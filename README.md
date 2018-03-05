@@ -1,19 +1,34 @@
 
-# Contributing
+# Microsoft FastTrack
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+Welcome to the OSS home for Microsoft FastTrack.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+## Projects
+
+This section lists the currently published projects from Microsoft FastTrack. Please see the individual project readme files for more details.
+
+|Project|Description
+|----|--------------------------
+|[SMAT Workbook Generator](https://github.com/Microsoft/fasttrack-smat-workbook-generator)|Combines the output of SMAT into a single workbook|
+
+
+## Ideas Welcome!
+
+If you have ideas for projects that would help Microsoft FastTrack improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues). We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
+
+
+## Contributing
+
+Please do not submit PRs to this repo - instead please contribute to the individual repos for each tool or application.
+
+
+## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-# Legal Notices
+## Legal Notices
 
 Microsoft and any contributors grant you a license to the Microsoft documentation and other content
 in this repository under the [Creative Commons Attribution 4.0 International Public License](https://creativecommons.org/licenses/by/4.0/legalcode),
