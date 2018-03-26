@@ -1,11 +1,10 @@
 
-# Microsoft FastTrack
-
-Welcome to the OSS home for Microsoft FastTrack.
+# Microsoft FastTrack Open Source
+Welcome to the home for Microsoft FastTrack Open Source. Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program with the aim to make them easier to find, grow, and improve with help from the community and partners.
 
 ## Projects
 
-This section lists the currently published projects from Microsoft FastTrack. Please see the individual project readme files for more details.
+This section lists the projects currently published as part of the Microsoft FastTrack OSS initiative. Please see the individual project readme for details and usage.
 
 |Project|Description
 |----|--------------------------
@@ -16,10 +15,12 @@ This section lists the currently published projects from Microsoft FastTrack. Pl
 
 If you have ideas for projects that would help Microsoft FastTrack improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues). We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
 
+Do you have a script or tool you use that would be of value to the community? Please let us know so we can discuss potentially adding it to the catalog!
+
 
 ## Contributing
 
-Please do not submit PRs to this repo - instead please contribute to the individual repos for each tool or application.
+Please do not submit PRs to this repo - instead please contribute to the individual repos for each tool or application. Your contributions are very welcome! If you would like to make a substantial change to a project, please let us know first so we can discuss. This is to ensure we can merge your work.
 
 
 ## Code of Conduct
