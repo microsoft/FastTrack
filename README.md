@@ -6,14 +6,6 @@ Welcome to the home for Microsoft FastTrack Open Source. Through this initiative
 
 This section lists the projects currently published as part of the Microsoft FastTrack OSS initiative. Please see the individual readme files for details and usage.
 
-### Scripts
-
-_coming soon_
-
-### Samples
-
-_coming soon_
-
 ### Tools
 
 |Project|Description
