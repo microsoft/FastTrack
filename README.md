@@ -4,7 +4,17 @@ Welcome to the home for Microsoft FastTrack Open Source. Through this initiative
 
 ## Projects
 
-This section lists the projects currently published as part of the Microsoft FastTrack OSS initiative. Please see the individual project readme for details and usage.
+This section lists the projects currently published as part of the Microsoft FastTrack OSS initiative. Please see the individual readme files for details and usage.
+
+### Scripts
+
+_coming soon_
+
+### Samples
+
+_coming soon_
+
+### Tools
 
 |Project|Description
 |----|--------------------------
@@ -13,15 +23,14 @@ This section lists the projects currently published as part of the Microsoft Fas
 
 ## Ideas Welcome!
 
-If you have ideas for projects that would help Microsoft FastTrack improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues). We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
+If you have ideas for projects that would improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues) and let us know. We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
 
 Do you have a script or tool you use that would be of value to the community? Please let us know so we can discuss potentially adding it to the catalog!
 
 
 ## Contributing
 
-Please do not submit PRs to this repo - instead please contribute to the individual repos for each tool or application. Your contributions are very welcome! If you would like to make a substantial change to a project, please let us know first so we can discuss. This is to ensure we can merge your work.
-
+If you have a script or sample you would like to contribute to the Microsoft FastTrack repository please review the [contributing](CONTRIBUTING.md) guidance.
 
 ## Code of Conduct
 
