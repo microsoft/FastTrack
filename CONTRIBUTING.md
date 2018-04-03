@@ -23,7 +23,7 @@ The details in this section apply to all contributions.
 
 ## New Tools
 
-* Tools are defined as applications or "something" more than a script. Generally they are compiled and have releases
+* Tools are defined as applications or "something" more than a script. Usually they are compiled and have releases
 * Tools generally go into their own repo, which we need to create. Please open an issue to discuss adding a new tool
 
 ## Bug Fixes
