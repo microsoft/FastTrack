@@ -1,28 +1,37 @@
+_PLEASE COMPLETE THIS README TEMPLATE FOR YOUR CONTRIBUTION. IT SHOULD BE PLACED IN THE ROOT OF YOUR FOLDER AND BE RENAMED "README.md". ONCE COMPLETE PLEASE DELETE ALL OF THESE INSTRUCTIONS_
 
-# Microsoft FastTrack Open Source
-Welcome to the home for Microsoft FastTrack Open Source. Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program with the aim to make them easier to find, grow, and improve with help from the community and partners.
+# Microsoft FastTrack Open Source - _YOUR TITLE HERE_
 
-## Projects
+_INTRODUCTION TO THIS TOOL/REPO_
 
-This section lists the projects currently published as part of the Microsoft FastTrack OSS initiative. Please see the individual readme files for details and usage.
+## Usage
 
-### Tools
+_PROVIDE DETAILED GUIDE TO INSTALL AND USE THIS TOOL/SCRIPT/SAMPLE. INCLUDE ANY OPTIONS, CONFIGURATION, ERROR HANDLING, ETC. YOU CAN LINK TO SUPPORTING BLOG POSTS OR OTHER RESOURCES, BUT THIS SECTION MUST CONTAIN ALL THE DETAILS REQUIRED TO RUN THE TOOL._
 
-|Project|Description
+## Applies To
+
+_IN THIS SECTION LIST THE ENVIRONMENT(S) WHERE THIS TOOL IS USEFUL_
+
+- SharePoint 2010
+- SharePoint 2013
+- SharePoint Online
+
+## Author
+
+_UPDATE TABLE BELOW_
+
+|Author|Original Publish Date
 |----|--------------------------
-|[SMAT Workbook Generator](https://github.com/Microsoft/fasttrack-smat-workbook-generator)|Combines the output of SMAT into a single workbook|
+|_YOUR NAME_|_DATE ORIGINALLY PUBLISHED_|
+
+## Issues
+
+Please report any issues you find to the [issues list](/issues).
+
+_ENSURE THE ISSUES LINK ABOVE IS CORRECT. ADD EXTRA ISSUE DETAILS, IF APPLICABLE. EXAMPLE: "IF YOU GET ERROR X, ENSURE YOU DID CONFIGURATION Y"
 
 
-## Ideas Welcome!
-
-If you have ideas for projects that would improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues) and let us know. We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
-
-Do you have a script or tool you use that would be of value to the community? Please let us know so we can discuss potentially adding it to the catalog!
-
-
-## Contributing
-
-If you have a script or sample you would like to contribute to the Microsoft FastTrack repository please review the [contributing](CONTRIBUTING.md) guidance.
+_DO NOT DELETE/ALTER THE SECTIONS BELOW_
 
 ## Support Statement
 
@@ -38,8 +47,8 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 Microsoft and any contributors grant you a license to the Microsoft documentation and other content
 in this repository under the [Creative Commons Attribution 4.0 International Public License](https://creativecommons.org/licenses/by/4.0/legalcode),
-see the [LICENSE](LICENSE) file, and grant you a license to any code in the repository under the [MIT License](https://opensource.org/licenses/MIT), see the
-[LICENSE-CODE](LICENSE-CODE) file.
+see the [LICENSE](https://github.com/Microsoft/FastTrack/blob/master/LICENSE) file, and grant you a license to any code in the repository under the [MIT License](https://opensource.org/licenses/MIT), see the
+[LICENSE-CODE](https://github.com/Microsoft/FastTrack/blob/master/LICENSE-CODE) file.
 
 Microsoft, Windows, Microsoft Azure and/or other Microsoft products and services referenced in the documentation
 may be either trademarks or registered trademarks of Microsoft in the United States and/or other countries.
