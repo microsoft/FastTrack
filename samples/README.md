@@ -1,1 +1,0 @@
-# Microsoft FastTrack Open Source - Samples

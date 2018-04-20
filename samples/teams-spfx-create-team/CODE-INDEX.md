@@ -41,3 +41,5 @@ A [React](https://reactjs.org/) based [SharePoint Framework](https://docs.micros
 * [React](https://reactjs.org/)
 * [PnPjs Libraries](https://github.com/pnp/pnpjs)
 * [SharePoint Patterns and Practices](https://dev.office.com/patterns-and-practices)
+* [Office UI Fabric](https://developer.microsoft.com/en-us/fabric)
+* [TypeScript](https://www.typescriptlang.org/)

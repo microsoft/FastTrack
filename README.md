@@ -12,6 +12,11 @@ This section lists the projects currently published as part of the Microsoft Fas
 |----|--------------------------
 |[SMAT Workbook Generator](https://github.com/Microsoft/fasttrack-smat-workbook-generator)|Combines the output of SMAT into a single workbook|
 
+### Samples
+
+|Sample|Description
+|----|--------------------------
+|[teams-spfx-create-team](./samples/teams-spfx-create-team)|Demonstrates how to create a Microsoft Team from a SharePoint Framework Field customizer. Makes use of PnPjs libraries, Office UI Fabric & React Fabric Controls, and React.|
 
 ## Ideas Welcome!
 
