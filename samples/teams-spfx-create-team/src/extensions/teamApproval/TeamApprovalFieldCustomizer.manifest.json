@@ -1,0 +1,11 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx/client-side-extension-manifest.schema.json",
+
+  "id": "5d8015ce-5da6-4216-8f05-63e326acfaf1",
+  "alias": "TeamApprovalFieldCustomizer",
+  "componentType": "Extension",
+  "extensionType": "FieldCustomizer",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false
+}

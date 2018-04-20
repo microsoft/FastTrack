@@ -1,0 +1,34 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "fasttrack-teams-governance-sample-client-side-solution",
+    "id": "4220401b-312c-48fc-bfb2-c476e89ec453",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "features": [
+      {
+        "title": "Application Extension - Deployment of custom action.",
+        "description": "Deploys a custom action with ClientSideComponentId association",
+        "id": "f79e12d3-b46c-493d-b709-283c35c96a62",
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": [
+            "elements.xml"
+          ],
+          "elementFiles": [
+            "schema.xml"
+          ]
+        }
+      }
+    ],
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft.Azure.AgregatorService",
+        "scope": "Groups.ReadWrite.All"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/fasttrack-teams-governance-sample.sppkg"
+  }
+}

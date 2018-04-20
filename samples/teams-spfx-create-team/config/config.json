@@ -1,0 +1,27 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "team-approval-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/teamApproval/TeamApprovalFieldCustomizer.js",
+          "manifest": "./src/extensions/teamApproval/TeamApprovalFieldCustomizer.manifest.json"
+        }
+      ]
+    },
+    "team-precheck-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/teamPrecheck/TeamPrecheckFieldCustomizer.js",
+          "manifest": "./src/extensions/teamPrecheck/TeamPrecheckFieldCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "TeamApprovalFieldCustomizerStrings": "lib/extensions/teamApproval/loc/{locale}.js",
+    "TeamPrecheckFieldCustomizerStrings": "lib/extensions/teamPrecheck/loc/{locale}.js"
+  }
+}

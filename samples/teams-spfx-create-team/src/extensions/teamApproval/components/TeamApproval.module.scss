@@ -1,0 +1,37 @@
+.TeamApproval {
+  .cell {
+    background-color: "[theme:themePrimary, default:#e5e5e5]";
+    display: 'inline-block';
+  }
+
+  .TeamApprovalHovercard {
+    padding: 4px;
+  }
+  
+  .IconBase {
+    height:auto;
+    padding-right: 2px;
+  
+    .IconSuccess {
+      color: #107c10;
+    }
+  
+    .IconDenied {
+      color: #fff100;
+    }
+  
+    .IconError {
+      color: #e81123;
+    }
+  
+    .IconUnknown {
+      color: #0078d7;
+    }
+  }
+}
+
+.TeamApprovalDialog {
+  width: 350px;
+  padding: 3px;
+  overflow: show;
+}

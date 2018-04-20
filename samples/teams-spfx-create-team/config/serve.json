@@ -1,0 +1,40 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "5d8015ce-5da6-4216-8f05-63e326acfaf1",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    },
+    "teamApproval": {
+      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "5d8015ce-5da6-4216-8f05-63e326acfaf1",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    },
+    "teamPrecheck": {
+      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "89b74d88-5b66-4c38-8dc4-a3c5acc116a4",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    }
+  }
+}
