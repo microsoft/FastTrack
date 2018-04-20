@@ -1,6 +1,6 @@
 # Contribute to Microsoft FastTrack
 
-Thank you for your interest in contributing to Microsoft FastTrack's open source program! This article outlines the guidance you should follow to ensure we can accept your contribution. If you have any questions please open an issue so we can discuss your contribution.
+Thank you for your interest in contributing to Microsoft FastTrack's open source program! This article outlines the guidance you should follow to ensure we can accept your contribution. If you have any questions please open an issue so we help get things sorted.
 
 ## All Contributions
 
