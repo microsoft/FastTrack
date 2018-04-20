@@ -28,7 +28,7 @@ The details in this section apply to all contributions.
 
 ## Bug Fixes
 
-* Please complete the PR template and describe the bug you are fixing with enough detail we can test your change
+* Please complete the issue template and describe the bug you are fixing with enough detail we can test your change
 * If you find a bug, please open an issue first and mention you are working on a fix so we avoid duplicating work
 
 
