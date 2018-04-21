@@ -62,7 +62,7 @@ export default class TeamApprovalFieldCustomizer
       listId: this.context.pageContext.list.id.toString(),
       listItemId: event.listItem.getValueByName("ID"),
       fieldValue: <IFieldValue>JSON.parse(event.fieldValue),
-      submitterEmail: "patrick@three18studios.com",
+      submitterEmail: "email@place.com",
       teamName: event.listItem.getValueByName("TeamName"),
       teamDescription: event.listItem.getValueByName("TeamDescription"),
     };
