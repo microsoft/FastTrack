@@ -4,7 +4,7 @@ This sample shows how to use a SharePoint Framework field customizer solution to
 
 You can see the code used to create the [team here](/src/extensions/teamApproval/components/cells.tsx#L144). This makes use of the [PnPjs libraries](https://github.com/pnp/pnpjs) to simplify creation of the team and authentication. See the [code index](CODE-INDEX.md) to quickly see how the pieces work.
 
-**This sample currently makes use of pre-release features of Microsoft365 related to adal authentication. You need to be working in a first release tenant for the steps described to work correctly. We will remove this message once the features reach GA. If you have any questions please open an issue so we can help.**
+**This sample currently makes use of pre-release features of Microsoft365 related to ADAL authentication. You need to be working in a first release tenant for the steps described to work correctly. We will remove this message once the features reach GA. If you have any questions please open an issue so we can help.**
 
 ## Usage
 
