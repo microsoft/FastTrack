@@ -4,11 +4,11 @@ This script will split consolidated SPMT error logs and output one csv file per 
 
 ## Usage
 
-1. Copy the script file "Select-SPMTLogErrors.ps1" to the folder with the consolidated log file
+1. Copy the script file "Split-SPMTLogErrors.ps1" to the folder with the consolidated log file
 2. Open a PowerShell command window
 3. Execute the script using
 
-     `.\Select-SPMTLogErrors.ps1 -file {file name to filter}`
+     `.\Split-SPMTLogErrors.ps1 -file {file name to filter}`
 
 4. Review the output files which will be named "split_" with the column value appended. One file per value
 
@@ -16,11 +16,11 @@ This script will split consolidated SPMT error logs and output one csv file per 
 
 Specify the ouput folder where the split files will be written
 
-`.\Select-SPMTLogErrors.ps1 -file {file name to filter} -outFolder ./output`
+`.\Split-SPMTLogErrors.ps1 -file {file name to filter} -outFolder ./output`
 
 Specify the column upon whose values we will split the consolidated errors log
 
-`.\Select-SPMTLogErrors.ps1 -file {file name to filter} -splitColumn "Result Category"`
+`.\Split-SPMTLogErrors.ps1 -file {file name to filter} -splitColumn "Result Category"`
 
 ### Additional Options
 
