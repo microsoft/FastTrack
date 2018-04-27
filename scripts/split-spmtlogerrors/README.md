@@ -44,7 +44,7 @@ Used against the consolidated error logs from SPMT.
 
 ## Issues
 
-Please report any issues you find to the [issues list](../../../issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 
