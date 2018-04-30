@@ -26,20 +26,20 @@ import { escapedStringToJson } from "../../utils";
  * You can define an interface to describe it.
  */
 export interface ITeamApprovalFieldCustomizerProperties {
-  // This is an example; replace with your own property
+  // this is an example; replace with your own property
   sampleText?: string;
 }
 
-const LOG_SOURCE: string = 'TeamApprovalFieldCustomizer';
+const LOG_SOURCE: string = "TeamApprovalFieldCustomizer";
 
 export default class TeamApprovalFieldCustomizer
   extends BaseFieldCustomizer<ITeamApprovalFieldCustomizerProperties> {
 
   @override
   public onInit(): Promise<void> {
-    // Add your custom initialization to this method.  The framework will wait
+    // add your custom initialization to this method.  The framework will wait
     // for the returned promise to resolve before firing any BaseFieldCustomizer events.
-    Log.info(LOG_SOURCE, 'Activated TeamApprovalFieldCustomizer with properties:');
+    Log.info(LOG_SOURCE, "Activated TeamApprovalFieldCustomizer with properties:");
     Log.info(LOG_SOURCE, JSON.stringify(this.properties, undefined, 2));
     Log.info(LOG_SOURCE, `The following string should be equal: "TeamApprovalFieldCustomizer" and "${strings.Title}"`);
 
