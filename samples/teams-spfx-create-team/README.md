@@ -6,30 +6,41 @@ You can see the code used to create the [team here](/src/extensions/teamApproval
 
 **This sample currently makes use of pre-release features of Microsoft365 related to ADAL authentication. You need to be working in a first release tenant for the steps described to work correctly. We will remove this message once the features reach GA. If you have any questions please open an issue so we can help.**
 
+To get around this limitation you can register an Azure AD application with delegated Group Read/Write all permissions and paste the client id for that app in the demo-config.js file at the root of the project.
+
 ## Usage
 
 ### Setup
 
+Please review [this guide](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/extensions/get-started/serving-your-extension-from-sharepoint) for additional details on the deployment process.
+
 1. [Setup your development environment](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-development-environment) for SPFx
 2. Clone this solution folder
 3. Run `npm install`
-4. Run `gulp build --ship`
-5. Run `gulp bundle --ship`
-6. Run `gulp package-solution --ship`
+4. Run `gulp build`
+5. Run `gulp bundle`
+6. Run `gulp package-solution`
 7. Copy the ./sharepoint/solution/fasttrack-teams-governance-sample.sppkg to your app catalog (may require admin assistance depending on environment)
 8. Deploy the solution when prompted
 9. Approve the requested permissions in the admin center ([details](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aad-tutorial#deploy-the-solution-and-grant-permissions))
-10. Navigate to your site collection and add the app "fasttrack-teams-governance-sample-client-side-solution" to your site
+10. Run `gulp serve --nobrowser` to serve the files from local host for testing
+11. Navigate to your site collection and add the app "fasttrack-teams-governance-sample-client-side-solution" to your site
 
 _You must allow pop-ups for the site where you are testing to enable the ADAL authentication_
 
 ### Run
+
+Ensure the local web server is running by executing the command `gulp serve --nobrowser`
 
 The solution should create a new list whose title is "Team Approval" in your site. Navigate to this list and add a new list item using the included "Team Request" content type. Once you add the item you should see the two custom fields displayed in the standard list view.
 
 Clicking the "Run Scan" button will execute the code in the [TeamPrecheck component](.src/extensions/teamPrecheck/components/TeamPrecheck.tsx). This shows how you can run a series of checks to determine if a team should be approved based on your business rules. In this example we see if a team with the supplied name already exists, that the name isn't empty, and that the name doesn't start with a number. We also show how you can have blocking and non-blocking rules. You can expand this logic to meet your specific requirements.
 
 Clicking the "Approve" or "Deny" buttons will execute the code in the [TeamApproval component](.src/extensions/teamApproval/components/cells.tsx#L144). In either case you will be presented with a dialog where you can leave comments or update the team properties before creation.
+
+### Deployment
+
+[This guide](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/extensions/get-started/hosting-extension-from-office365-cdn) covers deploying your extension to a CDN for production.
 
 
 ## Applies To

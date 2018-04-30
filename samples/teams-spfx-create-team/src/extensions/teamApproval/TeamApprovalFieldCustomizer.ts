@@ -17,6 +17,9 @@ import { graph } from "@pnp/graph";
 
 import { ICellContainerProps, ICellState, IFieldValue } from "./interfaces";
 
+import { demoConfig } from "../../demo-config";
+import { escapedStringToJson } from "../../utils";
+
 /**
  * If your field customizer uses the ClientSideComponentProperties JSON input,
  * it will be deserialized into the BaseExtension.properties object.
@@ -43,7 +46,9 @@ export default class TeamApprovalFieldCustomizer
     graph.setup({
       graph: {
         fetchClientFactory: () => {
-          return AdalClient.fromSPFxContext(this.context);
+          const client: AdalClient = AdalClient.fromSPFxContext(this.context);
+          client.clientId = demoConfig.clientId;
+          return client;
         },
       },
       spfxContext: this.context,
@@ -61,7 +66,7 @@ export default class TeamApprovalFieldCustomizer
     const cellProps: ICellContainerProps = {
       listId: this.context.pageContext.list.id.toString(),
       listItemId: event.listItem.getValueByName("ID"),
-      fieldValue: <IFieldValue>JSON.parse(event.fieldValue),
+      fieldValue: escapedStringToJson<IFieldValue>(event.fieldValue),
       submitterEmail: "email@place.com",
       teamName: event.listItem.getValueByName("TeamName"),
       teamDescription: event.listItem.getValueByName("TeamDescription"),
@@ -73,8 +78,8 @@ export default class TeamApprovalFieldCustomizer
 
   @override
   public onDisposeCell(event: IFieldCustomizerCellEventParameters): void {
-    // This method should be used to free any resources that were allocated during rendering.
-    // For example, if your onRenderCell() called ReactDOM.render(), then you should
+    // this method should be used to free any resources that were allocated during rendering.
+    // for example, if your onRenderCell() called ReactDOM.render(), then you should
     // call ReactDOM.unmountComponentAtNode() here.
     ReactDOM.unmountComponentAtNode(event.domElement);
     super.onDisposeCell(event);

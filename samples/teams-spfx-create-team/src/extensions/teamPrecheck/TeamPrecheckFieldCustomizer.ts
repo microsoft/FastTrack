@@ -16,6 +16,9 @@ import { IFieldValue, ITeamPrecheckProps } from "./interfaces";
 import { AdalClient } from "@pnp/common";
 import { graph } from "@pnp/graph";
 
+import { demoConfig } from "../../demo-config";
+import { escapedStringToJson } from "../../utils";
+
 /**
  * If your field customizer uses the ClientSideComponentProperties JSON input,
  * it will be deserialized into the BaseExtension.properties object.
@@ -47,7 +50,9 @@ export default class TeamPrecheckFieldCustomizer
     graph.setup({
       graph: {
         fetchClientFactory: () => {
-          return AdalClient.fromSPFxContext(this.context);
+          const client: AdalClient = AdalClient.fromSPFxContext(this.context);
+          client.clientId = demoConfig.clientId;
+          return client;
         },
       },
       spfxContext: this.context,
@@ -60,7 +65,7 @@ export default class TeamPrecheckFieldCustomizer
   public onRenderCell(event: IFieldCustomizerCellEventParameters): void {
 
     const cellProps: ITeamPrecheckProps = {
-      fieldValue: <IFieldValue>JSON.parse(event.fieldValue),
+      fieldValue: escapedStringToJson<IFieldValue>(event.fieldValue),
       listId: this.context.pageContext.list.id.toString(),
       listItemId: event.listItem.getValueByName("ID"),
       teamName: event.listItem.getValueByName("TeamName"),

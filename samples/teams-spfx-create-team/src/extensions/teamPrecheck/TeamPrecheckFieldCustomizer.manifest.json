@@ -1,7 +1,7 @@
 {
   "$schema": "https://dev.office.com/json-schemas/spfx/client-side-extension-manifest.schema.json",
 
-  "id": "89b74d88-5b66-4c38-8dc4-a3c5acc116a4",
+  "id": "0c43d2d5-033e-4719-9f37-e212d4ea09e6",
   "alias": "TeamPrecheckFieldCustomizer",
   "componentType": "Extension",
   "extensionType": "FieldCustomizer",

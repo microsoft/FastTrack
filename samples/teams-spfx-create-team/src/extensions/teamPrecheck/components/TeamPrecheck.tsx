@@ -17,6 +17,8 @@ import { graph } from "@pnp/graph";
 import { sp, ItemUpdateResult } from "@pnp/sp";
 import { stringIsNullOrEmpty } from "@pnp/common";
 
+import { jsonToEscapedString } from "../../../utils";
+
 const LOG_SOURCE: string = "TeamPrecheck";
 
 import { ITeamPrecheckProps, ITeamPrecheckState } from "../interfaces";
@@ -124,7 +126,7 @@ export default class TeamPrecheck extends React.Component<ITeamPrecheckProps, IT
       };
 
       await this.updateListItem({
-        TeamPrecheck: JSON.stringify(state),
+        TeamPrecheck: jsonToEscapedString(state),
       });
 
       this.setState(state);

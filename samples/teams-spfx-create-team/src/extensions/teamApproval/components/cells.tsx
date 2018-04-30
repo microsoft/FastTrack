@@ -18,6 +18,8 @@ import { graph, TeamCreateResult } from "@pnp/graph";
 import { ApproveTeamDialog } from "./ApproveTeamDialog";
 import { DenyTeamDialog } from "./DenyTeamDialog";
 
+import { jsonToEscapedString } from "../../../utils";
+
 const LOG_SOURCE: string = 'TeamApproval';
 
 export abstract class CellBase extends React.Component<ICellProps, ICellState> {
@@ -146,7 +148,7 @@ export class PendingCell extends CellBase {
             newFieldValue.groupId = team.data.id;
 
             this.updateListItem({
-                TeamApproval: JSON.stringify(newFieldValue),
+                TeamApproval: jsonToEscapedString(newFieldValue),
             });
 
             this.props.onCellChanged(newFieldValue);
@@ -178,7 +180,7 @@ export class PendingCell extends CellBase {
         try {
 
             const updateResult: ItemUpdateResult = await this.updateListItem({
-                TeamApproval: JSON.stringify(newFieldValue),
+                TeamApproval: jsonToEscapedString(newFieldValue),
             });
 
             this.props.onCellChanged(newFieldValue);
@@ -195,7 +197,7 @@ export class PendingCell extends CellBase {
         };
 
         await sp.web.lists.getById(this.props.listId).items.getById(this.props.listItemId).update({
-            "TeamApproval": JSON.stringify(errorFieldValue),
+            "TeamApproval": jsonToEscapedString(errorFieldValue),
         });
 
         this.props.onCellChanged(errorFieldValue);

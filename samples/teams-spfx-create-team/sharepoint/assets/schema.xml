@@ -1,7 +1,7 @@
 <List xmlns:ows="Microsoft SharePoint" Title="Team Approval List" EnableContentTypes="TRUE" FolderCreation="FALSE" Direction="$Resources:Direction;" Url="Lists/TeamApproval" BaseType="0" xmlns="http://schemas.microsoft.com/sharepoint/">
  <MetaData>
    <ContentTypes>
-     <ContentTypeRef ID="0x01007b1a22e46675425597b2c89ea6506934" />
+     <ContentTypeRef ID="0x01009b6b4d269335408982afe63ac859230d" />
    </ContentTypes>
    <Fields></Fields>
    <Views>

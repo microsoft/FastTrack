@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
     
-    <Field ID="{d79b923e-b65b-4b91-b0eb-0ff4b50385f4}"
+    <Field ID="{b026f176-b4e5-428d-82a1-c43648cc32ca}"
             Name="TeamName"
             DisplayName="Team Name"
             Type="Text"
@@ -9,7 +9,7 @@
             Group="FastTrack Columns">
     </Field>
 
-    <Field ID="{31552138-c00a-44f5-a59d-b66e18b6cbcd}"
+    <Field ID="{570e39fb-f648-4d96-abb3-ebead89399f5}"
             Name="TeamDescription"
             DisplayName="Team Description"
             Type="Text"
@@ -17,7 +17,7 @@
             Group="FastTrack Columns">
     </Field>
     
-    <Field ID="{57e23482-c3da-47d2-8e34-937849d2655f}"
+    <Field ID="{ea8fa690-db8c-4e35-97f7-0bc278dde9f6}"
             Name="TeamApproval"
             DisplayName="Team Approval"
             Type="Note"
@@ -25,11 +25,11 @@
             ShowInEditForm="FALSE"
             ShowInNewForm="FALSE"
             Group="FastTrack Columns"
-            ClientSideComponentId="5d8015ce-5da6-4216-8f05-63e326acfaf1">
+            ClientSideComponentId="674ad2f5-ecbd-4f48-8911-8a935e45fbfa">
         <Default>{"status":"Pending"}</Default>
     </Field>
 
-    <Field ID="{1358dc4b-075b-4ae9-8e6f-c450c05778bf}"
+    <Field ID="{a25404b2-6fdc-4589-b788-d002647dd8fd}"
             Name="TeamPrecheck"
             DisplayName="Team Precheck"
             Type="Note"
@@ -37,19 +37,19 @@
             ShowInEditForm="FALSE"
             ShowInNewForm="FALSE"
             Group="FastTrack Columns"
-            ClientSideComponentId="89b74d88-5b66-4c38-8dc4-a3c5acc116a4">
+            ClientSideComponentId="0c43d2d5-033e-4719-9f37-e212d4ea09e6">
         <Default>{"status":"None"}</Default>
     </Field>
 
-   <ContentType ID="0x01007b1a22e46675425597b2c89ea6506934" 
+   <ContentType ID="0x01009b6b4d269335408982afe63ac859230d" 
            Name="Team Request" 
            Group="FastTrack Content Types" 
            Description="Tracks a Team Request">
        <FieldRefs>
-            <FieldRef ID="{d79b923e-b65b-4b91-b0eb-0ff4b50385f4}" /> 
-            <FieldRef ID="{31552138-c00a-44f5-a59d-b66e18b6cbcd}" /> 
-            <FieldRef ID="{57e23482-c3da-47d2-8e34-937849d2655f}" /> 
-            <FieldRef ID="{1358dc4b-075b-4ae9-8e6f-c450c05778bf}" />
+            <FieldRef ID="{b026f176-b4e5-428d-82a1-c43648cc32ca}" /> 
+            <FieldRef ID="{570e39fb-f648-4d96-abb3-ebead89399f5}" /> 
+            <FieldRef ID="{ea8fa690-db8c-4e35-97f7-0bc278dde9f6}" /> 
+            <FieldRef ID="{a25404b2-6fdc-4589-b788-d002647dd8fd}" />
        </FieldRefs>
    </ContentType> 
 
