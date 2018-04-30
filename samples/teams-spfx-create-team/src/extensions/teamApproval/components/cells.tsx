@@ -177,7 +177,7 @@ export class PendingCell extends CellBase {
 
         try {
 
-            const updateResult: ItemUpdateResult = this.updateListItem({
+            const updateResult: ItemUpdateResult = await this.updateListItem({
                 TeamApproval: JSON.stringify(newFieldValue),
             });
 
