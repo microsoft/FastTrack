@@ -39,7 +39,7 @@ A [React](https://reactjs.org/) based [SharePoint Framework](https://docs.micros
 * [SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview)
 * [Microsoft Graph](https://developer.microsoft.com/en-us/graph/)
 * [React](https://reactjs.org/)
-* [PnPjs Libraries](https://github.com/pnp/pnpjs)
 * [SharePoint Patterns and Practices](https://dev.office.com/patterns-and-practices)
+* [PnPjs Libraries](https://github.com/pnp/pnpjs)
 * [Office UI Fabric](https://developer.microsoft.com/en-us/fabric)
 * [TypeScript](https://www.typescriptlang.org/)
