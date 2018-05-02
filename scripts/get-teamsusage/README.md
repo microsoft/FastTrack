@@ -11,7 +11,7 @@ This script requires that you register an Azure AD Application, which can be don
 1. Login to Portal.Azure.Com
 2. Navigate to "Azure Active Directory" > "App Registrations"
 3. Click "New Application Registration"
-4. Give your application a friendly name, Select application type "native", and enter a redirect URL in the format urn:foo and click create
+4. Give your application a friendly name, Select application type "native", and enter a redirect URL in the format "urn:foo" and click create
 5. Click on the App > Required Permissions
 6. Click Add and select the "Microsoft Graph" API
 7. Grant the App the "Read All Usage Reports" permission
@@ -22,13 +22,13 @@ This script requires that you register an Azure AD Application, which can be don
 1. Copy the script file "Get-TeamsUsage.ps1" to a folder and open a PowerShell command window to that folder
 2. Execute the script using:
 
-`.\Get-TeamsUsage.ps1 -tenantName "contoso.onmicrosoft.com" -ClientID "{your app id}" -GroupsReport getOffice365GroupsActivityDetail -Period D7`
+`.\Get-TeamsUsage.ps1 -tenantName "contoso.onmicrosoft.com" -ClientID "{your app id}" -GroupsReport getOffice365GroupsActivityDetail -Period D7 -redirectUri "urn:foo"`
 
 (You may be prompted to install the nuget provider and several other libraries. This is expected so the dependencies can be auto-installed.)
 
 3. Review the produced csv file, or optionally you can pipe the array results to other commands such as Format-Table
 
-`.\Get-TeamsUsage.ps1 -tenantName "contoso.onmicrosoft.com" -ClientID "{your app id}" -GroupsReport getOffice365GroupsActivityDetail -Period D7 | Format-Table`
+`.\Get-TeamsUsage.ps1 -tenantName "contoso.onmicrosoft.com" -ClientID "{your app id}" -GroupsReport getOffice365GroupsActivityDetail -Period D7 -redirectUri "urn:foo" | Format-Table`
 
 |Option|Description|Default
 |----|--------------------------|--------------------------
@@ -60,11 +60,6 @@ MicrosoftTeams PowerShell Module
 ## Issues
 
 Please report any issues you find to the [issues list](../../../../issues).
-
-_ENSURE THE ISSUES LINK ABOVE IS CORRECT. ADD EXTRA ISSUE DETAILS, IF APPLICABLE. EXAMPLE: "IF YOU GET ERROR X, ENSURE YOU DID CONFIGURATION Y"
-
-
-_DO NOT DELETE/ALTER THE SECTIONS BELOW_
 
 ## Support Statement
 
