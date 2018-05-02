@@ -4,6 +4,8 @@ This script will split consolidated SPMT error logs and output one csv file per 
 
 ## Usage
 
+### Split Mode
+
 1. Copy the script file "Split-SPMTLogErrors.ps1" to the folder with the consolidated log file
 2. Open a PowerShell command window
 3. Execute the script using
@@ -12,29 +14,62 @@ This script will split consolidated SPMT error logs and output one csv file per 
 
 4. Review the output files which will be named "split_" with the column value appended. One file per value
 
-### Additional Examples
+**Specify the ouput folder where the split files will be written**
 
-Specify the ouput folder where the split files will be written
+```PowerShell
+.\Split-SPMTLogErrors.ps1 -file {file name to filter} -outFolder ./output
+```
 
-`.\Split-SPMTLogErrors.ps1 -file {file name to filter} -outFolder ./output`
+**Specify the column upon whose values we will split the consolidated errors log**
 
-Specify the column upon whose values we will split the consolidated errors log
+```PowerShell
+.\Split-SPMTLogErrors.ps1 -file {file name to filter} -splitColumn "Result Category"
+```
 
-`.\Split-SPMTLogErrors.ps1 -file {file name to filter} -splitColumn "Result Category"`
+### Report Mode
 
-### Additional Options
+You can use the tool to quickly view occurance counts for a given column's unique values. This is done using the "getColumnReport" flag. It will output an ordered table of values with their occurance counts. This can serve as a guide to see what errors may be of the most interest or easy to filter. Can also be used as a check to ensure the 
+
+```PowerShell
+.\Split-SPMTLogErrors.ps1 -file {file name to filter} -getColumnReport
+```
+
+### Filter Mode
+
+Another way to use the script is to select only those rows with certain values for a given column and output those row into a new csv. 
+
+1. Run the script with "getSelectFile" flag to generate a list of all the unique values found in the specified column. This file will be output as "selects.txt". 
+2. Edit the "selects.txt" file leaving only the values you want to keep, one per line. 
+3. Run the script with the "selectFile" and "outFile" parameters specified. This will produce a file with the name "filtered.csv" containing only those rows whose select column value is found in the input file. This process is shown below.
+
+```PowerShell
+.\Split-SPMTLogErrors.ps1 -file {file name to filter}  -getSelectFile
+
+# Edit selects.txt to include those values to KEEP in the output csv
+
+.\Split-SPMTLogErrors.ps1 -file {file name to filter}  -selectFile "selects.txt"
+
+# Review filtered.csv file that is output
+```
+
+### All Options
 
 The script supports several additional options. None are required except for the _file_ parameter.
 
 |Option|Description|Default
 |----|--------------------------|--------------------------
 |file|Input file to be filtered|**required**
-|splitColumn|Column used to split the rows based on unique values|Message
-|outFolder|Folder where individual csv files are written|Current Folder
+|splitColumn|Column whose data is used by this script|Message
+|outFolder|Folder where individual csv files are written in Split Mode|Current Folder
+|outFile|Used only with getSelectFile and selectFile parameters|"selects.txt" or "filtered.csv"
+|getSelectFile|When specified a file will be generated listing all the unique values for the given splitColumn|none
+|selectFile|Specifies the file to use when filtering the error log|**required**
+|getColumnReport|If specified writes a report of the unique values for the given column with counts|none
+
 
 ## Applies To
 
-Used against the consolidated error logs from SPMT.
+Used against the consolidated error log file from SPMT.
 
 ## Author
 
