@@ -1,6 +1,6 @@
 
 # Microsoft FastTrack Open Source
-Welcome to the home for Microsoft FastTrack Open Source. Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program with the aim to make them easier to find, grow, and improve with help from the community and partners.
+Welcome to the home for Microsoft FastTrack Open Source Software. Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program with the aim to make them easier to find, grow, and improve with help from the community and partners.
 
 ## Projects
 
