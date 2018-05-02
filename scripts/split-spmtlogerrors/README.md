@@ -28,7 +28,7 @@ This script will split consolidated SPMT error logs and output one csv file per 
 
 ### Report Mode
 
-You can use the tool to quickly view occurance counts for a given column's unique values. This is done using the "getColumnReport" flag. It will output an ordered table of values with their occurance counts. This can serve as a guide to see what errors may be of the most interest or easy to filter. Can also be used as a check to ensure the 
+You can use the tool to quickly view occurance counts for a given column's unique values. This is done using the "getColumnReport" flag. It will output an ordered table of values with their occurance counts. This can serve as a guide to see what errors may be of the most interest or easy to filter. Can also be used as a check to ensure filter mode is producing results as expected.
 
 ```PowerShell
 .\Split-SPMTLogErrors.ps1 -file {file name to filter} -getColumnReport
