@@ -74,7 +74,7 @@ The script supports several additional options. None are required except for the
 |outFolder|Folder where individual csv files are written in Split Mode|Current Folder
 |outFile|Used only with getSelectFile and selectFile parameters|"selects.txt" or "filtered.csv"
 |getSelectFile|When specified a file will be generated listing all the unique values for the given splitColumn|none
-|selectFile|Specifies the file to use when filtering the error log|**required**
+|selectFile|Specifies the file to use when filtering the error log|none, presence triggers filter mode
 |getColumnReport|If specified writes a report of the unique values for the given column with counts|none
 
 
