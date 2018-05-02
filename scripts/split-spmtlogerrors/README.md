@@ -40,7 +40,7 @@ Another way to use the script is to select only those rows with certain values f
 
 1. Run the script with "getSelectFile" flag to generate a list of all the unique values found in the specified column. This file will be output as "selects.txt". 
 2. Edit the "selects.txt" file leaving only the values you want to keep, one per line. 
-3. Run the script with the "selectFile" and "outFile" parameters specified. This will produce a file with the name "filtered.csv" containing only those rows whose select column value is found in the input file. This process is shown below.
+3. Run the script with the "selectFile" parameter specified. This will produce a file with the name "filtered.csv" containing only those rows whose select column value is found in the input file. This process is shown below.
 
 ```PowerShell
 .\Split-SPMTLogErrors.ps1 -file {file name to filter}  -getSelectFile
@@ -48,6 +48,17 @@ Another way to use the script is to select only those rows with certain values f
 # Edit selects.txt to include those values to KEEP in the output csv
 
 .\Split-SPMTLogErrors.ps1 -file {file name to filter}  -selectFile "selects.txt"
+
+# Review filtered.csv file that is output
+```
+You can also specify a different column than the default using the "splitColumn" parameter
+
+```PowerShell
+.\Split-SPMTLogErrors.ps1 -file {file name to filter} -splitColumn "Content Type" -getSelectFile
+
+# Edit selects.txt to include those values to KEEP in the output csv
+
+.\Split-SPMTLogErrors.ps1 -file {file name to filter} -splitColumn "Content Type" -selectFile "selects.txt"
 
 # Review filtered.csv file that is output
 ```
