@@ -1,4 +1,4 @@
-<#
+﻿<#
 
 .SYNOPSIS
   Name: Get-TeamsUsage.ps1
@@ -139,11 +139,7 @@ process {
         $parameterset += $str
     }
     
-    #If the date is specified then add that to the parameters unless it is not supported
-    if ($date -and !($report -eq "MailboxUsage" -or $report -notlike "*Office365Activation*" -or $report -notlike "*getSkypeForBusinessOrganizerActivity*")) {
-        $str = "date='{0}'" -f $Date
-        $parameterset += $str
-    }
+ 
 
     #Trim a trailing comma off the ParameterSet if needed
     if ($parameterset) {
