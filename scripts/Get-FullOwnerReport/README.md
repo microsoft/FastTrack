@@ -2,7 +2,7 @@
 
 ## Usage
 
-The purpose of this script is to use the groups usage report graph api to gather usage data on teams within a certain period of time
+This script looks for and reports all users and groups that have full control access for all sites and subsites in a user's tenant
 
 ### Run
 
