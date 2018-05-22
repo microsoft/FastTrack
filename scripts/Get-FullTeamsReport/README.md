@@ -2,7 +2,7 @@
 
 ## Usage
 
-The purpose of this script is to use the groups usage report graph api to gather usage data on teams within a certain period of time
+The purpose of this script is to report all teams, channels, and users that exists in an environment
 
 ### Run
 

@@ -3,7 +3,6 @@
 .SYNOPSIS
   Name: Get-FullTeamsReport.ps1
   The purpose of this script is to report all teams, channels, and users that exists in an environment
-  is apart of
 
 .Requirements
 MicrosoftTeams PowerShell Module
