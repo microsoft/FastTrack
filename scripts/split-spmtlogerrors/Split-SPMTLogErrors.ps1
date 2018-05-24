@@ -33,7 +33,7 @@ process {
         Write-Host "Writing output to $($outFile)"
 
         Import-Csv $file -Delimiter "," | 
-            Group-Object { $_.Message } | 
+            Group-Object { $_.$splitColumn } | 
             Select-Object -ExpandProperty Name | 
             Set-Content -Path $outFile
     }
@@ -42,7 +42,7 @@ process {
         Write-Host "Gathering unique values report for error log $($file) for column $($splitColumn)"
 
         Import-Csv $file -Delimiter "," |
-            Group-Object { $_.Message } |
+            Group-Object { $_.$splitColumn } |
             Select-Object Count, Name |
             Sort-Object Count -Descending |
             Format-Table
