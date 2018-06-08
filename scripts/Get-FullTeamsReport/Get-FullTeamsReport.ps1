@@ -49,7 +49,7 @@ $creds = Get-Credential
 $Session365 = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $creds -Authentication Basic -AllowRedirection
 
 
-$allGroups = Invoke-Command -ScriptBlock {Get-UnifiedGroup} -Session $Session365 
+$allGroups = Invoke-Command -ScriptBlock {Get-UnifiedGroup -ResultSize Unlimited} -Session $Session365 
 
 Remove-PSSession -Session $Session365
 
