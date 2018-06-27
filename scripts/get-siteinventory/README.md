@@ -22,7 +22,7 @@ The purpose of this script is to gather a site inventory for a SharePoint Online
 
 ### All Options
 
-The script supports additional options, none are required except for the _url_ parameter.
+The script supports additional options, none are required except for the _Url_ parameter.
 
 |Option|Description|Default
 |----|--------------------------|--------------------------
@@ -33,11 +33,17 @@ The script supports additional options, none are required except for the _url_ p
 |PoolSize|The number of concurrent processes to run|NumberOfLogicalProcessors
 |NoWorkbook|Is supplied the excel workbook generation is skipped (files can be found individually in the temp folder)|false
 |NoQuery|Is supplied only the excel workbook generation is done|false
-|Timeout|Wait time for all sub-tasks to complete (default is indefinitely|-1
+|Timeout|Wait time for all sub-tasks to complete (default is indefinitely)|-1
+|DeleteTemp|If supplied the temp folder will be deleted once complete|false
 
-`There is no advantage to setting a poolSize above the number of available processors. Setting it to a lower value will reduce load on the servers and machine executing the script.`
 
-`The NoQuery flag allows you to regenerate a workbook from existing files without re-querying SharePoint. The files are expected to exist in the specifed TempFolder.`
+```
+There is no advantage to setting a poolSize above the number of available processors. Setting it to a lower value will reduce load on the servers and machine executing the script.
+```
+
+```
+The NoQuery flag allows you to regenerate a workbook from existing files without re-querying SharePoint. The files are expected to exist in the specifed TempFolder.
+```
 
 ### External Dependencies
 

@@ -39,7 +39,8 @@ Get-PnPList -Web $web -Connection $connection -Includes "WorkflowAssociations" `
     # report any workflow details
     $_ `
         | Select-Object "Title" -ExpandProperty "WorkflowAssociations" `
+        | Where-Object { $_.Name -notlike "*(Previous Version:*" } `
         | Add-Member @{WebUrl = $web.Url} -PassThru `
+        | Select-Object "Title", "WebUrl", "Id", "Name", "Description", "Created", "Enabled", "IsDeclarative", "ListId", "Modified", "TaskListTitle", "HistoryListTitle" `
         | Export-Csv -Path $listWorkflowsCsvFile -Delimiter "," -NoTypeInformation -Append
 }
-

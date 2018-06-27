@@ -8,19 +8,26 @@ function Join-TempCSV {
         [String]$OutFilePath
     )
 
-    process {
+    begin {
         $getFirstLine = $true    
+    }
+
+    process {
+        
         Get-ChildItem $SearchFolderMask | ForEach-Object {
 
-            $lines = $lines = Get-Content $_ 
-            $linesToWrite = switch ($getFirstLine) {
-                $true {$lines}
-                $false {$lines | Select-Object -Skip 1}
+            $lines = Get-Content $_ 
 
-            }
+            if ($lines.length -gt 0) {
 
-            $getFirstLine = $false
-            Add-Content $OutFilePath $linesToWrite
+                $linesToWrite = switch ($getFirstLine) {
+                    $true {$lines}
+                    $false {$lines | Select-Object -Skip 1}
+                }
+    
+                $getFirstLine = $false
+                Add-Content $OutFilePath $linesToWrite
+            }           
         }
     }
 }
@@ -41,24 +48,30 @@ function Add-Worksheet {
         $Worksheet = $null
     )
 
-    process {
-
+    begin {
         if ($Worksheet -eq $null) {
             $ws = $workbook.worksheets.add()
         }
         else {
             $ws = $Worksheet
         }
-    
+    }
+
+    process {
+
         $ws.Name = $SheetName
-        $cellRef = $ws.Range("A1")
-        $txtConnector = ("TEXT;" + $InputFilePath)
-        $connector = $ws.QueryTables.add($txtConnector, $cellRef)
-        $ws.QueryTables.item($connector.name).TextFileCommaDelimiter = $True
-        $ws.QueryTables.item($connector.name).TextFileParseType = 1
-        $ws.QueryTables.item($connector.name).Refresh() | Out-Null
-        $ws.QueryTables.item($connector.name).Delete() | Out-Null
-        $ws.UsedRange.EntireColumn.AutoFit() | Out-Null
+        
+        if ([System.IO.File]::Exists($InputFilePath)) {
+
+            $cellRef = $ws.Range("A1")
+            $txtConnector = ("TEXT;" + $InputFilePath)
+            $connector = $ws.QueryTables.add($txtConnector, $cellRef)
+            $ws.QueryTables.item($connector.name).TextFileCommaDelimiter = $True
+            $ws.QueryTables.item($connector.name).TextFileParseType = 1
+            $ws.QueryTables.item($connector.name).Refresh() | Out-Null
+            $ws.QueryTables.item($connector.name).Delete() | Out-Null
+            $ws.UsedRange.EntireColumn.AutoFit() | Out-Null
+        }
     }
 }
 

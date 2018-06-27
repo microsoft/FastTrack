@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $false)]
-    [String]$Url = "https://portal.sposites.com/sites/gdom/",
+    [Parameter(Mandatory = $true)]
+    [String]$Url,
         
     [Parameter(Mandatory = $false)]
     [Switch]$ProcessSubWebs = $false,
@@ -22,7 +22,10 @@ param (
     [Switch]$NoQuery = $false,
 
     [Parameter(Mandatory = $false)]
-    $Timeout = -1
+    $Timeout = -1,
+
+    [Parameter(Mandatory = $false)]
+    [Switch]$DeleteTemp = $false
 )
     
 begin {
@@ -154,6 +157,7 @@ process {
     else {
 
         Write-Host "There were errors processing the sub-tasks, ending inventory. Please review individual sub-task errors for more details." -ForegroundColor Yellow
+        Write-Output $success
         return;
     }
     
@@ -181,7 +185,7 @@ process {
     
         # save the workbook to the output folder
         $outputWorkbookPath = Join-Path $OutputFolder "inventory.xlsx"
-        $workbook.SaveAs($outputWorkbookPath, 51)
+        $workbook.SaveAs($outputWorkbookPath, 51)| Out-Null
         $excel.Quit()
     }
 }
@@ -189,6 +193,10 @@ process {
 end {
     if ($pool -ne $null) {
         $pool.Dispose()
+    }
+
+    if ($DeleteTemp) {
+        Remove-Item $TempFolder -Force -Recurse
     }
 
     if ($success) {
@@ -203,4 +211,6 @@ end {
 
         Write-Host  "Done with errors"
     }
+
+    Write-Output $success
 }
