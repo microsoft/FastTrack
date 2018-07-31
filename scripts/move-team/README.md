@@ -27,7 +27,7 @@ Run the script with no switches. Menus and prompts are presented at run time.
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 KNOWN ISSUES:  
 - Tabs and Connectors. As of the time of this script's creation, the ability to create tabs and connectors in the target team is not supported.
