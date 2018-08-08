@@ -7,6 +7,7 @@ The purpose of this script is to gather a site inventory for a SharePoint Online
 ### Setup
 
 1. Copy all scripts "Lib folder", "Get-Inventory.ps1", and "Get-WebInventory.ps1" to a folder on a computer with internet access
+2. Ensure you install any needed [dependencies listed](#external-dependencies).
 
 ### Run
 
