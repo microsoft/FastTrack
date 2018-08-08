@@ -39,7 +39,7 @@ This will enumerate groups that have permissions to mailboxes and include in the
 
 *This will slow down processing.*
 
-  * PARAMETER ExcludeGroupsCSV  
+* PARAMETER ExcludeGroupsCSV  
 Use this to exclude groups that you don't want to enumerate. Provide the path to a csv file (no header needed) with each group name on its own line. 
 
 * PARAMETER ExchServerFQDN  
@@ -53,6 +53,16 @@ Make sure not to use in conjunction with the InputMailboxesCSV switch.
 * PARAMETER BatchUsers  
 Use this if you want to skip collecting permissions and only run Step 2 and Step 3. 
 Make sure you have the permissions output file in the same directory (Find-MailboxDelegates-Permissions.csv).
+
+* .PARAMETER BatchUsers  
+Use this if you want to skip collecting permissions and only run Step 2 and Step 3.   
+Make sure you have the permissions output file in the same directory (Find-MailboxDelegates-Permissions.csv).  
+
+* .PARAMETER BatchUsersOnly  
+Use this if you want to skip collecting permissions (step1) and creating a migration schedule (step 3). This won't require an active exchange session, but make sure you have the permissions output file in the same directory (Find-MailboxDelegates-Permissions.csv).  
+
+* .PARAMETER AccountResourceEnv  
+Switch to run the script taking into account an Account/Resource environment  
 
 * EXAMPLE  
 #Export only SendOnBehalfTo and Send As permissions and Enumerate Groups for all mailboxes.    
@@ -82,14 +92,24 @@ Make sure you have the permissions output file in the same directory (Find-Mailb
 #Export all permissions and exclude service accounts for all mailboxes  
 .\Find-MailboxDelegates.ps1 -FullAccess -SendOnBehalfTo -SendAs -Calendar -ExcludeServiceAcctsCSV "c:\serviceaccts.csv" -ExcludeGroupsCSV "c:\groups.csv"
 
-* EXAMPLE  
-#Skip collect permissions (assumes you already have a permissions output file) and only run Step 2 and 3 to batch users  
-.\Find-MailboxDelegates.ps1 -BatchUsers
+* .EXAMPLE  
+#Skip collect permissions (assumes you already have a permissions output file) and only run Step 2 to batch users  
+.\Find-MailboxDelegates.ps1 -BatchUsersOnly  
+
+* .EXAMPLE  
+#Skip collect permissions (assumes you already have a permissions output file) and only run Step 2 and 3 to batch users and creation migration schedule file  
+.\Find-MailboxDelegates.ps1 -BatchUsers  
 
 ### External Dependencies
 
 Powershell v3+
 Exchange Management Tools
+
+### FAQ  
+* I get one or multiple extremely large batch files, what's the best way to manage these?   
+If there is a large batch in the batches.csv file, using the batch analysis spreadsheet can help.  
+FastTrackTips blog for migration permissions analysis -> https://aka.ms/permissions-analysis  
+The blog has this link to the batch analysis spreadsheet -> https://github.com/D-Larry/Batch-Analysis-of-Permission-threads/archive/master.zip     
 
 ## Applies To
 - Exchange 2010
