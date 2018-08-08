@@ -50,6 +50,7 @@ The NoQuery flag allows you to regenerate a workbook from existing files without
 
 - PowerShell Version >= 5
 - [SharePointPnPPowerShellOnline](https://github.com/SharePoint/PnP-PowerShell) Module
+  - For SharePoint online you can use the command `Install-Module SharePointPnPPowerShellOnline`
 - Microsoft Excel needs to be present on the executing machine or use the -NoWorkbook flag to skip
 
 ## Applies To
