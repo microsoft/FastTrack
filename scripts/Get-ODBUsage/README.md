@@ -7,27 +7,24 @@ The purpose of this script is to enumerate OneDrive for Business Sites along wit
 ### Run
 
 1. Copy the script file "Get-ODBUsage.ps1" to a folder and open a PowerShell command window to that folder
-2. Execute the script using:
+2. Execute the script: 
 
-`.\Get-ODBUsage.ps1 -AdminSiteUrl https://domain-admin.sharepoint.com -GlobalAdminUPN admin@domain.onmicrosoft.com -AdminPassword Password -MySiteHostURL https://domain-my.sharepoint.com -ImportCSVFile "c:\userslist.csv"`
+Run report for specific users using an import CSV file:  
 
-Another example:
+`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" -ImportCSVFile "c:\userslist.csv"`  
 
-`.\Get-ODBUsage.ps1 -AdminSiteUrl https://domain-admin.sharepoint.com -GlobalAdminUPN admin@domain.onmicrosoft.com -AdminPassword Password -MySiteHostURL https://domain-my.sharepoint.com -ExcelFilePath c:\dailyreport -FileName OneDriveUsage.csv `
+Run report for all ODB users:  
+
+`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" `  
 
 |Option|Description
 |----|--------------------------
 |AdminSiteUrl|Specifies the URL of the SharePoint Online Administration Center site
-|GlobalAdminUPN|Specifies the username of the SharePoint Online global administrator that will be added to the personal sites collection administrators
-|AdminPassword|Specifies the password of the SharePoint Online global administrator that will be added to the personal sites collection administrators
-|MySiteHostURL|Specifies the location at which the personal sites are created
 |ImportCSVFile|Specify a CSV file with list of users to query for their ODB sites and get their storage. The CSV file needs to have "LoginName" as the column header
-|ExcelFilePath|Specifies the path which the report will be stored in. If this parameter is empty, the report will be stored in current directory
-|FileName|Specifies the file name which the report will be. If this parameter is empty, the default name is OneDriveUsage.csv
 
 ### External Dependencies
 
-MSOnline PowerShell Module
+SharePoint Online Management Shell 
 
 ## Applies To
 
