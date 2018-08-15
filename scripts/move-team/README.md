@@ -1,44 +1,36 @@
-# Microsoft FastTrack Open Source - Get-ODBUsage
-
-The purpose of this script is to enumerate OneDrive for Business Sites along with their data usage and date created.
+# Microsoft FastTrack Open Source - move-team script
 
 ## Usage
 
-### Run
+move-team.ps1 is a PowerShell script used to consolidate teams by copying one team's members, owners, channels, and files to another team. Useful for consolidating teams and reducing team sprawl.
 
-1. Copy the script file "Get-ODBUsage.ps1" to a folder and open a PowerShell command window to that folder
-2. Execute the script: 
+What this script does:  
+1. Establish connection to Microsoft Teams and Azure Active Directory in the user's context.  
+2. Prompt user for source and target teams.  
+3. Read and report source and target team membership, compare and prompt whether or not to add members missing from target team. If current user is owner in target team, add members/owners to target team.  
+4. Loop through source channels and either confirm they exist in the target team or create them.  
+5. Copy the files from each source channel into the corresponding target channel.  
 
-Run report for specific users using an import CSV file:  
-
-`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" -ImportCSVFile "c:\userslist.csv"`  
-
-Run report for all ODB users:  
-
-`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" `  
-
-|Option|Description
-|----|--------------------------
-|AdminSiteUrl|Specifies the URL of the SharePoint Online Administration Center site
-|ImportCSVFile|Specify a CSV file with list of users to query for their ODB sites and get their storage. The CSV file needs to have "LoginName" as the column header
-
-### External Dependencies
-
-SharePoint Online Management Shell 
+EXAMPLE  
+Run the script with no switches. Menus and prompts are presented at run time.  
+.\move-teams.ps1
 
 ## Applies To
 
-- SharePoint Online
+- Microsoft Teams
 
 ## Author
 
 |Author|Original Publish Date
 |----|--------------------------
-|Alejandro Lopez, Microsoft|July 24, 2018|
+|Jayme Bowers|07/06/2018|
 
 ## Issues
 
 Please report any issues you find to the [issues list](../../../../issues).
+
+KNOWN ISSUES:  
+- Tabs and Connectors. As of the time of this script's creation, the ability to create tabs and connectors in the target team is not supported.
 
 ## Support Statement
 
@@ -66,5 +58,3 @@ Privacy information can be found at https://privacy.microsoft.com/en-us/
 
 Microsoft and any contributors reserve all others rights, whether under their respective copyrights, patents,
 or trademarks, whether by implication, estoppel or otherwise.
-
-

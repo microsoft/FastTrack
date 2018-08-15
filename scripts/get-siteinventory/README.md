@@ -7,6 +7,7 @@ The purpose of this script is to gather a site inventory for a SharePoint Online
 ### Setup
 
 1. Copy all scripts "Lib folder", "Get-Inventory.ps1", and "Get-WebInventory.ps1" to a folder on a computer with internet access
+2. Ensure you install any needed [dependencies listed](#external-dependencies).
 
 ### Run
 
@@ -49,6 +50,7 @@ The NoQuery flag allows you to regenerate a workbook from existing files without
 
 - PowerShell Version >= 5
 - [SharePointPnPPowerShellOnline](https://github.com/SharePoint/PnP-PowerShell) Module
+  - For SharePoint online you can use the command `Install-Module SharePointPnPPowerShellOnline`
 - Microsoft Excel needs to be present on the executing machine or use the -NoWorkbook flag to skip
 
 ## Applies To
