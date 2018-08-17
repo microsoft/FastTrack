@@ -145,7 +145,8 @@ param(
     [string]$ExchServerFQDN,
     [switch]$Resume,
     [switch]$BatchUsers, 
-    [switch]$BatchUsersOnly
+    [switch]$BatchUsersOnly,
+    [switch]$AccountResourceEnv
 )
 
 Begin{
