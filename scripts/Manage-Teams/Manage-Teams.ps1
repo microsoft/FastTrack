@@ -22,10 +22,12 @@ What this script does:
         Settings captured: Azure AD Group Settings, Who's Allowed to Create Teams, Guest Access, Expiration Policy
     7) Get Groups/Teams Without Owner(s)
         Properties: "GroupID","GroupName","HasOwners","ManagedBy"
-    8) Get All Above Reports
-    9) Get Teams By User
+    8) Get Co-existence Mode, Messaging, Meeting, and Calling Policies for Users
+        Properties: "UserPrincipalName","TeamsUpgradeEffectiveMode","TeamsMeetingPolicy","TeamsMessagingPolicy","TeamsCallingPolicy"
+    9) Get All Above Reports
+    10) Get Teams By User
         Properties: "User","GroupId","GroupName","TeamsEnabled","IsOwner"
-    10) Exit Script
+    11) Exit Script
 
 REQUIREMENTS: 
     -Powershell v3+ 
@@ -37,6 +39,7 @@ REQUIREMENTS:
     -PNP Module - https://docs.microsoft.com/en-us/powershell/sharepoint/sharepoint-pnp/sharepoint-pnp-cmdlets?view=sharepoint-ps
 
 VERSION:
+    08092018: Add report of Co-existence Mode, Messaging, Meeting, and Calling Policies for Users
     06292018: Added progress xml. This can be used to run the script against only certain groups/teams OR to spin up multiple powershell sessions for faster processing
     06272018: Update membership report to consolidate members/guests
     06262018: Update inactive report logic to use LastItemUserModifiedDate. Updated Teams report to get person who created Group
@@ -1663,6 +1666,30 @@ Function Get-GroupsWithoutOwners(){
 
 }
 
+Function Get-PoliciesForUsers(){
+    $listOfUsersPolicies = New-Object -TypeName System.Collections.ArrayList
+
+    Write-LogEntry -LogName:$Log -LogEntryText "Getting Users Policies Report..." -ForegroundColor Yellow
+
+    $csOnlineUsers = get-csonlineuser -ResultSize Unlimited
+
+    $count = $csOnlineUsers.count
+    $i=0
+    foreach($user in $csOnlineUsers){
+        Write-Progress -Activity "Getting Users Policies Report..." -Status "Processed $i of $count " -PercentComplete ($i/$count*100);
+        $userInfo = [pscustomobject]@{UserPrincipalName = $user.UserPrincipalName;
+                                    TeamsUpgradeEffectiveMode = $user.TeamsUpgradeEffectiveMode;
+                                    TeamsMeetingPolicy = $user.TeamsMeetingPolicy;
+                                    TeamsMessagingPolicy = $user.TeamsMessagingPolicy;
+                                    TeamsCallingPolicy = $user.TeamsCallingPolicy}
+        $listOfUsersPolicies.add($userInfo) | out-null
+    }
+
+    $listOfUsersPolicies | Export-CSV -Path $usersPoliciesCSV -NoTypeInformation
+
+}
+
+
 #endregion Functions
 
 #region MAIN
@@ -1673,7 +1700,7 @@ Clear-Host
 $yyyyMMdd = Get-Date -Format 'yyyyMMdd'
 $computer = $env:COMPUTERNAME
 $user = $env:USERNAME
-$version = "06292018"
+$version = "08092018"
 $log = "$PSScriptRoot\Manage-Teams-$yyyyMMdd.log"
 $output = $PSScriptRoot
 $TeamsCSV = "$($output)\ListOfTeams.csv"
@@ -1683,6 +1710,7 @@ $UsersCanCreateCSV = "$($output)\ListOfUsersThatCanCreateTeams.csv"
 $teamsSettingsOut = "$($output)\ListOfTeamsSettings.txt"
 $TeamsByUserCSV = "$($output)\ListOfTeamsByUser.csv"
 $groupsNoOwnersCSV = "$($output)\ListOfTeamsWithoutOwners.csv"
+$usersPoliciesCSV = "$($output)\ListOfTeamsUsersPolicies.csv"
 $ProgressXMLFile = "$($output)\ListOfGroupsTeams-Progress.xml"
 Write-LogEntry -LogName:$Log -LogEntryText "User: $user Computer: $computer Version: $version" -foregroundcolor Yellow
 
@@ -1702,11 +1730,12 @@ Write-LogEntry -LogName:$Log -LogEntryText "User: $user Computer: $computer Vers
         5) Get Users That Are Allowed To Create Teams
         6) Get Teams Tenant Settings
         7) Get Groups/Teams Without Owner(s)
-        8) Get All Above Reports
-        9) Get Teams By User
-       10) Exit Script
+        8) Get Co-existence Mode, Messaging, Meeting, and Calling Policies for Users
+        9) Get All Above Reports
+       10) Get Teams By User
+       11) Exit Script
 
-Select an option.. [0-10]?
+Select an option.. [0-11]?
 '@
 
 Do { 	
@@ -1770,25 +1799,32 @@ Do {
             Write-LogEntry -LogName:$Log -LogEntryText "Report location: $($groupsNoOwnersCSV)" -ForegroundColor Green
         }
 
-        8 { # Get All Reports Above
+        8 { # Get Co-existence Mode, Messaging, Meeting, and Calling Policies for Users
             Write-LogEntry -LogName:$Log -LogEntryText "Selected option 8" -ForegroundColor Yellow
+            Get-PoliciesForUsers
+            Write-LogEntry -LogName:$Log -LogEntryText "Report location: $($usersPoliciesCSV)" -ForegroundColor Green
+        }
+
+        9 { # Get All Reports Above
+            Write-LogEntry -LogName:$Log -LogEntryText "Selected option 9" -ForegroundColor Yellow
             Get-Teams -ExportToFile
             Get-TeamsMembersGuests
             Get-InactiveTeams
             Get-UsersCanCreateTeams
             Get-GroupsWithoutOwners
+            Get-PoliciesForUsers
             Get-TeamsSettings
             Write-LogEntry -LogName:$Log -LogEntryText "Reports location: $($output)" -ForegroundColor Green
         }
 
-        9 { # Get Teams that a User (input) Owns
-            Write-LogEntry -LogName:$Log -LogEntryText "Selected option 9" -ForegroundColor Yellow
+        10 { # Get Teams that a User (input) Owns
+            Write-LogEntry -LogName:$Log -LogEntryText "Selected option 10" -ForegroundColor Yellow
             Get-TeamsByUser
             Write-LogEntry -LogName:$Log -LogEntryText "Report location: $($TeamsByUserCSV)" -ForegroundColor Green
         }
 
-		10 { # Remove sessions and exit
-            Write-LogEntry -LogName:$Log -LogEntryText "Selected option 10" -ForegroundColor Yellow
+		11 { # Remove sessions and exit
+            Write-LogEntry -LogName:$Log -LogEntryText "Selected option 11" -ForegroundColor Yellow
             try{Disconnect-AzureAD -erroraction silentlycontinue}
             catch{}
             try{Remove-PSSession $sfbSession -ErrorAction SilentlyContinue}
@@ -1810,6 +1846,6 @@ Do {
 		
         default {Write-Host "You haven't selected any of the available options."}
 	}
-} while ($opt -ne 10)
+} while ($opt -ne 11)
 
 #endregion MAIN
