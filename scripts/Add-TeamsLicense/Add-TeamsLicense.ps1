@@ -57,7 +57,7 @@ begin{
     $yyyyMMdd = Get-Date -Format 'yyyyMMdd'
     $computer = $env:COMPUTERNAME
     $user = $env:USERNAME
-    $version = "1.20180817"
+    $version = "1.20180823"
     $log = "$PSScriptRoot\Add-TeamsLicense-$yyyyMMdd.log"
     $DefaultUsageLocation = "US"
 
@@ -100,7 +100,7 @@ process{
 end{
     Write-LogEntry -LogName:$Log -LogEntryText "Total Elapsed Time: $($elapsed.Elapsed.ToString()). " -foregroundcolor White
     Write-LogEntry -LogName:$Log -LogEntryText "Total Users Processed: $NumOfUsers. " -foregroundcolor White
-    Write-LogEntry -LogName:$Log -LogEntryText "Average Time Per User: $($elapsed.Elapsed.Seconds / $NumOfUsers)s." -foregroundcolor White
+    Write-LogEntry -LogName:$Log -LogEntryText "Average Time Per User: $($sw.Elapsed.TotalSeconds / $NumOfUsers)s." -foregroundcolor White
 }
 
 
