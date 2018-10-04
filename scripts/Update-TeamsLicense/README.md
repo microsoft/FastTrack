@@ -1,24 +1,29 @@
-# Microsoft FastTrack Open Source - Add-TeamsLicense
+# Microsoft FastTrack Open Source - Update-TeamsLicense
 
-The purpose of this script is to enable the Teams license and keep existing license configurations. 
+The purpose of this script is to enable or disable the Teams license and keep existing license configurations. 
 
 ## Usage
 
 ### Run
 
-1. Copy the script file "Add-TeamsLicense.ps1" to a folder and open a PowerShell command window to that folder
+1. Copy the script file "Update-TeamsLicense.ps1" to a folder and open a PowerShell command window to that folder
 2. Connect to MSOnline - Connect-MsolService
 2. Execute the script: 
 
-Run report for specific users using an import CSV file:  
+Examples to run the script:  
 
-`.\Add-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -ImportCSVFile "c:\userslist.csv"`  
+`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
+`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`  
+`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
+`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`    
 
 
 |Option|Description
 |----|--------------------------
 |AccountSkuId|Account SKU ID, for example, for Enterprise E3 it is CONTOSO:ENTERPRISEPACK
 |ImportCSVFile|Specify a CSV file with list of users to target. Column header must be "UserPrincipalName"
+|DisableSubLicenses|Provide the sublicense name to disable. Multiple sublicenses can be included using the format "licenseA","licenseB"
+|EnableSubLicenses|Provide the sublicense name to enable. Multiple sublicenses can be included using the format "licenseA","licenseB"
 
 ### External Dependencies
 
