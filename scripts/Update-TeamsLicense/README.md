@@ -27,11 +27,11 @@ Examples to run the script:
 
 ### External Dependencies
 
-SharePoint Online Management Shell 
+MSOnline module : https://docs.microsoft.com/en-us/office365/enterprise/powershell/connect-to-office-365-powershell  
 
 ## Applies To
 
-- SharePoint Online
+- O365 - Teams   
 
 ## Author
 
