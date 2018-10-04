@@ -12,10 +12,10 @@ The purpose of this script is to enable or disable the Teams license and keep ex
 
 Examples to run the script:  
 
-`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
-`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`  
-`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
-`.\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`    
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`  
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`    
 
 
 |Option|Description
