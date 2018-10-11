@@ -109,7 +109,6 @@ Exchange Management Tools
 * I get one or multiple extremely large batch files, what's the best way to manage these?   
 If there is a large batch in the batches.csv file, using the batch analysis spreadsheet can help.  
 FastTrackTips blog for migration permissions analysis -> https://aka.ms/permissions-analysis  
-The blog has this link to the batch analysis spreadsheet -> https://github.com/D-Larry/Batch-Analysis-of-Permission-threads/archive/master.zip     
 
 ## Applies To
 - Exchange 2010
