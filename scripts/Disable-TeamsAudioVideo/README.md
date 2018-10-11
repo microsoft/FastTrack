@@ -1,40 +1,33 @@
-# Microsoft FastTrack Open Source - Get-ODBUsage
+# Microsoft FastTrack Open Source - Disable-TeamsAudioVideo
 
-The purpose of this script is to enumerate OneDrive for Business Sites along with their data usage and date created.
+Script to disable Audio and Video for Teams users
 
 ## Usage
 
 ### Run
 
-1. Copy the script file "Get-ODBUsage.ps1" to a folder and open a PowerShell command window to that folder
-2. Execute the script: 
+1. Copy the script file "Disable-TeamsAudioVideo.ps1" to a folder and open a PowerShell command window to that folder
+2. Execute the script using the following example to disable Audio and Video for the list of users:
 
-Run report for specific users using an import CSV file:  
-
-`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" -ImportCSVFile "c:\userslist.csv"`  
-
-Run report for all ODB users:  
-
-`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" `  
+`.\Disable-TeamsAudioVideo.ps1 -ImportCSVFile "c:\userslist.csv"`
 
 |Option|Description
 |----|--------------------------
-|AdminSiteUrl|Specifies the URL of the SharePoint Online Administration Center site
-|ImportCSVFile|Specify a CSV file with list of users to query for their ODB sites and get their storage. The CSV file needs to have "LoginName" as the column header
+|ImportCSVFile|Specify a CSV file with list of users to disable audio and video for them. The CSV file needs to have "UserPrincipalName" as the column header.  
 
 ### External Dependencies
 
-SharePoint Online Management Shell 
+Skype for Business Online Module: https://www.microsoft.com/en-us/download/details.aspx?id=39366
 
 ## Applies To
 
-- SharePoint Online
+- Microsoft Teams
 
 ## Author
 
 |Author|Original Publish Date
 |----|--------------------------
-|Alejandro Lopez, Microsoft|July 24, 2018|
+|Alejandro Lopez, Microsoft|August 16, 2018|
 
 ## Issues
 

@@ -1,40 +1,44 @@
-# Microsoft FastTrack Open Source - Get-ODBUsage
+# Microsoft FastTrack Open Source - Update-TeamsLicense
 
-The purpose of this script is to enumerate OneDrive for Business Sites along with their data usage and date created.
+The purpose of this script is to enable or disable the Teams license and keep existing license configurations. 
 
 ## Usage
 
 ### Run
 
-1. Copy the script file "Get-ODBUsage.ps1" to a folder and open a PowerShell command window to that folder
+1. Copy the script file "Update-TeamsLicense.ps1" to a folder and open a PowerShell command window to that folder
+2. Connect to MSOnline - Connect-MsolService
 2. Execute the script: 
 
-Run report for specific users using an import CSV file:  
+Examples to run the script:  
 
-`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" -ImportCSVFile "c:\userslist.csv"`  
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`  
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"`  
+`.\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"`    
 
-Run report for all ODB users:  
-
-`.\Get-ODBUsage.ps1 -AdminSiteUrl "https://domain-admin.sharepoint.com" `  
 
 |Option|Description
 |----|--------------------------
-|AdminSiteUrl|Specifies the URL of the SharePoint Online Administration Center site
-|ImportCSVFile|Specify a CSV file with list of users to query for their ODB sites and get their storage. The CSV file needs to have "LoginName" as the column header
+|AccountSkuId|Account SKU ID, for example, for Enterprise E3 it is CONTOSO:ENTERPRISEPACK
+|ImportCSVFile|Specify a CSV file with list of users to target. Column header must be "UserPrincipalName"
+|DisableSubLicenses|Provide the sublicense name to disable. Multiple sublicenses can be included using the format "licenseA","licenseB"
+|EnableSubLicenses|Provide the sublicense name to enable. Multiple sublicenses can be included using the format "licenseA","licenseB"
 
 ### External Dependencies
 
-SharePoint Online Management Shell 
+MSOnline module : https://docs.microsoft.com/en-us/office365/enterprise/powershell/connect-to-office-365-powershell  
 
 ## Applies To
 
-- SharePoint Online
+- O365 - Teams   
 
 ## Author
 
 |Author|Original Publish Date
 |----|--------------------------
 |Alejandro Lopez, Microsoft|July 24, 2018|
+|David Whitney, Microsoft|July 24, 2018|
 
 ## Issues
 
