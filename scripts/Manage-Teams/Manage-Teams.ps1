@@ -39,6 +39,7 @@ REQUIREMENTS:
     -PNP Module - https://docs.microsoft.com/en-us/powershell/sharepoint/sharepoint-pnp/sharepoint-pnp-cmdlets?view=sharepoint-ps
 
 VERSION:
+    10152018: Remove Group Creator due to reliance on Audit Log which is only available for 90 days. Will wait on API improvements. 
     08092018: Add report of Co-existence Mode, Messaging, Meeting, and Calling Policies for Users
     06292018: Added progress xml. This can be used to run the script against only certain groups/teams OR to spin up multiple powershell sessions for faster processing
     06272018: Update membership report to consolidate members/guests
@@ -868,7 +869,7 @@ Function Get-Teams{
     Write-LogEntry -LogName:$Log -LogEntryText "Getting Teams report..." -ForegroundColor Yellow
     
     If(Test-Path $ProgressXMLFile){
-        Write-LogEntry -LogName:$Log -LogEntryText "Found Existing Progress File..." -ForegroundColor Yellow
+        Write-LogEntry -LogName:$Log -LogEntryText "Using Existing Progress File..." -ForegroundColor Yellow
         $xmlDoc = [System.Xml.XmlDocument](Get-Content $ProgressXMLFile)
         [array]$ListOfPendingGroups = $xmlDoc.groups.group | ?{$_.Progress -eq "Pending"} | select @{N="PrimarySMTPAddress";E={$_.name}} #-expandproperty name         
         If($ListOfPendingGroups.count -gt 0){
@@ -918,8 +919,6 @@ Function Get-Teams{
         $spoStorageQuota =  "$(($spoSite).StorageQuota)" + "MB"
         $spoStorageUsed = "$(($spoSite).StorageUsageCurrent)" + "MB"
         $spoSharingSetting = ($spoSite).SharingCapability
-        $start = (get-date $o365group.WhenCreatedUTC).adddays(-1)
-        $end = (get-date $o365group.WhenCreatedUTC).adddays(1)
 
         #Microsoft Graph Query for Teams: https://developer.microsoft.com/en-us/graph/docs/api-reference/beta/api/group_list_endpoints
         try {
@@ -927,7 +926,6 @@ Function Get-Teams{
             $groupDetails = (Invoke-RestMethod -Uri $GroupsUri -Headers $authHeader -Method Get).value
             
             #Creator not available yet: https://graph.microsoft.com/v1.0/groups/aba16e77-0c12-46bf-bbd0-b46c0fab6a69/createdOnBehalfOf
-            $groupCreator = (Search-UnifiedAuditLog -StartDate $start -EndDate $end -Operations "Add Group"  | ?{$_.auditdata -like "*$($o365group.ExternalDirectoryObjectId)*"}).UserIDs
 
             If($groupDetails){
                 If($groupDetails.providerName -eq "Microsoft Teams"){
@@ -935,7 +933,6 @@ Function Get-Teams{
                         GroupName = $o365group.DisplayName;
                         TeamsEnabled = $true;
                         Provider = $groupDetails.providerName;
-                        GroupCreator = $groupCreator;
                         ManagedBy = $o365group.ManagedBy; 
                         WhenCreated = $o365group.WhenCreatedUTC;
                         PrimarySMTPAddress = $o365group.PrimarySMTPAddress;
@@ -956,7 +953,6 @@ Function Get-Teams{
                         GroupName = $o365group.DisplayName;
                         TeamsEnabled = $false;
                         Provider = $groupDetails.providerName;
-                        GroupCreator = $groupCreator;
                         ManagedBy = $o365group.ManagedBy;
                         WhenCreated = $o365group.WhenCreatedUTC;
                         PrimarySMTPAddress = $o365group.PrimarySMTPAddress;
@@ -979,7 +975,6 @@ Function Get-Teams{
                     GroupName = $o365group.DisplayName;
                     TeamsEnabled = $false;
                     Provider = "";
-                    GroupCreator = $groupCreator;
                     ManagedBy = $o365group.ManagedBy;
                     WhenCreated = $o365group.WhenCreatedUTC;
                     PrimarySMTPAddress = $o365group.PrimarySMTPAddress;
@@ -1022,15 +1017,13 @@ Function Get-Teams{
                     $groupDetails = (Invoke-RestMethod -Uri $GroupsUri -Headers $authHeader -Method Get).value
                     
                     #Creator not available yet: https://graph.microsoft.com/v1.0/groups/aba16e77-0c12-46bf-bbd0-b46c0fab6a69/createdOnBehalfOf
-                    $groupCreator = (Search-UnifiedAuditLog -StartDate $start -EndDate $end -Operations "Add Group"  | ?{$_.auditdata -like "*$($o365group.ExternalDirectoryObjectId)*"}).UserIDs
-    
+
                     If($groupDetails){
                         If($groupDetails.providerName -eq "Microsoft Teams"){
                             $GroupTeam = [pscustomobject]@{GroupId = $o365group.ExternalDirectoryObjectId; 
                                 GroupName = $o365group.DisplayName;
                                 TeamsEnabled = $true;
                                 Provider = $groupDetails.providerName;
-                                GroupCreator = $groupCreator;
                                 ManagedBy = $o365group.ManagedBy; 
                                 WhenCreated = $o365group.WhenCreatedUTC;
                                 PrimarySMTPAddress = $o365group.PrimarySMTPAddress;
@@ -1051,7 +1044,6 @@ Function Get-Teams{
                                 GroupName = $o365group.DisplayName;
                                 TeamsEnabled = $false;
                                 Provider = $groupDetails.providerName;
-                                GroupCreator = $groupCreator;
                                 ManagedBy = $o365group.ManagedBy;
                                 WhenCreated = $o365group.WhenCreatedUTC;
                                 PrimarySMTPAddress = $o365group.PrimarySMTPAddress;
@@ -1074,7 +1066,6 @@ Function Get-Teams{
                             GroupName = $o365group.DisplayName;
                             TeamsEnabled = $false;
                             Provider = "";
-                            GroupCreator = $groupCreator;
                             ManagedBy = $o365group.ManagedBy;
                             WhenCreated = $o365group.WhenCreatedUTC;
                             PrimarySMTPAddress = $o365group.PrimarySMTPAddress;
@@ -1700,7 +1691,7 @@ Clear-Host
 $yyyyMMdd = Get-Date -Format 'yyyyMMdd'
 $computer = $env:COMPUTERNAME
 $user = $env:USERNAME
-$version = "08092018"
+$version = "10152018"
 $log = "$PSScriptRoot\Manage-Teams-$yyyyMMdd.log"
 $output = $PSScriptRoot
 $TeamsCSV = "$($output)\ListOfTeams.csv"
