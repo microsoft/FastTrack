@@ -844,7 +844,7 @@ Begin{
         #Open connection to AD - this will be used to enumerate groups and collect Send As permissions
         $checkADModule = get-module -listavailable activedirectory
         If($checkADModule -eq $null){
-            throw "Please install the Active Direcotry Module: https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/dd378937(v=ws.10) "
+            throw "Please install the Active Directory Module: https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/dd378937(v=ws.10) "
         }
         Import-Module -Name ActiveDirectory
 
