@@ -43,7 +43,7 @@ There is no advantage to setting a poolSize above the number of available proces
 ```
 
 ```
-The NoQuery flag allows you to regenerate a workbook from existing files without re-querying SharePoint. The files are expected to exist in the specifed TempFolder.
+The NoQuery flag allows you to regenerate a workbook from existing files without re-querying SharePoint. The files are expected to exist in the specified TempFolder.
 ```
 
 ### External Dependencies
