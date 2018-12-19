@@ -1,4 +1,4 @@
-# Microsoft FastTrack Open Source - Get-SiteInventory
+# Microsoft FastTrack Open Source - Get-DocLibInventory
 
 The purpose of this script is to gather a simple inventory for a SharePoint Online document library.
 
