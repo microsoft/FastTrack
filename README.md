@@ -5,6 +5,10 @@ Welcome to the home for Microsoft FastTrack Open Source Software (FTOSS). Throug
 
 This section lists the projects currently published as part of the Microsoft FastTrack OSS initiative. Please see the individual readme files for details and usage.
 
+### Scripts
+
+We have a collection of [scripts](scripts) to help with various migration related tasks. Each script folder has a readme describing what the script does and how to use it. If you have scripts you would like to add please submit a Pull Request.
+
 ### Tools
 
 |Project|Description
@@ -21,8 +25,7 @@ This section lists the projects currently published as part of the Microsoft Fas
 
 If you have ideas for projects that would improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues) and let us know. We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
 
-Do you have a script or tool you use that would be of value to the community? Please let us know so we can discuss potentially adding it to the catalog!
-
+Do you have a script or tool you use that would be of value to the community? Please let us know so we can discuss potentially adding it to the catalog - or submit a Pull Request to get it added!
 
 ## Contributing
 
