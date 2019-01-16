@@ -1,21 +1,17 @@
 # Microsoft FastTrack Open Source
-Welcome to the home for Microsoft FastTrack Open Source Software (FTOSS). Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program with the aim to make them easier to find, grow, and improve with help from the community and partners. Please let us know any questions or feedback you have by using the issues list.
+Welcome to the home for Microsoft FastTrack Open Source Software (FTOSS). Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program, our partners, and anyone who wants to contribute with the aim to make them easier to find, grow, and improve. Please let us know any questions or feedback you have using the [issues list](https://github.com/Microsoft/FastTrack/issues).
 
-## Projects
+## Scripts
 
-This section lists the projects currently published as part of the Microsoft FastTrack OSS initiative. Please see the individual readme files for details and usage.
+We have a collection of [scripts](scripts) to help with migration related tasks. Each script folder has a readme describing what the script does and how to use it. If you have scripts you would like to add please submit a Pull Request.
 
-### Scripts
-
-We have a collection of [scripts](scripts) to help with various migration related tasks. Each script folder has a readme describing what the script does and how to use it. If you have scripts you would like to add please submit a Pull Request.
-
-### Tools
+## Tools
 
 |Project|Description
 |----|--------------------------
 |[SMAT Workbook Generator](https://github.com/Microsoft/fasttrack-smat-workbook-generator)|Combines the output of SMAT into a single workbook|
 
-### Samples
+## Samples
 
 |Sample|Description
 |----|--------------------------
@@ -29,11 +25,11 @@ Do you have a script or tool you use that would be of value to the community? Pl
 
 ## Contributing
 
-If you have a script or sample you would like to contribute to the Microsoft FastTrack repository please review the [contributing](CONTRIBUTING.md) guidance.
+If you have a script or sample you would like to contribute to the Microsoft FastTrack repository please review the [contributing](CONTRIBUTING.md) guidance. If you have any questions, please let us know using the issues list. We'd love to discuss how you'd like to contribute!
 
 ## Support Statement
 
-The scripts, samples, and tools made available through the FastTrack Open Source initiative are provided as-is. These resources are developed in partnership with the community and do not represent official Microsoft software. As such, support is not available through premier or other official support channels. If you find an issue or have questions please reach out through the issues list and we'll do our best to assist, but there is no support SLA associated with these tools.
+The scripts, samples, and tools made available through the FastTrack Open Source initiative are provided as-is. These resources are developed in partnership with the community and do not represent official Microsoft software. As such, support is not available through premier or other Microsoft support channels. If you find an issue or have questions please reach out through the issues list and we'll do our best to assist, however there is no associated SLA.
 
 ## Code of Conduct
 
@@ -43,15 +39,9 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Legal Notices
 
-Microsoft and any contributors grant you a license to the Microsoft documentation and other content
-in this repository under the [Creative Commons Attribution 4.0 International Public License](https://creativecommons.org/licenses/by/4.0/legalcode),
-see the [LICENSE](LICENSE) file, and grant you a license to any code in the repository under the [MIT License](https://opensource.org/licenses/MIT), see the
-[LICENSE-CODE](LICENSE-CODE) file.
+Microsoft and any contributors grant you a license to the Microsoft documentation and other content in this repository under the [MIT License](https://opensource.org/licenses/MIT), see the [LICENSE](LICENSE) file, and grant you a license to any code in the repository under the [MIT License](https://opensource.org/licenses/MIT), see the [LICENSE-CODE](LICENSE-CODE) file.
 
-Microsoft, Windows, Microsoft Azure and/or other Microsoft products and services referenced in the documentation
-may be either trademarks or registered trademarks of Microsoft in the United States and/or other countries.
-The licenses for this project do not grant you rights to use any Microsoft names, logos, or trademarks.
-Microsoft's general trademark guidelines can be found at http://go.microsoft.com/fwlink/?LinkID=254653.
+Microsoft, Windows, Microsoft Azure and/or other Microsoft products and services referenced in the documentation may be either trademarks or registered trademarks of Microsoft in the United States and/or other countries. The licenses for this project do not grant you rights to use any Microsoft names, logos, or trademarks. Microsoft's general trademark guidelines can be found at http://go.microsoft.com/fwlink/?LinkID=254653.
 
 Privacy information can be found at https://privacy.microsoft.com/en-us/
 
