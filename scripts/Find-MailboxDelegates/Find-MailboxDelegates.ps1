@@ -651,8 +651,7 @@ Begin{
 	                Do{
 		                $checkForMatches = $false
 		                foreach($key in $($hashData.keys)){
-			                Write-Progress -Activity "Step 2 of 3: Analyze Delegates" -status "Items remaining: $($hashData.Count)" `
-    		                -percentComplete (($hashDataSize-$hashData.Count) / $hashDataSize*100)
+			                Write-Progress -Activity "Step 2 of 3: Analyze Delegates" -status "Items remaining: $($hashData.Count)" -percentComplete (($hashDataSize-$hashData.Count) / $hashDataSize*100)
 			
 	                        #Checks
 			                $usersHashData = $($hashData[$key]) | %{$_.mailbox}
@@ -726,8 +725,7 @@ Begin{
                     foreach($item in $usersFromBatch){
                         $usersFromBatchCounter++
                         $usersFromBatchRemaining = $usersFromBatch.count - $usersFromBatchCounter
-                        Write-Progress -Activity "Step 3 of 3: Creating migration schedule" -status "Items remaining: $($usersFromBatchRemaining)" `
-    		                -percentComplete (($usersFromBatchCounter / $usersFromBatch.count)*100)
+                        Write-Progress -Activity "Step 3 of 3: Creating migration schedule" -status "Items remaining: $($usersFromBatchRemaining)" -percentComplete (($usersFromBatchCounter / $usersFromBatch.count)*100)
 
                        #Check if using UseImportCSVFile and if yes, check if the user was part of that file, otherwise mark 
                        $isUserPartOfInitialCSVFile = ""
@@ -988,8 +986,7 @@ Process{
         $mailboxCounter = 0
         Foreach($mailbox in $ListOfMailboxes.PrimarySMTPAddress){
             $mailboxCounter++
-            Write-Progress -Activity "Step 1 of 3: Gathering Permissions" -status "Items processed: $($mailboxCounter) of $($ListOfMailboxes.Count)" `
-    		            -percentComplete (($mailboxCounter / $ListOfMailboxes.Count)*100)
+            Write-Progress -Activity "Step 1 of 3: Gathering Permissions" -status "Items processed: $($mailboxCounter) of $($ListOfMailboxes.Count)" -percentComplete (($mailboxCounter / $ListOfMailboxes.Count)*100)
             Get-Permissions -UserEmail $mailbox -gatherfullaccess $FullAccess -gatherSendOnBehalfTo $SendOnBehalfTo -gathercalendar $Calendar -gathersendas $SendAs -EnumerateGroups $EnumerateGroups -ExcludedGroups $ExcludeGroups -ExcludedServiceAccts $ExcludeServiceAccts | export-csv -path $PermsOutputFile -notypeinformation -Append
         }
     }
