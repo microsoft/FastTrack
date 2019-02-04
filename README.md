@@ -10,6 +10,7 @@ We have a collection of [scripts](scripts) to help with migration related tasks.
 |Project|Description
 |----|--------------------------
 |[SMAT Workbook Generator](https://github.com/Microsoft/fasttrack-smat-workbook-generator)|Combines the output of SMAT into a single workbook|
+|[IdFix](https://github.com/Microsoft/idfix)|Fix on-premesis AD issues before migration|
 
 ## Samples
 
