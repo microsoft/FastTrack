@@ -145,8 +145,7 @@ param(
     [string]$ExchServerFQDN,
     [switch]$Resume,
     [switch]$BatchUsers, 
-    [switch]$BatchUsersOnly,
-    [switch]$AccountResourceEnv
+    [switch]$BatchUsersOnly
 )
 
 Begin{
@@ -325,7 +324,7 @@ Begin{
                                             $groupDomainName = $ifgroup.Identity | select DomainId
                                             $groupDomainName = $groupDomainName.domainid.tostring()
                                             Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found permission : FullAccess : Enumerate Group $($ifGroup.distinguishedName) Domain Name: $groupDomainName"
-                                            $lstUsr = Get-AdGroup -identity $ifGroup.Name -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
+                                            $lstUsr = Get-AdGroup -identity $ifGroup.distinguishedName -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
 
 	                                        foreach ($usrTmp in $lstUsr) {
                                                 $usrTmpEmail = $usrTmp.Mail
@@ -372,7 +371,7 @@ Begin{
 
                     If($gathersendas -eq $true){
                         $Error.Clear()
-                        #$SendAsPermissions = Get-ADPermission $Mailbox.DistinguishedName | ?{($_.ExtendedRights -like "*send-as*") -and ($_.IsInherited -eq $false) -and -not ($_.User -like "NT AUTHORITY\SELF") }
+                        #$SendAsPermissions = Get-ADPermission $Mailbox.DistinguishedName | ?{($_.ExtendedRights -like "*send-as*") -and ($_.IsInherited -eq $false) -and -not ($_.User -like "NT AUTHORITY\SELF") }
                 
                         $SendAsPermissions = New-Object System.Collections.Generic.List[System.Object] 
                         $userDN = [ADSI]("LDAP://$($mailbox.DistinguishedName)")
@@ -392,7 +391,7 @@ Begin{
                                             $groupDomainName = $ifgroup.Identity | select DomainId
                                             $groupDomainName = $groupDomainName.domainid.tostring()
                                             Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found permission : SendAs : Enumerate Group $($ifGroup.distinguishedName) Domain Name: $groupDomainName"
-                                            $lstUsr = Get-AdGroup -identity $ifGroup.Name -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
+                                            $lstUsr = Get-AdGroup -identity $ifGroup.distinguishedName -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
 
 	                                        foreach ($usrTmp in $lstUsr) {
                                                 $usrTmpEmail = $usrTmp.Mail
@@ -594,7 +593,7 @@ Begin{
                 If((get-childitem $InputPermissionsFile).length -eq 0 ){
                     Write-LogEntry -LogName:$Script:LogFile -LogEntryText "The permissions file is empty. Check the log file for more info: $LogFile" -ForegroundColor Red
                     exit 
-                }
+                }
                 Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Run function: Create-Batches" -ForegroundColor White 
     
                 $data = import-csv $InputPermissionsFile
@@ -737,10 +736,11 @@ Begin{
                         }
                        }
 
-                       $user = get-user $item.user -erroraction SilentlyContinue
+                       $user = get-user $item.user #-erroraction SilentlyContinue
 		   
                        If(![string]::IsNullOrEmpty($user.WindowsEmailAddress)){
-			                $mbStats = Get-MailboxStatistics $user.WindowsEmailAddress.tostring() | select totalitemsize
+			             If((Get-Recipient $user.WindowsEmailAddress.toString()).RecipientType -eq "UserMailbox"){ 
+                          $mbStats = Get-MailboxStatistics $user.WindowsEmailAddress.tostring() | select totalitemsize
 			                If($mbStats.totalitemsize.value)
                             {
                                 #if connecting through remote pshell, and not using Exo server shell, the data comes as 
@@ -760,6 +760,7 @@ Begin{
                             }
 
                            $userInfo.AppendLine(",,,$($user.WindowsEmailAddress),$($item.Batch),$($mailboxSize),$isUserPartOfInitialCSVFile") | Out-Null
+                         }
                        }
 		               Else{ #there was an error either getting the user from Get-User or the user doesn't have an email address
 					       $userInfo.AppendLine(",,,$($item.user),$($item.Batch),n/a,,User not found or doesn't have an email address") | Out-Null
@@ -844,7 +845,7 @@ Begin{
         #Open connection to AD - this will be used to enumerate groups and collect Send As permissions
         $checkADModule = get-module -listavailable activedirectory
         If($checkADModule -eq $null){
-            throw "Please install the Active Directory Module: https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/dd378937(v=ws.10) "
+            throw "Please install the Active Direcotry Module: https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/dd378937(v=ws.10) "
         }
         Import-Module -Name ActiveDirectory
 
