@@ -35,6 +35,7 @@ Steps performed by the script:
 
 =========================================
 Version: 
+    05012019: Update cross domain check
 	06262018: Update group enumeration cross domain logic
     06122018: Update group enumeration logic
 
@@ -212,6 +213,34 @@ Begin{
             return $del
         }
 
+        Function Get-GroupCustom{
+            param(
+                [string]$Identity
+            )
+            $error.Clear()
+            try
+            { 
+                #$del=Get-Group -Identity $group -ErrorAction stop
+                $group = Get-Group -identity $Identity -ErrorAction SilentlyContinue
+            }
+            catch 
+            {
+                if ( $error[0].Exception.ToString() -like "*The operation couldn't be performed because object*couldn't be found on*")
+                {
+                    $domain = $Identity.split("\")[0]
+                    $remoteDC = Get-ADDomainController -discover -domain $domain 
+                    try{
+                        $group = get-group -identity $Identity -DomainController $remoteDC.hostname -erroraction silentlyContinue
+                        return $group
+                    }
+                    catch{
+                        return $null
+                    }
+                }
+            }
+            return $group
+        }
+
         Function Get-Permissions(){
 	            param(
                     [string]$UserEmail,
@@ -235,6 +264,7 @@ Begin{
                     If(!$Mailbox){
                         throw "Problem getting mailbox for $($UserEmail) : $($error)" 
                     }
+                    $globalCatalog = ([System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest().GlobalCatalogs | Select-Object -First 1 -ExpandProperty Name) + ":3268"
 
                     #Enumerate Groups/Send As - moving this part outside of the function for faster processing
                     <#
@@ -259,14 +289,15 @@ Begin{
             
                         If($CalendarPermission){
                             Foreach($perm in $CalendarPermission){
-                                $ifGroup = Get-Group -identity $perm.user.tostring() -ErrorAction SilentlyContinue
+                                #$ifGroup = Get-Group -identity $perm.user.tostring() -ErrorAction SilentlyContinue
+                                $ifGroup = Get-GroupCustom -identity $perm.user.tostring() -ErrorAction SilentlyContinue
                                 If($ifGroup){
                                     If($EnumerateGroups -eq $true){
 				                        If(-not ($excludedGroups -contains $ifGroup.Name)){
-                                            $groupDomainName = $ifgroup.Identity | select DomainId
-                                            $groupDomainName = $groupDomainName.domainid.tostring()
+                                            $groupDomainName = $ifgroup.identity.tostring().split("/")[0]
                                             Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found permission : Calendar : Enumerate Group $($ifGroup.distinguishedName) Domain Name: $groupDomainName"
-                                            $lstUsr = Get-AdGroup -identity $ifGroup.Name -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
+                                            #$lstUsr = Get-AdGroup -identity $ifGroup.Name -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
+                                            $lstUsr = Get-ADGroupMember -identity $ifGroup.distinguishedName -server $groupDomainName -Recursive | Get-ADUser -Properties Mail | ?{$_.Mail}
 
 	                                        foreach ($usrTmp in $lstUsr) {
                                                 $usrTmpEmail = $usrTmp.Mail
@@ -317,14 +348,15 @@ Begin{
                 
                         If($FullAccessPermissions){
                             Foreach($perm in $FullAccessPermissions){
-                                $ifGroup = Get-Group -identity $perm.user.tostring() -ErrorAction SilentlyContinue 
+                                #$ifGroup = Get-Group -identity $perm.user.tostring() -ErrorAction SilentlyContinue 
+                                $ifGroup = Get-GroupCustom -identity $perm.user.tostring() -ErrorAction SilentlyContinue
                                 If($ifGroup){
                                     If($EnumerateGroups -eq $true){
 				                        If(-not ($excludedGroups -contains $ifGroup.Name)){
-                                            $groupDomainName = $ifgroup.Identity | select DomainId
-                                            $groupDomainName = $groupDomainName.domainid.tostring()
+                                            $groupDomainName = $ifgroup.identity.tostring().split("/")[0]
                                             Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found permission : FullAccess : Enumerate Group $($ifGroup.distinguishedName) Domain Name: $groupDomainName"
-                                            $lstUsr = Get-AdGroup -identity $ifGroup.distinguishedName -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
+                                            #$lstUsr = Get-AdGroup -identity $ifGroup.distinguishedName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail $globalCatalog
+                                            $lstUsr = Get-ADGroupMember -identity $ifGroup.distinguishedName -server $groupDomainName -Recursive | Get-ADUser -Properties Mail | ?{$_.Mail}
 
 	                                        foreach ($usrTmp in $lstUsr) {
                                                 $usrTmpEmail = $usrTmp.Mail
@@ -384,14 +416,15 @@ Begin{
 
                         If($SendAsPermissions){
                             Foreach($perm in $SendAsPermissions){
-                                $ifGroup = Get-Group -identity $perm.tostring() -ErrorAction SilentlyContinue
+                                #$ifGroup = Get-Group -identity $perm.tostring() -ErrorAction SilentlyContinue
+                                $ifGroup = Get-GroupCustom -identity $perm.tostring() -ErrorAction SilentlyContinue
                                 If($ifGroup){
                                     If($EnumerateGroups -eq $true){
 				                        If(-not ($ExcludedGroups -contains $ifGroup.Name)){
-                                            $groupDomainName = $ifgroup.Identity | select DomainId
-                                            $groupDomainName = $groupDomainName.domainid.tostring()
+                                            $groupDomainName = $ifgroup.identity.tostring().split("/")[0]
                                             Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found permission : SendAs : Enumerate Group $($ifGroup.distinguishedName) Domain Name: $groupDomainName"
-                                            $lstUsr = Get-AdGroup -identity $ifGroup.distinguishedName -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail
+                                            #$lstUsr = Get-AdGroup -identity $ifGroup.distinguishedName -Server $groupDomainName | Get-ADGroupMember -Recursive | Get-ADUser -Properties Mail -server $globalCatalog
+                                            $lstUsr = Get-ADGroupMember -identity $ifGroup.distinguishedName -server $groupDomainName -Recursive | Get-ADUser -Properties Mail | ?{$_.Mail}
 
 	                                        foreach ($usrTmp in $lstUsr) {
                                                 $usrTmpEmail = $usrTmp.Mail
@@ -737,7 +770,7 @@ Begin{
                        $user = get-user $item.user #-erroraction SilentlyContinue
 		   
                        If(![string]::IsNullOrEmpty($user.WindowsEmailAddress)){
-			             If((Get-Recipient $user.WindowsEmailAddress.toString()).RecipientType -eq "UserMailbox"){ 
+			             If($user.recipienttype -eq "UserMailbox"){ 
                           $mbStats = Get-MailboxStatistics $user.WindowsEmailAddress.tostring() | select totalitemsize
 			                If($mbStats.totalitemsize.value)
                             {
@@ -795,7 +828,7 @@ Begin{
         $BatchesFile = "$scriptPath\Find-MailboxDelegates-Batches.csv"
         $MigrationScheduleFile = "$scriptPath\Find-MailboxDelegates-Schedule.csv"
         $ProgressXMLFile = "$scriptPath\Find-MailboxDelegates-Progress.xml"
-        $Version = "06262018"
+        $Version = "05012019"
         $computer = $env:COMPUTERNAME
         $user = $env:USERNAME
 
