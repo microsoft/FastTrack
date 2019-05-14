@@ -18,6 +18,15 @@ The purpose of this script is to generate a report(s) that joins details from O3
 |InputCSV|Use this if you want to run the report against a list of Groups in a CSV file (Use PrimarySMTPAddress as column header) |false
 |Properties|Specify which properties you want to retrieve. [List of available properties](#PropertyList) |false
 
+### Ouput
+
+|File Name|Description
+|----|--------------------------
+|GroupsTeamsAndSites-AllColumns.csv| This report will include ALL columns and will be the most verbose.
+|GroupsTeamsAndSites-SimpleColumns.csv | This report will include properties that customers typically request.
+|GroupsTeamsAndSites-CustomColumns.csv| This report will include only the properties you specify when using the -Properties switch.  
+
+
 ### Run Examples
 
 #### How can I export the properties for only certain groups/teams
@@ -115,6 +124,10 @@ Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","S
 |Author|Original Publish Date
 |----|--------------------------
 |Alejandro Lopez|05/14/2019|
+
+## References
+
+- Join-Object function from [http://ramblingcookiemonster.github.io/Join-Object/](http://ramblingcookiemonster.github.io/Join-Object/ )
 
 ## Issues
 
