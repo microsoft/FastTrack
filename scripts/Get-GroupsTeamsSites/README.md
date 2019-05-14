@@ -100,7 +100,7 @@ Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","S
 
 `Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","SPO_Url","SPO_TimeZoneId"`
 
-#### Get report of Groups/Teams and their SharePoint Site's ability to customize via custom scripting? [Allow/Preven Custom Scripting](https://docs.microsoft.com/en-us/sharepoint/allow-or-prevent-custom-script)
+#### Get report of Groups/Teams and their SharePoint Site's ability to customize via custom scripting? [Allow/Prevent Custom Scripting](https://docs.microsoft.com/en-us/sharepoint/allow-or-prevent-custom-script)
 
 `Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","SPO_Url","SPO_DenyAddAndCustomizePages"`
 
