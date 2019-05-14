@@ -56,7 +56,9 @@ The purpose of this script is to generate a report(s) that joins details from O3
 
 #### Get report of Groups/Teams/Sites that are allowed to use 3rd Party Connectors
 
-`Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","ConnectorsEnabled","TEAMS_DisplayName","TEAMS_AllowCreateUpdateRemoveConnectors","SPO_Url"`
+```
+Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","ConnectorsEnabled","TEAMS_DisplayName","TEAMS_AllowCreateUpdateRemoveConnectors","SPO_Url"
+```
 
 #### Get report of Groups/Teams/Sites and their number of members and guests
 
@@ -76,7 +78,9 @@ The purpose of this script is to generate a report(s) that joins details from O3
 
 #### Get report of Groups/Teams/Sites that are Active/Inactive
 
-`Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","SPO_Url","SPO_LastContentModifiedDate","WhenCreatedUTC","WhenChangedUTC"`
+```
+Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","SPO_Url","SPO_LastContentModifiedDate","WhenCreatedUTC","WhenChangedUTC"
+```
 
 #### Get report of Groups/Teams and their SharePoint Site's Conditional Access Policy (if any)
 
@@ -84,7 +88,9 @@ The purpose of this script is to generate a report(s) that joins details from O3
 
 #### Get report of Groups/Teams and their SharePoint Site's Allowed/Blocked Sharing Domain list
 
-`Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","SPO_Url","SPO_SharingAllowedDomainList","SPO_SharingBlockedDomainList"`
+```
+Get-GroupsTeamsSites.ps1 -Properties "PrimarySmtpAddress","TEAMS_DisplayName","SPO_Url","SPO_SharingAllowedDomainList","SPO_SharingBlockedDomainList"
+```
 
 #### Get report of Groups/Teams and their SharePoint Site's Restricted Region? Useful for GDPR scenarios
 
