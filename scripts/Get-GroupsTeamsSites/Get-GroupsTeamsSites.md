@@ -118,7 +118,8 @@ The script assumes you're using an account that's not MFA enabled. If you need t
 
 ## PropertyList
 
-|Property|
+```
+Property
 PSComputerName
 RunspaceId
 PSShowComputerName
@@ -317,6 +318,7 @@ SPO_Path
 SPO_ObjectVersion
 SPO_ServerObjectIsNull
 SPO_TypedObject
+```
 
 ## Support Statement
 
