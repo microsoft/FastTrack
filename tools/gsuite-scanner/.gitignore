@@ -1,0 +1,39 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn.lock
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+.idea/
+
+# Coverage directory used by tools like istanbul
+coverage
+.nyc_output
+
+# node-waf configuration
+.lock-wscript
+
+# Dependency directory
+node_modules
+
+# generated folders/files
+/build
+/dist
+/site
+.awcache
+/lib
+
+# Optional npm cache directory
+.npm
+
+.idea
+
+# project settings
+gscan-config.ts
+credentials.json
+credentials2.json

@@ -1,0 +1,39 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "lib",
+        "declaration": true,
+        "declarationMap": false,
+        "sourceMap": true,
+        "removeComments": true,
+        "types": [
+            "node"
+        ],
+        "lib": [
+            "es6",
+            "dom"
+        ], 
+        "allowUnreachableCode": false,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "pretty": true,
+        "experimentalDecorators": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipDefaultLibCheck": true,
+        "downlevelIteration": true,
+        "skipLibCheck": true,
+        "strictNullChecks": false,
+        "preserveConstEnums": true,
+        "importHelpers": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "./index.ts",
+        "./**/*.ts"
+    ]
+}
