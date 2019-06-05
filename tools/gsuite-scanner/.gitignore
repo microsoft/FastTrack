@@ -36,4 +36,4 @@ node_modules
 # project settings
 gscan-config.ts
 credentials.json
-credentials2.json
+results/

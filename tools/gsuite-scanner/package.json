@@ -5,7 +5,6 @@
     "gscan": "./bin/gscan.js"
   },
   "description": "Provides reporting on G-Suite assets",
-  "main": "index.js",
   "scripts": {
     "test": "nyc mocha"
   },

@@ -2,9 +2,10 @@
 
 import * as LiftOff from "liftoff";
 import { jsVariants } from "interpret";
-import { IConfigSchema, getAuthorizedClient } from "../";
+import { IConfigSchema } from "../src/config-schema";
 import * as findup from "findup-sync";
-import { Scanner } from "../src/scanner";
+import scan from "../src/scan";
+import { resolve } from "path";
 
 const packagePath = findup("package.json");
 
@@ -24,17 +25,27 @@ scanner.launch({}, async (env: LiftOff.LiftoffEnv) => {
 
     const config: { default: IConfigSchema } = await import(env.configPath);
     const pkg: { version: string } = await import(packagePath);
-    const credsPath = findup(config.default.credentialPath);
-    const creds = await import(credsPath);
 
-    console.log(`GScan Version: ${pkg.version}`);
-    console.log(`Domain: ${config.default.domain}`);
-    console.log(`Impersonating: ${config.default.impersonatingAccount}`);
-    console.log(`Credentials path: ${config.default.credentialPath}`);
+    // ensure we correctly resolve our credential file path relatice to the config base path
+    config.default.credentialPath = resolve(env.configBase, config.default.credentialPath);
 
+    console.log(`gscan Version: ${pkg.version}`);
 
-    const scanner = new Scanner(config.default);
+    if (config.default.verbose) {
+        console.log(`Domain: ${config.default.domain}`);
+        console.log(`Impersonating: ${config.default.impersonatingAccount}`);
+        console.log(`Credentials path: ${config.default.credentialPath}`);
+    }
 
-    
+    try {
 
+        const results = await scan(config.default);
+
+        // obviously we need various outputters
+        console.log(JSON.stringify(results, null, 2));
+
+    } catch (e) {
+
+        console.error(e);
+    }
 });

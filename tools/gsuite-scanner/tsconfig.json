@@ -15,7 +15,7 @@
         "lib": [
             "es6",
             "dom"
-        ], 
+        ],
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
