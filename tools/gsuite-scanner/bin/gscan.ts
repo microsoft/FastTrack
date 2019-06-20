@@ -2,10 +2,11 @@
 
 import * as LiftOff from "liftoff";
 import { jsVariants } from "interpret";
-import { IConfigSchema } from "../src/config-schema";
+import { IConfigSchema } from "../src/configuration";
 import * as findup from "findup-sync";
 import scan from "../src/scan";
 import { resolve } from "path";
+import { log, logError} from "../src/log";
 
 const packagePath = findup("package.json");
 
@@ -32,20 +33,20 @@ scanner.launch({}, async (env: LiftOff.LiftoffEnv) => {
     console.log(`gscan Version: ${pkg.version}`);
 
     if (config.default.verbose) {
-        console.log(`Domain: ${config.default.domain}`);
-        console.log(`Impersonating: ${config.default.impersonatingAccount}`);
-        console.log(`Credentials path: ${config.default.credentialPath}`);
+        // dump config values
+        const keys = Object.getOwnPropertyNames(config.default);
+        for (let i = 0; i < keys.length; i++) {
+            log(`${keys[i]} = ${config.default[keys[i]]}`);
+        }
     }
 
     try {
 
         const results = await scan(config.default);
 
-        // obviously we need various outputters
-        console.log(JSON.stringify(results, null, 2));
+        log(`Scan complete, processed ${results.sites.length} sites.`);
 
     } catch (e) {
-
-        console.error(e);
+        logError(e);
     }
 });

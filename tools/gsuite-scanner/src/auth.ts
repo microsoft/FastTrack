@@ -1,4 +1,4 @@
-import { IConfigSchema } from "./config-schema";
+import { IConfigSchema } from "./configuration";
 import { JWT, Credentials } from "google-auth-library";
 
 export interface IServiceAccountCredentials {

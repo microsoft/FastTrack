@@ -11,7 +11,8 @@
 			"preLaunchTask": "build",
 			"runtimeExecutable": null,
 			"runtimeArgs": [
-				"--nolazy"
+                "--nolazy",
+                "--harmony_async_iteration"
 			],
 			"env": {
 				"NODE_ENV": "development"

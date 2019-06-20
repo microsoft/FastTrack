@@ -1,5 +1,7 @@
-export { IConfigSchema } from "./config-schema";
+import scan, { IScanResult } from "./scan";
+import { IConfigSchema, sanitizeConfig } from "./configuration";
 
-export function api(): boolean {
-    return true;
+export function gscan(config: Partial<IConfigSchema>): Promise<IScanResult> {
+
+    return scan(sanitizeConfig(config));
 }

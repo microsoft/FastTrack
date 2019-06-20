@@ -1,6 +1,7 @@
 import { GetCredentialsDelegate } from "../auth";
-import fetch from "../fetch";
-import { parseString } from "xml2js";
+import { IConfigSchema } from "../configuration";
+import { read, createFeedReader } from "./feed-reader";
+import { log } from "../log";
 
 export interface ISite {
     id: string;
@@ -11,54 +12,35 @@ export interface ISite {
     updated: Date;
 }
 
-// returns a function binding that allows us to load sites for a given domain
-export default (getCreds: GetCredentialsDelegate) => async (domain: string): Promise<ISite[]> => {
+/**
+ * returns a function binding that allows us to load sites for a given domain
+ */
+export default (getCreds: GetCredentialsDelegate) => async (config: IConfigSchema): Promise<ISite[]> => {
+
+    log("Loading all sites...");
 
     const creds = await getCreds(["https://sites.google.com/feeds"]);
 
-    const response = await fetch(`https://sites.google.com/feeds/site/${domain}/?include-all-sites=true&max-results=100`, {
-        headers: {
-            "Authorization": `${creds.token_type} ${creds.access_token}`,
-            "Gdata-version": "1.4",
-        },
-        method: "GET",
-    });
+    log("Creating sites feed reader...");
 
-    if (!response.ok) {
-        throw Error(`Error retrieving sites: [${response.status}] ${response.statusText}`);
-    }
+    const sitesFeedReader = createFeedReader<ISite>(creds, (node: any) => ({
+        id: node.id[0],
+        links: (<any[]>node.link).map(n => ({ rel: n.$.rel, type: n.$.type, href: n.$.href })),
+        siteName: node["sites:siteName"][0],
+        theme: node["sites:theme"][0],
+        title: node.title[0],
+        updated: new Date(node.updated[0]),
+    }));
 
-    const xml = await response.text();
+    log("Created sites feed reader.");
 
-    // now we need to translate the raw response into something useful
-    const parsed: ISite[] = await new Promise<ISite[]>((resolve, reject) => {
+    const baseUrl = `https://sites.google.com/feeds/site/${config.domain}/`;
+    const params = [
+        "include-all-sites=true",
+        `max-results=${config.maxResultsPerPage}`,
+    ];
 
-        parseString(xml, (err, result) => {
+    log(`Reading sites from feed ${baseUrl}`);
 
-            if (err) {
-                reject(err);
-            }
-
-            // here we need to translate the raw json from xml response into what we care about
-
-            // TODO:: if we have a next we need to process it too
-            const next = (<any[]>result.feed.link).filter((node: any) => node.$.rel === "next")[0];
-
-            const sites: ISite[] = (<any[]>result.feed.entry).map((node: any) => {
-
-                return {
-                    id: node.id[0],
-                    links: (<any[]>node.link).map(n => ({ rel: n.$.rel, type: n.$.type, href: n.$.href })),
-                    siteName: node["sites:siteName"][0],
-                    theme: node["sites:theme"][0],
-                    title: node.title[0],
-                    updated: new Date(node.updated[0]),
-                };
-            });
-
-            resolve(sites);
-        });
-    });
-
-    return parsed;
+    return read(sitesFeedReader(`${baseUrl}?${params.join("&")}`));
 };

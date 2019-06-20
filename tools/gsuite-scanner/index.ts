@@ -1,1 +1,2 @@
-export * from "./src/api";
+export { IConfigSchema } from "./src/configuration";
+export { gscan } from "./src/api";
