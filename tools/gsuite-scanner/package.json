@@ -1,0 +1,52 @@
+{
+  "name": "@microsoft/gscan",
+  "version": "0.0.1",
+  "bin": {
+    "gscan": "./lib/bin/gscan.js"
+  },
+  "main": "./lib/index.js",
+  "description": "Provides reporting on G-Suite assets",
+  "scripts": {
+    "test": "nyc mocha",
+    "start": "tsc -p . && node ./lib/bin/gscan.js",
+    "prepublish": "tsc -p ."
+  },
+  "author": "Patrick Rodgers, Microsoft",
+  "license": "MIT",
+  "dependencies": {
+    "@pnp/common": "^1.3.3",
+    "@pnp/logging": "^1.3.3",
+    "googleapis": "^39.2.0",
+    "interpret": "^1.2.0",
+    "liftoff": "^3.1.0",
+    "node-fetch": "^2.6.0",
+    "readline": "^1.3.0",
+    "tslib": "^1.9.3",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "@types/interpret": "^1.1.1",
+    "@types/liftoff": "^2.5.0",
+    "@types/node": "^12.0.4",
+    "@types/node-fetch": "^2.3.4",
+    "@types/xml2js": "^0.4.4",
+    "@types/yargs": "^13.0.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
+    "ts-node": "^8.2.0",
+    "tsconfig-paths": "^3.8.0",
+    "typescript": "^3.5.1"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/fasttrack/issues"
+  },
+  "homepage": "https://github.com/microsoft/fasttrack",
+  "repository": {
+    "type": "git",
+    "url": "git:github.com/microsoft/fasttrack/tools/google-site-scanner"
+  }
+}
