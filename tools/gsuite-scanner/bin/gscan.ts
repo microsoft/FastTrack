@@ -3,17 +3,15 @@
 import * as LiftOff from "liftoff";
 import { jsVariants } from "interpret";
 import { IConfigSchema } from "../src/configuration";
-import * as findup from "findup-sync";
 import scan from "../src/scan";
 import { resolve } from "path";
-import { log, logError} from "../src/log";
-
-const packagePath = findup("package.json");
+import { log, logError } from "../src/log";
 
 const scanner = new LiftOff({
     configName: "gscan-config",
     extensions: jsVariants,
     name: "gscan",
+    processTitle: "gscan",
 });
 
 scanner.launch({}, async (env: LiftOff.LiftoffEnv) => {
@@ -24,25 +22,26 @@ scanner.launch({}, async (env: LiftOff.LiftoffEnv) => {
         throw Error("No config file found.");
     }
 
-    const config: { default: IConfigSchema } = await import(env.configPath);
-    const pkg: { version: string } = await import(packagePath);
+    const config: IConfigSchema = await import(env.configPath);
 
-    // ensure we correctly resolve our credential file path relatice to the config base path
-    config.default.credentialPath = resolve(env.configBase, config.default.credentialPath);
+    // ensure we correctly resolve our credential file path relative to the config base path
+    config.credentialPath = resolve(env.configBase, config.credentialPath);
 
-    console.log(`gscan Version: ${pkg.version}`);
+    console.log(`gscan Version: ${env.modulePackage.version}`);
 
-    if (config.default.verbose) {
+    if (config.verbose) {
         // dump config values
-        const keys = Object.getOwnPropertyNames(config.default);
+        log("Verbose logging enabled");
+        log("Configuration values:");
+        const keys = Object.getOwnPropertyNames(config);
         for (let i = 0; i < keys.length; i++) {
-            log(`${keys[i]} = ${config.default[keys[i]]}`);
+            log(`${keys[i]} = ${config[keys[i]]}`);
         }
     }
 
     try {
 
-        const results = await scan(config.default);
+        const results = await scan(config);
 
         log(`Scan complete, processed ${results.sites.length} sites.`);
 

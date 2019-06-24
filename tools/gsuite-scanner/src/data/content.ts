@@ -17,7 +17,7 @@ export interface ISiteContent {
 export interface ISiteContentSummary {
     count: number;
     lastModified: Date;
-    categories: string[];
+    categories: { name: string, count: number }[];
 }
 
 export interface ISiteWithContentSummary extends ISite {
@@ -58,11 +58,14 @@ export function summarize(site: ISite, content: ISiteContent[]): ISiteWithConten
     const lastUpdated = content.map(c => c.updated).reduce((prev, cur) => cur > prev ? cur : prev, new Date(0));
 
     const cats = content.map(c => c.category).reduce((prev, cur) => {
-        if (prev.indexOf(cur) < 0) {
-            prev.push(cur);
+        const index = prev.findIndex(i => i.name === cur);
+        if (index < 0) {
+            prev.push({ name: cur, count: 1 });
+        } else {
+            prev[index].count++;
         }
         return prev;
-    }, []);
+    }, <{ name: string, count: number }[]>[]);
 
     // augment the site with the summary information
     return Object.assign(site, {

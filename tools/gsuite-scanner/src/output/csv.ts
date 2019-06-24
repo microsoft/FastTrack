@@ -1,22 +1,57 @@
 import { IScanResult } from "src/scan";
-// import { writeFile } from "fs";
+import { EOL } from "os";
+import { createWriteStream, WriteStream } from "fs";
 
-export function outputCSV(_result: IScanResult, _fileName = "gscan_results.json"): Promise<void> {
+export async function outputCSV(result: IScanResult, fileName = "gscan_results.csv"): Promise<void> {
 
-    return new Promise((resolve, reject) => {
+    const fileStream = createWriteStream(fileName, { flags: "a", autoClose: false });
 
-        // // we need to flatten each thing into csv
-        // // keeping just the fields we care about
+    // write headers
+    const headers = [
+        "id",
+        "siteName",
+        "theme",
+        "title",
+        "updated",
+        "content-count",
+        "content-last-modified",
+        "content-categories",
+    ].join(",");
 
+    await doWrite(fileStream, headers + EOL);
 
-        resolve();
-        // writeFile(fileName, JSON.stringify(result, null, 2), (err) => {
+    for (let i = 0; i < result.sites.length; i++) {
 
-        //     if (err) {
-        //         return reject(err);
-        //     }
+        const site = result.sites[i];
 
-        //     resolve();
-        // });
+        const data = [
+            `'${site.id}'`,
+            `'${site.siteName}'`,
+            `'${site.theme}'`,
+            `'${site.title}'`,
+            `'${site.updated}'`,
+            `${site.contentSummary.count}`,
+            `'${site.contentSummary.lastModified}'`,
+            `'${site.contentSummary.categories.map(cat => `${cat.name}:${cat.count}`).join(";")}'`,
+        ].join(",");
+
+        await doWrite(fileStream, data + EOL);
+    }
+
+    fileStream.close();
+}
+
+function doWrite(stream: WriteStream, value: string): Promise<void> {
+
+    return new Promise<void>((resolve, reject) => {
+
+        stream.write(value, (err) => {
+
+            if (err) {
+                reject(err);
+            }
+
+            resolve();
+        });
     });
 }

@@ -6,13 +6,15 @@
 			"type": "node",
 			"request": "launch",
 			"program": "${workspaceRoot}/bin/gscan.ts",
-			"args": [],
+			"args": [
+                "--cwd",
+                "C:/gscan-local-testing"
+            ],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": "build",
 			"runtimeExecutable": null,
 			"runtimeArgs": [
                 "--nolazy",
-                "--harmony_async_iteration"
 			],
 			"env": {
 				"NODE_ENV": "development"
