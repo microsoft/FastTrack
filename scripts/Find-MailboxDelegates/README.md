@@ -106,9 +106,12 @@ Powershell v3+
 Exchange Management Tools
 
 ### FAQ  
-* I get one or multiple extremely large batch files, what's the best way to manage these?   
+* **I get one or multiple extremely large batch files, what's the best way to manage these?**   
 If there is a large batch in the batches.csv file, using the batch analysis spreadsheet can help.  
 FastTrackTips blog for migration permissions analysis -> https://aka.ms/permissions-analysis  
+
+* **What's the best way to run this in extra large environments with 10s or 100s of thousands of mailboxes?**   
+For extra large environments, please review the "Suggestions for Extra Large Environments" section in this [guide](./Find-MailboxDelegates-GUIDE.docx) 
 
 ## Applies To
 - Exchange 2010
