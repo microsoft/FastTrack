@@ -10,7 +10,7 @@ The Google Site Scanner (gscan) cli tool allows you to gather basic statistics a
 
 ### Installation
 
-`npm install -g @microsoft/gsuite-scanner`
+`npm install -g @microsoft/gscan`
 
 ## Setup
 
