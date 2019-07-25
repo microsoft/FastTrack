@@ -22,7 +22,7 @@ The Google Site Scanner (gscan) cli tool allows you to gather basic statistics a
 
 ### Create configuration file (one-time)
 
-The behavior of the cli tool is controlled by a JavaScript configuration file. This allows you some flexibility as you can use code in the configuration. This file should be located in your app working directoy. The application expects a single export with the following structure. "credentialPath", "domain", and "impersonatingAccount" are required, the rest are optional.
+The behavior of the cli tool is controlled by a JavaScript configuration file named `gscan-config.js`. This allows you some flexibility as you can use code in the configuration. This file should be located in your app working directory and be named `gscan-config.js`. The application expects a single export with the following structure. "credentialPath", "domain", and "impersonatingAccount" are required, the rest are optional.
 
 ```JavaScript
 {
