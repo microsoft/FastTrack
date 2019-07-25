@@ -11,6 +11,7 @@ We have a collection of [scripts](scripts) to help with migration related tasks.
 |----|--------------------------
 |[SMAT Workbook Generator](https://github.com/Microsoft/fasttrack-smat-workbook-generator)|Combines the output of SMAT into a single workbook|
 |[IdFix](https://github.com/Microsoft/idfix)|Fix on-premesis AD issues before migration|
+|[gscan](https://github.com/microsoft/FastTrack/tree/master/tools/gsuite-scanner)|Provides an inventory of v1 Google Sites|
 
 ## Samples
 
