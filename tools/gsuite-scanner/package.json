@@ -8,8 +8,9 @@
   "description": "Provides reporting on G-Suite assets",
   "scripts": {
     "test": "nyc mocha",
-    "start": "tsc -p . && node ./lib/bin/gscan.js",
-    "prepublish": "tsc -p ."
+    "build": "tsc -p .",
+    "start": "npm run build && node ./lib/bin/gscan.js",
+    "prepublish": "npm run build"
   },
   "author": "Patrick Rodgers, Microsoft",
   "license": "MIT",

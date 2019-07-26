@@ -93,3 +93,25 @@ module.exports = {
 
 1. Open a command prompt to the folder where you saved the credentials and configuration file
 2. Run `gscan`
+
+# Build
+
+To build the solution execute:
+
+```CMD
+npm run build
+```
+
+# Publish
+
+To publish a new version you need to increment the version number appropriately and then publish the solution. The publish command handles rebuilding the solution.
+
+```CMD
+npm version patch
+npm publish
+```
+
+# Debug
+
+If you are using VS Code F5 debugging is setup. It expects a local folder named "gscan-local-testing" containing the credentials and config files, you can adjust this path in the launch file.
+
