@@ -6,11 +6,7 @@
 			"type": "node",
 			"request": "launch",
 			"program": "${workspaceRoot}/bin/gscan.ts",
-			"args": [
-                "--cwd",
-                "C:/gscan-local-testing"
-            ],
-			"cwd": "${workspaceRoot}",
+			"cwd": "C:/gscan-local-testing",
 			"preLaunchTask": "build",
 			"runtimeExecutable": null,
 			"runtimeArgs": [

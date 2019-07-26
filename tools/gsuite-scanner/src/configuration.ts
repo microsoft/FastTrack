@@ -1,5 +1,6 @@
 import { stringIsNullOrEmpty } from "@pnp/common";
 import { existsSync } from "fs";
+import { setProxyUrl } from "./fetch";
 
 export interface IConfigSchema {
     domain: string;
@@ -11,6 +12,7 @@ export interface IConfigSchema {
     useDefaultLogging: boolean;
     logFileName: string;
     output: ("json" | "csv")[];
+    proxyUrl: string | null;
 }
 
 export function sanitizeConfig(config: Partial<IConfigSchema>): IConfigSchema {
@@ -25,6 +27,7 @@ export function sanitizeConfig(config: Partial<IConfigSchema>): IConfigSchema {
         loggingListener: null,
         maxResultsPerPage: 100,
         output: ["json"],
+        proxyUrl: null,
         useDefaultLogging: true,
         verbose: false,
     }, config);
@@ -40,6 +43,10 @@ export function sanitizeConfig(config: Partial<IConfigSchema>): IConfigSchema {
 
     if (stringIsNullOrEmpty(saneConfig.impersonatingAccount)) {
         throw Error("You must supply a valid impersonatingAccount in the gscan-config.js file.");
+    }
+
+    if (!stringIsNullOrEmpty(saneConfig.proxyUrl)) {
+        setProxyUrl(saneConfig.proxyUrl);
     }
 
     return saneConfig;
