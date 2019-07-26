@@ -34,7 +34,8 @@ The behavior of the cli tool is controlled by a JavaScript configuration file na
     verbose: boolean,
     loggingListener: (entry: {}) => void,
     useDefaultLogging: boolean,
-    logFileName: string
+    logFileName: string,
+    proxyUrl: string,
 }
 ```
 
@@ -61,6 +62,7 @@ module.exports = {
     loggingListener: (entry) => console.log(entry.message),
     useDefaultLogging: false,
     logFileName: "mylog.txt",
+    proxyUrl: "https://my.proxy.url",
 };
 ```
 
@@ -85,6 +87,7 @@ module.exports = {
 |loggingListener|[Optional, default null] Allows you to supply an additional logging function that will receive all logging messages. Function takes a single argument and returns null. The argument will be `{ message: string, level: 0|1|2|3|99, data: any }`. 0 = Verbose|
 |useDefaultLogging|[Optional, default true] If true logging is also written to the console.|
 |logFileName|[Optional, default 'gscan_log_{timestamp}.txt'] Name of the log file, set to empty string to supress log file generation.|
+|proxyUrl|[Optional]Url to a network proxy (added in 0.0.3)|
 
 ###
 
