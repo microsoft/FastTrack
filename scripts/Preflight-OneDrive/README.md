@@ -21,6 +21,14 @@ Script to generate a report (within console or HTML report) from a directory (lo
 [EnhancedHTML2 Module](https://www.powershellgallery.com/packages/EnhancedHTML2/2.0)  
 [Test-OneDrivePath Function](https://github.com/OTvedt/Scripts-For-Sharing/blob/master/OneDrive/Test-OneDrivePath.ps1)
 
+### Screenshots of Results
+
+**Console Screenshot**  
+![Console screenshot](screenshots/ConsoleScreenshot.jpg?raw=true "Console Screenshot")  
+
+**HTML Report screenshot**
+![HTML screenshot](screenshots/HTMLReportScreenshot.jpg?raw=true "HTML Screenshot")
+
 ## Applies To
 
 - SharePoint Online / OneDrive for Business
