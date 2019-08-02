@@ -1,6 +1,6 @@
 # Microsoft FastTrack Open Source - Preflight-OneDrive
 
-Script to add/remove secondary admins (user or group) to OneDrive for Business sites.
+Script to generate a report (within console or HTML report) from a directory (local folder or UNC path) of potential sync issues before deploying the OneDrive for Business sync client.
 
 ## Usage
 
@@ -18,7 +18,7 @@ Script to add/remove secondary admins (user or group) to OneDrive for Business s
 
 ### External Dependencies
 
-[EnhancedHTML2 Module](https://www.powershellgallery.com/packages/EnhancedHTML2/2.0)
+[EnhancedHTML2 Module](https://www.powershellgallery.com/packages/EnhancedHTML2/2.0)  
 [Test-OneDrivePath Function](https://github.com/OTvedt/Scripts-For-Sharing/blob/master/OneDrive/Test-OneDrivePath.ps1)
 
 ## Applies To
