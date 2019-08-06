@@ -28,13 +28,13 @@
 	.PARAMETER ImportCSVFile
         Script will add licenses to the users in the CSV file. "UserPrincipalName" needs to be the column header. 
     .EXAMPLE
-        .\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"
+        .\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"
     .EXAMPLE
-        .\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"
+        .\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -DisableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"
     .EXAMPLE
-        .\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"
+        .\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1" -ImportCSVFile "c:\userslist.csv"
     .EXAMPLE
-        .\Disable-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"
+        .\Update-TeamsLicense.ps1 -AccountSkuId "CONTOSO:ENTERPRISEPREMIUM" -EnableSubLicenses "TEAMS1","MCOSTANDARD" -ImportCSVFile "c:\userslist.csv"
 
 #>
 [Cmdletbinding()]
