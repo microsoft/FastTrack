@@ -54,6 +54,7 @@ Begin{
 
     Function Test-OneDrivePath{
         #updated original Test-OneDrivePath function to accommodate UNC paths using: [System.StringSplitOptions]:: RemoveEmptyEntries
+        #updated to look for pst and onenote for KFM folders
 
         #region Header
         <#
@@ -270,9 +271,23 @@ Begin{
         # File name must not contain blocked characters or strings
         if($file.Name -match $BlockedFileCharactersAndStrings){$errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message 'This file will be blocked due to invalid character(s) or string(s).';};
         # File name must not have blocked prefix or extension
-        if($file.Name -match $BlockedFilePrefixesAndExtensions){$errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message 'This file will be blocked due to invalid prefix or extension.';};
+        if($file.Name -match $BlockedFilePrefixesAndExtensions){
+            if($file.Name -like "*.one*"){
+                $errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message 'OneNote files will cause Known Folder Move (KFM) to fail.';
+            }
+            else{
+                $errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message 'This file will be blocked due to invalid prefix or extension.';
+            }
+        };
         # Check if file name should be a warning
-        if(-not($ErrorsOnly) -and $file.Name -match $WarningFileNames){$errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message 'This file may be unwanted for security reasons.' -Status Warning;};
+        if(-not($ErrorsOnly) -and $file.Name -match $WarningFileNames){
+            if($file.Name -like "*.pst"){
+                $errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message 'PST files will cause Known Folder Move (KFM) to fail.'; #overriding this to show PST as an error since KFM currently doesn't support PST files
+            }
+            else{
+                $errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message 'This file may be unwanted for security reasons.' -Status Warning;
+            }
+        };
         # Size of a file should not exceed size limit
         if($file.Length -gt ($FileSizeLimitGB * 1024 * 1024 * 1024)){$size=[math]::Round(($file.Length/1gb),2);$errorlist+=Get-OutMessage -Name $file.Name -FullName $file.FullName -Message "This file exceed the size limit of $FileSizeLimitGB GB. It is $size GB.";};
         # Size of a file should not exceed warning size limit
