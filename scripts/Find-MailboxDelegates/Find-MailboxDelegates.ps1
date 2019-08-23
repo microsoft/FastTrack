@@ -35,6 +35,7 @@ Steps performed by the script:
 
 =========================================
 Version: 
+    08232019: AccountResourceEnv switch add 
     05012019: Update cross domain check
 	06262018: Update group enumeration cross domain logic
     06122018: Update group enumeration logic
@@ -146,7 +147,8 @@ param(
     [string]$ExchServerFQDN,
     [switch]$Resume,
     [switch]$BatchUsers, 
-    [switch]$BatchUsersOnly
+    [switch]$BatchUsersOnly, 
+    [switch]$AccountResourceEnv
 )
 
 Begin{
@@ -828,7 +830,7 @@ Begin{
         $BatchesFile = "$scriptPath\Find-MailboxDelegates-Batches.csv"
         $MigrationScheduleFile = "$scriptPath\Find-MailboxDelegates-Schedule.csv"
         $ProgressXMLFile = "$scriptPath\Find-MailboxDelegates-Progress.xml"
-        $Version = "05012019"
+        $Version = "08232019"
         $computer = $env:COMPUTERNAME
         $user = $env:USERNAME
 
