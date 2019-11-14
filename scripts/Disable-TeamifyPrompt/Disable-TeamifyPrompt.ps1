@@ -69,7 +69,7 @@ Begin{
 
         Write-LogEntry -LogName:$Log -LogEntryText "User: $user Computer: $computer Version: $version" -foregroundcolor Yellow
 
-        Connect-PnPOnline -Url $tenant -SPOManagementShell
+        Connect-PnPOnline -Url $tenant -SPOManagementShell -cleartokencache
 
         If($ImportCSVFile){
             $Sites = import-csv $ImportCSVFile -delimiter ","
@@ -90,18 +90,20 @@ Process{
         $sw = [System.Diagnostics.Stopwatch]::StartNew()
 
         Foreach($SiteURL in $Sites){
-            $site = Get-PnPTenantSite -Detailed -Url $SiteURL
+            $site = Get-PnPTenantSite -Detailed -Url $SiteURL.URL
 
             If($EnableCustomScript){
                 if ($site.DenyAddAndCustomizePages -ne 'Disabled') {
                     $site.DenyAddAndCustomizePages = 'Disabled'
                     $site.Update()
                     $site.Context.ExecuteQuery()
-                } 
+                }
+                Connect-PnPOnline -Url $site -SPOManagementShell 
                 Set-PnPPropertyBagValue -Key 'TeamifyHidden' -Value 'True'  
             }
             Else{
                 if ($site.DenyAddAndCustomizePages -eq 'Disabled'){
+                    Connect-PnPOnline -Url $site -SPOManagementShell
                     Set-PnPPropertyBagValue -Key 'TeamifyHidden' -Value 'True'
                 }
             }
