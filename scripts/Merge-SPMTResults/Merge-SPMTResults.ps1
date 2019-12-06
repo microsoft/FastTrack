@@ -17,6 +17,9 @@
 
         Author: Alejandro Lopez - alejanl@microsoft.com
 
+        Version: 
+            12062019: Added check for SPMT Reports
+
         Requirements: 
             -EnhancedHTML2 Module: https://www.powershellgallery.com/packages/EnhancedHTML2/2.0
 
@@ -96,6 +99,8 @@ Begin{
                 }
             }     
         }
+        
+
     }
 
     Function Get-GeneralDetails{
@@ -175,6 +180,7 @@ html{font-family:verdana,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-
     #Script Variables: 
     $yyyyMMdd = Get-Date -Format 'yyyyMMdd'
     $LogFile = "$PSScriptRoot\Merge-SPMTResults-$yyyyMMdd.log"
+    $Version = "12062019"
     $jQueryDataTableUri = 'http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.10.5/jquery.dataTables.js';
     $jQueryUri = 'http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js';
     $htmlReportLocation = "$PSScriptRoot\Merge-SPMTResults-$yyyyMMdd.html"
@@ -183,8 +189,11 @@ html{font-family:verdana,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-
     $SummaryReportsExport = "$PSScriptRoot\MergedSummaryReport.csv"
     $FailureReportsExport = "$PSScriptRoot\MergedFailureReport.csv"
 
+    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Running Script Version: $Version | Run Date: $yyyyMMdd" -ForegroundColor Yellow
+
 }
 Process{
+    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Getting SPMT Reports..." -ForegroundColor Yellow
     If($ServersInCSV){
         $servers += get-content -Path $ServersInCSV
     }
@@ -192,6 +201,20 @@ Process{
         Merge-Reports $Server
     }
 
+    If(!$Global:SummaryReports -and !$Global:FailureReports){
+        Write-LogEntry -LogName:$Script:LogFile -LogEntryText "No Summary Reports or Failure Reports from SPMT Found. No data to process." -ForegroundColor Yellow
+        exit
+    }
+    Else{
+        If(!$Global:SummaryReports){
+            Write-LogEntry -LogName:$Script:LogFile -LogEntryText "No Summary Reports Found." -ForegroundColor Yellow
+        }
+        If(!$Global:FailureReports){
+            Write-LogEntry -LogName:$Script:LogFile -LogEntryText "No Failure Reports Found." -ForegroundColor Yellow
+        }
+    }
+
+    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Export Formatted SPMT Reports..." -ForegroundColor Yellow
     If($Global:SummaryReports){
         $Global:SummaryReports | Export-Csv -Path $SummaryReportsExport -NoTypeInformation
     }
@@ -200,6 +223,7 @@ Process{
     }
 
     If($GenerateHTMLReport){
+        Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Generating HTML Reports..." -ForegroundColor Yellow
         #Build Summary Section
 		$params = @{'As'='List';
         'PreContent'='<div class="panel panel-info"><div class="panel-heading"><h2 class="panel-title">General Details</h2></div><div class="panel-body">'}
@@ -218,9 +242,11 @@ Process{
                             @{n='Warnings';e={$_.'Warning count'};css={'text-warning'}},
                             @{n='Throughput';e={$_.'GB/hour'}},
                             'Log Path'}
-							
-        $html_FileShares = $Global:SummaryReports | ConvertTo-EnhancedHTMLFragment @params		   
         
+        If($Global:SummaryReports){
+            $html_FileShares = $Global:SummaryReports | ConvertTo-EnhancedHTMLFragment @params		   
+        }
+
         #Build failures table 
 		$params = @{'As'='Table';
                 'PreContent'='<h2> Details </h2>';
@@ -233,8 +259,10 @@ Process{
                             @{n='Category';e={$_.'Result category'}},
                             'Message', 
                             @{n='Hostname';e={$_.'Device name'}}}
-                    
-        $html_Failures = $Global:FailureReports | ConvertTo-EnhancedHTMLFragment @params	
+        
+        If($Global:FailureReports){
+         $html_Failures = $Global:FailureReports | ConvertTo-EnhancedHTMLFragment @params	
+        }
 
 		#Build Report
 		$params = @{'CssStyleSheet'=$style;
