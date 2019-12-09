@@ -92,9 +92,11 @@ Begin{
                 $summaryReportLocation = "$($migrationRun.FullName)\Report\SummaryReport.csv"
                 $failureReportLocation = "$($migrationRun.FullName)\Report\FailureSummaryReport.csv"
                 If(test-path $summaryReportLocation){
+                    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Summary Report: $summaryReportLocation" -ForegroundColor Yellow
                     $Global:SummaryReports += Import-Csv -Path $summaryReportLocation -ErrorAction SilentlyContinue
                 }
                 If(test-path $failureReportLocation){
+                    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Failure Report: $failureReportLocation" -ForegroundColor Yellow
                     $Global:FailureReports += Import-Csv -Path $failureReportLocation -ErrorAction SilentlyContinue
                 }
             }     
