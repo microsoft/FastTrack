@@ -266,15 +266,29 @@ Process{
          $html_Failures = $Global:FailureReports | ConvertTo-EnhancedHTMLFragment @params	
         }
 
-		#Build Report
-		$params = @{'CssStyleSheet'=$style;
-                'Title'="Merged SPMT Results";
-                'PreContent'='<div class="well well-sm"><h1>Merged SPMT Results</h1></div>';
-                'HTMLFragments'=@($html_UserMachineDetails,$html_FileShares,$html_Failures);
-                'jQueryDataTableUri'=$jQueryDataTableUri;
-                'jQueryUri'=$jQueryUri;}
-       
-        ConvertTo-EnhancedHTML @params |  Out-File -FilePath $htmlReportLocation
+        #Build Report
+        
+        #Condition in case there's no failure report 
+        If($Global:FailureReports){
+            $params = @{'CssStyleSheet'=$style;
+                    'Title'="Merged SPMT Results";
+                    'PreContent'='<div class="well well-sm"><h1>Merged SPMT Results</h1></div>';
+                    'HTMLFragments'=@($html_UserMachineDetails,$html_FileShares,$html_Failures);
+                    'jQueryDataTableUri'=$jQueryDataTableUri;
+                    'jQueryUri'=$jQueryUri;}
+        
+            ConvertTo-EnhancedHTML @params |  Out-File -FilePath $htmlReportLocation
+        }
+        Else{ #no failure report, so don't include in the HTML
+            $params = @{'CssStyleSheet'=$style;
+                    'Title'="Merged SPMT Results";
+                    'PreContent'='<div class="well well-sm"><h1>Merged SPMT Results</h1></div>';
+                    'HTMLFragments'=@($html_UserMachineDetails,$html_FileShares);
+                    'jQueryDataTableUri'=$jQueryDataTableUri;
+                    'jQueryUri'=$jQueryUri;}
+        
+            ConvertTo-EnhancedHTML @params |  Out-File -FilePath $htmlReportLocation
+        }
     }
 
 }
