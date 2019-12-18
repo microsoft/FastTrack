@@ -17,7 +17,9 @@
 
         Author: Alejandro Lopez - alejanl@microsoft.com
 
-        Version: 
+        Version:
+            12182019: Added logic to get the latest failure reports for scenarios with multiple runs
+            12132019: Updated naming convention for the failure reports 
             12062019: Added check for SPMT Reports
 
         Requirements: 
@@ -89,33 +91,40 @@ Begin{
         foreach($serverLocation in $serverLocations){
             $migrationRuns = Get-ChildItem $serverLocation -ErrorAction SilentlyContinue
             foreach($migrationRun in $migrationRuns){
+                #Check for Summary Report
                 $summaryReportLocation = "$($migrationRun.FullName)\Report\SummaryReport.csv"
-                $failureReportLocation = "$($migrationRun.FullName)\Report\FailureSummaryReport.csv"
                 If(test-path $summaryReportLocation){
                     Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Summary Report: $summaryReportLocation" -ForegroundColor Yellow
-                    $Global:SummaryReports += Import-Csv -Path $summaryReportLocation -ErrorAction SilentlyContinue
+                    $Script:SummaryReports += Import-Csv -Path $summaryReportLocation -ErrorAction SilentlyContinue
                 }
-                If(test-path $failureReportLocation){
-                    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Failure Report: $failureReportLocation" -ForegroundColor Yellow
-                    $Global:FailureReports += Import-Csv -Path $failureReportLocation -ErrorAction SilentlyContinue
+
+                #Check for Failure Reports - Latest Run
+                $taskReports = Get-ChildItem "$($migrationRun.FullName)\Report" -Filter "TaskReport*"
+                foreach($taskReport in $taskReports){
+                    $failureReportLocation = Get-ChildItem $taskReport.FullName -filter "ItemFailureReport_R*" | Sort-Object LastWriteTime -Descending | Select-Object -first 1  
+                    If($failureReportLocation){
+                        Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Failure Report: $failureReportLocation" -ForegroundColor Yellow
+                        try{
+                            $Script:FailureReports += Import-Csv -Path $failureReportLocation.FullName | ?{$_.'Result Category' -eq "SCAN FAILURE"}
+                        }
+                        catch{}
+                    }
                 }
             }     
         }
-        
-
     }
 
     Function Get-GeneralDetails{
-        If($Global:SummaryReports){
-            $totalFileShares = ($Global:SummaryReports).count
-            $totalItemsMigrated =  $Global:SummaryReports | Measure-Object -Property 'Migrated Items' -Sum | select -expandproperty sum  
+        If($Script:SummaryReports){
+            $totalFileShares = ($Script:SummaryReports).count
+            $totalItemsScanned =  $Script:SummaryReports | Measure-Object -Property 'Total scanned item' -Sum | select -expandproperty sum  
         }
         Else{
             $totalFileShares = "Unable to retrieve"
-            $totalItemsMigrated = "N/A"
+            $totalItemsScanned = "N/A"
         }
-        If($Global:FailureReports){
-            $totalFailures = ($Global:FailureReports).count    
+        If($Script:FailureReports){
+            $totalFailures = ($Script:FailureReports).count    
         }
         Else{
             $totalFailures = "Unable to retrieve"
@@ -123,8 +132,8 @@ Begin{
 
         $basicDetails = [pscustomobject]@{'Date' = Get-Date -DisplayHint Date; 
                                 'Total File Shares'= $totalFileShares;
-                                'Total Items Migrated' = $totalItemsMigrated; 
-                                'Total Items Not Migrated' = $totalFailures}
+                                'Total Items Scanned' = $totalItemsScanned; 
+                                'Total Items with Issues' = $totalFailures}
 
         return $basicDetails
     }
@@ -182,12 +191,12 @@ html{font-family:verdana,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-
     #Script Variables: 
     $yyyyMMdd = Get-Date -Format 'yyyyMMdd'
     $LogFile = "$PSScriptRoot\Merge-SPMTResults-$yyyyMMdd.log"
-    $Version = "12062019"
+    $Version = "12182019"
     $jQueryDataTableUri = 'http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.10.5/jquery.dataTables.js';
     $jQueryUri = 'http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js';
     $htmlReportLocation = "$PSScriptRoot\Merge-SPMTResults-$yyyyMMdd.html"
-    $Global:SummaryReports
-    $Global:FailureReports
+    $Script:SummaryReports | out-null
+    $Script:FailureReports | Out-Null
     $SummaryReportsExport = "$PSScriptRoot\MergedSummaryReport.csv"
     $FailureReportsExport = "$PSScriptRoot\MergedFailureReport.csv"
 
@@ -203,25 +212,25 @@ Process{
         Merge-Reports $Server
     }
 
-    If(!$Global:SummaryReports -and !$Global:FailureReports){
+    If(!$Script:SummaryReports -and !$Script:FailureReports){
         Write-LogEntry -LogName:$Script:LogFile -LogEntryText "No Summary Reports or Failure Reports from SPMT Found. No data to process." -ForegroundColor Yellow
         exit
     }
     Else{
-        If(!$Global:SummaryReports){
+        If(!$Script:SummaryReports){
             Write-LogEntry -LogName:$Script:LogFile -LogEntryText "No Summary Reports Found." -ForegroundColor Yellow
         }
-        If(!$Global:FailureReports){
+        If(!$Script:FailureReports){
             Write-LogEntry -LogName:$Script:LogFile -LogEntryText "No Failure Reports Found." -ForegroundColor Yellow
         }
     }
 
     Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Export Formatted SPMT Reports..." -ForegroundColor Yellow
-    If($Global:SummaryReports){
-        $Global:SummaryReports | Export-Csv -Path $SummaryReportsExport -NoTypeInformation
+    If($Script:SummaryReports){
+        $Script:SummaryReports | Export-Csv -Path $SummaryReportsExport -NoTypeInformation
     }
-    If($Global:FailureReports){
-        $Global:FailureReports | Export-Csv -Path $FailureReportsExport -NoTypeInformation
+    If($Script:FailureReports){
+        $Script:FailureReports | Export-Csv -Path $FailureReportsExport -NoTypeInformation
     }
 
     If($GenerateHTMLReport){
@@ -239,14 +248,13 @@ Process{
                 'TableCssClass'='table table-striped table-hover table-condensed order-column';
                 'Properties'='Source',
                             'Destination',
-                            'Status',
-                            @{n='Not migrated';e={$_.'Items not migrated'};css={'text-danger'}},
-                            @{n='Warnings';e={$_.'Warning count'};css={'text-warning'}},
-                            @{n='Throughput';e={$_.'GB/hour'}},
+                            'Total GB',
+                            @{n='Total Items';e={$_.'Total scanned item'}},
+                            @{n='Issues';e={$_.'Total scanned item' - $_.'Total to be migrated'};css={'text-danger'}},
                             'Log Path'}
         
-        If($Global:SummaryReports){
-            $html_FileShares = $Global:SummaryReports | ConvertTo-EnhancedHTMLFragment @params		   
+        If($Script:SummaryReports){
+            $html_FileShares = $Script:SummaryReports | ConvertTo-EnhancedHTMLFragment @params		   
         }
 
         #Build failures table 
@@ -262,14 +270,13 @@ Process{
                             'Message', 
                             @{n='Hostname';e={$_.'Device name'}}}
         
-        If($Global:FailureReports){
-         $html_Failures = $Global:FailureReports | ConvertTo-EnhancedHTMLFragment @params	
+        If($Script:FailureReports){
+         $html_Failures = $Script:FailureReports | ConvertTo-EnhancedHTMLFragment @params	
         }
 
         #Build Report
-        
         #Condition in case there's no failure report 
-        If($Global:FailureReports){
+        If($Script:FailureReports){
             $params = @{'CssStyleSheet'=$style;
                     'Title'="Merged SPMT Results";
                     'PreContent'='<div class="well well-sm"><h1>Merged SPMT Results</h1></div>';
@@ -290,7 +297,6 @@ Process{
             ConvertTo-EnhancedHTML @params |  Out-File -FilePath $htmlReportLocation
         }
     }
-
 }
 End{
     Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Reports location: $PSScriptRoot" -ForegroundColor Yellow
