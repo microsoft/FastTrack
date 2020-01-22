@@ -1,6 +1,6 @@
 import { default as fetch, RequestInit, Response } from "node-fetch";
 import * as proxy from "https-proxy-agent";
-import { stringIsNullOrEmpty } from "@pnp/common";
+import { stringIsNullOrEmpty } from "@pnp/common/commonjs";
 
 let enableProxy = false;
 let proxyUrl: string | null = null;

@@ -1,7 +1,7 @@
-import { Logger, LogLevel, ConsoleListener, FunctionListener, LogEntry } from "@pnp/logging";
+import { Logger, LogLevel, ConsoleListener, FunctionListener, ILogEntry } from "@pnp/logging/commonjs";
 import { performance } from "perf_hooks";
 import { IConfigSchema } from "./configuration";
-import { isFunc, stringIsNullOrEmpty } from "@pnp/common";
+import { isFunc, stringIsNullOrEmpty } from "@pnp/common/commonjs";
 import { createWriteStream } from "fs";
 import { EOL } from "os";
 
@@ -12,7 +12,7 @@ function createFileLogger(fileName: string) {
 
     const fileStream = createWriteStream(fileName, { flags: "a", autoClose: true });
 
-    return function fileLogger(entry: LogEntry) {
+    return function fileLogger(entry: ILogEntry) {
 
         fileStream.write(entry.message + EOL);
     };
