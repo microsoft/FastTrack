@@ -1,14 +1,15 @@
 {
   "name": "@microsoft/gscan",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "bin": {
     "gscan": "./lib/bin/gscan.js"
   },
   "main": "./lib/index.js",
   "description": "Provides reporting on G-Suite assets",
   "scripts": {
-    "start": "tsc -p . && node ./lib/bin/gscan.js",
-    "prepublish": "tsc -p ."
+    "build": "tsc -p .",
+    "start": "npm run build && node ./lib/bin/gscan.js",
+    "prepublish": "npm run build"
   },
   "author": "Patrick Rodgers, Microsoft",
   "license": "MIT",

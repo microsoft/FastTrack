@@ -35,6 +35,8 @@ Steps performed by the script:
 
 =========================================
 Version: 
+    12062019: Add Permissions Only switch to skip steps 2 & 3
+    08232019: AccountResourceEnv switch add 
     05012019: Update cross domain check
 	06262018: Update group enumeration cross domain logic
     06122018: Update group enumeration logic
@@ -92,6 +94,9 @@ Make sure you have the permissions output file in the same directory (Find-Mailb
 .PARAMETER BatchUsersOnly
 Use this if you want to skip collecting permissions (step1) and creating a migration schedule (step 3). This won't require an active exchange session, but make sure you have the permissions output file in the same directory (Find-MailboxDelegates-Permissions.csv).
 
+.PARAMETER GetPermissionsOnly
+Use this switch to run Step 1 only (Get Permissions). This will skip steps 2&3 which does the spider web batching and creates a migration schedule. 
+
 .PARAMETER AccountResourceEnv
 Switch to run the script taking into account an Account/Resource environment
 
@@ -146,7 +151,9 @@ param(
     [string]$ExchServerFQDN,
     [switch]$Resume,
     [switch]$BatchUsers, 
-    [switch]$BatchUsersOnly
+    [switch]$BatchUsersOnly,
+    [switch]$GetPermissionsOnly, 
+    [switch]$AccountResourceEnv
 )
 
 Begin{
@@ -828,7 +835,7 @@ Begin{
         $BatchesFile = "$scriptPath\Find-MailboxDelegates-Batches.csv"
         $MigrationScheduleFile = "$scriptPath\Find-MailboxDelegates-Schedule.csv"
         $ProgressXMLFile = "$scriptPath\Find-MailboxDelegates-Progress.xml"
-        $Version = "05012019"
+        $Version = "12062019"
         $computer = $env:COMPUTERNAME
         $user = $env:USERNAME
 
@@ -847,9 +854,13 @@ Begin{
             throw "Powershell V3+ is required. If you're running from Exchange Shell, it may be defaulting to PS2.0. Run 'powershell -version 3' and re-run the script."
         }
 
-        #Run only the batch users step if the switch BatchUsersOnly switch has been added 
-        If($BatchUsersOnly){
-            Write-LogEntry -LogName:$LogFile -LogEntryText "Running only Step #2: Batch Users" -ForegroundColor Yellow
+        #Run only the batch users step if the switch BatchUsersOnly switch has been added
+        If($BatchUsersOnly -and $GetPermissionsOnly){
+            Throw "Can't have both 'BatchUsersOnly' and 'GetPermissionsOnly' switches. Please use one or the other. "
+            exit   
+        }
+        ElseIf($BatchUsersOnly){
+            Write-LogEntry -LogName:$LogFile -LogEntryText "Running only Step #2: Batch Users..." -ForegroundColor Yellow
             Create-Batches -InputPermissionsFile $PermsOutputFile
             exit     
         }
@@ -1014,14 +1025,28 @@ Begin{
 Process{
     ""
     If(!$BatchUsers){
-        Write-LogEntry -LogName:$LogFile -LogEntryText "STEP 1 of 3: Collect Permissions..." -ForegroundColor Yellow
-        If($Resume){Write-LogEntry -LogName:$LogFile -LogEntryText "Resume collect permissions based on xml file" -ForegroundColor White}
-        Write-LogEntry -LogName:$LogFile -LogEntryText "Mailbox count: $($ListOfMailboxes.Count)" -ForegroundColor White
-        $mailboxCounter = 0
-        Foreach($mailbox in $ListOfMailboxes.PrimarySMTPAddress){
-            $mailboxCounter++
-            Write-Progress -Activity "Step 1 of 3: Gathering Permissions" -status "Items processed: $($mailboxCounter) of $($ListOfMailboxes.Count)" -percentComplete (($mailboxCounter / $ListOfMailboxes.Count)*100)
-            Get-Permissions -UserEmail $mailbox -gatherfullaccess $FullAccess -gatherSendOnBehalfTo $SendOnBehalfTo -gathercalendar $Calendar -gathersendas $SendAs -EnumerateGroups $EnumerateGroups -ExcludedGroups $ExcludeGroups -ExcludedServiceAccts $ExcludeServiceAccts | export-csv -path $PermsOutputFile -notypeinformation -Append
+        If($GetPermissionsOnly){
+            Write-LogEntry -LogName:$LogFile -LogEntryText "Running Step #1 Only: Get Permissions..." -ForegroundColor Yellow
+            If($Resume){Write-LogEntry -LogName:$LogFile -LogEntryText "Resume collect permissions based on xml file" -ForegroundColor White}
+            Write-LogEntry -LogName:$LogFile -LogEntryText "Mailbox count: $($ListOfMailboxes.Count)" -ForegroundColor White
+            $mailboxCounter = 0
+            Foreach($mailbox in $ListOfMailboxes.PrimarySMTPAddress){
+                $mailboxCounter++
+                Write-Progress -Activity "Gathering Permissions" -status "Items processed: $($mailboxCounter) of $($ListOfMailboxes.Count)" -percentComplete (($mailboxCounter / $ListOfMailboxes.Count)*100)
+                Get-Permissions -UserEmail $mailbox -gatherfullaccess $FullAccess -gatherSendOnBehalfTo $SendOnBehalfTo -gathercalendar $Calendar -gathersendas $SendAs -EnumerateGroups $EnumerateGroups -ExcludedGroups $ExcludeGroups -ExcludedServiceAccts $ExcludeServiceAccts | export-csv -path $PermsOutputFile -notypeinformation -Append
+            }
+            exit
+        }
+        Else{
+            Write-LogEntry -LogName:$LogFile -LogEntryText "STEP 1 of 3: Collect Permissions..." -ForegroundColor Yellow
+            If($Resume){Write-LogEntry -LogName:$LogFile -LogEntryText "Resume collect permissions based on xml file" -ForegroundColor White}
+            Write-LogEntry -LogName:$LogFile -LogEntryText "Mailbox count: $($ListOfMailboxes.Count)" -ForegroundColor White
+            $mailboxCounter = 0
+            Foreach($mailbox in $ListOfMailboxes.PrimarySMTPAddress){
+                $mailboxCounter++
+                Write-Progress -Activity "Step 1 of 3: Gathering Permissions" -status "Items processed: $($mailboxCounter) of $($ListOfMailboxes.Count)" -percentComplete (($mailboxCounter / $ListOfMailboxes.Count)*100)
+                Get-Permissions -UserEmail $mailbox -gatherfullaccess $FullAccess -gatherSendOnBehalfTo $SendOnBehalfTo -gathercalendar $Calendar -gathersendas $SendAs -EnumerateGroups $EnumerateGroups -ExcludedGroups $ExcludeGroups -ExcludedServiceAccts $ExcludeServiceAccts | export-csv -path $PermsOutputFile -notypeinformation -Append
+            }
         }
     }
     ""
