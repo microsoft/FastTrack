@@ -18,19 +18,19 @@
 
         Author: Alejandro Lopez - alejanl@microsoft.com
         Version:
-            1.20191101
+            1.20200122
 
         Requirements: 
-            -SharePoint PNP Online: https://docs.microsoft.com/en-us/powershell/sharepoint/sharepoint-pnp/sharepoint-pnp-cmdlets?view=sharepoint-ps
+            -SharePoint PNP Online: https://docs.microsoft.com/powershell/sharepoint/sharepoint-pnp/sharepoint-pnp-cmdlets?view=sharepoint-ps
 
     .PARAMETER Tenant
         Tenant URL     
     .PARAMETER ImportCSVFile
-        This is optional. You can use this if you want to run the report against a subset of users. If empty, it'll run against all users in the tenant. 
+        This is optional. You can use this if you want to run the report against a subset of sites. If empty, it'll run against all sites in the tenant. 
         The CSV file needs to have "URL" as the column header. 
     .PARAMETER EnableCustomScript
     Include this if you want to Enable Custom Scripting (DenyAndAddCustomizePages = $false). Otherwise, the script will skip sites where scripting is disabled. 
-    Please review the following considerations when enabling scripting: https://docs.microsoft.com/en-us/sharepoint/allow-or-prevent-custom-script
+    Please review the following considerations when enabling scripting: https://docs.microsoft.com/sharepoint/allow-or-prevent-custom-script
     
     .EXAMPLE
     .\Disable-TeamifyPrompt.ps1 -Tenant "https://tenant-admin.sharepoint.com" -ImportCSVFile "c:\SitesList.csv"
@@ -122,7 +122,7 @@ Process{
 End{
     Write-LogEntry -LogName:$Log -LogEntryText "Total Elapsed Time: $($elapsed.Elapsed.ToString()). " -foregroundcolor White
     Write-LogEntry -LogName:$Log -LogEntryText "Total Users Processed: $NumOfSites. " -foregroundcolor White
-    Write-LogEntry -LogName:$Log -LogEntryText "Average Time Per User: $($elapsed.Elapsed.Seconds / $NumOfSites)s." -foregroundcolor White
+    Write-LogEntry -LogName:$Log -LogEntryText "Average Time Per Site: $($elapsed.Elapsed.Seconds / $NumOfSites)s." -foregroundcolor White
     Write-LogEntry -LogName:$Log -LogEntryText "Log: $log" -foregroundcolor Green
     ""
 }
