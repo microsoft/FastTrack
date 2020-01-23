@@ -1,4 +1,4 @@
-import { stringIsNullOrEmpty } from "@pnp/common/commonjs";
+import { stringIsNullOrEmpty } from "@pnp/common-commonjs";
 import { existsSync } from "fs";
 import { setProxyUrl } from "./fetch";
 

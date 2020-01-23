@@ -1,7 +1,7 @@
-import { Logger, LogLevel, ConsoleListener, FunctionListener, ILogEntry } from "@pnp/logging/commonjs";
+import { Logger, LogLevel, ConsoleListener, FunctionListener, ILogEntry } from "@pnp/logging-commonjs";
 import { performance } from "perf_hooks";
 import { IConfigSchema } from "./configuration";
-import { isFunc, stringIsNullOrEmpty } from "@pnp/common/commonjs";
+import { isFunc, stringIsNullOrEmpty } from "@pnp/common-commonjs";
 import { createWriteStream } from "fs";
 import { EOL } from "os";
 

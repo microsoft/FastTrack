@@ -2,7 +2,7 @@ import { Credentials } from "google-auth-library";
 import { parseString } from "xml2js";
 import fetch from "../fetch";
 import { log } from "../log";
-import { LogLevel } from "@pnp/logging/commonjs";
+import { LogLevel } from "@pnp/logging-commonjs";
 
 /**
  * Reads a feed created with the createFeedReader factory
