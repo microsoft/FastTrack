@@ -35,9 +35,9 @@ If you need a quick start creating an input csv to start from, download your ful
 Get-CsOnlineUser -ResultsSize Unlimited | Export-Csv "C:\path\to\exportusers.csv"
 ```
 
-### Run the Meeting Migration Service for users upgraded to Teams Only mode by inheriting a switch of the org-wide setting for Teams Upgrade
+### Run the Meeting Migration Service after upgrading to Teams Only org-wide
 
-As discussed in the [Meeting Migration Service (MMS) doc article](https://docs.microsoft.com/en-us/skypeforbusiness/audio-conferencing-in-office-365/setting-up-the-meeting-migration-service-mms), Skype meetings will automatically be upgraded to Teams meetings when upgrading individual users to Teams Only mode or Skype for BUsiness with Teams Collaboration and Meetings mode (also called *Meetings First* mode), but will not upgrade meetings automatically when the org-wide setting for Teams Upgrade is flipped to one of these modes. The following single command will find all users who are in Teams Only mode or Meetings First mode by org-wide setting inheritance, not by individual upgrade mode assignment, and will queue up MMS for them.
+As discussed in the [Meeting Migration Service (MMS) doc article](https://docs.microsoft.com/en-us/skypeforbusiness/audio-conferencing-in-office-365/setting-up-the-meeting-migration-service-mms), Skype for Business meetings will automatically be upgraded to Teams meetings when upgrading individual users to Teams Only mode or Skype for Business with Teams Collaboration and Meetings mode (also called *Meetings First* mode), but will not upgrade meetings automatically when the org-wide setting for Teams Upgrade is flipped to one of these modes. The following single command will find all users who are in Teams Only mode or Meetings First mode by org-wide setting inheritance, not by individual upgrade mode assignment, and will queue up MMS for them.
 
 ```PowerShell
 Get-CsOnlineUser -Filter {TeamsUpgradePolicy -eq $null} | where TeamsUpgradeEffectiveMode -in "TeamsOnly","SfBWithTeamsCollabAndMeetings" | Start-CsExMeetingMigration -SourceMeetingType SfB -TargetMeetingType Teams
@@ -47,7 +47,7 @@ Get-CsOnlineUser -Filter {TeamsUpgradePolicy -eq $null} | where TeamsUpgradeEffe
 
 |Author|Original Publish Date
 |----|--------------------------
-|David Whitney|Jan 30, 2020|
+|David Whitney, Microsoft|January 30, 2020|
 
 ## Issues
 
