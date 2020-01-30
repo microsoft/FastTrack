@@ -29,7 +29,8 @@ foreach ($user in $upgradeusers) {
 }
 ```
 
-If you need a quick start creating an input csv to start from, download your full list of Skype/Teams users and save off the ```upgradeusers.csv``` file from there:
+If you need a quick start creating an input csv to start from, download your full list of Skype/Teams users and save off the desired user rows in the ```upgradeusers.csv``` file from that export:
+
 ```PowerShell
 Get-CsOnlineUser -ResultsSize Unlimited | Export-Csv "C:\path\to\exportusers.csv"
 ```
