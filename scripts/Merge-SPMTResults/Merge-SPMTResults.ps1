@@ -18,6 +18,7 @@
         Author: Alejandro Lopez - alejanl@microsoft.com
 
         Version:
+            02122020: Added addition logic for the failure reports
             12182019: Added logic to get the latest failure reports for scenarios with multiple runs
             12132019: Updated naming convention for the failure reports 
             12062019: Added check for SPMT Reports
@@ -191,7 +192,7 @@ html{font-family:verdana,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-
     #Script Variables: 
     $yyyyMMdd = Get-Date -Format 'yyyyMMdd'
     $LogFile = "$PSScriptRoot\Merge-SPMTResults-$yyyyMMdd.log"
-    $Version = "12182019"
+    $Version = "02122020"
     $jQueryDataTableUri = 'http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.10.5/jquery.dataTables.js';
     $jQueryUri = 'http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js';
     $htmlReportLocation = "$PSScriptRoot\Merge-SPMTResults-$yyyyMMdd.html"
