@@ -94,7 +94,8 @@ Begin{
                 #Check for Summary Report
                 $summaryReportLocation = "$($migrationRun.FullName)\Report\SummaryReport.csv"
                 If(test-path $summaryReportLocation){
-                    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Summary Report: $summaryReportLocation" -ForegroundColor Yellow
+                    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Summary Report:" -ForegroundColor Yellow
+                    Write-LogEntry -LogName:$Script:LogFile -LogEntryText "$summaryReportLocation" -ForegroundColor White
                     $Script:SummaryReports += Import-Csv -Path $summaryReportLocation -ErrorAction SilentlyContinue
                 }
 
@@ -103,11 +104,10 @@ Begin{
                 foreach($taskReport in $taskReports){
                     $failureReportLocation = Get-ChildItem $taskReport.FullName -filter "ItemFailureReport_R*" | Sort-Object LastWriteTime -Descending | Select-Object -first 1  
                     If($failureReportLocation){
-                        Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Failure Report: $failureReportLocation" -ForegroundColor Yellow
-                        try{
-                            $Script:FailureReports += Import-Csv -Path $failureReportLocation.FullName | ?{$_.'Result Category' -eq "SCAN FAILURE"}
-                        }
-                        catch{}
+                        Write-LogEntry -LogName:$Script:LogFile -LogEntryText "Found Failure Report: " -ForegroundColor Yellow
+                        Write-LogEntry -LogName:$Script:LogFile -LogEntryText "$($failureReportLocation.FullName)" -ForegroundColor White
+                        $scannedFailures = Import-Csv -Path $failureReportLocation.FullName | ?{$_.'Result Category' -eq "SCAN FAILURE"}
+                        $scannedFailures | %{$Script:FailureReports.add($_)} | Out-Null
                     }
                 }
             }     
@@ -195,8 +195,8 @@ html{font-family:verdana,sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-
     $jQueryDataTableUri = 'http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.10.5/jquery.dataTables.js';
     $jQueryUri = 'http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js';
     $htmlReportLocation = "$PSScriptRoot\Merge-SPMTResults-$yyyyMMdd.html"
-    $Script:SummaryReports | out-null
-    $Script:FailureReports | Out-Null
+    $Script:SummaryReports = New-Object -TypeName "System.Collections.ArrayList"
+    $Script:FailureReports = New-Object -TypeName "System.Collections.ArrayList"
     $SummaryReportsExport = "$PSScriptRoot\MergedSummaryReport.csv"
     $FailureReportsExport = "$PSScriptRoot\MergedFailureReport.csv"
 
@@ -230,7 +230,7 @@ Process{
         $Script:SummaryReports | Export-Csv -Path $SummaryReportsExport -NoTypeInformation
     }
     If($Script:FailureReports){
-        $Script:FailureReports | Export-Csv -Path $FailureReportsExport -NoTypeInformation
+        $Script:FailureReports | Export-Csv -Path $FailureReportsExport -NoTypeInformation -append
     }
 
     If($GenerateHTMLReport){
