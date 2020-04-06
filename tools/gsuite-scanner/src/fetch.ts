@@ -1,5 +1,5 @@
 import { default as fetch, RequestInit, Response } from "node-fetch";
-import * as proxy from "https-proxy-agent";
+import { HttpsProxyAgent } from "https-proxy-agent";
 import { stringIsNullOrEmpty } from "@pnp/common-commonjs";
 
 let enableProxy = false;
@@ -18,7 +18,7 @@ export function useProxy(v: boolean): void {
 export default function (url: string, options: RequestInit): Promise<Response> {
 
     if (enableProxy && !stringIsNullOrEmpty(proxyUrl)) {
-        options.agent = new proxy(proxyUrl);
+        options.agent = new HttpsProxyAgent(proxyUrl);
     }
 
     return fetch(url, options);
