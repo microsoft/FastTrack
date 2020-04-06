@@ -14,7 +14,7 @@ export async function read<T>(feed: AsyncIterableIterator<T[]>): Promise<T[]> {
     log("Reading feed");
 
     const results: T[] = [];
-    let r: { value: T[], done: boolean } = null;
+    let r: IteratorResult<T[]> = null;
 
     while (!(r = await feed.next()).done) {
         results.push(...r.value);
