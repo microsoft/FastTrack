@@ -8,16 +8,23 @@ These snippets are not provided as PowerShell scripts as they are only a few lin
 
 Note we do assume the appropriate Office 365 remote PowerShell session has already been established. For assistance, please see the following docs pages:
 
-[Skype for Business Online PowerShell](https://docs.microsoft.com/en-us/office365/enterprise/powershell/manage-skype-for-business-online-with-office-365-powershell)
+- [Skype for Business Online PowerShell](https://docs.microsoft.com/en-us/office365/enterprise/powershell/manage-skype-for-business-online-with-office-365-powershell)
+
+We recommend that you use the new ```Enable-CsOnlineSessionForReconnection``` command after establishing a Skype for Business Online PowerShell session to mitigate the typical 60 minute remote PowerShell session timeout as noted in the [Skype for Business Online remote PowerShell troubleshooting page](https://docs.microsoft.com/en-us/skypeforbusiness/set-up-your-computer-for-windows-powershell/diagnose-problems-with-the-skype-for-business-online-connector). For example:
+
+```PowerShell
+Import-Module SkypeOnlineConnector
+$sfbSession = New-CsOnlineSession
+Import-PSSession $sfbSession
+Enable-CsOnlineSessionForReconnection
+```
 
 ## Applies To
 
-- Skype for Business Online
 - Microsoft Teams
+- Skype for Business Online
 
-## The Teams Upgrade Snippets
-
-### Upgrade a list of users to Teams Only mode
+## Upgrade a list of users to Teams Only mode
 
 ***Input CSV needs a column with name UserPrincipalName.***
 
@@ -29,18 +36,34 @@ foreach ($user in $upgradeusers) {
 }
 ```
 
-If you need a quick start creating an input csv to start from, download your full list of Skype/Teams users and save off the desired user rows in the ```upgradeusers.csv``` file from that export:
+If you need a quick start creating an input csv to start from, download your full list of Skype/Teams users and save off the desired user rows to the ```upgradeusers.csv``` file from this export:
 
 ```PowerShell
 Get-CsOnlineUser -ResultsSize Unlimited | Export-Csv "C:\path\to\exportusers.csv"
 ```
 
-### Run the Meeting Migration Service after upgrading to Teams Only org-wide
+## Run the Meeting Migration Service after upgrading to Teams Only org-wide
 
-As discussed in the [Meeting Migration Service (MMS) doc article](https://docs.microsoft.com/en-us/skypeforbusiness/audio-conferencing-in-office-365/setting-up-the-meeting-migration-service-mms), Skype for Business meetings will automatically be upgraded to Teams meetings when upgrading individual users to Teams Only mode or Skype for Business with Teams Collaboration and Meetings mode (also called *Meetings First* mode), but will not upgrade meetings automatically when the org-wide setting for Teams Upgrade is flipped to one of these modes. The following single command will find all users who are in Teams Only mode or Meetings First mode by org-wide setting inheritance, not by individual upgrade mode assignment, and will queue up MMS for them.
+As discussed in the [Meeting Migration Service (MMS) doc article](https://docs.microsoft.com/en-us/skypeforbusiness/audio-conferencing-in-office-365/setting-up-the-meeting-migration-service-mms), Skype for Business meetings will automatically be upgraded to Teams meetings when upgrading individual users to Teams Only mode or Skype for Business with Teams Collaboration and Meetings mode (also called *Meetings First* mode), but will not upgrade meetings automatically when the org-wide setting for Teams Upgrade is flipped to one of these modes. The following snippet will find all users who are in Teams Only mode or Meetings First mode by org-wide setting inheritance, not by individual upgrade mode assignment, and will queue up MMS for them.
 
 ```PowerShell
-Get-CsOnlineUser -Filter {TeamsUpgradePolicy -eq $null} | where TeamsUpgradeEffectiveMode -in "TeamsOnly","SfBWithTeamsCollabAndMeetings" | Start-CsExMeetingMigration -SourceMeetingType SfB -TargetMeetingType Teams
+$orgwideupgradeusers = Get-CsOnlineUser -Filter {TeamsUpgradePolicy -eq $null} | where TeamsUpgradeEffectiveMode -in "TeamsOnly","SfBWithTeamsCollabAndMeetings"
+
+foreach ($user in $orgwideupgradeusers) {
+    Start-CsExMeetingMigration -Identity $user.UserPrincipalName -SourceMeetingType SfB -TargetMeetingType Teams -Confirm:$false
+}
+```
+
+### Report on Meeting Migration Service status
+
+```PowerShell
+Get-CsMeetingMigrationStatus -SummaryOnly
+```
+
+Export MMS queued attempts that have ended in a Failed status to a CSV file for further investigation:
+
+```PowerShell
+Get-CsMeetingMigrationStatus -State Failed | Export-Csv "C:\path\to\MMSFailedreport.csv"
 ```
 
 ## Author
