@@ -13,12 +13,6 @@ We have a collection of [scripts](scripts) to help with migration related tasks.
 |[IdFix](https://github.com/Microsoft/idfix)|Fix on-premesis AD issues before migration|
 |[gscan](https://github.com/microsoft/FastTrack/tree/master/tools/gsuite-scanner)|Provides an inventory of v1 Google Sites|
 
-## Samples
-
-|Sample|Description
-|----|--------------------------
-|[teams-spfx-create-team](./samples/teams-spfx-create-team)|Demonstrates how to create a Microsoft Team from a SharePoint Framework Field customizer. Makes use of PnPjs libraries, Office UI Fabric & React Fabric Controls, and React.|
-
 ## Ideas Welcome!
 
 If you have ideas for projects that would improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues) and let us know. We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
