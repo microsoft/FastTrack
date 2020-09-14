@@ -54,7 +54,7 @@ New-CsBatchPolicyAssignmentOperation -PolicyType TeamsUpgradePolicy -PolicyName 
 Report on previous batch policy assignments with ```Get-CsBatchPolicyAssignmentOperation```. With the specific OperationId returned from the above New batch policy assignment or from the list from that Get command, pull complete details of a single batch policy assignment:
 
 ```PowerShell
-Get-CsBatchPolicyAssignmentOperation -Identity xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx | Format-List OperationId, Created*, *Count, Overall*
+Get-CsBatchPolicyAssignmentOperation -Identity xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx | Format-List *
 ```
 
 ## Run the Meeting Migration Service after upgrading to Teams Only org-wide
