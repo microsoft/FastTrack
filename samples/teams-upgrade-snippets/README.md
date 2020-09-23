@@ -9,20 +9,26 @@ These snippets are not provided as PowerShell scripts as they are only a few lin
 Note we do assume the appropriate Office 365 remote PowerShell session has already been established. For assistance, please see the following docs pages:
 
 - [Skype for Business Online PowerShell](https://docs.microsoft.com/en-us/office365/enterprise/powershell/manage-skype-for-business-online-with-office-365-powershell)
+- [Microsoft Teams PowerShell](https://docs.microsoft.com/en-us/MicrosoftTeams/teams-powershell-install)
 
-We recommend that you use the new ```Enable-CsOnlineSessionForReconnection``` command after establishing a Skype for Business Online PowerShell session to mitigate the typical 60 minute remote PowerShell session timeout as noted in the [Skype for Business Online remote PowerShell troubleshooting page](https://docs.microsoft.com/en-us/skypeforbusiness/set-up-your-computer-for-windows-powershell/diagnose-problems-with-the-skype-for-business-online-connector). For example:
+Note that you can use the new ```Enable-CsOnlineSessionForReconnection``` command after establishing a Skype for Business Online PowerShell session with basic authentication (no MFA) to mitigate the typical 60 minute remote PowerShell session timeout as noted in the [Skype for Business Online remote PowerShell troubleshooting page](https://docs.microsoft.com/en-us/skypeforbusiness/set-up-your-computer-for-windows-powershell/diagnose-problems-with-the-skype-for-business-online-connector). For example:
 
 ```PowerShell
 Import-Module SkypeOnlineConnector
-$sfbSession = New-CsOnlineSession
+$userCredential = Get-Credential
+$sfbSession = New-CsOnlineSession -Credential $userCredential
 Import-PSSession $sfbSession
 Enable-CsOnlineSessionForReconnection
 ```
 
-## Applies To
+**Important:** If connecting with modern authentication (by not specifying the -Credential parameter), the session will time out after 60 minutes and not be able to be automatically re-established with ```Enable-CsOnlineSessionForReconnection```
 
-- Microsoft Teams
-- Skype for Business Online
+To establish a Microsoft Teams PowerShell session, use the following command after installing the MicrosoftTeams module:
+
+```PowerShell
+Import-Module MicrosoftTeams
+Connect-MicrosoftTeams
+```
 
 ## Upgrade a list of users to Teams Only mode
 
@@ -39,7 +45,25 @@ foreach ($user in $upgradeusers) {
 If you need a quick start creating an input csv to start from, download your full list of Skype/Teams users and save off the desired user rows to the ```upgradeusers.csv``` file from this export:
 
 ```PowerShell
-Get-CsOnlineUser -ResultsSize Unlimited | Export-Csv "C:\path\to\exportusers.csv"
+Get-CsOnlineUser -ResultSize Unlimited | Export-Csv "C:\path\to\exportusers.csv"
+```
+
+### Server-side batch upgrade for long list of users
+
+Alternatively, for a long list of users, you can use the new batch policy assignments process. In particular this can help avoid the 60-minute timeout. This batch policy assignment is only available in the Microsoft Teams module, not the Skype for Business Online one.
+
+**Important** It's recommended to break up the batches into groups of about 5000 and not run more than a handful of batches at a time.
+
+```PowerShell
+$upgradeusers = Import-Csv "C:\path\to\upgradeusers.csv"
+
+New-CsBatchPolicyAssignmentOperation -PolicyType TeamsUpgradePolicy -PolicyName "UpgradetoTeams" -Identity $upgradeusers.UserPrincipalName -OperationName "Teams Upgrade Batch 1"
+```
+
+Report on previous batch policy assignments with ```Get-CsBatchPolicyAssignmentOperation```. With the specific OperationId returned from the above New batch policy assignment or from the list from that Get command, pull complete details of a single batch policy assignment:
+
+```PowerShell
+Get-CsBatchPolicyAssignmentOperation -Identity xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx | Format-List *
 ```
 
 ## Run the Meeting Migration Service after upgrading to Teams Only org-wide
@@ -47,7 +71,7 @@ Get-CsOnlineUser -ResultsSize Unlimited | Export-Csv "C:\path\to\exportusers.csv
 As discussed in the [Meeting Migration Service (MMS) doc article](https://docs.microsoft.com/en-us/skypeforbusiness/audio-conferencing-in-office-365/setting-up-the-meeting-migration-service-mms), Skype for Business meetings will automatically be upgraded to Teams meetings when upgrading individual users to Teams Only mode or Skype for Business with Teams Collaboration and Meetings mode (also called *Meetings First* mode), but will not upgrade meetings automatically when the org-wide setting for Teams Upgrade is flipped to one of these modes. The following snippet will find all users who are in Teams Only mode or Meetings First mode by org-wide setting inheritance, not by individual upgrade mode assignment, and will queue up MMS for them.
 
 ```PowerShell
-$orgwideupgradeusers = Get-CsOnlineUser -Filter {TeamsUpgradePolicy -eq $null} | where TeamsUpgradeEffectiveMode -in "TeamsOnly","SfBWithTeamsCollabAndMeetings"
+$orgwideupgradeusers = Get-CsOnlineUser -Filter {(Enabled -eq $true) -and (TeamsUpgradePolicy -eq $null)} | where TeamsUpgradeEffectiveMode -in "TeamsOnly","SfBWithTeamsCollabAndMeetings"
 
 foreach ($user in $orgwideupgradeusers) {
     Start-CsExMeetingMigration -Identity $user.UserPrincipalName -SourceMeetingType SfB -TargetMeetingType Teams -Confirm:$false
@@ -60,7 +84,7 @@ foreach ($user in $orgwideupgradeusers) {
 Get-CsMeetingMigrationStatus -SummaryOnly
 ```
 
-Export MMS queued attempts that have ended in a Failed status to a CSV file for further investigation:
+Export MMS attempts that have ended in a Failed status to a CSV file for further investigation:
 
 ```PowerShell
 Get-CsMeetingMigrationStatus -State Failed | Export-Csv "C:\path\to\MMSFailedreport.csv"
@@ -68,13 +92,13 @@ Get-CsMeetingMigrationStatus -State Failed | Export-Csv "C:\path\to\MMSFailedrep
 
 ## Author
 
-|Author|Original Publish Date
+|Author|Last Updated Date
 |----|--------------------------
-|David Whitney, Microsoft|January 30, 2020|
+|David Whitney, Microsoft|September 23, 2020|
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](https://github.com/microsoft/FastTrack/issues).
 
 ## Support Statement
 
