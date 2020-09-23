@@ -23,6 +23,13 @@ Enable-CsOnlineSessionForReconnection
 
 **Important:** If connecting with modern authentication (by not specifying the -Credential parameter), the session will time out after 60 minutes and not be able to be automatically re-established with ```Enable-CsOnlineSessionForReconnection```
 
+To establish a Microsoft Teams PowerShell session, use the following command after installing the MicrosoftTeams module:
+
+```PowerShell
+Import-Module MicrosoftTeams
+Connect-MicrosoftTeams
+```
+
 ## Upgrade a list of users to Teams Only mode
 
 ***Input CSV needs a column with name UserPrincipalName.***
@@ -44,6 +51,8 @@ Get-CsOnlineUser -ResultSize Unlimited | Export-Csv "C:\path\to\exportusers.csv"
 ### Server-side batch upgrade for long list of users
 
 Alternatively, for a long list of users, you can use the new batch policy assignments process. In particular this can help avoid the 60-minute timeout. This batch policy assignment is only available in the Microsoft Teams module, not the Skype for Business Online one.
+
+**Important** It's recommended to break up the batches into groups of about 5000 and not run more than a handful of batches at a time.
 
 ```PowerShell
 $upgradeusers = Import-Csv "C:\path\to\upgradeusers.csv"
@@ -85,7 +94,7 @@ Get-CsMeetingMigrationStatus -State Failed | Export-Csv "C:\path\to\MMSFailedrep
 
 |Author|Last Updated Date
 |----|--------------------------
-|David Whitney, Microsoft|September 14, 2020|
+|David Whitney, Microsoft|September 23, 2020|
 
 ## Issues
 

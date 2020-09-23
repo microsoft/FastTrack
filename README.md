@@ -18,6 +18,7 @@ We have a collection of [scripts](scripts) to help with migration related tasks.
 |Sample|Description
 |----|--------------------------
 |[teams-spfx-create-team](./samples/teams-spfx-create-team)|Demonstrates how to create a Microsoft Team from a SharePoint Framework Field customizer. Makes use of PnPjs libraries, Office UI Fabric & React Fabric Controls, and React.|
+|[Teams upgrade snippets](./samples/teams-upgrade-snippets)|Example PowerShell snippets for common automated tasks when performing an upgrade to Teams Only mode from Skype for Business|
 
 ## Ideas Welcome!
 
