@@ -7,6 +7,7 @@ Script to list Yammer verified Admins that have promoted themselves to Private C
 Yammer developer token created at the following site : https://www.yammer.com/client_applications
 
 .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### >
+
 .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > | Export-CSv -Path "C:\scripts\YammerPrivateContentModeAdmins.csv" -NoTypeInformation
 
 ## Applies To
