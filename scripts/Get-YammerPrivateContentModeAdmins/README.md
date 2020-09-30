@@ -4,11 +4,19 @@
 
 Script to list Yammer verified Admins that have promoted themselves to Private Content Mode.
 
-Yammer developer token created at the following site : https://www.yammer.com/client_applications
+A Yammer developer token is required and can be created at the following site : https://www.yammer.com/client_applications
+ 
+    .EXAMPLE
+        To list all users whether or not they are verified admins:
+        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > -VerifiedAdminsOnly $False
 
-.\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### >
-
-.\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > | Export-CSv -Path "C:\scripts\YammerPrivateContentModeAdmins.csv" -NoTypeInformation
+    .EXAMPLE
+        To list only verified admins and whether they have Private Content Mode enabled:
+        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > -VerifiedAdminsOnly $True
+    
+    .EXAMPLE
+        To export the list as a CSV file:
+        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > -VerifiedAdminsOnly [$True | $False]| Export-CSv -Path "C:\scripts\YammerPrivateContentModeAdmins.csv" -NoTypeInformation
 
 ## Applies To
 -Yammer

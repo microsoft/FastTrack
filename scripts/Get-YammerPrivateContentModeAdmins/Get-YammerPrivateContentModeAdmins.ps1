@@ -22,40 +22,79 @@
     
     .PARAMETER DeveloperToken
         The developer token generated above
+    .PARAMETER VerifiedAdminsOnly
+        Boolean ($True or $False) will list only verified admins in Yammer otherwise will list all users 
 	    
     .EXAMPLE
-        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### >
+        To list all users whether or not they are verified admins:
+        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > -VerifiedAdminsOnly $False
+
+    .EXAMPLE
+        To list only verified admins and whether they have Private Content Mode enabled:
+        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > -VerifiedAdminsOnly $True
     
     .EXAMPLE
-        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > | Export-CSv -Path "C:\scripts\YammerPrivateContentModeAdmins.csv" -NoTypeInformation
+        To export the list as a CSV file:
+        .\Get-YammerPrivateContentModeAdmins.ps1 -DeveloperToken < ###########-##################### > -VerifiedAdminsOnly [$True | $False]| Export-CSv -Path "C:\scripts\YammerPrivateContentModeAdmins.csv" -NoTypeInformation
 #>
 
 [Cmdletbinding()]
     Param (
-        [Parameter(mandatory=$true)][String]$DeveloperToken
+        [Parameter(mandatory=$true)][String]$DeveloperToken,
+        [Parameter(mandatory=$true)][Bool]$VerifiedAdminsOnly
     )
 
     begin{
-        $Url = "https://www.yammer.com/api/v1/users.json"
-        $Header = @{ Authorization=("Bearer " + $DeveloperToken) }
-        $TableOutput = @()
         
-        try{
-            $WebRequest = Invoke-WebRequest –Uri $Url –Method Get -Headers $Header
-            $ConvertJSON = $WebRequest.Content | ConvertFrom-Json
+        function Get-UserList{
+            $Url = "https://www.yammer.com/api/v1/users.json"
+            $Header = @{ Authorization=("Bearer " + $DeveloperToken) }
+            $TableOutput = @()
 
-            $ConvertJSON | ForEach-Object {  
-                $UserList = $_
-                $Output = New-Object psobject -Property ([ordered]@{
-                    'Username' = ($UserList.email)
-                    'Private Content Mode Enabled' = ($UserList.supervisor_admin)
-                })
-                    $TableOutput += $Output 
+            try{
+                $WebRequest = Invoke-WebRequest –Uri $Url –Method Get -Headers $Header
+                $ConvertJSON = $WebRequest.Content | ConvertFrom-Json
+
+                if($VerifiedAdminsOnly){
+                    $ConvertJSON | ForEach-Object {
+                        $UserList = $_
+                        $Output = New-Object psobject -Property ([ordered]@{
+                            'Username' = ($UserList.email)
+                            'Verified Admin' = ($UserList.verified_admin)
+                            'Private Content Mode Enabled' = ($UserList.supervisor_admin)
+                            })
+
+                        if($UserList.verified_admin -eq "TRUE" -or $UserList.verified_admin -eq "true"){
+                            $TableOutput += $Output
+                        }
+                    }
+                }
+
+                else{
+                    $ConvertJSON | ForEach-Object {
+                        $UserList = $_
+                        $Output = New-Object psobject -Property ([ordered]@{
+                            'Username' = ($UserList.email)
+                            'Verified Admin' = ($UserList.verified_admin)
+                            'Private Content Mode Enabled' = ($UserList.supervisor_admin)
+                        })
+                    $TableOutput += $Output
+                    }
+                }
+                return $TableOutput
             }
-            return $TableOutput
-        }
-
-    catch{
-        return $_.Exception.Message
+            catch{
+                return $_.Exception.Message
+            }
         }
     }
+
+    process{
+        try{
+           Get-UserList
+        }
+        catch{
+            return $_.Exception.Message
+        }
+    }
+ 
