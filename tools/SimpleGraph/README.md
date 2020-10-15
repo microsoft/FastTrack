@@ -4,12 +4,10 @@ This PowerShell module provides a generic but simplified way to access Microsoft
 
 ## Usage
 
-The SimpleGraph module allows for simple cmdlet-based calls to Graph, while providing flexibity to have complex calls as needed. Basic examples of the commands available:
+The SimpleGraph module allows for simple calls to Graph, while providing flexibity to have complex calls as needed. Basic examples of the commands available:
 
 ```PowerShell
 Get-SimpleGraphObject users/you@domain.com
-
-Set-SimpleGraphObject groups/b17d8f89-581b-4a6c-bf0d-164afb05f1ce -Body @{"description" = "Updated by SimpleGraph"}
 
 $newteam = @{
     "template@odata.bind" = "https://graph.microsoft.com/v1.0/teamsTemplates('standard')";
@@ -18,17 +16,19 @@ $newteam = @{
 }
 New-SimpleGraphObject teams -Body $newteam
 
-Remove-SimpleGraphObject teams/2db2903f-c70d-4107-a6ae-5b6e073accb7
+Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"description" = "New Team Description"}
+
+Remove-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad
 
 Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domain.com" -Method GET -Raw
 ```
 
 **Before running any of these commands, see the below steps to get connected to Graph and import the SimpleGraph module.**
 
-**Note:** More help on the SimpleGraph commands can be seen inline after importing the module, for example
+**Note:** More help on available parameters and examples on the SimpleGraph commands can be seen inline after importing the module, for example:
 
 ```PowerShell
-help Get-SimpleGraphModule
+help Get-SimpleGraphObject -Full
 ```
 
 ### Authenticate to Graph API
@@ -60,10 +60,6 @@ Some Graph API calls or scenarios require **Application** permissions, in which 
 ```PowerShell
 Connect-PnPOnline -AppId '2994aca5-7ef4-4179-89ff-c1ce18fa052f' -AppSecret 'NvgASDFS4564fas' -AADDomain 'techmikael.onmicrosoft.com'
 ```
-
-### Call Graph API with SimpleGraph
-
-Once authenticated to Graph with PnP PowerShell, the SimpleGraph module can be imported and used to call Graph API.
 
 #### Import SimpleGraph module
 
