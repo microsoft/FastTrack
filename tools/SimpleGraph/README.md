@@ -2,6 +2,8 @@
 
 This PowerShell module provides a generic but simplified way to access Microsoft Graph API resources with PowerShell. It relies on the Graph authentication provided with the PnP PowerShell module from the Office Dev/SharePoint PnP team.
 
+Please note this module is written as a simple web call-based (and therefore always up to date) alternative to the official [Microsoft Graph PowerShell SDK](https://github.com/microsoftgraph/msgraph-sdk-powershell), which fully wraps Graph calls in resource-appropriate cmdlets.
+
 ## Usage
 
 The SimpleGraph module allows for simple calls to Graph, while providing flexibity to have complex calls as needed. Basic examples of the commands available:
