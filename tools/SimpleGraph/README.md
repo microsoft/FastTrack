@@ -10,18 +10,26 @@ The SimpleGraph module allows for simple calls to Graph, while providing flexibi
 
 ```PowerShell
 Get-SimpleGraphObject users/you@domain.com
+```
 
+```PowerShell
 $newteam = @{
     "template@odata.bind" = "https://graph.microsoft.com/v1.0/teamsTemplates('standard')";
     "displayName" = "My Sample Team";
     "description" = "My Sample Team's Description"
 }
 New-SimpleGraphObject teams -Body $newteam
+```
 
+```PowerShell
 Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"description" = "New Team Description"}
+```
 
+```PowerShell
 Remove-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad
+```
 
+```PowerShell
 Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domain.com" -Method GET -Raw
 ```
 
