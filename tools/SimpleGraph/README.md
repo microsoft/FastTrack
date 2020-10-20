@@ -6,11 +6,17 @@ Please note this module is written as a simple web call-based (and therefore alw
 
 ## Usage
 
-The SimpleGraph module allows for simple calls to Graph, while providing flexibity to have complex calls as needed. Basic examples of the commands available:
+The SimpleGraph module allows for simple calls to Graph, while providing flexibity to have complex calls as needed. Here are some basic examples of each of the commands available.
+
+**Before running any of these commands, see the steps in the next section to authenticate and connect to Graph and then import the SimpleGraph module.**
+
+Get an object/read an API endpoint in Graph with a GET web call. In this case, reading a specific user:
 
 ```PowerShell
 Get-SimpleGraphObject users/you@domain.com
 ```
+
+Create an object in Graph with a POST web call. In this case, creating a simple team:
 
 ```PowerShell
 $newteam = @{
@@ -21,19 +27,23 @@ $newteam = @{
 New-SimpleGraphObject teams -Body $newteam
 ```
 
+Update an object in Graph with a PATCH web call. In this case, updating the description for a team: 
+
 ```PowerShell
 Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"description" = "New Team Description"}
 ```
+
+Remove an object in Graph with a DELETE web call. In this case, deleting a group/team:
 
 ```PowerShell
 Remove-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad
 ```
 
+Construct a custom call to Graph, including method choice and an option for not massaging return. In this case, getting a specific user, but asking for raw object return:
+
 ```PowerShell
 Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domain.com" -Method GET -Raw
 ```
-
-**Before running any of these commands, see the below steps to get connected to Graph and import the SimpleGraph module.**
 
 **Note:** More help on available parameters and examples on the SimpleGraph commands can be seen inline after importing the module, for example:
 
