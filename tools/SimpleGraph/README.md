@@ -2,7 +2,7 @@
 
 This PowerShell module provides a generic but simplified way to access Microsoft Graph API resources with PowerShell. It relies on the Graph authentication provided with the PnP PowerShell module from the Office Dev/SharePoint PnP team.
 
-For complete details on how to make requests against Graph API with HTTPS, which what this module uses, visit the [Microsoft Graph API REST API reference](https://docs.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0).
+Visit the [Microsoft Graph API REST API reference](https://docs.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0) for complete details on how to make requests against Graph API with HTTPS, which what this module uses.
 
 Please note this module is written as a simple web call-based (and therefore always up to date) alternative to the official [Microsoft Graph PowerShell SDK](https://github.com/microsoftgraph/msgraph-sdk-powershell), which fully wraps Graph calls in resource-appropriate cmdlets.
 
