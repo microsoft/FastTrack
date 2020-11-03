@@ -2,30 +2,60 @@
 
 This PowerShell module provides a generic but simplified way to access Microsoft Graph API resources with PowerShell. It relies on the Graph authentication provided with the PnP PowerShell module from the Office Dev/SharePoint PnP team.
 
+Visit the [Microsoft Graph API REST API reference](https://docs.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0) for complete details on how to make requests against Graph API with HTTPS, which what this module uses.
+
 Please note this module is written as a simple web call-based (and therefore always up to date) alternative to the official [Microsoft Graph PowerShell SDK](https://github.com/microsoftgraph/msgraph-sdk-powershell), which fully wraps Graph calls in resource-appropriate cmdlets.
 
 ## Usage
 
-The SimpleGraph module allows for simple calls to Graph, while providing flexibity to have complex calls as needed. Basic examples of the commands available:
+The SimpleGraph module allows for simple calls to Graph, while providing flexibity to have complex calls as needed. Here are some basic examples of each of the commands available.
+
+**NOTE: Before running any of these commands, see the steps in the next section to authenticate and connect to Graph and then import the SimpleGraph module.**
+
+#### Get an object/read an API endpoint in Graph with a GET web call
+
+In this example, we're reading a specific user, you@domain.com
 
 ```PowerShell
 Get-SimpleGraphObject users/you@domain.com
+```
 
+#### Create an object in Graph with a POST web call
+
+In this example, creating a simple team called "My Sample Team", using the standard blank team template. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable like here:
+
+```PowerShell
 $newteam = @{
     "template@odata.bind" = "https://graph.microsoft.com/v1.0/teamsTemplates('standard')";
     "displayName" = "My Sample Team";
     "description" = "My Sample Team's Description"
 }
 New-SimpleGraphObject teams -Body $newteam
-
-Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"description" = "New Team Description"}
-
-Remove-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad
-
-Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domain.com" -Method GET -Raw
 ```
 
-**Before running any of these commands, see the below steps to get connected to Graph and import the SimpleGraph module.**
+#### Update an object in Graph with a PATCH web call
+
+In this example, updating the description for a team with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable like here:
+
+```PowerShell
+Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"description" = "New Team Description"}
+```
+
+#### Remove an object in Graph with a DELETE web call
+
+In this example, deleting a group (which may be teams-enabled) with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad:
+
+```PowerShell
+Remove-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad
+```
+
+#### Construct a custom call to Graph
+
+This can include method choice and an option for not massaging return. In this case, getting a specific user, but asking for raw object return:
+
+```PowerShell
+Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domain.com" -Method GET -Raw
+```
 
 **Note:** More help on available parameters and examples on the SimpleGraph commands can be seen inline after importing the module, for example:
 
@@ -33,7 +63,7 @@ Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domai
 help Get-SimpleGraphObject -Full
 ```
 
-### Authenticate to Graph API
+### Authenticate and connect to Graph API
 
 SimpleGraph relies on the SharePoint Online PnP module to authenticate to Graph, so installing and connecting with that module is a required.
 
@@ -77,13 +107,13 @@ Import-Module "C:\Users\you\Scripts\SimpleGraph.psm1"
 ## Author
 
 
-|Author|Original Publish Date
-|----|--------------------------
-| David Whitney | October 15, 2020 |
+|Author|Original Publish Date|Last Updated Date
+|----|--------------------------|--------------
+| David Whitney | October 15, 2020 | October 20, 2020
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](https://github.com/microsoft/FastTrack/issues).
 
 ## Support Statement
 
