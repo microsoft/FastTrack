@@ -8,15 +8,19 @@ Please note this module is written as a simple web call-based (and therefore alw
 
 The SimpleGraph module allows for simple calls to Graph, while providing flexibity to have complex calls as needed. Here are some basic examples of each of the commands available.
 
-**Before running any of these commands, see the steps in the next section to authenticate and connect to Graph and then import the SimpleGraph module.**
+**NOTE: Before running any of these commands, see the steps in the next section to authenticate and connect to Graph and then import the SimpleGraph module.**
 
-Get an object/read an API endpoint in Graph with a GET web call. In this case, reading a specific user:
+#### Get an object/read an API endpoint in Graph with a GET web call
+
+In this example, we're reading a specific user, you@domain.com
 
 ```PowerShell
 Get-SimpleGraphObject users/you@domain.com
 ```
 
-Create an object in Graph with a POST web call. In this case, creating a simple team:
+#### Create an object in Graph with a POST web call
+
+In this example, creating a simple team called "My Sample Team", using the standard blank team template. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable like here:
 
 ```PowerShell
 $newteam = @{
@@ -27,19 +31,25 @@ $newteam = @{
 New-SimpleGraphObject teams -Body $newteam
 ```
 
-Update an object in Graph with a PATCH web call. In this case, updating the description for a team: 
+#### Update an object in Graph with a PATCH web call
+
+In this example, updating the description for a team with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable like here:
 
 ```PowerShell
 Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"description" = "New Team Description"}
 ```
 
-Remove an object in Graph with a DELETE web call. In this case, deleting a group/team:
+#### Remove an object in Graph with a DELETE web call
+
+In this example, deleting a group (which may be teams-enabled) with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad:
 
 ```PowerShell
 Remove-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad
 ```
 
-Construct a custom call to Graph, including method choice and an option for not massaging return. In this case, getting a specific user, but asking for raw object return:
+#### Construct a custom call to Graph
+
+This can include method choice and an option for not massaging return. In this case, getting a specific user, but asking for raw object return:
 
 ```PowerShell
 Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domain.com" -Method GET -Raw
