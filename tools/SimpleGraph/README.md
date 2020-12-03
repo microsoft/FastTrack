@@ -63,7 +63,7 @@ Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domai
 help Get-SimpleGraphObject -Full
 ```
 
-### Authenticate and connect to Graph API
+## Authenticate and connect to Graph API
 
 SimpleGraph relies on the SharePoint Online PnP module to authenticate to Graph, so installing and connecting with that module is a required.
 
