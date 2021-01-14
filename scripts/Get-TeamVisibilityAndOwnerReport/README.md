@@ -1,5 +1,4 @@
-# Microsoft FastTrack Open Source - Yammer script to get Private Content Mode Admins
-
+# Microsoft FastTrack Open Source - Teams PowerShell - Get a list of Teams,Owners according to visibility status
 ## Usage
 
 Script to list all existing Teams. Filters on visibility status (Public or Private). And lists the owners, which are listed in way that's easy to paste into an email for mass mailing if necessary.
