@@ -1,9 +1,7 @@
-
 <#
     .DESCRIPTION
         Script to list all existing Teams, filters on visibility status (Public or Private) and
-        associated owners. The owners are listed in way that's easy to paste into an email for
-        mass mailing if necessary. 
+        associated owners. The owners are listed in way that's easy to paste into an email for mass mailing if necessary.
          
         The sample scripts are not supported under any Microsoft standard support 
         program or service. The sample scripts are provided AS IS without warranty  
@@ -41,7 +39,7 @@
         .\Get-TeamVisibilityAndOwnerReport.ps1 -M365Admin admin@contoso.onmicrosoft.com -GroupVisility Public -ExportPath "C:\Scripts"
 #>
 
-[CmdletBinding(DefaultParameterSetName='All')]
+[CmdletBinding()]
     param (
         [Parameter(Mandatory=$true,
         HelpMessage='Enter an admin account UPN - Example "user@domain.com"')]
