@@ -1,4 +1,8 @@
 # Microsoft FastTrack Open Source - AAD PowerShell - Get a list of admin roles and their members
+
+## Dependencies
+- Azure Active Directory PowerShell for Graph
+
 ## Usage
 This script is designed to display all of the members of the Azure AD Administrator Roles. You can filter by three different parameters. Either "-All" displaying all members from all Administrator Roles, "-UserPrincipalName" to find out which Roles a specific user is member of, or, "-RoleName" to display the members of a specific role group.
 
