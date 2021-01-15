@@ -1,5 +1,0 @@
-#TYPE System.Management.Automation.PSCustomObject
-"ObjectID","Member","RoleName"
-"8fbf8d2f-01c5-4601-aa5e-06731c49608f","Megan.Bowen@abt-laboratories.net","Power BI Service Administrator"
-"e5e846b7-369b-4cd7-b92d-862ff5b5f633","Megan.Bowen@abt-laboratories.net","Printer Administrator"
-"f2cf93ac-1e19-49cc-afbc-e7f0921ad3c3","Megan.Bowen@abt-laboratories.net","Reports Reader"

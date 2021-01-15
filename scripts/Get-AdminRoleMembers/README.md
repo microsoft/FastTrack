@@ -7,15 +7,15 @@ Please install the Azure AD PowerShell Module, follow the instructions at the fo
  
     .EXAMPLE
         Get a list of all the members of all the Administrator Roles in Azure AD
-        .\Get-AdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -All
+        .\Get-AADAdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -All
 
     .EXAMPLE
         Get a list of all the roles a user is member of
-        .\Get-AdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -UserPrincipalName user@contoso.onmicrosoft.com
+        .\Get-AADAdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -UserPrincipalName user@contoso.onmicrosoft.com
 
     .EXAMPLE
         Display the members for a particular Adminitrator Role
-        .\Get-AdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -RoleName "Power BI Service Administrators"
+        .\Get-AADAdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -RoleName "Power BI Service Administrators"
 
 ## Applies To
 -Azure Active Directory
