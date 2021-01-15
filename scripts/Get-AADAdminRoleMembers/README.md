@@ -22,7 +22,7 @@ Please install the Azure AD PowerShell Module, follow the instructions at the fo
         .\Get-AADAdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -RoleName "Power BI Service Administrators"
 
 ## Applies To
--Azure Active Directory
+- Azure Active Directory
 
 ## Author
 
