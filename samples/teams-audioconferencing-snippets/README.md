@@ -6,7 +6,7 @@ Here are a few common Teams Audio Conferencing configuration PowerShell snippets
 
 These snippets are not provided as PowerShell scripts as they are only a few lines each, and would often be run interactively or as a one-off.
 
-Note we do assume the appropriate Office 365 remote PowerShell session has already been established. For assistance, please see the following docs pages:
+Note we do assume the MicrosoftTeams PowerShell module has been installed and signed in. For assistance, please see the following docs pages:
 
 - [Microsoft Teams PowerShell](https://docs.microsoft.com/en-us/MicrosoftTeams/teams-powershell-install)
 
@@ -26,7 +26,6 @@ If you need a quick start creating an input csv for the below examples, download
 Get-CsOnlineUser -ResultSize Unlimited | Export-Csv "C:\path\to\allusers.csv"
 ```
 
-
 ## Limit call me/dial-out from an Audio Conferencing-enabled Teams meeting
 
 By default, all users can dial out to any destination with the call me at (sometimes referred to as "join with phone") and add PSTN participant feature. This is subject to the included dial out minute pool for [Zone A](https://docs.microsoft.com/en-us/microsoftteams/audio-conferencing-zones) target numbers and [Communication Credits](https://docs.microsoft.com/en-us/microsoftteams/what-are-communications-credits) for non-Zone A target numbers and minute pool overage dial outs. For full details on this, read the ["Dial-Out"/"Call Me At" minutes benefit docs page](https://docs.microsoft.com/en-us/microsoftteams/audio-conferencing-subscription-dial-out).
@@ -43,6 +42,12 @@ $nodialoutusers = Import-Csv "C:\path\to\nodialoutusers.csv"
 foreach ($user in $nodialoutusers) {
     Grant-CsDialOutPolicy -Identity $user.UserPrincipalName -PolicyName "DialoutCPCDisabledPSTNInternational"
 }
+```
+
+If you want to disable this for all users who are not already set so, a CSV input is not required and instead we can simply run against all enabled users:
+
+```PowerShell
+Get-CsOnlineUser -Filter {Enabled -eq $true -and OnlineDialOutPolicy -ne "DialoutCPCDisabledPSTNInternational"} | Grant-CsDialOutPolicy -PolicyName "DialoutCPCDisabledPSTNInternational"
 ```
 
 ### Limit dial out to only Zone A countries from Audio Conferencing-enabled meetings:
@@ -66,8 +71,7 @@ You may want to [disable the use of toll-free dial-in numbers for some users](ht
 ***Input CSV needs a column with name UserPrincipalName.***
 
 ```PowerShell
-$notollfreeusers = Import-Csv "C:\path\to\$notollfreeusers = Import-Csv "C:\path\to\notollfreeusers.csv"
-.csv"
+$notollfreeusers = Import-Csv "C:\path\to\notollfreeusers.csv"
 
 foreach ($user in $notollfreeusers) {
     Set-CsOnlineDialInConferencingUser -Identity $user.UserPrincipalName -AllowTollFreeDialIn $false
@@ -78,7 +82,7 @@ foreach ($user in $notollfreeusers) {
 
 |Author|Last Updated Date
 |----|--------------------------
-|David Whitney, Microsoft|January 26, 2021|
+|David Whitney, Microsoft|January 27, 2021|
 
 ## Issues
 
