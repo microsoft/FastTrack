@@ -44,7 +44,7 @@ foreach ($user in $nodialoutusers) {
 }
 ```
 
-If you want to disable this for all users who are not already set so, a CSV input is not required and instead we can simply run against all enabled users:
+If you want to disable this for **all users** who are not already set so, a CSV input is not required and instead we can simply run against all enabled users:
 
 ```PowerShell
 Get-CsOnlineUser -Filter {Enabled -eq $true -and OnlineDialOutPolicy -ne "DialoutCPCDisabledPSTNInternational"} | Grant-CsDialOutPolicy -PolicyName "DialoutCPCDisabledPSTNInternational"
