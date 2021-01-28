@@ -1,6 +1,6 @@
 # Microsoft FastTrack Open Source - Teams Audio Conferencing Snippets
 
-Here are a few common Teams Audio Conferencing configuration PowerShell snippets that our customers rely on to updating user settings for Audio Conferencing.
+Here are a few common Teams Audio Conferencing configuration PowerShell snippets that our customers rely on to update user settings for Audio Conferencing.
 
 ## Usage
 
