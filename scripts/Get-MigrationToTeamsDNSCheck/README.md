@@ -12,7 +12,8 @@ The credentials will be used to obtain all the domains automatically from the te
 #### The script will detect the A records.
 ####
 #### ----> Always use the most recent version of the Script <----
-![Tool](https://github.com/tiagoroxo/Fastrack/Get-MigrationToTeamsDNSCheck/blob/main/tool.JPG?raw=true)
+![Tool](https://github.com/tiagoroxo/FastTrack/blob/master/scripts/Get-MigrationToTeamsDNSCheck/tool.JPG?raw=true)
+
 ## Applies To
 
 - Microsoft Teams
@@ -28,10 +29,6 @@ The credentials will be used to obtain all the domains automatically from the te
 
 Please report any issues you find to the [issues list](/issues).
 
-_ENSURE THE ISSUES LINK ABOVE IS CORRECT. ADD EXTRA ISSUE DETAILS, IF APPLICABLE. EXAMPLE: "IF YOU GET ERROR X, ENSURE YOU DID CONFIGURATION Y"
-
-
-_DO NOT DELETE/ALTER THE SECTIONS BELOW_
 
 ## Support Statement
 
