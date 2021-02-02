@@ -16,6 +16,8 @@ The credentials will be used to obtain all the domains automatically from the te
 ####
 #### ----> Always use the most recent version of the Script <----
 #### Tool:
+![Tool](https://github.com/tiagoroxo/FastTrack/blob/master/scripts/Get-MigrationToTeamsDNSCheck/tool.JPG?raw=true)
+
 
 ## Applies To
 
