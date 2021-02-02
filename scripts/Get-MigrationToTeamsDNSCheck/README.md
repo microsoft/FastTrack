@@ -20,8 +20,6 @@ The credentials will be used to obtain all the domains automatically from the te
 
 ## Author
 
-_UPDATE TABLE BELOW_
-
 |Author|Original Publish Date
 |----|--------------------------
 |_Tiago Roxo_|_02/02/2021_|
