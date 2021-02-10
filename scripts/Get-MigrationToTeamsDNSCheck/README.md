@@ -38,7 +38,7 @@ Powershell Script used to query all Skype for Business hardcoded DNS's to all yo
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](https://github.com/microsoft/FastTrack/issues).
 
 
 ## Support Statement
