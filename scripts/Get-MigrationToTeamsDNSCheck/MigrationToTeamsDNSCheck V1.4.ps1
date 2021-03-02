@@ -2,7 +2,7 @@ cls
 ## ------------------------------------------
 ##
 ##Script: MigrationToTeamsDNSCheck
-##Version: V1.3.1
+##Version: V1.4
 ##Author: Tiago Roxo
 ##Description: Powershell Script used to query all Skype for Business hardcoded DNS's to all your Domains part of the tenant, help you detect your current configuration, and help you migrate the tenant Coexistance mode to TeamsOnly.
 ## 
@@ -36,6 +36,7 @@ $DNSonline = "-> DNS Record is pointing to an Online environment:"
 $DNSOnPremises = "-> DNS Record is NOT pointing to Online environment: "
 $DNSARecord = "-> DNS Record is pointing to an A record - unable to determine. Result: "
 $DNSTXTRecord = "-> DNS Record is pointing to an TXT record. Result: "
+$DNSTypeOther = "-> DNS Record type found :"
 $DNSError = "DNS name does not exist"
 ##############################################################################################
 
@@ -50,9 +51,10 @@ Foreach($i in $domains)
     
     #Checks the DNS records for all domains part of the O365 tenant
     else{
+        write-host "" -BackgroundColor DarkGreen
 
-        write-host ""
-        write-host "DOMAIN: " $i.name -BackgroundColor DarkGreen
+        write-host "DOMAIN:" $i.name -BackgroundColor DarkGreen
+
         #-------------------------------------  
         $DNS_Lyncdiscover = "lyncdiscover."+$i.Name.ToString()
         $resolution = $null
@@ -60,29 +62,46 @@ Foreach($i in $domains)
                 $resolution = Resolve-DnsName -Name $DNS_Lyncdiscover -type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
                 if ($resolution.NameHost.ToString() -eq "webdir.online.lync.com")
                 {
-                    
+                
                     write-host $DNS_Lyncdiscover $DNSonline $resolution.NameHost
+
                 }
 
                 else{
+
                     write-host $DNS_Lyncdiscover $DNSOnPremises $resolution.NameHost -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
                     $DomainsToCheck += $i.Name.ToString()
+
                 }
             }catch{ 
                 if ($resolution.Type -eq "A"){
+
                     write-host $DNS_Lyncdiscover $DNSARecord $resolution.IPaddress -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
                     $DomainsToCheck += $i.Name.ToString()
+
                 }
                 if ($resolution.Type -eq "TXT"){
+
                     write-host $DNS_Lyncdiscover $DNSTXTRecord $resolution.Strings -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
                     $DomainsToCheck += $i.Name.ToString()
+
+                }
+                if (($resolution.Type -ne $null ) -and (($resolution.Type -ne "TXT") -and ($resolution.Type -ne "A") -and ($resolution.Type -ne "CNAME"))){
+
+                    write-host $DNS_Lyncdiscover $DNSTypeOther $resolution.Type  -BackgroundColor Yellow -ForegroundColor Black
+                    $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
                 if ($Error[0].Exception.Message.Contains($DNSError)){
-                    write-host $DNS_Lyncdiscover "->"$DNSError -BackgroundColor Gray -ForegroundColor Black
+
+                    write-host $DNS_Lyncdiscover "->" $DNSError -BackgroundColor Gray -ForegroundColor Black
+
                 }
+                
             }
         #-------------------------------------    
         $DNS_SIP = "sip."+$i.Name.ToString()
@@ -91,23 +110,42 @@ Foreach($i in $domains)
                 $resolution = Resolve-DnsName -Name $DNS_SIP -type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
                 if ($resolution.NameHost.ToString() -eq "sipdir.online.lync.com")
                 {
+
                     write-host $DNS_SIP $DNSonline $resolution.NameHost
+
                 }
                 else{
+
                     write-host $DNS_SIP $DNSOnPremises $resolution.NameHost -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
 
                 }
             }catch{ 
                 if ($resolution.Type -eq "A"){
+
                     write-host $DNS_SIP $DNSARecord $resolution.IPaddress -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
                  if ($resolution.Type -eq "TXT"){
+
                     write-host $DNS_SIP $DNSTXTRecord $resolution.Strings -BackgroundColor Yellow -ForegroundColor Black
+                    $DomainsToCheck += $i.Name.ToString()
+
+                }
+                if (($resolution.Type -ne $null ) -and (($resolution.Type -ne "TXT") -and ($resolution.Type -ne "A") -and ($resolution.Type -ne "CNAME"))){
+
+                    write-host $DNS_SIP $DNSTypeOther $resolution.Type  -BackgroundColor Yellow -ForegroundColor Black
+                    $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
                 if ($Error[0].Exception.Message.Contains($DNSError)){
-                    write-host $DNS_SIP "->"$DNSError -BackgroundColor Gray -ForegroundColor Black
+
+                    write-host $DNS_SIP "->" $DNSError -BackgroundColor Gray -ForegroundColor Black
+
                 }
             }
         #-------------------------------------  
@@ -117,22 +155,43 @@ Foreach($i in $domains)
                 $resolution = Resolve-DnsName -Name $DNS_SRVSIP -Type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
                 if ($resolution.NameTarget.ToString() -eq "sipdir.online.lync.com")
                 {
+
                     write-host $DNS_SRVSIP $DNSonline $resolution.NameTarget
+
                 }
                 else{
+
                     write-host $DNS_SRVSIP $DNSOnPremises $resolution.NameTarget -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
             }catch{ 
                 if ($resolution.Type -eq "A"){
+
                     write-host $DNS_SRVSIP $DNSARecord $resolution.IPaddress -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
                  if ($resolution.Type -eq "TXT"){
+
                     write-host $DNS_SRVSIP $DNSTXTRecord $resolution.Strings -BackgroundColor Yellow -ForegroundColor Black
+                    $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
+                }
+                if (($resolution.Type -ne $null ) -and (($resolution.Type -ne "TXT") -and ($resolution.Type -ne "A") -and ($resolution.Type -ne "CNAME"))){
+
+                    write-host $DNS_SRVSIP $DNSTypeOther $resolution.Type  -BackgroundColor Yellow -ForegroundColor Black
+                    $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
                 if ($Error[0].Exception.Message.Contains($DNSError)){
-                    write-host $DNS_SRVSIP "->"$DNSError -BackgroundColor Gray -ForegroundColor Black
+
+                    write-host $DNS_SRVSIP "->" $DNSError -BackgroundColor Gray -ForegroundColor Black
+
                 }
             }
 
@@ -143,22 +202,43 @@ Foreach($i in $domains)
                 $resolution = Resolve-DnsName -Name $DNS_SRVSIPFED -Type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
                 if ($resolution.NameTarget.ToString() -eq "sipfed.online.lync.com")
                 {
+                    
                     write-host $DNS_SRVSIPFED $DNSonline $resolution.NameTarget
+
                 }
                 else{
+
                     write-host $DNS_SRVSIPFED $DNSOnPremises $resolution.NameTarget -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
             }catch{ 
                 if ($resolution.Type -eq "A"){
+
                     write-host $DNS_SRVSIPFED $DNSARecord $resolution.IPaddress -BackgroundColor Yellow -ForegroundColor Black
                     $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
                  if ($resolution.Type -eq "TXT"){
+
                     write-host $DNS_SRVSIPFED $DNSTXTRecord $resolution.Strings -BackgroundColor Yellow -ForegroundColor Black
+                    $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
+                }
+                if (($resolution.Type -ne $null ) -and (($resolution.Type -ne "TXT") -and ($resolution.Type -ne "A") -and ($resolution.Type -ne "CNAME"))){
+
+                    write-host $DNS_SRVSIPFED $DNSTypeOther $resolution.Type  -BackgroundColor Yellow -ForegroundColor Black
+                    $warningflag = $true
+                    $DomainsToCheck += $i.Name.ToString()
+
                 }
                 if ($Error[0].Exception.Message.Contains($DNSError)){
-                    write-host $DNS_SRVSIPFED "->"$DNSError -BackgroundColor Gray -ForegroundColor Black
+
+                    write-host $DNS_SRVSIPFED "->" $DNSError -BackgroundColor Gray -ForegroundColor Black
+
                 }
             }
         #-------------------------------------  
@@ -172,7 +252,7 @@ if ($warningflag){
     write-host "WARNINGS:" -BackgroundColor Yellow -ForegroundColor Black
     write-host "Domains that are requiring attention:"
     write-host "........."
-    $DomainsToCheck
+    $DomainsToCheck | sort -Unique
     write-host "........."
     write-host "This is normally caused when there are still an Skype for Business on-premises environment deployed or the DNS records are not properly configured."
     write-host "If you are planning to migrate to TeamsOnly mode, please make sure that all the DNS records are pointing to Online, or if you don't plan to use that Domain, delete the DNS records."
