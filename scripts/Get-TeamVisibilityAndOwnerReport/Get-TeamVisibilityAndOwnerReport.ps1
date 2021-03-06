@@ -21,9 +21,6 @@
         Requirements: 
             Microsoft Teams powershell module can be installed following the instructions at this link: https://aka.ms/AAatf62
     
-    .PARAMETER Admin
-        Admin account utilized for accessing the Microsoft 365 platform
-
     .PARAMETER GroupVisibility
         Used to reduce the amount of teams returned in the output, is the group "Public" or "Private"
 
@@ -41,10 +38,6 @@
 
 [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true,
-        HelpMessage='Enter an admin account UPN - Example "user@domain.com"')]
-        [String]$Admin,
-
         [Parameter(Mandatory=$true,
         HelpMessage='Enter Private or Public to filter Team searchbase')]
         [ValidateSet("Private","Public")]
@@ -90,7 +83,7 @@
 
     process{
         try{
-            Connect-MicrosoftTeams -AccountId $Admin
+            Connect-MicrosoftTeams | Out-Null
             try{
                 $Teams = Get-Team | Where-Object -Property Visibility -eq $GroupVisibility
                 $Object = New-Object PSObject -Property @{}
@@ -102,7 +95,7 @@
                         GroupID = ($Team.GroupID)
                         TeamName = ($Team.DisplayName)
                         Visibility = ($Team.Visibility)
-                        Owners = (@($TeamMembers.User) -join ', ')
+                        Owners = (@($TeamMembers.User) -join '; ')
                     }
                     $Masterlist += $Object
                 }

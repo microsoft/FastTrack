@@ -13,11 +13,11 @@ Microsoft Teams powershell module can be installed following the instructions at
  
     .EXAMPLE
         To get a list of all public groups and their owner(s) CSV is exported to the defaulted script directory
-        .\Get-TeamVisibilityAndOwnerReport.ps1 -M365Admin admin@contoso.onmicrosoft.com -GroupVisility Public
+        .\Get-TeamVisibilityAndOwnerReport.ps1 -GroupVisility Public
 
     .EXAMPLE
         To get a list of all public groups and their owner(s) CSV is exported to specific directory, do not include trailing '\'
-        .\Get-TeamVisibilityAndOwnerReport.ps1 -M365Admin admin@contoso.onmicrosoft.com -GroupVisility Public -ExportPath "C:\Scripts"
+        .\Get-TeamVisibilityAndOwnerReport.ps1 -GroupVisility Public -ExportPath "C:\Scripts"
 
 ## Applies To
 -Teams
