@@ -21,7 +21,7 @@
         Requirements: 
             Microsoft Teams powershell module can be installed following the instructions at this link: https://aka.ms/AAatf62
     
-    .PARAMETER M365Admin
+    .PARAMETER Admin
         Admin account utilized for accessing the Microsoft 365 platform
 
     .PARAMETER GroupVisibility
@@ -32,21 +32,22 @@
     
     .EXAMPLE
         To get a list of all public groups and their owner(s) CSV is exported to the defaulted script directory
-        .\Get-TeamVisibilityAndOwnerReport.ps1 -M365Admin admin@contoso.onmicrosoft.com -GroupVisility Public
+        .\Get-TeamVisibilityAndOwnerReport.ps1 -Admin admin@contoso.onmicrosoft.com -GroupVisility Public
 
     .EXAMPLE
         To get a list of all public groups and their owner(s) CSV is exported to specific directory, do not include trailing '\'
-        .\Get-TeamVisibilityAndOwnerReport.ps1 -M365Admin admin@contoso.onmicrosoft.com -GroupVisility Public -ExportPath "C:\Scripts"
+        .\Get-TeamVisibilityAndOwnerReport.ps1 -Admin admin@contoso.onmicrosoft.com -GroupVisility Public -ExportPath "C:\Scripts"
 #>
 
 [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true,
         HelpMessage='Enter an admin account UPN - Example "user@domain.com"')]
-        [String]$M365Admin,
+        [String]$Admin,
 
         [Parameter(Mandatory=$true,
         HelpMessage='Enter Private or Public to filter Team searchbase')]
+        [ValidateSet("Private","Public")]
         [String]$GroupVisibility,
         
         [Parameter(Mandatory=$false,
@@ -55,45 +56,58 @@
     )
 
     begin{
-        if(!($GroupVisibility -eq "Private" -or $GroupVisibility -eq "private" -or $GroupVisibility -eq "Public" -or $GroupVisibility -eq "public")){
-            Write-Host "Please enter a valid option for -GroupVisibility. Private or Public are the valid options."
-            Break
-        }
-        else{
-            if($ExportPath -eq ""){
-                $ExportPath = Split-Path $script:MyInvocation.MyCommand.Path
-            }
+        function CheckModules{
             try{
-                Import-Module MicrosoftTeams
+                #Test for AzureAD or AzureADPreview Module
+                if(Get-Module -ListAvailable -Name "MicrosoftTeams"){
+                    return 1
+                }
+                else{
+                    return 2
+                }
+            }
+            catch{
+                return $_.Exception.Message
+            }
+        }
+        try{
+            switch(CheckModules){
+                1 {Import-Module MicrosoftTeams}
+                2 {
+                    Write-Output "Microsoft Teams PowerShell module not found - Please install the Microsoft Teams powershell module by following the instructions at this link: https://aka.ms/AAbfj8w `n"
+                    break
+                }
+            }
+        }
+        catch{
+            return $_.Exception.Message
+        } 
+
+        if($ExportPath -eq ""){
+            $ExportPath = Split-Path $script:MyInvocation.MyCommand.Path
+        }
+    }
+
+    process{
+        try{
+            Connect-MicrosoftTeams -AccountId $Admin
+            try{
+                $Teams = Get-Team | Where-Object -Property Visibility -eq $GroupVisibility
+                $Object = New-Object PSObject -Property @{}
+                $Masterlist = @()
+
+                Foreach($Team in $Teams){
+                    $TeamMembers = Get-TeamUser -GroupId $Team.GroupID | Where-Object -Property Role -eq "owner" | Select-Object User
+                    $Object = New-Object PSObject -Property @{
+                        GroupID = ($Team.GroupID)
+                        TeamName = ($Team.DisplayName)
+                        Visibility = ($Team.Visibility)
+                        Owners = (@($TeamMembers.User) -join ', ')
+                    }
+                    $Masterlist += $Object
+                }
                 try{
-                    Connect-MicrosoftTeams -AccountId $M365Admin
-                    try{
-                        $Teams = Get-Team | Where-Object -Property Visibility -eq $GroupVisibility
-                        $Object = New-Object PSObject -Property @{}
-                        $Masterlist = @()
-    
-                        Foreach($Team in $Teams){
-                            $TeamMembers = Get-TeamUser -GroupId $Team.GroupID | Where-Object -Property Role -eq "owner" | Select-Object User
-                            $Object = New-Object PSObject -Property @{
-                                GroupID = ($Team.GroupID)
-                                TeamName = ($Team.DisplayName)
-                                Visibility = ($Team.Visibility)
-                                Owners = (@($TeamMembers.User) -join '; ')
-                            }
-                            $Masterlist += $Object
-                        }
-                        try{
-                            Export-Csv -InputObject $Object -path "$($ExportPath)\TeamsOwnerReport.csv" -NoTypeInformation
-                        }
-                        catch{
-                            return $_.Exception.Message
-                            Break
-                        }
-                    }
-                    catch{
-                        return $_.Exception.Message
-                        Break
-                    }
+                    Export-Csv -InputObject $Object -path "$($ExportPath)\TeamsOwnerReport.csv" -NoTypeInformation
                 }
                 catch{
                     return $_.Exception.Message
@@ -101,12 +115,13 @@
                 }
             }
             catch{
-                Write-Output "Please install the MicrosoftTeams powershell module following the instructions at this link: https://aka.ms/AAatf62"
-                Break
+                return $_.Exception.Message
             }
         }
+        catch{
+            return $_.Exception.Message
+        }
     }
-
     end{
         return $Masterlist | Format-Table GroupID,TeamName,Visibility,Owners
         Break
