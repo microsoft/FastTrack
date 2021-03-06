@@ -60,38 +60,63 @@
         HelpMessage='Enter the admin account for the tenant - Example "admin@domain.com".')]
         [String]$Admin,
         
-        [Parameter(Mandatory=$true,
+        [Parameter(Mandatory=$false,
         ParameterSetName='All',
         HelpMessage='This is the default parameter, will list all "active" admin roles and members.')]
         [switch]$All,
 
-        [Parameter(Mandatory=$true,
+        [Parameter(Mandatory=$false,
         ParameterSetName='UPN',
         HelpMessage='Enter the UserPrincipalName - Example "user@domain.com".')]
         [String]$UserPrincipalName,
 
-        [Parameter(Mandatory=$True,
+        [Parameter(Mandatory=$false,
         ParameterSetName='RoleName',
         HelpMessage='Enter the name of the Admin Role you would like to see members of.')]
         [String]$RoleName
     )
     
     begin {
-        if(!(Get-Module -ListAvailable -Name "AzureAD")){
-            Write-Output "Please install the Azure AD powershell module by following the instructions at this link: https://aka.ms/AAau56t"
-        }
-        else{
-            Import-Module AzureAD
+        function CheckModules{
             try{
-                $TestConnection = Get-AzureADTenantDetail
+                #Test for AzureAD or AzureADPreview Module
+                if(Get-Module -ListAvailable -Name "AzureAD"){
+                    return 1
+                }
+                elseif(Get-Module -ListAvailable -Name "AzureADPreview"){
+                    return 2
+                }
+                else{
+                    return 3
+                }
             }
-            catch [Microsoft.Open.Azure.AD.CommonLibrary.AadNeedAuthenticationException]{
-                try{
-                    Connect-AzureAD -AccountId $Admin | Out-Null
+            catch{
+                return $_.Exception.Message
+            }
+        }
+        try{
+            switch(CheckModules){
+                1 {Import-Module AzureAD}
+                2 {Import-Module AzureADPreview}
+                3 {
+                    Write-Output "Please install the Azure AD powershell module by following the instructions at this link: https://aka.ms/AAau56t"
+                    break
                 }
-                catch{
-                    return $_.Exception.Message
-                }
+            }
+        }
+        catch{
+            return $_.Exception.Message
+        }            
+        #Check if already connected to AAD:
+        try{
+            $TestConnection = Get-AzureADTenantDetail
+        }
+        catch [Microsoft.Open.Azure.AD.CommonLibrary.AadNeedAuthenticationException]{
+            try{
+                Connect-AzureAD -AccountId $Admin | Out-Null
+            }
+            catch{
+                return $_.Exception.Message
             }
         }
     }
@@ -123,8 +148,8 @@
                                 RoleName = ($Role.DisplayName)
                                 Member = ($Member.UserPrincipalName)
                             }
+                            $MemberList += $Table 
                         }
-                        $MemberList += $Table 
                     }           
                 }
             }
@@ -139,7 +164,7 @@
                         Member = ""
                     }
                     foreach($Member in $RoleMembers){
-                        $Table.Member += "$($Member.UserPrincipalName);"
+                        $Table.Member += "$($Member.UserPrincipalName), "
                     }
                     $MemberList += $Table
                 }
