@@ -180,5 +180,5 @@
     }
 
     end {
-        return $MemberList | Format-Table -Property ObjectID,RoleName,Member -AutoSize
+        return $MemberList | Select-Object ObjectID, RoleName, Member
     }

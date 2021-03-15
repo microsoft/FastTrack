@@ -29,11 +29,11 @@
     
     .EXAMPLE
         To get a list of all public groups and their owner(s) CSV is exported to the defaulted script directory
-        .\Get-TeamVisibilityAndOwnerReport.ps1 -Admin admin@contoso.onmicrosoft.com -GroupVisility Public
+        .\Get-TeamVisibilityAndOwnerReport.ps1 -GroupVisibility Public
 
     .EXAMPLE
         To get a list of all public groups and their owner(s) CSV is exported to specific directory, do not include trailing '\'
-        .\Get-TeamVisibilityAndOwnerReport.ps1 -Admin admin@contoso.onmicrosoft.com -GroupVisility Public -ExportPath "C:\Scripts"
+        .\Get-TeamVisibilityAndOwnerReport.ps1 -GroupVisibility Public -ExportPath "C:\Scripts"
 #>
 
 [CmdletBinding()]
@@ -75,7 +75,19 @@
         catch{
             return $_.Exception.Message
         } 
-
+        
+        try{
+            $TestConnection = Get-CsGroupPolicyAssignment -ErrorAction Stop
+        }
+        catch [System.Management.Automation.CmdletInvocationException]{
+            try{
+                Connect-MicrosoftTeams | Out-Null
+            }
+            catch{
+                return $_.Exception.Message
+            }
+        }
+        
         if($ExportPath -eq ""){
             $ExportPath = Split-Path $script:MyInvocation.MyCommand.Path
         }
@@ -100,7 +112,7 @@
                     $Masterlist += $Object
                 }
                 try{
-                    Export-Csv -InputObject $Object -path "$($ExportPath)\TeamsOwnerReport.csv" -NoTypeInformation
+                    Export-Csv -InputObject $Object -path "$($ExportPath)\TeamsVisibilityOwnerReport.csv" -NoTypeInformation
                 }
                 catch{
                     return $_.Exception.Message
@@ -116,6 +128,6 @@
         }
     }
     end{
-        return $Masterlist | Format-Table GroupID,TeamName,Visibility,Owners
+        return $Masterlist | Select GroupID,TeamName,Visibility,Owners
         Break
     }
