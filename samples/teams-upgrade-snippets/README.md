@@ -6,29 +6,18 @@ Here are a few common Teams Upgrade PowerShell snippets that our customers have 
 
 These snippets are not provided as PowerShell scripts as they are only a few lines each, and would often be run interactively or as a one-off.
 
-Note we do assume the appropriate Office 365 remote PowerShell session has already been established. For assistance, please see the following docs pages:
+Note we do assume the MicrosoftTeams PowerShell module has been installed and signed in. For assistance, please see the following docs page:
 
-- [Skype for Business Online PowerShell](https://docs.microsoft.com/en-us/office365/enterprise/powershell/manage-skype-for-business-online-with-office-365-powershell)
 - [Microsoft Teams PowerShell](https://docs.microsoft.com/en-us/MicrosoftTeams/teams-powershell-install)
 
-Note that you can use the new ```Enable-CsOnlineSessionForReconnection``` command after establishing a Skype for Business Online PowerShell session with basic authentication (no MFA) to mitigate the typical 60 minute remote PowerShell session timeout as noted in the [Skype for Business Online remote PowerShell troubleshooting page](https://docs.microsoft.com/en-us/skypeforbusiness/set-up-your-computer-for-windows-powershell/diagnose-problems-with-the-skype-for-business-online-connector). For example:
-
-```PowerShell
-Import-Module SkypeOnlineConnector
-$userCredential = Get-Credential
-$sfbSession = New-CsOnlineSession -Credential $userCredential
-Import-PSSession $sfbSession
-Enable-CsOnlineSessionForReconnection
-```
-
-**Important:** If connecting with modern authentication (by not specifying the -Credential parameter), the session will time out after 60 minutes and not be able to be automatically re-established with ```Enable-CsOnlineSessionForReconnection```
-
-To establish a Microsoft Teams PowerShell session, use the following command after installing the MicrosoftTeams module:
+After installing the Microsoft Teams module, here's an example of connecting to remote Teams/Skype for Business Online PowerShell:
 
 ```PowerShell
 Import-Module MicrosoftTeams
 Connect-MicrosoftTeams
 ```
+
+**Note:** Ensure you are running the 2.0.0 (March 2021) or later version of the MicrosoftTeams module. You can verify installed versions with `Get-Module MicrosoftTeams -ListAvailable`, and if needed install the latest update from an elevated PowerShell session with `Update-Module MicrosoftTeams`
 
 ## Upgrade a list of users to Teams Only mode
 
@@ -94,7 +83,7 @@ Get-CsMeetingMigrationStatus -State Failed | Export-Csv "C:\path\to\MMSFailedrep
 
 |Author|Last Updated Date
 |----|--------------------------
-|David Whitney, Microsoft|September 23, 2020|
+|David Whitney, Microsoft|March 16, 2021|
 
 ## Issues
 

@@ -6,19 +6,18 @@ Here are a few common Teams Audio Conferencing configuration PowerShell snippets
 
 These snippets are not provided as PowerShell scripts as they are only a few lines each, and would often be run interactively or as a one-off.
 
-Note we do assume the MicrosoftTeams PowerShell module has been installed and signed in. For assistance, please see the following docs pages:
+Note we do assume the MicrosoftTeams PowerShell module has been installed and signed in. For assistance, please see the following docs page:
 
 - [Microsoft Teams PowerShell](https://docs.microsoft.com/en-us/MicrosoftTeams/teams-powershell-install)
 
-After installing the Microsoft Teams module, here's an example of connecting to remote Skype for Business Online/Teams PowerShell:
+After installing the Microsoft Teams module, here's an example of connecting to remote Teams/Skype for Business Online PowerShell:
 
 ```PowerShell
 Import-Module MicrosoftTeams
-$CsSession = New-CsOnlineSession
-Import-PSSession $CsSession
+Connect-MicrosoftTeams
 ```
 
-**Note:** This session has a 60-minute timeout which cannot be changed. You will need to re-run the above to re-establish the session after it times out.
+**Note:** Ensure you are running the 2.0.0 (March 2021) or later version of the MicrosoftTeams module. You can verify installed versions with `Get-Module MicrosoftTeams -ListAvailable`, and if needed install the latest update from an elevated PowerShell session with `Update-Module MicrosoftTeams`
 
 If you need a quick start creating an input csv for the below examples, download your full list of Skype/Teams users and save off the desired user rows to be the input CSV file from this export:
 
@@ -82,7 +81,7 @@ foreach ($user in $notollfreeusers) {
 
 |Author|Last Updated Date
 |----|--------------------------
-|David Whitney, Microsoft|January 27, 2021|
+|David Whitney, Microsoft|March 16, 2021|
 
 ## Issues
 
