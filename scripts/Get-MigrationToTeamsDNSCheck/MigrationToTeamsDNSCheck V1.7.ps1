@@ -2,11 +2,11 @@ cls
 ## ------------------------------------------
 ##
 ##Script: MigrationToTeamsDNSCheck
-##Version: V1.6
+##Version: V1.7
 ##Author: Tiago Roxo
 ##Description: Powershell Script used to query Skype for Business hardcoded DNS's to all your Domains part of the tenant, help you detect your current configuration, and help you migrate the tenant Coexistance mode to TeamsOnly.
 ##
-##Warning: Make sure you have the latest "MicrosoftTeams" module version installed - "Update-Module MicrosoftTeams".
+##Warning: Make sure you have the latest "MicrosoftTeams" module version installed - Run the cmdlet: "Update-Module MicrosoftTeams" - or check the page "https://www.powershellgallery.com/packages/MicrosoftTeams/2.0.0"
 ##
 ## ------------------------------------------
 
@@ -31,7 +31,6 @@ Import-Module MicrosoftTeams
 Connect-MicrosoftTeams
 Read-Host -Prompt "Press enter to Start"
 cls
-
 
 #Function: Get the List of SIP Domains Enabled/Disabled
 $domains = get-CsOnlineSipDomain
@@ -79,11 +78,12 @@ Foreach($i in $domains)
         $DNS_Lyncdiscover = "lyncdiscover."+$i.Name.ToString()
         $resolution = $null
         try{
-            $resolution = Resolve-DnsName -Name $DNS_Lyncdiscover -type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            $resolution = Resolve-DnsName -Name $DNS_Lyncdiscover -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
             Foreach($d in $resolution){
                 if ($d.Type -eq "CNAME"){
                     if ($d.NameHost.ToString() -eq "webdir.online.lync.com"){
                         write-host $DNS_Lyncdiscover $DNSonline $d.NameHost
+                        break
                     }
                     else{
                         write-host $DNS_Lyncdiscover $DNSOnPremises $d.NameHost -BackgroundColor Yellow -ForegroundColor Black
@@ -121,12 +121,13 @@ Foreach($i in $domains)
         $DNS_SIP = "sip."+$i.Name.ToString()
         $resolution = $null
          try{
-            $resolution = Resolve-DnsName -Name $DNS_SIP -type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            $resolution = Resolve-DnsName -Name $DNS_SIP -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
             Foreach($d in $resolution){
                 if ($d.Type -eq "CNAME"){
                     if ($d.NameHost.ToString() -eq "sipdir.online.lync.com")
                     {
                         write-host $DNS_SIP $DNSonline $d.NameHost
+                        break
                     }
                     else{
                         write-host $DNS_SIP $DNSOnPremises $d.NameHost -BackgroundColor Yellow -ForegroundColor Black
@@ -164,7 +165,7 @@ Foreach($i in $domains)
         $DNS_SRVSIP = "_sip._tls."+$i.Name.ToString()
         $resolution = $null
         try{
-            $resolution = Resolve-DnsName -Name $DNS_SRVSIP -Type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            $resolution = Resolve-DnsName -Name $DNS_SRVSIP -Type SRV -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
             Foreach($d in $resolution){
                 if ($d.Type -eq "SRV"){
                     if ($d.NameTarget.ToString() -eq "sipdir.online.lync.com"){
@@ -206,7 +207,7 @@ Foreach($i in $domains)
         $DNS_SRVSIPFED = "_sipfederationtls._tcp."+$i.Name.ToString()
         $resolution = $null
         try{
-            $resolution = Resolve-DnsName -Name $DNS_SRVSIPFED -Type ALL -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            $resolution = Resolve-DnsName -Name $DNS_SRVSIPFED -Type SRV -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
             Foreach($d in $resolution){
                 if ($d.Type -eq "SRV"){
                     if ($d.NameTarget.ToString() -eq "sipfed.online.lync.com"){
