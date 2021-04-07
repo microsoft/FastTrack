@@ -35,6 +35,7 @@ cls
 #Function: Get the List of SIP Domains Enabled/Disabled
 $domains = get-CsOnlineSipDomain
 
+
 }catch{
     write-host "Problem loading Microsoft Teams Module - Make sure the Authentication is correct and make sure you latest version installed - https://www.powershellgallery.com/packages/MicrosoftTeams/2.0.0" -ForegroundColor Red
     $version = Get-Module MicrosoftTeams 
@@ -79,7 +80,13 @@ Foreach($i in $domains)
         $resolution = $null
         try{
             $resolution = Resolve-DnsName -Name $DNS_Lyncdiscover -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            
+            if (($resolution).count -lt 1){
+                    $resolution = Resolve-DnsName -Name $DNS_Lyncdiscover -type all -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            }
+
             Foreach($d in $resolution){
+                
                 if ($d.Type -eq "CNAME"){
                     if ($d.NameHost.ToString() -eq "webdir.online.lync.com"){
                         write-host $DNS_Lyncdiscover $DNSonline $d.NameHost
@@ -122,6 +129,11 @@ Foreach($i in $domains)
         $resolution = $null
          try{
             $resolution = Resolve-DnsName -Name $DNS_SIP -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            
+            if (($resolution).count -lt 1){
+                    $resolution = Resolve-DnsName -Name $DNS_SIP -type all -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            }
+            
             Foreach($d in $resolution){
                 if ($d.Type -eq "CNAME"){
                     if ($d.NameHost.ToString() -eq "sipdir.online.lync.com")
@@ -166,6 +178,11 @@ Foreach($i in $domains)
         $resolution = $null
         try{
             $resolution = Resolve-DnsName -Name $DNS_SRVSIP -Type SRV -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+
+            if (($resolution).count -lt 1){
+                    $resolution = Resolve-DnsName -Name $DNS_SRVSIP -type all -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            }
+
             Foreach($d in $resolution){
                 if ($d.Type -eq "SRV"){
                     if ($d.NameTarget.ToString() -eq "sipdir.online.lync.com"){
@@ -208,6 +225,11 @@ Foreach($i in $domains)
         $resolution = $null
         try{
             $resolution = Resolve-DnsName -Name $DNS_SRVSIPFED -Type SRV -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+
+            if (($resolution).count -lt 1){
+                    $resolution = Resolve-DnsName -Name $DNS_SRVSIPFED -type all -Server $DNSServer -DnsOnly -ErrorAction Stop | where Section -eq "Answer"
+            }
+
             Foreach($d in $resolution){
                 if ($d.Type -eq "SRV"){
                     if ($d.NameTarget.ToString() -eq "sipfed.online.lync.com"){
