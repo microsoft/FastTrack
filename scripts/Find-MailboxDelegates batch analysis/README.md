@@ -1,6 +1,4 @@
-_PLEASE COMPLETE THIS README TEMPLATE FOR YOUR CONTRIBUTION. IT SHOULD BE PLACED IN THE ROOT OF YOUR FOLDER AND BE RENAMED "README.md". ONCE COMPLETE PLEASE DELETE ALL OF THESE INSTRUCTIONS_
-
-# Microsoft FastTrack Open Source - _YOUR TITLE HERE_
+# Microsoft FastTrack Open Source - Find-MailboxDelegates batch analysis
 
 The BatchAnalysis-generic.xlsm spreadsheet is designed to be an extension of the Find-MailboxDelegates script at https://aka.ms/find-mailboxdelegates here on GitHub.
 
