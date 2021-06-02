@@ -351,7 +351,7 @@ Begin{
 
                     If($gatherfullaccess -eq $true){
                         $Error.Clear()
-                        $FullAccessPermissions = Get-MailboxPermission -Identity ($Mailbox.PrimarySMTPAddress).tostring() | ? {($_.AccessRights -like “*FullAccess*”) -and ($_.IsInherited -eq $false) -and ($_.User -notlike “NT AUTHORITY\SELF”) -and ($_.User -notlike "S-1-5*") -and ($_.User -notlike $Mailbox.PrimarySMTPAddress)}
+                        $FullAccessPermissions = Get-MailboxPermission -Identity ($Mailbox.PrimarySMTPAddress).tostring() | ? {($_.AccessRights -like "*FullAccess*") -and ($_.IsInherited -eq $false) -and ($_.User -notlike "NT AUTHORITY\SELF") -and ($_.User -notlike "S-1-5*") -and ($_.User -notlike $Mailbox.PrimarySMTPAddress)}
                 
                         If($FullAccessPermissions){
                             Foreach($perm in $FullAccessPermissions){
