@@ -6,7 +6,7 @@
   on teams within a certain period of time
 
 .Requirements
-Microsoft.ADAL.PowerShell PowerShell Module
+MSAL.PS PowerShell Module
 MSOnline PowerShell Module
 MicrosoftTeams PowerShell Module
 
@@ -88,19 +88,19 @@ begin {
     $report = $GroupsReport
 
     try {
-        Import-Module Microsoft.ADAL.PowerShell -ErrorAction Stop
+        Import-Module MSAL.PS -ErrorAction Stop
         Import-Module MicrosoftTeams -ErrorAction Stop
         Import-Module MSOnline -ErrorAction Stop
     }
     catch {
     
-        Start-Process -FilePath "powershell" -Verb runas -ArgumentList "Install-Module Microsoft.ADAL.PowerShell -Force -AllowClobber;" -Wait 
+        Start-Process -FilePath "powershell" -Verb runas -ArgumentList "Install-Module MSAL.PS -Force -AllowClobber -AcceptLicense;" -Wait 
         Start-Process -FilePath "powershell" -Verb runas -ArgumentList "Install-Module MicrosoftTeams -Force -AllowClobber;" -Wait 
         Start-Process -FilePath "powershell" -Verb runas -ArgumentList "Install-Module MSOnline -Force -AllowClobber;" -Wait 
     
-        Import-Module Microsoft.ADAL.PowerShell  
+        Import-Module MSAL.PS
         Import-Module MicrosoftTeams
-        Import-Module MSOnline 
+        Import-Module MSOnline
     }
 }
 
@@ -113,14 +113,13 @@ process {
    
     #Build REST API header with authorization token
 
-    $token = Get-ADALAccessToken `
-        -ForcePromptSignIn   `
-        -RedirectUri "$redirectUri" `
-        -ClientId "$ClientID" `
-        -AuthorityName "$TenantName" `
-        -ResourceId "https://graph.microsoft.com" `
+    $token = Get-MsalToken `
+        -ClientId $ClientID `
+        -RedirectUri $redirectUri `
+        -TenantId $TenantName `
+        -Scopes "Reports.Read.All"
                  
-    if ($token -eq $null) {
+    if (($null -eq $token) -or ($null -eq $token.AccessToken)) {
   
         Write-Host "No token was created. Please review all parameters to ensure they are correct" -ForegroundColor Red
         break
@@ -128,7 +127,7 @@ process {
 
     $authHeader = @{
         'Content-Type'  = 'application/json'
-        'Authorization' = $token
+        'Authorization' = $token.AccessToken
     }
 
     #Build Parameter String
@@ -160,9 +159,8 @@ process {
     $allTeams = @()
 
     try {
-
-        Connect-MsolService -Credential $Credential -ErrorAction Stop
-        Connect-MicrosoftTeams -Credential $Credential -ErrorAction Stop    
+        Connect-MsolService -Credential $Credential -ErrorAction Stop | Out-Null
+        Connect-MicrosoftTeams -Credential $Credential -ErrorAction Stop | Out-Null
     }
     catch {
     
