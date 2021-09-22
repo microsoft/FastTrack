@@ -19,7 +19,7 @@ Important Detail: The script will require AzureADPreview module, and it will rem
 - You must set ExecutionPolicy to allow running the script. Example: Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 
 .PARAMETER: "ExportMethod"
-- This parameter will define the way the outcome will be displayed: On Screen or saved into the Desktop of the user profile;
+- This parameter will define the way the outcome will be displayed: On Screen or saved into the Downloads folder of the user profile;
 
 .EXAMPLE:
 - ".\Get-AuditGuestTeams -ExportMethod onScreen"
