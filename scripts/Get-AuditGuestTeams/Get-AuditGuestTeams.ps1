@@ -85,7 +85,7 @@ $guestUsers = Get-AzureADUser | Where-Object { $_.UserType -eq 'Guest'}
 $loggedOnUsers = @()
 foreach($m in $guestUsers){
     $MAIL = $m.Mail
-    $loggedOnUsers += Get-AzureADAuditSignInLogs -top 5000 -Filter "UserPrincipalName eq '$MAIL'"
+    $loggedOnUsers += Get-AzureADAuditSignInLogs -top 1000 -Filter "UserPrincipalName eq '$MAIL'"
 }
 
 #Creating a list of Microsoft 365 Groups
