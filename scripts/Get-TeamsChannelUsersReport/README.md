@@ -1,37 +1,59 @@
-_PLEASE COMPLETE THIS README TEMPLATE FOR YOUR CONTRIBUTION. IT SHOULD BE PLACED IN THE ROOT OF YOUR FOLDER AND BE RENAMED "README.md". ONCE COMPLETE PLEASE DELETE ALL OF THESE INSTRUCTIONS_
 
-# Microsoft FastTrack Open Source - _YOUR TITLE HERE_
+# Microsoft FastTrack Open Source - Get-TeamsChannelUsersReport.ps1
 
-_INTRODUCTION TO THIS TOOL/REPO_
+Create a CSV file output that contains a row for each user that has a role in each channel of every team in the tenant or specified teams.
 
 ## Usage
 
-_PROVIDE DETAILED GUIDE TO INSTALL AND USE THIS TOOL/SCRIPT/SAMPLE. INCLUDE ANY OPTIONS, CONFIGURATION, ERROR HANDLING, ETC. YOU CAN LINK TO SUPPORTING BLOG POSTS OR OTHER RESOURCES, BUT THIS SECTION MUST CONTAIN ALL THE DETAILS REQUIRED TO RUN THE TOOL._
+Report on all teams in the tenant
+
+```PowerShell
+.\Get-TeamsChannelUsersReport.ps1 -ExportCSVFilePath "C:\path\to\export.csv"
+```
+
+Report on a specific team by its group ID
+
+```PowerShell
+.\Get-TeamsChannelUsersReport.ps1 -GroupId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" -ExportCSVFilePath "C:\path\to\export.csv"
+```
+
+Report on teams that the specified user is a member or owner of
+
+```PowerShell
+.\Get-TeamsChannelUsersReport.ps1 -UserId "user@domain.com" -ExportCSVFilePath "C:\path\to\export.csv"
+```
+
+### Output columns
+
+- Team Name
+- Group ID
+- Team Description
+- Team Privacy
+- Team Is Archived
+- Team Classification
+- Team Sensivitity Label
+- Channel Name
+- Channel Membership Type
+- Channel Description
+- Channel Member Name
+- Channel Member Role
+- Channel Member User ID
+- Channel Member Mail
 
 ## Applies To
 
-_IN THIS SECTION LIST THE ENVIRONMENT(S) WHERE THIS TOOL IS USEFUL_
-
-- SharePoint 2010
-- SharePoint 2013
-- SharePoint Online
+- Microsoft Graph
+- Microsoft Teams
 
 ## Author
 
-_UPDATE TABLE BELOW_
-
-|Author|Original Publish Date
+|Author|Last Update Date
 |----|--------------------------
-|_YOUR NAME_|_DATE ORIGINALLY PUBLISHED_|
+|David Whitney|October 27, 2021|
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
-
-_ENSURE THE ISSUES LINK ABOVE IS CORRECT. ADD EXTRA ISSUE DETAILS, IF APPLICABLE. EXAMPLE: "IF YOU GET ERROR X, ENSURE YOU DID CONFIGURATION Y"
-
-
-_DO NOT DELETE/ALTER THE SECTIONS BELOW_
+Please report any issues you find to the [issues list](https://github.com/microsoft/FastTrack/issues).
 
 ## Support Statement
 
