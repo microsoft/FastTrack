@@ -33,25 +33,27 @@ PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF TH
 [CmdletBinding()]
 param (
     # Path to where to save the report export CSV file
-    [Parameter(Mandatory = $true)]
+    [Parameter(
+        Mandatory = $true,
+        Position = 0)]
     [System.IO.FileInfo]
     $ExportCSVFilePath,
 
     # Provide specific group ID to only report on that team
-    [Parameter(
-        ParameterSetName = "GroupID"
-    )]
+    [Parameter(Mandatory = $false)]
     [Alias("TeamID")]
     [string]
     $GroupID,
 
     # Provide specific user ID to only report on the teams that user is a member or owner of
-    [Parameter(
-        ParameterSetName = "UserId"
-    )]
+    [Parameter(Mandatory = $false)]
     [string]
     $UserID
 )
+
+if ($GroupID -and $UserID) {
+    Write-Warning "Group ID and User ID both provided - ignoring User ID"
+}
 
 $MgModuleAuth  = Get-Module -Name "Microsoft.Graph.Authentication" -ListAvailable
 $MgModuleGroup = Get-Module -Name "Microsoft.Graph.Groups" -ListAvailable
