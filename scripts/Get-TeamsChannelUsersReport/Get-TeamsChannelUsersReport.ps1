@@ -194,5 +194,7 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
 }
 
 Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Saving report: $ExportCSVFilePath"
-$ReportOutput | Export-Csv -Path $ExportCSVFilePath -NoTypeInformation
+$ReportOutput | Export-Csv -Path $ExportCSVFilePath -NoTypeInformation -ErrorAction Stop
+$outputfile = Get-ChildItem $ExportCSVFilePath
+Write-Output "Report saved to: $($outputfile.FullName)"
 Write-Progress -Id 1 -Activity "Gathering Teams Data" -Completed
