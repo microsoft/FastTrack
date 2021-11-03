@@ -5,9 +5,12 @@ This Script function will create a report that will help IT PROs to Monitor and 
 2. Sign-in logs in Azure Active Directory - Audits if the Guest accounts already Sign-in in the tenant, if the Guest user accepted the invite and also the last time they Signd-In in the tenant;
 3. List what is the current Azure B2B Collaboration restrictions configured;
 
-Once you run the script, you will get an report in the Shell/screen or you can choose to be exported to an TXT file;
+Once you run the script, you will get a report in the Shell/Screen or you can choose to be exported to a TXT/CSV file;
+Both ways of executing the script:
+	Getting data on Screen: ".\Get-AuditGuestTeams -ExportMethod onScreen"
+	Getting data on a TXT file and CSV: ".\Get-AuditGuestTeams -ExportMethod Report"
 
-Important Detail: The script will require AzureADPreview module, and it will remove the old modules and install the needed modules;
+Important Detail: The script will require AzureADPreview module. The script will remove the old modules and install the new and needed modules for you;
 
 .Requirements
 - This Script function needs AzureADPreview module version "2.0.2.138" or higher installed - the script will install/update it for you;
@@ -17,7 +20,7 @@ Important Detail: The script will require AzureADPreview module, and it will rem
 - You must set ExecutionPolicy to allow running the script. Example: Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 
 .PARAMETER: "ExportMethod"
-- This parameter will define the way the outcome will be displayed: On Screen or saved into the Desktop of the user profile;
+- This parameter will define the way the outcome will be displayed: On Shell/Screen or saved into the Downloads folder of the user profile;
 
 .EXAMPLE:
 - ".\Get-AuditGuestTeams -ExportMethod onScreen"
