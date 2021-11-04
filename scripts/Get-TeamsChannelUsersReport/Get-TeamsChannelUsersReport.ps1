@@ -85,12 +85,15 @@ if ($GroupID) {
     $User = Get-MgUser -UserId $UserID -ErrorAction Stop
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting groups for user ID $UserID - $($User.DisplayName)"
     if ($User) {
-        $UserGroupIds = Get-MgUserMemberOf -UserId $UserID -Property id
-        $UserGroupIdsWithProvisioning = foreach ($userGroup in $UserGroupIds) {
-            #ask for assignedLabels in this call for the group since we can't ask for it when calling for the team
-            Get-MgGroup -GroupId $userGroup.Id -Property Id, DisplayName, Mail, resourceProvisioningOptions, assignedLabels
-        }
+        $UserMemberOfIdsWithProvisioning = Get-MgUserMemberOf -UserId $UserID -Property displayName, Id, resourceProvisioningOptions, assignedLabels
+        # MemberOf call returns directory roles as well (e.g. Teams Administrator), need to filter to just groups
+        $UserGroupIdsWithProvisioning = $UserMemberOfIdsWithProvisioning | Where-Object {$_.AdditionalProperties."@odata.type" -eq "#microsoft.graph.group"}
         $M365GroupsThatAreTeams = @($UserGroupIdsWithProvisioning | Where-Object {$_.AdditionalProperties.resourceProvisioningOptions -contains "Team"})
+        if (!$M365GroupsThatAreTeams) {
+            Write-Warning "User $($User.DisplayName) ($UserID) is not a member of any teams"
+            Write-Progress -Id 1 -Activity "Gathering Teams Data" -Completed
+            exit
+        }
     }
 } else {
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting list of M365 Groups"
@@ -109,7 +112,11 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
     # strip out unneeded fields in Get-MgTeam return so that we can add our own Channels and Members properties, since the return doesn't include that data
     $team = $team | Select-Object Id, DisplayName, Description, Visibility, IsArchived, Classification
     # add sensitivity label that we got from first call to get M365 Groups, since asking for assignedLabels is not supported for getting the team
-    $team | Add-Member -NotePropertyName "AssignedLabel" -NotePropertyValue $group.AssignedLabels[0].DisplayName
+    if ($group.AssignedLabels) {
+        $team | Add-Member -NotePropertyName "AssignedLabel" -NotePropertyValue $group.AssignedLabels[0].DisplayName
+    } else {
+        $team | Add-Member -NotePropertyName "AssignedLabel" -NotePropertyValue ""
+    }
 
     $teamMembers = Get-MgTeamMember -TeamId $team.Id
     [PSCustomObject[]]$teamMembersReturn = foreach ($member in $teamMembers) {
@@ -183,7 +190,7 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                 "Channel Member Name" = $channelMemberName;
                 "Channel Member Role" = $channelMemberRole;
                 "Channel Member User ID" = $channelMemberUserId;
-                "Channel Member Mail" = $channelMemberMail;
+                "Channel Member Email" = $channelMemberMail;
             }
 
             $teamChannelUsersReturn
