@@ -38,7 +38,7 @@ Report on teams that the specified user is a member or owner of
 - Channel Member Name
 - Channel Member Role
 - Channel Member User ID
-- Channel Member Mail
+- Channel Member Email
 
 ## Applies To
 
