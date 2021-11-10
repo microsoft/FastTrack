@@ -1,6 +1,6 @@
 <#
 
-Get-TeamsChannelUsersReport PowerShell script | Version 0.8
+Get-TeamsChannelUsersReport.ps1 PowerShell script | Version 0.9
 
 by David.Whitney@microsoft.com
 
@@ -28,7 +28,21 @@ PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF TH
 
     Report on teams that the specified user is a member or owner of
 .OUTPUTS
-    Writes out a CSV file report
+    Writes out a CSV file report with columns:
+    - Team Name
+    - Group ID
+    - Team Description
+    - Team Privacy
+    - Team Is Archived
+    - Team Classification
+    - Team Sensivitity Label
+    - Channel Name
+    - Channel Membership Type
+    - Channel Description
+    - Channel Member Name
+    - Channel Member Role
+    - Channel Member User ID
+    - Channel Member Email
 #>
 [CmdletBinding()]
 param (
@@ -56,17 +70,21 @@ if ($GroupID -and $UserID) {
 }
 
 $MgModuleAuth  = Get-Module -Name "Microsoft.Graph.Authentication" -ListAvailable
-$MgModuleGroup = Get-Module -Name "Microsoft.Graph.Groups" -ListAvailable
-$MgModuleTeams = Get-Module -Name "Microsoft.Graph.Teams" -ListAvailable
-if (-not ($MgModuleGroup -and $MgModuleTeams -and $MgModuleAuth)) {
+$MgModuleGroup = Get-Module -Name "Microsoft.Graph.Groups"         -ListAvailable
+$MgModuleUsers = Get-Module -Name "Microsoft.Graph.Users"          -ListAvailable
+$MgModuleTeams = Get-Module -Name "Microsoft.Graph.Teams"          -ListAvailable
+if (-not ($MgModuleGroup -and $MgModuleUsers -and $MgModuleTeams -and $MgModuleAuth)) {
     throw "This script requires the Microsoft.Graph (PowerShell SDK for Graph) module - use 'Install-Module Microsoft.Graph' from an elevated PowerShell session, restart this PowerShell session, then try again."
 }
 Import-Module Microsoft.Graph.Authentication -WarningAction SilentlyContinue -ErrorAction Stop
 Import-Module Microsoft.Graph.Groups         -WarningAction SilentlyContinue -ErrorAction Stop
+Import-Module Microsoft.Graph.Users          -WarningAction SilentlyContinue -ErrorAction Stop
 Import-Module Microsoft.Graph.Teams          -WarningAction SilentlyContinue -ErrorAction Stop
 
 # Connect to Graph interactively (delegated permissions) with minimum required Read permission scopes
-Connect-Graph -Scopes "Group.Read.All", "TeamMember.Read.All", "Channel.ReadBasic.All", "ChannelMember.Read.All"
+Connect-Graph -Scopes "Group.Read.All", "User.Read.All", "TeamMember.Read.All", "Channel.ReadBasic.All", "ChannelMember.Read.All"
+
+Write-Output "Gathering Teams data..."
 
 if ($GroupID) {
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting group ID $GroupID"
@@ -75,6 +93,7 @@ if ($GroupID) {
     if ($M365GroupIdWithProvisioning) {
         $M365GroupThatIsTeam = $M365GroupIdWithProvisioning | Where-Object {$_.AdditionalProperties.resourceProvisioningOptions -contains "Team"}
         if ($M365GroupThatIsTeam) {
+            Write-Output "Found team $($M365GroupThatIsTeam.DisplayName) ($GroupID)"
             $M365GroupsThatAreTeams = @($M365GroupThatIsTeam)
         } else {
             throw "Group $($M365GroupIdWithProvisioning.DisplayName) ($GroupID) is not a Teams-enabled group"
@@ -83,29 +102,33 @@ if ($GroupID) {
 } elseif ($UserID) {
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting groups for user ID $UserID"
     $User = Get-MgUser -UserId $UserID -ErrorAction Stop
+    Write-Output "Found user $($User.DisplayName) ($UserID)"
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting groups for user ID $UserID - $($User.DisplayName)"
     if ($User) {
         $UserMemberOfIdsWithProvisioning = Get-MgUserMemberOf -UserId $UserID -Property displayName, Id, resourceProvisioningOptions, assignedLabels
         # MemberOf call returns directory roles as well (e.g. Teams Administrator), need to filter to just groups
         $UserGroupIdsWithProvisioning = $UserMemberOfIdsWithProvisioning | Where-Object {$_.AdditionalProperties."@odata.type" -eq "#microsoft.graph.group"}
         $M365GroupsThatAreTeams = @($UserGroupIdsWithProvisioning | Where-Object {$_.AdditionalProperties.resourceProvisioningOptions -contains "Team"})
+        # Add displayname to root of object as return from member of sticks displayName into the AdditionalProperties, where normal Get-MgGroup has it at root of return object
+        $M365GroupsThatAreTeams | ForEach-Object {$_ | Add-Member -NotePropertyName "DisplayName" -NotePropertyValue $_.AdditionalProperties.displayName}
         if (!$M365GroupsThatAreTeams) {
             Write-Warning "User $($User.DisplayName) ($UserID) is not a member of any teams"
             Write-Progress -Id 1 -Activity "Gathering Teams Data" -Completed
             exit
         }
+        Write-Output "Found $($M365GroupsThatAreTeams.count) teams user is a member of"
     }
 } else {
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting list of M365 Groups"
     #ask for assignedLabels in this call for groups since we can't ask for it when calling for the team
     $M365GroupIdsWithProvisioning = Get-MgGroup -Filter "groupTypes/any(c:c eq 'Unified')" -Property Id, DisplayName, Mail, resourceProvisioningOptions, assignedLabels
     $M365GroupsThatAreTeams = $M365GroupIdsWithProvisioning | Where-Object {$_.AdditionalProperties.resourceProvisioningOptions -contains "Team"}
+    Write-Output "Found $($M365GroupsThatAreTeams.count) teams"
 }
 
 Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting Teams properties"
 $n = 1
 $total = $M365GroupsThatAreTeams.count
-#$Teams = foreach ($team in $M365GroupsThatAreTeams) {
 $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting team properties" -CurrentOperation "$n of $total - $($group.DisplayName)" -PercentComplete (100 * $n / $total)
     $team = Get-MgTeam -TeamId $group.Id -Property Id, DisplayName, Description, Visibility, IsArchived, Classification
