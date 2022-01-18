@@ -131,10 +131,9 @@ help Invoke-SimpleGraphRequest -Full
 
 ## Author
 
-
 |Author|Original Publish Date|Last Updated Date
 |----|--------------------------|--------------
-| David Whitney | October 15, 2020 | October 20, 2020
+| David Whitney | October 15, 2020 | January 18, 2022
 
 ## Issues
 
