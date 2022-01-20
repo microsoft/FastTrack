@@ -17,10 +17,10 @@ To authenticate to Graph, you will need to create an application registration in
 1. Navigate to Azure AD's **App Registration** page
 2. Start to create a new app with **New registration**
 3. Give a meaningful name to the app, keep other defaults, and click **Register**
-4. Once created, go to **Authentication** within the app and click **+Add a platform**
+4. Once created, go to **Authentication** within the app page and click **+Add a platform**
 5. Select **Mobile and desktop applications** and check the box next to the Redirect URIs entry for `https://login.microsoftonline.com/common/oauth2/nativeclient`
 6. Click **Configure** in the flyout and then **Save** at the top
-7. _Optionally_, create a client secret or upload a client certificate and add appropriate API permissions for Graph to be used with those Application contexts
+7. _Optionally_, create a client secret or upload a client certificate and add appropriate API permissions for Graph to be used for direct sign-in Application contexts (vs Delegated user sign-in)
 
 #### Install MSAL.PS module for Graph authentication (one time only)
 
@@ -67,7 +67,7 @@ The SimpleGraph module allows for simple calls to Graph, while providing flexibi
 
 #### Get an object/read an API endpoint in Graph with a GET web call
 
-In this example, we're reading a specific user, you@domain.com
+In this example, we're reading a specific user, you@domain.com. See Graph API reference [Get a user](https://docs.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http).
 
 ```PowerShell
 Get-SimpleGraphObject users/you@domain.com
@@ -75,7 +75,7 @@ Get-SimpleGraphObject users/you@domain.com
 
 #### Create an object in Graph with a POST web call
 
-In this example, creating a simple team called "My Sample Team", using the standard blank team template. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable like here:
+In this example, creating a simple team called "My Sample Team", using the standard blank team template. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable. See Graph API reference [Create team](https://docs.microsoft.com/en-us/graph/api/team-post?view=graph-rest-1.0&tabs=http).
 
 ```PowerShell
 $newteam = @{
@@ -88,7 +88,7 @@ New-SimpleGraphObject teams -Body $newteam
 
 #### Update an object in Graph with a PATCH web call
 
-In this example, updating the description for a team with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable like here:
+In this example, updating the description for a team with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad. This requires specifying the body of the request, which is constructed either as a JSON string or as a hashtable. See Graph API reference [Update group](https://docs.microsoft.com/en-us/graph/api/group-update?view=graph-rest-1.0&tabs=http).
 
 ```PowerShell
 Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"description" = "New Team Description"}
@@ -96,7 +96,7 @@ Set-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad -Body @{"descr
 
 #### Remove an object in Graph with a DELETE web call
 
-In this example, deleting a group (which may be teams-enabled) with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad:
+In this example, deleting a group (which may be teams-enabled) with id 5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad. See Graph API reference [Delete group](https://docs.microsoft.com/en-us/graph/api/group-delete?view=graph-rest-1.0&tabs=http).
 
 ```PowerShell
 Remove-SimpleGraphObject groups/5dcbffc1-a762-43a1-aa5a-2ae7edfa6aad
@@ -112,13 +112,13 @@ Invoke-SimpleGraphRequest -Uri "https://graph.microsoft.com/v1.0/users/you@domai
 
 #### Save a report from Graph
 
-In this example, pull down the last 7 days of Office 365 user activity counts by workload. Reports are made available as CSV files and must be saved as files with the SDK. Fore more, see [available data in reports](https://docs.microsoft.com/en-us/graph/reportroot-concept-overview#what-data-can-i-access-by-using-the-reports-apis).
+In this example, pull down the last 7 days of Office 365 user activity counts by workload. For more, see Graph API reference on [available data in reports](https://docs.microsoft.com/en-us/graph/reportroot-concept-overview#what-data-can-i-access-by-using-the-reports-apis).
 
 ```PowerShell
 Get-SimpleGraphReport getOffice365ActiveUserCounts -Days 7
 ```
 
-**Note:** More help on available parameters and examples on the SimpleGraph commands can be seen inline after importing the module, for example:
+**Note:** More help on available parameters and examples on the SimpleGraph commands can be seen inline after importing the module using the `help` command followed by the command name:
 
 ```PowerShell
 help Invoke-SimpleGraphRequest -Full
@@ -133,7 +133,7 @@ help Invoke-SimpleGraphRequest -Full
 
 |Author|Original Publish Date|Last Updated Date
 |----|--------------------------|--------------
-| David Whitney | October 15, 2020 | January 18, 2022
+| David Whitney | October 15, 2020 | January 20, 2022
 
 ## Issues
 
