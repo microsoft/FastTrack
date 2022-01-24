@@ -25,13 +25,28 @@ If you need a quick start creating an input csv for the below examples, download
 Get-CsOnlineUser -ResultSize Unlimited | Export-Csv "C:\path\to\allusers.csv"
 ```
 
+## Update meeting invite bridge number for users
+
+When first enabled for Audio Conferencing, users will be given a default conference bridge number based on their user location and the available bridge numbers in the tenant, and this number is shown in their meeting invites they organize. You may want to change this for some or all users after making updates to your default bridge or acquiring additional local conference bridge numbers. The number included on invites can be [updated manually in the Teams admin center](https://docs.microsoft.com/en-us/microsoftteams/set-the-phone-numbers-included-on-invites-in-teams), or via PowerShell with a CSV input of users.
+
+**_Input CSV needs a column with name UserPrincipalName._**
+
+```PowerShell
+$newbridgenumber = "+15551234567"
+$updatebridgeusers = Import-Csv "C:\path\to\updatebridgeusers.csv"
+
+foreach ($user in $updatebridgeusers) {
+    Set-CsOnlineDialInConferencingUser -Identity $user.UserPrincipalName -ServiceNumber $newbridgenumber
+}
+```
+
 ## Limit call me/dial-out from an Audio Conferencing-enabled Teams meeting
 
 By default, all users can dial out to any destination with the call me at (sometimes referred to as "join with phone") and add PSTN participant feature. This is subject to the included dial out minute pool for [Zone A](https://docs.microsoft.com/en-us/microsoftteams/audio-conferencing-zones) target numbers and [Communication Credits](https://docs.microsoft.com/en-us/microsoftteams/what-are-communications-credits) for non-Zone A target numbers and minute pool overage dial outs. For full details on this, read the ["Dial-Out"/"Call Me At" minutes benefit docs page](https://docs.microsoft.com/en-us/microsoftteams/audio-conferencing-subscription-dial-out).
 
-You may want to adjust which destinations your users can dial out to, or disable it outright. To do so in bulk, we must use the `Grant-CsDialOutPolicy` command for each user to limit Communications Credits consumption. See the [Outbound calling restrictions policies docs page](https://docs.microsoft.com/en-us/microsoftteams/outbound-calling-restriction-policies) for full details. Following are a couple examples of using a CSV file input to do so. 
+You may want to adjust which destinations your users can dial out to, or disable it outright. To do so in bulk, we must use the `Grant-CsDialOutPolicy` command for each user to limit Communications Credits consumption. See the [Outbound calling restrictions policies docs page](https://docs.microsoft.com/en-us/microsoftteams/outbound-calling-restriction-policies) for full details. Following are a couple examples of using a CSV file input to do so.
 
-### Disable dial out completely from Audio Conferencing-enabled meetings:
+### Disable dial out completely from Audio Conferencing-enabled meetings
 
 **_Input CSV needs a column with name UserPrincipalName._**
 
@@ -49,9 +64,9 @@ If you want to disable this for **all users** who are not already set so, a CSV 
 Get-CsOnlineUser -Filter {Enabled -eq $true -and OnlineDialOutPolicy -ne "DialoutCPCDisabledPSTNInternational"} | Grant-CsDialOutPolicy -PolicyName "DialoutCPCDisabledPSTNInternational"
 ```
 
-### Limit dial out to only Zone A countries from Audio Conferencing-enabled meetings:
+### Limit dial out to only Zone A countries from Audio Conferencing-enabled meetings
 
-***Input CSV needs a column with name UserPrincipalName.***
+**_Input CSV needs a column with name UserPrincipalName._**
 
 ```PowerShell
 $zoneadialoutusers = Import-Csv "C:\path\to\zoneadialoutusers.csv"
@@ -67,7 +82,7 @@ By default, all users are allowed to use toll-free bridge numbers and will have 
 
 You may want to [disable the use of toll-free dial-in numbers for some users](https://docs.microsoft.com/en-us/microsoftteams/disabling-toll-free-numbers-for-specific-teams-users) while leaving it enabled for others. To do so in bulk requires a PowerShell command run per user. Here's an example of how to do so with a CSV input.
 
-***Input CSV needs a column with name UserPrincipalName.***
+**_Input CSV needs a column with name UserPrincipalName._**
 
 ```PowerShell
 $notollfreeusers = Import-Csv "C:\path\to\notollfreeusers.csv"
