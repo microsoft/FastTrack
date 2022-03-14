@@ -1,55 +1,56 @@
+# Microsoft FastTrack Open Source - Get-MgUserVoicemailReport
 
-# Microsoft FastTrack Open Source - Get-TeamsChannelUsersReport.ps1
+This script uses Graph API to read and save a report of all voicemail messages for a specific or all users. It depends on the Graph SDK for PowerShell and Application permissions to read user messages.
 
-Create a CSV file output that contains a row for each user that has a role in each channel of every team in the tenant or specified teams.
+## Pre-requisites
+
+- Install the [Graph SDK for PowerShell](https://docs.microsoft.com/en-us/graph/powershell/installation)
+- Create an [Azure AD application](https://docs.microsoft.com/en-us/graph/powershell/app-only?tabs=azure-portal) and grant 'Mail.Read' permissions to it
 
 ## Usage
 
-Report on all teams in the tenant
+**Important:** Before running the script, connect to Graph in PowerShell by running `Connect-MgGraph` with [App-only authentication](https://docs.microsoft.com/en-us/graph/powershell/app-only?tabs=azure-portal#authenticate).
 
-```PowerShell
-.\Get-TeamsChannelUsersReport.ps1 -ExportCSVFilePath "C:\path\to\export.csv"
-```
+To create a report of the voicemails of all users, simply run the script:
 
-Report on a specific team by its group ID
+`Get-MgUserVoicemailReport.ps1`
 
-```PowerShell
-.\Get-TeamsChannelUsersReport.ps1 -GroupId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" -ExportCSVFilePath "C:\path\to\export.csv"
-```
+To specify a date range, use one or both of the `ReceivedDateTimeStart` and `ReceivedDateTimeEnd` parameters:
 
-Report on teams that the specified user is a member or owner of
+`Get-MgUserVoicemailReport.ps1 -ReceivedDateTimeStart "2022-01-01" -ReceivedDateTimeEnd "2022-03-31"`
 
-```PowerShell
-.\Get-TeamsChannelUsersReport.ps1 -UserId "user@domain.com" -ExportCSVFilePath "C:\path\to\export.csv"
-```
+To create a report for only a single specific user, provide the username with the `User` parameter:
 
-### Output columns
+`Get-MgUserVoicemailReport.ps1 -User "userA@domain.com"`
 
-- Team Name
-- Group ID
-- Team Description
-- Team Privacy
-- Team Is Archived
-- Team Classification
-- Team Sensivitity Label
-- Channel Name
-- Channel Membership Type
-- Channel Description
-- Channel Member Name
-- Channel Member Role
-- Channel Member User ID
-- Channel Member Email
+To specify the export file, use `-ExportCsvFilePath`.
+
+`Get-MgUserVoicemailReport.ps1 -ExportCsvFilePath "C:\Users\me\Downloads\VMUserReport.csv"`
+
+**Note:** By default the script saves a timestamped file to the same directly where the script was run.
+
+## Output
+
+The saved CSV file report contains these columns:
+
+* userPrincipalName
+* mail
+* receivedDateTime
+* fromName
+* fromAddress
+* subject
+* id
 
 ## Applies To
 
-- Microsoft Graph
+- Exchange Online
 - Microsoft Teams
 
 ## Author
 
-|Author|Last Update Date
+|Author|Original Publish Date
 |----|--------------------------
-|David Whitney|November 10, 2021|
+|David Whitney|March 14, 2022|
 
 ## Issues
 

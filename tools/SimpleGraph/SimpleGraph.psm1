@@ -1,6 +1,6 @@
 <#
 
-SimpleGraph module for PowerShell, using SharePoint Online PnP PowerShell module| Version 0.9
+SimpleGraph module for PowerShell, using MSAL.PS PowerShell module for Graph authentication | Version 0.9.3
 
 by David.Whitney@microsoft.com
 
@@ -10,32 +10,24 @@ PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF TH
 
 #>
 
-# First ensure SharePoint Online PnP PowerShell module is available
-Write-Verbose "Checking for SharePoint Online PnP module"
-$PnPModule = Get-Module -Name "SharePointPnPPowerShellOnline" -ListAvailable
-if (-not $PnPModule) {
-    $errorstring = "Authentication to Microsoft Graph with SimpleGraph requires installation of SharePoint Online PnP PowerShell module - use 'Install-Module SharePointPnPPowerShellOnline' from an elevated PowerShell session, restart this PowerShell session, then try again."
+# First ensure Microsoft Authentication Library (MSAL) is installed via MSAL.PS public module
+Write-Verbose "Checking for MSAL.PS module"
+$MSALModule = Get-Module -Name "MSAL.PS" -ListAvailable
+if (-not $MSALModule) {
+    $errorstring = "Authentication to Microsoft Graph with SimpleGraph requires installation of the MSAL.PS module. Run the command 'Install-Module MSAL.PS' from an elevated PowerShell session, restart this PowerShell session, then try again."
     $errorreturn = New-Object System.Management.Automation.ErrorRecord($errorstring, $null, 'NotSpecified', $null)
     throw $errorreturn
-}
-Import-Module SharePointPnPPowerShellOnline -WarningAction SilentlyContinue -ErrorAction Stop
-
-$script:DefaultApiVersion = "v1.0"
-$script:GraphBaseUri = "https://graph.microsoft.com"
-
-function Get-SimpleGraphAuthToken {
-    try {
-        Get-PnPGraphAccessToken
-    } catch {
-        $e = $_
-        if ($e.Exception -like "*Connect-PnPOnline*") {
-            Write-Debug ("{0}" -f $e.Exception)
-            $errorstring = ("Please run Connect-PnPOnline to authenticate with Microsoft Graph before using SimpleGraph")
-            $errorreturn = New-Object System.Management.Automation.ErrorRecord($errorstring, $null, 'NotSpecified', $null)
-            $PSCmdlet.ThrowTerminatingError($errorreturn)
-        }
+} else {
+    if (!(Get-Module -Name "MSAL.PS")) {
+        Import-Module -Name "MSAL.PS" -ErrorAction Stop
     }
 }
+
+# Setup common module variables
+$script:DefaultApiVersion = "v1.0"
+$script:GraphBaseUri = "https://graph.microsoft.com"
+$script:MsalClientApplication = $null
+$script:Scopes = @(".default")
 
 # https://stackoverflow.com/questions/18771424/how-to-get-powershell-invoke-restmethod-to-return-body-of-http-500-code-response
 function ParseErrorForResponseBody($RestError) {
@@ -55,6 +47,203 @@ function ParseErrorForResponseBody($RestError) {
         return $RestError.ErrorDetails.Message
     }
 }
+
+<#
+.Synopsis
+    Connect and authenticate to Graph
+.DESCRIPTION
+    Connect and authenticate to Graph, specifying your Client ID and other authentication details
+.EXAMPLE
+    Connect-SimpleGraph -ClientId XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX -TenantId XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX -Scopes "User.Read.All"
+
+    Authenticate to Graph for certain permissions Scopes using a specific Client ID and Tenant ID
+.EXAMPLE
+    $clientCertThumbprint = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    $clientCertObject = Get-Item "Cert:\CurrentUser\My\$($clientCertThumbprint)"
+    Connect-SimpleGraph -ClientID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -TenantId "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -ClientCertificate $clientCertObject
+    
+    Authenticate to Graph using a specific Client ID, Tenant ID, and local X.509 Client Certificate from an Azure AD registered application with required Application permissions
+.EXAMPLE
+    $clientSecret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" | ConvertTo-SecureString -AsPlainText -Force
+    Connect-SimpleGraph -ClientID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -TenantId "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -ClientSecret $clientSecret
+
+    Authenticate to Graph using a specific Client ID, Tenant ID, and Client Secret as a SecureString from an Azure AD registered application with required Application permissions
+#>
+function Connect-SimpleGraph {
+    [CmdletBinding(
+        DefaultParameterSetName = "Delegation"
+    )]
+    param(
+        # Specify the Client ID that will be used to authorize the connection to Graph
+        [Parameter(
+            Mandatory = $true
+        )]
+        [Alias("ApplicationId")]
+        [string]
+        $ClientId,
+
+        # List of permissions to request access to in Graph with this connection
+        [Parameter(
+            ParameterSetName = "Delegation",
+            Mandatory = $true
+        )]
+        [string[]]
+        $Scopes,
+
+        # Supply the Client Secret as a SecureString when authenticating as a confidential application
+        [Parameter(
+            ParameterSetName = "Secret",
+            Mandatory = $true
+        )]
+        [Alias("ClientPassword","ApplicationSecret","ApplicationPassword")]
+        [System.Security.SecureString]
+        $ClientSecret,
+
+        # Specify an X.509 certificate to use for authenticating to Graph as an application
+        [Parameter(
+            ParameterSetName = "Certificate",
+            Mandatory = $true
+        )]
+        [System.Security.Cryptography.X509Certificates.X509Certificate2]
+        $ClientCertificate,
+
+        # Specify the Tenant ID to authorize against when authenticating with a certificate
+        [Parameter(
+            ParameterSetName = "Delegation",
+            Mandatory = $false
+        )]
+        [Parameter(
+            ParameterSetName = "Certificate",
+            Mandatory = $true
+        )]
+        [Parameter(
+            ParameterSetName = "Secret",
+            Mandatory = $true
+        )]
+        [string]
+        $TenantId,
+
+        # Specify a custom RedirectUri for Delegated auth. If not specified, the default nativeclient redirect will be used
+        [Parameter(
+            ParameterSetName = "Delegation",
+            Mandatory = $false
+        )]
+        [string]
+        $RedirectUri,
+
+        # Choose a Graph environment for national clouds like US Government (aka GCC High)
+        [Parameter(
+            Mandatory = $false
+        )]
+        [ValidateSet("Global","USGov","USGovDoD","Germany","China")]
+        [Alias("GraphEnvironmentName", "EnvironmentName")]
+        [string]
+        $Environment = "Global"
+    )
+
+    # Update Graph endpoint for web calls and login instance name for Get-MsalToken
+    switch ($GraphEnvironmentName) {
+        ("Global") {
+            $script:GraphBaseUri = "https://graph.microsoft.com"
+            $AzureCloudInstance = "AzurePublic"
+        }
+        ("USGov") {
+            $script:GraphBaseUri = "https://graph.microsoft.us"
+            $AzureCloudInstance = "AzureUsGovernment"
+        }
+        ("USGovDoD") {
+            $script:GraphBaseUri = "https://dod-graph.microsoft.us"
+            $AzureCloudInstance = "AzureUsGovernment"
+        }
+        ("Germany") {
+            $script:GraphBaseUri = "https://graph.microsoft.de"
+            $AzureCloudInstance = "AzureGermany"
+        }
+        ("China") {
+            $script:GraphBaseUri = "https://microsoftgraph.chinacloudapi.cn"
+            $AzureCloudInstance = "AzureChina"
+        }
+        default {
+            $script:GraphBaseUri = "https://graph.microsoft.com"
+            $AzureCloudInstance = "AzurePublic"
+        }
+    }
+
+    # Create a MsalClientApplication instance and save Scopes to use with Get-MsalToken based on what kind of auth is being used
+    # Start to build arguments to pass to New-MsalClientApplication 
+    $NewMsalClientApplication_Args = @{
+        "ClientId" = $ClientId;
+        "AzureCloudInstance" = $AzureCloudInstance
+    }
+    switch ($PSCmdlet.ParameterSetName) {
+        ("Delegation") {
+            # Add relevant arguments based on what has been supplied to Connect-SimpleGraph
+            if ($TenantId) {
+                $NewMsalClientApplication_Args.Add(
+                    "TenantId", $TenantId
+                )
+            }
+            if ($RedirectUri) {
+                $NewMsalClientApplication_Args.Add(
+                    "RedirectUri", $RedirectUri
+                )
+            }
+            
+            # Delegation auth expects a custom permission scope has been provided
+            $script:Scopes = $Scopes
+        }
+        ("Secret") {
+            $NewMsalClientApplication_Args.Add(
+                "ClientSecret", $ClientSecret
+            )
+            $NewMsalClientApplication_Args.Add(
+                "TenantId", $TenantId
+            )
+            $script:Scopes = ".default"
+        }
+        ("Certificate") {
+            $NewMsalClientApplication_Args.Add(
+                "ClientCertificate", $ClientCertificate
+            )
+            $NewMsalClientApplication_Args.Add(
+                "TenantId", $TenantId
+            )
+            $script:Scopes = ".default"
+        }
+    }
+
+    # Use splat of args to pass what has been supplied via Connect-SimpleGraph on to New-MsalClientApplication
+    $script:MsalClientApplication = New-MsalClientApplication @NewMsalClientApplication_Args
+
+    try {
+        $MsalToken = $script:MsalClientApplication | Get-MsalToken -Scopes $script:Scopes
+    } catch {
+        # TODO - catch Windows PowerShell error related to certs, see https://github.com/AzureAD/MSAL.PS/issues/15
+        $PSCmdlet.ThrowTerminatingError($PSItem)
+    }
+    Write-Debug ("SimpleGraph auth token obtained (Current Date: {0}, auth token ExpiresOn: {1})" -f (Get-Date).ToLocalTime(), $MsalToken.ExpiresOn.ToLocalTime())
+}
+Export-ModuleMember -Function Connect-SimpleGraph
+
+<#
+.Synopsis
+    Disconnect from Graph
+.DESCRIPTION
+    Disconnect from Graph by removing the current client application authentication context from the session
+.EXAMPLE
+    Disconnect-SimpleGraph
+
+    Disconnect from Graph and remove current session auth context
+#>
+function Disconnect-SimpleGraph {
+    [CmdletBinding()]
+    param()
+    $script:MsalClientApplication = $null
+    $script:Scopes = @(".default")
+}
+Export-ModuleMember -Function Disconnect-SimpleGraph
+
+# TODO - Implement a Get-SimpleGraphContext function?
 
 <#
 .Synopsis
@@ -78,7 +267,8 @@ function ParseErrorForResponseBody($RestError) {
 #>
 function Invoke-SimpleGraphRequest {
     [CmdletBinding(
-        SupportsShouldProcess = $true
+        SupportsShouldProcess = $true,
+        DefaultParameterSetName = "Path"
     )]
     param (
         # Specify which Rest method this Graph request will be
@@ -106,10 +296,17 @@ function Invoke-SimpleGraphRequest {
             ParameterSetName = "Uri",
             Mandatory = $true)]
         [ValidateScript({
-            if (($_ -like "https://graph.microsoft.com/*") -or ($_ -like "https://graph.microsoft.us/*")) {
+            $UriInput = $_
+            $validGraphEndpoints = @("https://graph.microsoft.com/*",
+                                     "https://graph.microsoft.us/*",
+                                     "https://dod-graph.microsoft.us/*",
+                                     "https://dod-graph.microsoft.us/*",
+                                     "https://graph.microsoft.de/*",
+                                     "https://microsoftgraph.chinacloudapi.cn/*")
+            if ([System.String]::IsNullOrEmpty($UriInput) -or ($validGraphEndpoints | Where-Object {$UriInput -like $_})) {
                 $true
             } else {
-                $errorstring = "Uri must start with https://graph.microsoft.com/"
+                $errorstring = "Uri base endpoint must be a Graph endpoint such as https://graph.microsoft.com/"
                 $errorreturn = New-Object System.Management.Automation.ErrorRecord($errorstring, $null, 'NotSpecified', $null)
                 $PSCmdlet.ThrowTerminatingError($errorreturn)        
             }})]
@@ -151,12 +348,17 @@ function Invoke-SimpleGraphRequest {
         $AccessToken
     )
 
-    # Get access token and build header for request
     if (!$AccessToken) {
-        $AccessToken = Get-SimpleGraphAuthToken
-    }
-    $headers = @{
-        Authorization = ("Bearer {0}" -f $AccessToken)
+        if (!$script:MsalClientApplication) {
+            $errorstring = "Run Connect-SimpleGraph with appropriate parameters to authenticate to Graph before invoking a request"
+            $errorreturn = New-Object System.Management.Automation.ErrorRecord($errorstring, $null, 'NotSpecified', $null)
+            $PSCmdlet.ThrowTerminatingError($errorreturn)
+        }
+        try {
+            $MsalAuthToken = $script:MsalClientApplication | Get-MsalToken -Scopes $script:Scopes
+        } catch {
+            $PSCmdlet.ThrowTerminatingError($PSItem)
+        }
     }
 
     # Build full URI that request will use
@@ -177,6 +379,9 @@ function Invoke-SimpleGraphRequest {
             $ApiVersion = "v" + $ApiVersion
         }
         if ($Filter -and $Method -eq "GET") {
+            # ----
+            # TODO: More parsing to know if a filter has already been supplied in the Path and either throw an error or add on to existing filter
+            # ----
             $Uri = ("{0}/{1}/{2}?`$filter={3}" -f $script:GraphBaseUri, ($ApiVersion.Trim('/')), ($Path.Trim('/')), $Filter)
         } else {
             $Uri = ("{0}/{1}/{2}" -f $script:GraphBaseUri, ($ApiVersion.Trim('/')), ($Path.Trim('/')))
@@ -197,7 +402,6 @@ function Invoke-SimpleGraphRequest {
     if ($Body) {
         Write-Debug ("Body: {0}" -f $Body)
     }
-    Write-Debug ("Headers: Content-Type={0}; Authorization={1}; ExpiresOn={2}" -f $headers['Content-Type'], $headers['Authorization'], $headers['ExpiresOn'])
 
     # Confirm deletion before moving on
     if (($Method -like "DELETE") -and -not ($Force -or $PSCmdlet.ShouldProcess($Uri, "DELETE object"))) {
@@ -205,11 +409,30 @@ function Invoke-SimpleGraphRequest {
         $errorreturn = New-Object System.Management.Automation.ErrorRecord($errorstring, $null, 'NotSpecified', $null)
         $PSCmdlet.ThrowTerminatingError($errorreturn)
     }
+
+    if ($Uri -like "*/reports/*") {
+        Write-Debug "Detected that request is a report via Uri, will treat return as CSV"
+        $ResponseIsCSV = $true
+    } else {
+        $ResponseIsCSV = $false
+    }
+
+    # Create header for web request that includes Authorization bearer either directly supplied or via MsalAuth token
+    if ($AccessToken) {
+        $headers = @{
+            Authorization = ("Bearer {0}" -f $AccessToken)
+        }
+     } else {
+         $headers = @{
+             Authorization = $MsalAuthToken.CreateAuthorizationHeader()
+         }
+     }
+
     try {
         if ($Body) {
-            $response = Invoke-RestMethod -Uri $Uri -Method $Method -Headers $headers -Body $Body -ContentType "application/json" -Verbose:$DebugPreference
+            $response = Invoke-RestMethod -Uri $Uri -Method $Method -Headers $headers -Body $Body
         } else {
-            $response = Invoke-RestMethod -Uri $Uri -Method $Method -Headers $headers -ContentType "application/json" -Verbose:$DebugPreference
+            $response = Invoke-RestMethod -Uri $Uri -Method $Method -Headers $headers
         }
     } catch {
         $responsemessage = (ParseErrorForResponseBody $_).Error.Message
@@ -226,29 +449,49 @@ function Invoke-SimpleGraphRequest {
         if ($Raw) {
             return $response
         }
+        
+        # Graph API Reports calls download a CSV file (redirects to a CSV file location), so need convert from straight CSV to PS Objects
+        if ($ResponseIsCsv) {
+            Write-Debug ("Assuming response is CSV, cleaning and converting to object return")
+            # For some reason, return from Report download includes some apparent garbage characters in front which mess up the CSV conversion
+            # Coded as character Unicode values to avoid encoding issues, characters are: 'ï','»','¿'
+            # This is needed as of Jan 18, 2022 against v1.0 and beta APIs
+            $cleanResponse = $response.ToString().TrimStart([char]0xef,[char]0xbb,[char]0xbf)
+            $output = $cleanResponse | ConvertFrom-Csv
+            return $output
+        }
+
         if ($response.'@odata.type') {
             # strip Graph context properties for simplicity
+            Write-Debug ("Removing @odata.type = {0}" -f $response.'@odata.type')
             $response.PSObject.Properties.Remove('@odata.type')
         }
         # if the @odata.context property has $entity at the end, this is a single item so return as is, otherwise return the value property
         if ($response.'@odata.context' -like "*`$entity") {
             # strip Graph context properties for simplicity
+            Write-Debug ("Removing @odata.context = {0}" -f $response.'@odata.context')
             $response.PSObject.Properties.Remove('@odata.context')
-            return $response
+            $output = $response
         } elseif ($response.'@odata.nextLink' -and $Uri -notlike "*`$top=*") {
             # multiple pages of data, invoke a request to get the next page as long as it wasn't explicitly called with a $top URL
             # this allows return to include all data in the asked for collection when the server automatically paginates the response
-            $response.value
+            $output = $response.value
             Write-Verbose "Response has been paginated, retrieving next page of data"
             Write-Progress -Id 1 -Activity "Results paginated" -Status "Retrieving next page of data"
-            return (Invoke-SimpleGraphRequest -Method $Method -Uri $response.'@odata.nextLink')
-            Write-Progress -Id 1 -Completed
+            $output += (Invoke-SimpleGraphRequest -Method $Method -Uri $response.'@odata.nextLink')
+            Write-Progress -Id 1 -Activity "Results paginated" -Completed
         } else {
-            return $response.value
+            # return from Invoke-MgGraphRequest is a hashtable, so cast each return value to PS Object
+            Write-Debug ("Assuming response has a value parameter to return")
+            $output = $response.value
         }
+
+        return $output
+
     } else {
         Write-Verbose ("{0} request successful, Graph gave no response" -f $Method)
     }
+
 }
 Export-ModuleMember -Function Invoke-SimpleGraphRequest
 
@@ -281,7 +524,9 @@ Export-ModuleMember -Function Invoke-SimpleGraphRequest
     Response from Graph as a PowerShell Custom Object (System.Management.Automation.PSCustomObject)
 #>
 function Get-SimpleGraphObject {
-    [CmdletBinding()]
+    [CmdletBinding(
+        DefaultParameterSetName = "Path"
+    )]
     param(
         # Specify the Graph request Uri without needing to specify the base Uri of https://graph.microsoft.com/{ApiVersion}/
         [Parameter(
@@ -506,12 +751,13 @@ Export-ModuleMember -Function Remove-SimpleGraphObject
 .EXAMPLE
     Get-SimpleGraphReport getOffice365ActiveUserDetail -Days 7
 
-    Get a usage report
+    Get a usage report that saves to the current folder as a CSV file.
 .OUTPUTS
-    Response from Graph as a PowerShell Custom Object (System.Management.Automation.PSCustomObject)
-#>
+    Response from Graph as a PowerShell Custom Object (System.Management.Automation.PSCustomObject)#>
 function Get-SimpleGraphReport {
-    [CmdletBinding()]
+    [CmdletBinding(
+        DefaultParameterSetName = "Name"
+    )]
     param(
         # Specify the Graph report to get, without needing to specify the base Uri of https://graph.microsoft.com/{ApiVersion}/reports/
         [Parameter(
@@ -544,12 +790,10 @@ function Get-SimpleGraphReport {
     )
     try {
         if ($Name) {
-            $Path = ("reports/{0}(period='D{1}')?`$format=application/json" -f $Name, $Days)
+            $Path = ("reports/{0}(period='D{1}')" -f $Name, $Days)
             Write-Debug ("Constructed Graph request path: {0}" -f $Path)
             Invoke-SimpleGraphRequest -Method GET -ApiVersion $ApiVersion -Path $Path
         } else {
-            # if Uri didn't specify the format, do so as JSON
-            if (($Uri -notlike "*`$format=*")) {$Uri + "`$format=application/json"}
             Invoke-SimpleGraphRequest -Method GET -Uri $Uri
         }
     } catch {
