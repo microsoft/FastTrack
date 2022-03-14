@@ -4,8 +4,8 @@ This script uses Graph API to read and save a report of all voicemail messages f
 
 ## Pre-requisites
 
-- Install the [Graph SDK for PowerShell]("https://docs.microsoft.com/en-us/graph/powershell/installation")
-- Create an [Azure AD application]("https://docs.microsoft.com/en-us/graph/powershell/app-only?tabs=azure-portal") and grant 'Mail.Read' permissions to it
+- Install the [Graph SDK for PowerShell](https://docs.microsoft.com/en-us/graph/powershell/installation)
+- Create an [Azure AD application](https://docs.microsoft.com/en-us/graph/powershell/app-only?tabs=azure-portal) and grant 'Mail.Read' permissions to it
 
 ## Usage
 
