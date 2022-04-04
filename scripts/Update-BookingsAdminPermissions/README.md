@@ -10,6 +10,8 @@ You'll need to install the Exchange Online module to use this PowerShell script.
 Install-Module ExchangeOnline
 ```
 
+## Examples
+
 Report on all Bookings's mailboxes's permissions.
 
 ```PowerShell
