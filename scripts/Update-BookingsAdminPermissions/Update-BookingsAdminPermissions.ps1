@@ -6,6 +6,39 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY 
 PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF THIS CODE REMAINS WITH THE USER.
 #>
 
+<#
+.SYNOPSIS
+    To Add/Remove user(s) to all Bookings's mailboxes and export out to a CSV. 
+
+.DESCRIPTION
+    To Add/Remove user(s) to all Bookings's mailboxes's permissions so that you can view/edit Bookings via Graph API or Bookings PowerShell SDK. Then you can export out
+    the Bookings mailbox permissions afterwards to a CSV.
+
+.EXAMPLE
+    .\Update-BookingsAdminPermissions.ps1 -ExportCSVFilePath "C:\path\to\export.csv"
+    Report on all Bookings's mailboxes's permissions.
+
+.EXAMPLE
+    .\Update-BookingsAdminPermissions.ps1 -AddUser "User1@Contoso.com","User2@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
+    Add users "User1@Contoso.com" and "User2@Contoso.com" to all Bookings's mailboxes's permissions and then Export a CSV of all Bookings's Mailboxes's permissions.
+
+.EXAMPLE
+    .\Update-BookingsAdminPermissions.ps1 -RemoveUser "User3@Contoso.com","User4@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
+    Remove users "User3@Contoso.com" and "User4@Contoso.com" from all Bookings's mailboxes's permissions and then Export a CSV of all Bookings's Mailboxes's permissions.
+
+.EXAMPLE
+    .\Update-BookingsAdminPermissions.ps1 -AddUser "User1@Contoso.com","User2@Contoso.com" -RemoveUser "User3@Contoso.com","User4@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
+    Add users "User1@Contoso.com" and "User2@Contoso.com" to all Bookings's mailboxes's permissions, Remove users "User3@Contoso.com" and "User4@Contoso.com" from all Bookings's mailboxes's permissions,
+    and then Export a CSV of all Bookings's Mailboxes's permissions.
+
+.OUTPUTS
+    Writes out a CSV file report with columns:
+    - Identity
+    - User
+    - AccessRights
+    - ObjectState
+#>
+
 [CmdletBinding()]
 param
 (   
