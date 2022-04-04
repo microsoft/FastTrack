@@ -6,20 +6,35 @@ This script is used to search for all Bookings mailboxes and add/remove Administ
 
 You'll need to install the Exchange Online module to use this PowerShell script. 
 
+```PowerShell
 Install-Module ExchangeOnline
+```
 
 Report on all Bookings's mailboxes's permissions.
+
+```PowerShell
 .\Update-BookingsAdminPermissions.ps1 -ExportCSVFilePath "C:\path\to\export.csv"
+```
     
 Add users "User1@Contoso.com" and "User2@Contoso.com" to all Bookings's mailboxes's permissions and then Export a CSV of all Bookings's Mailboxes's permissions.
+
+```PowerShell
 .\Update-BookingsAdminPermissions.ps1 -AddUser "User1@Contoso.com","User2@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
+```
     
-Remove users "User3@Contoso.com" and "User4@Contoso.com" from all Bookings's mailboxes's permissions and then Export a CSV of all Bookings's Mailboxes's permissions    .\Update-BookingsAdminPermissions.ps1 -RemoveUser "User3@Contoso.com","User4@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
+Remove users "User3@Contoso.com" and "User4@Contoso.com" from all Bookings's mailboxes's permissions and then Export a CSV of all Bookings's Mailboxes's permissions.
+
+```PowerShell
+.\Update-BookingsAdminPermissions.ps1 -RemoveUser "User3@Contoso.com","User4@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
+```
     
 Add users "User1@Contoso.com" and "User2@Contoso.com" to all Bookings's mailboxes's permissions, Remove users "User3@Contoso.com" and "User4@Contoso.com" from all Bookings's mailboxes's permissions, and then Export a CSV of all Bookings's Mailboxes's permissions.
-.\Update-BookingsAdminPermissions.ps1 -AddUser "User1@Contoso.com","User2@Contoso.com" -RemoveUser "User3@Contoso.com","User4@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
 
-Output columns
+```PowerShell
+.\Update-BookingsAdminPermissions.ps1 -AddUser "User1@Contoso.com","User2@Contoso.com" -RemoveUser "User3@Contoso.com","User4@Contoso.com" -ExportCSVFilePath C:\path\to\export.csv
+```
+
+### Output columns
 
 - Identity
 - User
