@@ -53,6 +53,7 @@ Add users "User1@Contoso.com" and "User2@Contoso.com" to all Bookings's mailboxe
 |Author|Original Publish Date
 |----|--------------------------
 |Nick Bear|04-01-2022|
+|David Whitney|04-01-2022|
 
 ## Issues
 
