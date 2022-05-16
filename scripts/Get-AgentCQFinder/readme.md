@@ -1,4 +1,4 @@
-# Microsoft FastTrack Open Source - MigrationToTeamsDNSCheck
+# Microsoft FastTrack Open Source - Get-AgentCQFinder
 
 This Script function will help IT PROs find the Call Queues to which an specific Agent belongs.
 The only needed details is the “User Principal Name” (UPN) of the Agent.
