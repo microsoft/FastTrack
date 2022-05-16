@@ -27,7 +27,6 @@ You can read the outcome of report on the screen/shell or you view it in a CSV f
 #### Tool:
 ![Tool](https://github.com/tiagoroxo/FastTrack/blob/master/scripts/Get-AgentCQFinder/tool.JPG?raw=true)
 
-
 ## Applies To
 
 - Microsoft Teams
