@@ -25,7 +25,7 @@ You can read the outcome of report on the screen/shell or you view it in a CSV f
 - This script will only list data, won't do any change;
 #### ----> Always use the most recent version of the Script <----
 #### Tool:
-![Tool](https://github.com/tiagoroxo/FastTrack/blob/master/scripts/Get-AgentCQFinder/tool.JPG?raw=true)
+![Tool](https://github.com/tiagoroxo/FastTrack/blob/master/scripts/Get-AgentCQFinder/Tool.jpg?raw=true)
 
 ## Applies To
 
