@@ -7,7 +7,8 @@ Once you run the script, you will have to enter the UPN of the Agent, the outcom
 - How many Call Queues the users belongs;
 - The details of the user (UPN/SIP/Phone)
 - The details of the Call Queue (QQ Name/QQ ID) 
-You can read the outcome of report on the screen/shell or you view it in a CSV file.
+
+-You can read the outcome of report on the screen/shell or you view it in a CSV file.
 
 ## Usage
 
@@ -15,12 +16,11 @@ You can read the outcome of report on the screen/shell or you view it in a CSV f
 ####  2. Install/Update Microsoft Teams Powershell Module: 
 - Install: Open PowerShell and run the following cmdlet: "Install-Module -Name MicrosoftTeams"
 - Update: Open PowerShell and run the following cmdlet: "Update-Module MicrosoftTeams"
--
-- Module Source: https://www.powershellgallery.com/packages/MicrosoftTeams
 ####  3. You will need Office 365 tenant admin rights to access Call Queues details;
-####  4. Once the above steps are completed, you can execute the script. Open a Powershell and execute scrip. Example: ".\Get-AgentCQFinder -AgentID tiago@contoso.com"
+####  4. Once the above steps are completed, you can execute the script. 
+- Open a Powershell and execute script. Example: **".\Get-AgentCQFinder -AgentID tiago@contoso.com"**
 ####  
-- Once you execute the script, you will be prompt to enter your Office 365 credentials;
+- Once you execute the script, you will be prompt to enter your Office 365 tenant admin credentials;
 - The credentials will be used to obtain all the details from the Call Queues;
 - This script will only list data, won't do any change;
 #### ----> Always use the most recent version of the Script <----
