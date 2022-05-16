@@ -1,7 +1,7 @@
 <#
 .Description
 This Script function will help IT PROs find the Call Queues to which an specific Agent belongs.
-The only needed details is the “User Principal Name” (UPN) of the Agent.
+The only needed detail is the “User Principal Name” (UPN) of the Agent.
 
 Once you run the script, you will have to enter the UPN of the Agent, the outcome will give you the following details:
 - How many Call Queues the users belongs;
@@ -24,13 +24,13 @@ You can read the outcome of report on the screen/shell or you view it in a CSV f
 .Version: V1.0
 
 .Author: Tiago Roxo
+
 #> 
 
 #FUNCTION PARAMS
 param(
-    [Parameter(Mandatory = $false,ParameterSetName='AgentID')] [string] $agentID
+    [Parameter(Mandatory = $true,ParameterSetName='AgentID')] [string] $agentID
     )
-if(-not($AgentID)) { Throw “You must supply a value for -AgentID! Example: tiago@contoso.com” }
 
 #Connecting to Microsoft Teams
 try{
@@ -46,30 +46,31 @@ try{
     exit
 }
 
-Write-Host "Search for Agent: " $agentID -BackgroundColor White -ForegroundColor Black
+Write-Host "Search for Agent:" $agentID -BackgroundColor White -ForegroundColor Black
 
 #Variables
 ##############################################################################################
 $filePath = "$($env:USERPROFILE)\Downloads\"
-$fileName = "ReportAuditGuestTeams_"+ (Get-Date).ToString('yyyy-MM-dd') +".csv"
+$fileName = "AgentCQFind_"+ (Get-Date).ToString('yyyy-MM-dd') +".csv"
 $file = $filePath+$fileName
 $users = @()
 
+
 #MAGIC STARTS HERE
 $cq = Get-CsCallQueue
+$userID = Get-CsOnlineUser -Identity $agentID
 foreach($i in $cq){
     foreach($user in $i.Agents){
-        $user = Get-CsOnlineUser -Identity $user.ObjectId | Select UserPrincipalName, LineUri, SipAddress
-        if ($user.UserPrincipalName -eq $agentID)
+        if ($user.ObjectId -eq $userID.identity)
             {
-            $users += [PSCustomObject]@{
-                UserPrincipalName = $user.UserPrincipalName
-                LineUri = $user.LineUri
-                SipAddress = $user.SipAddress
+                $users += [PSCustomObject]@{
+                UserPrincipalName = $userID.UserPrincipalName
+                LineUri = $userID.LineUri
+                SipAddress = $userID.SipAddress
                 QueueName = $i.Name
                 QueueID = $i.Identity
-                }
             }
+        }
     }
 }
 
