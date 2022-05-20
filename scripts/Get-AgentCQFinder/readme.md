@@ -1,7 +1,9 @@
 # Microsoft FastTrack Open Source - Get-AgentCQFinder
 
-This Script function will help IT PROs find the Call Queues to which an specific Agent belongs.
-The only needed detail is the “User Principal Name” (UPN) of the Agent.
+You might find hard sometimes to diagnose and troubleshoot some scenarios where the Agent belongs to several Call Queues, and to make things even harder, sometimes the CQ's are configured with the name of the Group/Channel(Voice Enabled Channels), so it's difficult to know who is in that group on the fly without having to check manually the Group members.
+
+This Script function will help IT PROs find the Call Queues to which an specific Agent belongs. The only needed detail is the “User Principal Name” (UPN) of the Agent.
+
 
 Once you run the script, you will have to enter the UPN of the Agent, the outcome will give you the following details:
 - How many Call Queues the users belongs;
