@@ -17,10 +17,16 @@ Report on a specific team by its group ID
 .\Get-TeamsChannelUsersReport.ps1 -GroupId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" -ExportCSVFilePath "C:\path\to\export.csv"
 ```
 
-Report on teams that the specified user is a member or owner of
+Report on teams that the specified user is a member or owner of. Note that at this time it can only retrieve full team memberships due to Graph API limitations. A future update should allow for both full team memberships as well as shared channel-only memberships.
 
 ```PowerShell
 .\Get-TeamsChannelUsersReport.ps1 -UserId "user@domain.com" -ExportCSVFilePath "C:\path\to\export.csv"
+```
+
+Report on all teams, and include incoming shared channels - shared channels that have been shared from other teams into a given team
+
+```PowerShell
+.\Get-TeamsChannelUsersReport.ps1 -ExportCSVFilePath "C:\path\to\export.csv" -IncludeIncomingSharedChannelsInReport
 ```
 
 ### Output columns
@@ -36,9 +42,27 @@ Report on teams that the specified user is a member or owner of
 - Channel Membership Type
 - Channel Description
 - Channel Member Name
-- Channel Member Role
+- Channel Member Role*
 - Channel Member User ID
 - Channel Member Email
+- Shared Channel Shared Team ID
+- Shared Channel Shared Team Name
+- Incoming Shared Channel Host Team ID**
+- Incoming Shared Channel Host Tenant ID**
+
+\*Possible values for Channel Member Role:
+
+|Channel Member Role|Description|
+|----|----
+|owner|Directly assigned owner of channel|
+|member|Directly asigned member of channel|
+|guest|Team guest via B2B Collaboration, directly assigned member of channel|
+|external member|Shared channel member directly assigned externally from another tenant|
+|shared team member|Shared channel member via a different team shared to the channel|
+|shared host team member|Shared channel member via the host team shared to the channel|
+|external shared team member|Shared channel member via an external team from another tenant shared to the channel|
+
+\*\*Only if `-IncludeIncomingSharedChannelsInReport` is specified in parameters while running script
 
 ## Applies To
 
@@ -49,7 +73,7 @@ Report on teams that the specified user is a member or owner of
 
 |Author|Last Update Date
 |----|--------------------------
-|David Whitney|November 10, 2021|
+|David Whitney|June 26, 2022|
 
 ## Issues
 
