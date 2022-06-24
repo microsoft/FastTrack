@@ -47,10 +47,14 @@ Report on all teams, and include incoming shared channels - shared channels that
 - Channel Member Role*
 - Channel Member User ID
 - Channel Member Email
+- Channel Member Organization
 - Shared Channel Shared Team ID
 - Shared Channel Shared Team Name
+- Shared Channel Shared Team Tenant ID
+- Shared Channel Shared Team Organization
 - Incoming Shared Channel Host Team ID**
 - Incoming Shared Channel Host Tenant ID**
+- Incoming Shared Channel Host Organization**
 
 \*Possible values for Channel Member Role:
 
