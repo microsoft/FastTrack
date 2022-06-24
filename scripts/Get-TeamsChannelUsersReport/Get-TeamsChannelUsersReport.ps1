@@ -41,7 +41,7 @@ PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF TH
     - Team Privacy
     - Team Is Archived
     - Team Classification
-    - Team Sensivitity Label
+    - Team Sensitivity Label
     - Channel Name
     - Channel Membership Type
     - Channel Description
@@ -493,7 +493,7 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                 "Team Privacy" = $teamPrivacy;
                 "Team Is Archived" = $teamIsArchived;
                 "Team Classification" = $teamClassification;
-                "Team Sensivitity Label" = $teamSensitivityLabel;
+                "Team Sensitivity Label" = $teamSensitivityLabel;
                 "Channel Name" = $channelName;
                 "Channel Membership Type" = $channelMembershipType;
                 "Channel Description" = $channelDescription;
