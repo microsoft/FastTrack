@@ -30,7 +30,9 @@ PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF TH
 .EXAMPLE
     .\Get-TeamsChannelUsersReport.ps1 -ExportCSVFilePath "C:\path\to\export.csv" -IncludeIncomingSharedChannelsInReport
 
-    Report on all teams, and include incoming shared channels - shared channels that have been shared from other teams into a given team
+    Report on all teams, and include incoming shared channels - shared channels that have been shared from other teams into a given team.
+
+    Warning: The -IncludeIncomingSharedChannelsInReport option may add significant time to generating the report depending on shared channel team sharing usage.
 .OUTPUTS
     Writes out a CSV file report with columns:
     - Team Name
