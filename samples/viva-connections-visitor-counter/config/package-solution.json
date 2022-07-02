@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "viva-connections-visitor-counter-client-side-solution",
+    "id": "4a78f48c-7f48-4081-9f50-0dfd7fa1a20a",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "viva-connections-visitor-counter description"
+      },
+      "longDescription": {
+        "default": "viva-connections-visitor-counter description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "viva-connections-visitor-counter Feature",
+        "description": "The feature that activates elements of the viva-connections-visitor-counter solution.",
+        "id": "1e30dabf-f2f8-44f8-9267-796c01297cf3",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/viva-connections-visitor-counter.sppkg"
+  }
+}
