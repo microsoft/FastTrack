@@ -1,14 +1,14 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "viva-connections-visitor-counter-client-side-solution",
+    "name": "viva-connections-visitor-counter",
     "id": "4a78f48c-7f48-4081-9f50-0dfd7fa1a20a",
-    "version": "1.0.0.0",
+    "version": "1.0.0.1",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
     "developer": {
-      "name": "",
+      "name": "Michael Bondarevsky",
       "websiteUrl": "",
       "privacyUrl": "",
       "termsOfUseUrl": "",
@@ -16,10 +16,10 @@
     },
     "metadata": {
       "shortDescription": {
-        "default": "viva-connections-visitor-counter description"
+        "default": "Visitor Counter for Viva Connections Dashboard"
       },
       "longDescription": {
-        "default": "viva-connections-visitor-counter description"
+        "default": "Visitor Counter Adaptive Card Extension provides some insight on Viva Connections Dashboard usage."
       },
       "screenshotPaths": [],
       "videoUrl": "",
@@ -27,10 +27,10 @@
     },
     "features": [
       {
-        "title": "viva-connections-visitor-counter Feature",
-        "description": "The feature that activates elements of the viva-connections-visitor-counter solution.",
+        "title": "Visitor Counter for Viva Connections Dashboard",
+        "description": "Visitor Counter Adaptive Card Extension provides some insight on Viva Connections Dashboard usage.",
         "id": "1e30dabf-f2f8-44f8-9267-796c01297cf3",
-        "version": "1.0.0.0"
+        "version": "1.0.0.1"
       }
     ]
   },

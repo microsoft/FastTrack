@@ -1,7 +1,9 @@
 {
   "name": "viva-connections-visitor-counter",
-  "version": "0.0.1",
-  "private": true,
+  "version": "1.0.1",
+  "description": "",
+  "author": "Michael Bondarevsky (bondarevsky@gmail.com)",
+  "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
     "build": "gulp bundle",
