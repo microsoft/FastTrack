@@ -51,6 +51,10 @@ Visitor Counter Adaptive Card Extension provides some insight on Viva Connection
   - **gulp bundle --ship**
   - **gulp package-solution --ship**
 
-> Include any additional steps as needed.
-
+> Aditional steps:
+  - Log in to the Azure Portal, 
+  - Create an Application Insights resource
+  - In the sidebar, navigate to Configure > API Access on the sidebar 
+  - Create API key with read telemertry permission
+  - Copy the Application ID and API Key
 
