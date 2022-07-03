@@ -5,22 +5,44 @@
   "body": [
     {
       "type": "TextBlock",
-      "weight": "Bolder",
-      "text": "${title}"
+      "wrap": true,
+      "text": "Viva Connections Dashboard usage insights for the last 30 days"
     },
     {
-      "type": "ColumnSet",
-      "columns": [
+      "type": "TextBlock",
+      "text": "Microsoft Teams vs SharePoint Portal"
+    },
+    {
+      "type": "FactSet",
+      "facts": [
         {
-          "type": "Column",
-          "items": [
-            {
-              "type": "TextBlock",
-              "weight": "Bolder",
-              "text": "${subTitle}",
-              "wrap": true
-            }
-          ]
+          "title": "Teams",
+          "value": "${msteams}"
+        },
+        {
+          "title": "SharePoint",
+          "value": "${spo}"
+        }        
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Microsoft Teams Details"
+    },    
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Desktop",
+          "value": "${desktop}"
+        },
+        {
+          "title": "Mobile",
+          "value": "${mobile}"
+        },
+        {
+          "title": "Web",
+          "value": "${web}"
         }
       ]
     }
