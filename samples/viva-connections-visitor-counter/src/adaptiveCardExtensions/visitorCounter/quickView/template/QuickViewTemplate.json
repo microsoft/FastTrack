@@ -1,0 +1,50 @@
+{
+  "schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.2",
+  "body": [
+    {
+      "type": "TextBlock",
+      "wrap": true,
+      "text": "Viva Connections Dashboard usage insights for the last 30 days"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Microsoft Teams vs SharePoint Portal"
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Teams",
+          "value": "${msteams}"
+        },
+        {
+          "title": "SharePoint",
+          "value": "${spo}"
+        }        
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Microsoft Teams Details"
+    },    
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Desktop",
+          "value": "${desktop}"
+        },
+        {
+          "title": "Mobile",
+          "value": "${mobile}"
+        },
+        {
+          "title": "Web",
+          "value": "${web}"
+        }
+      ]
+    }
+  ]
+}
