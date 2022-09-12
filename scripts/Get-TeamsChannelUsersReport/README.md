@@ -79,7 +79,7 @@ Report on all teams, and include incoming shared channels - shared channels that
 
 |Author|Last Update Date
 |----|--------------------------
-|David Whitney|June 26, 2022|
+|David Whitney|Sept 9, 2022|
 
 ## Issues
 
