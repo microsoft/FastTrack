@@ -3,6 +3,15 @@
 
 Create a CSV file output that contains a row for each user that has a role in each channel of every team in the tenant or specified teams.
 
+## Prerequisites
+
+Install Microsoft Graph PowerShell SDK
+
+```PowerShell
+# From an administrator-elevated PowerShell session:
+Install-Module Microsoft.Graph
+```
+
 ## Usage
 
 Report on all teams in the tenant
