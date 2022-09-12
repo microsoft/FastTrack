@@ -107,6 +107,7 @@ Import-Module Microsoft.Graph.Teams          -WarningAction SilentlyContinue -Er
 # connect to Graph interactively (delegated permissions) with minimum required Read permission scopes
 Connect-Graph -Scopes "Group.Read.All", "User.Read.All", "TeamMember.Read.All", "Channel.ReadBasic.All", "ChannelMember.Read.All", "Directory.AccessAsUser.All"
 
+# note that as of 9 September 2022 the v1.0 Graph API returns "unknownFutureValue" for Shared channel membership type, so have to use beta
 if ((Get-MgProfile).Name -ne "beta"){
     # if running script in a session where Select-MgProfile had been previously not set to beta, throw up a warning 
     #   that we are going to switch to beta which will affect the session even after script finishes
@@ -126,9 +127,9 @@ if ($GroupID) {
     # ask for assignedLabels in this call for the requested group since we can't ask for it when calling for the team
     $M365GroupIdWithProvisioning = Get-MgGroup -GroupId $GroupID -Property Id, DisplayName, Mail, resourceProvisioningOptions, assignedLabels -ErrorAction Stop
     if ($M365GroupIdWithProvisioning) {
+        $M365GroupThatIsTeam = $M365GroupIdWithProvisioning | Where-Object {$_.resourceProvisioningOptions -contains "Team"}
         # note that the non-beta profile of Graph SDK for Get-MgGroup has resourceProvisioningOptions under AdditionalProperties
         # $M365GroupThatIsTeam = $M365GroupIdWithProvisioning | Where-Object {$_.AdditionalProperties.resourceProvisioningOptions -contains "Team"}
-        $M365GroupThatIsTeam = $M365GroupIdWithProvisioning | Where-Object {$_.resourceProvisioningOptions -contains "Team"}
 
         if ($M365GroupThatIsTeam) {
             Write-Output "Found team $($M365GroupThatIsTeam.DisplayName) ($GroupID)"
@@ -160,8 +161,10 @@ if ($GroupID) {
 } else {
     ## Get all groups that are Teams-enabled ##
     Write-Progress -Id 1 -Activity "Gathering Teams Data" -Status "Getting list of M365 Groups"
-    #ask for assignedLabels in this call for groups since we can't ask for it when calling for the team
+    # ask for assignedLabels in this call for groups since we can't ask for it when calling for the team
     $M365GroupIdsWithProvisioning = Get-MgGroup -Filter "groupTypes/any(c:c eq 'Unified')" -Property Id, DisplayName, Mail, resourceProvisioningOptions, assignedLabels
+    # note that the non-beta profile of Graph SDK for Get-MgGroup has resourceProvisioningOptions under AdditionalProperties
+    # $M365GroupsThatAreTeams = $M365GroupIdsWithProvisioning | Where-Object {$_.AdditionalProperties.resourceProvisioningOptions -contains "Team"}
     $M365GroupsThatAreTeams = $M365GroupIdsWithProvisioning | Where-Object {$_.resourceProvisioningOptions -contains "Team"}
     Write-Output "Found $($M365GroupsThatAreTeams.count) teams"
 }
@@ -234,9 +237,9 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                     "Mail" = $member.AdditionalProperties.email;
                     "UserId" = $member.AdditionalProperties.userId;
                     "TenantId" = $member.AdditionalProperties.tenantId;
-                    "SharedChannelSharedTeamId" = $null;
-                    "SharedChannelSharedTeamDisplayName" = $null;
-                    "SharedChannelSharedTeamTenantId" = $null;
+                    "SharedChannelSharedWithTeamId" = $null;
+                    "SharedChannelSharedWithTeamDisplayName" = $null;
+                    "SharedChannelSharedWithTeamTenantId" = $null;
                     "IncomingSharedChannelHostTeamId" = $null;
                     "IncomingSharedChannelHostTenantId" = $null;
                 }
@@ -244,27 +247,27 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
 
             ## If Shared channel, get shared with teams and transitive list of members ##
             if ($channel.MembershipType -eq "shared") {
-                $sharedChannelSharedTeams = Get-MgTeamChannelShared -TeamId $team.Id -ChannelId $channel.Id -ErrorAction SilentlyContinue
-                foreach ($sharedchannelSharedTeam in $sharedChannelSharedTeams) {
-                    $sharedChannelSharedTeamMembers = Get-MgTeamChannelSharedWithTeamAllowedMember -TeamId $team.Id -ChannelId $channel.Id -SharedWithChannelTeamInfoId $sharedchannelSharedTeam.Id
-                    [PSCustomObject[]]$sharedChannelSharedTeamMembersObject = foreach ($sharedChannelSharedTeamMember in $sharedChannelSharedTeamMembers) {
+                $sharedChannelSharedWithTeams = Get-MgTeamChannelSharedWithTeam -TeamId $team.Id -ChannelId $channel.Id -ErrorAction SilentlyContinue
+                foreach ($sharedChannelSharedWithTeam in $sharedChannelSharedWithTeams) {
+                    $sharedChannelSharedWithTeamMembers = Get-MgTeamChannelSharedWithTeamAllowedMember -TeamId $team.Id -ChannelId $channel.Id -SharedWithChannelTeamInfoId $sharedchannelSharedWithTeam.Id
+                    [PSCustomObject[]]$sharedChannelSharedWithTeamMembersObject = foreach ($sharedChannelSharedWithTeamMember in $sharedChannelSharedWithTeamMembers) {
                         [PSCustomObject]@{
                             # transitive Shared channel permissions can only be Member - must be a directly assigned channel member to be a Shared channel Owner
                             "Role" = "member";
-                            "DisplayName" = $sharedChannelSharedTeamMember.DisplayName;
-                            "Mail" = $sharedChannelSharedTeamMember.AdditionalProperties.email;
-                            "UserId" = $sharedChannelSharedTeamMember.AdditionalProperties.userId;
-                            "TenantId" = $sharedChannelSharedTeamMember.AdditionalProperties.tenantId;
-                            "SharedChannelSharedTeamId" = $sharedchannelSharedTeam.Id;
-                            "SharedChannelSharedTeamDisplayName" = $sharedchannelSharedTeam.DisplayName;
-                            "SharedChannelSharedTeamTenantId" = $sharedchannelSharedTeam.TenantId;
+                            "DisplayName" = $sharedChannelSharedWithTeamMember.DisplayName;
+                            "Mail" = $sharedChannelSharedWithTeamMember.AdditionalProperties.email;
+                            "UserId" = $sharedChannelSharedWithTeamMember.AdditionalProperties.userId;
+                            "TenantId" = $sharedChannelSharedWithTeamMember.AdditionalProperties.tenantId;
+                            "SharedChannelSharedWithTeamId" = $sharedchannelSharedWithTeam.Id;
+                            "SharedChannelSharedWithTeamDisplayName" = $sharedchannelSharedWithTeam.DisplayName;
+                            "SharedChannelSharedWithTeamTenantId" = $sharedchannelSharedWithTeam.TenantId;
                             "IncomingSharedChannelHostTeamId" = $null;
                             "IncomingSharedChannelHostTenantId" = $null;
                         }
                     }
                     # add shared channel shared team members to the directly assigned channel members
-                    if ($sharedChannelSharedTeamMembersObject) {
-                        $nonStandardChannelMembersObject += $sharedChannelSharedTeamMembersObject
+                    if ($sharedChannelSharedWithTeamMembersObject) {
+                        $nonStandardChannelMembersObject += $sharedChannelSharedWithTeamMembersObject
                     }
                 }
                 
@@ -308,36 +311,36 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                         "Mail" = $incomingSharedChannelMember.AdditionalProperties.email;
                         "UserId" = $incomingSharedChannelMember.AdditionalProperties.userId;
                         "TenantId" = $incomingSharedChannelMember.AdditionalProperties.tenantId;
-                        "SharedChannelSharedTeamId" = $null;
-                        "SharedChannelSharedTeamDisplayName" = $null;
-                        "SharedChannelSharedTeamTenantId" = $null;
+                        "SharedChannelSharedWithTeamId" = $null;
+                        "SharedChannelSharedWithTeamDisplayName" = $null;
+                        "SharedChannelSharedWithTeamTenantId" = $null;
                         "IncomingSharedChannelHostTeamId" = $incomingSharedChannelOdataIdExtractObject.TeamId;
                         "IncomingSharedChannelHostTenantId" = $incomingSharedChannelOdataIdExtractObject.TenantId;
                     }
                 }
 
-                $incomingSharedChannelSharedTeams = Get-MgTeamChannelShared -TeamId $incomingSharedChannelOdataIdExtractObject.TeamId -ChannelId $incomingSharedChannel.Id -ErrorAction SilentlyContinue
+                $incomingSharedChannelSharedWithTeams = Get-MgTeamChannelShared -TeamId $incomingSharedChannelOdataIdExtractObject.TeamId -ChannelId $incomingSharedChannel.Id -ErrorAction SilentlyContinue
 
-                foreach ($incomingSharedChannelSharedTeam in $incomingSharedChannelSharedTeams) {
-                    $incomingSharedChannelSharedTeamMembers = Get-MgTeamChannelSharedWithTeamAllowedMember -TeamId $incomingSharedChannelOdataIdExtractObject.TeamId -ChannelId $incomingSharedChannel.Id -SharedWithChannelTeamInfoId $incomingSharedChannelSharedTeam.Id
-                    [PSCustomObject[]]$incomingSharedChannelSharedTeamMembersObject = foreach ($incomingSharedChannelSharedTeamMember in $incomingSharedChannelSharedTeamMembers) {
+                foreach ($incomingSharedChannelSharedWithTeam in $incomingSharedChannelSharedWithTeams) {
+                    $incomingSharedChannelSharedWithTeamMembers = Get-MgTeamChannelSharedWithTeamAllowedMember -TeamId $incomingSharedChannelOdataIdExtractObject.TeamId -ChannelId $incomingSharedChannel.Id -SharedWithChannelTeamInfoId $incomingSharedChannelSharedWithTeam.Id
+                    [PSCustomObject[]]$incomingSharedChannelSharedWithTeamMembersObject = foreach ($incomingSharedChannelSharedWithTeamMember in $incomingSharedChannelSharedWithTeamMembers) {
                         [PSCustomObject]@{
                             # transitive Shared channel permissions can only be Member - must be a directly assigned channel member to be a Shared channel Owner
                             "Role" = "member";
-                            "DisplayName" = $incomingSharedChannelSharedTeamMember.DisplayName;
-                            "Mail" = $incomingSharedChannelSharedTeamMember.AdditionalProperties.email;
-                            "UserId" = $incomingSharedChannelSharedTeamMember.AdditionalProperties.userId;
-                            "TenantId" = $incomingSharedChannelSharedTeamMember.AdditionalProperties.tenantId;
-                            "SharedChannelSharedTeamId" = $incomingSharedChannelSharedTeam.Id;
-                            "SharedChannelSharedTeamDisplayName" = $incomingSharedChannelSharedTeam.DisplayName;
-                            "SharedChannelSharedTeamTenantId" = $incomingSharedChannelSharedTeam.TenantId;
+                            "DisplayName" = $incomingSharedChannelSharedWithTeamMember.DisplayName;
+                            "Mail" = $incomingSharedChannelSharedWithTeamMember.AdditionalProperties.email;
+                            "UserId" = $incomingSharedChannelSharedWithTeamMember.AdditionalProperties.userId;
+                            "TenantId" = $incomingSharedChannelSharedWithTeamMember.AdditionalProperties.tenantId;
+                            "SharedChannelSharedWithTeamId" = $incomingSharedChannelSharedWithTeam.Id;
+                            "SharedChannelSharedWithTeamDisplayName" = $incomingSharedChannelSharedWithTeam.DisplayName;
+                            "SharedChannelSharedWithTeamTenantId" = $incomingSharedChannelSharedWithTeam.TenantId;
                             "IncomingSharedChannelHostTeamId" = $incomingSharedChannelOdataIdExtractObject.TeamId;
                             "IncomingSharedChannelHostTenantId" = $incomingSharedChannelOdataIdExtractObject.TenantId;
                         }
                     }
                     # add incoming shared channel shared team members to the directly assigned incoming shared channel members
-                    if ($incomingSharedChannelSharedTeamMembersObject) {
-                        $incomingSharedChannelMembersObject += $incomingSharedChannelSharedTeamMembersObject
+                    if ($incomingSharedChannelSharedWithTeamMembersObject) {
+                        $incomingSharedChannelMembersObject += $incomingSharedChannelSharedWithTeamMembersObject
                     }
                 }
             } else {
@@ -348,9 +351,9 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                     "Mail" = $null;
                     "UserId" = $null;
                     "TenantId" = $null;
-                    "SharedChannelSharedTeamId" = $null;
-                    "SharedChannelSharedTeamDisplayName" = $null;
-                    "SharedChannelSharedTeamTenantId" = $null;
+                    "SharedChannelSharedWithTeamId" = $null;
+                    "SharedChannelSharedWithTeamDisplayName" = $null;
+                    "SharedChannelSharedWithTeamTenantId" = $null;
                     "IncomingSharedChannelHostTeamId" = $incomingSharedChannelOdataIdExtractObject.TeamId;
                     "IncomingSharedChannelHostTenantId" = $incomingSharedChannelOdataIdExtractObject.TenantId;
                 })
@@ -393,10 +396,10 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
             $channelMemberMail = $channelMember.Mail
             $channelMemberTenantId = $channelMember.TenantId
             $channelMemberTenantName = $null
-            $sharedChannelSharedTeamId = $null
-            $sharedChannelSharedTeamName = $null
-            $sharedChannelSharedTeamTenantId = $null
-            $sharedChannelSharedTeamTenantName = $null
+            $sharedChannelSharedWithTeamId = $null
+            $sharedChannelSharedWithTeamName = $null
+            $sharedChannelSharedWithTeamTenantId = $null
+            $sharedChannelSharedWithTeamTenantName = $null
 
             if ($IncludeIncomingSharedChannelsInReport) {
                 $incomingSharedChannelHostTeamId = $null
@@ -410,17 +413,17 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                     $channelMemberRole = ($channelMember.Role -join ",").ToLower()
                 }
                 "shared" {
-                    if ($channelMember.SharedChannelSharedTeamId) {
+                    if ($channelMember.SharedChannelSharedWithTeamId) {
                         # Shared channel membership was granted via a shared team
-                        $sharedChannelSharedTeamId = $channelMember.SharedChannelSharedTeamId
-                        $sharedChannelSharedTeamName = $channelMember.SharedChannelSharedTeamDisplayName
-                        $sharedChannelSharedTeamTenantId = $channelMember.SharedChannelSharedTeamTenantId
+                        $sharedChannelSharedWithTeamId = $channelMember.SharedChannelSharedWithTeamId
+                        $sharedChannelSharedWithTeamName = $channelMember.SharedChannelSharedWithTeamDisplayName
+                        $sharedChannelSharedWithTeamTenantId = $channelMember.SharedChannelSharedWithTeamTenantId
                         
-                        if ($channelMember.SharedChannelSharedTeamTenantId -ne $HomeTenantId) {
+                        if ($channelMember.SharedChannelSharedWithTeamTenantId -ne $HomeTenantId) {
                             $channelMemberRole = "external shared team member"
                             $channelMemberName = $channelMemberName + " (External)"
-                            $sharedChannelSharedTeamName = $sharedChannelSharedTeamName + " (External)"
-                        } elseif ($channelmember.SharedChannelSharedTeamId -eq $team.Id) {
+                            $sharedChannelSharedWithTeamName = $sharedChannelSharedWithTeamName + " (External)"
+                        } elseif ($channelmember.SharedChannelSharedWithTeamId -eq $team.Id) {
                             $channelMemberRole = "shared host team member"
                         } else {
                             $channelMemberRole = "shared team member"
@@ -465,16 +468,16 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                     $ExternalTenantNameList.Add($channelMemberTenantId,$channelMemberTenantName)
                 }
             }
-            if ($sharedChannelSharedTeamTenantId) {
-                if ($sharedChannelSharedTeamTenantId -eq $HomeTenantId) {
-                    $sharedChannelSharedTeamTenantName = $HomeTenantName
-                } elseif ($ExternalTenantNameList[$sharedChannelSharedTeamTenantId]) {
-                    $sharedChannelSharedTeamTenantName = $ExternalTenantNameList[$sharedChannelSharedTeamTenantId]
+            if ($sharedChannelSharedWithTeamTenantId) {
+                if ($sharedChannelSharedWithTeamTenantId -eq $HomeTenantId) {
+                    $sharedChannelSharedWithTeamTenantName = $HomeTenantName
+                } elseif ($ExternalTenantNameList[$sharedChannelSharedWithTeamTenantId]) {
+                    $sharedChannelSharedWithTeamTenantName = $ExternalTenantNameList[$sharedChannelSharedWithTeamTenantId]
                 } else {
-                    $tenantInfoRequestUri = "https://graph.microsoft.com/beta/tenantRelationships/findTenantInformationByTenantId(tenantId='$sharedChannelSharedTeamTenantId')"
+                    $tenantInfoRequestUri = "https://graph.microsoft.com/beta/tenantRelationships/findTenantInformationByTenantId(tenantId='$sharedChannelSharedWithTeamTenantId')"
                     $tenantInfoReturn = Invoke-MgGraphRequest -Method GET -Uri $tenantInfoRequestUri
-                    $sharedChannelSharedTeamTenantName = $tenantInfoReturn.displayName
-                    $ExternalTenantNameList.Add($sharedChannelSharedTeamTenantId,$sharedChannelSharedTeamTenantName)
+                    $sharedChannelSharedWithTeamTenantName = $tenantInfoReturn.displayName
+                    $ExternalTenantNameList.Add($sharedChannelSharedWithTeamTenantId,$sharedChannelSharedWithTeamTenantName)
                 }
             }
             if ($incomingSharedChannelHostTenantId) {
@@ -506,10 +509,10 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
                 "Channel Member User ID" = $channelMemberUserId;
                 "Channel Member Email" = $channelMemberMail;
                 "Channel Member Organization" = $channelMemberTenantName;
-                "Shared Channel Shared Team ID" = $sharedChannelSharedTeamId;
-                "Shared Channel Shared Team Name" = $sharedChannelSharedTeamName;
-                "Shared Channel Shared Team Tenant ID" = $sharedChannelSharedTeamTenantId;
-                "Shared Channel Shared Team Organization" = $sharedChannelSharedTeamTenantName;
+                "Shared Channel Shared With Team ID" = $sharedChannelSharedWithTeamId;
+                "Shared Channel Shared With Team Name" = $sharedChannelSharedWithTeamName;
+                "Shared Channel Shared With Team Tenant ID" = $sharedChannelSharedWithTeamTenantId;
+                "Shared Channel Shared With Team Organization" = $sharedChannelSharedWithTeamTenantName;
             }
 
             if ($IncludeIncomingSharedChannelsInReport) {
