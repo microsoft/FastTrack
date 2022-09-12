@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "visitor-counter-adaptive-card-extension": {
+      "components": [
+        {
+          "entrypoint": "./lib/adaptiveCardExtensions/visitorCounter/VisitorCounterAdaptiveCardExtension.js",
+          "manifest": "./src/adaptiveCardExtensions/visitorCounter/VisitorCounterAdaptiveCardExtension.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "VisitorCounterAdaptiveCardExtensionStrings": "lib/adaptiveCardExtensions/visitorCounter/loc/{locale}.js"
+  }
+}
