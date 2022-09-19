@@ -219,6 +219,9 @@ $ReportOutput = foreach ($group in $M365GroupsThatAreTeams) {
     } else {
         $totalChannelCount = $channelsList.count
     }
+    # if team only has a single channel, the above .count will retun a $null instead of 1 since it's not a collection, so need to ensure count is at least 1
+    # (could also fix by strongly-typing the get channel calls as collections so .count is always asking against a collection)
+    if (!$totalChannelCount -or $totalChannelCount -lt 1) {$totalChannelCount = 1}
     
     [PSCustomObject[]]$channelsReturn = foreach ($channel in $channelsList) {
 
