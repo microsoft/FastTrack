@@ -22,21 +22,27 @@ Important Detail: The script will require AzureADPreview module. The script will
 .PARAMETER: "ExportMethod"
 - This parameter will define the way the outcome will be displayed: On Shell/Screen or saved into the Downloads folder of the user profile;
 
+.PARAMETER: "ExportFolderPath"
+- Folder path where files will get exported. By Default will be the user's Downloads folder.
+
 .EXAMPLE:
 - ".\Get-AuditGuestTeams -ExportMethod onScreen"
 - ".\Get-AuditGuestTeams -ExportMethod Report"
+- ".\Get-AuditGuestTeams -ExportMethod Report" -ExportFolderPath "C:\Temp"
 
-.Version: V1.0
+.Version: V1.1
 
 .Author: Tiago Roxo
-
+.Contributions: Agustin Gallegos
 #> 
 
 #FUNCTION PARAMS
 param(
 	[Parameter(Position=0,ParameterSetName='ExportMethod')]
 	[validateset("onScreen","Report")]
-	[string] $ExportMethod = "onScreen"
+	[string] $ExportMethod = "onScreen",
+	
+	[string] $ExportFolderPath = "$env:USERPROFILE\Downloads"
 	)
 
 cls
@@ -206,24 +212,28 @@ if($ExportMethod -eq "onScreen"){
         Write-Host $details 
         Write-Host "If you wish to save the outcome to a file, run the following cmdlet: .\Get-AuditGuestTeams -ExportMethod Report"
 }elseif($ExportMethod -eq "Report"){
-    $filePath = "$($env:USERPROFILE)\Downloads\"
+    # Determining if 'Downloads' folder is in the user's profile folder, or under Onedrive mapped folders.
+    if ( -not(Test-Path $ExportFolderPath) ){
+    	if ( Test-Path "$env:OneDriveCommercial\Downloads"){
+	    $ExportFolderPath = "$env:OneDriveCommercial\Downloads"
+	}
+	else{
+	    Write-Host "'Downloads' folder could not be located. Please re-run the script and specify the parameter 'ExportFolderPath' with a custom folder"
+	}
+    }
     $fileName = "ReportAuditGuestTeams_"+ (Get-Date).ToString('yyyy-MM-dd') +".txt"
-    $file = $filePath+$fileName
+    $file = "$ExportFolderPath\$fileName"
     $details | Out-File -FilePath $file -Force
 
-	
-    $filePath = "$($env:USERPROFILE)\Downloads\"
     $fileName = "CSVGuestUsersInGroups_"+ (Get-Date).ToString('yyyy-MM-dd') +".csv"
-    $fileCSV1 = $filePath+$fileName
+    $fileCSV1 = "$ExportFolderPath\$fileName"
     $CSVGuestUsersInGroups | Select-Object -Property GroupName,DisplayName,Mail,LastSignInTime | Export-Csv -Path $fileCSV1 -NoTypeInformation
 
-    
-    $filePath = "$($env:USERPROFILE)\Downloads\"
     $fileName = "CSVGuestUsersAudit_"+ (Get-Date).ToString('yyyy-MM-dd') +".csv"
-    $fileCSV2 = $filePath+$fileName
+    $fileCSV2 = "$ExportFolderPath\$fileName"
     $CSVGuestUsersAudit | Select-Object -Property DisplayName,Mail,InviteStatus,LastSignInTime,obs | Export-Csv -Path $fileCSV2 -NoTypeInformation
 
-    Write-Host "`nAll 3 files will be stored in the following location:" $filePath -BackgroundColor Green -ForegroundColor Black
+    Write-Host "`nAll 3 files will be stored in the following location:" $ExportFolderPath -BackgroundColor Green -ForegroundColor Black
     Write-Host "`Opening the files..." -BackgroundColor Green -ForegroundColor Black
     
     start notepad $file
