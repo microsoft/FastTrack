@@ -11,18 +11,18 @@ PowerShell script to fetch the shared channels (in resource tenant) that a given
 2. Install the latest Microsoft Teams module for PowerShell: `Install-Module MicrosoftTeams -AllowClobber -Force`
 3. Open a PowerShell session and connect to Teams: `Connect-MicrosoftTeams`
 4. Change directory to where the script is located (*cd*) and run it:
-    > `Get-SharedChannelsUserIsPartOf -UserPrincipalName user@contoso.com`
+> `.\Get-SharedChannelsUserIsPartOf.ps1 -UserPrincipalName user@contoso.com`
 
 ![Get-SharedChannelsUserIsPartOf.ps1 execution](https://i.postimg.cc/8kryp7xJ/MB8r-By-Bkay.png)
 
 ## Examples
 ## Shared channels a user is owner of
-> `Get-SharedChannelsUserIsPartOf -UserPrincipalName user@contoso.com -Owner $true`
+> `.\Get-SharedChannelsUserIsPartOf.ps1 -UserPrincipalName user@contoso.com -Owner $true`
 
 ![Owner example](https://i.postimg.cc/nrYSn5MV/Qs-D8g-NV9o-V.png)
 
 ## Export CSV
->`Get-SharedChannelsUserIsPartOf -UserPrincipalName user@contoso.com -CSV $true`
+>`.\Get-SharedChannelsUserIsPartOf.ps1 -UserPrincipalName user@contoso.com -CSV $true`
 
 ![CSV example](https://i.postimg.cc/52cyhRLQ/n-C0t-PW5-IQV.png)
 
