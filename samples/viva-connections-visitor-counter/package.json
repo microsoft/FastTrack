@@ -18,6 +18,7 @@
     "@microsoft/sp-http": "1.15.0",
     "@microsoft/sp-property-pane": "1.15.0",
     "@pnp/logging": "^3.0.3",
+    "loader-utils": "^3.2.1",
     "tslib": "2.3.1"
   },
   "devDependencies": {
