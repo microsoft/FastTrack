@@ -8,12 +8,14 @@ A tool to manage Microsoft 365 group creation restrictions.
 - [AzureADPreview](https://learn.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0) PowerShell module
 
 ## Usage
-1. Run the executable
+1. Run the executable (or script)
 2. Sign in with a Microsoft 365 admin account (the application will use AzureADPreview\Connect-AzureAD)
 3. Choose an option
     - **Enable restriction**: with this option you can provide a security group name and select Enable to restrict Microsoft 365 group creation only to the members of the provided security group
     - **Check restriction**: with this option you can verify if Microsoft 365 group creation restriction is already in place and the id of the security group the restriction is scoped to
     - **Disable restriction**: with this option you can disable Microsoft 365 group creation restriction
+
+> If the executable crashes, comment out line 16 in the script and run it to look for errors.
 
 ## Other
 - The tool was built using PowerShell and compiled with [PS2EXE](https://www.powershellgallery.com/packages/ps2exe/1.0.4)
