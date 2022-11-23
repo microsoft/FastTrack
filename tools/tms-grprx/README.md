@@ -1,40 +1,44 @@
-# Microsoft FastTrack Open Source - Get-SharedChannelsUserIsPartOf
-PowerShell script to fetch the shared channels (in resource tenant) that a given user is member or owner of. The script will output a list of shared channel names and their respective team names or a CSV if specified.
+# Microsoft FastTrack Open Source - TMS-GRPRX (Group Restriction)
+A tool to manage Microsoft 365 group creation restrictions.
+
+![TMS-GRPRX logo](https://i.postimg.cc/hPyhL5GK/TMS-GRPRX.png)
 
 ## Requirements
-- Windows PowerShell
-- Microsoft Teams PowerShell module
-- A Microsoft 365 account with admin rights
+- Windows OS
+- [AzureADPreview](https://learn.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0) PowerShell module
 
 ## Usage
-1. Enable remote scripting in PowerShell with this cmdlet: `Set-ExecutionPolicy Unrestricted`
-2. Install the latest Microsoft Teams module for PowerShell: `Install-Module MicrosoftTeams -AllowClobber -Force`
-3. Open a PowerShell session and connect to Teams: `Connect-MicrosoftTeams`
-4. Change directory to where the script is located (*cd*) and run it:
-> `.\Get-SharedChannelsUserIsPartOf.ps1 -UserPrincipalName user@contoso.com`
+1. Run the executable
+2. Sign in with a Microsoft 365 admin account (the application will use AzureADPreview\Connect-AzureAD)
+3. Choose an option
+    - **Enable restriction**: with this option you can provide a security group name and select Enable to restrict Microsoft 365 group creation only to the members of the provided security group
+    - **Check restriction**: with this option you can verify if Microsoft 365 group creation restriction is already in place and the id of the security group the restriction is scoped to
+    - **Disable restriction**: with this option you can disable Microsoft 365 group creation restriction
 
-![Get-SharedChannelsUserIsPartOf.ps1 execution](https://i.postimg.cc/8kryp7xJ/MB8r-By-Bkay.png)
+## Other
+- The tool was built using PowerShell and compiled with [PS2EXE](https://www.powershellgallery.com/packages/ps2exe/1.0.4)
+- For further details on group restriction, see: https://aka.ms/create-o365-groups
 
 ## Examples
-## Shared channels a user is owner of
-> `.\Get-SharedChannelsUserIsPartOf.ps1 -UserPrincipalName user@contoso.com -Owner $true`
+## Sign in
+![Sign in example](https://i.postimg.cc/qq4cjzX3/KZ1dsze-NVt.png)
 
-![Owner example](https://i.postimg.cc/nrYSn5MV/Qs-D8g-NV9o-V.png)
+## Enable restriction
+![Enable restriction example](https://i.postimg.cc/kGTSsw-g0/xcrxrpk-FGO.png)
 
-## Export CSV
->`.\Get-SharedChannelsUserIsPartOf.ps1 -UserPrincipalName user@contoso.com -CSV $true`
+## Check restriction
+![Check restriction example](https://i.postimg.cc/GmG2hq1b/Dv-VVq-ZUVpt.png)
 
-![CSV example](https://i.postimg.cc/52cyhRLQ/n-C0t-PW5-IQV.png)
-
-![CSV example result](https://i.postimg.cc/jdhq1Sxm/c-MJa-Stn-EKs.png)
+## Disable restriction
+![Disable restriction example](https://i.postimg.cc/FKGh76CX/3chur5-D4f-P.png)
 
 ## Applies To
-- Microsoft Teams
+- Microsoft 365 (Outlook, SharePoint, Yammer, Microsoft Stream, Microsoft Teams, Planner, Power BI, Project for the web / Roadmap)
 
 ## Author
 | Author         | Date     |
 |--------------|-----------|
-| Mihai Filip | 11/2/2022      |
+| Mihai Filip | 11/23/2022      |
 
 ## Issues
 Please report any issues you find to the [issues list](https://github.com/microsoft/FastTrack/issues).
