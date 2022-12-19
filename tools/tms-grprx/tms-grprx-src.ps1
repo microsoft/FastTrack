@@ -111,7 +111,7 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                             <Label Foreground="#bdbdbd" FontFamily="Segoe UI" FontWeight="DemiBold" Margin="0,5,0,0">Group name:</Label>
                                             <TextBox Name="txtGREnableGroupName" Padding="5" Margin="5" HorizontalContentAlignment="Left"></TextBox>
                                             <Button Name="btnGREnable" Content="Enable" FontFamily="Segoe UI" FontWeight="DemiBold" Margin="5,10,450,10" Height="30" Cursor="Hand"></Button>
-                                            <TextBox Name="txtGREnableOutput" Margin="5,10,5,0" Height="330" IsEnabled="False" Background="#292929" FontFamily="Segoe UI" Foreground="#bdbdbd"></TextBox>
+                                            <TextBox Name="txtGREnableOutput" Margin="5,10,5,0" Height="330" IsReadOnly="True" Background="#292929" FontFamily="Segoe UI" Foreground="#bdbdbd"></TextBox>
                                         </StackPanel>
                                     </Grid>
                                     <Grid Name="grdCheckGroupRestriction" Margin="10,10,10,10" Visibility="Hidden">
@@ -120,7 +120,7 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                                 <Label Foreground="#bdbdbd" FontFamily="Segoe UI" FontWeight="DemiBold" FontSize="14">Group Restriction \ Check restriction</Label>
                                             </Border>
                                             <Button Name="btnGRCheck" Content="Check" FontFamily="Segoe UI" FontWeight="DemiBold" Margin="5,10,450,10" Height="30" Cursor="Hand"></Button>
-                                            <TextBox Name="txtGRCheckOutput" Margin="5,10,5,0" Height="399" IsEnabled="False" Background="#292929" FontFamily="Segoe UI" Foreground="#bdbdbd"></TextBox>
+                                            <TextBox Name="txtGRCheckOutput" Margin="5,10,5,0" Height="399" IsReadOnly="True" Background="#292929" FontFamily="Segoe UI" Foreground="#bdbdbd"></TextBox>
                                         </StackPanel>
                                     </Grid>
                                     <Grid Name="grdDisableGroupRestriction" Margin="10,10,10,10" Visibility="Hidden">
@@ -129,7 +129,7 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                                 <Label Foreground="#bdbdbd" FontFamily="Segoe UI" FontWeight="DemiBold" FontSize="14">Group Restriction \ Disable restriction</Label>
                                             </Border>
                                             <Button Name="btnGRDisable" Content="Disable" FontFamily="Segoe UI" FontWeight="DemiBold" Margin="5,10,450,10" Height="30" Cursor="Hand"></Button>
-                                            <TextBox Name="txtGRDisableOutput" Margin="5,10,5,0" Height="399" IsEnabled="False" Background="#292929" FontFamily="Segoe UI" Foreground="#bdbdbd"></TextBox>
+                                            <TextBox Name="txtGRDisableOutput" Margin="5,10,5,0" Height="399" IsReadOnly="True" Background="#292929" FontFamily="Segoe UI" Foreground="#bdbdbd"></TextBox>
                                         </StackPanel>
                                     </Grid>
                                 </Grid>
@@ -175,6 +175,7 @@ $btnCloseScreen.Add_Click({
         Start-Sleep -s 3
 
         Disconnect-AzureAD
+        Disconnect-MicrosoftTeams
     })
 
 $TitleBar.Add_MouseDown({
