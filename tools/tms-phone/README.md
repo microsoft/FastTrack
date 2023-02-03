@@ -45,8 +45,8 @@ If the error reported by the diagnostic does not solve the problem, please use t
 ![Resource Account diagnostic](https://i.postimg.cc/BQnM56zS/a-STEWr-XPCf.png) 
 
 ## Dynamic Caller ID
-Enter the UPN of the user (agent of call queue using dynamic caller id), the name of the call queue, and the UPN of the resource account the user will be calling on behalf of, then select *Run*. The diagnostic will validate that the user, the call queue and the resource account properly set for dynamic caller id to work.
-If the error reported by the diagnostic does not solve the problem, please use refer to the [feature prerequisites](https://learn.microsoft.com/en-us/microsoftteams/plan-auto-attendant-call-queue#prerequisites).
+Enter the UPN of the user (agent of call queue using dynamic caller id), the name of the call queue, and the UPN of the resource account the user will be calling on behalf of, then select *Run*. The diagnostic will validate that the user, the call queue and the resource account are properly set for dynamic caller id to work.
+If the error reported by the diagnostic does not solve the problem, please refer to the [feature prerequisites](https://learn.microsoft.com/en-us/microsoftteams/plan-auto-attendant-call-queue#prerequisites).
 ![Dynamic Caller ID diagnostic](https://i.postimg.cc/XYTh7mry/i-UIt-J4-O3-FK.png) 
 
 
