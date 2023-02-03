@@ -109,6 +109,9 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                                 <Label Name="lblAutoAttendant" Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" Cursor="Hand" Background="#181B40" Padding="7">Resource Account</Label>
                                             </Border>
                                             <Border BorderThickness="0" BorderBrush="#FFFFFF">
+                                                <Label Name="lblDynamicCallerId" Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" Cursor="Hand" Background="#181B40" Padding="7">Dynamic Caller ID</Label>
+                                            </Border>
+                                            <Border BorderThickness="0" BorderBrush="#FFFFFF">
                                                 <Label Name="lblUserValidationErrors" Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" Cursor="Hand" Background="#181B40" Padding="7">User Validation Errors</Label>
                                             </Border>
                                         </StackPanel>
@@ -151,6 +154,31 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                             <TextBox Name="txtAAUPN" Padding="5" Margin="5" HorizontalContentAlignment="Left"></TextBox>
                                             <Button Name="btnAARun" Content="Run" FontFamily="Segoe UI" FontWeight="DemiBold" Margin="5,10,450,10" Height="30" Cursor="Hand"></Button>
                                             <TextBox Name="txtAAOutput" Margin="5,10,5,0" Height="330" IsReadOnly="True" Background="#353A7A" FontFamily="Segoe UI" Foreground="#FFFFFF" VerticalScrollBarVisibility="Auto"></TextBox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Name="grdDynamicCallerId" Margin="10,10,10,10" Visibility="Hidden">
+                                        <StackPanel>
+                                            <Border BorderThickness="0.5" BorderBrush="#FFFFFF" Padding="5" Margin="5">
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" FontSize="14">Dynamic caller ID not working</Label>
+                                            </Border>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="0" Grid.Column="0">User Principal Name:</Label>
+                                                <TextBox Name="txtDCIUPN" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></TextBox>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0">Call Queue:</Label>
+                                                <TextBox Name="txtDCICQ" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="1" Grid.Column="0"></TextBox>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="1" Grid.Column="1">Resource Account:</Label>
+                                                <TextBox Name="txtDCIRA" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="1" Grid.Column="1"></TextBox>
+                                            </Grid>
+                                            <Button Name="btnDCIRun" Content="Run" FontFamily="Segoe    UI" FontWeight="DemiBold" Margin="5,10,450,10"     Height="30" Cursor="Hand"></Button>
+                                            <TextBox Name="txtDCIOutput" Margin="5,10,5,0" Height="273" IsReadOnly="True" TextWrapping="Wrap" Background="#353A7A" FontFamily="Segoe UI" Foreground="#FFFFFF" VerticalScrollBarVisibility="Auto"></TextBox>
                                         </StackPanel>
                                     </Grid>
                                     <Grid Name="grdUserValidationErrors" Margin="10,10,10,10" Visibility="Hidden">
@@ -198,7 +226,6 @@ $Window.Height = 580
 $Window.ResizeMode = 'NoResize'
 
 $lblDialPad.Background = '#353A7A'
-
 
 $btnCloseScreen.Add_Click({
         $Window.Close()
@@ -265,6 +292,20 @@ $lblUserValidationErrors.Add_MouseLeave({
         }
     })
 
+
+$lblDynamicCallerId.Add_MouseEnter({
+        $lblDynamicCallerId.Background = '#353A7A'
+    })
+
+$lblDynamicCallerId.Add_MouseLeave({
+        if ($grdDynamicCallerId.Visibility -eq 'Visible') {
+            $lblDynamicCallerId.Background = '#353A7A'
+        }
+        else {
+            $lblDynamicCallerId.Background = '#181B40'
+        }
+    })
+
 $lblAutoAttendant.Add_MouseLeftButtonUp({
         $grdForwarding.Visibility = 'Hidden'
         $grdDialPad.Visibility = 'Hidden'
@@ -273,6 +314,8 @@ $lblAutoAttendant.Add_MouseLeftButtonUp({
         $lblDialPad.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Hidden'
         $lblUserValidationErrors.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
     })
 
 $lblDialPad.Add_MouseLeftButtonUp({
@@ -283,6 +326,8 @@ $lblDialPad.Add_MouseLeftButtonUp({
         $lblAutoAttendant.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Hidden'
         $lblUserValidationErrors.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
     })
 
 $lblForwarding.Add_MouseLeftButtonUp({
@@ -293,6 +338,8 @@ $lblForwarding.Add_MouseLeftButtonUp({
         $lblAutoAttendant.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Hidden'
         $lblUserValidationErrors.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
     })
 
 $lblUserValidationErrors.Add_MouseLeftButtonUp({
@@ -303,6 +350,19 @@ $lblUserValidationErrors.Add_MouseLeftButtonUp({
         $lblDialPad.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Visible'
         $lblAutoAttendant.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
+    })
+
+$lblDynamicCallerId.Add_MouseLeftButtonUp({
+        $grdForwarding.Visibility = 'Hidden'
+        $grdDialPad.Visibility = 'Hidden'
+        $grdAutoAttendant.Visibility = 'Hidden'
+        $lblForwarding.Background = '#181B40'
+        $lblDialPad.Background = '#181B40'
+        $grdUserValidationErrors.Visibility = 'Hidden'
+        $lblAutoAttendant.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Visible'
     })
 
 $btnSignIn.Add_Click({
@@ -344,15 +404,15 @@ $btnSignIn.Add_Click({
 
             # AUTH BYPASS FOR DEBUG
             # $grdLogo.Visibility = 'Hidden'
-            # $grdAuthFields.Visibility = 'Hidden'
-            # $grdAuthStatus.Visibility = 'Hidden'
-            # $Window.Width = 800
-            # $Window.Left -= 200
-            # $grdApp.VerticalAlignment = 'Top'
-            # $grdApp.Margin = '0,-540,0,0'
-            # $grdApp.Height = 554
-            # $grdApp.Visibility = 'Visible'
-            # $txtSignedInUser.Text = "Signed in as: $($Username)"
+            $grdAuthFields.Visibility = 'Hidden'
+            $grdAuthStatus.Visibility = 'Hidden'
+            $Window.Width = 800
+            $Window.Left -= 200
+            $grdApp.VerticalAlignment = 'Top'
+            $grdApp.Margin = '0,-540,0,0'
+            $grdApp.Height = 554
+            $grdApp.Visibility = 'Visible'
+            $txtSignedInUser.Text = "Signed in as: $($Username)"
 
         }
     })
@@ -863,14 +923,16 @@ $btnUVERun.Add_Click({
             
                 $txtUVEOutput.Text += "$($loc.path)\TMS-PHONE-UsersWithValidationErrors.csv`n"
                 $txtUVEOutput.Text += "---------------------------------`n"
-            } else {
+            }
+            else {
                 $txtUVEOutput.Text += "---------------------------------`n"
                 foreach ($u in $usersWithValidationErrors) {
                     $txtUVEOutput.Text += "User: $($u.User) --- Error: $($u.ErrorCode) - $($u.ErrorDescription)`n"         
                 }
                 $txtUVEOutput.Text += "---------------------------------`n"
             }
-        } else {
+        }
+        else {
             $txtUVEOutput.Text += "---------------------------------`n"
             $txtUVEOutput.Text += "Found no users with validation errors.`n"
             $txtUVEOutput.Text += "---------------------------------`n"
