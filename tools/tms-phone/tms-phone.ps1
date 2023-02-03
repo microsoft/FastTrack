@@ -1363,7 +1363,7 @@ $btnDCIRun.Add_Click({
                 $txtDCIOutput.Text += "---------------------------------`n"
                 $txtDCIOutput.Text += "RESOURCE ACCOUNT \ LICENSE`n"
                 $txtDCIOutput.Text += "---------------------------------`n"
-                $txtDCIOutput.Text += "Checking if the resource account is properly licensed:"
+                $txtDCIOutput.Text += "Checking if the resource account is properly licensed:`n"
                 $raAssignedPlans = Get-UserAssignedPlans $RA.UserPrincipalName
 
                 if ($raAssignedPlans.length -ne 0) {
@@ -1399,19 +1399,76 @@ $btnDCIRun.Add_Click({
                                     $txtDCIOutput.Text += "There is a phone number assigned.`n"
 
                                     $txtDCIOutput.Text += "Checking the phone number type:`n"
-                                    $PhoneNumberType = (Get-CsPhoneNumberAssignment | Where-Object {$_.AssignedPstnTargetId -eq $RA.Identity}).NumberType
+                                    $PhoneNumberType = (Get-CsPhoneNumberAssignment | Where-Object { $_.AssignedPstnTargetId -eq $RA.Identity }).NumberType
 
                                     if ($PhoneNumberType -eq 'CallingPlan') {
                                         $txtDCIOutput.Text += "The phone number type is Calling Plan.`n"
-                                    } elseif ($PhoneNumberType -eq 'DirectRouting') {
-                                        $txtDCIOutput.Text += "The phone number type is Direct Routing.`n"
-                                    } elseif ($PhoneNumberType -eq 'OperatorConnect') {
-                                        $txtDCIOutput.Text += "The phone number type is Operator Connect.`n"
+
+                                        $txtDCIOutput.Text += "Checking if the resource account has calling capabilities assigned:`n"
+                                        $isMCOPSTNAssignedAndEnabled = $false
+
+                                        foreach ($plan in $raAssignedPlans) {
+                                            if (($plan.Capability -eq 'MCOPSTN1' -OR $plan.Capability -eq 'MCOPSTN2' -OR $plan.Capability -eq 'MCOPSTN5' -OR $plan.Capability -eq 'MCOPSTN6' -OR $plan.Capability -eq 'MCOPSTN8' -OR $plan.Capability -eq 'MCOPSTN9') -AND $plan.CapabilityStatus -eq 'Enabled') {
+                                                $isMCOPSTNAssignedAndEnabled = $true
+                                            }
+                                        }
+
+                                        if ($isMCOPSTNAssignedAndEnabled) {
+                                            $txtDCIOutput.Text += "The resource account is assigned a Calling Plan license.`n"
+
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "SUCCESS`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Foreground = "#BDF2D5"
+                                        }
+                                        else {
+                                            $txtDCIOutput.Foreground = "Salmon"
+                                            $txtDCIOutput.Text += "The resource account is not assigned any Calling Plan license.`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "FAILURE`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            return 
+                                        }
                                     }
-                                    # $txtDCIOutput.Text += "---------------------------------`n"
-                                    # $txtDCIOutput.Text += "SUCCESS`n"
-                                    # $txtDCIOutput.Text += "---------------------------------`n"
-                                    # $txtDCIOutput.Foreground = "#BDF2D5"
+                                    elseif ($PhoneNumberType -eq 'DirectRouting') {
+                                        $txtDCIOutput.Text += "The phone number type is Direct Routing.`n"
+
+                                        $txtDCIOutput.Text += "Checking if the resource account has a voice routing policy with a gateway route assigned:`n"
+
+                                        $voiceRoutingPolicy = $ra.OnlineVoiceRoutingPolicy.Name
+
+                                        if ($voiceRoutingPolicy -eq $null) {
+                                            $voiceRoutingPolicy = 'Global'
+                                        }
+
+                                        $pstnUsageName = ((Get-CsOnlineVoiceRoutingPolicy -Identity $voiceRoutingPolicy).OnlinePstnUsages | Out-String).trim()
+                                        $voiceRoute = (Get-CsOnlineVoiceRoute | Where-Object { $_.OnlinePstnUsages -contains $pstnUsageName })
+
+                                        if ($voiceRoute.OnlinePstnGatewayList) {
+                                            $txtDCIOutput.Text += "The resource account's voice routing policy has a gateway route.`n"
+
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "SUCCESS`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Foreground = "#BDF2D5"
+                                        }
+                                        else {
+                                            $txtDCIOutput.Foreground = "Salmon"
+                                            $txtDCIOutput.Text += "The resource account's voice routing policy does not have a gateway route.`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "FAILURE`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            return
+                                        }
+                                    }
+                                    elseif ($PhoneNumberType -eq 'OperatorConnect') {
+                                        $txtDCIOutput.Text += "The phone number type is Operator Connect.`n"
+
+                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "SUCCESS`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Foreground = "#BDF2D5"
+                                    }
                                 }
                                 else {
                                     $txtDCIOutput.Foreground = "Salmon"
