@@ -404,15 +404,15 @@ $btnSignIn.Add_Click({
 
             # AUTH BYPASS FOR DEBUG
             # $grdLogo.Visibility = 'Hidden'
-            $grdAuthFields.Visibility = 'Hidden'
-            $grdAuthStatus.Visibility = 'Hidden'
-            $Window.Width = 800
-            $Window.Left -= 200
-            $grdApp.VerticalAlignment = 'Top'
-            $grdApp.Margin = '0,-540,0,0'
-            $grdApp.Height = 554
-            $grdApp.Visibility = 'Visible'
-            $txtSignedInUser.Text = "Signed in as: $($Username)"
+            # $grdAuthFields.Visibility = 'Hidden'
+            # $grdAuthStatus.Visibility = 'Hidden'
+            # $Window.Width = 800
+            # $Window.Left -= 200
+            # $grdApp.VerticalAlignment = 'Top'
+            # $grdApp.Margin = '0,-540,0,0'
+            # $grdApp.Height = 554
+            # $grdApp.Visibility = 'Visible'
+            # $txtSignedInUser.Text = "Signed in as: $($Username)"
 
         }
     })
@@ -800,7 +800,7 @@ $btnAARun.Add_Click({
                     $txtAAOutput.Text += "The resource account has a Teams Phone Resource Account Plan assigned.`n"
 
                     $txtAAOutput.Text += "---------------------------------`n"
-                    $txtAAOutput.Text += "RESOURCE ACCOUNT \ VOICE`n"
+                    $txtAAOutput.Text += "VOICE`n"
                     $txtAAOutput.Text += "---------------------------------`n"
 
                     $txtAAOutput.Text += "Checking if the resource account is enabled:`n"
@@ -1381,7 +1381,7 @@ $btnDCIRun.Add_Click({
                         $txtDCIOutput.Text += "The resource account has a Teams Phone Resource Account Plan assigned.`n"
     
                         $txtDCIOutput.Text += "---------------------------------`n"
-                        $txtDCIOutput.Text += "VOICE`n"
+                        $txtDCIOutput.Text += "RESOURCE ACCOUNT \ VOICE`n"
                         $txtDCIOutput.Text += "---------------------------------`n"
     
                         $txtDCIOutput.Text += "Checking if the resource account is enabled:`n"
@@ -1398,10 +1398,20 @@ $btnDCIRun.Add_Click({
                                 if ($RA.LineUri) {
                                     $txtDCIOutput.Text += "There is a phone number assigned.`n"
 
-                                    $txtDCIOutput.Text += "---------------------------------`n"
-                                    $txtDCIOutput.Text += "SUCCESS`n"
-                                    $txtDCIOutput.Text += "---------------------------------`n"
-                                    $txtDCIOutput.Foreground = "#BDF2D5"
+                                    $txtDCIOutput.Text += "Checking the phone number type:`n"
+                                    $PhoneNumberType = (Get-CsPhoneNumberAssignment | Where-Object {$_.AssignedPstnTargetId -eq $RA.Identity}).NumberType
+
+                                    if ($PhoneNumberType -eq 'CallingPlan') {
+                                        $txtDCIOutput.Text += "The phone number type is Calling Plan.`n"
+                                    } elseif ($PhoneNumberType -eq 'DirectRouting') {
+                                        $txtDCIOutput.Text += "The phone number type is Direct Routing.`n"
+                                    } elseif ($PhoneNumberType -eq 'OperatorConnect') {
+                                        $txtDCIOutput.Text += "The phone number type is Operator Connect.`n"
+                                    }
+                                    # $txtDCIOutput.Text += "---------------------------------`n"
+                                    # $txtDCIOutput.Text += "SUCCESS`n"
+                                    # $txtDCIOutput.Text += "---------------------------------`n"
+                                    # $txtDCIOutput.Foreground = "#BDF2D5"
                                 }
                                 else {
                                     $txtDCIOutput.Foreground = "Salmon"
