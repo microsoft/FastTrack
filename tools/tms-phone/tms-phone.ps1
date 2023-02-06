@@ -109,6 +109,9 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                                 <Label Name="lblAutoAttendant" Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" Cursor="Hand" Background="#181B40" Padding="7">Resource Account</Label>
                                             </Border>
                                             <Border BorderThickness="0" BorderBrush="#FFFFFF">
+                                                <Label Name="lblDynamicCallerId" Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" Cursor="Hand" Background="#181B40" Padding="7">Dynamic Caller ID</Label>
+                                            </Border>
+                                            <Border BorderThickness="0" BorderBrush="#FFFFFF">
                                                 <Label Name="lblUserValidationErrors" Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" Cursor="Hand" Background="#181B40" Padding="7">User Validation Errors</Label>
                                             </Border>
                                         </StackPanel>
@@ -151,6 +154,31 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                             <TextBox Name="txtAAUPN" Padding="5" Margin="5" HorizontalContentAlignment="Left"></TextBox>
                                             <Button Name="btnAARun" Content="Run" FontFamily="Segoe UI" FontWeight="DemiBold" Margin="5,10,450,10" Height="30" Cursor="Hand"></Button>
                                             <TextBox Name="txtAAOutput" Margin="5,10,5,0" Height="330" IsReadOnly="True" Background="#353A7A" FontFamily="Segoe UI" Foreground="#FFFFFF" VerticalScrollBarVisibility="Auto"></TextBox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Name="grdDynamicCallerId" Margin="10,10,10,10" Visibility="Hidden">
+                                        <StackPanel>
+                                            <Border BorderThickness="0.5" BorderBrush="#FFFFFF" Padding="5" Margin="5">
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI" FontWeight="DemiBold" FontSize="14">Dynamic caller ID not working</Label>
+                                            </Border>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="0" Grid.Column="0">User Principal Name:</Label>
+                                                <TextBox Name="txtDCIUPN" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></TextBox>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0">Call Queue:</Label>
+                                                <TextBox Name="txtDCICQ" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="1" Grid.Column="0"></TextBox>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="1" Grid.Column="1">(DID) Resource Account:</Label>
+                                                <TextBox Name="txtDCIRA" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="1" Grid.Column="1"></TextBox>
+                                            </Grid>
+                                            <Button Name="btnDCIRun" Content="Run" FontFamily="Segoe    UI" FontWeight="DemiBold" Margin="5,10,450,10"     Height="30" Cursor="Hand"></Button>
+                                            <TextBox Name="txtDCIOutput" Margin="5,10,5,0" Height="273" IsReadOnly="True" TextWrapping="Wrap" Background="#353A7A" FontFamily="Segoe UI" Foreground="#FFFFFF" VerticalScrollBarVisibility="Auto"></TextBox>
                                         </StackPanel>
                                     </Grid>
                                     <Grid Name="grdUserValidationErrors" Margin="10,10,10,10" Visibility="Hidden">
@@ -198,7 +226,6 @@ $Window.Height = 580
 $Window.ResizeMode = 'NoResize'
 
 $lblDialPad.Background = '#353A7A'
-
 
 $btnCloseScreen.Add_Click({
         $Window.Close()
@@ -265,6 +292,20 @@ $lblUserValidationErrors.Add_MouseLeave({
         }
     })
 
+
+$lblDynamicCallerId.Add_MouseEnter({
+        $lblDynamicCallerId.Background = '#353A7A'
+    })
+
+$lblDynamicCallerId.Add_MouseLeave({
+        if ($grdDynamicCallerId.Visibility -eq 'Visible') {
+            $lblDynamicCallerId.Background = '#353A7A'
+        }
+        else {
+            $lblDynamicCallerId.Background = '#181B40'
+        }
+    })
+
 $lblAutoAttendant.Add_MouseLeftButtonUp({
         $grdForwarding.Visibility = 'Hidden'
         $grdDialPad.Visibility = 'Hidden'
@@ -273,6 +314,8 @@ $lblAutoAttendant.Add_MouseLeftButtonUp({
         $lblDialPad.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Hidden'
         $lblUserValidationErrors.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
     })
 
 $lblDialPad.Add_MouseLeftButtonUp({
@@ -283,6 +326,8 @@ $lblDialPad.Add_MouseLeftButtonUp({
         $lblAutoAttendant.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Hidden'
         $lblUserValidationErrors.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
     })
 
 $lblForwarding.Add_MouseLeftButtonUp({
@@ -293,6 +338,8 @@ $lblForwarding.Add_MouseLeftButtonUp({
         $lblAutoAttendant.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Hidden'
         $lblUserValidationErrors.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
     })
 
 $lblUserValidationErrors.Add_MouseLeftButtonUp({
@@ -303,6 +350,19 @@ $lblUserValidationErrors.Add_MouseLeftButtonUp({
         $lblDialPad.Background = '#181B40'
         $grdUserValidationErrors.Visibility = 'Visible'
         $lblAutoAttendant.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Hidden'
+        $lblDynamicCallerId.Background = '#181B40'
+    })
+
+$lblDynamicCallerId.Add_MouseLeftButtonUp({
+        $grdForwarding.Visibility = 'Hidden'
+        $grdDialPad.Visibility = 'Hidden'
+        $grdAutoAttendant.Visibility = 'Hidden'
+        $lblForwarding.Background = '#181B40'
+        $lblDialPad.Background = '#181B40'
+        $grdUserValidationErrors.Visibility = 'Hidden'
+        $lblAutoAttendant.Background = '#181B40'
+        $grdDynamicCallerId.Visibility = 'Visible'
     })
 
 $btnSignIn.Add_Click({
@@ -752,33 +812,17 @@ $btnAARun.Add_Click({
                         if ($RA.Department -eq 'Microsoft Communication Application Instance') {
                             $txtAAOutput.Text += "The department property is valid.`n"
 
-                            $txtAAOutput.Text += "Checking if there is a SIP address set:`n"
+                            if ($RA.LineUri) {
+                                $txtAAOutput.Text += "There is a phone number assigned.`n"
 
-                            if ($RA.SipAddress -eq $null) {
-                                $txtAAOutput.Text += "There is no SIP address set.`n"
-
-                                $txtAAOutput.Text += "Checking if there is a phone number assigned:`n"
-
-                                if ($RA.LineUri) {
-                                    $txtAAOutput.Text += "There is a phone number assigned.`n"
-
-                                    $txtAAOutput.Text += "---------------------------------`n"
-                                    $txtAAOutput.Text += "SUCCESS`n"
-                                    $txtAAOutput.Text += "---------------------------------`n"
-                                    $txtAAOutput.Foreground = "#BDF2D5"
-                                }
-                                else {
-                                    $txtAAOutput.Foreground = "Salmon"
-                                    $txtAAOutput.Text += "There isn't a phone number set.`n"
-                                    $txtAAOutput.Text += "---------------------------------`n"
-                                    $txtAAOutput.Text += "FAILURE`n"
-                                    $txtAAOutput.Text += "---------------------------------`n"
-                                    return
-                                }
+                                $txtAAOutput.Text += "---------------------------------`n"
+                                $txtAAOutput.Text += "SUCCESS`n"
+                                $txtAAOutput.Text += "---------------------------------`n"
+                                $txtAAOutput.Foreground = "#BDF2D5"
                             }
                             else {
                                 $txtAAOutput.Foreground = "Salmon"
-                                $txtAAOutput.Text += "There is a SIP address set.`n"
+                                $txtAAOutput.Text += "There isn't a phone number set.`n"
                                 $txtAAOutput.Text += "---------------------------------`n"
                                 $txtAAOutput.Text += "FAILURE`n"
                                 $txtAAOutput.Text += "---------------------------------`n"
@@ -863,19 +907,634 @@ $btnUVERun.Add_Click({
             
                 $txtUVEOutput.Text += "$($loc.path)\TMS-PHONE-UsersWithValidationErrors.csv`n"
                 $txtUVEOutput.Text += "---------------------------------`n"
-            } else {
+            }
+            else {
                 $txtUVEOutput.Text += "---------------------------------`n"
                 foreach ($u in $usersWithValidationErrors) {
                     $txtUVEOutput.Text += "User: $($u.User) --- Error: $($u.ErrorCode) - $($u.ErrorDescription)`n"         
                 }
                 $txtUVEOutput.Text += "---------------------------------`n"
             }
-        } else {
+        }
+        else {
             $txtUVEOutput.Text += "---------------------------------`n"
             $txtUVEOutput.Text += "Found no users with validation errors.`n"
             $txtUVEOutput.Text += "---------------------------------`n"
         }
 
+    })
+
+
+$btnDCIRun.Add_Click({
+        $txtDCIOutput.Foreground = "White"
+        $txtDCIOutput.Text = ""
+
+        # USER CHECK - validate Dial Pad
+        $txtDCIOutput.Text += "---------------------------------`n"
+        $txtDCIOutput.Text += "USER`n"
+        $txtDCIOutput.Text += "---------------------------------`n"
+        $txtDCIOutput.Text += "Checking if the user exists in the directory:`n"
+        $user = (Get-CsOnlineUser $txtDCIUPN.Text)
+
+        if ($user) {
+            $txtDCIOutput.Text += "The user was found in the directory.`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            $txtDCIOutput.Text += "USER \ LICENSE`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            $txtDCIOutput.Text += "Checking the user is properly licensed for Teams Phone:`n"
+            $userAssignedPlans = Get-UserAssignedPlans $txtDCIUPN.Text
+
+            if ($userAssignedPlans.length -ne 0) {
+                $txtDCIOutput.Text += "The user has assigned plans.`n"
+                $txtDCIOutput.Text += "Checking if the user is licensed for Teams:`n"
+                $isTeamsAssignedAndEnabled = $false
+
+                foreach ($plan in $userAssignedPlans) {
+                    if ($plan.Capability -eq 'Teams' -AND $plan.CapabilityStatus -eq 'Enabled') {
+                        $isTeamsAssignedAndEnabled = $true
+                    }
+                }
+
+                if ($isTeamsAssignedAndEnabled) {
+                    $txtDCIOutput.Text += "The user is licensed for Teams.`n"
+
+                    $txtDCIOutput.Text += "Checking if the user is licensed for Skype for Business Online:`n"
+                    $isSfBOAssignedAndEnabled = $false
+
+                    foreach ($plan in $userAssignedPlans) {
+                        if ($plan.Capability -eq 'MCOProfessional' -AND $plan.CapabilityStatus -eq 'Enabled') {
+                            $isSfBOAssignedAndEnabled = $true
+                        }
+                    }
+
+                    if ($isSfBOAssignedAndEnabled) {
+                        $txtDCIOutput.Text += "The user is licensed for Skype for Business Online.`n"
+
+                        $txtDCIOutput.Text += "Checking if the user is licensed for Teams Phone:`n"
+                        $isMCOEVAssignedAndEnabled = $false
+
+                        foreach ($plan in $userAssignedPlans) {
+                            if ($plan.Capability -eq 'MCOEV' -AND $plan.CapabilityStatus -eq 'Enabled') {
+                                $isMCOEVAssignedAndEnabled = $true
+                            }
+                        }
+
+                        if ($isMCOEVAssignedAndEnabled) {
+                            $txtDCIOutput.Text += "The user is licensed for Teams Phone.`n"
+
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            $txtDCIOutput.Text += "USER \ VOICE`n"
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            $txtDCIOutput.Text += "Checking if the user is Enterprise Voice enabled:`n"
+
+                            if ($user.EnterpriseVoiceEnabled) {
+                                $txtDCIOutput.Text += "The user is Enterprise Voice enabled.`n"
+
+                                $txtDCIOutput.Text += "Checking if the user is homed online in Skype for Business:`n" 
+
+                                if ($user.HostingProvider -eq 'sipfed.online.lync.com') {
+                                    $txtDCIOutput.Text += "The user is homed online.`n" 
+
+                                    $txtDCIOutput.Text += "Checking if the user is set up for TeamsOnly:`n" 
+
+                                    if ($user.TeamsUpgradeEffectiveMode -eq 'TeamsOnly') {
+                                        $txtDCIOutput.Text += "The user is set up for TeamsOnly.`n"
+
+                                        $txtDCIOutput.Text += "Checking if the user has a phone number assigned:`n"
+
+                                        if ($user.LineUri) {
+                                            $txtDCIOutput.Text += "The user has a phone number assigned.`n"
+
+                                            $txtDCIOutput.Text += "Checking the PSTN connectivity type:`n"
+
+                                            $PSTNType = (Get-CsPhoneNumberAssignment -AssignedPstnTargetId $user.UserPrincipalName).NumberType
+
+
+                                            if ($PSTNType -eq 'CallingPlan') {
+                                                $txtDCIOutput.Text += "The user is set up for Calling Plan.`n"
+
+                                                $txtDCIOutput.Text += "Checking if the user is assigned a Caling Plan license:`n"
+                                                $isMCOPSTNAssignedAndEnabled = $false
+
+                                                foreach ($plan in $userAssignedPlans) {
+                                                    if (($plan.Capability -eq 'MCOPSTN1' -OR $plan.Capability -eq 'MCOPSTN2' -OR $plan.Capability -eq 'MCOPSTN5' -OR $plan.Capability -eq 'MCOPSTN6' -OR $plan.Capability -eq 'MCOPSTN8' -OR $plan.Capability -eq 'MCOPSTN9') -AND $plan.CapabilityStatus -eq 'Enabled') {
+                                                        $isMCOPSTNAssignedAndEnabled = $true
+                                                    }
+                                                }
+
+                                                if ($isMCOPSTNAssignedAndEnabled) {
+                                                    $txtDCIOutput.Text += "The user is assigned a Callign Plan license.`n"
+
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    $txtDCIOutput.Text += "USER \ ERRORS`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    $txtDCIOutput.Text += "Checking if the user has any validation error:`n"
+
+                                                    if (!($user.UserValidationErrors -gt 0)) {
+                                                        $txtDCIOutput.Text += "The user does not have any validation error.`n"
+
+
+                                                    }
+                                                    else {
+                                                        $txtDCIOutput.Foreground = "Salmon"
+                                                        $txtDCIOutput.Text += "The user has a validation error of $($user.UserValidationErrors[0].ErrorCode): $($user.UserValidationErrors[0].ErrorDescription).`n"
+                                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                                        $txtDCIOutput.Text += "FAILURE`n"
+                                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                                        return 
+                                                    }
+                                                }
+                                                else {
+                                                    $txtDCIOutput.Foreground = "Salmon"
+                                                    $txtDCIOutput.Text += "The user is not assigned any Calling Plan license.`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    $txtDCIOutput.Text += "FAILURE`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    return 
+                                                }
+
+                                            }
+                                            elseif ($PSTNType -eq 'DirectRouting') {
+                                                $txtDCIOutput.Text += "The user is set up for Direct Routing.`n"
+
+                                                $txtDCIOutput.Text += "Checking if the user is assigned a voice routing policy with a gateway route:`n"
+
+                                                $voiceRoutingPolicy = $user.OnlineVoiceRoutingPolicy.Name
+
+                                                if ($voiceRoutingPolicy -eq $null) {
+                                                    $voiceRoutingPolicy = 'Global'
+                                                }
+
+                                                $pstnUsageName = ((Get-CsOnlineVoiceRoutingPolicy -Identity $voiceRoutingPolicy).OnlinePstnUsages | Out-String).trim()
+                                                $voiceRoute = (Get-CsOnlineVoiceRoute | Where-Object { $_.OnlinePstnUsages -contains $pstnUsageName })
+
+                                                if ($voiceRoute.OnlinePstnGatewayList) {
+                                                    $txtDCIOutput.Text += "The user's voice routing policy has a gateway route.`n"
+
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    $txtDCIOutput.Text += "USER \ ERRORS`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    $txtDCIOutput.Text += "Checking if the user has any validation error:`n"
+
+                                                    if (!($user.UserValidationErrors -gt 0)) {
+                                                        $txtDCIOutput.Text += "The user does not have any validation error.`n"
+
+                                                    }
+                                                    else {
+                                                        $txtDCIOutput.Foreground = "Salmon"
+                                                        $txtDCIOutput.Text += "The user has a validation error of $($user.UserValidationErrors[0].ErrorCode): $($user.UserValidationErrors[0].ErrorDescription).`n"
+                                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                                        $txtDCIOutput.Text += "FAILURE`n"
+                                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                                        return 
+                                                    }
+                                                }
+                                                else {
+                                                    $txtDCIOutput.Foreground = "Salmon"
+                                                    $txtDCIOutput.Text += "The user's voice routing policy does not have a gateway route.`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    $txtDCIOutput.Text += "FAILURE`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    return
+                                                }
+                                            }
+                                            elseif ($PSTNType -eq 'OperatorConnect') {
+                                                $txtDCIOutput.Text += "The user is set up for Operator Connect.`n"
+
+                                                # TO VALIDATE EMERGENCY CALLING POLICY NOT NULL ???
+
+                                                $txtDCIOutput.Text += "---------------------------------`n"
+                                                $txtDCIOutput.Text += "USER \ ERRORS`n"
+                                                $txtDCIOutput.Text += "---------------------------------`n"
+                                                $txtDCIOutput.Text += "Checking if the user has any validation error:`n"
+
+                                                if (!($user.UserValidationErrors -gt 0)) {
+                                                    $txtDCIOutput.Text += "The user does not have any validation error.`n"
+
+                                                }
+                                                else {
+                                                    $txtDCIOutput.Foreground = "Salmon"
+                                                    $txtDCIOutput.Text += "The user has a validation error of $($user.UserValidationErrors[0].ErrorCode): $($user.UserValidationErrors[0].ErrorDescription).`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    $txtDCIOutput.Text += "FAILURE`n"
+                                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                                    return 
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            $txtDCIOutput.Foreground = "Salmon"
+                                            $txtDCIOutput.Text += "The user does not have a phone number assigned.`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "FAILURE`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            return 
+                                        }
+                                    }
+                                    else {
+                                        $txtDCIOutput.Foreground = "Salmon"
+                                        $txtDCIOutput.Text += "The user is not set up for TeamsOnly.`n"
+                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                        $txtDCIOutput.Text += "FAILURE`n"
+                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                        return 
+                                    }
+                                }
+                                else {
+                                    $txtDCIOutput.Foreground = "Salmon"
+                                    $txtDCIOutput.Text += "The user is not homed online.`n"
+                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                    $txtDCIOutput.Text += "FAILURE`n"
+                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                    return 
+                                }
+                            }
+                            else {
+                                $txtDCIOutput.Foreground = "Salmon"
+                                $txtDCIOutput.Text += "The user is not Enterprise Voice enabled.`n"
+                                $txtDCIOutput.Text += "---------------------------------`n"
+                                $txtDCIOutput.Text += "FAILURE`n"
+                                $txtDCIOutput.Text += "---------------------------------`n"
+                                return 
+                            }
+                        }
+                        else {
+                            $txtDCIOutput.Foreground = "Salmon"
+                            $txtDCIOutput.Text += "The user is not licensed for Teams Phone.`n"
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            $txtDCIOutput.Text += "FAILURE`n"
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            return 
+                        }
+                    }
+                    else {
+                        $txtDCIOutput.Foreground = "Salmon"
+                        $txtDCIOutput.Text += "The user is not licensed for Skype for Business Online.`n"
+                        $txtDCIOutput.Text += "---------------------------------`n"
+                        $txtDCIOutput.Text += "FAILURE`n"
+                        $txtDCIOutput.Text += "---------------------------------`n"
+                        return 
+                    }
+                }
+                else {
+                    $txtDCIOutput.Foreground = "Salmon"
+                    $txtDCIOutput.Text += "The user is not licensed for Teams.`n"
+                    $txtDCIOutput.Text += "---------------------------------`n"
+                    $txtDCIOutput.Text += "FAILURE`n"
+                    $txtDCIOutput.Text += "---------------------------------`n"
+                    return 
+                }
+            }
+            else {
+                $txtDCIOutput.Foreground = "Salmon"
+                $txtDCIOutput.Text += "The user doesn't have any assigned plans.`n"
+                $txtDCIOutput.Text += "---------------------------------`n"
+                $txtDCIOutput.Text += "FAILURE`n"
+                $txtDCIOutput.Text += "---------------------------------`n"
+                return 
+            }
+        }
+        else {
+            $txtDCIOutput.Foreground = "Salmon"
+            $txtDCIOutput.Text += "The user was not found in the directory. Please check the User Principal Name and try again.`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            $txtDCIOutput.Text += "FAILURE`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            return 
+        }
+
+
+        # CALL QUEUE
+        $txtDCIOutput.Text += "---------------------------------`n"
+        $txtDCIOutput.Text += "CALL QUEUE`n"
+        $txtDCIOutput.Text += "---------------------------------`n"
+        $txtDCIOutput.Text += "Checking if the call queue exists in the directory:`n"
+
+        $CQ = (Get-CsCallQueue -NameFilter $txtDCICQ.Text)
+
+        if ($CQ) {
+            $txtDCIOutput.Text += "The call queue exists.`n"
+
+            $txtDCIOutput.Text += "Checking if there are any resource accounts linked to this call queue:`n"
+            $RAs = @()
+        
+            if ($CQ.ApplicationInstances) {
+                $txtDCIOutput.Text += "There are resource accounts linked to this call queue.`n"
+        
+                $txtDCIOutput.Text += "Checking if the call queue is linked to a Teams channel:`n"
+                $channelId = $CQ.ChannelId
+
+                if ($channelId) {
+                    $txtDCIOutput.Text += "The call queue is linked to a Teams channel.`n"
+
+                    # TEAM & CHANNEL CHECK
+                    # getting team name
+                    $teams = (Get-Team)
+                    $teamName = ''
+                    $channelDisplayName = ''
+
+                    # write-host 'getting team'
+                    foreach ($team in $teams) {
+                        $channels = (Get-TeamChannel -GroupId $team.GroupId)
+
+                        foreach ($channel in $channels) {
+                            if ($channel.Id -eq $channelId) {
+                                $channelDisplayName = $channel.DisplayName
+                                $teamName = $team.DisplayName
+                            }
+                        }
+                    }
+
+                    # write-host $teamName
+                    $txtDCIOutput.Text += "Checking if the team the call queue is linked to exists:`n"
+                    $team = (Get-Team -DisplayName $teamName)
+
+                    if ($team) {
+                        $txtDCIOutput.Text += "The team the call queue is linked to exists.`n"
+
+                        # TEAM & CHANNEL MEMBERSHIP
+                        $teamId = $team.GroupId
+
+                        $txtDCIOutput.Text += "Checking if the user is member of the team:`n"
+                        $teamUsers = (Get-TeamUser -GroupId $teamId)
+                        $isUserMemberOfTeam = $false
+
+                        foreach ($teamUser in $teamUsers) {
+                            if ($teamUser.User -eq $user.UserPrincipalName) {
+                                $isUserMemberOfTeam = $true
+                            }
+                        }
+
+                        if ($isUserMemberOfTeam) {
+                            $txtDCIOutput.Text += "The user is member of the team.`n"
+
+                            $txtDCIOutput.Text += "Checking if the user is member of the channel the call queue is linked to:`n"
+                            $teamChannelUsers = (Get-TeamChannelUser -GroupId $teamId -DisplayName $channelDisplayName)
+                            $isUserMemberOfChannel = $false
+
+                            foreach ($teamChannelUser in $teamChannelUsers) {
+                                if ($teamChannelUser.User -eq $user.UserPrincipalName) {
+                                    $isUserMemberOfChannel = $true
+                                }
+                            }
+
+                            if ($isUserMemberOfChannel) {
+                                $txtDCIOutput.Text += "The user is member of the linked channel.`n"
+
+                            }
+                            else {
+                                $txtDCIOutput.Foreground = "Salmon"
+                                $txtDCIOutput.Text += "The user is not member of the linked channel..`n"
+                                $txtDCIOutput.Text += "---------------------------------`n"
+                                $txtDCIOutput.Text += "FAILURE`n"
+                                $txtDCIOutput.Text += "---------------------------------`n"
+                                return 
+                            }
+
+                        }
+                        else {
+                            $txtDCIOutput.Foreground = "Salmon"
+                            $txtDCIOutput.Text += "The user is not member of the team.`n"
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            $txtDCIOutput.Text += "FAILURE`n"
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            return 
+                        }
+                    }
+                    else {
+                        $txtDCIOutput.Foreground = "Salmon"
+                        $txtDCIOutput.Text += "The team the call queue is linked to does not exist.`n"
+                        $txtDCIOutput.Text += "---------------------------------`n"
+                        $txtDCIOutput.Text += "FAILURE`n"
+                        $txtDCIOutput.Text += "---------------------------------`n"
+                        return 
+                    }
+                }
+                else {
+                    $txtDCIOutput.Foreground = "Salmon"
+                    $txtDCIOutput.Text += "The call queue is not linked to any Teams channel.`n"
+                    $txtDCIOutput.Text += "---------------------------------`n"
+                    $txtDCIOutput.Text += "FAILURE`n"
+                    $txtDCIOutput.Text += "---------------------------------`n"
+                    return 
+                }
+            }
+            else {
+                $txtDCIOutput.Foreground = "Salmon"
+                $txtDCIOutput.Text += "There are no resource accounts linked to this call queue.`n"
+                $txtDCIOutput.Text += "---------------------------------`n"
+                $txtDCIOutput.Text += "FAILURE`n"
+                $txtDCIOutput.Text += "---------------------------------`n"
+                return 
+            }
+        }
+        else {
+            $txtDCIOutput.Foreground = "Salmon"
+            $txtDCIOutput.Text += "The call queue does not exist in the directory.`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            $txtDCIOutput.Text += "FAILURE`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            return 
+        }
+
+        # ON-BEHALF-OF RESOURCE ACCOUNT
+        $txtDCIOutput.Text += "---------------------------------`n"
+        $txtDCIOutput.Text += "(DID) RESOURCE ACCOUNT`n"
+        $txtDCIOutput.Text += "---------------------------------`n"
+        $txtDCIOutput.Text += "Checking if the call queue has any resource accounts configured for dynamic caller id:`n"
+        $OBORAs = (Get-CsCallQueue -NameFilter $CQ.Name).OboResourceAccounts
+
+        if ($OBORAs.length -gt 0) {
+            $txtDCIOutput.Text += "The call queue has resource accounts configured for dynamic caller id.`n"
+
+            $txtDCIOutput.Text += "Checking if the resource account configured for dynamic caller id matches the one provided:`n"
+            $RA = (Get-CsOnlineUser -Identity $txtDCIRA.Text)
+            $doesRAMatchOBORA = $false
+
+            foreach ($OBORA in $OBORAs) {
+                if ($OBORA.ObjectId -eq $RA.Identity) {
+                    $doesRAMatchOBORA = $true
+                }
+            }
+
+            if ($doesRAMatchOBORA) {
+                $txtDCIOutput.Text += "The resource account configured for dynamic caller id matches the one provided.`n"
+
+                $txtDCIOutput.Text += "---------------------------------`n"
+                $txtDCIOutput.Text += "RESOURCE ACCOUNT \ LICENSE`n"
+                $txtDCIOutput.Text += "---------------------------------`n"
+                $txtDCIOutput.Text += "Checking if the resource account is properly licensed:`n"
+                $raAssignedPlans = Get-UserAssignedPlans $RA.UserPrincipalName
+
+                if ($raAssignedPlans.length -ne 0) {
+                    $txtDCIOutput.Text += "The resorce account has plans assigned.`n"
+                    $txtDCIOutput.Text += "Checking if the resource account has a Teams Phone Resource Account plan assigned:`n"
+                    $isMCOEVVIRTUALUSERAssignedAndEnabled = $false
+    
+                    foreach ($plan in $raAssignedPlans) {
+                        if ($plan.Capability -eq "MCOEV_VIRTUALUSER" -AND $plan.CapabilityStatus -eq 'Enabled') {
+                            $isMCOEVVIRTUALUSERAssignedAndEnabled = $true
+                        }
+                    }
+    
+                    if ($isMCOEVVIRTUALUSERAssignedAndEnabled) {
+                        $txtDCIOutput.Text += "The resource account has a Teams Phone Resource Account Plan assigned.`n"
+    
+                        $txtDCIOutput.Text += "---------------------------------`n"
+                        $txtDCIOutput.Text += "RESOURCE ACCOUNT \ VOICE`n"
+                        $txtDCIOutput.Text += "---------------------------------`n"
+    
+                        $txtDCIOutput.Text += "Checking if the resource account is enabled:`n"
+                        if (!($RA.AccountEnabled)) {
+                            $txtDCIOutput.Text += "The resource account is not enabled.`n"
+    
+                            $txtDCIOutput.Text += "Checking if the department property is valid:`n"
+    
+                            if ($RA.Department -eq 'Microsoft Communication Application Instance') {
+                                $txtDCIOutput.Text += "The department property is valid.`n"
+    
+                                $txtDCIOutput.Text += "Checking if there is a phone number assigned:`n"
+
+                                if ($RA.LineUri) {
+                                    $txtDCIOutput.Text += "There is a phone number assigned.`n"
+
+                                    $txtDCIOutput.Text += "Checking the phone number type:`n"
+                                    $PhoneNumberType = (Get-CsPhoneNumberAssignment | Where-Object { $_.AssignedPstnTargetId -eq $RA.Identity }).NumberType
+
+                                    if ($PhoneNumberType -eq 'CallingPlan') {
+                                        $txtDCIOutput.Text += "The phone number type is Calling Plan.`n"
+
+                                        $txtDCIOutput.Text += "Checking if the resource account has calling capabilities assigned:`n"
+                                        $isMCOPSTNAssignedAndEnabled = $false
+
+                                        foreach ($plan in $raAssignedPlans) {
+                                            if (($plan.Capability -eq 'MCOPSTN1' -OR $plan.Capability -eq 'MCOPSTN2' -OR $plan.Capability -eq 'MCOPSTN5' -OR $plan.Capability -eq 'MCOPSTN6' -OR $plan.Capability -eq 'MCOPSTN8' -OR $plan.Capability -eq 'MCOPSTN9') -AND $plan.CapabilityStatus -eq 'Enabled') {
+                                                $isMCOPSTNAssignedAndEnabled = $true
+                                            }
+                                        }
+
+                                        if ($isMCOPSTNAssignedAndEnabled) {
+                                            $txtDCIOutput.Text += "The resource account is assigned a Calling Plan license.`n"
+
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "SUCCESS`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Foreground = "#BDF2D5"
+                                        }
+                                        else {
+                                            $txtDCIOutput.Foreground = "Salmon"
+                                            $txtDCIOutput.Text += "The resource account is not assigned any Calling Plan license.`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "FAILURE`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            return 
+                                        }
+                                    }
+                                    elseif ($PhoneNumberType -eq 'DirectRouting') {
+                                        $txtDCIOutput.Text += "The phone number type is Direct Routing.`n"
+
+                                        $txtDCIOutput.Text += "Checking if the resource account has a voice routing policy with a gateway route assigned:`n"
+
+                                        $voiceRoutingPolicy = $ra.OnlineVoiceRoutingPolicy.Name
+
+                                        if ($voiceRoutingPolicy -eq $null) {
+                                            $voiceRoutingPolicy = 'Global'
+                                        }
+
+                                        $pstnUsageName = ((Get-CsOnlineVoiceRoutingPolicy -Identity $voiceRoutingPolicy).OnlinePstnUsages | Out-String).trim()
+                                        $voiceRoute = (Get-CsOnlineVoiceRoute | Where-Object { $_.OnlinePstnUsages -contains $pstnUsageName })
+
+                                        if ($voiceRoute.OnlinePstnGatewayList) {
+                                            $txtDCIOutput.Text += "The resource account's voice routing policy has a gateway route.`n"
+
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "SUCCESS`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Foreground = "#BDF2D5"
+                                        }
+                                        else {
+                                            $txtDCIOutput.Foreground = "Salmon"
+                                            $txtDCIOutput.Text += "The resource account's voice routing policy does not have a gateway route.`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "FAILURE`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            return
+                                        }
+                                    }
+                                    elseif ($PhoneNumberType -eq 'OperatorConnect') {
+                                        $txtDCIOutput.Text += "The phone number type is Operator Connect.`n"
+
+                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Text += "SUCCESS`n"
+                                            $txtDCIOutput.Text += "---------------------------------`n"
+                                            $txtDCIOutput.Foreground = "#BDF2D5"
+                                    }
+                                }
+                                else {
+                                    $txtDCIOutput.Foreground = "Salmon"
+                                    $txtDCIOutput.Text += "There isn't a phone number set.`n"
+                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                    $txtDCIOutput.Text += "FAILURE`n"
+                                    $txtDCIOutput.Text += "---------------------------------`n"
+                                    return
+                                }
+                            }
+                            else {
+                                $txtDCIOutput.Foreground = "Salmon"
+                                $txtDCIOutput.Text += "The department property is not valid.`n"
+                                $txtDCIOutput.Text += "---------------------------------`n"
+                                $txtDCIOutput.Text += "FAILURE`n"
+                                $txtDCIOutput.Text += "---------------------------------`n"
+                                return
+                            }
+                        }
+                        else {
+                            $txtDCIOutput.Foreground = "Salmon"
+                            $txtDCIOutput.Text += "The resource account is enabled.`n"
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            $txtDCIOutput.Text += "FAILURE`n"
+                            $txtDCIOutput.Text += "---------------------------------`n"
+                            return
+                        }
+                    }
+                    else {
+                        $txtDCIOutput.Foreground = "Salmon"
+                        $txtDCIOutput.Text += "The resource account does not have a Teams Phone Resource Account plan assigned.`n"
+                        $txtDCIOutput.Text += "---------------------------------`n"
+                        $txtDCIOutput.Text += "FAILURE`n"
+                        $txtDCIOutput.Text += "---------------------------------`n"
+                        return
+                    }
+    
+                }
+                else {
+                    $txtDCIOutput.Foreground = "Salmon"
+                    $txtDCIOutput.Text += "The resource account does not have any plans assigned.`n"
+                    $txtDCIOutput.Text += "---------------------------------`n"
+                    $txtDCIOutput.Text += "FAILURE`n"
+                    $txtDCIOutput.Text += "---------------------------------`n"
+                    return
+                }
+            }
+            else {
+                $txtDCIOutput.Foreground = "Salmon"
+                $txtDCIOutput.Text += "The resource account configured for dynamic caller id does not match the one provided.`n"
+                $txtDCIOutput.Text += "---------------------------------`n"
+                $txtDCIOutput.Text += "FAILURE`n"
+                $txtDCIOutput.Text += "---------------------------------`n"
+                return 
+            }
+
+
+        }
+        else {
+            $txtDCIOutput.Foreground = "Salmon"
+            $txtDCIOutput.Text += "The call queue does not have any resource account configured for dynamic caller id.`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            $txtDCIOutput.Text += "FAILURE`n"
+            $txtDCIOutput.Text += "---------------------------------`n"
+            return 
+        }
     })
 
 $Window.ShowDialog()

@@ -15,6 +15,7 @@ A tool with Teams Phone diagnostics.
     - **Dial Pad**: runs the dial pad diagnostic for the provided user to validate if the requirements are met
     - **Forwarding**: runs the forwarding diagnostic for the provided user to ensure forwarding is enabled and set to forward to the provided phone number
     - **Resource Account**: validates the resource account backing an auto attendant or a call queue (valid only for directly callable voice apps, not nested ones)
+    - **Dynamic Caller ID**: validates user, call queue, and resource accont for Dynamic Caller ID
     - **User Validation Errors**: checks the directory and returns user that have validation errors
 > If the executable crashes, comment out line 16 in the script and run it to look for errors.
 
@@ -42,6 +43,12 @@ Enter the UPN of the resource account backing up the auto attendant or the call 
 
 If the error reported by the diagnostic does not solve the problem, please use the self-help [Auto Attendant diagnostic](https://aka.ms/TeamsAADiag) or [Call Queue diagnostic](https://aka.ms/TeamsCallQueueDiag).
 ![Resource Account diagnostic](https://i.postimg.cc/BQnM56zS/a-STEWr-XPCf.png) 
+
+## Dynamic Caller ID
+Enter the UPN of the user (agent of call queue using dynamic caller id), the name of the call queue, and the UPN of the resource account the user will be calling on behalf of, then select *Run*. The diagnostic will validate that the user, the call queue and the resource account are properly set for dynamic caller id to work.
+If the error reported by the diagnostic does not solve the problem, please refer to the [feature prerequisites](https://learn.microsoft.com/en-us/microsoftteams/plan-auto-attendant-call-queue#prerequisites).
+![Dynamic Caller ID diagnostic](https://i.postimg.cc/XYTh7mry/i-UIt-J4-O3-FK.png) 
+
 
 ## User Validation Errors
 Select *Run* to run the diagnostic and return a list of users with validation errors. To export a CSV, select *CSV* and then select *Run*. The diagnostic will export a CSV of users with validation errors to the working directory and output the path.
