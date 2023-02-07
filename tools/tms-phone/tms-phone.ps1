@@ -366,6 +366,23 @@ $lblDynamicCallerId.Add_MouseLeftButtonUp({
     })
 
 $btnSignIn.Add_Click({
+        $installedTeamsModule = (Get-InstalledModule -Name 'MicrosoftTeams')
+        $supportedTeamsModules = @('4.0.0', '4.1.0', '4.2.0', '4.3.0', '4.4.1', '4.5.0', '4.6.0', '4.7.0', '4.8.0', '4.9.0', '4.9.1', '4.9.3')
+
+        if (!$installedTeamsModule) {
+            $lblAuthStatus.Foreground = "Salmon"
+            $lblAuthStatus.Content = "TEAMS MODULE NOT INSTALLED"
+            Write-Host 'Teams module is not installed on this machine.'
+            return
+        }
+
+        if (!($supportedTeamsModules -contains $installedTeamsModule.Version)) {
+            $lblAuthStatus.Foreground = "Salmon"
+            $lblAuthStatus.Content = "TEAMS MODULE NOT SUPPORTED"
+            Write-Host 'Teams module is installed but the version is not supported.'
+            return
+        }
+
         if (!($txtUsername.Text) -OR !($txtPassword.Password)) {
             Write-Host 'INCORRECT USERNAME AND/OR PASSWORD'
             $lblAuthStatus.Foreground = "Salmon"
@@ -1465,9 +1482,9 @@ $btnDCIRun.Add_Click({
                                         $txtDCIOutput.Text += "The phone number type is Operator Connect.`n"
 
                                         $txtDCIOutput.Text += "---------------------------------`n"
-                                            $txtDCIOutput.Text += "SUCCESS`n"
-                                            $txtDCIOutput.Text += "---------------------------------`n"
-                                            $txtDCIOutput.Foreground = "#BDF2D5"
+                                        $txtDCIOutput.Text += "SUCCESS`n"
+                                        $txtDCIOutput.Text += "---------------------------------`n"
+                                        $txtDCIOutput.Foreground = "#BDF2D5"
                                     }
                                 }
                                 else {

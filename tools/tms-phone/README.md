@@ -7,6 +7,7 @@ A tool with Teams Phone diagnostics.
 - Windows OS
 - Set-ExecutionPolicy RemoteSigned/Unrestricted
 - [Teams PowerShell module](https://learn.microsoft.com/en-us/microsoftteams/teams-powershell-install)
+> Supported MicrosoftTeams modules: '4.0.0', '4.1.0', '4.2.0', '4.3.0', '4.4.1', '4.5.0', '4.6.0', '4.7.0', '4.8.0', '4.9.0', '4.9.1', '4.9.3'
 
 ## Usage
 1. Run the executable (or script)
