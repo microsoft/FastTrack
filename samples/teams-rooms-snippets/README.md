@@ -89,7 +89,7 @@ foreach ($RA in $RAs) {
 
 |Author|Last Updated Date
 |----|--------------------------
-|Mihai Filip, Microsoft|February 10, 2023|
+|Mihai Filip|February 10, 2023|
 
 ## Issues
 
