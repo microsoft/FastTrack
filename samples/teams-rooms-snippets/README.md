@@ -12,7 +12,7 @@ The modules required to run these snippets are:
 After installing these modules, here's how you will connect to them in order to be able to run the snippets:
 
 ```PowerShell
-Connect-MgGraph -Scopes "User.Read, User.Read.All, User.ReadWrite.All, Directory.Read.All, Directory.ReadWrite.All"
+Connect-MgGraph -Scopes "User.ReadWrite.All"
 Connect-ExchangeOnline
 ```
 
