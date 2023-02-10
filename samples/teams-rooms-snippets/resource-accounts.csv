@@ -1,0 +1,3 @@
+﻿UPN,Alias,Password,License,UsageLocation,DisplayName,AutomateProcessing,AddOrganizerToSubject,DeleteComments,RemovePrivateProperty,ProcessExternalMeetingMessages,AdditionalResponse
+mtr-focusroom1@contoso.com,mtr-focusroom13,R3pl4c3th1sw1th4str0n6p4ssw0rd!!,Microsoft_Teams_Rooms_Pro,RO,MTR-FocusRoom13,AutoAccept,0,0,0,1,This is a Microsoft Teams meeting room!
+mtr-focusroom1@contoso.com,mtr-focusroom14,R3pl4c3th1sw1th4str0n6p4ssw0rd!!,Microsoft_Teams_Rooms_Pro,RO,MTR-FocusRoom14,AutoAccept,0,0,0,1,This is a Microsoft Teams meeting room!
