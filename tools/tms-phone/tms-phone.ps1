@@ -14,6 +14,7 @@
 # ...- --- .. -.. - .... . ...- .. .-.. .-.. .- .. -. 
 # FOR DEBUGGING N PROD
 $ErrorActionPreference = "SilentlyContinue"
+$ProgressPreference = "SilentlyContinue"
 
 # ...- --- .. -.. - .... . ...- .. .-.. .-.. .- .. -. #
 #----FUNC
@@ -169,6 +170,7 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition/>
                                                     <RowDefinition/>
+                                                    <RowDefinition/>
                                                 </Grid.RowDefinitions>
                                                 <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="0" Grid.Column="0">User Principal Name:</Label>
                                                 <TextBox Name="txtDCIUPN" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></TextBox>
@@ -176,9 +178,13 @@ CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Segoe UI" Height="844" 
                                                 <TextBox Name="txtDCICQ" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="1" Grid.Column="0"></TextBox>
                                                 <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="1" Grid.Column="1">(DID) Resource Account:</Label>
                                                 <TextBox Name="txtDCIRA" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="1" Grid.Column="1"></TextBox>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="2" Grid.Column="0">Team Name:</Label>
+                                                <TextBox Name="txtDCITeamName" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="2" Grid.Column="0"></TextBox>
+                                                <Label Foreground="#FFFFFF" FontFamily="Segoe UI"   FontWeight="DemiBold" Margin="0,0,0,0" Grid.Row="2" Grid.Column="1">Channel Name:</Label>
+                                                <TextBox Name="txtDCIChannelName" Padding="5" Margin="5,30,5,5"    HorizontalContentAlignment="Left" Grid.Row="2" Grid.Column="1"></TextBox>
                                             </Grid>
                                             <Button Name="btnDCIRun" Content="Run" FontFamily="Segoe    UI" FontWeight="DemiBold" Margin="5,10,450,10"     Height="30" Cursor="Hand"></Button>
-                                            <TextBox Name="txtDCIOutput" Margin="5,10,5,0" Height="273" IsReadOnly="True" TextWrapping="Wrap" Background="#353A7A" FontFamily="Segoe UI" Foreground="#FFFFFF" VerticalScrollBarVisibility="Auto"></TextBox>
+                                            <TextBox Name="txtDCIOutput" Margin="5,10,5,0" Height="210" IsReadOnly="True" TextWrapping="Wrap" Background="#353A7A" FontFamily="Segoe UI" Foreground="#FFFFFF" VerticalScrollBarVisibility="Auto"></TextBox>
                                         </StackPanel>
                                     </Grid>
                                     <Grid Name="grdUserValidationErrors" Margin="10,10,10,10" Visibility="Hidden">
@@ -1245,24 +1251,9 @@ $btnDCIRun.Add_Click({
                     $txtDCIOutput.Text += "The call queue is linked to a Teams channel.`n"
 
                     # TEAM & CHANNEL CHECK
-                    # getting team name
-                    $teams = (Get-Team)
-                    $teamName = ''
-                    $channelDisplayName = ''
+                    $teamName = $txtDCITeamName.Text
+                    $channelDisplayName = $txtDCIChannelName.Text
 
-                    # write-host 'getting team'
-                    foreach ($team in $teams) {
-                        $channels = (Get-TeamChannel -GroupId $team.GroupId)
-
-                        foreach ($channel in $channels) {
-                            if ($channel.Id -eq $channelId) {
-                                $channelDisplayName = $channel.DisplayName
-                                $teamName = $team.DisplayName
-                            }
-                        }
-                    }
-
-                    # write-host $teamName
                     $txtDCIOutput.Text += "Checking if the team the call queue is linked to exists:`n"
                     $team = (Get-Team -DisplayName $teamName)
 
