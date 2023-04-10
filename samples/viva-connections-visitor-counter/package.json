@@ -13,7 +13,7 @@
   "dependencies": {
     "@microsoft/applicationinsights-react-js": "^3.0.5",
     "@microsoft/applicationinsights-web": "^2.8.4",
-    "@microsoft/sp-adaptive-card-extension-base": "1.15.0",
+    "@microsoft/sp-adaptive-card-extension-base": "1.17.0",
     "@microsoft/sp-core-library": "1.15.0",
     "@microsoft/sp-http": "1.15.0",
     "@microsoft/sp-property-pane": "1.15.0",
