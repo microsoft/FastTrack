@@ -1,20 +1,41 @@
-_PLEASE COMPLETE THIS README TEMPLATE FOR YOUR CONTRIBUTION. IT SHOULD BE PLACED IN THE ROOT OF YOUR FOLDER AND BE RENAMED "README.md". ONCE COMPLETE PLEASE DELETE ALL OF THESE INSTRUCTIONS_
+# Microsoft FastTrack Open Source - Yammer-FilesExport
 
-# Microsoft FastTrack Open Source - _YOUR TITLE HERE_
-
-_INTRODUCTION TO THIS TOOL/REPO_
+This sample script calls the Yammer Files Export API to export files from your Yammer network that were uploaded by users during the date range specified in the command. 
 
 ## Usage
 
-_PROVIDE DETAILED GUIDE TO INSTALL AND USE THIS TOOL/SCRIPT/SAMPLE. INCLUDE ANY OPTIONS, CONFIGURATION, ERROR HANDLING, ETC. YOU CAN LINK TO SUPPORTING BLOG POSTS OR OTHER RESOURCES, BUT THIS SECTION MUST CONTAIN ALL THE DETAILS REQUIRED TO RUN THE TOOL._
+### Prerequisites
+
+You must register an app and  generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need itfor the next step below. Detailed instructions on how to generate this can be found here: https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+
+There are only 2 variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
+
+1. $Global:YammerAuthToken = "BearerTokenString"
+
+	Replace BearerTokenString with the token you created via the instructions in the prerequisites. The line should look something like this:
+
+	$Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
+
+2. $rootPath = "C:\Temp"
+
+	Replace the path above with the path you’d like the export data saved to. The script will create separate folders under this root path for each start/end date combination you run it with to try and keep the data 				separate.
+
+### Execution
+
+Once you’ve made and saved those changes, you’re ready to go. To run the script, just pass the startdate and enddate for the time period you want exported files from, like so:
+
+	.\ExportYammerFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+
+Reminder - Those parameters need to be in the YYYY-MM-DD format as shown above. Once complete, the console output will tell you where to find the result, which should be a date-named folder underneath your $rootPath set above.
+
+### Notes
+
+Console output is minimal. This is more of a ‘fire and go get a cup of coffee’ type thing based on how the API works, so detailed logging is sent to a logfile that will be created in the same folder the export data is saved to. If there are errors during script execution relating to issues making calls to the API, detailed info will be logged to that script log, along with various pieces of key information along the way. The console output will only give basic info on what step it’s on, and in the event of API call failure, just let you know it failed and point you to that log for more information.
 
 ## Applies To
 
-_IN THIS SECTION LIST THE ENVIRONMENT(S) WHERE THIS TOOL IS USEFUL_
+- Yammer / Viva Engage networks in M365
 
-- SharePoint 2010
-- SharePoint 2013
-- SharePoint Online
 
 ## Author
 
@@ -22,7 +43,7 @@ _UPDATE TABLE BELOW_
 
 |Author|Original Publish Date
 |----|--------------------------
-|_YOUR NAME_|_DATE ORIGINALLY PUBLISHED_|
+|Dean Cron, Microsoft|June 14th, 2023|
 
 ## Issues
 
