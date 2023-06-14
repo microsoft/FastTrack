@@ -34,7 +34,7 @@ Requirements:
     Required. Sets the end date for the target date range of the export
 
 .EXAMPLE
-    .\ExportYammerFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+    .\Yammer-FilesExport.ps1 -startdate 2023-01-14 -enddate 2023-01-31
 
 #>
 Param(
