@@ -32,6 +32,8 @@ Reminder - Those parameters need to be in the YYYY-MM-DD format as shown above. 
 
 Console output is minimal. This is more of a ‘fire and go get a cup of coffee’ type thing based on how the API works, so detailed logging is sent to a logfile that will be created in the same folder the export data is saved to. If there are errors during script execution relating to issues making calls to the API, detailed info will be logged to that script log, along with various pieces of key information along the way. The console output will only give basic info on what step it’s on, and in the event of API call failure, just let you know it failed and point you to that log for more information.
 
+Each time youo run this, it will create a new folder under the $rootPath you specify named for the export timeframe you specified. In that folder you'll find one or more zip files for the file downloads, along with the detailed script log showing each execution step.
+
 ## Applies To
 
 - Yammer / Viva Engage networks in M365
