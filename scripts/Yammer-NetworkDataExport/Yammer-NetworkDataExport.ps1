@@ -14,7 +14,7 @@
     has been advised of the possibility of such damages.
 
 Purpose: 
-    -Exports files and messages from a Yammer network for specific date ranges using the Files Export API:
+    -Exports files and messages from a Yammer network for specific date ranges using the Network Data Export API:
      https://learn.microsoft.com/en-us/rest/api/yammer/network-data-export
      
 Author:
