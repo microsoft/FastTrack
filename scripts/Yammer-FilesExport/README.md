@@ -24,7 +24,7 @@ There are only 2 variables you need to change in the script itself. These are lo
 
 Once you’ve made and saved those changes, you’re ready to go. To run the script, just pass the startdate and enddate for the time period you want exported files from, like so:
 
-	.\ExportYammerFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+	.\Yammer-FilesExport.ps1 -startdate 2023-01-14 -enddate 2023-01-31
 
 Reminder - Those parameters need to be in the YYYY-MM-DD format as shown above. Once complete, the console output will tell you where to find the result, which should be a date-named folder underneath your $rootPath set above.
 
