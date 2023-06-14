@@ -1,27 +1,47 @@
-# ==================================================================
-# Microsoft provides programming examples for illustration only, without warranty either expressed or
-# implied, including, but not limited to, the implied warranties of merchantability and/or fitness 
-# for a particular purpose.
-# 
-# This sample assumes that you are familiar with the programming language being demonstrated and the 
-# tools used to create and debug procedures. Microsoft support professionals can help explain the 
-# functionality of a particular procedure, but they will not modify these examples to provide added 
-# functionality or construct procedures to meet your specific needs. if you have limited programming 
-# experience, you may want to contact a Microsoft Certified Partner or the Microsoft fee-based consulting 
-# line at (800) 936-5200.
-#
-# For more information about Microsoft Certified Partners, please # visit the following Microsoft Web site:
-# https://partner.microsoft.com
-# -------------------------------------------------------------------
-#
-# Purpose: Exports files and messages from a Yammer network for specific date ranges
-# https://learn.microsoft.com/en-us/rest/api/yammer/network-data-export
-#
-# Requirements: Admin-created bearer token for Yammer app authentication:
-# https://learn.microsoft.com/en-us/rest/api/yammer/app-registration
-# https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
-#
-# ===================================================================
+<#
+.DESCRIPTION
+    The sample scripts are not supported under any Microsoft standard support 
+    program or service. The sample scripts are provided AS IS without warranty  
+    of any kind. Microsoft further disclaims all implied warranties including,  
+    without limitation, any implied warranties of merchantability or of fitness for 
+    a particular purpose. The entire risk arising out of the use or performance of  
+    the sample scripts and documentation remains with you. In no event shall 
+    Microsoft, its authors, or anyone else involved in the creation, production, or 
+    delivery of the scripts be liable for any damages whatsoever (including, 
+    without limitation, damages for loss of business profits, business interruption, 
+    loss of business information, or other pecuniary loss) arising out of the use 
+    of or inability to use the sample scripts or documentation, even if Microsoft 
+    has been advised of the possibility of such damages.
+
+Purpose: 
+    -Exports files and messages from a Yammer network for specific date ranges using the Files Export API:
+     https://learn.microsoft.com/en-us/rest/api/yammer/network-data-export
+     
+Author:
+    Dean Cron
+
+Version:
+    1.0
+
+Requirements: 
+    -Admin-created bearer token for Yammer app authentication:
+     https://learn.microsoft.com/en-us/rest/api/yammer/app-registration
+     https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+
+.PARAMETER StartDate YYYY-MM-DD
+    REQUIRED. Sets the start date for the target date range of the export
+.PARAMETER EndDate YYYY-MM-DD
+    OPTIONAL. Sets the end date for the target date range of the export. We recommend including this to set a reasonable range to avoid timeouts.
+.PARAMETER IncludeFiles <all/csv>
+    OPTIONAL. Set this to ‘all’ for CSVs (including messages) and all file attachments, or ‘csv’ for CSVs only (including messages), no file attachments.
+.PARAMETER IncludeFiles <true/false>
+    OPTIONAL. Setting this to ‘true’ would result in CSVs and/or file attachments downloaded for the primary network and all associated external networks.
+    This is unnecessary for native mode migration, as migration doesn’t touch external networks 
+
+.EXAMPLE
+    .\Yammer-NetworkDataExport.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+#>
+
 Param(
     [Parameter(Mandatory = $true)]
     [ValidateScript(
