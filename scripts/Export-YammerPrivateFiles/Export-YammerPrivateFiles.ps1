@@ -42,8 +42,7 @@ Requirements:
 <############    STUFF YOU NEED TO MODIFY    ############>
 
 #Replace BearerTokenString with the Yammer API bearer token you generated. See "Requirements" near the top of the script.
-#$Global:YammerAuthToken = "BearerTokenString"
-$Global:YammerAuthToken = "893129-8Ff2G7Cmr5Zsrzfx5vwnQ"
+$Global:YammerAuthToken = "BearerTokenString"
 
 #Point this to the messages.csv you obtained from a network data export.
 $messagesCsvPath = 'C:\temp\messages.csv'
