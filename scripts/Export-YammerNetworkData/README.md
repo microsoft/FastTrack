@@ -61,11 +61,9 @@ If your network is in native mode, no files will be downloaded. Included among t
 
 ## Author
 
-_UPDATE TABLE BELOW_
-
 |Author|Original Publish Date
 |----|--------------------------
-|Dean Cron, Microsoft|June 14th, 2023|
+|Dean Cron, Microsoft|June 15th, 2023|
 
 ## Issues
 
