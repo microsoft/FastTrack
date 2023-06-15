@@ -1,4 +1,4 @@
-# Microsoft FastTrack Open Source - Yammer-NetworkDataExport
+# Microsoft FastTrack Open Source - Export-YammerNetworkData
 
 This sample script calls the Yammer Network Data Export API to export messages and (optionally) files from your Yammer network for the date range specified in the command. 
 
@@ -41,7 +41,7 @@ There are only 2 variables you need to change in the script itself. These are lo
   
 Once you’ve made and saved those changes, you’re ready to go. To run the script, pass the start date for the export and any of the three optional parameters shown above. For example, if I wanted to export all data from the main network only (not any of the associated external networks), I'd run the script like so:
 
-	.\Yammer-NetworkDataExport.ps1 -startdate 2023-01-14 -enddate 2023-01-31 -IncludeFiles All
+	.\Export-YammerNetworkData.ps1 -startdate 2023-01-14 -enddate 2023-01-31 -IncludeFiles All
 
 Reminder - The StartDate and EndDate parameters need to be in the YYYY-MM-DD format as shown above. Once complete, the console output will tell you where to find the result, which should be a date-named folder underneath your $rootPath set above.
 
