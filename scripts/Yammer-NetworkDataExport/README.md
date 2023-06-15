@@ -22,15 +22,24 @@ There are only 2 variables you need to change in the script itself. These are lo
   
 ### Parameters
 
--StartDate <YYYY-MM-DD>
+**StartDate YYYY-MM-DD**
+
 	REQUIRED. Sets the start date for the target date range of the export
--EndDate <YYYY-MM-DD>
-	OPTIONAL. Sets the end date for the target date range of the export. We recommend including this and setting a reasonable range to avoid timeouts.
--IncludeFiles <all/csv>
-	OPTIONAL. Set this to ‘all’ for CSVs (including messages) and all file attachments, or ‘csv’ for CSVs only (including messages), no file attachments.
--IncludeFiles <true/false>
-	OPTIONAL. Setting this to ‘true’ would result in CSVs and/or file attachments downloaded for the primary network and all associated external networks.
-	This is unnecessary for native mode migration, as migration doesn’t touch external networks 
+
+**StartDate YYYY-MM-DD**
+	
+	REQUIRED. Sets the start date for the target date range of the export
+**EndDate YYYY-MM-DD**
+	
+	OPTIONAL. Sets the end date for the target date range of the export. 
+	NOTE: We recommend including this and setting a reasonable range to avoid timeouts.
+**IncludeFiles all/csv** (Default: CSV)
+	
+	OPTIONAL. Set this to ‘all’ to include messages and file attachments, or ‘csv’ for messages only.
+**IncludeFiles true/false** (Default: False)
+	
+	OPTIONAL. Set this to ‘true’ to include CSVs and/or file attachments for the primary network and all associated external networks.
+	NOTE: This is unnecessary for native mode migration, as migration doesn’t touch external networks 
   
 ### Execution
   
