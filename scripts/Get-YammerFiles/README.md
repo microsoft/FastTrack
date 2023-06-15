@@ -1,4 +1,4 @@
-# Microsoft FastTrack Open Source - Yammer-FilesExport
+# Microsoft FastTrack Open Source - Export-YammerFiles
 
 This sample script calls the Yammer Files Export API to export files from your Yammer network that were uploaded by users during the date range specified in the command. 
 
@@ -34,7 +34,7 @@ There are only 2 variables you need to change in the script itself. These are lo
 
 Once you’ve made and saved those changes, you’re ready to go. To run the script, just pass the startdate and enddate for the time period you want exported files from, like so:
 
-	.\Yammer-FilesExport.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+	.\Export-YammerFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
 
 Reminder - Those parameters need to be in the YYYY-MM-DD format as shown above. Once complete, the console output will tell you where to find the result, which should be a date-named folder underneath your $rootPath set above.
 
@@ -52,8 +52,6 @@ If your network is in native mode, no files will be downloaded. You'll get a CSV
 
 ## Author
 
-_UPDATE TABLE BELOW_
-
 |Author|Original Publish Date
 |----|--------------------------
 |Dean Cron, Microsoft|June 15th, 2023|
@@ -61,11 +59,6 @@ _UPDATE TABLE BELOW_
 ## Issues
 
 Please report any issues you find to the [issues list](/issues).
-
-_ENSURE THE ISSUES LINK ABOVE IS CORRECT. ADD EXTRA ISSUE DETAILS, IF APPLICABLE. EXAMPLE: "IF YOU GET ERROR X, ENSURE YOU DID CONFIGURATION Y"
-
-
-_DO NOT DELETE/ALTER THE SECTIONS BELOW_
 
 ## Support Statement
 
