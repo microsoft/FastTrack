@@ -23,10 +23,6 @@ There are only 2 variables you need to change in the script itself. These are lo
 ### Parameters
 
 **StartDate YYYY-MM-DD**
-
-	REQUIRED. Sets the start date for the target date range of the export
-
-**StartDate YYYY-MM-DD**
 	
 	REQUIRED. Sets the start date for the target date range of the export
 **EndDate YYYY-MM-DD**
