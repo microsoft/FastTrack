@@ -20,6 +20,16 @@ There are only 2 variables you need to change in the script itself. These are lo
 
 	Replace the path above with the path you’d like the export data saved to. The script will create separate folders under this root path for each start/end date combination you run it with to try and keep the data 				separate.
 
+### Parameters
+
+**StartDate YYYY-MM-DD**
+	
+	REQUIRED. Sets the start date for the target date range of the export
+**EndDate YYYY-MM-DD**
+	
+	REQUIRED. Sets the end date for the target date range of the export. 
+	NOTE: If the script fails while waiting on file packaging, we reocmmend shortening the start/end date windows.
+
 ### Execution
 
 Once you’ve made and saved those changes, you’re ready to go. To run the script, just pass the startdate and enddate for the time period you want exported files from, like so:
@@ -46,7 +56,7 @@ _UPDATE TABLE BELOW_
 
 |Author|Original Publish Date
 |----|--------------------------
-|Dean Cron, Microsoft|June 14th, 2023|
+|Dean Cron, Microsoft|June 15th, 2023|
 
 ## Issues
 
