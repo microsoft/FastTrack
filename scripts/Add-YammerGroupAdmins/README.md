@@ -1,8 +1,6 @@
 # Microsoft FastTrack Open Source - Add-YammerGroupAdmins
 
-This sample script adds new admins to Yammer groups in bulk
-
-NOTE: This sample calls an undocumented endpoint in the Yammer REST APIs, and as such has no official support provided for it, and may stop working without warning.
+This sample script will allow a Yammer admin to bulk-add group owners to groups in their network.
 
 ## Usage
 
@@ -11,18 +9,23 @@ NOTE: This sample calls an undocumented endpoint in the Yammer REST APIs, and as
 - You must register an app and generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need itfor the next step below. Detailed instructions on how to generate this can be found here: https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
 
 - You'll need to create a CSV file containing two columns:
-    1. GroupID. This will contain the IDs of the groups you want to add a new admin to.
-    2. Email. This will contain the email address of the user you want to assign as admin of the group represented by the GroupID value next to it.
+	- **GroupID**. This will contain the IDs of the groups you want to add a new admin to.
+	- **Email**. This will contain the email address of the user you want to assign as admin of the group represented by the GroupID value next to it.
+
+You can get the group ID of the groups you need to add the admins to in one of two ways:
+
+1. Grab the group ID from the group's URL and use a BASE64 decoder on the string at the end as described here: https://support.microsoft.com/en-us/office/how-do-i-find-a-community-s-group-feed-id-in-yammer-9372ab6f-bcc2-4283-bb6a-abf42dec970f
+2. Run a network data export going back as far as possible (do not export attachments) and get the group ID from the groups.csv file generated: https://learn.microsoft.com/en-us/rest/api/yammer/network-data-export
        
 There are 2 variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
 
-1. $Global:YammerAuthToken = "BearerTokenString"
+1. **$Global:YammerAuthToken = "BearerTokenString"**
 
 	  Replace BearerTokenString with the token you created via the instructions in the prerequisites. The line should look something like this:
 
     $Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
 
-2. $groupadminsCsvPath = 'C:\temp\groupadmins.csv'
+2. **$groupadminsCsvPath = 'C:\temp\groupadmins.csv'**
   
     Point this to the groupadmins.csv file you created as mentioned above.
   
@@ -32,15 +35,13 @@ None
 
 ### Execution
 
-Once you’ve completed the pre-reqs, you’re ready to go. To run the script, just pass the startdate and enddate for the time period you want exported files from, like so:
+Once you’ve completed the pre-reqs, you’re ready to go. Run the script like so:
 
 	.\Add-YammerGroupAdmins.ps1
 
 ### Notes
 
-This is only for use as a way to back up private message attachments prior to migrating your network to native mode. These files are removed during migration, so nothing will be exported by this script post-migration.
-
-A folder named for the date/time you ran the script will be created under your $rootPath. Under that, the script creates a separate directory for each user and places their files in their folder. 
+**This sample calls an undocumented endpoint in the Yammer REST APIs, and as such has no official support provided for it, and may stop working without warning.**
 
 ## Applies To
 
