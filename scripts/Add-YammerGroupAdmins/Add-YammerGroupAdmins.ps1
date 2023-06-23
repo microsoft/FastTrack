@@ -14,7 +14,7 @@
     has been advised of the possibility of such damages.
 
 Purpose: 
-    -Adds group admins 
+    -Allows a Yammer admin to bulk-add group owners to groups in their network. 
      
 Author:
     Dean Cron
@@ -28,7 +28,7 @@ Requirements:
         https://learn.microsoft.com/en-us/rest/api/yammer/app-registration
         https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
 
-    2. CSV containing group IDs and admins to add to each. See the README for more information on what needs to be done:
+    2. CSV containing group IDs and admins to add to each. See the README for more information on how to create this:
         https://github.com/microsoft/FastTrack/tree/master/scripts/Add-YammerGroupAdmins/README.md
 
 
@@ -77,7 +77,7 @@ $groupadminsCsv | ForEach-Object {
             $addAdmin = Invoke-WebRequest "https://www.yammer.com/api/v1/group_memberships.json" -Headers $authHeader -Method POST -Body $requestBody
             $adminID = (convertfrom-json $addAdmin.content).user_id
 
-            #We have the user ID, make them an admin on this group
+            #We have the user ID and have added them as a member, now make them an admin of this group
             $injectAdmin = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID/make_admin?user_id=$adminID" -Headers $authHeader -UseBasicParsing -Method POST
 
             #Comment the next line if you'd like to speed this script up slightly. Cosmetic only, used to output group name instead of group ID
@@ -100,7 +100,7 @@ $groupadminsCsv | ForEach-Object {
                 $rateLimitHit = $true
             }
             elseif($_.Exception.Response.StatusCode.Value__ -eq "401"){
-                #Thrown when the YammerAuthToken is invalid
+                #Thrown when the YammerAuthToken is invalid for the network in question
                 Write-Host "Exiting script, API reports ACCESS DENIED. Please ensure a valid developer token is set for the YammerAuthToken variable" -ForegroundColor Red
                 exit
             }
