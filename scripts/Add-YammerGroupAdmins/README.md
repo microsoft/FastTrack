@@ -11,6 +11,10 @@ This sample script will allow a Yammer admin to bulk-add group owners to groups 
 - You'll need to create a CSV file containing two columns:
 	- **GroupID**. This will contain the IDs of the groups you want to add a new admin to.
 	- **Email**. This will contain the email address of the user you want to assign as admin of the group represented by the GroupID value next to it.
+ 
+The CSV should look similar to this:
+
+![CSV format](groupadminssample.jpg?raw=true "Title")
 
 You can get the group ID of the groups you need to add the admins to in one of two ways:
 
