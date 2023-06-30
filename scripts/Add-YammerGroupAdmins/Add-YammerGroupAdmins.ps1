@@ -65,7 +65,7 @@ $groupadminsCsv | ForEach-Object {
     do {
         $rateLimitHit = $false
 
-        $gID = $_.GroupID
+        $gID = $_.GroupID -as [decimal]
         $mail = $_.Email
         
         try
