@@ -17,7 +17,7 @@ This sample script will allow a Yammer admin to bulk-delete groups/communities
 
   You can get the group ID of the groups you need to add the admins to in one of three ways:
 
-    1. Grab the group ID from the group's URL and use a BASE64 decoder on the string at the end as described here: https://support.microsoft.com/en-us/office/how-do-i-find-a-community-s-group-feed-id-in-yammer-9372ab6f-          bcc2-4283-bb6a-abf42dec970f
+    1. Grab the group ID from the group's URL and use a BASE64 decoder on the string at the end as described here: [How do I find a community's group feed ID in Viva Engage?](https://support.microsoft.com/en-us/office/how-do-i-find-a-community-s-group-feed-id-in-yammer-9372ab6f-bcc2-4283-bb6a-abf42dec970f) 
     2. Run a network data export going back as far as possible (do not export attachments) and get the group ID from the groups.csv file generated: https://learn.microsoft.com/en-us/rest/api/yammer/network-data-export
     3. If you're doing this pre-native mode migration, you can get the group IDs from the alignment report you're basing your cleanup on.
 
