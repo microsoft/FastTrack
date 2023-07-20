@@ -24,9 +24,8 @@ Version:
     1.1
 
 Requirements: 
-    -Admin-created bearer token for Yammer app authentication:
-     https://learn.microsoft.com/en-us/rest/api/yammer/app-registration
-     https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+    Admin-created bearer token for Yammer app authentication following the instructions in step 2 here:
+      https://support.microsoft.com/en-au/office/export-yammer-group-members-to-a-csv-file-201a78fd-67b8-42c3-9247-79e79f92b535#step2  
 
 .PARAMETER StartDate
     Required. Sets the start date for the target date range of the export

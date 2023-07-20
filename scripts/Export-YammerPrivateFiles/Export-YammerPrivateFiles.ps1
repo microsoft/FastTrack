@@ -24,9 +24,8 @@ Version:
 
 Requirements:
 
-    1. Admin-created bearer token for Yammer app authentication:
-        https://learn.microsoft.com/en-us/rest/api/yammer/app-registration
-        https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+    1. Admin-created bearer token for Yammer app authentication following the instructions in step 2 here:
+        https://support.microsoft.com/en-au/office/export-yammer-group-members-to-a-csv-file-201a78fd-67b8-42c3-9247-79e79f92b535#step2
 
     2. Private content mode enabled for the verified admin that created the bearer token:
         https://learn.microsoft.com/en-us/yammer/manage-security-and-compliance/monitor-private-content
