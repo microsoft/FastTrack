@@ -25,6 +25,7 @@ Version:
 Requirements:
 
     1. Admin account with M365 Groups and SPO access
+    2. Exchange Online and SharePoint Online PowerShell modules must be installed
 
 .EXAMPLE
     .\Get-YammerSiteSize.ps1
