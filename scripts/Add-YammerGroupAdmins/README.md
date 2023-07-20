@@ -6,7 +6,7 @@ This sample script will allow a Yammer admin to bulk-add group owners to groups 
 
 ### Prerequisites
 
-- You must register an app and generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need itfor the next step below. Detailed instructions on how to generate this can be found here: https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+- You must register an app and generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need itfor the next step below. Detailed instructions on how to generate this can be found in step 2 here: [https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058](https://support.microsoft.com/en-au/office/export-yammer-group-members-to-a-csv-file-201a78fd-67b8-42c3-9247-79e79f92b535#step2 )
 
 - You'll need to create a CSV file containing two columns:
 	- **GroupID**. This will contain the IDs of the groups you want to add a new admin to.
