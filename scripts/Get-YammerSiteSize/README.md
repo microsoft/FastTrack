@@ -16,6 +16,8 @@ There are only 2 variables you may need to change in the script itself. These ar
 
     If you'd like the script to be generated in a specific location, change the path above to reflect your target.
 
+You must have both the Exchange Online and SharePoint Online PowerShell modules installed.
+
 ### Parameters
 
 None
