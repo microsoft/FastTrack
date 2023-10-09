@@ -33,7 +33,7 @@ Requirements:
     OPTIONAL. Sets the end date for the target date range of the export. We recommend including this to set a reasonable range to avoid timeouts.
 .PARAMETER IncludeFiles <all/csv>
     OPTIONAL. Set this to ‘all’ for CSVs (including messages) and all file attachments, or ‘csv’ for CSVs only (including messages), no file attachments.
-.PARAMETER IncludeFiles <true/false>
+.PARAMETER IncludeExternalNetworks <true/false>
     OPTIONAL. Setting this to ‘true’ would result in CSVs and/or file attachments downloaded for the primary network and all associated external networks.
     This is unnecessary for native mode migration, as migration doesn’t touch external networks 
 
