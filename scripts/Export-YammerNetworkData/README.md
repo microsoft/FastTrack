@@ -32,7 +32,7 @@ There are only 2 variables you need to change in the script itself. These are lo
 **IncludeFiles all/csv** (Default: CSV)
 	
 	OPTIONAL. Set this to ‘all’ to include messages and file attachments, or ‘csv’ for messages only.
-**IncludeFiles true/false** (Default: False)
+**IncludeExternalNetworks true/false** (Default: False)
 	
 	OPTIONAL. Set this to ‘true’ to include CSVs and/or file attachments for the primary network and all associated external networks.
 	NOTE: This is unnecessary for native mode migration, as migration doesn’t touch external networks 
