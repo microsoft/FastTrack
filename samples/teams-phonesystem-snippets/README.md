@@ -33,17 +33,20 @@ Numbers can be assigned individually from the Teams admin center, but can also b
 
 - UserPrincipalName
 - PhoneNumber
-- PhoneNumberType*
-- LocationId**
+- PhoneNumberType¹
+- LocationId²
+- VoiceRoutingPolicy³
 
-\* _Possible values for PhoneNumberType:_
+¹ _Possible values for PhoneNumberType:_
 
 - CallingPlan
 - OperatorConnect
 - OCMobile
 - DirectRouting
 
-\*\* _LocationId only required for CallingPlan phone number type assignment_
+² _LocationId only required for CallingPlan phone number type assignment, and may be required for OperatorConnect and OCMobile_
+
+³ _VoiceRoutingPolicy only required for DirectRouting phone number type assignment_
 
 ```PowerShell
 $assignphoneusers = Import-Csv "C:\path\to\assignphoneusers.csv"
@@ -51,8 +54,20 @@ $assignphoneusers = Import-Csv "C:\path\to\assignphoneusers.csv"
 foreach ($user in $assignphoneusers) {
     if ($user.PhoneNumberType -eq "CallingPlan") {
         Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType -LocationId $user.LocationId
-    } else {
+
+    } elseif ($user.PhoneNumberType -eq "DirectRouting") {
         Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType
+        Grant-CsOnlineVoiceRoutingPolicy -Identity $user.UserPrincipalName -PolicyName $user.VoiceRoutingPolicy
+
+    } elseif ($user.PhoneNumberType -eq "OperatorConnect" -or $user.PhoneNumberType -eq "OCMobile") {
+        if ($user.LocationId) {
+            Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType -LocationId $user.LocationId
+        } else {
+            Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType
+        }
+
+    } else {
+        Write-Error "Invalid PhoneNumberType of '$($user.PhoneNumberType)' provided for user '$($user.UserPrincipalName)' and phone '$($user.PhoneNumber)'"
     }
 }
 ```
@@ -61,7 +76,7 @@ foreach ($user in $assignphoneusers) {
 
 |Author|Last Updated Date
 |----|--------------------------
-|David Whitney, Microsoft|November 8, 2022|
+|David Whitney, Microsoft|February 14, 2023|
 
 ## Issues
 
