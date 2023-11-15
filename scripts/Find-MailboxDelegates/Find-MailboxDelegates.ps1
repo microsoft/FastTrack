@@ -349,7 +349,7 @@ Begin{
 
                     If($gatherfullaccess -eq $true){
                         $Error.Clear()
-                        $FullAccessPermissions = Get-MailboxPermission -Identity ($Mailbox.PrimarySMTPAddress).tostring() | ? {($_.AccessRights -like "*FullAccess*") -and ($_.IsInherited -eq $false) -and ($_.User -notlike "NT AUTHORITY\SELF") -and ($_.User -notlike "S-1-5*") -and ($_.User -notlike $Mailbox.PrimarySMTPAddress)}
+                        $FullAccessPermissions = Get-MailboxPermission -Identity ($Mailbox.PrimarySMTPAddress).tostring() | ? {($_.AccessRights -like "*FullAccess*") -and ($_.IsInherited -eq $false) -and ($_.User -notlike $NTAuthoritySelf) -and ($_.User -notlike "S-1-5*") -and ($_.User -notlike $Mailbox.PrimarySMTPAddress)}
                 
                         If($FullAccessPermissions){
                             Foreach($perm in $FullAccessPermissions){
@@ -408,12 +408,12 @@ Begin{
 
                     If($gathersendas -eq $true){
                         $Error.Clear()
-                        #$SendAsPermissions = Get-ADPermission $Mailbox.DistinguishedName | ?{($_.ExtendedRights -like "*send-as*") -and ($_.IsInherited -eq $false) -and -not ($_.User -like "NT AUTHORITY\SELF") }
+                        #$SendAsPermissions = Get-ADPermission $Mailbox.DistinguishedName | ?{($_.ExtendedRights -like "*send-as*") -and ($_.IsInherited -eq $false) -and -not ($_.User -like $NTAuthoritySelf) }
                 
                         $SendAsPermissions = New-Object System.Collections.Generic.List[System.Object] 
                         $userDN = [ADSI]("LDAP://$($mailbox.DistinguishedName)")
                         $userDN.psbase.ObjectSecurity.Access | ? { ($_.ObjectType -eq [GUID]$right.RightsGuid.Value) -and ($_.IsInherited -eq $false) } | select -ExpandProperty identityreference | %{
-				            If(-not ($_ -like "NT AUTHORITY\SELF")){
+				            If(-not ($_ -like $NTAuthoritySelf)){
 					            $SendAsPermissions.add($_)
 				            }
 			            }
@@ -1006,6 +1006,9 @@ Begin{
             exit
          }   
         }
+
+        # Dynamically determine the localized name of "NT AUTHORITY\SELF"
+        $NTAuthoritySelf = ([System.Security.Principal.SecurityIdentifier]::new("S-1-5-10")).Translate([System.Security.Principal.NTAccount]).Value
 
         Write-LogEntry -LogName:$LogFile -LogEntryText "Pre-flight Completed" -ForegroundColor Green 
         ""
