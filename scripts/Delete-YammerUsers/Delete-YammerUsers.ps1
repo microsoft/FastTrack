@@ -66,7 +66,7 @@ $authHeader = Get-YammerAuthHeader
 $usersCsv | ForEach-Object {
     do {
         $rateLimitHit = $false
-        $uID = $_.userID -as [decimal]
+        $uID = $_.UserID -as [decimal]
         
         try
         {
