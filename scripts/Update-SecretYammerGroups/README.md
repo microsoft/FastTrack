@@ -2,7 +2,7 @@
 
 This sample script will change hidden (secret) Yammer communities to visible. They will still be private, just visible in the directory.
 
-**NOTE - This script is only intended for use with external Yammer networks. Those are the only ones that should still have any hidden/secret groups.**
+**This script is only intended for use with external Yammer networks. Those are the only ones that should still have any hidden/secret groups.**
 
 ## Usage
 
