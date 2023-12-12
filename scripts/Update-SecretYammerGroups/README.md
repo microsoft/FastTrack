@@ -32,10 +32,6 @@ Once you’ve completed the pre-reqs, you’re ready to go. Run the script like 
 
 	.\Update-SecretYammerGroups.ps1
 
-### Notes
-
-**This sample calls an undocumented endpoint in the Yammer REST APIs, and as such has no official support provided for it, and may stop working without warning.**
-
 ## Applies To
 
 - Yammer / Viva Engage networks in M365
