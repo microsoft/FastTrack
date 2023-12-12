@@ -9,6 +9,9 @@ This sample script will change hidden (secret) Yammer communities to visible. Th
 ### Prerequisites
 
 - You must register an app and generate a bearer token (aka Developer Token) in the **external network** you want this script to target. Detailed instructions on how to generate this can be found here: https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+  
+- The account that creates the developer token in the step above MUST have private content mode enabled:
+https://learn.microsoft.com/en-us/viva/engage/manage-security-and-compliance/monitor-private-content
 
 There are 2 variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
 
