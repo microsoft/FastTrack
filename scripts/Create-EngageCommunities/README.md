@@ -19,7 +19,7 @@ https://learn.microsoft.com/en-us/graph/api/employeeexperience-post-communities
 
   https://youtu.be/fY-KYJZHpdk
 
-- You'll need a JSON file containing at least 50 community name and description pairs. Here's a sample of how this file should be formatted:
+- You'll need a JSON file containing at least 50 community name and description pairs. You can find a properly formatted sample [right here](communities.json).
        
 There are 3 variables you need to change in the script itself. You may have already done this while following the [video linked earlier](https://youtu.be/fY-KYJZHpdk). These are located in the 'variables' section and are the only ones you should change:
 
