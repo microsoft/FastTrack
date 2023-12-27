@@ -43,7 +43,7 @@ There are 3 variables you need to change in the script itself. You may have alre
 
 **-NumberofCommunities 'number to create'**
 
->Specifies the number of communities to create. Must be an integer between 1 and 50. 
+>OPTIONAL: Specifies the number of communities to create. Must be an integer between 1 and 50. 
 >NOTE: If not specified, the script defaults to creating 50 communities.
 
 **-AssignedOwner "user UPN"**
