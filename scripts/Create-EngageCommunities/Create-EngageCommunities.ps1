@@ -112,8 +112,6 @@ function New-Community {
 
         $responseHeaders = $response.Headers
         $statusUri = $responseHeaders.location.ToString()
-
-        $statusUri = $statusUri.Replace("('","/").Replace("')","")
         
         # Check community creation status.
         # https://learn.microsoft.com/en-us/graph/api/engagementasyncoperation-get?view=graph-rest-beta
@@ -210,7 +208,8 @@ function Connect-ToGraph {
 
 #region Variables
 
-# Change these to match your environment.
+# Change these to match your environment. Instructions:
+# https://github.com/microsoft/FastTrack/tree/master/scripts/Create-EngageCommunities/README.md
 $ClientId = "281cc15d-e1ae-4be7-8072-20c150bb9ad2"
 $TenantId = "e778c874-9f25-4044-a1ee-860391129957"
 $ClientSecret = "9dK8Q~ZRDCda3dfKnLdRZucDWg2FiduYTYyceY"
