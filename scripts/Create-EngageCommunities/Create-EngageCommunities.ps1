@@ -116,11 +116,17 @@ function New-Community {
         # Check community creation status.
         # https://learn.microsoft.com/en-us/graph/api/engagementasyncoperation-get?view=graph-rest-beta
         Do{
-            # Check status too quickly and it'll fail. Adding 2 second sleep to account for timing.
             Start-Sleep -Seconds 2
             $operationInfo = Invoke-RestMethod -Uri $statusUri -Headers $headers -Method Get
             if ($operationInfo.status -eq "succeeded") {
                 $createComplete = $true
+            }
+            elseif ($operationInfo.status -eq "failed") {
+                # Graph indicates creation failed. Return the error and move on.
+                # https://learn.microsoft.com/en-us/graph/api/resources/engagementasyncoperation?view=graph-rest-beta
+                Write-Host "Failed to create community:" $DisplayName -ForegroundColor Red
+                Write-Host "Error returned from Graph: $($operationInfo.statusDetail)" -ForegroundColor Red
+                return
             }
         } While (-not $createComplete)
 
