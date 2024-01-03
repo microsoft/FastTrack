@@ -70,7 +70,7 @@ Creates 50 sample communities in Viva Engage with random owners:
 
 |Author|Original Publish Date
 |----|--------------------------
-|Dean Cron, Microsoft|December 22th, 2023|
+|Dean Cron, Microsoft|December 22nd, 2023|
 
 ## Issues
 
