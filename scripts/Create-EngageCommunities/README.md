@@ -4,6 +4,8 @@ This sample script will demonstrate how to use PowerShell to bulk-create Viva En
 
 https://learn.microsoft.com/en-us/graph/api/employeeexperience-post-communities
 
+https://techcommunity.microsoft.com/t5/viva-engage-blog/introducing-the-community-creation-api-for-viva-engage-on/ba-p/4011966
+
 **NOTE - NOT INTENDED FOR PRODUCTION USE, SAMPLE ONLY. This script will create up to 50 sample communities.**
 
 ## Usage
