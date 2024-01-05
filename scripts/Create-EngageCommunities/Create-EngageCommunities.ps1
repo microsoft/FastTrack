@@ -121,11 +121,11 @@ function New-Community {
             if ($operationInfo.status -eq "succeeded") {
                 $createComplete = $true
             }
-            elseif ($operationInfo.status -eq "failed") {
-                # Graph indicates creation failed. Return the error and move on.
+            elseif ($operationInfo.status -eq "failed" -or $operationInfo.status -eq "skipped") {
+                # Graph indicates creation failed or was skipped. Return the error and move on.
                 # https://learn.microsoft.com/en-us/graph/api/resources/engagementasyncoperation?view=graph-rest-beta
                 Write-Host "Failed to create community:" $DisplayName -ForegroundColor Red
-                Write-Host "Error returned from Graph: $($operationInfo.statusDetail)" -ForegroundColor Red
+                Write-Host "Info returned from Graph: $($operationInfo.statusDetail)" -ForegroundColor Red
                 return
             }
         } While (-not $createComplete)
