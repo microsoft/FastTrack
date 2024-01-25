@@ -76,7 +76,6 @@ $groupsCsv | ForEach-Object {
             else{
                 $deleteGroup = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID.json" -Headers $authHeader -Method DELETE
                 Write-Host "Successfully deleted group $gID" -ForegroundColor Green
-                $rateLimitHit = $false
             }
         }
         catch {
