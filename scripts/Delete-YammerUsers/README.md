@@ -30,7 +30,7 @@ There are 3 variables you need to change in the script itself. These are located
 
     $Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
 
-2. **$groupsToBeDeletedCSV = 'C:\temp\userstobedeleted.csv'**
+2. **$usersToBeDeletedCSV = 'C:\temp\userstobedeleted.csv'**
   
     Point this to the userstobedeleted.csv file you created as mentioned above.
 
