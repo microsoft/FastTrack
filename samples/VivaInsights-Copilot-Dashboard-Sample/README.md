@@ -23,6 +23,12 @@ This is a PowerBI file (.pbix) showing a sample of how the Viva Advanced Insight
 | 1.0.1     | May 6, 2024   | Include Word document with steps on how to use  |
 | 1.0.0     | May 3, 2024 | Initial release |
 
+## FAQ
+
+How are the values in the left bar calculated?
+![image](https://github.com/soyalejolopez/FastTrack/assets/28953579/e9a42afc-bce1-43ea-a064-f75fa8e0f1ac)
+
+
 ## Disclaimer
 
 **THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
