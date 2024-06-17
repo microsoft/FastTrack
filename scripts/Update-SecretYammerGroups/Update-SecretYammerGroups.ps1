@@ -46,25 +46,47 @@ $whatIfMode = $true
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
 
 #Create header with access token
-$headers = @{"Authorization" = "Bearer $YammerAuthToken"; "Content-Type" = "application/json"}
+$Global:headers = @{"Authorization" = "Bearer $YammerAuthToken"; "Content-Type" = "application/json"}
 
-#Get the list of groups in the network. 
-#groups.json will only return a max of 50 at a time, so we may need to loop through multiple times.
-$GroupCycle = 1
+#Function to get all groups
+Function Get-YammerGroups($page, $allGroups) {
+    if (!$page) {
+        $page = 1
+    }
 
-Do {
-    $groupsUri = "https://www.yammer.com/api/v1/groups.json?limit=50&page=$GroupCycle"
-    write-host "Getting list of groups: Page $GroupCycle"
-    $MoreYammerGroups = (Invoke-WebRequest -Uri $groupsUri -Method Get -Headers $headers).content | ConvertFrom-Json
-    $YammerGroups += $MoreYammerGroups | Where-Object {$_.show_in_directory -eq "false"}
-    $GroupCycle ++
+    if (!$allGroups) {
+        $allGroups = New-Object System.Collections.ArrayList($null)
+    }
+
+    $urlToCall = "https://www.yammer.com/api/v1/groups.json"
+    $urlToCall += "?page=" + $page;
+
+    #API only returns 50 results per page, so we need to loop through all pages
+    Write-Host "Retrieving page $page of groups list" -Foreground Yellow
+    $webRequest = Invoke-WebRequest -Uri $urlToCall -Method Get -Headers $headers
+
+    if ($webRequest.StatusCode -eq 200) {
+        $results = $webRequest.Content | ConvertFrom-Json
+
+        if ($results.Length -eq 0) {
+            return $allGroups
+        }
+        $allGroups.AddRange($results)
+    }
+
+    if ($allGroups.Count % 50 -eq 0) {
+        $page = $page + 1
+        return Get-YammerGroups $page $allGroups
+    }
+    else {
+        return $allGroups
+    }
 }
-While ($MoreYammerGroups.Count -gt 0)
 
-#groups.json will occasionally return duplicate groups in results. This should remove them.
-$results = $YammerGroups | sort-object -Property * -Unique
+$results = Get-YammerGroups
+$groupList = $results | Where-Object {$_.show_in_directory -eq "false"}
 
-$resultCount = ($results | Measure-Object).Count
+$resultCount = ($groupList | Measure-Object).Count
 
 if($resultCount -eq 0)
 {
@@ -84,56 +106,56 @@ else
 }
 
 #Change hidden groups to visible groups. These groups will still be private.
-$results | ForEach-Object {
+ $groupList | ForEach-Object {
     
-    $gID = $_.Id -as [decimal]
+     $gID = $_.Id -as [decimal]
 
-    try
-    {
-        #Get the group properties.
-        #This is more of a test to ensure we can see it, but also allows display of some info for each group.
-        $getGroupInfo = (Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID.json" -Headers $headers -Method GET).content | ConvertFrom-Json
-        Write-Host ""
-        Write-Host "Processing Group: " $getGroupInfo.full_name
-        Write-Host "Group ID: $gID"
-        if($getGroupInfo.stats.last_message_at -ne $null)
-        {
-            Write-Host "Last Message Date: "$getGroupInfo.stats.last_message_at
-        }
-        else
-        {
-           Write-Host "Last Message Date: No messages in group" 
-        }
+     try
+     {
+         #Get the group properties.
+         #This is more of a test to ensure we can see it, but also allows display of some info for each group.
+         $getGroupInfo = (Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID.json" -Headers $headers -Method GET).content | ConvertFrom-Json
+         Write-Host ""
+         Write-Host "Processing Group: " $getGroupInfo.full_name
+         Write-Host "Group ID: $gID"
+         if($getGroupInfo.stats.last_message_at -ne $null)
+         {
+             Write-Host "Last Message Date: "$getGroupInfo.stats.last_message_at
+         }
+         else
+         {
+            Write-Host "Last Message Date: No messages in group" 
+         }
         
-        Write-Host "Is group currently visible: "$getGroupInfo.show_in_directory
+         Write-Host "Is group currently visible: "$getGroupInfo.show_in_directory
 
-        #Make the change
-        if($whatIfMode){
-            Write-Host "WhatIf mode enabled, no changes were made to group $gID." -ForegroundColor Yellow
-        }
-        else{
-            #Create payload, set to visible
-            $communityPayload = @{"show_in_directory" = "true"} | ConvertTo-Json
-            $updateGroup = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID.json" -Headers $headers -Method PUT -Body $communityPayload
-            Write-Host "Successfully changed group $gID to visible" -ForegroundColor Green
-        }
-    }
-    catch {
-        if($_.Exception.Response.StatusCode.Value__ -eq "401"){
-            #Thrown when the YammerAuthToken is invalid. Exit here.
-            Write-Host "Exiting script, API reports ACCESS DENIED. Please ensure a valid developer token is set for the YammerAuthToken variable" -ForegroundColor Red
-            exit
-        }
-        elseif($_.Exception.Response.StatusCode.Value__ -eq "404"){
-            #Typically thrown when the group isn't found. No exit, try next group.
-            Write-Host "Exiting script, API reports 404, typically caused if the group ($gID) was not found" -ForegroundColor Red
-        }
-        else{
-            #Fallback, no idea what happened to get us here.
-            $e = $_.Exception.Response.StatusCode.Value__
-            $l = $_.InvocationInfo.ScriptLineNumber
-            Write-Host "Failed to update group" $gID  -ForegroundColor Red
-            Write-Host "error $e on line $l"
-        }
-    }
-}
+         #Make the change
+         if($whatIfMode){
+             Write-Host "WhatIf mode enabled, no changes were made to group $gID." -ForegroundColor Yellow
+         }
+         else{
+             #Create payload, set to visible
+             $communityPayload = @{"show_in_directory" = "true"} | ConvertTo-Json
+             $updateGroup = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID.json" -Headers $headers -Method PUT -Body $communityPayload
+             Write-Host "Successfully changed group $gID to visible" -ForegroundColor Green
+         }
+     }
+     catch {
+         if($_.Exception.Response.StatusCode.Value__ -eq "401"){
+             #Thrown when the YammerAuthToken is invalid. Exit here.
+             Write-Host "Exiting script, API reports ACCESS DENIED. Please ensure a valid developer token is set for the YammerAuthToken variable" -ForegroundColor Red
+             exit
+         }
+         elseif($_.Exception.Response.StatusCode.Value__ -eq "404"){
+             #Typically thrown when the group isn't found. No exit, try next group.
+             Write-Host "Exiting script, API reports 404, typically caused if the group ($gID) was not found" -ForegroundColor Red
+         }
+         else{
+             #Fallback, no idea what happened to get us here.
+             $e = $_.Exception.Response.StatusCode.Value__
+             $l = $_.InvocationInfo.ScriptLineNumber
+             Write-Host "Failed to update group" $gID  -ForegroundColor Red
+             Write-Host "error $e on line $l"
+         }
+     }
+ }
