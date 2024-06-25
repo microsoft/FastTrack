@@ -43,37 +43,45 @@ $ReportOutput = "C:\Temp\YammerGroupInfo{0}.csv" -f [DateTime]::Now.ToString("yy
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
 
 #Create header with access token
-$header = @{"Authorization" = "Bearer $YammerAuthToken"}
+$Global:header = @{"Authorization" = "Bearer $YammerAuthToken"}
 
-$GroupCycle = 1
-
-Do {
-    try{
-        $groupsUri = "https://www.yammer.com/api/v1/groups.json?limit=50&page=$GroupCycle"
-        write-host "Getting list of groups: Page $GroupCycle"
-        $MoreYammerGroups = (Invoke-WebRequest -Uri $groupsUri -Method Get -Headers $header).content | ConvertFrom-Json
-        $YammerGroups += $MoreYammerGroups
-        $GroupCycle ++
+#Function to get all groups
+Function Get-YammerGroups($page, $allGroups) {
+    if (!$page) {
+        $page = 1
     }
-    catch{
-        if($_.Exception.Response.StatusCode.Value__ -eq "401"){
-            #Thrown when the YammerAuthToken is invalid. Exit here.
-            Write-Host "Exiting script, API reports ACCESS DENIED. Please ensure a valid developer token is set for the YammerAuthToken variable" -ForegroundColor Red
-            exit
+
+    if (!$allGroups) {
+        $allGroups = New-Object System.Collections.ArrayList($null)
+    }
+
+    $urlToCall = "https://www.yammer.com/api/v1/groups.json"
+    $urlToCall += "?page=" + $page;
+
+    #API only returns 50 results per page, so we need to loop through all pages
+    Write-Host "Retrieving page $page of groups list" -Foreground Yellow
+    $webRequest = Invoke-WebRequest -Uri $urlToCall -Method Get -Headers $header
+
+    if ($webRequest.StatusCode -eq 200) {
+        $results = $webRequest.Content | ConvertFrom-Json
+
+        if ($results.Length -eq 0) {
+            return $allGroups
         }
-        else{
-            #Fallback, no idea what happened to get us here.
-            $e = $_.Exception.Response.StatusCode.Value__
-            $l = $_.InvocationInfo.ScriptLineNumber
-            Write-Host "Failed to get list of groups" -ForegroundColor Red
-            Write-Host "error $e on line $l"
-        }
+        $allGroups.AddRange($results)
+    }
+
+    if ($allGroups.Count % 50 -eq 0) {
+        $page = $page + 1
+        return Get-YammerGroups $page $allGroups
+    }
+    else {
+        return $allGroups
     }
 }
-While ($MoreYammerGroups.Count -gt 0)
 
 #groups.json will occasionally return duplicates in results. This should remove them.
-$results = $YammerGroups | sort-object -Property * -Unique
+$results = Get-YammerGroups
 
 #Array to store Result
 $ResultSet = @()
