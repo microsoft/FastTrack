@@ -24,26 +24,27 @@ Version:
 
 Requirements:
 
-    -The script must be run by a user with the appropriate permissions to connect to Exchange Online and MSOL
+    -The script must be run by a user with the appropriate permissions to connect to Exchange Online and Microsoft Graph
 
 .EXAMPLE
     .\Disable-InsightsHeadSpace.ps1
 #>
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+$ErrorActionPreference = "Stop"
 
 #Import the required modules
-Write-Host "Connecting to Exchange Online and MSOL"
-Import-Module -Name "MSOnline" -ErrorAction Stop
+Write-Host "Connecting to Exchange Online and Microsoft Graph"
+Import-Module -Name "Microsoft.Graph.Users" -ErrorAction Stop
 Import-Module -Name "ExchangeOnlineManagement" -ErrorAction Stop
 
-#Connect to Exchange Online and MSOL
-Connect-MsolService
+#Connect to Exchange Online and Graph
+Connect-MgGraph -Scopes 'User.Read.All' -NoWelcome -ContextScope Process
 Connect-ExchangeOnline -ShowBanner:$false
 
-#Get all users that have licenses with the MYANALYTICS_P2 service plan enabled
-Write-Host "Getting all users with the Personal Insights service plan assigned and enabled`n"
-$users = Get-MsolUser -All | ? {$_.Licenses.ServiceStatus | ? { ($_.ServicePlan.ServiceName -eq "MYANALYTICS_P2" -or $_.ServicePlan.ServiceName -eq "EXCHANGE_ANALYTICS") -and $_.ProvisioningStatus -eq "Success" }}
+#Get all users that have licenses with the EXCHANGE_ANALYTICS or MYANALYTICS_P2 plan
+Write-Host "Getting all users with a Personal Insights service plan assigned`n"
+$users = Get-MgUser -Filter "assignedPlans/any(x:x/ServicePlanId eq 33c4f319-9bdd-48d6-9c4d-410b750a4a5a) or assignedPlans/any(x:x/ServicePlanId eq 34c0d7a0-a70f-4668-9238-47f9fc208882)" -All -ConsistencyLevel eventual -Count userCount
 
 #Do the work
 foreach($user in $users)
@@ -52,12 +53,12 @@ foreach($user in $users)
     Write-Host "Disabling HeadSpace for user" $user.UserPrincipalName -ForegroundColor Yellow
 
     #Disable HeadSpace for the user
-    Set-VivaInsightsSettings -Identity $user.UserPrincipalName -Enabled $false -Feature headspace
+    Set-VivaInsightsSettings -Identity $user.UserPrincipalName -Enabled $true -Feature headspace
 
     #Make the output a little cleaner
     Write-Host "`n"
 }
 
-Write-Host "HeadSpace is disabled for all users with the Personal Insights service plan" -ForegroundColor Green
+Write-Host "HeadSpace is disabled for all users with a Personal Insights service plan" -ForegroundColor Green
 Disconnect-ExchangeOnline -Confirm:$false
 
