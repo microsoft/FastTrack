@@ -56,7 +56,7 @@ A folder named for the date/time you ran the script will be created under your $
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 
