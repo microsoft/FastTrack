@@ -31,7 +31,6 @@ Requirements:
 #>
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-$ErrorActionPreference = "Stop"
 
 #Import the required modules
 Write-Host "Connecting to Exchange Online and Microsoft Graph"
@@ -47,18 +46,29 @@ Write-Host "Getting all users with a Personal Insights service plan assigned`n"
 $users = Get-MgUser -Filter "assignedPlans/any(x:x/ServicePlanId eq 33c4f319-9bdd-48d6-9c4d-410b750a4a5a) or assignedPlans/any(x:x/ServicePlanId eq 34c0d7a0-a70f-4668-9238-47f9fc208882)" -All -ConsistencyLevel eventual -Count userCount
 
 #Do the work
-foreach($user in $users)
+try
 {
-    #Set the new name by removing the string defined in $namingPolicyString
-    Write-Host "Disabling HeadSpace for user" $user.UserPrincipalName -ForegroundColor Yellow
+    foreach($user in $users)
+    {
+        #Set the new name by removing the string defined in $namingPolicyString
+        Write-Host "Disabling HeadSpace for user" $user.UserPrincipalName -ForegroundColor Yellow
 
-    #Disable HeadSpace for the user
-    Set-VivaInsightsSettings -Identity $user.UserPrincipalName -Enabled $true -Feature headspace
+        #Disable HeadSpace for the user
+        Set-VivaInsightsSettings -Identity $user.UserPrincipalName -Enabled $false -Feature headspace -ErrorAction Stop
 
-    #Make the output a little cleaner
-    Write-Host "`n"
+        #Make the output a little cleaner
+        Write-Host "`n"
+    }
+
+    Write-Host "HeadSpace is disabled for all users with a Personal Insights service plan" -ForegroundColor Green
+}
+catch
+{
+    $e = $_.Exception.Response.StatusCode.Value__
+    $l = $_.InvocationInfo.ScriptLineNumber
+    Write-Host "Failed to disable HeadSpace for all users" -ForegroundColor Red
+    Write-Host "error $e on line $l"
 }
 
-Write-Host "HeadSpace is disabled for all users with a Personal Insights service plan" -ForegroundColor Green
 Disconnect-ExchangeOnline -Confirm:$false
 
