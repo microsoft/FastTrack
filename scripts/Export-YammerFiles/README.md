@@ -58,7 +58,7 @@ If your network is in native mode, no files will be downloaded. You'll get a CSV
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 
