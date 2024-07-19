@@ -76,7 +76,7 @@ Creates 50 sample communities in Viva Engage with random owners:
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 

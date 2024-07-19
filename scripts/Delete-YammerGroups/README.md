@@ -65,7 +65,7 @@ Once you’ve completed the pre-reqs, you’re ready to go. Run the script like 
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 

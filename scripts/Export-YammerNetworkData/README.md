@@ -67,7 +67,7 @@ If your network is in native mode, no files will be downloaded. Included among t
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 

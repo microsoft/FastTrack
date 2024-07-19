@@ -40,7 +40,7 @@ Once you’ve made and saved those changes, you’re ready to go. To run the scr
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 
