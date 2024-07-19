@@ -31,7 +31,6 @@ Requirements:
 #>
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-$ErrorActionPreference = "Stop"
 
 #Import the required modules
 Write-Host "Connecting to Exchange Online and Microsoft Graph"
@@ -55,7 +54,7 @@ try
         Write-Host "Disabling HeadSpace for user" $user.UserPrincipalName -ForegroundColor Yellow
 
         #Disable HeadSpace for the user
-        Set-VivaInsightsSettings -Identity $user.UserPrincipalName -Enabled $true -Feature headspace
+        Set-VivaInsightsSettings -Identity $user.UserPrincipalName -Enabled $false -Feature headspace -ErrorAction Stop
 
         #Make the output a little cleaner
         Write-Host "`n"
@@ -72,3 +71,4 @@ catch
 }
 
 Disconnect-ExchangeOnline -Confirm:$false
+
