@@ -35,14 +35,12 @@ AUTHOR(S):
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-#Import the required modules
-Write-Host "Connecting to Microsoft Graph"
-Import-Module -Name "Microsoft.Graph" -ErrorAction Stop
-
 # Connect to Microsoft Graph
+Write-Host "Connecting to Microsoft Graph..." -foregroundcolor "Yellow"
 Connect-MgGraph -Scopes "Group.Read.All", "User.Read.All"
 
 # Get all groups
+Write-Host "Get All Groups. This might take some time..." -foregroundcolor "Yellow"
 $groups = Get-MgGroup -All
 
 # Prepare an array to hold user details
@@ -58,13 +56,16 @@ foreach ($group in $groups) {
 
     # For each member, get the required details
     foreach ($memberId in $members.Id) {
-        $user = Get-MgUser -UserId $memberId -Property ID,DisplayName,UserPrincipalName,Department -ExpandProperty Manager
-        $managerUpn = $null
-        try {
-            $managerUpn = $user.Manager.AdditionalProperties['userPrincipalName']
-        } catch {
-            Write-Host "Manager not found for user: $($user.DisplayName)"
+        try{
+            $user = Get-MgUser -UserId $memberId -Property ID,DisplayName,UserPrincipalName,Department -ExpandProperty Manager
+            $managerUpn = $null
+            try {
+                $managerUpn = $user.Manager.AdditionalProperties['userPrincipalName']
+            } catch {
+                Write-Host "Manager not found for user: $($user.DisplayName)"
+            }
         }
+        catch{Write-Host "Unable to get details for this account: $($memberId)"}
 
         # Add user details to the array
         $userDetails += [PSCustomObject]@{
@@ -86,4 +87,5 @@ try{
 catch{Write-Host "Hit error while exporting results: $($_)"}
 
 # Disconnect from Microsoft Graph
+Write-Host "Disconnecting from Microsoft Graph..." -foregroundcolor "Yellow"
 Disconnect-MgGraph
