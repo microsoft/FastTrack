@@ -1,32 +1,26 @@
-# Build your Own Copilot Dashboard - Sample
+# Viva Engage Community Creation Power App - Sample
 
 ## Summary
 
-This is a PowerBI file (.pbix) showing a sample of how the Viva Advanced Insights Person Query export can be visualized in PowerBI. Please review the Word document for steps on how to use.
+This Power App import package is intended to be used as a sample that shows how to use the Viva Engage Community Creation API to create new communities. Please review the included [Word document](AppImportInstructions.docx) for steps on how to import it into your environment.
 
-![image](https://github.com/soyalejolopez/FastTrack/assets/28953579/57198df7-d07b-40c4-9778-b61ce348c949)
+![image](VECCApp.png)
 
 ## Prerequisites
 
-> Microsoft Viva - Advanced Insights
+> Microsoft Viva Engage
 
 ## Solution
 
 | Solution    | Author(s)                                               |
 | ----------- | ------------------------------------------------------- |
-| Build your Own Copilot Dashboard - Sample | Alejandro Lopez - alejandro.lopez@microsoft.com |
+| Viva Engage Community Creation Power App - Sample | Dean Cron - dean.cron@microsoft.com |
 
 ## Version history
 
 | Version | Date             | Comments        |
 | ------- | ---------------- | --------------- |
-| 1.0.1     | May 6, 2024   | Include Word document with steps on how to use  |
-| 1.0.0     | May 3, 2024 | Initial release |
-
-## FAQ
-
-How are the values in the left bar calculated?
-![image](https://github.com/soyalejolopez/FastTrack/assets/28953579/e9a42afc-bce1-43ea-a064-f75fa8e0f1ac)
+| 1.0.0     | July 31st, 2024 | Initial release |
 
 
 ## Disclaimer
