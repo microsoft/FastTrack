@@ -2,7 +2,7 @@
 
 ## Summary
 
-This Power App import package is intended to be used as a sample that shows how to use the Viva Engage Community Creation API to create new communities. Please review the included [Word document](AppImportInstructions.docx) for steps on how to import it into your environment.
+This Power App import package is intended to be used as a sample that shows how to use the [Viva Engage Community Creation API](https://learn.microsoft.com/en-us/graph/api/employeeexperience-post-communities?view=graph-rest-beta&tabs=http) to create new communities. Please review the included [Word document](AppImportInstructions.docx) for steps on how to import it into your environment.
 
 ![image](VECCApp.png)
 
