@@ -2,6 +2,8 @@
 
 This sample script will allow a Viva Engage admin to delete all messages in an existing Engage group.
 
+DELETION CAN'T BE UNDONE.
+
 ## Usage
 
 ### Prerequisites
