@@ -1,0 +1,9 @@
+﻿UserPrincipalName,TeamsCallingPolicy,CallingLineIdentity,TeamsMOHPolicy,TeamsCallParkPolicy,TenantDialPlan,TeamsIPPhonePolicy,LocationID,City,OnlineVoiceRoutingPolicy,PhoneNumberToAssign,OperatorType
+AllanD@MODERNCOMMS509747.OnMicrosoft.com,TMS_CALL_Recording_PSTN_ON,TMS_CLID_Redmond,TMS_MOH_US_Audio,TMS_CallPark_ON_US_100-300,TMS-DP-US-Redmond,,,Redmond,,+14254190479,CallingPlan
+AlexW@MODERNCOMMS509747.OnMicrosoft.com,TMS_CALL_Recording_PSTN_ON,TMS_CLID_Redmond,TMS_MOH_US_Audio,TMS_CallPark_ON_US_100-300,TMS-DP-US-Red,,,,,+14254190485,CallingPlan
+BiancaP@ModernComms509747.onmicrosoft.com,TMS_CALL_Recording_PSTN_ON,TMS_CLID_Redmond,TMS_MOH_US_Audio,,TMS-DP-US-Redmond,,701d2c9e-1525-4551-a958-6a9195d35f68,,,+14254190487,CallingPlan
+DeliaD@ModernComms509747.onmicrosoft.com,TMS_CALL_Recording_PSTN_ON,TMS_CLID_Redmond,TMS_MOH_US_Audio,,TMS-DP-US-Redmond,,701d2c9e-1525-4551-a958-6a9195d35f68,,,+16784594494,CallingPlan
+LeeG@ModernComms509747.onmicrosoft.com,TMS_CALL_Recording_PSTN_ON,,,,TMS-DP-US-Redmond,,,London,,+442045912449,CallingPlan
+CAP-US-Redmond-Reception@ModernComms509747.onmicrosoft.com,TMS_CALL_Recording_PSTN_ON,TMS_CLID_Redmond,TMS_MOH_US_Audio,TMS_CallPark_ON_US_100-300,TMS-DP-US-Redmond,TMS_IPPhone_CAP_HotDesk,,Redmond,,+14254190515,CallingPlan
+ChristieC@ModernComms509747.onmicrosoft.com,TMS_CALL_Recording_PSTN_ON,TMS_CLID_Redmond,TMS_MOH_US_Audio,TMS_CallPark_ON_US_100-300,TMS-DP-US-Redmond,,,Redmond,VRP-US-Unrestricted,+12345678901,DirectRouting
+MegB@ModernComms509747.onmicrosoft.com,TMS_CALL_Recording_PSTN_ON,TMS_CLID_Paris,TMS_MOH_FR_Audio,,TMS-DP-FR-Paris,,,Paris,VRP-FR-Domestic,+33123456789,CallingPlan
