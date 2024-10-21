@@ -4,22 +4,22 @@ Here are a few common Teams Phone System configuration PowerShell snippets for n
 
 ## Usage
 
-These snippets are not provided as PowerShell scripts as they are only a few lines each, and would often be run interactively or as a one-off.
+These snippets are not provided as PowerShell scripts as they are only a few lines each, and would often be run interactively or as a one-off, or included in a larger script.
 
 Note we do assume the MicrosoftTeams PowerShell module has been installed and signed in. For assistance, please see the following docs page:
 
 - [Microsoft Teams PowerShell](https://docs.microsoft.com/en-us/MicrosoftTeams/teams-powershell-install)
 
-After installing the Microsoft Teams module, here's an example of connecting to remote Teams/Skype for Business Online PowerShell:
+After installing the Microsoft Teams module, here's an example of connecting to Teams PowerShell:
 
 ```PowerShell
 Import-Module MicrosoftTeams
 Connect-MicrosoftTeams
 ```
 
-**Note:** Ensure you are running the 4.6.0 (July 2022) or later version of the MicrosoftTeams module. You can verify installed versions with `Get-Module MicrosoftTeams -ListAvailable`, and if needed install the latest update from an elevated PowerShell session with `Update-Module MicrosoftTeams`
+**Note:** Ensure you are running the latest version of the MicrosoftTeams module. Install the latest update from a PowerShell session with `Update-Module MicrosoftTeams`
 
-If you need a quick start creating an input csv for the below examples, download your full list of Skype/Teams users and save off the desired user rows to be the input CSV file from this export:
+If you need a quick start creating an input csv for the below examples, download your full list of Teams users and save off the desired user rows to be the input CSV file from this export:
 
 ```PowerShell
 Get-CsOnlineUser -ResultSize Unlimited | Export-Csv "C:\path\to\allusers.csv"
@@ -41,7 +41,6 @@ Numbers can be assigned individually from the Teams admin center, but can also b
 
 - CallingPlan
 - OperatorConnect
-- OCMobile
 - DirectRouting
 
 ² _LocationId only required for CallingPlan phone number type assignment, and may be required for OperatorConnect and OCMobile_
@@ -59,7 +58,7 @@ foreach ($user in $assignphoneusers) {
         Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType
         Grant-CsOnlineVoiceRoutingPolicy -Identity $user.UserPrincipalName -PolicyName $user.VoiceRoutingPolicy
 
-    } elseif ($user.PhoneNumberType -eq "OperatorConnect" -or $user.PhoneNumberType -eq "OCMobile") {
+    } elseif ($user.PhoneNumberType -eq "OperatorConnect") {
         if ($user.LocationId) {
             Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType -LocationId $user.LocationId
         } else {
@@ -72,11 +71,13 @@ foreach ($user in $assignphoneusers) {
 }
 ```
 
+For more individual examples, see the [`Set-CsPhoneNumberAssignment` command documentation](https://learn.microsoft.com/en-us/powershell/module/teams/set-csphonenumberassignment?view=teams-ps).
+
 ## Author
 
 |Author|Last Updated Date
 |----|--------------------------
-|David Whitney, Microsoft|February 14, 2023|
+|David Whitney, Microsoft|Oct 21, 2024
 
 ## Issues
 
