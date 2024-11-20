@@ -30,6 +30,14 @@ There are 3 variables you need to change in the script itself. These are located
 3. **$whatIfMode = $true**
 
    The script runs in a WhatIf mode by default since the group deletion can’t be undone, so it’ll only loop through the CSV and tell you which groups it *would* have deleted, it doesn’t actually take hard action. When        you’re ready to have it actually delete groups, change the value to $false. DELETION CAN'T BE UNDONE.
+
+4. **$hardDelete = $false**
+
+   The script soft-deletes messages by default, set this to true if you want them hard-deleted. If you do, be aware that this is UNRECOVERABLE. Any data export run after this will show the message redacted, so unless you back the messages up first, you have no way of going back to any record of them. Think carefully before setting this to $true.
+
+5. **$messageBackupPath**
+
+   Path to save the backup of messages to if you choose to back them up before deletion.
   
 ### Parameters
 
@@ -51,9 +59,10 @@ Once you’ve completed the pre-reqs, you’re ready to go. Run the script like 
 
 ## Author
 
-|Author|Original Publish Date
-|----|--------------------------
-|Dean Cron, Microsoft|October 18, 2024|
+|Author|Original Publish Date|Version
+|----|--------------------------|--------------
+|Dean Cron, Microsoft|October 18, 2024| Version 1.0| 
+|Dean Cron, Microsoft|November 20th, 2024| Version 1.925|
 
 ## Issues
 
