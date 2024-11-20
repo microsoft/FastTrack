@@ -21,6 +21,11 @@ This script deletes all messages in an existing Viva Engage community based on t
 
 Author: Dean Cron - dean.cron@microsoft.com
 
+Version:
+    1.925
+
+Requirements:
+
     1. Admin-created bearer token for Yammer app authentication:
         https://learn.microsoft.com/en-us/rest/api/yammer/app-registration
         https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
@@ -36,13 +41,20 @@ Author: Dean Cron - dean.cron@microsoft.com
 <############    STUFF YOU NEED TO MODIFY    ############>
 
 #Replace BearerTokenString with the Yammer API bearer token you generated. See "Requirements" near the top of the script.
-$Global:YammerAuthToken = "BearerToken"
+$YammerAuthToken = "BearerToken"
 
 #The ID of the group you want to delete all messages from.
 $GroupId = 1111111111111
 
 #Change to $false when you're ready to actually delete the groups. DELETION CAN'T BE UNDONE.
 $whatIfMode = $true
+
+#By default, messages are soft-deleted. Set to $true to hard-delete messages. 
+#WARNING: Hard-deleted messages can't be recovered in a data export, so think carefully before setting this to $true.
+$hardDelete = $true
+
+#Path to save the backup of messages to if you choose to back them up before deletion.
+$messageBackupPath = "YammerGroupMessagesBackup{0}.csv" -f [DateTime]::Now.ToString("yyyy-MM-dd_hh-mm-ss")
 
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
 
@@ -57,13 +69,10 @@ function Get-AllPosts($lastMessageId, $allPosts) {
         $allPosts = New-Object System.Collections.ArrayList($null)
     }
 
-    if ($null -ne $lastMessageId) {
-        $urlToCall += "&older_than=" + $lastMessageId;
-    }
-
     $urlToCall = "https://www.yammer.com/api/v1/messages/in_group/$GroupId.json"
+    
     if ($null -ne $lastMessageId) {
-        $urlToCall += "?older_than=" + $lastMessageId;
+        $urlToCall += "?older_than=" + $lastMessageId
     }
 
     try{
@@ -87,7 +96,6 @@ function Get-AllPosts($lastMessageId, $allPosts) {
         }
     }
 
-
     $allPosts.AddRange($response.messages)
 
     if ($response.meta.older_available) {
@@ -99,10 +107,52 @@ function Get-AllPosts($lastMessageId, $allPosts) {
     }
 }
 
+Function Read-YesNoChoice {
+	Param (
+        [Parameter(Mandatory=$true)][String]$Title,
+		[Parameter(Mandatory=$true)][String]$Message,
+		[Parameter(Mandatory=$false)][Int]$DefaultOption = 1
+    )
+	
+	$No = New-Object System.Management.Automation.Host.ChoiceDescription '&No', 'No'
+	$Yes = New-Object System.Management.Automation.Host.ChoiceDescription '&Yes', 'Yes'
+	$Options = [System.Management.Automation.Host.ChoiceDescription[]]($No, $Yes)
+	
+	return $host.ui.PromptForChoice($Title, $Message, $Options, $DefaultOption)
+}
+
 Write-Host "Getting all messages in group $GroupId" -ForegroundColor Green
 $groupMessages = Get-AllPosts
 
-Write-Host "`nThere are" $groupMessages.Count "messages in group $GroupId. Starting deletion.`n" -ForegroundColor Yellow
+Write-Host "`nThere are" $groupMessages.Count "messages in group" $GroupId -ForegroundColor Yellow
+
+#Give the option to back up messages to CSV before deletion
+$doBackup = Read-YesNoChoice -Title "THIS IS A DATA DESTRUCTIVE OPERATION. You will not be able to restore these messages to this community" -Message "Would you like to back these messages up to CSV first?"
+if ($doBackup -eq 1) {
+    Write-Host "`nBacking up messages to CSV file $messageBackupPath" -ForegroundColor Yellow
+    $groupMessages | Export-Csv -Path $messageBackupPath -NoTypeInformation
+    Write-Host "`nStarting deletion of all messages in group $GroupId.`n" -ForegroundColor Yellow
+}
+else {
+    #Last chance to back out if hard-delete is enabled
+    if ($hardDelete) {
+        $areYouSure = Read-YesNoChoice -Title "`nAGAIN, THIS IS A DATA DESTRUCTIVE OPERATION, AND YOU'VE ENABLED HARD-DELETE MODE" -Message "You chose not to create a backup. Are you ABSOLUTELY SURE you want to continue?"
+        if ($areYouSure -eq 1) {
+            #It's your funeral
+            Write-Host "`nYes selected, proceeding to hard-delete all messages in group $GroupId without a backup `n" -ForegroundColor Yellow
+        }
+        else {
+            #Whew, that was close
+            Write-Host "`nExiting script. No messages in group $GroupId were deleted." -ForegroundColor Green
+            exit
+        }
+    }
+    else {
+        #Messages can still be recovered in a data export when in a soft-delete state, so no need for the second confirmation
+        Write-Host "`nSkipping backup, proceeding with soft-deletion of all messages in group $GroupId `n" -ForegroundColor Yellow
+    }
+}
+
 $groupMessages | ForEach-Object {
     do {
         $rateLimitHit = $false
@@ -113,8 +163,16 @@ $groupMessages | ForEach-Object {
                 Write-Host "WhatIf mode enabled, would have successfully deleted message $messageId" -ForegroundColor Green
             }
             else{
-                $deleteMessage = Invoke-WebRequest "https://www.yammer.com/api/v1/messages/$messageId.json" -Headers $authHeader -Method DELETE
-                Write-Host "Successfully deleted message $messageId" -ForegroundColor Green
+                if($hardDelete){
+                    #Purge messages if hardDelete is set to $true. This is a destructive operation.
+                    $deleteMessage = Invoke-WebRequest "https://www.yammer.com/api/v1/messages/$messageId.json?purge=true" -Headers $authHeader -Method DELETE
+                    Write-Host "Successfully hard-deleted message $messageId" -ForegroundColor Green
+                }
+                else{
+                    #Soft-delete messages by default, which can be recovered in a data export.
+                    $deleteMessage = Invoke-WebRequest "https://www.yammer.com/api/v1/messages/$messageId.json" -Headers $authHeader -Method DELETE
+                    Write-Host "Successfully soft-deleted message $messageId" -ForegroundColor Green
+                }
             }
         }
         catch {
