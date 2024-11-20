@@ -51,7 +51,7 @@ $whatIfMode = $true
 
 #By default, messages are soft-deleted. Set to $true to hard-delete messages. 
 #WARNING: Hard-deleted messages can't be recovered in a data export, so think carefully before setting this to $true.
-$hardDelete = $true
+$hardDelete = $false
 
 #Path to save the backup of messages to if you choose to back them up before deletion.
 $messageBackupPath = "YammerGroupMessagesBackup{0}.csv" -f [DateTime]::Now.ToString("yyyy-MM-dd_hh-mm-ss")
