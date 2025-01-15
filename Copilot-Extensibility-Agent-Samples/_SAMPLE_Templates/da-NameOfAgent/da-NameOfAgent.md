@@ -1,8 +1,8 @@
-# Build your Own Copilot Dashboard - Sample
+# Copilot Extensibility Agent Samples
 
 ## Summary
 
-This directory has sample Copilot Agents.
+This directory has sample M365 Copilot Agents. Prefix of "da" means it's a *Declarative Agent* and a prefix of "ca" means that it's a *Custom Agent*.
 
 ## Prerequisites
 
