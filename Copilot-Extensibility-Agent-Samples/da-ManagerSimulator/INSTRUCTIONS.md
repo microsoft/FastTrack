@@ -11,13 +11,13 @@ How to Use:
 
 
 ### Diagram
-![alt text](Diagram.png)
+![alt text](<./Images/Diagram.png>)
 
 ## Setup Agent(s)
 ### 🤖 MS: Scenario Agent
 
 #### Icon
-![alt text](<Scenario Agent Icon.png>)
+![alt text](<./Images/Scenario Agent Icon.png>)
 
 #### Description
 ```text
@@ -70,7 +70,7 @@ You are the *Scenario* agent. You are taking the role of an experienced Manageme
 
 ### 🤖 MS: Employee Agent
 #### Icon
-![alt text](<Employee Agent Icon.png>)
+![alt text](<./Images/Employee Agent Icon.png>)
 #### Description
 ```text
 Agent responsible for role playing in manager simulator.
@@ -120,7 +120,7 @@ Skip
 
 ### 🤖 MS: Coaching Agent
 #### Icon
-![alt text](<Coach Agent Icon.png>)
+![alt text](<./Images/Coach Agent Icon.png>)
 #### Description
 ```text
 Agent that helps coach manager in manager simulator.
@@ -183,10 +183,10 @@ You are an experienced Executive Coach with 25+ years of management experience a
 Skip
 
 ## Example: Responsible AI Kicks-In
-![alt text](image.png)
+![alt text](./Images/image.png)
 ## Example: Handling Team Conflict
-![alt text](image-1.png)
-![alt text](image-3.png)
+![alt text](./Images/image-1.png)
+![alt text](./Images/image-3.png)
 
 ## Metadata
 - **Category**: Skilling & Training
