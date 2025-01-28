@@ -192,7 +192,7 @@ Skip
 
 ## Author
 - **Category**: Skilling & Training
-- **Author**: Alejandro Lopez, David Whitney, Darwin Flores, Pranali Desai
+- **Author**: Melissa Wilson, Alejandro Lopez, David Whitney, Darwin Flores, Pranali Desai
 - **Last Updated**: 2025-01-15
 
 
