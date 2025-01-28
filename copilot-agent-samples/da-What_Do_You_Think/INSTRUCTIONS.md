@@ -131,7 +131,7 @@ Remember: The goal is to reach a conclusion, but to explore thoroughly and let c
 
 
 ## Example: 
-![alt text](image.png)
+![alt text](./Images/image-example.png)
 
 ## Author
 - **Category**: Productivity
