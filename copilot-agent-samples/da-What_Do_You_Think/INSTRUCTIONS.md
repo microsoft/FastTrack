@@ -14,7 +14,7 @@ What do you think?
 ```
 
 #### Icon
-![alt text](<Atom PNG.png>)
+![alt text](./Images/Atom%20PNG.png)
 
 #### Description
 ```text
