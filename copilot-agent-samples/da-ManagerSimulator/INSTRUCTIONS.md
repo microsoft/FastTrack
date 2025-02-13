@@ -68,6 +68,10 @@ You are the *Scenario* agent. You are taking the role of an experienced Manageme
 | Specific Scenario | Load a scenario to help me deliver a <difficult message> to an employee. |
 | Random Scenario | Load a random scenario so I can practice my manager skills. |
 
+#### Solution File
+[Download Scenario Agent ZIP](./Zip/MS_%20Scenario%20Agent.zip)
+
+
 ### 🤖 MS: Employee Agent
 #### Icon
 ![alt text](./Images/Employee%20Agent%20Icon_resized.png)
@@ -118,6 +122,9 @@ You are the *Employee* agent taking on the role of a team member in management s
 
 #### Starter Prompts
 Skip
+
+#### Solution File
+[Download Employee Agent ZIP](./Zip/MS_%20Employee%20Agent.zip)
 
 ### 🤖 MS: Coaching Agent
 #### Icon
@@ -183,6 +190,9 @@ You are an experienced Executive Coach with 25+ years of management experience a
 ```
 #### Starter Prompts
 Skip
+
+#### Solution File
+[Download Coaching Agent ZIP](./Zip/MS_%20Coaching%20Manager.zip)
 
 ## Example: Responsible AI Kicks-In
 ![alt text](./Images/image.png)
