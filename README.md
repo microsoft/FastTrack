@@ -1,25 +1,29 @@
 # Microsoft FastTrack Open Source
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
+[![Contributors](https://img.shields.io/badge/contributors-11-green)](https://github.com/microsoft/FastTrack/contributors)
+[![Issues](https://img.shields.io/badge/issues-0%20open-green)](https://github.com/microsoft/FastTrack/issues)
+[![Pull Requests](https://img.shields.io/badge/pull%20requests-0%20open-green)](https://github.com/microsoft/FastTrack/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/microsoft/FastTrack/pulls)
+
+![GitHub Watchers](https://img.shields.io/github/watchers/microsoft/fasttrack.svg?style=social)
+![GitHub Forks](https://img.shields.io/github/forks/microsoft/fasttrack.svg?style=social)
+![GitHub Stars](https://img.shields.io/github/stars/microsoft/fasttrack.svg?style=social)
+
+
+
 Welcome to the home for Microsoft FastTrack Open Source Software (FTOSS). Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program, our partners, and anyone who wants to contribute with the aim to make them easier to find, grow, and improve. Please let us know any questions or feedback you have using the [issues list](https://github.com/Microsoft/FastTrack/issues).
 
 ## Scripts
 
-We have a collection of [scripts](scripts) to help with migration related tasks. Each script folder has a readme describing what the script does and how to use it. If you have scripts you would like to add please submit a Pull Request.
-
-## Tools
-
-|Project|Description
-|----|--------------------------
-|[SMAT Workbook Generator](https://github.com/Microsoft/fasttrack-smat-workbook-generator)|Combines the output of SMAT into a single workbook|
-|[IdFix](https://github.com/Microsoft/idfix)|Fix on-premesis AD issues before migration|
-|[gscan](https://github.com/microsoft/FastTrack/tree/master/tools/gsuite-scanner)|Provides an inventory of v1 Google Sites|
-|[SimpleGraph](https://github.com/microsoft/FastTrack/tree/master/tools/SimpleGraph)|Use PowerShell to make simple requests against Graph API, with full support for complex requests|
+We have a collection of [scripts](scripts) to help with deploying Microsoft 365. Each script folder has a readme describing what the script does and how to use it. If you have scripts you would like to add please submit a Pull Request.
 
 ## Samples
 
 |Sample|Description
 |----|--------------------------
-|[teams-spfx-create-team](./samples/teams-spfx-create-team)|Demonstrates how to create a Microsoft Team from a SharePoint Framework Field customizer. Makes use of PnPjs libraries, Office UI Fabric & React Fabric Controls, and React.|
-|[Teams upgrade snippets](./samples/teams-upgrade-snippets)|Example PowerShell snippets for common automated tasks when performing an upgrade to Teams Only mode from Skype for Business|
+|[Copilot Agent Samples](./copilot-agent-samples/)|Collection of Copilot Agent samples including Declarative Agents and Custom Agents.|
+|[Copilot Analytics Samples](./copilot-analytics-samples/)|Collection of Copilot Analytics samples including PowerBI templates.|
+
 
 ## Ideas Welcome!
 
