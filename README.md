@@ -1,8 +1,6 @@
 # Microsoft FastTrack Open Source
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![Contributors](https://img.shields.io/badge/contributors-11-green)](https://github.com/microsoft/FastTrack/contributors)
-[![Issues](https://img.shields.io/badge/issues-0%20open-green)](https://github.com/microsoft/FastTrack/issues)
-[![Pull Requests](https://img.shields.io/badge/pull%20requests-0%20open-green)](https://github.com/microsoft/FastTrack/pulls)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/microsoft/FastTrack/pulls)
 
 ![GitHub Watchers](https://img.shields.io/github/watchers/microsoft/fasttrack.svg?style=social)
