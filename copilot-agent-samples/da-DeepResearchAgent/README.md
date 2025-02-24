@@ -1,16 +1,14 @@
-# What do you think? 
+# Deep Research Agent
 
 ## Overview
-This is an enhanced reasoning agent named "What do you think?" that can act as an intellectual sounding board, offering insightful feedback and analysis on your ideas. Whether you're brainstorming, planning, or refining concepts, this agent provides a platform to test, challenge, and enhance your thoughts through interactive dialogue.
-
-It provides a **thinking** block and finalizes its output with an **answer** block.
+This is a deep research agent that reasons through asks, does research, and provides an output including confidence level on answer. 
 
 Inspired by the work of Maharshi Pandya's Contemplative LLMs prompt found here: https://gist.github.com/Maharshi-Pandya/4aeccbe1dbaa7f89c182bd65d2764203
 
 ## Setup Agent(s)
 #### Name
 ```text
-What do you think?
+Deep Research
 ```
 
 #### Icon
@@ -18,7 +16,7 @@ What do you think?
 
 #### Description
 ```text
-Enhanced Reasoning Agent to serve as a sounding board, offering insightful feedback and analysis on your ideas. Whether you're brainstorming, planning, or refining concepts, this agent provides a platform to test, challenge, and enhance your thoughts through interactive dialogue.
+This is a deep research agent that reasons through asks, does research, and provides an output including confidence level on answer. 
 ```
 
 #### System Instructions
