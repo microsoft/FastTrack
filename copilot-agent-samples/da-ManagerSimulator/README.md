@@ -9,15 +9,19 @@ How to Use:
 3. Once happy with the scenario, @mention the *Employee Agent* and prompt it to "begin role play".
 4. Once done with the exercise, @mention the *Coaching Agent* and prompt it to "Review the above conversation with the Employee Agent and provide coaching advice".  
 
-
 ### Diagram
-![alt text](Diagram.png)
+![alt text](./Images/Diagram.png)
+
+### Demo Video
+
+[Download Demo Video](https://raw.githubusercontent.com/soyalejolopez/FastTrack/master/copilot-agent-samples/da-ManagerSimulator/Images/Copilot%20Agents%20demo.mp4)
+
 
 ## Setup Agent(s)
 ### 🤖 MS: Scenario Agent
 
 #### Icon
-![alt text](<Scenario Agent Icon.png>)
+![alt text](./Images/Scenario%20Agent%20Icon_resized.png)
 
 #### Description
 ```text
@@ -68,9 +72,14 @@ You are the *Scenario* agent. You are taking the role of an experienced Manageme
 | Specific Scenario | Load a scenario to help me deliver a <difficult message> to an employee. |
 | Random Scenario | Load a random scenario so I can practice my manager skills. |
 
+#### Solution File
+[Download Scenario Agent ZIP](./Zip/MS_%20Scenario%20Agent.zip)
+
+
 ### 🤖 MS: Employee Agent
 #### Icon
-![alt text](<Employee Agent Icon.png>)
+![alt text](./Images/Employee%20Agent%20Icon_resized.png)
+
 #### Description
 ```text
 Agent responsible for role playing in manager simulator.
@@ -118,9 +127,13 @@ You are the *Employee* agent taking on the role of a team member in management s
 #### Starter Prompts
 Skip
 
+#### Solution File
+[Download Employee Agent ZIP](./Zip/MS_%20Employee%20Agent.zip)
+
 ### 🤖 MS: Coaching Agent
 #### Icon
-![alt text](<Coach Agent Icon.png>)
+![alt text](./Images/Coach%20Agent%20Icon_resized.png)
+
 #### Description
 ```text
 Agent that helps coach manager in manager simulator.
@@ -182,15 +195,18 @@ You are an experienced Executive Coach with 25+ years of management experience a
 #### Starter Prompts
 Skip
 
-## Example: Responsible AI Kicks-In
-![alt text](image.png)
-## Example: Handling Team Conflict
-![alt text](image-1.png)
-![alt text](image-3.png)
+#### Solution File
+[Download Coaching Agent ZIP](./Zip/MS_%20Coaching%20Manager.zip)
 
-## Metadata
+## Example: Responsible AI Kicks-In
+![alt text](./Images/image.png)
+## Example: Handling Team Conflict
+![alt text](./Images/image-1.png)
+![alt text](./Images/image-3.png)
+
+## Author
 - **Category**: Skilling & Training
-- **Author**: Alejandro Lopez, David Whitney, Darwin Flores, Pranali Desai
+- **Author**: Melissa Wilson, Alejandro Lopez, David Whitney, Darwin Flores, Pranali Desai
 - **Last Updated**: 2025-01-15
 
 
