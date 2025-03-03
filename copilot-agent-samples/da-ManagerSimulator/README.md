@@ -9,7 +9,6 @@ How to Use:
 3. Once happy with the scenario, @mention the *Employee Agent* and prompt it to "begin role play".
 4. Once done with the exercise, @mention the *Coaching Agent* and prompt it to "Review the above conversation with the Employee Agent and provide coaching advice".  
 
-
 ### Diagram
 ![alt text](./Images/Diagram.png)
 
