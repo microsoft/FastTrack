@@ -13,9 +13,9 @@ How to Use:
 ![alt text](./Images/Diagram.png)
 
 ### Demo Video
-<video controls src="Images/Copilot Agents demo.mp4" title=""></video>
 
-<video controls src="https://raw.githubusercontent.com/soyalejolopez/FastTrack/master/copilot-agent-samples/da-ManagerSimulator/Images/Copilot%20Agents%20demo.mp4" title="Demo Video"></video>
+[Download Demo Video](https://raw.githubusercontent.com/soyalejolopez/FastTrack/master/copilot-agent-samples/da-ManagerSimulator/Images/Copilot%20Agents%20demo.mp4)
+
 
 ## Setup Agent(s)
 ### 🤖 MS: Scenario Agent
