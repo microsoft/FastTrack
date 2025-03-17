@@ -4,7 +4,12 @@
 
 This is a PowerBI file (.pbix) showing a sample of how the Viva Advanced Insights Person Query export can be visualized in PowerBI. Please review the Word document for steps on how to use.
 
-![image](https://github.com/soyalejolopez/FastTrack/assets/28953579/57198df7-d07b-40c4-9778-b61ce348c949)
+### Dashboard in BYO-CopilotDashboard.pbix
+![alt text](./Images/328332577-57198df7-d07b-40c4-9778-b61ce348c949.png)
+
+### Dashboard in BYO-CopilotDashboard - Dynamic Personas.pbix
+
+![alt text](./Images/image.png)
 
 ## Prerequisites
 
@@ -20,6 +25,7 @@ This is a PowerBI file (.pbix) showing a sample of how the Viva Advanced Insight
 
 | Version | Date             | Comments        |
 | ------- | ---------------- | --------------- |
+| 2.0.0     | March 17, 2025   | Include Dynamic Personas PBIX version with User Profile Usage  |
 | 1.0.1     | May 6, 2024   | Include Word document with steps on how to use  |
 | 1.0.0     | May 3, 2024 | Initial release |
 
