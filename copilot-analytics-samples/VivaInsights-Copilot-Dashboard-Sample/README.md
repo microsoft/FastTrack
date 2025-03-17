@@ -5,11 +5,11 @@
 This is a PowerBI file (.pbix) showing a sample of how the Viva Advanced Insights Person Query export can be visualized in PowerBI. Please review the Word document for steps on how to use.
 
 ### Dashboard in BYO-CopilotDashboard.pbix
-![image](https://github.com/soyalejolopez/FastTrack/assets/28953579/57198df7-d07b-40c4-9778-b61ce348c949)
+![alt text](./Images/328332577-57198df7-d07b-40c4-9778-b61ce348c949.png)
 
 ### Dashboard in BYO-CopilotDashboard - Dynamic Personas.pbix
 
-
+![alt text](./Images/image.png)
 
 ## Prerequisites
 
