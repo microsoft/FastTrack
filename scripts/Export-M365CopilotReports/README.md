@@ -3,10 +3,10 @@
 Enhanced Export logs that can be used for Copilot Analytics Reporting, including Entra Users, Purview Audit Logs, etc. 
 
 Features:
-- Export Entra Users Details including Manager Information (Can be used for Org Data Preparation)
+- Export Entra Users Details including Manager Information (Can be used for Org Data Preparation to be uploaded Viva Insights Analyst Workbench)
 - Export Purview Audit Logs for Copilot Interactions (Can be used for Copilot Analytics Reporting)
 - Export Purview Audit Logs for All Interactions 
-- Extensible for future export functions
+- Export M365 Copilot Usage Report
 - Interactive startup menu
 
 ### Prerequisites
