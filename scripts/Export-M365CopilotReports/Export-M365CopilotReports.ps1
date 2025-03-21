@@ -8,7 +8,7 @@
 # - Interactive startup menu
 
 # Author: Alejandro Lopez | alejandro.lopez@microsoft.com
-# Version: v20250320
+# Version: v20250321 
 
 # Function to connect to Microsoft Graph
 function Connect-ToMicrosoftGraph {
@@ -17,7 +17,8 @@ function Connect-ToMicrosoftGraph {
     
     try {
         Write-Host "Connecting to Microsoft Graph..." -ForegroundColor Cyan
-        Connect-MgGraph -Scopes "User.Read.All", "AuditLog.Read.All", "Reports.Read.All" -ErrorAction Stop
+        # Added Organization.Read.All scope which is required for license information
+        Connect-MgGraph -Scopes "User.Read.All", "AuditLog.Read.All", "Reports.Read.All", "Organization.Read.All" -ErrorAction Stop
         Write-Host "Successfully connected to Microsoft Graph." -ForegroundColor Green
         return $true
     }
@@ -44,7 +45,6 @@ function Connect-ToExchangeOnline {
     }
 }
 
-# Function to export Entra Users details
 # Function to export Entra Users details with license information
 function Export-EntraUsersDetails {
     [CmdletBinding()]
@@ -71,7 +71,7 @@ function Export-EntraUsersDetails {
         # First get all users with basic properties
         $users = Get-MgUser -All -Property Id, DisplayName, UserPrincipalName, Mail, JobTitle, Department, 
             CompanyName, AccountEnabled, CreatedDateTime, UserType, MobilePhone, OfficeLocation, 
-            UsageLocation, City, Country, PostalCode, State, EmployeeHireDate
+            UsageLocation, City, Country, PostalCode, State, EmployeeHireDate, AssignedLicenses
         
         Write-Host "Retrieved $($users.Count) users from Entra directory." -ForegroundColor Green
         
@@ -81,20 +81,26 @@ function Export-EntraUsersDetails {
             return
         }
         
-        # Get license SKU information to later resolve SKU IDs to readable names
-        Write-Host "Retrieving license SKU information..." -ForegroundColor Cyan
-        $licenseSkus = Get-MgSubscribedSku -All
+        # Try to get license information differently - use direct API call instead of Get-MgSubscribedSku
+        Write-Host "Retrieving license SKU information using direct API call..." -ForegroundColor Cyan
         
-        # Create a hashtable for quick SKU lookup
-        $skuLookup = @{}
-        foreach ($sku in $licenseSkus) {
-            $skuLookup[$sku.SkuId] = $sku.SkuPartNumber
+        try {
+            # Direct API call to get subscribed SKUs - this avoids the issue with Get-MgSubscribedSku
+            $licenseSkus = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/subscribedSkus" -ErrorAction Stop
+            
+            # Create a hashtable for quick SKU lookup
+            $skuLookup = @{}
+            foreach ($sku in $licenseSkus.value) {
+                $skuLookup[$sku.skuId] = $sku.skuPartNumber
+            }
+            
+            Write-Host "Retrieved $($licenseSkus.value.Count) license SKUs." -ForegroundColor Green
         }
-        
-        Write-Host "Retrieved $($licenseSkus.Count) license SKUs." -ForegroundColor Green
-        
-        # Now we need to get manager information for each user
-        Write-Host "Retrieving manager information and license details for each user..." -ForegroundColor Cyan
+        catch {
+            Write-Host "Could not retrieve license SKUs. Will proceed with just SKU IDs: $_" -ForegroundColor Yellow
+            # Initialize an empty lookup
+            $skuLookup = @{}
+        }
         
         # Initialize progress bar parameters
         $progressParams = @{
@@ -148,26 +154,19 @@ function Export-EntraUsersDetails {
                 Write-Verbose "Error retrieving manager for user $($user.UserPrincipalName): $_"
             }
             
-            # Get user license information
+            # Process licenses directly from the user object
             $licenseDetails = @()
-            try {
-                $userLicenses = Get-MgUserLicenseDetail -UserId $user.Id -ErrorAction SilentlyContinue
-                
-                if ($userLicenses) {
-                    foreach ($license in $userLicenses) {
-                        # Convert SKU ID to readable SKU part number using our lookup table
-                        $skuFriendlyName = if ($skuLookup.ContainsKey($license.SkuId)) {
-                            $skuLookup[$license.SkuId]
-                        } else {
-                            $license.SkuId  # Fall back to ID if not found in lookup
-                        }
-                        
-                        $licenseDetails += $skuFriendlyName
+            if ($user.AssignedLicenses) {
+                foreach ($license in $user.AssignedLicenses) {
+                    # Convert SKU ID to readable SKU part number using our lookup table
+                    $skuFriendlyName = if ($skuLookup.ContainsKey($license.SkuId)) {
+                        $skuLookup[$license.SkuId]
+                    } else {
+                        $license.SkuId  # Fall back to ID if not found in lookup
                     }
+                    
+                    $licenseDetails += $skuFriendlyName
                 }
-            }
-            catch {
-                Write-Verbose "Error retrieving license details for user $($user.UserPrincipalName): $_"
             }
             
             # Join license details into a semicolon-separated string
@@ -451,7 +450,7 @@ function Export-CopilotUsageReports {
     Write-Host "Output will be saved to: $mydocumentsPath" -ForegroundColor Cyan
     
     try {
-        # Connect to Microsoft Graph with appropriate scopes
+        # Connect to Microsoft Graph with appropriate scopes - use our fixed connect function
         Write-Host "Connecting to Microsoft Graph..." -ForegroundColor Yellow
         if (-not (Connect-ToMicrosoftGraph)) {
             Write-Host "Cannot proceed with export. Microsoft Graph connection failed." -ForegroundColor Red
@@ -797,6 +796,7 @@ function Start-CopilotReportingTool {
     Clear-Host
     Write-Host "=========================================================" -ForegroundColor Cyan
     Write-Host "    Microsoft 365 Copilot Analytics Reporting Tool v3" -ForegroundColor Cyan
+    Write-Host "    (Fixed version for permissions issue)" -ForegroundColor Yellow
     Write-Host "=========================================================" -ForegroundColor Cyan
     Write-Host ""
     
