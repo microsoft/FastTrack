@@ -9,6 +9,9 @@ Features:
 - Export M365 Copilot Usage Report
 - Interactive startup menu
 
+
+![alt text](./images/image.png)
+
 ### Prerequisites
 
 Microsoft Graph 
@@ -25,7 +28,7 @@ Once you’ve completed the pre-reqs, you’re ready to go. Run the script like 
 
 ### Notes
 
-**This sample calls an undocumented endpoint in the Yammer REST APIs, and as such has no official support provided for it, and may stop working without warning.**
+None
 
 ## Applies To
 
