@@ -16,13 +16,12 @@ The multi-agent manager simulator is meant to help aspiring and experienced mana
 4. Save the Scenario agent, then repeat steps 2-4 for the Employee agent and Coaching agent definitions below
 5. Refer to above **How to Use** instructions to get started
 
-### Diagram
-![alt text](./Images/Diagram.png)
-
 ### Demo Video
 
 [Download Demo Video](https://raw.githubusercontent.com/soyalejolopez/FastTrack/master/copilot-agent-samples/da-ManagerSimulator/Images/Copilot%20Agents%20demo.mp4)
 
+### Diagram
+![alt text](./Images/Diagram.png)
 
 ## Setup Agent(s)
 ### 🤖 MS: Scenario Agent
