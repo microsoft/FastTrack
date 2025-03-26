@@ -3,11 +3,18 @@
 ## Overview
 The multi-agent manager simulator is meant to help aspiring and experienced managers practice their manager communications by drafting a scenario with the help of the *Scenario agent*, engaging in role play with the *Employee Agent* and ultimately receiving coaching advice from the *Coaching Agent*. 
 
-How to Use:
+**How to Use:**
 1. Start in Microsoft 365 Copilot Chat. 
 2. @mention the *Scenario Agent* and prompt it "load scenario". 
 3. Once happy with the scenario, @mention the *Employee Agent* and prompt it to "begin role play".
 4. Once done with the exercise, @mention the *Coaching Agent* and prompt it to "Review the above conversation with the Employee Agent and provide coaching advice".  
+
+**How to Setup:**
+1. Start in Microsoft 365 Copilot Chat
+2. Open Create an agent from the right sidebar, and switch to the Configure tab in the popup
+3. Use the name, icon, description, system instructions, and starter prompts for the Scenario agent below
+4. Save the Scenario agent, then repeat steps 2-4 for the Employee agent and Coaching agent definitions below
+5. Refer to above **How to Use** instructions to get started
 
 ### Diagram
 ![alt text](./Images/Diagram.png)
