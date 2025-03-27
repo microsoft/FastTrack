@@ -1,11 +1,14 @@
 # Copilot Audit Dashboard
 
 ## Overview
-This solution provides tools for analyzing and visualizing Microsoft 365 Copilot usage across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
+This solution provides a dashboard for analyzing and visualizing Microsoft 365 Copilot Purview Audit events across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
 
 ## Components
 1. **PowerShell Script**: Extracts data from various Microsoft 365 sources including Entra users, Copilot audit logs, and usage reports
+![alt text](./Images/2025-03-27%2014_42_33-AlejanlDev.png)
+
 2. **Power BI Template**: Visualization dashboard for analyzing Copilot usage patterns, user behavior, and adoption metrics
+![alt text](./Images/2025-03-27%2014_28_17-AlejanlDev.png)
 
 ## Prerequisites
 - PowerShell 5.1 or higher
