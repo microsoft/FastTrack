@@ -767,7 +767,7 @@ function Export-CopilotAuditLogs {
                 # Flag fields for specific analyses
                 IsCopilotStudio               = $appInfo.App -eq "Copilot Studio Agent"
                 IsCustomAgent                 = ($appInfo.App -eq "Copilot Studio Agent") -and ($appInfo.AgentName -ne "")
-                IsSPOAgent                    = ($appInfo.Location -eq "SharePoint Online") -or ($AccessedResourceUrls -like "*sharepoint*")
+                IsSPOAgent                    = $copilotData.AppHost -eq "SharePoint" 
             }
             
             return $outputObj
