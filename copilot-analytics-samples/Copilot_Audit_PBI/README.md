@@ -1,6 +1,9 @@
 # Copilot Audit Dashboard
 
 ## Overview
+> [!NOTE]
+> This solution builds on top of the great work from Bojan over here: [M365 Copilot Audit PowerBI Report](https://github.com/BojanBuhac/M365-Copilot-Audit-Report). Please first check that out. 
+
 This solution provides a dashboard for analyzing and visualizing Microsoft 365 Copilot Purview Audit events across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
 
 ## Components
