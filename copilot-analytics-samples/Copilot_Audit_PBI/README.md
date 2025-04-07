@@ -11,7 +11,7 @@ This solution provides a dashboard for analyzing and visualizing Microsoft 365 C
 ![alt text](./Images/2025-03-27%2014_42_33-AlejanlDev.png)
 
 2. **Power BI Template**: Visualization dashboard for analyzing Copilot usage patterns, user behavior, and adoption metrics
-![alt text](./Images/2025-03-27%2014_28_17-AlejanlDev.png)
+![alt text](./Images/image.png)
 
 ## Prerequisites
 - PowerShell 5.1 or higher
