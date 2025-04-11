@@ -119,8 +119,8 @@ Respond to prompts such as:
 
 ## Author
 - **Category**: Productivity
-- **Author**: Alejandro Lopez, Alexander Hurtado
-- **Last Updated**: 2025-01-28
+- **Author**: Alejandro Lopez
+- **Last Updated**: 2025-04-11
 
 
 
