@@ -1,19 +1,18 @@
-# Copilot Audit Dashboard
+# 🔍 Copilot Audit Dashboard
 
-## Overview
-> [!NOTE]
-> This solution builds on top of the great work from Bojan over here: [M365 Copilot Audit PowerBI Report](https://github.com/BojanBuhac/M365-Copilot-Audit-Report). Please first check that out. 
+> [!NOTE] New Version! This version includes agent details including columns to categorize interactions that are related to SPO Agent, Custom Agent, and Copilot Pages (powered by Loop).
 
-This solution provides a dashboard for analyzing and visualizing Microsoft 365 Copilot Purview Audit events across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
+## 📊 Overview
+This solution provides a comprehensive dashboard for analyzing and visualizing Microsoft 365 Copilot Purview Audit events across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
 
-## Components
+## 🧩 Components
 1. **PowerShell Script**: Extracts data from various Microsoft 365 sources including Entra users, Copilot audit logs, and usage reports
 ![alt text](./Images/2025-03-27%2014_42_33-AlejanlDev.png)
 
 2. **Power BI Template**: Visualization dashboard for analyzing Copilot usage patterns, user behavior, and adoption metrics
 ![alt text](./Images/image.png)
 
-## Prerequisites
+## ✅ Prerequisites
 - PowerShell 5.1 or higher
 - Microsoft Graph PowerShell SDK
 - Exchange Online Management module
@@ -21,7 +20,7 @@ This solution provides a dashboard for analyzing and visualizing Microsoft 365 C
 - Microsoft 365 E5 license or Microsoft 365 Copilot license
 - Power BI Desktop (for opening and customizing the template)
 
-## Installation
+## 🚀 Installation
 
 ### Required PowerShell Modules
 The script will check for the required modules and offer to install them if they're missing:
@@ -29,21 +28,20 @@ The script will check for the required modules and offer to install them if they
 - ExchangeOnlineManagement
 
 If you prefer to install manually, run:
-```powershell
+
 Install-Module -Name Microsoft.Graph -Force -AllowClobber
 Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
-```
 
-## Usage
+## 🔧 Usage
 
 ### Running the PowerShell Script
 1. Download the script file `Export-M365CopilotReports.ps1`
 2. Open PowerShell as an administrator
 3. Navigate to the script location
 4. Run the script:
-   ```powershell
+
    .\Export-M365CopilotReports.ps1
-   ```
+
 5. The script will display a menu with the following options:
    - Export Entra Users Details
    - Export Purview Audit Logs (Copilot Interactions Only)
@@ -52,7 +50,7 @@ Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
 
 ### Data Export Options
 
-#### Export Entra Users Details
+#### 👥 Export Entra Users Details
 This option exports user information from Microsoft Entra (Azure AD), including:
 - User profile details (DisplayName, Email, Department, etc.)
 - Manager information (critical for organizational hierarchy in reports)
@@ -60,16 +58,17 @@ This option exports user information from Microsoft Entra (Azure AD), including:
 
 The exported CSV file will be used as input for the Power BI dashboard to build organizational context.
 
-#### Export Copilot Audit Logs
+#### 📝 Export Copilot Audit Logs
 This option extracts Copilot interaction data from Microsoft Purview audit logs:
 - User activity with Copilot across different applications
 - Copilot prompts and responses (where available)
 - Context of Copilot usage (documents, chats, etc.)
 - Resources accessed by Copilot
+- Identification of SPO Agent, Custom Agent, and Copilot Pages interactions
 
 You can specify the number of days to look back (default is 7 days).
 
-#### Export Microsoft 365 Copilot Usage Reports
+#### 📈 Export Microsoft 365 Copilot Usage Reports
 This option retrieves aggregated Copilot usage data at the user level:
 - User activity dates across different applications
 - Last activity timestamps by application
@@ -88,15 +87,16 @@ You can choose from different time periods:
    - Copilot Usage Reports export (optional)
 3. Power BI will load and transform the data, then display the dashboard
 
-## Dashboard Features
+## 📊 Dashboard Features
 The Copilot Analytics Dashboard provides visualizations including:
 - User adoption and activity metrics
 - Department-level usage patterns
 - Application-specific Copilot usage
 - Activity timelines and trends
 - Resource access patterns
+- SPO Agent, Custom Agent, and Copilot Pages usage analytics
 
-## Troubleshooting
+## ⚠️ Troubleshooting
 
 ### Common Issues
 - **Authentication Errors**: Ensure you have appropriate admin permissions
@@ -109,32 +109,35 @@ The script creates detailed log files in the output directory. Review these for 
 - Each export function creates its own log file with timestamp
 - Logs contain detailed information about connection attempts and data retrieval
 
-## Additional Resources
+## 📚 Additional Resources
 - [Microsoft 365 Copilot Documentation](https://learn.microsoft.com/en-us/microsoft-365-copilot/)
 - [Microsoft Purview Audit Logging](https://learn.microsoft.com/en-us/purview/audit-log-search)
 - [Microsoft Graph API Documentation](https://learn.microsoft.com/en-us/graph/api/overview)
 
-## Author
+## 👨‍💻 Author
 
 |Author|Original Publish Date
 |----|--------------------------
 |Alejandro Lopez, Microsoft|March 26th, 2025|
 
-## Issues
+## ✨ Inspiration
+This solution builds on top of the great work from Bojan: [M365 Copilot Audit PowerBI Report](https://github.com/BojanBuhac/M365-Copilot-Audit-Report). The original report provided a foundation that has been expanded with additional features and visualizations.
+
+## ❓ Issues
 
 Please report any issues you find to the [issues list](../../../../issues).
 
-## Support Statement
+## ⚖️ Support Statement
 
 The scripts, samples, and tools made available through the FastTrack Open Source initiative are provided as-is. These resources are developed in partnership with the community and do not represent official Microsoft software. As such, support is not available through premier or other Microsoft support channels. If you find an issue or have questions please reach out through the issues list and we'll do our best to assist, however there is no associated SLA.
 
-## Code of Conduct
+## 🤝 Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## Legal Notices
+## 📜 Legal Notices
 
 Microsoft and any contributors grant you a license to the Microsoft documentation and other content in this repository under the [MIT License](https://opensource.org/licenses/MIT), see the [LICENSE](LICENSE) file, and grant you a license to any code in the repository under the [MIT License](https://opensource.org/licenses/MIT), see the [LICENSE-CODE](LICENSE-CODE) file.
 
