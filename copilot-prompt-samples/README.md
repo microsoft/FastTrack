@@ -18,7 +18,7 @@ The Frontier Program represents Microsoft's commitment to responsible AI innovat
 
 | Prompt Sample Name | Where To Use | Use Case |
 |--------------------|-------------|----------|
-| 🔍 [Researcher-AutomationOpportunities](./Researcher-OrganizationInsights) | Researcher Agent | Analyzes organizational data across Microsoft 365 services to identify high-value automation opportunities for Copilot Agents, focusing on repetitive, manual, or fragmented workflows |
+| 🔍 [Researcher-AutomationOpportunities](Researcher-OrganizationInsights.md) | Researcher Agent | Analyzes organizational data across Microsoft 365 services to identify high-value automation opportunities for Copilot Agents, focusing on repetitive, manual, or fragmented workflows |
 
 ## 🛠️ Contributing
 
