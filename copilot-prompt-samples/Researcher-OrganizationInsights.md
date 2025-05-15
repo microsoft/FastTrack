@@ -39,6 +39,15 @@ Use Case Name  Source(s) Detected  Description of Pattern  Departments Involved 
 
   "If possible, also identify the volume or frequency of the task across the organization to help prioritize which Copilot Agents would have the highest impact."
   "Do not propose ideas that are already well-automated or covered by current Power Automate flows—focus on gaps that require intelligence, summarization, or multi-source decision support."
+
+**Example Output:**
+
+| Use Case Name | Source(s) Detected | Description | Departments | Time Savings | Copilot Function |
+|---------------|-------------------|-------------|-------------|--------------|------------------|
+| Meeting Action Item Extractor | Teams meeting transcripts + Outlook | Users manually write meeting notes and follow-ups after meetings | Engineering, PMO | 2 hrs/week/user | Automatically summarize meetings, extract tasks, and post to Planner |
+| Quarterly Metrics Summary | Email threads + Excel files + SharePoint | Managers spend time collecting KPIs from various owners | Sales, Operations | 5 hrs/quarter | Auto-pull KPI data, compile into report draft |
+| Repetitive IT Request Responses | Outlook + Teams chats | Repeated IT questions about password resets, access issues | Org-wide | 15 mins/request | AI-driven FAQ responder with adaptive cards |
+| Escalation Summary Generator | Emails + Teams | Manual duplication of status updates across stakeholders | Customer Success, Support | 1.5 hrs/escalation | Compile single escalation status brief and route to stakeholders |
 ```
 
 ## 📊 Example Output
