@@ -1,8 +1,0 @@
-{
-  "@microsoft/generator-sharepoint": {
-    "version": "1.4.1",
-    "libraryName": "fasttrack-teams-governance-sample",
-    "libraryId": "4220401b-312c-48fc-bfb2-c476e89ec453",
-    "environment": "spo"
-  }
-}
