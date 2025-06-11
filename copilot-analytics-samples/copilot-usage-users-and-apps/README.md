@@ -1,6 +1,6 @@
 # Copilot Usage Dashboard - Users and Apps
 
-
+![Dashboard Sample](./images/dashboard.png)
 
 ## Summary
 
@@ -22,11 +22,11 @@ This is a PowerBI template file (.pbix) dispalying a sample of how a Viva Insigh
 
 Replace with your data
 1. Transform data
-  ![alt text](./images/transform.png)
+  ![Step 1](./images/transform.png)
 2. Delete "Query1"
 3. Add "New Source" (the preferred source being Viva Insights)
-  ![alt text](./images/excel.png)
-  ![alt text](./images/GetData.png)
+  ![Step 2 Excel](./images/excel.png)
+  ![Step  2 Insights](./images/GetData.png)
 4. If using Viva Insights, use PartitionID/QueryID and "row level security". Sign in as a "organization account". Data Connectivity mode of "Import"
 5. Make sure your new source is named "Query1", rename if needed
 6. Any filters that are showing errors, replace the "field" with an attribute from your "Query1"
