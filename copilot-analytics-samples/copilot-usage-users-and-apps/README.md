@@ -4,7 +4,7 @@
 
 ## Summary
 
-This is a PowerBI template file (.pbix) dispalying a sample of how a Viva Insights Person Query export can be used to visualize user and application data in PowerBI. This report allows you to display the following:
+This is a PowerBI template file (.pbix) displaying a sample of how a Viva Insights Person Query export can be used to visualize user and application data in PowerBI. This report allows you to display the following:
 
 1. Leaderboard showcasing top/bottom users and filter these users by attribute (example, organization)
 2. Number of Copilot actions taken, week over week
