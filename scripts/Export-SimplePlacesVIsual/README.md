@@ -40,7 +40,7 @@ Export-SimplePlacesVisual.ps1 -AncestorId "12345" -IncludePlaceId
 
 ## Issues
 
-Please report any issues you find to the [issues list](../../issues).
+Please report any issues you find to the [issues list](../../../../issues).
 
 ## Support Statement
 
