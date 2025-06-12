@@ -10,23 +10,23 @@ Requires the Places PowerShell Module to be installed and for you to be authenti
 
 ### Examples
 
+Export the Places directory structure to the console in a simple text format:
+
 ```PowerShell
 Export-SimplePlacesVisual.ps1
 ```
 
-This command exports the Places directory structure to the console in a simple text format.	
+Export the Places directory structure to an text file named "PlacesDirectory.txt" in the current directory, including PlaceId for each object:
 
 ```PowerShell
 Export-SimplePlacesVisual.ps1 -IncludePlaceId -OutputFileName "PlacesDirectory.txt"
 ```
 
-This command exports the Places directory structure to an text file named "PlacesDirectory.txt" in the current directory, including PlaceId for each object.
+Export the Places directory structure starting from the specified ancestor PlaceId "12345", including PlaceId for each object in the output:
 
 ```PowerShell
 Export-SimplePlacesVisual.ps1 -AncestorId "12345" -IncludePlaceId
 ```
-
-This command exports the Places directory structure starting from the specified ancestor PlaceId "12345", including PlaceId for each object in the output.
 
 ## Applies To
 
