@@ -13,19 +13,19 @@ Requires the Places PowerShell Module to be installed and for you to be authenti
 Export the Places directory structure to the console in a simple text format:
 
 ```PowerShell
-Export-SimplePlacesVisual.ps1
+.\Export-SimplePlacesVisual.ps1
 ```
 
 Export the Places directory structure to an text file named "PlacesDirectory.txt" in the current directory, including PlaceId for each object:
 
 ```PowerShell
-Export-SimplePlacesVisual.ps1 -IncludePlaceId -OutputFileName "PlacesDirectory.txt"
+.\Export-SimplePlacesVisual.ps1 -IncludePlaceId -OutputFileName "PlacesDirectory.txt"
 ```
 
 Export the Places directory structure starting from the specified ancestor PlaceId "eac6c494-ec67-43c8-92db-99840ced7c5f", including PlaceId for each object in the output:
 
 ```PowerShell
-Export-SimplePlacesVisual.ps1 -AncestorId "eac6c494-ec67-43c8-92db-99840ced7c5f" -IncludePlaceId
+.\Export-SimplePlacesVisual.ps1 -AncestorId "eac6c494-ec67-43c8-92db-99840ced7c5f" -IncludePlaceId
 ```
 
 ### Example output
