@@ -13,19 +13,45 @@ Requires the Places PowerShell Module to be installed and for you to be authenti
 Export the Places directory structure to the console in a simple text format:
 
 ```PowerShell
-Export-SimplePlacesVisual.ps1
+.\Export-SimplePlacesVisual.ps1
 ```
 
 Export the Places directory structure to an text file named "PlacesDirectory.txt" in the current directory, including PlaceId for each object:
 
 ```PowerShell
-Export-SimplePlacesVisual.ps1 -IncludePlaceId -OutputFileName "PlacesDirectory.txt"
+.\Export-SimplePlacesVisual.ps1 -IncludePlaceId -OutputFileName "PlacesDirectory.txt"
 ```
 
-Export the Places directory structure starting from the specified ancestor PlaceId "12345", including PlaceId for each object in the output:
+Export the Places directory structure starting from the specified ancestor PlaceId "eac6c494-ec67-43c8-92db-99840ced7c5f", including PlaceId for each object in the output:
 
 ```PowerShell
-Export-SimplePlacesVisual.ps1 -AncestorId "12345" -IncludePlaceId
+.\Export-SimplePlacesVisual.ps1 -AncestorId "eac6c494-ec67-43c8-92db-99840ced7c5f" -IncludePlaceId
+```
+
+### Example output
+
+```Plain Text
+Building | Contoso HQ 
+         |--- Floor    | 1
+                       |--- Section  | HQ.1.North
+                                     |--- Space    | Workspace HQ/1.400
+                       |--- Section  | HQ.1.NorthEast
+                                     |--- Space    | Workspace HQ/1.300
+                                     |--- Space    | Workspace HQ/1.360
+                                     |--- Desk     | Office HQ/1.390
+                       |--- Room     | ConfRm HQ/1.019
+                       |--- Room     | ConfRm HQ/1.031
+                       |--- Room     | ConfRm HQ/1.143
+         |--- Floor    | 2
+                       |--- Section  | HQ.2.North
+                                     |--- Space    | Workspace HQ/2.400
+                       |--- Section  | HQ.2.NorthEast
+                                     |--- Space    | Workspace HQ/2.300
+                                     |--- Space    | Workspace HQ/2.370
+                                     |--- Desk     | Office HQ/2.390
+                       |--- Room     | ConfRm HQ/2.033
+                       |--- Room     | ConfRm HQ/2.057
+                       |--- Room     | ConfRm HQ/2.143
 ```
 
 ## Applies To

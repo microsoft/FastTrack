@@ -1,20 +1,91 @@
 <#
 .SYNOPSIS
-    Exports a simple visual representation of the Places directory structure
+Exports a simple visual representation of the Places directory structure
+
 .DESCRIPTION
-    Exports a simple visual representation of the Places directory structure, showing the hierarchy of sections, rooms, spaces, and desks.
-    The output is a text-based tree structure that is displayed in the console or can be saved to a file.
+Exports a simple visual representation of the Places directory structure, showing the hierarchy of sections, rooms, spaces, and desks.
+The output is a text-based tree structure that is displayed in the console or can be saved to a file.
+
 .NOTES
-    Requires the Places PowerShell Module to be installed and for you to be authenticated to the Places service.
+Requires the Places PowerShell Module to be installed and for you to be authenticated to the Places service.
+
 .EXAMPLE
-    Export-SimplePlacesVisual.ps1
-    This command exports the Places directory structure to the console in a simple text format.
+PS> .\Export-SimplePlacesVisual.ps1
+
+This command exports the Places directory structure to the console in a simple text format.
+
+OUTPUT:
+
+Building | Contoso HQ 
+         |--- Floor    | 1
+                       |--- Section  | HQ.1.North
+                                     |--- Space    | Workspace HQ/1.400
+                       |--- Section  | HQ.1.NorthEast
+                                     |--- Space    | Workspace HQ/1.300
+                                     |--- Space    | Workspace HQ/1.360
+                                     |--- Desk     | Office HQ/1.390
+                       |--- Room     | ConfRm HQ/1.019
+                       |--- Room     | ConfRm HQ/1.031
+                       |--- Room     | ConfRm HQ/1.143
+         |--- Floor    | 2
+                       |--- Section  | HQ.2.North
+                                     |--- Space    | Workspace HQ/2.400
+                       |--- Section  | HQ.2.NorthEast
+                                     |--- Space    | Workspace HQ/2.300
+                                     |--- Space    | Workspace HQ/2.370
+                                     |--- Desk     | Office HQ/2.390
+                       |--- Room     | ConfRm HQ/2.033
+                       |--- Room     | ConfRm HQ/2.057
+                       |--- Room     | ConfRm HQ/2.143
+
+
 .EXAMPLE
-    Export-SimplePlacesVisual.ps1 -IncludePlaceId -OutputFileName "PlacesDirectory.txt"
-    This command exports the Places directory structure to an text file named "PlacesDirectory.txt" in the current directory, including PlaceId for each object.
+PS> .\Export-SimplePlacesVisual.ps1 -IncludePlaceId -OutputFileName "PlacesDirectory.txt"
+
+This command exports the Places directory structure to an text file named "PlacesDirectory.txt" in the current directory, including PlaceId for each object.
+
+OUTPUT FILE CONTENT (PlacesDirectory.txt):
+
+Building | Contoso HQ | a38cf291-393c-4341-b387-2f96540512cb
+         |--- Floor    | 1 | ea850f6e-4e50-4f77-ba81-f2181c1875a9
+                       |--- Section  | HQ.1.North | ff8579b8-8937-48c1-9c70-c88fab984421
+                                     |--- Space    | Workspace HQ/1.400 | 4abf3982-c053-498d-81a3-4e42088b0271
+                       |--- Section  | HQ.1.NorthEast | b4c6fbe5-2b37-4ebb-a1d5-a6f2654de9c9
+                                     |--- Space    | Workspace HQ/1.300 | 3a069930-44c1-4009-8ac4-5debd6242361
+                                     |--- Space    | Workspace HQ/1.360 | cc5e3196-517f-4f9a-8b7e-43260cdedbf9
+                                     |--- Desk     | Office HQ/1.390 | 5bab80cc-b88e-4082-a010-0bb3d5c2ff31
+                       |--- Room     | ConfRm HQ/1.019 | 86ce0ce5-6cbb-40ec-b5bf-20f1430372af
+                       |--- Room     | ConfRm HQ/1.031 | 68ea1e13-8019-4cb4-86f4-d1a318af90ad
+                       |--- Room     | ConfRm HQ/1.143 | ac38bd70-b149-43c1-85bd-6f431b552958
+         |--- Floor    | 2 | eac6c494-ec67-43c8-92db-99840ced7c5f
+                       |--- Section  | HQ.2.North | f7dcee8c-cf9f-4088-9fbe-9d97508ea477
+                                     |--- Space    | Workspace HQ/2.400 | e5ff28ab-f08f-4561-a28e-9990a1961669
+                       |--- Section  | HQ.2.NorthEast | 98be95d1-9880-4a7e-8499-66f31e408762
+                                     |--- Space    | Workspace HQ/2.300 | fb49ca0d-3b36-4aea-a280-5adeece17a21
+                                     |--- Space    | Workspace HQ/2.370 | 0ddca668-58eb-4a1d-ab14-ca36f04ab7c3
+                                     |--- Desk     | Office HQ/2.390 | bd98ba7d-aafd-448b-b754-19397084afa4
+                       |--- Room     | ConfRm HQ/2.033 | a5b6ef95-6ad1-4b5c-84bb-d7ede0467d74
+                       |--- Room     | ConfRm HQ/2.057 | c4179b01-4268-4ab9-b772-e9d262237b79
+                       |--- Room     | ConfRm HQ/2.143 | 9ad63633-2b64-4e14-b652-5a881980f217
+
 .EXAMPLE
-    Export-SimplePlacesVisual.ps1 -AncestorId "12345" -IncludePlaceId
-    This command exports the Places directory structure starting from the specified ancestor PlaceId "12345", including PlaceId for each object in the output.
+PS> .\Export-SimplePlacesVisual.ps1 -AncestorId "eac6c494-ec67-43c8-92db-99840ced7c5f" -IncludePlaceId
+
+This command exports the Places directory structure starting from the specified ancestor PlaceId "eac6c494-ec67-43c8-92db-99840ced7c5f" (2nd Floor), including PlaceId for each object in the output.
+
+OUTPUT:
+
+|--- Floor    | 2 | eac6c494-ec67-43c8-92db-99840ced7c5f
+              |--- Section  | HQ.2.North | f7dcee8c-cf9f-4088-9fbe-9d97508ea477
+                            |--- Space    | Workspace HQ/2.400 | e5ff28ab-f08f-4561-a28e-9990a1961669
+              |--- Section  | HQ.2.NorthEast | 98be95d1-9880-4a7e-8499-66f31e408762
+                            |--- Space    | Workspace HQ/2.300 | fb49ca0d-3b36-4aea-a280-5adeece17a21
+                            |--- Space    | Workspace HQ/2.370 | 0ddca668-58eb-4a1d-ab14-ca36f04ab7c3
+                            |--- Desk     | Office HQ/2.390 | bd98ba7d-aafd-448b-b754-19397084afa4
+              |--- Room     | ConfRm HQ/2.033 | a5b6ef95-6ad1-4b5c-84bb-d7ede0467d74
+              |--- Room     | ConfRm HQ/2.057 | c4179b01-4268-4ab9-b772-e9d262237b79
+              |--- Room     | ConfRm HQ/2.143 | 9ad63633-2b64-4e14-b652-5a881980f217
+
 #>
 
 [CmdletBinding()]
