@@ -1,6 +1,7 @@
 # 🔍 Copilot Audit Dashboard
 
-> [!NOTE] New Version! This version includes agent details including columns to categorize interactions that are related to SPO Agent, Custom Agent, and Copilot Pages (powered by Loop).
+> [!NOTE] 
+> New Version! This version includes agent details including columns to categorize interactions that are related to SPO Agent, Custom Agent, and Copilot Pages (powered by Loop).
 
 ## 📊 Overview
 This solution provides a comprehensive dashboard for analyzing and visualizing Microsoft 365 Copilot Purview Audit events across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
@@ -80,12 +81,12 @@ You can choose from different time periods:
 - D180 (180 days)
 
 ### Setting Up the Power BI Dashboard
-1. Open the Power BI template (`.pbit` file)
-2. When prompted, specify the location of the exported CSV files:
-   - Entra Users export
-   - Copilot Audit Logs export
-   - Copilot Usage Reports export (optional)
-3. Power BI will load and transform the data, then display the dashboard
+1. Open the Power BI File (`.pbix` file)
+2. This will open the dashboard with sample data. 
+3. To load your reports, **Click Home > Transform Data** and update the parameters to point to your Entra Users CSV Export and Copilot Audit Activities CSV Export.  
+
+   ![alt text](./Images/image-updateparameters.png)
+4. Click **Close & Apply** and Power BI will load the dashboard with your reports. 
 
 ## 📊 Dashboard Features
 The Copilot Analytics Dashboard provides visualizations including:
