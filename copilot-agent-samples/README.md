@@ -1,41 +1,41 @@
-# 🤖 Sample Declarative and Custom Agents
+# 🚀 FastTrack for Copilot Agents 🚀
 
-Welcome to our collection of sample declarative agents and custom agents! This repository provides ready-to-use agent examples for both customers and the open source community. These samples demonstrate a range of capabilities and use cases that you can build upon for your own projects.
+Welcome to the official FastTrack repository for agent templates! 👋 This is your one-stop-shop for getting a head start on building powerful and intelligent agents for both **Microsoft Copilot Studio** and **Agent Builder**.
 
-Our sample **declarative agents** are prefixed with `da-` . 
+Whether you're a seasoned pro or just getting started, these templates are designed to accelerate your development process and showcase what's possible.
 
-Our sample **custom agents** are prefixed with `ca-` . 
+## 📂 Repository Structure
 
-## 🧠 Declarative Agents
+This repository is organized into two main directories, one for each platform:
 
-| Agent Name | Description | Use Cases |
-|------------|-------------|-----------|
-| [**🔍 Deep Research**](./da-DeepResearch) | A deep research agent that systematically reasons through requests, conducts thorough research, and provides comprehensive outputs with confidence levels attached to answers. **Note**: We published this before the new Copilot Researcher agent was made available. We highly recommend trying that out first. | • Academic research<br>• Competitor analysis<br>• Literature reviews<br>• Fact verification |
-| [**👥 Manager Simulator**](./da-ManagerSimulator) | A multi-agent system designed to help aspiring and experienced managers practice their communication skills through simulated scenarios. The system consists of a *Scenario Agent* to draft realistic situations, an *Employee Agent* for role-playing interactions, and a *Coaching Agent* that provides feedback and advice. | • Management training<br>• Communication practice<br>• Conflict resolution practice<br>• Performance review preparation |
-| [**🧩 Reasoning Agent**](./da-ReasoningAgent) | An enhanced reasoning agent that serves as an intelligent sounding board, offering detailed feedback and analysis on ideas and concepts. This agent excels at helping users test, challenge, and refine their thinking through interactive dialogue. | • Brainstorming sessions<br>• Project planning<br>• Thesis development<br>• Decision making |
-| [**🌟 Omni Agent**](./da-OmniAgent) | An adaptive agent that assumes specialized personas to optimally address and solve a wide variety of user requests. This agent dynamically adjusts its expertise and approach based on the specific problem domain. | • Technical troubleshooting<br>• Creative content generation<br>• Domain-specific consulting<br>• Multi-disciplinary problem solving |
-| [**✍️ Vibe Writing Agent**](./da-VibeWritingAgent) | Transforms stream-of-consciousness writing into polished text while preserving your unique voice. Type your unfiltered thoughts—spelling errors and all—and get clear, readable content that still sounds exactly like you. No judging, censoring, or rewriting your ideas—just enhanced readability with your authentic style intact. | • Journal entries and personal reflections<br>• First drafts of creative writing<br>• Quick notes and brainstorming sessions<br>• Organizing scattered thoughts after meetings or discussions |
-| [**📄 Compare Documents Agent**](./da-CompareDocs) | A specialized tool that analyzes contract documents field-by-field, highlighting structural differences, metadata changes, and distinguishing between placeholder text and actual content in a comprehensive tabular format. | • Contract review<br>• Legal compliance<br>• Template verification<br>• Document auditing<br>• Version tracking |
+* `copilot-studio-agents/`
+    * Contains agent templates, examples, and solutions specifically designed for **Microsoft Copilot Studio**. These are great for building sophisticated, enterprise-grade agents. Our sample **custom agents** are prefixed with `ca-` . 
 
-## ⚙️ Custom Agents
+* `agent-builder-agents/`
+    * Contains agent templates tailored for the **Agent Builder** in Copilot. These are perfect for creating more focused, task-oriented agents quickly. Note these can also be easily repurposed to be used with SharePoint Agents. Our sample **declarative agents** are prefixed with `da-` . 
 
-| Agent Name | Description | Use Cases |
-|------------|-------------|-----------|
-| [**📧 AutoReply Agent**](./ca-AutoReplyAgent) | An autonomous agent that monitors incoming emails, researches questions using trusted knowledge sources, and generates professional draft responses. The agent analyzes email content, provides detailed answers with source citations, and formats responses in an engaging, professional manner with suggested follow-up questions. | • Email automation<br>• Customer service support<br>• Research assistance<br>• Professional correspondence<br>• Knowledge base integration |
+## ✨ Getting Started
 
-## 🚀 Getting Started
+Using these templates is simple!
 
-To use these sample agents:
-
-1. Clone this repository
-2. Navigate to the agent directory of your choice
-3. Follow the setup instructions in each agent's README file
-
+1.  **Clone or Download:** Clone this repository or download the ZIP file to your local machine.
+2.  **Explore:** Navigate into either the `copilot-studio-agents` or `agent-builder-agents` directory.
+3.  **Import:** Follow the instructions within each template's own README to import it into your Copilot Studio or Agent Builder environment.
+4.  **Customize:** Adapt the template to your specific needs. Change the logic, add new capabilities, and make it your own!
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! If you've built an interesting agent or improved one of our samples, please consider submitting a pull request.
+Have a great agent template you'd like to share with the community? We'd love your contributions!
+
+1.  **Fork** this repository.
+2.  **Create a new branch** for your feature (`git checkout -b feature/my-awesome-agent`).
+3.  **Add your template** to the appropriate directory, including a clear README.md file explaining what it does and how to use it.
+4.  **Commit your changes** (`git commit -m 'Add some awesome agent'`).
+5.  **Push to the branch** (`git push origin feature/my-awesome-agent`).
+6.  **Open a Pull Request** and we'll review it.
+
+Let's build an amazing collection of agent templates together! 🎉
 
 ---
 
-Happy agent building! 🚀
+Happy building! 🤖
