@@ -1,10 +1,8 @@
-# 🤖 Sample Declarative and Custom Agents
+# 🤖 Agent Builder Agent Samples
 
 Welcome to our collection of sample declarative agents and custom agents! This repository provides ready-to-use agent examples for both customers and the open source community. These samples demonstrate a range of capabilities and use cases that you can build upon for your own projects.
 
-Our sample **declarative agents** are prefixed with `da-` . 
-
-Our sample **custom agents** are prefixed with `ca-` . 
+Our sample **declarative agents** are prefixed with `da-` .  
 
 ## 🧠 Declarative Agents
 
@@ -17,11 +15,6 @@ Our sample **custom agents** are prefixed with `ca-` .
 | [**✍️ Vibe Writing Agent**](./da-VibeWritingAgent) | Transforms stream-of-consciousness writing into polished text while preserving your unique voice. Type your unfiltered thoughts—spelling errors and all—and get clear, readable content that still sounds exactly like you. No judging, censoring, or rewriting your ideas—just enhanced readability with your authentic style intact. | • Journal entries and personal reflections<br>• First drafts of creative writing<br>• Quick notes and brainstorming sessions<br>• Organizing scattered thoughts after meetings or discussions |
 | [**📄 Compare Documents Agent**](./da-CompareDocs) | A specialized tool that analyzes contract documents field-by-field, highlighting structural differences, metadata changes, and distinguishing between placeholder text and actual content in a comprehensive tabular format. | • Contract review<br>• Legal compliance<br>• Template verification<br>• Document auditing<br>• Version tracking |
 
-## ⚙️ Custom Agents
-
-| Agent Name | Description | Use Cases |
-|------------|-------------|-----------|
-| [**📧 AutoReply Agent**](./ca-AutoReplyAgent) | An autonomous agent that monitors incoming emails, researches questions using trusted knowledge sources, and generates professional draft responses. The agent analyzes email content, provides detailed answers with source citations, and formats responses in an engaging, professional manner with suggested follow-up questions. | • Email automation<br>• Customer service support<br>• Research assistance<br>• Professional correspondence<br>• Knowledge base integration |
 
 ## 🚀 Getting Started
 
