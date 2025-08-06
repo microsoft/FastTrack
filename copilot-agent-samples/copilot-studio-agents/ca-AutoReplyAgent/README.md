@@ -3,7 +3,7 @@
 ## 📌 Overview
 This Autonomous Agent helps with incoming emails to my inbox (can also be pointed at a shared mailbox). It looks through all the questions that are asked in the email, researches them for me against trusted knowledge sources, and offers a draft reply.
 
-![alt text](./Images/screencapture-copilotstudio-preview-microsoft-environments-Default-a1c2fad6-2fc5-46e6-ba17-d5f246ce1af4-bots-38ea300c-5537-f011-8c4e-00224805babe-overview-2025-06-17-13_27_51.png)
+![alt text](./Images/agent_details.png)
 
 ## 🙌 Credit 
 This build is based on the great work from **Shervin Shaffie** here: [Master Autonomous AI Agents in Microsoft Copilot Studio - Easy to Build & Extremely Powerful](https://youtu.be/OZ_NgoFDiHI?si=OfeUMPdo2VaWx8xf)
