@@ -34,7 +34,10 @@ Follow these steps carefully to import and configure the agent in your own envir
 #### **Step 1: Download the Solution**
 
 Download the solution file located in this directory:
-* `./Solution/ProductQuoteAgent.zip`
+
+`./Solution/ProductQuoteAgent.zip`
+  
+This includes the word template which you'll need to upload to a SharePoint site and also the .zip solution file that you'll upload in powerapps when importing the solution. 
 
 #### **Step 2: Import the Solution into Power Apps**
 
@@ -42,7 +45,7 @@ Download the solution file located in this directory:
 2.  Select the correct **Environment** from the top-right corner where you want to install the agent.
 3.  On the left navigation pane, select **Solutions**.
 4.  Click **Import solution** from the top menu.
-5.  Click **Browse**, locate the `ProductQuoteAgent.zip` file you downloaded, and click **Next**.
+5.  Click **Browse**, locate the `ProductQuoteAgent_1_0_0_1.zip.zip` file you downloaded, and click **Next**.
 6.  The wizard will prompt you to configure connections. Establish the necessary connections for **Dataverse**, **Office 365 Outlook**, **SharePoint**, etc., by selecting them or creating new ones. Click **Next** once all connections are ready.
 7.  You will be asked to configure **Environment Variables**. This is where you link the solution to your resources.
     * **Email Address:** Enter the email address you want the quotes to be sent from.
@@ -68,7 +71,7 @@ Your agent should now be fully configured and ready to generate quotes!
 
 ## Version History
 
-| Date | Comments | Author |
+| Date | Comments | Published By |
 |------|----------|--------|
 | August 6, 2025 | Initial release | Alejandro Lopez - alejanl@microsoft.com |
 
