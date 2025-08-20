@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Copilot Readiness Report</title>
+<style>
+body { font-family: Segoe UI,Arial,sans-serif; margin: 24px; color: #222; }
+h1 { font-size: 22px; margin-bottom: 6px }
+h2 { font-size: 18px; margin-top: 24px }
+table { border-collapse: collapse; width: 100%; margin: 8px 0 16px 0 }
+th,td { border: 1px solid #ddd; padding: 8px; font-size: 13px }
+th { background: #f3f3f3; text-align: left }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-weight: 600 }
+.pass { background: #e6f4ea; color: #137333 }
+.gap { background: #fce8e6; color: #c5221f }
+.manual { background: #fff8e1; color: #a05a00 }
+.unknown { background: #eceff1; color: #546e7a }
+.small { color: #555; font-size: 12px }
+pre { background: #f7f7f7; padding: 10px; overflow: auto; border: 1px solid #eee }
+</style>
+</head>
+<body>
+<h1>Copilot for Microsoft 365 - Tenant Readiness</h1>
+<div class="small">Generated: 2025-08-20T17:53:27Z | Duration: 45.4699275s</div>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Check</th><th>Status</th></tr>
+<tr><td>Copilot add-on license present</td><td><span class="badge pass">Pass</span></td></tr>
+<tr><td>Eligible base licenses present</td><td><span class="badge pass">Pass</span></td></tr>
+<tr><td>Exchange Online (primary mailbox in EXO)</td><td><span class="badge pass">Pass</span></td></tr>
+<tr><td>OneDrive provisioned (personal sites exist)</td><td><span class="badge pass">Pass</span></td></tr>
+<tr><td>SharePoint Online tenant connected</td><td><span class="badge pass">Pass</span></td></tr>
+<tr><td>Microsoft Teams connected</td><td><span class="badge pass">Pass</span></td></tr>
+<tr><td>Entra ID external sharing configured</td><td><span class="badge pass">Pass</span></td></tr>
+</table>
+
+<h2>Manual checks (review & remediate)</h2>
+<table>
+<tr><th>Item</th><th>Status</th><th>Guidance</th></tr>
+<tr><td>Microsoft 365 Apps (channel/version) & network endpoints</td><td><span class='badge manual'>Manual</span></td><td>Ensure supported update channel (Current Channel or Monthly Enterprise), and app/network requirements are satisfied. <a href='https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements'>Learn</a></td></tr>
+<tr><td>App privacy settings & third-party cookies (Web)</td><td><span class='badge manual'>Manual</span></td><td>Verify privacy controls for connected experiences; enable third-party cookies for Word/Excel/PowerPoint online Copilot. <a href='https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements'>Learn</a></td></tr>
+<tr><td>Device-based licensing</td><td><span class='badge manual'>Manual</span></td><td>Copilot is not available with device-based licensing for Microsoft 365 Apps. <a href='https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements'>Learn</a></td></tr>
+</table><h2>Tenant</h2>
+<table>
+<tr><th>DisplayName</th><td>Example Organization</td></tr>
+<tr><th>TenantId</th><td>12345678-1234-1234-1234-123456789012</td></tr>
+<tr><th>DefaultDomain</th><td></td></tr>
+<tr><th>VerifiedDomains</th><td>example.onmicrosoft.com, example.com</td></tr>
+<tr><th>Country</th><td>US</td></tr>
+</table>
+
+<h2>Licensing</h2>
+<p>Copilot SKU present: <strong>True</strong></p>
+<table>
+<tr><th>Type</th><th>SkuPartNumber</th><th>Consumed</th><th>Prepaid(Enabled)</th><th>ServicePlans</th></tr>
+<tr><td>Base</td><td>Microsoft_365_E5_(no_Teams)</td><td>25</td><td>25</td><td>INSIGHTS_BY_MYANALYTICS, MICROSOFT_MYANALYTICS_FULL, PEOPLE_SKILLS_FOUNDATION</td></tr> <tr><td>Copilot</td><td>Microsoft_365_Copilot</td><td>22</td><td>25</td><td>COPILOT_STUDIO_IN_COPILOT_FOR_M365, M365_COPILOT_SHAREPOINT, GRAPH_CONNECTORS_COPILOT, M365_COPILOT_CONNECTORS, M365_COPILOT_APPS, M365_COPILOT_TEAMS, M365_COPILOT_BUSINESS_CHAT, M365_COPILOT_INTELLIGENT_SEARCH</td></tr>
+</table>
+
+<h2>Services</h2>
+
+<h3>Exchange Online</h3>
+<table>
+<tr><th>Connected</th><td>True</td></tr>
+<tr><th>User Mailboxes</th><td>25</td></tr>
+<tr><th>Notes</th><td></td></tr>
+</table>
+
+<h3>SharePoint & OneDrive</h3>
+<table>
+<tr><th>Connected</th><td>True</td></tr>
+<tr><th>Admin URL</th><td>https://example-admin.sharepoint.com</td></tr>
+<tr><th>Total Sites</th><td>10</td></tr>
+<tr><th>OneDrive Sites</th><td>25</td></tr>
+</table>
+
+<h4>Sharing Settings</h4>
+<p class="small"><strong>Impact on Copilot:</strong> These settings determine how content can be shared externally. 
+More permissive sharing may increase the scope of content accessible to Copilot through external collaborations.</p>
+<table>
+<tr><th>Setting</th><th>Value</th><th>Description</th></tr>
+<tr><td>TenantSharingLevel</td><td>ExternalUserAndGuestSharing</td><td>Tenant-wide sharing level (Disabled, ExternalUserSharingOnly, ExistingExternalUserSharingOnly, ExternalUserAndGuestSharing)</td></tr> <tr><td>DefaultSharingLinkType</td><td>AnonymousAccess</td><td>Default sharing link type for new sharing links (None, Direct, Internal, AnonymousAccess)</td></tr> <tr><td>FileAnonymousLinkType</td><td>Edit</td><td>Anonymous link permissions for files (None, View, Edit)</td></tr> <tr><td>FolderAnonymousLinkType</td><td>Edit</td><td>Anonymous link permissions for folders (None, View, Edit)</td></tr> <tr><td>RequireAnonymousLinksExpireInDays</td><td>-1</td><td>Days after which anonymous links expire (0 = no expiration)</td></tr> <tr><td>ExternalUserExpirationRequired</td><td>False</td><td>Whether external user invitations must have expiration dates</td></tr> <tr><td>ExternalUserExpireInDays</td><td>60</td><td>Default expiration period for external user access (days)</td></tr> <tr><td>PreventExternalUsersFromResharing</td><td>False</td><td>Whether external users are prevented from resharing content</td></tr>
+</table>
+
+<h4>Search & Language Settings</h4>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>AllowEditing</td><td>False</td></tr> <tr><td>DisableSearchResults</td><td></td></tr> <tr><td>EnableDynamicSort</td><td>True</td></tr> <tr><td>SearchCenter</td><td></td></tr> <tr><td>DefaultLanguage</td><td></td></tr> <tr><td>AdditionalLanguages</td><td></td></tr>
+</table>
+
+<h4>Content Type & Graph Connector Status</h4>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>HubUrl</td><td>Not configured</td></tr> <tr><td>SyncEnabled</td><td>Not configured</td></tr> <tr><td>Status</td><td>Disabled</td></tr>
+</table>
+
+<h4>Microsoft Graph Connectors</h4>
+<table>
+<tr><th>Name</th><th>State</th></tr>
+<tr><td colspan='2'>No Graph connectors found or access denied</td></tr>
+</table>
+
+<h4>Teams Integration Settings</h4>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>TeamsClientDefaultShareLinkScope</td><td>Anyone</td></tr> <tr><td>TeamsClientDefaultShareLinkRole</td><td>Read</td></tr> <tr><td>DefaultOneDriveMode</td><td>My Files</td></tr> <tr><td>TeamsChannelDefaultShareLinkScope</td><td>Anyone</td></tr> <tr><td>TeamsChannelDefaultShareLinkRole</td><td>Read</td></tr>
+</table>
+
+<h4>Sites with Access Restrictions</h4>
+<p class="small">Sites with RAC policies, conditional access, or other restrictions that may affect Copilot.</p>
+<table>
+<tr><th>Title</th><th>URL</th><th>Applied Restrictions</th></tr>
+<tr><td>Production Department</td><td>https://example.sharepoint.com/sites/ProductionDepartment</td><td></td></tr> <tr><td>Sales and Marketing</td><td>https://example.sharepoint.com/sites/SalesandMarketing</td><td></td></tr> <tr><td>Leadership</td><td>https://example.sharepoint.com/sites/Leadership</td><td></td></tr>
+</table>
+
+<h4>Sites with Restricted Content Discovery</h4>
+<table>
+<tr><th>Title</th><th>URL</th><th>Restrictions</th></tr>
+<tr><td>Operations Department</td><td>https://example.sharepoint.com/sites/OperationsDepartment</td><td></td></tr>
+</table>
+
+<h3>Entra ID External Sharing & Guest Settings</h3>
+<p class="small"><strong>Impact on Copilot:</strong> These settings control how external users can be invited and what permissions they have. 
+External users may have access to content that Copilot can surface, so understanding guest access patterns is important for data governance.</p>
+<table>
+<tr><th>Connected</th><td>True</td></tr>
+<tr><th>Notes</th><td></td></tr>
+</table>
+
+<h4>Authorization Policy (Guest Invitations)</h4>
+<table>
+<tr><th>Setting</th><th>Value</th><th>Description</th></tr>
+<tr><td>AllowInvitesFrom</td><td>adminsAndGuestInviters</td><td>Who can invite external users (none, adminsAndGuestInviters, adminsGuestInvitersAndAllMembers, everyone)</td></tr> <tr><td>AllowedToSignUpEmailBasedSubscriptions</td><td>True</td><td>Whether users can sign up for email-based subscriptions</td></tr> <tr><td>AllowedToUseSSPR</td><td>True</td><td>Whether users can use Self-Service Password Reset</td></tr> <tr><td>AllowEmailVerifiedUsersToJoinOrganization</td><td>True</td><td>Whether email-verified users can join the organization without invitation</td></tr> <tr><td>BlockMsolPowerShell</td><td>False</td><td>Whether MSOL PowerShell access is blocked for users</td></tr> <tr><td>DefaultUserRole - AllowedToCreateApps</td><td>True</td><td>Whether users can create applications</td></tr> <tr><td>DefaultUserRole - AllowedToCreateSecurityGroups</td><td>True</td><td>Whether users can create security groups</td></tr> <tr><td>DefaultUserRole - AllowedToCreateTenants</td><td>False</td><td>Whether users can create new tenants</td></tr> <tr><td>DefaultUserRole - AllowedToReadOtherUsers</td><td>True</td><td>Whether users can read other users' profiles</td></tr> <tr><td>DefaultUserRole - AllowedToReadBitlockerKeysForOwnedDevice</td><td>True</td><td>Whether users can read BitLocker recovery keys for their own devices</td></tr>
+</table>
+
+<h4>External Identities Policy</h4>
+<table>
+<tr><th>Setting</th><th>Value</th><th>Description</th></tr>
+<tr><td>PolicyAvailable</td><td>False</td><td>Legacy format</td></tr> <tr><td>Note</td><td>External Identities Policy not available - may require specific licensing or tenant configuration</td><td>Legacy format</td></tr>
+</table>
+
+<h4>Guest User Settings</h4>
+<table>
+<tr><th>Setting</th><th>Value</th><th>Description</th></tr>
+<tr><td>GuestUserRoleId</td><td>Not configured</td><td>Role template ID assigned to guest users (controls their permissions)</td></tr>
+</table>
+
+<h4>Cross-Tenant Access Policy</h4>
+<table>
+<tr><th>Setting</th><th>Value</th><th>Description</th></tr>
+<tr><td>AllowedCloudEndpoints</td><td>None specified</td><td>Cloud endpoints allowed for cross-tenant access</td></tr> <tr><td>IsServiceDefault</td><td></td><td>Whether this policy uses service defaults (true) or has custom configuration (false)</td></tr>
+</table>
+
+<h4>Organization Settings</h4>
+<table>
+<tr><th>Setting</th><th>Value</th><th>Description</th></tr>
+<tr><td>PrivacyProfile</td><td>Configured</td><td>Whether organization has configured privacy contact information</td></tr> <tr><td>MarketingNotificationEmails</td><td>None specified</td><td>Email addresses for marketing notifications from Microsoft</td></tr> <tr><td>SecurityComplianceNotificationMails</td><td>None specified</td><td>Email addresses for security and compliance notifications</td></tr> <tr><td>TechnicalNotificationMails</td><td>admin@example.com</td><td>Email addresses for technical notifications about the tenant</td></tr>
+</table>
+
+<h4>Guest User Statistics</h4>
+<table>
+<tr><th>Metric</th><th>Value</th><th>Description</th></tr>
+<tr><td>TotalGuestUsers</td><td>0</td><td>Number of guest users currently in the tenant</td></tr> <tr><td>Impact</td><td>No external users</td><td>Potential impact on Copilot data access and security considerations</td></tr>
+</table>
+
+<h2>References (Microsoft Learn)</h2>
+<ul>
+<li><a href='https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements'>https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements</a></li>
+<li><a href='https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-enablement-resources'>https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-enablement-resources</a></li>
+<li><a href='https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-licensing'>https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-licensing</a></li>
+</ul>
+
+<h2>Warnings</h2>
+<pre></pre>
+
+<h2>Errors</h2>
+<pre></pre>
+
+</body>
+</html>
