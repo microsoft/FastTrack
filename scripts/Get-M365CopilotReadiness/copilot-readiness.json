@@ -1,0 +1,697 @@
+﻿{
+    "GeneratedAtUtc":  "2025-08-20T17:53:27Z",
+    "ScriptDurationSec":  45.4699275,
+    "LearnReferences":  [
+                            "https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements",
+                            "https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-enablement-resources",
+                            "https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-licensing"
+                        ],
+    "Connections":  {
+                        "Graph":  true,
+                        "EXO":  true,
+                        "Teams":  true,
+                        "SPO":  true
+                    },
+    "Tenant":  {
+                   "DisplayName":  "Example Organization",
+                   "Id":  "12345678-1234-1234-1234-123456789012",
+                   "DefaultDomain":  null,
+                   "VerifiedDomains":  [
+                                           "example.onmicrosoft.com",
+                                           "example.com"
+                                       ],
+                   "CountryLetterCode":  "US",
+                   "TenantType":  "AAD"
+               },
+    "Licensing":  {
+                      "CopilotSkuPresent":  true,
+                      "CopilotSkus":  {
+                                          "SkuPartNumber":  "Microsoft_365_Copilot",
+                                          "SkuId":  "639dec6b-bb19-468b-871c-c5c441c4b0cb",
+                                          "ConsumedUnits":  22,
+                                          "PrepaidEnabled":  25,
+                                          "ServicePlans":  "COPILOT_STUDIO_IN_COPILOT_FOR_M365, M365_COPILOT_SHAREPOINT, GRAPH_CONNECTORS_COPILOT, M365_COPILOT_CONNECTORS, M365_COPILOT_APPS, M365_COPILOT_TEAMS, M365_COPILOT_BUSINESS_CHAT, M365_COPILOT_INTELLIGENT_SEARCH"
+                                      },
+                      "SubscribedSkus":  null,
+                      "EligibleBaseLicenses":  {
+                                                   "SkuPartNumber":  "Microsoft_365_E5_(no_Teams)",
+                                                   "ConsumedUnits":  25,
+                                                   "Enabled":  25
+                                               },
+                      "AllRelevantSkus":  [
+                                              {
+                                                  "SkuPartNumber":  "Microsoft_365_E5_(no_Teams)",
+                                                  "ConsumedUnits":  25,
+                                                  "PrepaidEnabled":  25,
+                                                  "Type":  "Base",
+                                                  "ServicePlans":  "INSIGHTS_BY_MYANALYTICS, MICROSOFT_MYANALYTICS_FULL, PEOPLE_SKILLS_FOUNDATION"
+                                              },
+                                              {
+                                                  "SkuPartNumber":  "Microsoft_365_Copilot",
+                                                  "ConsumedUnits":  22,
+                                                  "PrepaidEnabled":  25,
+                                                  "Type":  "Copilot",
+                                                  "ServicePlans":  "COPILOT_STUDIO_IN_COPILOT_FOR_M365, M365_COPILOT_SHAREPOINT, GRAPH_CONNECTORS_COPILOT, M365_COPILOT_CONNECTORS, M365_COPILOT_APPS, M365_COPILOT_TEAMS, M365_COPILOT_BUSINESS_CHAT, M365_COPILOT_INTELLIGENT_SEARCH"
+                                              }
+                                          ]
+                  },
+    "Services":  {
+                     "ExchangeOnline":  {
+                                            "Connected":  true,
+                                            "UserMailboxCount":  25,
+                                            "Notes":  null
+                                        },
+                     "SharePointOnline":  {
+                                              "Connected":  true,
+                                              "AdminUrl":  "https://example-admin.sharepoint.com",
+                                              "TenantProperties":  {
+                                                                       "OneDriveStorageQuota":  1048576,
+                                                                       "ConditionalAccessPolicy":  0,
+                                                                       "ExternalUserExpirationRequired":  false,
+                                                                       "SharingCapability":  2,
+                                                                       "RestrictedAccessControl":  null,
+                                                                       "ShowAllUsersClaim":  false,
+                                                                       "EnableAzureADB2BIntegration":  true
+                                                                   },
+                                              "TotalSites":  10,
+                                              "OneDriveSites":  25,
+                                              "Notes":  null,
+                                              "SharingSettings":  {
+                                                                      "TenantSharingLevel":  {
+                                                                                                 "Value":  2,
+                                                                                                 "Description":  "Tenant-wide sharing level (Disabled, ExternalUserSharingOnly, ExistingExternalUserSharingOnly, ExternalUserAndGuestSharing)"
+                                                                                             },
+                                                                      "DefaultSharingLinkType":  {
+                                                                                                     "Value":  3,
+                                                                                                     "Description":  "Default sharing link type for new sharing links (None, Direct, Internal, AnonymousAccess)"
+                                                                                                 },
+                                                                      "FileAnonymousLinkType":  {
+                                                                                                    "Value":  2,
+                                                                                                    "Description":  "Anonymous link permissions for files (None, View, Edit)"
+                                                                                                },
+                                                                      "FolderAnonymousLinkType":  {
+                                                                                                      "Value":  2,
+                                                                                                      "Description":  "Anonymous link permissions for folders (None, View, Edit)"
+                                                                                                  },
+                                                                      "RequireAnonymousLinksExpireInDays":  {
+                                                                                                                "Value":  -1,
+                                                                                                                "Description":  "Days after which anonymous links expire (0 = no expiration)"
+                                                                                                            },
+                                                                      "ExternalUserExpirationRequired":  {
+                                                                                                             "Value":  false,
+                                                                                                             "Description":  "Whether external user invitations must have expiration dates"
+                                                                                                         },
+                                                                      "ExternalUserExpireInDays":  {
+                                                                                                       "Value":  60,
+                                                                                                       "Description":  "Default expiration period for external user access (days)"
+                                                                                                   },
+                                                                      "PreventExternalUsersFromResharing":  {
+                                                                                                                "Value":  false,
+                                                                                                                "Description":  "Whether external users are prevented from resharing content"
+                                                                                                            }
+                                                                  },
+                                              "RacPolicySites":  [
+                                                                     {
+                                                                         "CreatedTime":  "\/Date(1736210529950)\/",
+                                                                         "LastContentModifiedDate":  "\/Date(1754355012620)\/",
+                                                                         "Status":  "Active",
+                                                                         "ArchiveStatus":  "NotArchived",
+                                                                         "ArchivedBy":  "",
+                                                                         "ArchivedTime":  "\/Date(-62135578800000)\/",
+                                                                         "BonusDiskQuota":  0,
+                                                                         "ResourceUsageCurrent":  0,
+                                                                         "ResourceUsageAverage":  0,
+                                                                         "StorageUsageCurrent":  2,
+                                                                         "LockIssue":  null,
+                                                                         "WebsCount":  1,
+                                                                         "CompatibilityLevel":  15,
+                                                                         "DisableSharingForNonOwnersStatus":  null,
+                                                                         "SiteId":  "82a6ceb9-915b-48d5-bd18-65fa0fcd8eab",
+                                                                         "HubSiteId":  "00000000-0000-0000-0000-000000000000",
+                                                                         "IsHubSite":  false,
+                                                                         "RelatedGroupId":  "c512fab9-b200-4b1c-9e80-3c49051efae5",
+                                                                         "GroupId":  "c512fab9-b200-4b1c-9e80-3c49051efae5",
+                                                                         "Url":  "https://m365cpi66888714.sharepoint.com/sites/ProductionDepartment",
+                                                                         "LocaleId":  1033,
+                                                                         "LockState":  "Unlock",
+                                                                         "Owner":  "c512fab9-b200-4b1c-9e80-3c49051efae5_o",
+                                                                         "StorageQuota":  26214400,
+                                                                         "StorageQuotaWarningLevel":  25574400,
+                                                                         "ResourceQuota":  300,
+                                                                         "ResourceQuotaWarningLevel":  100,
+                                                                         "Template":  "GROUP#0",
+                                                                         "Title":  "Production Department",
+                                                                         "AllowSelfServiceUpgrade":  true,
+                                                                         "DenyAddAndCustomizePages":  2,
+                                                                         "PWAEnabled":  1,
+                                                                         "SharingCapability":  1,
+                                                                         "SiteDefinedSharingCapability":  1,
+                                                                         "SandboxedCodeActivationCapability":  2,
+                                                                         "DisableCompanyWideSharingLinks":  2,
+                                                                         "DisableAppViews":  2,
+                                                                         "DisableFlows":  2,
+                                                                         "AuthenticationContextName":  null,
+                                                                         "StorageQuotaType":  null,
+                                                                         "RestrictedToGeo":  3,
+                                                                         "ShowPeoplePickerSuggestionsForGuestUsers":  false,
+                                                                         "SharingDomainRestrictionMode":  0,
+                                                                         "SharingAllowedDomainList":  "",
+                                                                         "SharingBlockedDomainList":  "",
+                                                                         "ConditionalAccessPolicy":  0,
+                                                                         "AllowDownloadingNonWebViewableFiles":  false,
+                                                                         "LimitedAccessFileType":  1,
+                                                                         "AllowEditing":  true,
+                                                                         "SensitivityLabel":  "",
+                                                                         "CommentsOnSitePagesDisabled":  false,
+                                                                         "SocialBarOnSitePagesDisabled":  false,
+                                                                         "DefaultSharingLinkType":  0,
+                                                                         "DefaultLinkPermission":  0,
+                                                                         "DefaultLinkToExistingAccess":  false,
+                                                                         "AnonymousLinkExpirationInDays":  0,
+                                                                         "OverrideTenantAnonymousLinkExpirationPolicy":  false,
+                                                                         "ExternalUserExpirationInDays":  0,
+                                                                         "OverrideTenantExternalUserExpirationPolicy":  false,
+                                                                         "SharingLockDownEnabled":  false,
+                                                                         "SharingLockDownCanBeCleared":  true,
+                                                                         "InformationSegment":  [
+
+                                                                                                ],
+                                                                         "InformationBarriersMode":  "",
+                                                                         "BlockDownloadLinksFileType":  1,
+                                                                         "OverrideBlockUserInfoVisibility":  0,
+                                                                         "IsTeamsConnected":  true,
+                                                                         "IsTeamsChannelConnected":  false,
+                                                                         "TeamsChannelType":  0,
+                                                                         "MediaTranscription":  0,
+                                                                         "ExcludedBlockDownloadGroupIds":  [
+
+                                                                                                           ],
+                                                                         "ExcludeBlockDownloadPolicySiteOwners":  false,
+                                                                         "ReadOnlyForBlockDownloadPolicy":  false,
+                                                                         "ExcludeBlockDownloadSharePointGroups":  [
+
+                                                                                                                  ],
+                                                                         "BlockDownloadPolicy":  false,
+                                                                         "LoopDefaultSharingLinkScope":  -1,
+                                                                         "LoopDefaultSharingLinkRole":  0,
+                                                                         "RequestFilesLinkEnabled":  false,
+                                                                         "RequestFilesLinkExpirationInDays":  -1,
+                                                                         "OverrideSharingCapability":  false,
+                                                                         "DefaultShareLinkScope":  -1,
+                                                                         "DefaultShareLinkRole":  0,
+                                                                         "BlockGuestsAsSiteAdmin":  0,
+                                                                         "ReadOnlyForUnmanagedDevices":  false,
+                                                                         "RestrictedAccessControl":  true,
+                                                                         "RestrictContentOrgWideSearch":  false,
+                                                                         "AuthenticationContextLimitedAccess":  false,
+                                                                         "RestrictedAccessControlGroups":  [
+                                                                                                               "c512fab9-b200-4b1c-9e80-3c49051efae5"
+                                                                                                           ],
+                                                                         "ListsShowHeaderAndNavigation":  false,
+                                                                         "EnableAutoExpirationVersionTrim":  null,
+                                                                         "ExpireVersionsAfterDays":  null,
+                                                                         "MajorVersionLimit":  null,
+                                                                         "HidePeoplePreviewingFiles":  false,
+                                                                         "HidePeopleWhoHaveListsOpen":  false
+                                                                     },
+                                                                     {
+                                                                         "CreatedTime":  "\/Date(1736210522533)\/",
+                                                                         "LastContentModifiedDate":  "\/Date(1754355009070)\/",
+                                                                         "Status":  "Active",
+                                                                         "ArchiveStatus":  "NotArchived",
+                                                                         "ArchivedBy":  "",
+                                                                         "ArchivedTime":  "\/Date(-62135578800000)\/",
+                                                                         "BonusDiskQuota":  0,
+                                                                         "ResourceUsageCurrent":  0,
+                                                                         "ResourceUsageAverage":  0,
+                                                                         "StorageUsageCurrent":  12,
+                                                                         "LockIssue":  null,
+                                                                         "WebsCount":  1,
+                                                                         "CompatibilityLevel":  15,
+                                                                         "DisableSharingForNonOwnersStatus":  null,
+                                                                         "SiteId":  "132b559b-b087-41b2-b7cf-863537f12450",
+                                                                         "HubSiteId":  "00000000-0000-0000-0000-000000000000",
+                                                                         "IsHubSite":  false,
+                                                                         "RelatedGroupId":  "b228f579-fa4b-4275-9561-3bcb929fe9f7",
+                                                                         "GroupId":  "b228f579-fa4b-4275-9561-3bcb929fe9f7",
+                                                                         "Url":  "https://m365cpi66888714.sharepoint.com/sites/SalesandMarketing",
+                                                                         "LocaleId":  1033,
+                                                                         "LockState":  "Unlock",
+                                                                         "Owner":  "b228f579-fa4b-4275-9561-3bcb929fe9f7_o",
+                                                                         "StorageQuota":  26214400,
+                                                                         "StorageQuotaWarningLevel":  25574400,
+                                                                         "ResourceQuota":  300,
+                                                                         "ResourceQuotaWarningLevel":  100,
+                                                                         "Template":  "GROUP#0",
+                                                                         "Title":  "Sales and Marketing",
+                                                                         "AllowSelfServiceUpgrade":  true,
+                                                                         "DenyAddAndCustomizePages":  2,
+                                                                         "PWAEnabled":  1,
+                                                                         "SharingCapability":  1,
+                                                                         "SiteDefinedSharingCapability":  1,
+                                                                         "SandboxedCodeActivationCapability":  2,
+                                                                         "DisableCompanyWideSharingLinks":  2,
+                                                                         "DisableAppViews":  2,
+                                                                         "DisableFlows":  2,
+                                                                         "AuthenticationContextName":  null,
+                                                                         "StorageQuotaType":  null,
+                                                                         "RestrictedToGeo":  3,
+                                                                         "ShowPeoplePickerSuggestionsForGuestUsers":  false,
+                                                                         "SharingDomainRestrictionMode":  0,
+                                                                         "SharingAllowedDomainList":  "",
+                                                                         "SharingBlockedDomainList":  "",
+                                                                         "ConditionalAccessPolicy":  0,
+                                                                         "AllowDownloadingNonWebViewableFiles":  false,
+                                                                         "LimitedAccessFileType":  1,
+                                                                         "AllowEditing":  true,
+                                                                         "SensitivityLabel":  "",
+                                                                         "CommentsOnSitePagesDisabled":  false,
+                                                                         "SocialBarOnSitePagesDisabled":  false,
+                                                                         "DefaultSharingLinkType":  0,
+                                                                         "DefaultLinkPermission":  0,
+                                                                         "DefaultLinkToExistingAccess":  false,
+                                                                         "AnonymousLinkExpirationInDays":  0,
+                                                                         "OverrideTenantAnonymousLinkExpirationPolicy":  false,
+                                                                         "ExternalUserExpirationInDays":  0,
+                                                                         "OverrideTenantExternalUserExpirationPolicy":  false,
+                                                                         "SharingLockDownEnabled":  false,
+                                                                         "SharingLockDownCanBeCleared":  true,
+                                                                         "InformationSegment":  [
+
+                                                                                                ],
+                                                                         "InformationBarriersMode":  "",
+                                                                         "BlockDownloadLinksFileType":  1,
+                                                                         "OverrideBlockUserInfoVisibility":  0,
+                                                                         "IsTeamsConnected":  true,
+                                                                         "IsTeamsChannelConnected":  false,
+                                                                         "TeamsChannelType":  0,
+                                                                         "MediaTranscription":  0,
+                                                                         "ExcludedBlockDownloadGroupIds":  [
+
+                                                                                                           ],
+                                                                         "ExcludeBlockDownloadPolicySiteOwners":  false,
+                                                                         "ReadOnlyForBlockDownloadPolicy":  false,
+                                                                         "ExcludeBlockDownloadSharePointGroups":  [
+
+                                                                                                                  ],
+                                                                         "BlockDownloadPolicy":  false,
+                                                                         "LoopDefaultSharingLinkScope":  -1,
+                                                                         "LoopDefaultSharingLinkRole":  0,
+                                                                         "RequestFilesLinkEnabled":  false,
+                                                                         "RequestFilesLinkExpirationInDays":  -1,
+                                                                         "OverrideSharingCapability":  false,
+                                                                         "DefaultShareLinkScope":  -1,
+                                                                         "DefaultShareLinkRole":  0,
+                                                                         "BlockGuestsAsSiteAdmin":  0,
+                                                                         "ReadOnlyForUnmanagedDevices":  false,
+                                                                         "RestrictedAccessControl":  true,
+                                                                         "RestrictContentOrgWideSearch":  false,
+                                                                         "AuthenticationContextLimitedAccess":  false,
+                                                                         "RestrictedAccessControlGroups":  [
+                                                                                                               "b228f579-fa4b-4275-9561-3bcb929fe9f7"
+                                                                                                           ],
+                                                                         "ListsShowHeaderAndNavigation":  false,
+                                                                         "EnableAutoExpirationVersionTrim":  null,
+                                                                         "ExpireVersionsAfterDays":  null,
+                                                                         "MajorVersionLimit":  null,
+                                                                         "HidePeoplePreviewingFiles":  false,
+                                                                         "HidePeopleWhoHaveListsOpen":  false
+                                                                     },
+                                                                     {
+                                                                         "CreatedTime":  "\/Date(1736210540677)\/",
+                                                                         "LastContentModifiedDate":  "\/Date(1755040257150)\/",
+                                                                         "Status":  "Active",
+                                                                         "ArchiveStatus":  "NotArchived",
+                                                                         "ArchivedBy":  "",
+                                                                         "ArchivedTime":  "\/Date(-62135578800000)\/",
+                                                                         "BonusDiskQuota":  0,
+                                                                         "ResourceUsageCurrent":  0,
+                                                                         "ResourceUsageAverage":  0,
+                                                                         "StorageUsageCurrent":  1,
+                                                                         "LockIssue":  null,
+                                                                         "WebsCount":  1,
+                                                                         "CompatibilityLevel":  15,
+                                                                         "DisableSharingForNonOwnersStatus":  null,
+                                                                         "SiteId":  "cbd880cd-009e-49fa-964d-8c29ec017f7b",
+                                                                         "HubSiteId":  "00000000-0000-0000-0000-000000000000",
+                                                                         "IsHubSite":  false,
+                                                                         "RelatedGroupId":  "603f1c93-81a4-4cf3-b690-46508e282fe4",
+                                                                         "GroupId":  "603f1c93-81a4-4cf3-b690-46508e282fe4",
+                                                                         "Url":  "https://m365cpi66888714.sharepoint.com/sites/Leadership",
+                                                                         "LocaleId":  1033,
+                                                                         "LockState":  "Unlock",
+                                                                         "Owner":  "603f1c93-81a4-4cf3-b690-46508e282fe4_o",
+                                                                         "StorageQuota":  26214400,
+                                                                         "StorageQuotaWarningLevel":  25574400,
+                                                                         "ResourceQuota":  300,
+                                                                         "ResourceQuotaWarningLevel":  100,
+                                                                         "Template":  "GROUP#0",
+                                                                         "Title":  "Leadership",
+                                                                         "AllowSelfServiceUpgrade":  true,
+                                                                         "DenyAddAndCustomizePages":  2,
+                                                                         "PWAEnabled":  1,
+                                                                         "SharingCapability":  2,
+                                                                         "SiteDefinedSharingCapability":  2,
+                                                                         "SandboxedCodeActivationCapability":  2,
+                                                                         "DisableCompanyWideSharingLinks":  2,
+                                                                         "DisableAppViews":  2,
+                                                                         "DisableFlows":  2,
+                                                                         "AuthenticationContextName":  null,
+                                                                         "StorageQuotaType":  null,
+                                                                         "RestrictedToGeo":  3,
+                                                                         "ShowPeoplePickerSuggestionsForGuestUsers":  false,
+                                                                         "SharingDomainRestrictionMode":  0,
+                                                                         "SharingAllowedDomainList":  "",
+                                                                         "SharingBlockedDomainList":  "",
+                                                                         "ConditionalAccessPolicy":  0,
+                                                                         "AllowDownloadingNonWebViewableFiles":  false,
+                                                                         "LimitedAccessFileType":  1,
+                                                                         "AllowEditing":  true,
+                                                                         "SensitivityLabel":  "",
+                                                                         "CommentsOnSitePagesDisabled":  false,
+                                                                         "SocialBarOnSitePagesDisabled":  false,
+                                                                         "DefaultSharingLinkType":  0,
+                                                                         "DefaultLinkPermission":  0,
+                                                                         "DefaultLinkToExistingAccess":  false,
+                                                                         "AnonymousLinkExpirationInDays":  0,
+                                                                         "OverrideTenantAnonymousLinkExpirationPolicy":  false,
+                                                                         "ExternalUserExpirationInDays":  0,
+                                                                         "OverrideTenantExternalUserExpirationPolicy":  false,
+                                                                         "SharingLockDownEnabled":  false,
+                                                                         "SharingLockDownCanBeCleared":  true,
+                                                                         "InformationSegment":  [
+
+                                                                                                ],
+                                                                         "InformationBarriersMode":  "",
+                                                                         "BlockDownloadLinksFileType":  1,
+                                                                         "OverrideBlockUserInfoVisibility":  0,
+                                                                         "IsTeamsConnected":  true,
+                                                                         "IsTeamsChannelConnected":  false,
+                                                                         "TeamsChannelType":  0,
+                                                                         "MediaTranscription":  0,
+                                                                         "ExcludedBlockDownloadGroupIds":  [
+
+                                                                                                           ],
+                                                                         "ExcludeBlockDownloadPolicySiteOwners":  false,
+                                                                         "ReadOnlyForBlockDownloadPolicy":  false,
+                                                                         "ExcludeBlockDownloadSharePointGroups":  [
+
+                                                                                                                  ],
+                                                                         "BlockDownloadPolicy":  false,
+                                                                         "LoopDefaultSharingLinkScope":  -1,
+                                                                         "LoopDefaultSharingLinkRole":  0,
+                                                                         "RequestFilesLinkEnabled":  true,
+                                                                         "RequestFilesLinkExpirationInDays":  -1,
+                                                                         "OverrideSharingCapability":  false,
+                                                                         "DefaultShareLinkScope":  -1,
+                                                                         "DefaultShareLinkRole":  0,
+                                                                         "BlockGuestsAsSiteAdmin":  0,
+                                                                         "ReadOnlyForUnmanagedDevices":  false,
+                                                                         "RestrictedAccessControl":  true,
+                                                                         "RestrictContentOrgWideSearch":  false,
+                                                                         "AuthenticationContextLimitedAccess":  false,
+                                                                         "RestrictedAccessControlGroups":  [
+                                                                                                               "603f1c93-81a4-4cf3-b690-46508e282fe4"
+                                                                                                           ],
+                                                                         "ListsShowHeaderAndNavigation":  false,
+                                                                         "EnableAutoExpirationVersionTrim":  null,
+                                                                         "ExpireVersionsAfterDays":  null,
+                                                                         "MajorVersionLimit":  null,
+                                                                         "HidePeoplePreviewingFiles":  false,
+                                                                         "HidePeopleWhoHaveListsOpen":  false
+                                                                     }
+                                                                 ],
+                                              "RestrictedSites":  {
+                                                                      "CreatedTime":  "\/Date(1736210544023)\/",
+                                                                      "LastContentModifiedDate":  "\/Date(1754353936913)\/",
+                                                                      "Status":  "Active",
+                                                                      "ArchiveStatus":  "NotArchived",
+                                                                      "ArchivedBy":  "",
+                                                                      "ArchivedTime":  "\/Date(-62135578800000)\/",
+                                                                      "BonusDiskQuota":  0,
+                                                                      "ResourceUsageCurrent":  0,
+                                                                      "ResourceUsageAverage":  0,
+                                                                      "StorageUsageCurrent":  1,
+                                                                      "LockIssue":  null,
+                                                                      "WebsCount":  1,
+                                                                      "CompatibilityLevel":  15,
+                                                                      "DisableSharingForNonOwnersStatus":  null,
+                                                                      "SiteId":  "12345678-1234-1234-1234-123456789012",
+                                                                      "HubSiteId":  "00000000-0000-0000-0000-000000000000",
+                                                                      "IsHubSite":  false,
+                                                                      "RelatedGroupId":  "12345678-1234-1234-1234-123456789012",
+                                                                      "GroupId":  "12345678-1234-1234-1234-123456789012",
+                                                                      "Url":  "https://example.sharepoint.com/sites/OperationsDepartment",
+                                                                      "LocaleId":  1033,
+                                                                      "LockState":  "Unlock",
+                                                                      "Owner":  "12345678-1234-1234-1234-123456789012_o",
+                                                                      "StorageQuota":  26214400,
+                                                                      "StorageQuotaWarningLevel":  25574400,
+                                                                      "ResourceQuota":  300,
+                                                                      "ResourceQuotaWarningLevel":  100,
+                                                                      "Template":  "GROUP#0",
+                                                                      "Title":  "Operations Department",
+                                                                      "AllowSelfServiceUpgrade":  true,
+                                                                      "DenyAddAndCustomizePages":  2,
+                                                                      "PWAEnabled":  1,
+                                                                      "SharingCapability":  1,
+                                                                      "SiteDefinedSharingCapability":  1,
+                                                                      "SandboxedCodeActivationCapability":  2,
+                                                                      "DisableCompanyWideSharingLinks":  2,
+                                                                      "DisableAppViews":  2,
+                                                                      "DisableFlows":  2,
+                                                                      "AuthenticationContextName":  null,
+                                                                      "StorageQuotaType":  null,
+                                                                      "RestrictedToGeo":  3,
+                                                                      "ShowPeoplePickerSuggestionsForGuestUsers":  false,
+                                                                      "SharingDomainRestrictionMode":  0,
+                                                                      "SharingAllowedDomainList":  "",
+                                                                      "SharingBlockedDomainList":  "",
+                                                                      "ConditionalAccessPolicy":  1,
+                                                                      "AllowDownloadingNonWebViewableFiles":  false,
+                                                                      "LimitedAccessFileType":  1,
+                                                                      "AllowEditing":  true,
+                                                                      "SensitivityLabel":  "12345678-1234-1234-1234-123456789012",
+                                                                      "CommentsOnSitePagesDisabled":  false,
+                                                                      "SocialBarOnSitePagesDisabled":  false,
+                                                                      "DefaultSharingLinkType":  0,
+                                                                      "DefaultLinkPermission":  0,
+                                                                      "DefaultLinkToExistingAccess":  false,
+                                                                      "AnonymousLinkExpirationInDays":  0,
+                                                                      "OverrideTenantAnonymousLinkExpirationPolicy":  false,
+                                                                      "ExternalUserExpirationInDays":  0,
+                                                                      "OverrideTenantExternalUserExpirationPolicy":  false,
+                                                                      "SharingLockDownEnabled":  false,
+                                                                      "SharingLockDownCanBeCleared":  true,
+                                                                      "InformationSegment":  [
+
+                                                                                             ],
+                                                                      "InformationBarriersMode":  "",
+                                                                      "BlockDownloadLinksFileType":  1,
+                                                                      "OverrideBlockUserInfoVisibility":  0,
+                                                                      "IsTeamsConnected":  true,
+                                                                      "IsTeamsChannelConnected":  false,
+                                                                      "TeamsChannelType":  0,
+                                                                      "MediaTranscription":  0,
+                                                                      "ExcludedBlockDownloadGroupIds":  [
+
+                                                                                                        ],
+                                                                      "ExcludeBlockDownloadPolicySiteOwners":  false,
+                                                                      "ReadOnlyForBlockDownloadPolicy":  false,
+                                                                      "ExcludeBlockDownloadSharePointGroups":  [
+
+                                                                                                               ],
+                                                                      "BlockDownloadPolicy":  false,
+                                                                      "LoopDefaultSharingLinkScope":  -1,
+                                                                      "LoopDefaultSharingLinkRole":  0,
+                                                                      "RequestFilesLinkEnabled":  false,
+                                                                      "RequestFilesLinkExpirationInDays":  -1,
+                                                                      "OverrideSharingCapability":  false,
+                                                                      "DefaultShareLinkScope":  -1,
+                                                                      "DefaultShareLinkRole":  0,
+                                                                      "BlockGuestsAsSiteAdmin":  0,
+                                                                      "ReadOnlyForUnmanagedDevices":  false,
+                                                                      "RestrictedAccessControl":  false,
+                                                                      "RestrictContentOrgWideSearch":  true,
+                                                                      "AuthenticationContextLimitedAccess":  false,
+                                                                      "RestrictedAccessControlGroups":  [
+
+                                                                                                        ],
+                                                                      "ListsShowHeaderAndNavigation":  false,
+                                                                      "EnableAutoExpirationVersionTrim":  null,
+                                                                      "ExpireVersionsAfterDays":  null,
+                                                                      "MajorVersionLimit":  null,
+                                                                      "HidePeoplePreviewingFiles":  false,
+                                                                      "HidePeopleWhoHaveListsOpen":  false
+                                                                  },
+                                              "SearchSettings":  {
+                                                                     "AllowEditing":  false,
+                                                                     "DisableSearchResults":  null,
+                                                                     "EnableDynamicSort":  true,
+                                                                     "SearchCenter":  null
+                                                                 },
+                                              "LanguageSettings":  {
+                                                                       "DefaultLanguage":  null,
+                                                                       "AdditionalLanguages":  ""
+                                                                   },
+                                              "ContentTypeSync":  {
+                                                                      "HubUrl":  "Not configured",
+                                                                      "SyncEnabled":  "Not configured",
+                                                                      "Status":  "Disabled"
+                                                                  },
+                                              "TeamsSettings":  {
+                                                                    "TeamsClientDefaultShareLinkScope":  "Anyone",
+                                                                    "TeamsClientDefaultShareLinkRole":  "Read",
+                                                                    "DefaultOneDriveMode":  "My Files",
+                                                                    "TeamsChannelDefaultShareLinkScope":  "Anyone",
+                                                                    "TeamsChannelDefaultShareLinkRole":  "Read"
+                                                                }
+                                          },
+                     "Teams":  {
+                                   "Connected":  true
+                               },
+                     "EntraId":  {
+                                     "Connected":  true,
+                                     "ExternalSharingSettings":  {
+                                                                     "PolicyAvailable":  false,
+                                                                     "Note":  "External Identities Policy not available - may require specific licensing or tenant configuration"
+                                                                 },
+                                     "GuestUserSettings":  {
+                                                               "GuestUserRoleId":  {
+                                                                                       "Value":  "Not configured",
+                                                                                       "Description":  "Role template ID assigned to guest users (controls their permissions)"
+                                                                                   }
+                                                           },
+                                     "AuthorizationPolicy":  {
+                                                                 "AllowInvitesFrom":  {
+                                                                                          "Value":  "adminsAndGuestInviters",
+                                                                                          "Description":  "Who can invite external users (none, adminsAndGuestInviters, adminsGuestInvitersAndAllMembers, everyone)"
+                                                                                      },
+                                                                 "AllowedToSignUpEmailBasedSubscriptions":  {
+                                                                                                                "Value":  true,
+                                                                                                                "Description":  "Whether users can sign up for email-based subscriptions"
+                                                                                                            },
+                                                                 "AllowedToUseSSPR":  {
+                                                                                          "Value":  true,
+                                                                                          "Description":  "Whether users can use Self-Service Password Reset"
+                                                                                      },
+                                                                 "AllowEmailVerifiedUsersToJoinOrganization":  {
+                                                                                                                   "Value":  true,
+                                                                                                                   "Description":  "Whether email-verified users can join the organization without invitation"
+                                                                                                               },
+                                                                 "BlockMsolPowerShell":  {
+                                                                                             "Value":  false,
+                                                                                             "Description":  "Whether MSOL PowerShell access is blocked for users"
+                                                                                         },
+                                                                 "DefaultUserRolePermissions":  {
+                                                                                                    "AllowedToCreateApps":  {
+                                                                                                                                "Value":  true,
+                                                                                                                                "Description":  "Whether users can create applications"
+                                                                                                                            },
+                                                                                                    "AllowedToCreateSecurityGroups":  {
+                                                                                                                                          "Value":  true,
+                                                                                                                                          "Description":  "Whether users can create security groups"
+                                                                                                                                      },
+                                                                                                    "AllowedToCreateTenants":  {
+                                                                                                                                   "Value":  false,
+                                                                                                                                   "Description":  "Whether users can create new tenants"
+                                                                                                                               },
+                                                                                                    "AllowedToReadOtherUsers":  {
+                                                                                                                                    "Value":  true,
+                                                                                                                                    "Description":  "Whether users can read other users\u0027 profiles"
+                                                                                                                                },
+                                                                                                    "AllowedToReadBitlockerKeysForOwnedDevice":  {
+                                                                                                                                                     "Value":  true,
+                                                                                                                                                     "Description":  "Whether users can read BitLocker recovery keys for their own devices"
+                                                                                                                                                 }
+                                                                                                }
+                                                             },
+                                     "Notes":  null,
+                                     "OrganizationSettings":  {
+                                                                  "PrivacyProfile":  {
+                                                                                         "Value":  "Configured",
+                                                                                         "Description":  "Whether organization has configured privacy contact information"
+                                                                                     },
+                                                                  "MarketingNotificationEmails":  {
+                                                                                                      "Value":  "None specified",
+                                                                                                      "Description":  "Email addresses for marketing notifications from Microsoft"
+                                                                                                  },
+                                                                  "SecurityComplianceNotificationMails":  {
+                                                                                                              "Value":  "None specified",
+                                                                                                              "Description":  "Email addresses for security and compliance notifications"
+                                                                                                          },
+                                                                  "TechnicalNotificationMails":  {
+                                                                                                     "Value":  "johncummings@microsoft.com",
+                                                                                                     "Description":  "Email addresses for technical notifications about the tenant"
+                                                                                                 }
+                                                              },
+                                     "CrossTenantAccessPolicy":  {
+                                                                     "AllowedCloudEndpoints":  {
+                                                                                                   "Value":  "None specified",
+                                                                                                   "Description":  "Cloud endpoints allowed for cross-tenant access"
+                                                                                               },
+                                                                     "IsServiceDefault":  {
+                                                                                              "Value":  null,
+                                                                                              "Description":  "Whether this policy uses service defaults (true) or has custom configuration (false)"
+                                                                                          }
+                                                                 },
+                                     "GuestUserStatistics":  {
+                                                                 "TotalGuestUsers":  {
+                                                                                         "Value":  0,
+                                                                                         "Description":  "Number of guest users currently in the tenant"
+                                                                                     },
+                                                                 "Impact":  {
+                                                                                "Value":  "No external users",
+                                                                                "Description":  "Potential impact on Copilot data access and security considerations"
+                                                                            }
+                                                             }
+                                 },
+                     "Graph":  {
+                                   "Connected":  true,
+                                   "Scopes":  [
+                                                  "Organization.Read.All",
+                                                  "Directory.Read.All",
+                                                  "User.Read.All",
+                                                  "ExternalItem.Read.All",
+                                                  "Sites.Read.All",
+                                                  "ExternalConnection.Read.All",
+                                                  "Policy.Read.All"
+                                              ]
+                               }
+                 },
+    "Readiness":  {
+                      "Licensing_CopilotSkuPresent":  "Pass",
+                      "Licensing_EligibleBaseLicenses":  "Pass",
+                      "EXO_PrimaryMailboxHostedInEXO":  "Pass",
+                      "OneDrive_Provisioned":  "Pass",
+                      "SPO_TenantConnected":  "Pass",
+                      "Teams_ServiceConnected":  "Pass",
+                      "EntraId_ExternalSharingConfigured":  "Pass",
+                      "ManualChecks":  [
+                                           {
+                                               "Name":  "Microsoft 365 Apps (channel/version) \u0026 network endpoints",
+                                               "Status":  "Manual",
+                                               "Guidance":  "Ensure supported update channel (Current Channel or Monthly Enterprise), and app/network requirements are satisfied.",
+                                               "Link":  "https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements"
+                                           },
+                                           {
+                                               "Name":  "App privacy settings \u0026 third-party cookies (Web)",
+                                               "Status":  "Manual",
+                                               "Guidance":  "Verify privacy controls for connected experiences; enable third-party cookies for Word/Excel/PowerPoint online Copilot.",
+                                               "Link":  "https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements"
+                                           },
+                                           {
+                                               "Name":  "Device-based licensing",
+                                               "Status":  "Manual",
+                                               "Guidance":  "Copilot is not available with device-based licensing for Microsoft 365 Apps.",
+                                               "Link":  "https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-requirements"
+                                           }
+                                       ]
+                  },
+    "Warnings":  [
+
+                 ],
+    "Errors":  [
+
+               ]
+}
