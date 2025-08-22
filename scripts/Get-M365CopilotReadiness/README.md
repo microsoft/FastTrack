@@ -1,4 +1,4 @@
-# M365 Copilot Readiness Assessment
+# Microsoft FastTrack Open Source - Get-M365CopilotReadiness
 
 PowerShell script that quickly collects key configuration information from Exchange Online, SharePoint Online, OneDrive, Microsoft Teams, and **Entra ID** to assess Microsoft 365 Copilot deployment readiness.
 
