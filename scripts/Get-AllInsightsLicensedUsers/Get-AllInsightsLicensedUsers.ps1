@@ -16,8 +16,9 @@ has been advised of the possibility of such damages.
 ###############Disclaimer#####################################################
 
 Purpose: 
-    -This script specifically pulls users assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan. 
-    If you want to pull all users, remove the -Filter parameter from the Get-MgUser command.
+    -This script specifically pulls users assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan.
+    -Use this to generate an organizational data file for upload in Viva Insights or the M365 Admin Center.
+    -If you want to pull all users, remove the -Filter parameter from the Get-MgUser command.
 
 REQUIREMENTS:
     -Microsoft Graph Module: https://learn.microsoft.com/en-us/powershell/microsoftgraph/installation?view=graph-powershell-1.0
