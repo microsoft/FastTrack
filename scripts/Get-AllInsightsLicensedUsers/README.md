@@ -1,8 +1,6 @@
-# Microsoft FastTrack Open Source - Get-AllEntraUsers.ps1
+# Microsoft FastTrack Open Source - Get-AllInsightsLicensedUSers.ps1
 
-This sample script generates a report of all users present in the target Entra tenant. This can be used to build the Organizational Data file which is later uploaded into M365 or Viva Advanced Insights.
-
-#### NOTE: This is similar to Get-GroupsMembersManagers.ps1, but focuses on user info only, not groups and their members.
+This sample script pulls users specifically assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan from Entra. This can be used to build the Organizational Data file which is later uploaded into M365 or Viva Advanced Insights.
 
 ## Usage
 
@@ -18,13 +16,18 @@ None
 
 The following properties are exported:
 
-|DisplayName|UserPrincipalName|Department|ManagerUPN 
+|PersonId|ManagerId|Department
+
+#### NOTE: You can add properties to the output by updating the '-Properties' value on the firsts Get-MgUser call with the ones you want, and updating the output later in the script to include it.
+All available user properties from Get-MgUser are shown here:
+
+https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.powershell.cmdlets.resources.msgraph.models.apiv10.imicrosoftgraphuser?view=az-ps-latest
 
 ### Execution
 
 Run the script like so:
 
-	.\Get-AllEntraUsers.ps1
+	.\Get-AllInsightsLicensedUSers.ps1
     
 ## Applies To
 
@@ -35,6 +38,7 @@ Run the script like so:
 |Author|Original Publish Date
 |----|--------------------------
 |Dean Cron, Microsoft|June 13th, 2025|
+-> Updated to v2|September 12th, 2025
 |Alejandro Lopez, Microsoft|June 13th, 2025|
 
 
