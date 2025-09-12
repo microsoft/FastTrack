@@ -80,7 +80,7 @@ foreach ($user in $users) {
 # Export the user details to a CSV file
 try{
     $userDetails | Export-Csv -Path "EntraUsersExport.csv" -NoTypeInformation
-    Write-Host "Finished processing. See results here: .\EntraUsersExport.csv" -foregroundcolor "Yellow"
+    Write-Host "Finished processing. See results here: .\InsightsLicensedUsers.csv" -foregroundcolor "Yellow"
 }
 catch{Write-Host "Encountered an error while exporting results: $($_)"}
 
