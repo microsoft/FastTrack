@@ -16,7 +16,7 @@ has been advised of the possibility of such damages.
 ###############Disclaimer#####################################################
 
 Purpose: 
-    -This script specifically pulls users assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan.
+    -This script pulls users specifically assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan.
     -Use this to generate an organizational data file for upload in Viva Insights or the M365 Admin Center.
     -If you want to pull all users, remove the -Filter parameter from the Get-MgUser command.
 
@@ -45,6 +45,7 @@ Write-Host "`nConnecting to Microsoft Graph..." -foregroundcolor "Yellow"
 Connect-MgGraph -Scopes "User.Read.All" -NoWelcome
     
 # Load all users assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan from Entra
+# If you want to return more properties, add them to the -Property parameter.
 Write-Host "Loading All Users with the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan. This might take some time..." -foregroundcolor "Yellow"
 $users = Get-MgUser -Filter "assignedPlans/any(c:c/servicePlanId eq b622badb-1b45-48d5-920f-4b27a2c0996c and c/capabilityStatus eq 'Enabled')" -All -ConsistencyLevel eventual -CountVariable count -Property "Id","Mail","Department"
 
@@ -71,7 +72,7 @@ foreach ($user in $users) {
         ManagerId = $managerUpn
         Department = $user.Department
 
-        # Add any other attributes you want to capture here. List of available attributes returned from Mg-User:
+        # Add any other attributes you want to capture here, and update the -Properties value on Get-MgUser (line 50). List of available attributes returned from Mg-User:
         # https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.powershell.cmdlets.resources.msgraph.models.apiv10.imicrosoftgraphuser?view=az-ps-latest
     }
 }
@@ -81,7 +82,7 @@ try{
     $userDetails | Export-Csv -Path "EntraUsersExport.csv" -NoTypeInformation
     Write-Host "Finished processing. See results here: .\EntraUsersExport.csv" -foregroundcolor "Yellow"
 }
-catch{Write-Host "Hit error while exporting results: $($_)"}
+catch{Write-Host "Encountered an error while exporting results: $($_)"}
 
 # Disconnect from Microsoft Graph
 Write-Host "`nDisconnecting from Microsoft Graph..." -foregroundcolor "Yellow"
