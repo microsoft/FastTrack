@@ -1,5 +1,3 @@
-Of course. Here is the final `readme.md` with the requested publisher section included.
-
 # 📜 Microsoft Teams Recurring Meeting Report
 
 This PowerShell script scans all user calendars in a Microsoft 365 tenant to find and report on all recurring Teams meetings. It exports key details to a CSV file, including the organizer, meeting subject, participant count, and a list of invited participants.
