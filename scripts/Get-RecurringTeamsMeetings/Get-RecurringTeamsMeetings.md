@@ -1,13 +1,17 @@
-Of course. Here is the final `readme.md` with the requested publisher section included.
-
 # 📜 Microsoft Teams Recurring Meeting Report
 
-This PowerShell script scans all user calendars in a Microsoft 365 tenant to find and report on all recurring Teams meetings. It exports key details to a CSV file, including the organizer, meeting subject, participant count, and a list of invited participants.
+This PowerShell script scans user calendars in a Microsoft 365 tenant to find and report on all recurring Teams meetings. It can run against **all users** in the tenant or a **targeted list of users** from a CSV file. It exports key details to a CSV file, including the organizer, meeting subject, participant count, and a list of invited participants.
 
 The script uses the Microsoft Graph API with **Application permissions**, ensuring it can run securely as an authorized background process.
 
 ![alt text](./images/image.png)
 
+-----
+
+## ✍️ Publisher
+
+  * **Author:** Alejandro Lopez | [alejandro.lopez@microsoft.com](mailto:alejandro.lopez@microsoft.com)
+  * **Published:** September 24, 2025
 
 -----
 
@@ -64,14 +68,35 @@ The script authenticates using an App Registration in Microsoft Entra ID. This i
 
 1.  Save the script to your computer with a `.ps1` extension (e.g., `Get-RecurringTeamsMeetings.ps1`).
 2.  Open a PowerShell terminal and navigate to the directory where you saved the script.
-3.  Run the script:
-    ```powershell
-    .\Get-RecurringTeamsMeetings.ps1
-    ```
-4.  You will be prompted to enter the following information:
-      * **Directory (Tenant) ID**: Found on the **Overview** page of your App Registration.
-      * **Application (Client) ID**: Also found on the **Overview** page of your App Registration.
-      * **Client Secret**: The secret value you copied. Your input will be hidden for security.
+3.  Choose one of the following methods to run the script. You will be prompted for your Tenant ID, App ID, and Client Secret.
+
+### Method 1: Scan ALL Users
+
+To run the script against every user in your tenant, execute it without any parameters:
+
+```powershell
+.\Get-RecurringTeamsMeetings.ps1
+```
+
+### Method 2: Scan Specific Users from a CSV File
+
+To target only specific users, use the `-UserCsvPath` parameter.
+
+**1. Create your CSV file:** The file must contain a header row with the column name `UserPrincipalName`.
+Example `users.csv` file:
+
+```csv
+UserPrincipalName
+adele.vance@yourtenant.onmicrosoft.com
+alex.wilber@yourtenant.onmicrosoft.com
+diego.siciliani@yourtenant.onmicrosoft.com
+```
+
+**2. Run the script with the parameter:**
+
+```powershell
+.\Get-RecurringTeamsMeetings.ps1 -UserCsvPath "C:\path\to\your\users.csv"
+```
 
 -----
 
@@ -85,14 +110,6 @@ The script generates a CSV file named `RecurringMeetingsReport.csv` in the same 
   * **ParticipantCount**: The total number of invitees.
   * **InvitedParticipants**: A semicolon-separated list of invitee email addresses.
   * **CreatedDateTime**: The timestamp when the recurring meeting series was first created.
-
-
------
-
-## ✍️ Publisher
-
-  * **Author:** Alejandro Lopez | [alejandro.lopez@microsoft.com](mailto:alejandro.lopez@microsoft.com)
-  * **Published:** September 24, 2025
 
 -----
 
