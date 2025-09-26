@@ -656,66 +656,72 @@ function Export-CopilotAuditLogs {
     }
     
     # Helper function to convert JSON AuditData to a flattened object
-# Helper function to convert JSON AuditData to a flattened object
-function Convert-AuditDataToObject {
-    param ([string]$AuditDataJson, [string]$UserID, [datetime]$CreationTime)
-    
-    try {
-        # Helper scriptblock to sanitize strings for CSV export
-        $Sanitizer = {
-            param($InputString)
-            if ($null -eq $InputString) { return $null }
-            # Replace one or more newline/carriage return characters with a single space
-            $cleaned = $InputString -replace "[\r\n]+", " "
-            # Truncate if the string is excessively long
-            if ($cleaned.Length -gt 500) {
-                return $cleaned.Substring(0, 497) + "..."
+    function Convert-AuditDataToObject {
+        param ([string]$AuditDataJson, [string]$UserID, [datetime]$CreationTime)
+        
+        try {
+            # Helper scriptblock to sanitize strings for CSV export
+            $Sanitizer = {
+                param($InputString)
+                if ($null -eq $InputString) { return $null }
+                # Replace one or more newline/carriage return characters with a single space
+                $cleaned = $InputString -replace "[\r\n]+", " "
+                # Truncate if the string is excessively long
+                if ($cleaned.Length -gt 500) {
+                    return $cleaned.Substring(0, 497) + "..."
+                }
+                return $cleaned
             }
-            return $cleaned
-        }
 
-        $auditDataObj = $AuditDataJson | ConvertFrom-Json
-        $copilotData = $auditDataObj.CopilotEventData
-        $appInfo = Get-CopilotAppAndLocation -AuditData $auditDataObj
-        
-        $Context = $auditDataObj.copiloteventdata.contexts.id ?? $auditDataObj.copiloteventdata.threadid
-        
-        # Defensively access potentially null properties
-        $accessedResources = $copilotData.AccessedResources ?? @()
-        $messages = $copilotData.Messages ?? @()
-        $contexts = $copilotData.Contexts ?? @()
-        $plugins = $copilotData.AISystemPlugin ?? @()
-        $models = $copilotData.ModelTransparencyDetails ?? @()
+            $auditDataObj = $AuditDataJson | ConvertFrom-Json
+            $copilotData = $auditDataObj.CopilotEventData
+            $appInfo = Get-CopilotAppAndLocation -AuditData $auditDataObj
+            
+            $Context = $auditDataObj.copiloteventdata.contexts.id ?? $auditDataObj.copiloteventdata.threadid
+            
+            # Defensively access potentially null properties
+            $accessedResources = $copilotData.AccessedResources ?? @()
+            $messages = $copilotData.Messages ?? @()
+            $contexts = $copilotData.Contexts ?? @()
+            $plugins = $copilotData.AISystemPlugin ?? @()
+            $models = $copilotData.ModelTransparencyDetails ?? @()
 
-        # Create a custom object with flattened properties
-        return [PSCustomObject][Ordered]@{
-            TimeStamp                 = (Get-Date $CreationTime -format "yyyy-MM-dd HH:mm:ss")
-            RecordID                  = $auditDataObj.Id
-            User                      = $UserID
-            ClientRegion              = $auditDataObj.ClientRegion
-            App                       = $appInfo.App
-            AgentName                 = $appInfo.AgentName
-            Location                  = $appInfo.Location
-            AppHost                   = $copilotData.AppHost
-            AppContext                = $Context
-            ThreadId                  = $copilotData.ThreadId
-            AISystemPlugins           = ($plugins | ForEach-Object { "$($_.Id):$($_.Name)" }) -join '; '
-            ModelDetails              = ($models.ModelName) -join '; '
-            ContextTypes              = ($contexts.Type) -join '; '
-            HasPrompt                 = @($messages.isPrompt).Contains($true)
-            HasResponse               = @($messages.isPrompt).Contains($false)
-            MessageCount              = $messages.Count
-            AccessedResourceCount     = $accessedResources.Count
-            # SANITIZE POTENTIALLY PROBLEMATIC FIELDS
-            AccessedResourceNames     = (($accessedResources.Name | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
-            AccessedResourceLocations = (($accessedResources.id | Sort-Object -Unique) -join ", ") # IDs are usually safe
-            AccessedResourceUrls      = (($accessedResources.SiteUrl | Sort-Object -Unique) -join ", ") # URLs are usually safe
-            AccessedResourceTypes     = (($accessedResources.Type | Sort-Object -Unique) -join ", ")
-            AccessedResourceActions   = (($accessedResources.action | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
-            Workload                  = $auditDataObj.Workload
-        }
-    } catch { Write-ErrorDetails -ErrorRecord $_; return $null }
-}
+            # Create a custom object with flattened properties
+            return [PSCustomObject][Ordered]@{
+                TimeStamp                 = (Get-Date $CreationTime -format "yyyy-MM-dd HH:mm:ss")
+                RecordID                  = $auditDataObj.Id
+                User                      = $UserID
+                ClientRegion              = $auditDataObj.ClientRegion
+                App                       = $appInfo.App
+                AgentName                 = $appInfo.AgentName
+                Location                  = $appInfo.Location
+                AppHost                   = $copilotData.AppHost
+                AppIdentity               = $auditDataObj.AppIdentity
+                AppContext                = $Context
+                ThreadId                  = $copilotData.ThreadId
+                AISystemPlugins           = ($plugins | ForEach-Object { "$($_.Id):$($_.Name)" }) -join '; '
+                ModelDetails              = ($models.ModelName) -join '; '
+                ContextTypes              = ($contexts.Type) -join '; '
+                HasPrompt                 = @($messages.isPrompt).Contains($true)
+                HasResponse               = @($messages.isPrompt).Contains($false)
+                MessageCount              = $messages.Count
+                AccessedResourceCount     = $accessedResources.Count
+                # SANITIZE POTENTIALLY PROBLEMATIC FIELDS
+                AccessedResourceNames     = (($accessedResources.Name | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
+                AccessedResourceLocations = (($accessedResources.id | Sort-Object -Unique) -join ", ") # IDs are usually safe
+                AccessedResourceUrls      = (($accessedResources.SiteUrl | Sort-Object -Unique) -join ", ") # URLs are usually safe
+                AccessedResourceTypes     = (($accessedResources.Type | Sort-Object -Unique) -join ", ")
+                AccessedResourceActions   = (($accessedResources.action | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
+                Workload                  = $auditDataObj.Workload
+                OrganizationId            = $auditDataObj.OrganizationId
+                CopilotLogVersion         = $auditDataObj.CopilotLogVersion
+                # Flag fields for specific analyses
+                IsCopilotStudio           = $appInfo.App -eq "Copilot Studio Agent"
+                IsCustomAgent             = ($appInfo.App -eq "Copilot Studio Agent") -and ($appInfo.AgentName -ne "")
+                IsSPOAgent                = $copilotData.AppHost -eq "SharePoint"
+            }
+        } catch { Write-ErrorDetails -ErrorRecord $_; return $null }
+    }
     
     # This variable will hold the connection status for the finally block
     $isConnected = $false
@@ -766,12 +772,17 @@ function Convert-AuditDataToObject {
                 Write-Host "  Fetching page $pageCount..." -ForegroundColor Gray
                 try {
                     $searchParams = @{ 
-                        SessionId = $sessionID; StartDate = $currentStart; EndDate = $currentEnd; ErrorAction = "Stop" 
+                        SessionId = $sessionID
+                        StartDate = $currentStart
+                        EndDate = $currentEnd
+                        ErrorAction = "Stop"
+                        SessionCommand = "ReturnLargeSet"  # ✅ CORRECTED: Always use ReturnLargeSet for the same SessionId
                     }
+                    
+                    # Only add RecordType and ResultSize on the FIRST request
                     if ($isFirstRequest) {
-                        $searchParams.RecordType = "CopilotInteraction"; $searchParams.ResultSize = $batchSize; $searchParams.SessionCommand = "ReturnLargeSet"
-                    } else { 
-                        $searchParams.SessionCommand = "ReturnNextPage" 
+                        $searchParams.RecordType = "CopilotInteraction"
+                        $searchParams.ResultSize = $batchSize
                     }
                     
                     $batchResults = @(Search-UnifiedAuditLog @searchParams)
@@ -807,35 +818,40 @@ function Convert-AuditDataToObject {
 
         if ($allResults.Count -eq 0) { Write-Host "No audit log entries found." -ForegroundColor Yellow; return }
 
-        Write-Host "`nProcessing $($allResults.Count) raw records..."
+        # OPTIMIZATION: Deduplicate the raw results first before the expensive conversion process
+        Write-Host "`nDeduplicating $($allResults.Count) raw records..."
+        $uniqueRawResults = $allResults | Group-Object { 
+            ($_.AuditData | ConvertFrom-Json).Id 
+        } | ForEach-Object { $_.Group[0] }
+        $dupCount = $allResults.Count - $uniqueRawResults.Count
+        if ($dupCount -gt 0) { 
+            Write-Host "Removed $dupCount duplicate raw records before processing." -ForegroundColor Yellow 
+        }
+        
+        Write-Host "Processing $($uniqueRawResults.Count) unique records..."
         $progressParams.Activity = "Processing Records"
         $processedResults = [System.Collections.Generic.List[Object]]::new()
         $counter = 0
 
-        foreach ($entry in $allResults) {
+        foreach ($entry in $uniqueRawResults) {
             $counter++
-            $progressParams.Status = "Record $counter of $($allResults.Count)"; Write-Progress @progressParams -PercentComplete (50 + (($counter / $allResults.Count) * 50))
+            $progressParams.Status = "Record $counter of $($uniqueRawResults.Count)"
+            Write-Progress @progressParams -PercentComplete (50 + (($counter / $uniqueRawResults.Count) * 50))
             $processedResult = Convert-AuditDataToObject -AuditDataJson $entry.AuditData -UserID $entry.UserIds -CreationTime $entry.CreationDate
             if ($processedResult) { $processedResults.Add($processedResult) }
         }
 
-        Write-Host "Deduplicating $($processedResults.Count) processed records..."
-        $finalUniqueResults = $processedResults | Group-Object RecordID | ForEach-Object { $_.Group[0] }
-        
-        $dupCount = $processedResults.Count - $finalUniqueResults.Count
-        if ($dupCount -gt 0) { Write-Host "Removed $dupCount duplicate records." -ForegroundColor Yellow }
-
         Write-Progress @progressParams -Completed
         
-        if ($finalUniqueResults.Count -gt 0) {
-            Write-Host "Exporting $($finalUniqueResults.Count) unique records to $outputFile..."
-            $finalUniqueResults | Export-Csv -Path $outputFile -NoTypeInformation
+        if ($processedResults.Count -gt 0) {
+            Write-Host "Exporting $($processedResults.Count) unique records to $outputFile..."
+            $processedResults | Export-Csv -Path $outputFile -NoTypeInformation
             Write-Host "Export completed successfully!" -ForegroundColor Green
-            Write-LogFile "END: Exported $($finalUniqueResults.Count) records to $outputFile."
+            Write-LogFile "END: Exported $($processedResults.Count) records to $outputFile."
         } else { Write-Host "No processed records available to export." -ForegroundColor Yellow }
         
         # Assign the clean data to the variable that will be returned
-        $functionResults = $finalUniqueResults
+        $functionResults = $processedResults
     }
     catch {
         Write-ErrorDetails -ErrorRecord $_
