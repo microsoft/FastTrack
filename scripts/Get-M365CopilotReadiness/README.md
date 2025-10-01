@@ -1,8 +1,8 @@
 # Microsoft FastTrack Open Source - Get-M365CopilotReadiness
 
-PowerShell script that quickly collects key configuration information from Exchange Online, SharePoint Online, OneDrive, Microsoft Teams, and **Entra ID** to assess Microsoft 365 Copilot deployment readiness.
+PowerShell script that quickly collects key configuration information from Exchange Online, SharePoint Online, OneDrive, Microsoft Teams, and **Entra ID** to assess Microsoft 365 Copilot deployment readiness. **Optional Microsoft Compliance Configuration Analyzer (MCCA) assessment available.**
 
-**New in latest version**: Enhanced with Entra ID external sharing settings and administrator-friendly reporting with clear descriptions for every configuration item.
+**New in latest version**: Enhanced with Entra ID external sharing settings, administrator-friendly reporting with clear descriptions for every configuration item, and optional MCCA compliance assessment.
 
 ---
 
@@ -36,6 +36,14 @@ PowerShell script that quickly collects key configuration information from Excha
 * Copilot license detection and SKU mapping
 * Base license eligibility verification
 * Comprehensive license inventory
+
+### MCCA (Microsoft Compliance Configuration Analyzer) - **OPTIONAL**
+* **Comprehensive Compliance Assessment**: Deep analysis of Microsoft 365 compliance configurations
+* **Automated Baseline Comparison**: Compares tenant settings against Microsoft recommended baselines
+* **Priority Recommendations**: Identifies critical compliance gaps requiring immediate attention
+* **Multi-Area Coverage**: Analyzes Information Protection, Data Loss Prevention, Retention Policies, and more
+* **Compliance Scoring**: Provides percentage-based compliance score with detailed breakdown
+* **Actionable Remediation**: Specific steps to address compliance gaps and improve security posture
 
 ---
 
@@ -113,6 +121,10 @@ PARAMETERS
 -SkipModuleInstall [Switch]
     If specified, the script will NOT attempt to install missing modules.
 
+-IncludeMCCA [Switch]
+    If specified, runs Microsoft Compliance Configuration Analyzer (MCCA) assessment.
+    Provides detailed compliance analysis and recommendations for Microsoft 365.
+
 -SPOAdminUrl <String>
     Optional explicit SharePoint Admin URL (e.g., https://contoso-admin.sharepoint.com).
     If omitted, the script tries to derive it from your tenant's *.onmicrosoft.com domain.
@@ -135,8 +147,14 @@ cd <your-repo>
 # Basic run, outputs to current directory
 .\Get-M365CopilotReadiness.ps1
 
+# Include MCCA compliance assessment
+.\Get-M365CopilotReadiness.ps1 -IncludeMCCA
+
 # Specify output folder
 .\Get-M365CopilotReadiness.ps1 -OutputPath "C:\Temp\M365Readiness"
+
+# Include MCCA with custom output path
+.\Get-M365CopilotReadiness.ps1 -OutputPath "C:\Temp\M365Readiness" -IncludeMCCA
 
 # Provide SPO Admin URL explicitly (if your tenant derivation is special)
 .\Get-M365CopilotReadiness.ps1 -SPOAdminUrl "https://contoso-admin.sharepoint.com"
@@ -245,7 +263,15 @@ High-level structure:
       "OrganizationSettings": { ... },
       "Notes": ""
     },
-    "Graph": { "Connected": true, "Scopes": [ "Organization.Read.All", ... ] }
+    "Graph": { "Connected": true, "Scopes": [ "Organization.Read.All", ... ] },
+    "MCCA": {
+      "Status": "Success",
+      "GeneratedAt": "2025-08-22 11:09:21",
+      "ReportFile": "C:\\Temp\\M365Readiness\\MCCA-M365CPI66888714-202508221109.html",
+      "OriginalLocation": "C:\\Users\\admin\\AppData\\Local\\Microsoft\\MCCA\\MCCA-M365CPI66888714-202508221109.html",
+      "FileSize": 1024.5,
+      "Summary": "MCCA assessment completed successfully. Report available at: C:\\Temp\\M365Readiness\\MCCA-M365CPI66888714-202508221109.html"
+    }
   }
 }
 ```
@@ -259,10 +285,43 @@ A compact, readable dashboard summarizing:
 * Basic Exchange / SPO / OneDrive signals
 * **Enhanced Entra ID external sharing and guest user configuration with descriptions**
 * **Improved SharePoint sharing settings with contextual explanations**
+* **Optional MCCA compliance assessment results with report file location**
 * **Three-column tables showing Setting, Value, and Description for better admin understanding**
 * **Contextual guidance about how settings impact Copilot usage and security**
 * Links to Microsoft Learn references
 * Error/notes section (if any)
+
+---
+
+## MCCA (Microsoft Compliance Configuration Analyzer) Requirements
+
+### Prerequisites for MCCA Assessment
+
+* **Required Licensing**: Microsoft 365 E5 or Microsoft 365 E3 + Microsoft 365 E5 Compliance add-on
+* **Required Permissions**: Compliance Administrator, Security Administrator, or Global Administrator role
+* **PowerShell Module**: MCCAPreview module (automatically installed if missing)
+* **Alternative**: Download MCCA from [GitHub](https://github.com/OfficeDev/MCCA)
+
+### MCCA Assessment Coverage
+
+When `-IncludeMCCA` is specified, the script analyzes:
+
+* **Data Loss Prevention (DLP)**: Policies for PII, government data, financial information, ePHI
+* **Information Protection**: Sensitivity labels, auto-apply policies, service-side labeling
+* **Information Governance**: Retention labels and policies, auto-apply retention
+* **Records Management**: Record labels, automatic record declaration
+* **Communication Compliance**: Offensive language monitoring, policy violations
+* **Insider Risk Management**: Data theft prevention, data leak detection
+* **Audit**: Office 365 auditing configuration, alert policies
+* **eDiscovery**: Core and Advanced eDiscovery case management
+
+### MCCA Output
+
+* **Detailed HTML Report**: Saved to your specified OutputPath with comprehensive compliance analysis
+* **Interactive Access**: The main HTML report includes a clickable link to directly open the MCCA report
+* **JSON Integration**: MCCA results included in the main script's JSON output
+* **Actionable Recommendations**: Specific steps to improve compliance posture
+* **Compliance Scoring**: Percentage-based assessment with detailed breakdowns
 
 ---
 
@@ -290,6 +349,23 @@ A compact, readable dashboard summarizing:
 
 * **Module import/installation errors:**
   Use `-SkipModuleInstall` if your environment restricts `Install-Module`, and pre-install the required modules with your standard process (e.g., internal repository).
+
+### MCCA-Specific Issues
+
+* **MCCA not available:**
+  If you see "MCCA module or script not found", install the MCCAPreview module: `Install-Module MCCAPreview -Scope CurrentUser` or download MCCA from [GitHub](https://github.com/OfficeDev/MCCA).
+
+* **MCCA permission errors:**
+  MCCA requires Compliance Administrator, Security Administrator, or Global Administrator role. Ensure your account has appropriate permissions before running with `-IncludeMCCA`.
+
+* **MCCA authentication prompts:**
+  MCCA will prompt for admin credentials to connect to Security & Compliance Center. When prompted for "Input the user name", use the same admin account you've been authenticating with for other Microsoft 365 services (e.g., admin@yourdomain.com). This is normal behavior and only occurs once per session.
+
+* **MCCA report not found:**
+  If MCCA runs but the report isn't found, check the MCCA default output location: `$env:LOCALAPPDATA\Microsoft\MCCA\`. The script automatically copies found reports to your specified OutputPath.
+
+* **MCCA licensing warnings:**
+  You can run MCCA without E5 licensing, but it will report on E5 workloads and capabilities. Some recommendations may not be applicable to your current licensing level.
 
 ---
 

@@ -26,6 +26,9 @@ param(
   [Parameter()]
   [switch]$SkipModuleInstall,
 
+  [Parameter()]
+  [switch]$IncludeMCCA,
+
   [string]$SPOAdminUrl
 )
 # Increase function capacity before loading any modules
@@ -109,6 +112,13 @@ $scriptStart = Get-Date
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Ensure-Directory -Path $OutputPath
 
+# Clear any existing Graph connection to ensure clean authentication state
+try { 
+    Disconnect-MgGraph -ErrorAction SilentlyContinue | Out-Null
+} catch { 
+    # Ignore disconnect errors
+}
+
 $errors = @()
 $warnings = @()
 
@@ -121,6 +131,8 @@ $requiredModules = @(
   @{ Name='MicrosoftTeams';                             MinimumVersion='5.6.0' },
   @{ Name='Microsoft.Online.SharePoint.PowerShell';      MinimumVersion='16.0.24908.12000' }
 )
+
+# Note: MCCA module is handled separately in the assessment section
 
 foreach ($m in $requiredModules) {
   try {
@@ -162,36 +174,40 @@ $graphScopes = @(
     'ExternalConnection.Read.All',
     'Policy.Read.All'
 )
-$graphTimeoutSec = 60
-$graphStart = Get-Date
+
 $graphConnected = $false
 $gError = $null
 
 try {
-    while ((New-TimeSpan -Start $graphStart -End (Get-Date)).TotalSeconds -lt $graphTimeoutSec -and -not $graphConnected) {
-        Write-host "[INFO ] Attempting Microsoft Graph connection..." -ForegroundColor Cyan
-        try {
-            Connect-MgGraph -Scopes $graphScopes -ErrorAction Stop | Out-Null
-            Write-Info "Getting organization details..."
-            $script:org = Get-MgOrganization -ErrorAction Stop | Select-Object -First 1
-            Write-Info "Getting license details..."
-            $script:skus = Get-MgSubscribedSku -All -ErrorAction Stop
-            $graphConnected = $true
-            Write-Info "Graph connection successful. Found $($skus.Count) licenses."
-        } catch {
-            $gError = $_.Exception.Message
-            Write-host "[WARN ] Microsoft Graph connection not yet successful: $gError" -ForegroundColor Yellow
-            Start-Sleep -Seconds 5
-        }
+    # Check if already connected to Graph
+    $currentContext = Get-MgContext -ErrorAction SilentlyContinue
+    if ($currentContext -and $currentContext.Account) {
+        Write-Info "Already connected to Microsoft Graph as: $($currentContext.Account)"
+        $graphConnected = $true
+    } else {
+        Write-Info "Attempting Microsoft Graph connection..."
+        Connect-MgGraph -Scopes $graphScopes -ErrorAction Stop | Out-Null
+        $graphConnected = $true
+        Write-Info "Graph connection successful"
+    }
+    
+    if ($graphConnected) {
+        Write-Info "Getting organization details..."
+        $script:org = Get-MgOrganization -ErrorAction Stop | Select-Object -First 1
+        Write-Info "Getting license details..."
+        $script:skus = Get-MgSubscribedSku -All -ErrorAction Stop
+        Write-Info "Graph connection successful. Found $($skus.Count) licenses."
     }
 } catch {
-    $gError = "Graph connection loop failed: $($_.Exception.Message)"
+    $gError = $_.Exception.Message
+    $graphConnected = $false
+    Write-Warning "Microsoft Graph connection failed: $gError"
 }
 
 $ctx.Graph = $graphConnected
 if (-not $ctx.Graph) {
     $errors += "Graph connect: $gError"
-    Write-Warn "Microsoft Graph connection failed after $graphTimeoutSec seconds. Please check authentication and network connectivity."
+    Write-Warning "Microsoft Graph connection failed. Please check authentication and network connectivity."
 }
 
 # Derive SPO Admin URL only if not provided as parameter
@@ -927,6 +943,172 @@ $readiness = [ordered]@{
     )
 }
 
+# MCCA Assessment (if requested)
+$mccaInfo = $null
+if ($IncludeMCCA) {
+    try {
+        Write-Info "Running MCCA (Microsoft Compliance Configuration Analyzer)..."
+        
+        # Check if MCCA is available via PowerShell module or script
+        $mccaAvailable = $false
+        $mccaCommand = $null
+        
+        # Method 1: Check for installed module
+        try {
+            if (Get-Module -ListAvailable -Name MCCAPreview) {
+                Import-Module MCCAPreview -Force
+                $mccaCommand = 'Get-MCCAReport'
+                $mccaAvailable = $true
+                Write-Info "Using MCCA from installed MCCAPreview module"
+            }
+        } catch {
+            Write-Verbose "MCCAPreview module not available: $($_.Exception.Message)"
+        }
+        
+        # Method 2: Check for MCCA script in common locations
+        if (-not $mccaAvailable) {
+            $commonPaths = @(
+                ".\MCCA",
+                ".\Tools\MCCA", 
+                "$env:USERPROFILE\Downloads\MCCA",
+                "$env:USERPROFILE\Documents\MCCA"
+            )
+            
+            foreach ($path in $commonPaths) {
+                $mccaScript = Join-Path $path "RunMCCAReport.ps1"
+                if (Test-Path $mccaScript) {
+                    $mccaCommand = "& '$mccaScript'"
+                    $mccaAvailable = $true
+                    Write-Info "Using MCCA from script at: $path"
+                    break
+                }
+            }
+        }
+        
+        # Method 3: Download MCCA if not available
+        if (-not $mccaAvailable) {
+            Write-Info "MCCA not found locally. Downloading from GitHub..."
+            $mccaTempPath = Join-Path $env:TEMP "MCCA_Downloaded"
+            
+            if (Test-Path $mccaTempPath) {
+                Remove-Item -Path $mccaTempPath -Recurse -Force
+            }
+            
+            # Try to download MCCA repository
+            try {
+                # Use git if available
+                if (Get-Command git -ErrorAction SilentlyContinue) {
+                    git clone https://github.com/OfficeDev/MCCA.git $mccaTempPath
+                    $mccaScript = Join-Path $mccaTempPath "RunMCCAReport.ps1"
+                    if (Test-Path $mccaScript) {
+                        $mccaCommand = "& '$mccaScript'"
+                        $mccaAvailable = $true
+                        Write-Info "Downloaded MCCA via git to: $mccaTempPath"
+                    }
+                } else {
+                    Write-Warning "Git not available and MCCA module not installed. Please install MCCAPreview module or download MCCA from https://github.com/OfficeDev/MCCA"
+                }
+            } catch {
+                Write-Warning "Failed to download MCCA: $($_.Exception.Message)"
+            }
+        }
+        
+        if ($mccaAvailable) {
+            # Run MCCA assessment
+            Write-Info "Executing MCCA assessment..."
+            Write-Info "Note: MCCA may prompt for admin credentials to connect to Security & Compliance Center"
+            Write-Info "If prompted for 'Input the user name', use the same admin account you've been authenticating with (e.g., admin@yourdomain.com)"
+            
+            if ($mccaCommand -eq 'Get-MCCAReport') {
+                # Using module
+                $mccaResult = Get-MCCAReport -ExchangeEnvironmentName O365Default -ErrorAction Stop
+            } else {
+                # Using script - change to MCCA directory and run
+                $originalLocation = Get-Location
+                try {
+                    Write-Info "Running MCCA script. If prompted for 'Input the user name', use the same admin account you've been authenticating with."
+                    Set-Location (Split-Path $mccaScript -Parent)
+                    $mccaResult = & $mccaScript -ErrorAction Stop
+                } finally {
+                    Set-Location $originalLocation
+                }
+            }
+            
+            # Look for HTML output file in MCCA default locations
+            $mccaSearchPaths = @(
+                "$env:LOCALAPPDATA\Microsoft\MCCA",
+                $env:USERPROFILE,
+                "."
+            )
+            
+            $htmlFiles = @()
+            foreach ($searchPath in $mccaSearchPaths) {
+                if (Test-Path $searchPath) {
+                    $htmlFiles += Get-ChildItem -Path $searchPath -Filter "MCCA-*.html" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending
+                    if ($htmlFiles) { break }
+                }
+            }
+            
+            if ($htmlFiles) {
+                $latestHtml = $htmlFiles[0]
+                Write-Info "Found MCCA HTML report: $($latestHtml.Name)"
+                
+                # Copy MCCA report to the specified OutputPath
+                try {
+                    $destinationPath = Join-Path $OutputPath $latestHtml.Name
+                    Copy-Item -Path $latestHtml.FullName -Destination $destinationPath -Force
+                    Write-Info "MCCA report copied to: $destinationPath"
+                    $reportLocation = $destinationPath
+                } catch {
+                    Write-Warning "Failed to copy MCCA report to OutputPath: $($_.Exception.Message)"
+                    $reportLocation = $latestHtml.FullName
+                }
+                
+                # Parse basic info from filename or file
+                $mccaInfo = [ordered]@{
+                    Status = 'Success'
+                    GeneratedAt = $latestHtml.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss")
+                    ReportFile = $reportLocation
+                    OriginalLocation = $latestHtml.FullName
+                    FileSize = [math]::Round($latestHtml.Length / 1KB, 2)
+                    Summary = "MCCA assessment completed successfully. Report available at: $reportLocation"
+                }
+                
+                Write-Info "MCCA assessment completed successfully. Report file: $($latestHtml.Name) ($($mccaInfo.FileSize) KB)"
+            } else {
+                $mccaInfo = [ordered]@{
+                    Status = 'Completed'
+                    GeneratedAt = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+                    Summary = "MCCA assessment completed but output file not found in expected locations: $($mccaSearchPaths -join ', ')"
+                    SearchedPaths = $mccaSearchPaths
+                }
+                Write-Warning "MCCA completed but output file not found in expected locations"
+            }
+            
+            # Clean up downloaded files if temporary
+            if ($mccaTempPath -and (Test-Path $mccaTempPath)) {
+                Remove-Item -Path $mccaTempPath -Recurse -Force -ErrorAction SilentlyContinue
+            }
+            
+        } else {
+            $mccaInfo = [ordered]@{
+                Status = 'NotAvailable'
+                Error = 'MCCA module or script not found. Please install MCCAPreview module or download from https://github.com/OfficeDev/MCCA'
+            }
+            $warnings += "MCCA not available: Please install MCCAPreview module or download from GitHub"
+            Write-Warning "MCCA not available. Install with: Install-Module MCCAPreview -Scope CurrentUser"
+        }
+        
+    } catch {
+        $mccaInfo = [ordered]@{
+            Status = 'Error'
+            Error = $_.Exception.Message
+        }
+        $warnings += "MCCA assessment failed: $($_.Exception.Message)"
+        Write-Warning "MCCA assessment failed: $($_.Exception.Message)"
+    }
+}
+
 # Build final report object
 $report = [ordered]@{
   GeneratedAtUtc     = (Get-Date).ToUniversalTime().ToString("s") + "Z"
@@ -945,6 +1127,7 @@ $report = [ordered]@{
     Teams            = $teamsInfo
     EntraId          = $entraIdInfo
     Graph            = [ordered]@{ Connected=$ctx.Graph; Scopes=$graphScopes }
+    MCCA             = $mccaInfo
   }
   Readiness          = $readiness
   Warnings           = $warnings
@@ -1304,6 +1487,65 @@ $(
     }
 )
 </table>
+
+$(
+    if ($report.Services.MCCA) {
+        # MCCA Section
+        @"
+<h3>Microsoft Compliance Configuration Analyzer (MCCA)</h3>
+<p class="small"><strong>About MCCA:</strong> Microsoft Compliance Configuration Analyzer helps identify compliance configuration gaps that may affect data governance and security controls relevant to Copilot deployment.</p>
+<table>
+<tr><th>Status</th><td>$($report.Services.MCCA.Status)</td></tr>
+$(
+    if ($report.Services.MCCA.Status -eq 'Success') {
+        @"
+<tr><th>Generated At</th><td>$($report.Services.MCCA.GeneratedAt)</td></tr>
+<tr><th>Report File</th><td>$($report.Services.MCCA.ReportFile)</td></tr>
+<tr><th>File Size</th><td>$($report.Services.MCCA.FileSize) KB</td></tr>
+<tr><th>Summary</th><td style="color: green;">$($report.Services.MCCA.Summary)</td></tr>
+"@
+    } elseif ($report.Services.MCCA.Status -eq 'Completed') {
+        @"
+<tr><th>Generated At</th><td>$($report.Services.MCCA.GeneratedAt)</td></tr>
+<tr><th>Summary</th><td style="color: orange;">$($report.Services.MCCA.Summary)</td></tr>
+"@
+    } elseif ($report.Services.MCCA.Status -eq 'NotAvailable') {
+        "<tr><th>Message</th><td style='color: orange;'>$($report.Services.MCCA.Error)</td></tr>"
+    } else {
+        "<tr><th>Error</th><td style='color: red;'>$($report.Services.MCCA.Error)</td></tr>"
+    }
+)
+</table>
+
+$(
+    if ($report.Services.MCCA.Status -eq 'Success' -and $report.Services.MCCA.ReportFile) {
+        $reportFileName = Split-Path $report.Services.MCCA.ReportFile -Leaf
+        @"
+<h4>MCCA Report</h4>
+<p>The detailed MCCA compliance assessment report has been generated successfully:</p>
+<div style="background-color: #e6f4ea; border: 1px solid #137333; border-radius: 4px; padding: 12px; margin: 8px 0;">
+    <p style="margin: 0; font-weight: bold; color: #137333;">&#128202; MCCA Report Generated</p>
+    <p style="margin: 4px 0 0 0; font-size: 14px;"><strong>File:</strong> $reportFileName</p>
+    <p style="margin: 4px 0 0 0; font-size: 14px;"><strong>Location:</strong> $($report.Services.MCCA.ReportFile)</p>
+    <p style="margin: 4px 0 0 0; font-size: 13px; color: #555;">Open this HTML file in your browser to view the detailed compliance assessment.</p>
+</div>
+<p class="small">This comprehensive compliance report includes detailed analysis and recommendations for Data Loss Prevention, Information Protection, Information Governance, Records Management, Communication Compliance, Insider Risk Management, Audit, and eDiscovery settings.</p>
+"@
+    } elseif ($report.Services.MCCA.Status -eq 'NotAvailable') {
+        @"
+<h4>MCCA Installation Instructions</h4>
+<p>To include MCCA assessment in future runs:</p>
+<ol>
+    <li>Install the MCCA module: <code>Install-Module MCCAPreview -Scope CurrentUser</code></li>
+    <li>Or download MCCA from <a href="https://github.com/OfficeDev/MCCA" target="_blank">GitHub</a></li>
+    <li>Re-run this script with the <code>-IncludeMCCA</code> parameter</li>
+</ol>
+"@
+    }
+)
+"@
+    }
+)
 
 <h2>References (Microsoft Learn)</h2>
 <ul>
