@@ -20,12 +20,15 @@ Author:
     Dean Cron
 
 Version:
-    1.0
+    2.0
 
 Requirements:
 
-    1. Admin-created bearer token for Yammer app authentication following the instructions in step 2 here:
-        https://support.microsoft.com/en-au/office/export-yammer-group-members-to-a-csv-file-201a78fd-67b8-42c3-9247-79e79f92b535#step2 
+    1. MSAL.PS PowerShell module. Install it from the PowerShell Gallery with the command:
+        Install-Module MSAL.PS
+
+    2. An Azure AD App Registration with the following API permissions:
+        -Yammer: access_as_user
 
     2. CSV containing group IDs and admins to add to each. See the README for more information on how to create this:
         https://github.com/microsoft/FastTrack/tree/master/scripts/Add-YammerGroupAdmins/README.md
@@ -37,16 +40,23 @@ Requirements:
 
 <############    STUFF YOU NEED TO MODIFY    ############>
 
-#Replace BearerTokenString with the Yammer API bearer token you generated. See "Requirements" near the top of the script.
-$Global:YammerAuthToken = "BearerTokenString"
-
 #Point this to the groupadmins.csv you created as per the requirements.
 $groupadminsCsvPath = 'C:\temp\groupadmins.csv'
 
+# Change these to match your environment. Instructions:
+# https://learn.microsoft.com/en-us/graph/auth-v2-service?view=graph-rest-1.0
+$ClientId = "c66ee66e-dd06-45a8-aa5d-e3dcc4cb4cdb"
+$TenantId = "99f9fd00-6145-4c3e-b3ba-d4c7e59470d8"
+$RedirectUri = "https://localhost"
+$Scopes = @("https://api.yammer.com/.default")
+
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
 
-function Get-YammerAuthHeader {
-    @{ AUTHORIZATION = "Bearer $YammerAuthToken" }
+#Check to see if MSAL.PS is installed, if not exit with instructions
+if(-not (Get-Module -ListAvailable -Name MSAL.PS)){
+    Write-Host "MSAL.PS module not found, please install it from the PowerShell Gallery with the command:" -ForegroundColor Red
+    Write-Host "Install-Module MSAL.PS" -ForegroundColor Yellow
+    Return
 }
 
 #Make sure groupadmins.csv is where it's supposed to be
@@ -58,7 +68,21 @@ catch{
     Return
 }
 
-$authHeader = Get-YammerAuthHeader
+function Get-YammerAuthHeader {
+    $authToken = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -RedirectUri $RedirectUri -Scopes $Scopes -Interactive
+    if (-not $authToken) {
+        Write-Host "Failed to acquire Yammer Auth Token. Please ensure the ClientID, TenantID, and ClientSecret are correct." -ForegroundColor Red
+        Return
+    }
+    else {
+        return $authToken.AccessToken
+    }
+    
+}
+
+$YammerAuthToken = Get-YammerAuthHeader
+
+Write-Host "Starting to add group admins..." -ForegroundColor Cyan
 
 $groupadminsCsv | ForEach-Object {
     do {
@@ -73,14 +97,14 @@ $groupadminsCsv | ForEach-Object {
             
             # Add Admin to Group
             $requestBody = @{ group_id=$gID; email=$mail }
-            $addAdmin = Invoke-WebRequest "https://www.yammer.com/api/v1/group_memberships.json" -Headers $authHeader -Method POST -Body $requestBody
+            $addAdmin = Invoke-WebRequest "https://www.yammer.com/api/v1/group_memberships.json" -Headers @{ AUTHORIZATION = "Bearer $YammerAuthToken" } -Method POST -Body $requestBody
             $adminID = (convertfrom-json $addAdmin.content).user_id
 
             #We have the user ID and have added them as a member, now make them an admin of this group
-            $injectAdmin = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID/make_admin?user_id=$adminID" -Headers $authHeader -UseBasicParsing -Method POST
+            $injectAdmin = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID/make_admin?user_id=$adminID" -Headers @{ AUTHORIZATION = "Bearer $YammerAuthToken" } -UseBasicParsing -Method POST
 
             #Comment the next line if you'd like to speed this script up slightly. Cosmetic only, used to output group name instead of group ID
-            $getGroupName = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID.json" -Headers $authHeader -Method GET
+            $getGroupName = Invoke-WebRequest "https://www.yammer.com/api/v1/groups/$gID.json" -Headers @{ AUTHORIZATION = "Bearer $YammerAuthToken" } -Method GET
 
             if($getGroupName){
                 $gFullName = (convertfrom-json $getGroupName.content).full_name
@@ -100,7 +124,7 @@ $groupadminsCsv | ForEach-Object {
             }
             elseif($_.Exception.Response.StatusCode.Value__ -eq "401"){
                 #Thrown when the YammerAuthToken is invalid for the network in question
-                Write-Host "Exiting script, API reports ACCESS DENIED. Please ensure a valid developer token is set for the YammerAuthToken variable" -ForegroundColor Red
+                Write-Host "Exiting script, API reports 401 ACCESS DENIED." -ForegroundColor Red
                 exit
             }
             elseif($_.Exception.Response.StatusCode.Value__ -eq "404"){
@@ -122,3 +146,5 @@ $groupadminsCsv | ForEach-Object {
         }
     } while ($rateLimitHit)
 }
+
+Write-Host "All done!" -ForegroundColor Cyan
