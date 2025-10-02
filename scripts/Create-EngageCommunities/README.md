@@ -12,14 +12,11 @@ https://techcommunity.microsoft.com/t5/viva-engage-blog/introducing-the-communit
 
 ### Prerequisites
 
-- You must create a new app registration in Microsoft Entra ID. This app should be configured to grant the following two **application** permissions:
+- You must create a new Mirosoft Graph app registration in Microsoft Entra ID. This app should be configured to grant the following two **application** permissions:
   ```
   Community.ReadWrite.All
   User.Read.All
   ```
-  The following video will walk you through the necessary steps to create this new app registration:
-
-  https://youtu.be/fY-KYJZHpdk
 
 - You'll need a JSON file containing at least 50 community name and description pairs. You can find a properly formatted sample [right here](communities.json).
        
