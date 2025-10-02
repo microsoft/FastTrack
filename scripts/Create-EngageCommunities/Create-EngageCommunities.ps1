@@ -217,9 +217,9 @@ function Connect-ToGraph {
 
 # Change these to match your environment. Instructions:
 # https://github.com/microsoft/FastTrack/tree/master/scripts/Create-EngageCommunities/README.md
-$ClientId = "281cc15d-e1ae-4be7-8072-20c150bb9ad2"
-$TenantId = "e778c874-9f25-4044-a1ee-860391129957"
-$ClientSecret = "9dK8Q~ZRDCda3dfKnLdRZucDWg2FiduYTYyceY"
+$ClientId = "clientid"
+$TenantId = "tenantid"
+$ClientSecret = "clientsecret"
 
 # Do not change these.
 $Global:CommunityUrl = "https://graph.microsoft.com/beta/employeeExperience/communities"
@@ -271,3 +271,4 @@ for ($i = 0; $i -lt $NumberofCommunities; $i++) {
 }
 
 #endregion
+
