@@ -45,8 +45,8 @@ $groupadminsCsvPath = 'C:\temp\groupadmins.csv'
 
 # Change these to match your environment. Instructions:
 # https://learn.microsoft.com/en-us/graph/auth-v2-service?view=graph-rest-1.0
-$ClientId = "c66ee66e-dd06-45a8-aa5d-e3dcc4cb4cdb"
-$TenantId = "99f9fd00-6145-4c3e-b3ba-d4c7e59470d8"
+$ClientId = "clientid"
+$TenantId = "tenantId"
 $RedirectUri = "https://localhost"
 
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
@@ -149,3 +149,4 @@ $groupadminsCsv | ForEach-Object {
 }
 
 Write-Host "All done!" -ForegroundColor Cyan
+
