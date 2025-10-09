@@ -646,13 +646,13 @@ function Export-CopilotAuditLogs {
             $CopilotLocation = "OneDrive for Business"
         }
         
-        # Extract agent name
-        $AgentName = ""
+        # Extract agent name from AppIdentity (legacy approach)
+        $AgentNameLegacy = ""
         if ($CopilotApp -eq "Copilot Studio Agent" -and $AuditData.AppIdentity -match '.*[_-](.+?)$') {
-            $AgentName = $Matches[1]
+            $AgentNameLegacy = $Matches[1]
         }
         
-        return @{ App = $CopilotApp; Location = $CopilotLocation; AgentName = $AgentName }
+        return @{ App = $CopilotApp; Location = $CopilotLocation; AgentNameLegacy = $AgentNameLegacy }
     }
     
     # Helper function to convert JSON AuditData to a flattened object
@@ -686,6 +686,32 @@ function Export-CopilotAuditLogs {
             $plugins = $copilotData.AISystemPlugin ?? @()
             $models = $copilotData.ModelTransparencyDetails ?? @()
 
+            # ✅ NEW: Extract declarative agent details from the audit data
+            # These fields are documented in the Copilot audit schema
+            $AgentId = $auditDataObj.AgentId ?? ""
+            $AgentName = $auditDataObj.AgentName ?? ""
+            $AgentVersion = $auditDataObj.AgentVersion ?? ""
+            
+            # Determine agent category based on AgentId format
+            $AgentCategory = ""
+            if ($AgentId) {
+                if ($AgentId -like "CopilotStudio.Declarative.*") {
+                    $AgentCategory = "Declarative Agent"
+                } elseif ($AgentId -like "CopilotStudio.CustomEngine.*") {
+                    $AgentCategory = "Custom Engine Agent"
+                } elseif ($AgentId -like "P_*") {
+                    # Handle Purview-specific format (e.g., P_552e6eda-fc18-7fb9-0ef6-1bf2de3393e4.dr_work)
+                    $AgentCategory = "Declarative Agent (Purview)"
+                } else {
+                    $AgentCategory = "Other Agent"
+                }
+            }
+            
+            # Fallback to legacy agent name extraction if new fields are empty
+            if ([string]::IsNullOrWhiteSpace($AgentName) -and -not [string]::IsNullOrWhiteSpace($appInfo.AgentNameLegacy)) {
+                $AgentName = $appInfo.AgentNameLegacy
+            }
+
             # Create a custom object with flattened properties
             return [PSCustomObject][Ordered]@{
                 TimeStamp                 = (Get-Date $CreationTime -format "yyyy-MM-dd HH:mm:ss")
@@ -693,7 +719,12 @@ function Export-CopilotAuditLogs {
                 User                      = $UserID
                 ClientRegion              = $auditDataObj.ClientRegion
                 App                       = $appInfo.App
-                AgentName                 = $appInfo.AgentName
+                # ✅ NEW: Declarative Agent fields
+                AgentName                 = $AgentName
+                AgentId                   = $AgentId
+                AgentVersion              = $AgentVersion
+                AgentCategory             = $AgentCategory
+                # Original fields continue...
                 Location                  = $appInfo.Location
                 AppHost                   = $copilotData.AppHost
                 AppIdentity               = $auditDataObj.AppIdentity
@@ -717,8 +748,11 @@ function Export-CopilotAuditLogs {
                 CopilotLogVersion         = $auditDataObj.CopilotLogVersion
                 # Flag fields for specific analyses
                 IsCopilotStudio           = $appInfo.App -eq "Copilot Studio Agent"
-                IsCustomAgent             = ($appInfo.App -eq "Copilot Studio Agent") -and ($appInfo.AgentName -ne "")
+                IsCustomAgent             = ($appInfo.App -eq "Copilot Studio Agent") -and ($AgentName -ne "")
                 IsSPOAgent                = $copilotData.AppHost -eq "SharePoint"
+                IsDeclarativeAgent        = ($AgentCategory -like "*Declarative*")
+                # ✅ NEW: Raw audit JSON for further inspection (sanitized for CSV)
+                AuditDataJson             = & $Sanitizer $AuditDataJson
             }
         } catch { Write-ErrorDetails -ErrorRecord $_; return $null }
     }
@@ -776,7 +810,7 @@ function Export-CopilotAuditLogs {
                         StartDate = $currentStart
                         EndDate = $currentEnd
                         ErrorAction = "Stop"
-                        SessionCommand = "ReturnLargeSet"  # ✅ CORRECTED: Always use ReturnLargeSet for the same SessionId
+                        SessionCommand = "ReturnLargeSet"
                     }
                     
                     # Only add RecordType and ResultSize on the FIRST request
@@ -848,6 +882,18 @@ function Export-CopilotAuditLogs {
             $processedResults | Export-Csv -Path $outputFile -NoTypeInformation
             Write-Host "Export completed successfully!" -ForegroundColor Green
             Write-LogFile "END: Exported $($processedResults.Count) records to $outputFile."
+            
+            # Display summary statistics
+            $agentStats = $processedResults | Where-Object { $_.IsDeclarativeAgent } | Measure-Object
+            if ($agentStats.Count -gt 0) {
+                Write-Host "`n📊 Declarative Agent Summary:" -ForegroundColor Cyan
+                Write-Host "   Total declarative agent interactions: $($agentStats.Count)" -ForegroundColor Green
+                $uniqueAgents = $processedResults | Where-Object { $_.IsDeclarativeAgent -and $_.AgentName } | Select-Object -ExpandProperty AgentName -Unique
+                Write-Host "   Unique agents found: $($uniqueAgents.Count)" -ForegroundColor Green
+                if ($uniqueAgents.Count -gt 0 -and $uniqueAgents.Count -le 10) {
+                    Write-Host "   Agent names: $($uniqueAgents -join ', ')" -ForegroundColor Gray
+                }
+            }
         } else { Write-Host "No processed records available to export." -ForegroundColor Yellow }
         
         # Assign the clean data to the variable that will be returned
