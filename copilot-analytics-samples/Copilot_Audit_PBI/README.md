@@ -1,7 +1,7 @@
 # 🔍 Copilot Audit Dashboard
 
 > [!NOTE] 
-> New Version! This version includes agent details including columns to categorize interactions that are related to SPO Agent, Custom Agent, and Copilot Pages (powered by Loop).
+> New Version! This version includes agent details including columns to categorize interactions that are related to SPO Agent, Custom Agent, and Copilot Pages (powered by Loop), including Copilot Studio lite & full agents. 
 
 ## 📊 Overview
 This solution provides a comprehensive dashboard for analyzing and visualizing Microsoft 365 Copilot Purview Audit events across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
