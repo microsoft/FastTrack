@@ -1,7 +1,7 @@
 # 🔍 Copilot Audit Dashboard
 
 > [!NOTE] 
-> New Version! This version includes agent details including columns to categorize interactions that are related to SPO Agent, Custom Agent, and Copilot Pages (powered by Loop), including Copilot Studio lite & full agents. 
+>**October 9th, 2025:**  New Version! This update now includes Copilot Studio lite agent on top of Copilot Studio full agents. Additionally, details like top users breakdown of Copilot usage, Top Users, Top Agents, and more. 
 
 ## 📊 Overview
 This solution provides a comprehensive dashboard for analyzing and visualizing Microsoft 365 Copilot Purview Audit events across your organization. It consists of a PowerShell script for data extraction and a Power BI template for visualization and insights.
@@ -30,8 +30,10 @@ The script will check for the required modules and offer to install them if they
 
 If you prefer to install manually, run:
 
+```powershell
 Install-Module -Name Microsoft.Graph -Force -AllowClobber
 Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
+```
 
 ## 🔧 Usage
 
@@ -41,7 +43,9 @@ Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
 3. Navigate to the script location
 4. Run the script:
 
+   ```powershell
    .\Export-M365CopilotReports.ps1
+   ```
 
 5. The script will display a menu with the following options:
    - Export Entra Users Details
@@ -96,6 +100,37 @@ The Copilot Analytics Dashboard provides visualizations including:
 - Activity timelines and trends
 - Resource access patterns
 - SPO Agent, Custom Agent, and Copilot Pages usage analytics
+
+## 🎯 Key Questions & Insights
+
+This dashboard is designed to answer critical questions about Copilot adoption and usage across your organization:
+
+### 👤 User & Adoption Analytics
+- **Who are your top Copilot users?** - Identify power users and champions who can help drive adoption
+- **Which users have Copilot licenses but aren't using it?** - Compare usage between M365 Copilot licensed vs unlicensed users to optimize license allocation
+- **What is the user activity breakdown?** - Categorize users by engagement level:
+  - **(0-10 Days) Very Active** - Recently engaged users
+  - **(10-30 Days) Active** - Regular users
+  - **(30-60 Days) Moderately Active** - Occasional users
+  - **(60-90 Days) Somewhat Inactive** - At-risk users who may need training
+  - **(90+ Days) Inactive** - Candidates for license reallocation
+  - **Never Used** - Identify users who need onboarding support
+
+### 🏢 Organizational Insights
+- **Which departments are leading in Copilot adoption?** - Understand organizational adoption patterns and identify departments that may need additional support
+- **How active are users within each department?** - Drill down from department-level metrics to individual user activity for targeted enablement
+- **What is the usage breakdown by manager?** - Leverage organizational hierarchy to identify management areas with high or low adoption
+- **How does usage vary by region?** - Track geographic adoption trends for global organizations
+
+### 🤖 Agent & Application Analytics
+- **Which Copilot agents are most popular?** - Identify top-performing SPO Agents, Custom Agents, and Copilot Pages (powered by Loop)
+- **What are the top M365 applications where Copilot is being used?** - Understand which productivity apps (Teams, Outlook, Word, Excel, PowerPoint, etc.) see the highest Copilot engagement
+- **How has Copilot usage evolved over time?** - Track adoption trends and identify patterns in Copilot and agent usage across different time periods
+
+### 📈 Strategic Planning
+- **Where should we focus enablement efforts?** - Use activity and license data to prioritize training and change management initiatives
+- **Are we maximizing our Copilot investment?** - Analyze license utilization and ROI by identifying unused licenses and low-engagement users
+- **Which teams or roles benefit most from Copilot?** - Identify high-value use cases and success patterns to replicate across the organization
 
 ## ⚠️ Troubleshooting
 
