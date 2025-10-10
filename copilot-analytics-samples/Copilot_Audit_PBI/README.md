@@ -93,17 +93,17 @@ You can choose from different time periods:
 4. Click **Close & Apply** and Power BI will load the dashboard with your reports. 
 
 ## 📊 Dashboard Features
-The Copilot Analytics Dashboard provides visualizations including:
+The Copilot Audit Dashboard provides visualizations including:
 - User adoption and activity metrics
 - Department-level usage patterns
 - Application-specific Copilot usage
 - Activity timelines and trends
 - Resource access patterns
-- SPO Agent, Custom Agent, and Copilot Pages usage analytics
+- Agent activity including Copilot Studio full & lite agents, SPO Agents, 1P Agents (Researcher, Analyst, Employee Self Service)
 
 ## 🎯 Key Questions & Insights
 
-This dashboard is designed to answer critical questions about Copilot adoption and usage across your organization:
+This dashboard is designed to help answer questions about Copilot usage across your organization:
 
 ### 👤 User & Adoption Analytics
 - **Who are your top Copilot users?** - Identify power users and champions who can help drive adoption
@@ -150,11 +150,11 @@ The script creates detailed log files in the output directory. Review these for 
 - [Microsoft Purview Audit Logging](https://learn.microsoft.com/en-us/purview/audit-log-search)
 - [Microsoft Graph API Documentation](https://learn.microsoft.com/en-us/graph/api/overview)
 
-## 👨‍💻 Author
+## 👨‍💻 Publish Details
 
-|Author|Original Publish Date
-|----|--------------------------
-|Alejandro Lopez, Microsoft|March 26th, 2025|
+|Publisher|Original Publish Date|Latest Version Publish Date
+|----|--------------------------|---------------------------
+|Alejandro Lopez (alejandro.lopez@microsoft.com)|March 26th, 2025|October 9th, 2025|
 
 ## ✨ Inspiration
 This solution builds on top of the great work from Bojan: [M365 Copilot Audit PowerBI Report](https://github.com/BojanBuhac/M365-Copilot-Audit-Report). The original report provided a foundation that has been expanded with additional features and visualizations.
