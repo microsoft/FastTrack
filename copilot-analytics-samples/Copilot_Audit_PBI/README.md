@@ -31,7 +31,7 @@ First, you'll export the Copilot interaction data. Using the Purview UI is the m
 2.  In the left navigation pane, click **Audit**.
 3.  On the **Search** tab, configure the following:
       * **Date and time range**: Select the time period you want to analyze (e.g., Last 30 days).
-      * **Activities**: In the search box, type and select **`CopilotInteraction`**.
+      * **Record Types**: In the search box, type and select **`CopilotInteraction`**.
       * **Users**: Leave this blank to search for all users.
 4.  Click the **Search** button. The search may take some time to complete.
 5.  Once the results are displayed, click **Export** \> **Download all results**.

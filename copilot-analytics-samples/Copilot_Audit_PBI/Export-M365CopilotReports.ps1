@@ -686,8 +686,7 @@ function Export-CopilotAuditLogs {
             $plugins = $copilotData.AISystemPlugin ?? @()
             $models = $copilotData.ModelTransparencyDetails ?? @()
 
-            # ✅ NEW: Extract declarative agent details from the audit data
-            # These fields are documented in the Copilot audit schema
+            # Extract declarative agent details from the audit data
             $AgentId = $auditDataObj.AgentId ?? ""
             $AgentName = $auditDataObj.AgentName ?? ""
             $AgentVersion = $auditDataObj.AgentVersion ?? ""
@@ -700,7 +699,6 @@ function Export-CopilotAuditLogs {
                 } elseif ($AgentId -like "CopilotStudio.CustomEngine.*") {
                     $AgentCategory = "Custom Engine Agent"
                 } elseif ($AgentId -like "P_*") {
-                    # Handle Purview-specific format (e.g., P_552e6eda-fc18-7fb9-0ef6-1bf2de3393e4.dr_work)
                     $AgentCategory = "Declarative Agent (Purview)"
                 } else {
                     $AgentCategory = "Other Agent"
@@ -719,12 +717,10 @@ function Export-CopilotAuditLogs {
                 User                      = $UserID
                 ClientRegion              = $auditDataObj.ClientRegion
                 App                       = $appInfo.App
-                # ✅ NEW: Declarative Agent fields
                 AgentName                 = $AgentName
                 AgentId                   = $AgentId
                 AgentVersion              = $AgentVersion
                 AgentCategory             = $AgentCategory
-                # Original fields continue...
                 Location                  = $appInfo.Location
                 AppHost                   = $copilotData.AppHost
                 AppIdentity               = $auditDataObj.AppIdentity
@@ -737,21 +733,18 @@ function Export-CopilotAuditLogs {
                 HasResponse               = @($messages.isPrompt).Contains($false)
                 MessageCount              = $messages.Count
                 AccessedResourceCount     = $accessedResources.Count
-                # SANITIZE POTENTIALLY PROBLEMATIC FIELDS
                 AccessedResourceNames     = (($accessedResources.Name | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
-                AccessedResourceLocations = (($accessedResources.id | Sort-Object -Unique) -join ", ") # IDs are usually safe
-                AccessedResourceUrls      = (($accessedResources.SiteUrl | Sort-Object -Unique) -join ", ") # URLs are usually safe
+                AccessedResourceLocations = (($accessedResources.id | Sort-Object -Unique) -join ", ")
+                AccessedResourceUrls      = (($accessedResources.SiteUrl | Sort-Object -Unique) -join ", ")
                 AccessedResourceTypes     = (($accessedResources.Type | Sort-Object -Unique) -join ", ")
                 AccessedResourceActions   = (($accessedResources.action | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
                 Workload                  = $auditDataObj.Workload
                 OrganizationId            = $auditDataObj.OrganizationId
                 CopilotLogVersion         = $auditDataObj.CopilotLogVersion
-                # Flag fields for specific analyses
                 IsCopilotStudio           = $appInfo.App -eq "Copilot Studio Agent"
                 IsCustomAgent             = ($appInfo.App -eq "Copilot Studio Agent") -and ($AgentName -ne "")
                 IsSPOAgent                = $copilotData.AppHost -eq "SharePoint"
                 IsDeclarativeAgent        = ($AgentCategory -like "*Declarative*")
-                # ✅ NEW: Raw audit JSON for further inspection (sanitized for CSV)
                 AuditDataJson             = & $Sanitizer $AuditDataJson
             }
         } catch { Write-ErrorDetails -ErrorRecord $_; return $null }
@@ -801,6 +794,9 @@ function Export-CopilotAuditLogs {
             $hasMoreRecords, $isFirstRequest = $true, $true
             $pageCount, $retryCount, $maxRetries = 0, 0, 3
             
+            # ✅ FIX: Track if we've hit the 50,000 limit
+            $maxResultsPerSession = 50000
+            
             while ($hasMoreRecords -and $retryCount -lt $maxRetries) {
                 $pageCount++
                 Write-Host "  Fetching page $pageCount..." -ForegroundColor Gray
@@ -826,19 +822,28 @@ function Export-CopilotAuditLogs {
                         $intervalResults.AddRange($batchResults)
                         Write-Host "    Retrieved $($batchResults.Count) records. Interval total: $($intervalResults.Count)"
                         
-                        $expectedTotal = $batchResults[0].ResultCount
-                        if ($intervalResults.Count -ge $expectedTotal) {
-                            $hasMoreRecords = $false; Write-Host "    All $expectedTotal expected records for this interval have been retrieved." -ForegroundColor Green
+                        # ✅ FIX: Use proper pagination logic instead of relying on ResultCount
+                        # Stop when we receive fewer results than the batch size OR hit the 50,000 limit
+                        if ($batchResults.Count -lt $batchSize) {
+                            $hasMoreRecords = $false
+                            Write-Host "    Received fewer results than batch size. All available records retrieved." -ForegroundColor Green
+                        } elseif ($intervalResults.Count -ge $maxResultsPerSession) {
+                            $hasMoreRecords = $false
+                            Write-Host "    ⚠️  Hit the 50,000 record limit for this interval!" -ForegroundColor Yellow
+                            Write-Host "    Consider using smaller time intervals to capture all data." -ForegroundColor Yellow
                         }
+                        
                         $retryCount = 0
                     } else { 
-                        $hasMoreRecords = $false; Write-Host "    No more records found for this interval."
+                        $hasMoreRecords = $false
+                        Write-Host "    No more records found for this interval."
                     }
                 } catch {
                     Write-Host "    Error: $($_.Exception.Message)" -ForegroundColor Red
                     $retryCount++
                     if ($retryCount -ge $maxRetries) {
-                        Write-Host "    Max retries reached. Moving on..." -ForegroundColor Yellow; $hasMoreRecords = $false
+                        Write-Host "    Max retries reached. Moving on..." -ForegroundColor Yellow
+                        $hasMoreRecords = $false
                     } else {
                         $delay = if ($_.Exception.Message -like "*throttl*") { 60 } else { 30 }
                         Write-Host "    Waiting $delay seconds before retrying (Attempt $retryCount of $maxRetries)..." -ForegroundColor Yellow
@@ -846,14 +851,20 @@ function Export-CopilotAuditLogs {
                     }
                 }
             }
+            
+            Write-Host "  Interval complete: Retrieved $($intervalResults.Count) total records" -ForegroundColor $(if ($intervalResults.Count -ge $maxResultsPerSession) { 'Yellow' } else { 'Green' })
             $allResults.AddRange($intervalResults)
             $currentStart = $currentEnd.AddSeconds(1).Date
         }
 
-        if ($allResults.Count -eq 0) { Write-Host "No audit log entries found." -ForegroundColor Yellow; return }
+        if ($allResults.Count -eq 0) { 
+            Write-Host "No audit log entries found." -ForegroundColor Yellow
+            Write-LogFile "No audit log entries found."
+            return 
+        }
 
-        # OPTIMIZATION: Deduplicate the raw results first before the expensive conversion process
-        Write-Host "`nDeduplicating $($allResults.Count) raw records..."
+        # Deduplicate the raw results first before the expensive conversion process
+        Write-Host "`nDeduplicating $($allResults.Count) raw records..." -ForegroundColor Cyan
         $uniqueRawResults = $allResults | Group-Object { 
             ($_.AuditData | ConvertFrom-Json).Id 
         } | ForEach-Object { $_.Group[0] }
@@ -862,7 +873,7 @@ function Export-CopilotAuditLogs {
             Write-Host "Removed $dupCount duplicate raw records before processing." -ForegroundColor Yellow 
         }
         
-        Write-Host "Processing $($uniqueRawResults.Count) unique records..."
+        Write-Host "Processing $($uniqueRawResults.Count) unique records..." -ForegroundColor Cyan
         $progressParams.Activity = "Processing Records"
         $processedResults = [System.Collections.Generic.List[Object]]::new()
         $counter = 0
@@ -878,12 +889,15 @@ function Export-CopilotAuditLogs {
         Write-Progress @progressParams -Completed
         
         if ($processedResults.Count -gt 0) {
-            Write-Host "Exporting $($processedResults.Count) unique records to $outputFile..."
+            Write-Host "`nExporting $($processedResults.Count) unique records to $outputFile..." -ForegroundColor Cyan
             $processedResults | Export-Csv -Path $outputFile -NoTypeInformation
-            Write-Host "Export completed successfully!" -ForegroundColor Green
+            Write-Host "✅ Export completed successfully!" -ForegroundColor Green
             Write-LogFile "END: Exported $($processedResults.Count) records to $outputFile."
             
             # Display summary statistics
+            Write-Host "`n📊 Summary Statistics:" -ForegroundColor Cyan
+            Write-Host "   Total interactions: $($processedResults.Count)" -ForegroundColor Green
+            
             $agentStats = $processedResults | Where-Object { $_.IsDeclarativeAgent } | Measure-Object
             if ($agentStats.Count -gt 0) {
                 Write-Host "`n📊 Declarative Agent Summary:" -ForegroundColor Cyan
@@ -894,7 +908,9 @@ function Export-CopilotAuditLogs {
                     Write-Host "   Agent names: $($uniqueAgents -join ', ')" -ForegroundColor Gray
                 }
             }
-        } else { Write-Host "No processed records available to export." -ForegroundColor Yellow }
+        } else { 
+            Write-Host "No processed records available to export." -ForegroundColor Yellow 
+        }
         
         # Assign the clean data to the variable that will be returned
         $functionResults = $processedResults
@@ -903,14 +919,12 @@ function Export-CopilotAuditLogs {
         Write-ErrorDetails -ErrorRecord $_
     }
     finally {
-        # This block now ONLY handles cleanup and does not affect the return value
         if ($isConnected) {
             Write-Host "`nDisconnecting from Exchange Online..." -ForegroundColor Yellow
             Get-PSSession | ForEach-Object { Disconnect-ExchangeOnline -PSSession $_ -Confirm:$false -ErrorAction SilentlyContinue | Out-Null }
         }
     }
 
-    # The explicit return statement ensures ONLY the intended data is output from the function
     return $functionResults
 }
 
