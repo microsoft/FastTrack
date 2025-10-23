@@ -9,7 +9,7 @@
 # - Interactive startup menu
 
 # Author: Alejandro Lopez | alejandro.lopez@microsoft.com
-# Version: v20250326 
+# Version: v20250924 
 
 # Global configuration
 $script:Config = @{
@@ -116,7 +116,7 @@ function Connect-ToExchangeOnline {
     
     try {
         Write-Host "Connecting to Exchange Online..." -ForegroundColor Cyan
-        Connect-ExchangeOnline -ShowBanner:$false -ErrorAction Stop
+        Connect-ExchangeOnline -ShowBanner:$false -ErrorAction Stop | Out-Null
         Write-Host "Successfully connected to Exchange Online." -ForegroundColor Green
         $script:Config.ExchangeSession = $true
         return $true
@@ -134,13 +134,13 @@ function Disconnect-AllServices {
     
     try {
         if ($script:Config.MGGraphSession) {
-            Disconnect-MgGraph -ErrorAction SilentlyContinue
+            Disconnect-MgGraph -ErrorAction SilentlyContinue | out-Null
             $script:Config.MGGraphSession = $null
             Write-Host "Disconnected from Microsoft Graph." -ForegroundColor Cyan
         }
         
         if ($script:Config.ExchangeSession) {
-            Disconnect-ExchangeOnline -Confirm:$false -ErrorAction SilentlyContinue
+            Disconnect-ExchangeOnline -Confirm:$false -ErrorAction SilentlyContinue | out-Null
             $script:Config.ExchangeSession = $null
             Write-Host "Disconnected from Exchange Online." -ForegroundColor Cyan
         }
@@ -563,12 +563,15 @@ function Export-CopilotAuditLogs {
         [string]$OutputFolder,
         
         [Parameter(Mandatory = $false)]
-        [string]$OutputFileName
+        [string]$OutputFileName,
+
+        [Parameter(Mandatory = $false)]
+        [int]$IntervalDays = 1
     )
     
-    # Generate consistent output paths
+    # Generate consistent output paths with a sensible default
     $outputDir = if ([string]::IsNullOrWhiteSpace($OutputFolder)) {
-        $script:Config.DefaultOutputDirectory
+        $PSScriptRoot # Default to the script's current directory
     } else {
         $OutputFolder
     }
@@ -588,342 +591,341 @@ function Export-CopilotAuditLogs {
     
     $logFile = Join-Path -Path $outputDir -ChildPath "CopilotAuditLog_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
     
-    # Function to handle error messages
+    # Helper function to handle error messages
     function Write-ErrorDetails {
-        param (
-            [Parameter(Mandatory = $true)]
-            [System.Management.Automation.ErrorRecord]$ErrorRecord
-        )
+        param ([System.Management.Automation.ErrorRecord]$ErrorRecord)
         $message = "Error occurred: $($ErrorRecord.Exception.Message)"
         Write-Host $message -ForegroundColor Red
         Write-Host "ScriptStackTrace: $($ErrorRecord.ScriptStackTrace)" -ForegroundColor Red
         Write-LogFile $message
     }
     
-    # Function to write to the log file
+    # Helper function to write to the log file
     function Write-LogFile ([String]$Message) {
         $final = [DateTime]::Now.ToUniversalTime().ToString("s") + ":" + $Message
         $final | Out-File $logFile -Append
     }
     
-    # Function to determine Copilot application and location based on context
+    # Helper function to determine Copilot application and location
     function Get-CopilotAppAndLocation {
-        param (
-            [Parameter(Mandatory = $false)]
-            [PSCustomObject]$AuditData
-        )
+        param ([PSCustomObject]$AuditData)
         
         $CopilotApp = 'Copilot for M365'
         $CopilotLocation = $null
         
-        # Determine app based on context type
-        Switch ($AuditData.copiloteventdata.contexts.type) {
-            "xlsx" {
-                $CopilotApp = "Excel"
-            }
-            "docx" {
-                $CopilotApp = "Word"
-            }
-            "pptx" {
-                $CopilotApp = "PowerPoint"
-            }
-            "TeamsMeeting" {
-                $CopilotApp = "Teams"
-                $CopilotLocation = "Teams meeting"
-            }
-            "whiteboard" {
-                $CopilotApp = "Whiteboard"
-            }
-            "loop" {
-                $CopilotApp = "Loop"
-            }
-            "StreamVideo" {
-                $CopilotApp = "Stream"
-                $CopilotLocation = "Stream video player"
-            }
+        # Refine app type based on specific AppHost values first
+        switch ($AuditData.CopilotEventData.AppHost) {
+            "bizchat"       { $CopilotApp = "Copilot for M365 Chat"; break }
+            "Outlook"       { $CopilotApp = "Outlook"; break }
+            "Copilot Studio"{ $CopilotApp = "Copilot Studio Agent"; break }
+            "Word"          { $CopilotApp = "Word"; break }
+            "Excel"         { $CopilotApp = "Excel"; break }
+            "PowerPoint"    { $CopilotApp = "PowerPoint"; break }
+            "Teams"         { $CopilotApp = "Teams"; break }
+            "Bing"          { $CopilotApp = "Bing"; break }
         }
-        
-        # Further refine app type based on other context clues
-        If ($AuditData.copiloteventdata.contexts.id -like "*https://teams.microsoft.com/*") {
-            $CopilotApp = "Teams"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "bizchat") {
-            $CopilotApp = "Copilot for M365 Chat"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "Outlook") {
-            $CopilotApp = "Outlook"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "Copilot Studio") {
-            $CopilotApp = "Copilot Studio Agent"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "Word") {
-            $CopilotApp = "Word"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "Excel") {
-            $CopilotApp = "Excel"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "PowerPoint") {
-            $CopilotApp = "PowerPoint"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "Teams") {
-            $CopilotApp = "Teams"
-        } ElseIf ($AuditData.CopiloteventData.AppHost -eq "Bing") {
-            $CopilotApp = "Bing"
-        } ElseIf ($AuditData.AppIdentity -like "*Copilot.Studio*") {
+
+        # Use context type as a fallback or for additional detail
+        if ($AuditData.copiloteventdata.contexts.type) {
+             switch ($AuditData.copiloteventdata.contexts.type) {
+                "TeamsMeeting" { $CopilotLocation = "Teams meeting" }
+                "StreamVideo"  { $CopilotApp = "Stream"; $CopilotLocation = "Stream video player" }
+             }
+        }
+       
+        if ($AuditData.AppIdentity -like "*Copilot.Studio*") {
             $CopilotApp = "Copilot Studio Agent"
         }
         
-        # Determine location
-        If ($AuditData.copiloteventdata.contexts.id -like "*/sites/*") {
+        # Determine location from context ID
+        if ($AuditData.copiloteventdata.contexts.id -like "*/sites/*") {
             $CopilotLocation = "SharePoint Online"
-        } ElseIf ($AuditData.copiloteventdata.contexts.id -like "*https://teams.microsoft.com/*") {
-            $CopilotLocation = "Teams"
-            If ($AuditData.copiloteventdata.contexts.id -like "*ctx=channel*") {
-                $CopilotLocation = "Teams Channel"
-            } Else {
-                $CopilotLocation = "Teams Chat"
-            }
-        } ElseIf ($AuditData.copiloteventdata.contexts.id -like "*/personal/*") {
+        } elseif ($AuditData.copiloteventdata.contexts.id -like "*https://teams.microsoft.com/*") {
+            $CopilotLocation = if ($AuditData.copiloteventdata.contexts.id -like "*ctx=channel*") { "Teams Channel" } else { "Teams Chat" }
+        } elseif ($AuditData.copiloteventdata.contexts.id -like "*/personal/*") {
             $CopilotLocation = "OneDrive for Business"
         }
         
-        # Extract agent name if it's a Copilot Studio agent
-        $AgentName = ""
-        if ($CopilotApp -eq "Copilot Studio Agent" -and $AuditData.AppIdentity -match '.*_(.+?)$') {
-            $AgentName = $Matches[1]
-        } elseif ($CopilotApp -eq "Copilot Studio Agent" -and $AuditData.AppIdentity -match '.*-(.+?)$') {
-            $AgentName = $Matches[1]
+        # Extract agent name from AppIdentity (legacy approach)
+        $AgentNameLegacy = ""
+        if ($CopilotApp -eq "Copilot Studio Agent" -and $AuditData.AppIdentity -match '.*[_-](.+?)$') {
+            $AgentNameLegacy = $Matches[1]
         }
         
-        return @{
-            App = $CopilotApp
-            Location = $CopilotLocation
-            AgentName = $AgentName
-        }
+        return @{ App = $CopilotApp; Location = $CopilotLocation; AgentNameLegacy = $AgentNameLegacy }
     }
     
-    # Function to convert JSON AuditData to flattened object
+    # Helper function to convert JSON AuditData to a flattened object
     function Convert-AuditDataToObject {
-        param (
-            [Parameter(Mandatory = $true)]
-            [string]$AuditDataJson,
-            
-            [Parameter(Mandatory = $true)]
-            [string]$UserID,
-            
-            [Parameter(Mandatory = $true)]
-            [datetime]$CreationTime
-        )
+        param ([string]$AuditDataJson, [string]$UserID, [datetime]$CreationTime)
         
         try {
+            # Helper scriptblock to sanitize strings for CSV export
+            $Sanitizer = {
+                param($InputString)
+                if ($null -eq $InputString) { return $null }
+                # Replace one or more newline/carriage return characters with a single space
+                $cleaned = $InputString -replace "[\r\n]+", " "
+                # Truncate if the string is excessively long
+                if ($cleaned.Length -gt 500) {
+                    return $cleaned.Substring(0, 497) + "..."
+                }
+                return $cleaned
+            }
+
             $auditDataObj = $AuditDataJson | ConvertFrom-Json
             $copilotData = $auditDataObj.CopilotEventData
-            
-            # Get Copilot app and location info
             $appInfo = Get-CopilotAppAndLocation -AuditData $auditDataObj
             
-            # Extract context
-            $Context = $null
-            If ($auditDataObj.copiloteventdata.contexts.id) {
-                $Context = $auditDataObj.copiloteventdata.contexts.id
-            } ElseIf ($auditDataObj.copiloteventdata.threadid) {
-                $Context = $auditDataObj.copiloteventdata.threadid
+            $Context = $auditDataObj.copiloteventdata.contexts.id ?? $auditDataObj.copiloteventdata.threadid
+            
+            # Defensively access potentially null properties
+            $accessedResources = $copilotData.AccessedResources ?? @()
+            $messages = $copilotData.Messages ?? @()
+            $contexts = $copilotData.Contexts ?? @()
+            $plugins = $copilotData.AISystemPlugin ?? @()
+            $models = $copilotData.ModelTransparencyDetails ?? @()
+
+            # Extract declarative agent details from the audit data
+            $AgentId = $auditDataObj.AgentId ?? ""
+            $AgentName = $auditDataObj.AgentName ?? ""
+            $AgentVersion = $auditDataObj.AgentVersion ?? ""
+            
+            # Determine agent category based on AgentId format
+            $AgentCategory = ""
+            if ($AgentId) {
+                if ($AgentId -like "CopilotStudio.Declarative.*") {
+                    $AgentCategory = "Declarative Agent"
+                } elseif ($AgentId -like "CopilotStudio.CustomEngine.*") {
+                    $AgentCategory = "Custom Engine Agent"
+                } elseif ($AgentId -like "P_*") {
+                    $AgentCategory = "Declarative Agent (Purview)"
+                } else {
+                    $AgentCategory = "Other Agent"
+                }
             }
             
-            # Make sure that we report the resources used by Copilot and the action (like read) used to access the resource
-            [array]$AccessedResourceLocations = $auditDataObj.copiloteventdata.accessedResources.id | Sort-Object -Unique
-            [string]$AccessedResourceLocations = $AccessedResourceLocations -join ", "
-            
-            [array]$AccessedResourceSiteUrls = $auditDataObj.copiloteventdata.accessedResources.SiteUrl | Sort-Object -Unique
-            [string]$AccessedResourceUrls = $AccessedResourceSiteUrls -join ", "
-            
-            [array]$AccessedResourceActions = $auditDataObj.copiloteventdata.accessedResources.action | Sort-Object -Unique
-            [string]$AccessedResourceActions = $AccessedResourceActions -join ", "
-            
-            [array]$AccessedResourceTypes = $auditDataObj.copiloteventdata.accessedResources.Type | Sort-Object -Unique
-            [string]$AccessedResourceTypes = $AccessedResourceTypes -join ", "
-            
+            # Fallback to legacy agent name extraction if new fields are empty
+            if ([string]::IsNullOrWhiteSpace($AgentName) -and -not [string]::IsNullOrWhiteSpace($appInfo.AgentNameLegacy)) {
+                $AgentName = $appInfo.AgentNameLegacy
+            }
+
             # Create a custom object with flattened properties
-            $outputObj = [PSCustomObject][Ordered]@{
-                TimeStamp                     = (Get-Date $CreationTime -format "dd-MMM-yyyy HH:mm:ss")
-                RecordID                      = $auditDataObj.Id
-                User                          = $UserID
-                ClientRegion                  = $auditDataObj.ClientRegion
-                App                           = $appInfo.App
-                AgentName                     = $appInfo.AgentName
-                Location                      = $appInfo.Location
-                AppHost                       = $copilotData.AppHost
-                AppIdentity                   = $auditDataObj.AppIdentity
-                AppContext                    = $Context
-                ThreadId                      = $copilotData.ThreadId
-                AISystemPlugins               = ($copilotData.AISystemPlugin | ForEach-Object { "$($_.Id):$($_.Name)" }) -join '; '
-                ModelDetails                  = ($copilotData.ModelTransparencyDetails | ForEach-Object { $_.ModelName }) -join '; '
-                ContextTypes                  = ($copilotData.Contexts | ForEach-Object { $_.Type }) -join '; '
-                HasPrompt                     = ($copilotData.Messages | Where-Object { $_.isPrompt -eq $true } | Measure-Object).Count -gt 0
-                HasResponse                   = ($copilotData.Messages | Where-Object { $_.isPrompt -eq $false } | Measure-Object).Count -gt 0
-                MessageCount                  = ($copilotData.Messages | Measure-Object).Count
-                AccessedResourceCount         = ($copilotData.AccessedResources | Measure-Object).Count
-                AccessedResourceNames         = $AccessedResourceNames
-                AccessedResourceLocations     = $AccessedResourceLocations
-                AccessedResourceUrls          = $AccessedResourceUrls
-                AccessedResourceTypes         = $AccessedResourceTypes
-                AccessedResourceActions       = $AccessedResourceActions
-                Workload                      = $auditDataObj.Workload
-                OrganizationId                = $auditDataObj.OrganizationId
-                CopilotLogVersion             = $auditDataObj.CopilotLogVersion
-                # Flag fields for specific analyses
-                IsCopilotStudio               = $appInfo.App -eq "Copilot Studio Agent"
-                IsCustomAgent                 = ($appInfo.App -eq "Copilot Studio Agent") -and ($appInfo.AgentName -ne "")
-                IsSPOAgent                    = $copilotData.AppHost -eq "SharePoint" 
+            return [PSCustomObject][Ordered]@{
+                TimeStamp                 = (Get-Date $CreationTime -format "yyyy-MM-dd HH:mm:ss")
+                RecordID                  = $auditDataObj.Id
+                User                      = $UserID
+                ClientRegion              = $auditDataObj.ClientRegion
+                App                       = $appInfo.App
+                AgentName                 = $AgentName
+                AgentId                   = $AgentId
+                AgentVersion              = $AgentVersion
+                AgentCategory             = $AgentCategory
+                Location                  = $appInfo.Location
+                AppHost                   = $copilotData.AppHost
+                AppIdentity               = $auditDataObj.AppIdentity
+                AppContext                = $Context
+                ThreadId                  = $copilotData.ThreadId
+                AISystemPlugins           = ($plugins | ForEach-Object { "$($_.Id):$($_.Name)" }) -join '; '
+                ModelDetails              = ($models.ModelName) -join '; '
+                ContextTypes              = ($contexts.Type) -join '; '
+                HasPrompt                 = @($messages.isPrompt).Contains($true)
+                HasResponse               = @($messages.isPrompt).Contains($false)
+                MessageCount              = $messages.Count
+                AccessedResourceCount     = $accessedResources.Count
+                AccessedResourceNames     = (($accessedResources.Name | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
+                AccessedResourceLocations = (($accessedResources.id | Sort-Object -Unique) -join ", ")
+                AccessedResourceUrls      = (($accessedResources.SiteUrl | Sort-Object -Unique) -join ", ")
+                AccessedResourceTypes     = (($accessedResources.Type | Sort-Object -Unique) -join ", ")
+                AccessedResourceActions   = (($accessedResources.action | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
+                Workload                  = $auditDataObj.Workload
+                OrganizationId            = $auditDataObj.OrganizationId
+                CopilotLogVersion         = $auditDataObj.CopilotLogVersion
+                IsCopilotStudio           = $appInfo.App -eq "Copilot Studio Agent"
+                IsCustomAgent             = ($appInfo.App -eq "Copilot Studio Agent") -and ($AgentName -ne "")
+                IsSPOAgent                = $copilotData.AppHost -eq "SharePoint"
+                IsDeclarativeAgent        = ($AgentCategory -like "*Declarative*")
+                AuditDataJson             = & $Sanitizer $AuditDataJson
             }
-            
-            return $outputObj
-        }
-        catch {
-            Write-ErrorDetails -ErrorRecord $_
-            return $null
-        }
+        } catch { Write-ErrorDetails -ErrorRecord $_; return $null }
     }
     
+    # This variable will hold the connection status for the finally block
+    $isConnected = $false
+    # This variable will hold the final results to be returned
+    $functionResults = $null
+
     try {
         Write-Host "Connecting to Exchange Online..." -ForegroundColor Yellow
-        Connect-ExchangeOnline -ShowBanner:$false -ErrorAction Stop
+        Connect-ExchangeOnline -ShowBanner:$false -ErrorAction Stop | Out-Null
+        $isConnected = $true
         Write-Host "Successfully connected to Exchange Online." -ForegroundColor Green
         Write-LogFile "Successfully connected to Exchange Online."
-    } catch{
-        Write-Host "Failed to connect to Exchange Online: $_" -ForegroundColor Red
-        Write-LogFile "Failed to connect to Exchange Online: $_"
-        return
-    }
-    
-    try {
-        # Define start and end date for audit log search
-        $endDate = Get-Date
-        $startDate = $endDate.AddDays(-$DaysToSearch)
         
-        Write-LogFile "BEGIN: Retrieving audit records between $($startDate) and $($endDate), RecordType=CopilotInteraction."
-        Write-Host "Searching audit logs for Copilot interactions from $startDate to $endDate..."
+        $endDate = (Get-Date).ToUniversalTime().Date.AddDays(1).AddSeconds(-1)
+        $startDate = (Get-Date).ToUniversalTime().Date.AddDays(-$DaysToSearch)
         
-        # Search for CopilotInteraction operations
-        $results = @()
+        $allResults = [System.Collections.Generic.List[Object]]::new()
         $batchSize = 5000
-        $currentOffset = 0
-        $hasMoreRecords = $true
+
+        Write-LogFile "BEGIN: Retrieving audit records from $startDate to $endDate"
+        Write-Host "Searching audit logs for Copilot interactions from $startDate to $endDate" -ForegroundColor Yellow
+        Write-Host "Using $IntervalDays-day intervals for reliability." -ForegroundColor Yellow
         
-        $sessionID = [Guid]::NewGuid().ToString() + "_" + "CopilotAuditExport" + (Get-Date).ToString("yyyyMMddHHmmssfff")
-        
-        # Initialize progress bar parameters
-        $progressParams = @{
-            Activity = "Retrieving Copilot Audit Logs"
-            Status = "Searching for records..."
-            PercentComplete = 0
-        }
-        
-        # Display initial progress bar
+        $progressParams = @{ Activity = "Retrieving Copilot Audit Logs"; Status = "Initializing..." }
         Write-Progress @progressParams
-        
-        while ($hasMoreRecords) {
-            $progressParams.Status = "Retrieving batch starting at offset $currentOffset..."
-            Write-Progress @progressParams
+
+        $totalIntervals = [math]::Ceiling(($endDate - $startDate).TotalDays / $IntervalDays)
+        $intervalCounter = 0
+        $currentStart = $startDate
+
+        while ($currentStart -le $endDate) {
+            $intervalCounter++
+            $currentEnd = ($currentStart.AddDays($IntervalDays)).AddSeconds(-1)
+            if ($currentEnd -gt $endDate) { $currentEnd = $endDate }
             
-            try {
-                # Search specifically for Copilot interactions
-                $batchResults = Search-UnifiedAuditLog -StartDate $startDate -EndDate $endDate -RecordType "CopilotInteraction" -ResultSize $batchSize -SessionCommand ReturnLargeSet -SessionId $sessionID -Operations "CopilotInteraction" -ErrorAction Stop
-                
-                if ($batchResults -and $batchResults.Count -gt 0) {
-                    # Remove any duplicate records and make sure that everything is sorted in date order
-                    $batchResults = $batchResults | Sort-Object Identity -Unique 
-                    $batchResults = $batchResults | Sort-Object {$_.CreationDate -as [datetime]}
-                    
-                    $results += $batchResults
-                    $currentOffset += $batchResults.Count
-                    
-                    if ($batchResults.Count -lt $batchSize) {
-                        $hasMoreRecords = $false
+            $progressParams.Status = "Interval $intervalCounter of $totalIntervals : $($currentStart.ToString('yyyy-MM-dd'))"
+            Write-Progress @progressParams -PercentComplete (($intervalCounter / $totalIntervals) * 50)
+            
+            Write-Host "`nProcessing interval: $currentStart to $currentEnd" -ForegroundColor Cyan
+            
+            $sessionID = [Guid]::NewGuid().ToString() + "_CopilotAudit"
+            $intervalResults = [System.Collections.Generic.List[Object]]::new()
+            $hasMoreRecords, $isFirstRequest = $true, $true
+            $pageCount, $retryCount, $maxRetries = 0, 0, 3
+            
+            # ✅ FIX: Track if we've hit the 50,000 limit
+            $maxResultsPerSession = 50000
+            
+            while ($hasMoreRecords -and $retryCount -lt $maxRetries) {
+                $pageCount++
+                Write-Host "  Fetching page $pageCount..." -ForegroundColor Gray
+                try {
+                    $searchParams = @{ 
+                        SessionId = $sessionID
+                        StartDate = $currentStart
+                        EndDate = $currentEnd
+                        ErrorAction = "Stop"
+                        SessionCommand = "ReturnLargeSet"
                     }
                     
-                    $progressParams.PercentComplete = [Math]::Min(50, ($currentOffset / ($currentOffset + $batchSize)) * 50)
-                    Write-Progress @progressParams
+                    # Only add RecordType and ResultSize on the FIRST request
+                    if ($isFirstRequest) {
+                        $searchParams.RecordType = "CopilotInteraction"
+                        $searchParams.ResultSize = $batchSize
+                    }
                     
-                    Write-LogFile "INFO: Retrieved $($batchResults.Count) records. Total records so far: $($results.Count)"
-                    Write-Host "Retrieved $($batchResults.Count) records. Total records so far: $($results.Count)"
-                }
-                else {
-                    $hasMoreRecords = $false
-                    Write-Host "No more records found."
-                }
-            } catch {
-                Write-Host "Error during Search-UnifiedAuditLog: $_" -ForegroundColor Red
-                Write-LogFile "Error during Search-UnifiedAuditLog: $_"
-                
-                # Check if this is a fatal error or if we should continue
-                if ($_.Exception.Message -like "*not recognized as the name of a cmdlet*") {
-                    Write-Host "The Search-UnifiedAuditLog cmdlet is not available. Cannot continue." -ForegroundColor Red
-                    return
-                } else {
-                    # For other errors, we might be able to continue
-                    Write-Host "Continuing with existing results..." -ForegroundColor Yellow
-                    $hasMoreRecords = $false
+                    $batchResults = @(Search-UnifiedAuditLog @searchParams)
+                    $isFirstRequest = $false
+                    
+                    if ($null -ne $batchResults -and $batchResults.Count -gt 0) {
+                        $intervalResults.AddRange($batchResults)
+                        Write-Host "    Retrieved $($batchResults.Count) records. Interval total: $($intervalResults.Count)"
+                        
+                        # ✅ FIX: Use proper pagination logic instead of relying on ResultCount
+                        # Stop when we receive fewer results than the batch size OR hit the 50,000 limit
+                        if ($batchResults.Count -lt $batchSize) {
+                            $hasMoreRecords = $false
+                            Write-Host "    Received fewer results than batch size. All available records retrieved." -ForegroundColor Green
+                        } elseif ($intervalResults.Count -ge $maxResultsPerSession) {
+                            $hasMoreRecords = $false
+                            Write-Host "    ⚠️  Hit the 50,000 record limit for this interval!" -ForegroundColor Yellow
+                            Write-Host "    Consider using smaller time intervals to capture all data." -ForegroundColor Yellow
+                        }
+                        
+                        $retryCount = 0
+                    } else { 
+                        $hasMoreRecords = $false
+                        Write-Host "    No more records found for this interval."
+                    }
+                } catch {
+                    Write-Host "    Error: $($_.Exception.Message)" -ForegroundColor Red
+                    $retryCount++
+                    if ($retryCount -ge $maxRetries) {
+                        Write-Host "    Max retries reached. Moving on..." -ForegroundColor Yellow
+                        $hasMoreRecords = $false
+                    } else {
+                        $delay = if ($_.Exception.Message -like "*throttl*") { 60 } else { 30 }
+                        Write-Host "    Waiting $delay seconds before retrying (Attempt $retryCount of $maxRetries)..." -ForegroundColor Yellow
+                        Start-Sleep -Seconds $delay
+                    }
                 }
             }
+            
+            Write-Host "  Interval complete: Retrieved $($intervalResults.Count) total records" -ForegroundColor $(if ($intervalResults.Count -ge $maxResultsPerSession) { 'Yellow' } else { 'Green' })
+            $allResults.AddRange($intervalResults)
+            $currentStart = $currentEnd.AddSeconds(1).Date
+        }
+
+        if ($allResults.Count -eq 0) { 
+            Write-Host "No audit log entries found." -ForegroundColor Yellow
+            Write-LogFile "No audit log entries found."
+            return 
+        }
+
+        # Deduplicate the raw results first before the expensive conversion process
+        Write-Host "`nDeduplicating $($allResults.Count) raw records..." -ForegroundColor Cyan
+        $uniqueRawResults = $allResults | Group-Object { 
+            ($_.AuditData | ConvertFrom-Json).Id 
+        } | ForEach-Object { $_.Group[0] }
+        $dupCount = $allResults.Count - $uniqueRawResults.Count
+        if ($dupCount -gt 0) { 
+            Write-Host "Removed $dupCount duplicate raw records before processing." -ForegroundColor Yellow 
         }
         
-        # Check if we got any results
-        if ($results.Count -eq 0) {
-            Write-Host "No Copilot audit log entries found for the specified period." -ForegroundColor Yellow
-            Write-LogFile "No Copilot audit log entries found for the specified period."
-            return
-        }
-        
-        Write-Host "Processing $($results.Count) audit log entries..."
-        
-        # Process the audit data and transform into detailed objects
+        Write-Host "Processing $($uniqueRawResults.Count) unique records..." -ForegroundColor Cyan
+        $progressParams.Activity = "Processing Records"
         $processedResults = [System.Collections.Generic.List[Object]]::new()
         $counter = 0
-        $totalResults = $results.Count
-        
-        foreach ($entry in $results) {
+
+        foreach ($entry in $uniqueRawResults) {
             $counter++
-            
-            # Update progress bar
-            $progressParams.Status = "Processing record $counter of $totalResults"
-            $progressParams.PercentComplete = 50 + (($counter / $totalResults) * 50)
-            
-            if ($counter % 100 -eq 0 || $counter -eq 1 || $counter -eq $totalResults) {
-                Write-Progress @progressParams
-            }
-            
+            $progressParams.Status = "Record $counter of $($uniqueRawResults.Count)"
+            Write-Progress @progressParams -PercentComplete (50 + (($counter / $uniqueRawResults.Count) * 50))
             $processedResult = Convert-AuditDataToObject -AuditDataJson $entry.AuditData -UserID $entry.UserIds -CreationTime $entry.CreationDate
-            if ($processedResult) {
-                $processedResults.Add($processedResult)
-            }
+            if ($processedResult) { $processedResults.Add($processedResult) }
         }
-        
-        # Complete progress bar
-        Write-Progress -Activity "Retrieving Copilot Audit Logs" -Completed
-        
-        # Export the processed results to CSV
-        Write-Host "Exporting $($processedResults.Count) processed records to $outputFile..."
+
+        Write-Progress @progressParams -Completed
         
         if ($processedResults.Count -gt 0) {
+            Write-Host "`nExporting $($processedResults.Count) unique records to $outputFile..." -ForegroundColor Cyan
             $processedResults | Export-Csv -Path $outputFile -NoTypeInformation
-            Write-Host "Export completed successfully. File saved to $outputFile" -ForegroundColor Green
-            Write-LogFile "END: Successfully exported $($processedResults.Count) audit records to $outputFile."
-        } else {
-            Write-Host "No records to export after processing." -ForegroundColor Yellow
-            Write-LogFile "END: No records to export after processing."
+            Write-Host "✅ Export completed successfully!" -ForegroundColor Green
+            Write-LogFile "END: Exported $($processedResults.Count) records to $outputFile."
+            
+            # Display summary statistics
+            Write-Host "`n📊 Summary Statistics:" -ForegroundColor Cyan
+            Write-Host "   Total interactions: $($processedResults.Count)" -ForegroundColor Green
+            
+            $agentStats = $processedResults | Where-Object { $_.IsDeclarativeAgent } | Measure-Object
+            if ($agentStats.Count -gt 0) {
+                Write-Host "`n📊 Declarative Agent Summary:" -ForegroundColor Cyan
+                Write-Host "   Total declarative agent interactions: $($agentStats.Count)" -ForegroundColor Green
+                $uniqueAgents = $processedResults | Where-Object { $_.IsDeclarativeAgent -and $_.AgentName } | Select-Object -ExpandProperty AgentName -Unique
+                Write-Host "   Unique agents found: $($uniqueAgents.Count)" -ForegroundColor Green
+                if ($uniqueAgents.Count -gt 0 -and $uniqueAgents.Count -le 10) {
+                    Write-Host "   Agent names: $($uniqueAgents -join ', ')" -ForegroundColor Gray
+                }
+            }
+        } else { 
+            Write-Host "No processed records available to export." -ForegroundColor Yellow 
         }
         
-        # Return processed results to the calling script
-        return $processedResults
+        # Assign the clean data to the variable that will be returned
+        $functionResults = $processedResults
     }
     catch {
         Write-ErrorDetails -ErrorRecord $_
-        return $null
     }
     finally {
-        # Disconnect from Exchange Online only if we connected in this function
-        if ($ConnectExchange) {
-            try { 
-                Write-Host 
-                Write-Host "Disconnecting from Exchange Online..." -ForegroundColor Yellow
-                Disconnect-ExchangeOnline -Confirm:$false -ErrorAction SilentlyContinue 
-            } catch {}
+        if ($isConnected) {
+            Write-Host "`nDisconnecting from Exchange Online..." -ForegroundColor Yellow
+            Get-PSSession | ForEach-Object { Disconnect-ExchangeOnline -PSSession $_ -Confirm:$false -ErrorAction SilentlyContinue | Out-Null }
         }
     }
+
+    return $functionResults
 }
 
 # Function to export Microsoft 365 Copilot usage reports

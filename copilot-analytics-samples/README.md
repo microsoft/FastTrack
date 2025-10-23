@@ -12,6 +12,7 @@ The following table summarizes the available samples within this directory. Plea
 | :----------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------- |
 | [Copilot-VivaInsights-PBI-Report](./VivaInsights-Copilot-Dashboard-Sample/)    | Provides a Power BI template focused on analyzing Copilot adoption and its potential correlation with collaboration patterns using aggregated Viva Insights data. Visualizes trends 📈 in focus time, meeting hours, network size, etc., for identified Copilot user cohorts compared to peers. | Microsoft Viva Insights (Advanced Insights Analyst Workbench) 🧠 |
 | [Copilot-PurviewAudit-PBI-Report](./Copilot_Audit_PBI/)    | Offers a Power BI template designed to visualize granular Copilot usage 🔍 based on specific audit events captured in Microsoft Purview. Helps track frequency and types of Copilot interactions across supported M365 applications (subject to audit log configuration and availability). | Microsoft Purview Audit Logs 🛡️                                   |
+| [Copilot-Usage-Users-and-Apps](./copilot-usage-users-and-apps/)    | Offers a Power BI template designed to show how a Viva Insights Person Query export can be used to visualize user and application data in PowerBI. Helps visualize where additional training investments may be needed in order to help increase license utilization. | Microsoft Viva Insights (Advanced Insights Analyst Workbench) 🧠                                   |
 
 ## General Prerequisites 📋
 
@@ -47,5 +48,6 @@ This repository is part of the Microsoft FastTrack effort. Please refer to the c
 The code and samples in this repository are licensed under the MIT License. Please refer to the `LICENSE` file in the root of the `microsoft/FastTrack` repository for specific details.
 
 ## Disclaimer ⚠️
+
 
 These samples are provided "as-is" for illustrative and educational purposes. They likely require modification and customization to fit your specific organizational environment, data schema, available audit events, and reporting requirements. Always ensure compliance with your organization's data privacy, security, and governance policies when working with employee data.

@@ -16,16 +16,16 @@ has been advised of the possibility of such damages.
 ###############Disclaimer#####################################################
 
 Purpose: 
-    -The purpose of this script is to generate a report of all users and their managers from Entra. 
-     This can be used to build the Organizational Data file which is later uploaded into M365 or Viva Advanced Insights.
-
-     -Similar to Get-GroupsMembersManagers.ps1, but this script focuses on users rather than groups.
+    -This script pulls users specifically assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan.
+    -Use this to generate an organizational data file for upload in Viva Insights or the M365 Admin Center.
+    -If you want to pull all users, remove the -Filter parameter from the Get-MgUser command.
 
 REQUIREMENTS:
     -Microsoft Graph Module: https://learn.microsoft.com/en-us/powershell/microsoftgraph/installation?view=graph-powershell-1.0
 
 VERSION:
     -03132025: V1
+    -09042025: V2 - Rewrote to filter users by service plan in the initial Get-MgUser call.
 
 AUTHOR(S): 
     -Dean Cron - DeanCron@microsoft.com
@@ -33,7 +33,7 @@ AUTHOR(S):
 
 EXAMPLE
     Get all users from Entra
-    .\Get-AllEntraUsers.ps1
+    .\Get-AllInsightsLicensedUsers.ps1
 #>
 
 # Set the execution policy to allow the script to run
@@ -43,11 +43,11 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # Connect to Microsoft Graph with minimum rights required to read users
 Write-Host "`nConnecting to Microsoft Graph..." -foregroundcolor "Yellow"
 Connect-MgGraph -Scopes "User.Read.All" -NoWelcome
-
-# Load all users from Entra
-# Note: The Manager property is expanded to get the manager's details
-Write-Host "Loading All Users. This might take some time..." -foregroundcolor "Yellow"
-$users = Get-MgUser -All -Property ID,DisplayName,UserPrincipalName,Department -ExpandProperty Manager
+    
+# Load all users assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan from Entra
+# If you want to return more properties, add them to the -Property parameter.
+Write-Host "Loading All Users with the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan. This might take some time..." -foregroundcolor "Yellow"
+$users = Get-MgUser -Filter "assignedPlans/any(c:c/servicePlanId eq b622badb-1b45-48d5-920f-4b27a2c0996c and c/capabilityStatus eq 'Enabled')" -All -ConsistencyLevel eventual -CountVariable count -Property "Id","Mail","Department"
 
 # Prepare an array to hold user details
 $userDetails = @()
@@ -56,27 +56,33 @@ $userDetails = @()
 Write-Host "Building user data for $($users.Count) users." -foregroundcolor "Yellow"
 foreach ($user in $users) {
     $managerUpn = $null
-    try {
-        $managerUpn = $user.Manager.AdditionalProperties['userPrincipalName']
-    } catch {
-        Write-Host "Manager not found for user: $($user.DisplayName)"
+    $managerId = Get-MgUserManager -UserId $user.Id -ErrorAction SilentlyContinue
+
+    if ($managerId) {
+        $manager = Get-MgUser -UserId $managerId.Id -Property UserPrincipalName
+        $managerUpn = $manager.UserPrincipalName
     }
-    
+    else{
+        Write-Host "No manager found for user: $($user.Mail)" -foregroundcolor "DarkYellow"
+    }
+
     # Add user details to the array
     $userDetails += [PSCustomObject]@{
-        DisplayName = $user.DisplayName
-        UserPrincipalName = $user.UserPrincipalName
+        PersonId = $user.Mail
+        ManagerId = $managerUpn
         Department = $user.Department
-        ManagerUPN = $managerUpn
+
+        # Add any other attributes you want to capture here, and update the -Properties value on Get-MgUser (line 50). List of available attributes returned from Mg-User:
+        # https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.powershell.cmdlets.resources.msgraph.models.apiv10.imicrosoftgraphuser?view=az-ps-latest
     }
 }
 
 # Export the user details to a CSV file
 try{
     $userDetails | Export-Csv -Path "EntraUsersExport.csv" -NoTypeInformation
-    Write-Host "Finished processing. See results here: .\EntraUsersExport.csv" -foregroundcolor "Yellow"
+    Write-Host "Finished processing. See results here: .\InsightsLicensedUsers.csv" -foregroundcolor "Yellow"
 }
-catch{Write-Host "Hit error while exporting results: $($_)"}
+catch{Write-Host "Encountered an error while exporting results: $($_)"}
 
 # Disconnect from Microsoft Graph
 Write-Host "`nDisconnecting from Microsoft Graph..." -foregroundcolor "Yellow"
