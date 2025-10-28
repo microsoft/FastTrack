@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Copilot Agents Guide</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+        
+        // Lucide Icon Components
+        const Check = ({ className, ...props }) => <i data-lucide="check" className={className} {...props}></i>;
+        const X = ({ className, ...props }) => <i data-lucide="x" className={className} {...props}></i>;
+        const Code = ({ className, ...props }) => <i data-lucide="code" className={className} {...props}></i>;
+        const Wrench = ({ className, ...props }) => <i data-lucide="wrench" className={className} {...props}></i>;
+        const Globe = ({ className, ...props }) => <i data-lucide="globe" className={className} {...props}></i>;
+        const MessageSquare = ({ className, ...props }) => <i data-lucide="message-square" className={className} {...props}></i>;
+        const Shield = ({ className, ...props }) => <i data-lucide="shield" className={className} {...props}></i>;
+        const Puzzle = ({ className, ...props }) => <i data-lucide="puzzle" className={className} {...props}></i>;
+        const Building = ({ className, ...props }) => <i data-lucide="building" className={className} {...props}></i>;
+        const TrendingUp = ({ className, ...props }) => <i data-lucide="trending-up" className={className} {...props}></i>;
+        const Clock = ({ className, ...props }) => <i data-lucide="clock" className={className} {...props}></i>;
+        const DollarSign = ({ className, ...props }) => <i data-lucide="dollar-sign" className={className} {...props}></i>;
+        const Lightbulb = ({ className, ...props }) => <i data-lucide="lightbulb" className={className} {...props}></i>;
+        const Search = ({ className, ...props }) => <i data-lucide="search" className={className} {...props}></i>;
+        const BarChart3 = ({ className, ...props }) => <i data-lucide="bar-chart-3" className={className} {...props}></i>;
+        const ArrowRight = ({ className, ...props }) => <i data-lucide="arrow-right" className={className} {...props}></i>;
+        const PlayCircle = ({ className, ...props }) => <i data-lucide="play-circle" className={className} {...props}></i>;
+        const BookOpen = ({ className, ...props }) => <i data-lucide="book-open" className={className} {...props}></i>;
+        const Target = ({ className, ...props }) => <i data-lucide="target" className={className} {...props}></i>;
+        const Settings = ({ className, ...props }) => <i data-lucide="settings" className={className} {...props}></i>;
+        const Database = ({ className, ...props }) => <i data-lucide="database" className={className} {...props}></i>;
+        const Bot = ({ className, ...props }) => <i data-lucide="bot" className={className} {...props}></i>;
+        const Brain = ({ className, ...props }) => <i data-lucide="brain" className={className} {...props}></i>;
+        const Sparkles = ({ className, ...props }) => <i data-lucide="sparkles" className={className} {...props}></i>;
+        const Users = ({ className, ...props }) => <i data-lucide="users" className={className} {...props}></i>;
+        const Cloud = ({ className, ...props }) => <i data-lucide="cloud" className={className} {...props}></i>;
+        const Zap = ({ className, ...props }) => <i data-lucide="zap" className={className} {...props}></i>;
+        const ExternalLink = ({ className, ...props }) => <i data-lucide="external-link" className={className} {...props}></i>;
+        const FileSearch = ({ className, ...props }) => <i data-lucide="file-search" className={className} {...props}></i>;
+
+        const CopilotAgentsGuide = () => {
+          const [selectedAgentKey, setSelectedAgentKey] = useState('lite');
+          const [activeTab, setActiveTab] = useState('overview');
+          const [searchTerm, setSearchTerm] = useState('');
+
+          const agentTypes = useMemo(() => ({
+            researcherAnalyst: {
+              name: 'Researcher & Analyst Agents',
+              subtitle: 'Built-in reasoning agents for research & data analysis',
+              icon: FileSearch,
+              color: 'bg-indigo-500',
+              gradient: 'from-indigo-400 to-indigo-600',
+              timeToMarket: 'Immediate',
+              technicalLevel: 'Beginner',
+              shortName: 'Researcher/Analyst',
+              fastTrackSupported: true,
+              description: 'First-party reasoning agents built into Microsoft 365 Copilot. Researcher tackles complex multi-step research with deep reasoning, while Analyst works like a data scientist to turn raw data into insights using Python and chain-of-thought reasoning.',
+              capabilities: [
+                'Researcher: Complex multi-step research tasks',
+                'Researcher: Access to work files, emails, meetings, and web',
+                'Researcher: Third-party connector support (Salesforce, ServiceNow)',
+                'Analyst: Advanced data analysis with Python execution',
+                'Analyst: Chain-of-thought reasoning for insights',
+                'Both: Pre-pinned in M365 Copilot app',
+                'Both: 25 combined queries per month per user',
+                'Structured reports with source citations'
+              ],
+              limitations: [
+                'Requires Microsoft 365 Copilot license',
+                'Limited to 25 combined queries per month',
+                'Cannot be customized or modified',
+                'No support for external deployment channels'
+              ],
+              whenToUse: [
+                'Complex research projects requiring multiple sources',
+                'Data analysis across messy or multiple datasets',
+                'Building go-to-market strategies with internal and external data',
+                'Creating comprehensive reports with citations',
+                'Analyzing customer behavior and trends',
+                'Synthesizing academic or policy literature'
+              ],
+              metrics: {
+                setupTime: 'Immediate',
+                maintenanceEffort: 'None',
+                scalability: 'High',
+                customization: 'None'
+              }
+            },
+            lite: {
+              name: 'Copilot Studio Lite Agents',
+              subtitle: 'Build agents within Microsoft 365 Copilot',
+              icon: MessageSquare,
+              color: 'bg-blue-500',
+              gradient: 'from-blue-400 to-blue-600',
+              timeToMarket: '1-2 days',
+              technicalLevel: 'Beginner',
+              shortName: 'Lite',
+              fastTrackSupported: true,
+              description: 'Create AI agents using natural language directly within Microsoft 365 Copilot. Perfect for quick prototyping and personal productivity enhancements.',
+              capabilities: [
+                'Natural language agent creation',
+                'Web search knowledge grounding',
+                'SharePoint content integration',
+                'Microsoft 365 Copilot connectors',
+                'Basic conversation starters',
+                'Real-time test pane'
+              ],
+              limitations: [
+                'Cannot publish to external channels beyond M365',
+                'No custom code or complex business logic',
+                'Limited to declarative agent functionality only',
+                'Cannot integrate with external APIs directly'
+              ],
+              whenToUse: [
+                'Quick prototyping and proof of concepts',
+                'Personal productivity and knowledge management',
+                'Simple Q&A bots for small teams',
+                'Knowledge retrieval from existing documents'
+              ],
+              metrics: {
+                setupTime: '2-4 hours',
+                maintenanceEffort: 'Low',
+                scalability: 'Medium',
+                customization: 'Low'
+              }
+            },
+            full: {
+              name: 'Copilot Studio Full Custom Agents',
+              subtitle: 'Advanced agents with complex workflows',
+              icon: Wrench,
+              color: 'bg-purple-500',
+              gradient: 'from-purple-400 to-purple-600',
+              timeToMarket: '2-4 weeks',
+              technicalLevel: 'Intermediate',
+              shortName: 'Full Custom',
+              fastTrackSupported: true,
+              description: 'Full-featured Copilot Studio with advanced capabilities, custom connectors, multi-channel publishing, and enterprise-grade features.',
+              capabilities: [
+                'Advanced conversation flows and logic',
+                'Custom connectors and API integrations',
+                'Multi-channel publishing',
+                'Power Platform integration',
+                'Advanced analytics and monitoring',
+                'Custom authentication and security'
+              ],
+              limitations: [
+                'Requires technical expertise and training',
+                'More complex licensing and cost structure',
+                'Higher development time investment required',
+                'Ongoing maintenance and monitoring needed'
+              ],
+              whenToUse: [
+                'Complex business process automation',
+                'Customer service and support at scale',
+                'Multi-step workflows and approval processes',
+                'Integration with external systems and APIs'
+              ],
+              metrics: {
+                setupTime: '2-4 weeks',
+                maintenanceEffort: 'Medium',
+                scalability: 'High',
+                customization: 'High'
+              }
+            },
+            sharepoint: {
+              name: 'SharePoint Agents',
+              subtitle: 'Site-specific intelligent assistants',
+              icon: Building,
+              color: 'bg-orange-500',
+              gradient: 'from-orange-400 to-orange-600',
+              timeToMarket: '1 day',
+              technicalLevel: 'Beginner',
+              shortName: 'SharePoint',
+              fastTrackSupported: true,
+              description: 'AI agents that live within SharePoint sites, helping users navigate content and find information specific to that site.',
+              capabilities: [
+                'Site-specific knowledge grounding',
+                'Automatic content indexing',
+                'SharePoint permissions respect',
+                'Document summarization'
+              ],
+              limitations: [
+                'Limited to single SharePoint site',
+                'No cross-site querying',
+                'Basic conversation capabilities only',
+                'No external integrations'
+              ],
+              whenToUse: [
+                'Site-specific knowledge bases',
+                'Department portals',
+                'Project sites',
+                'Team collaboration spaces'
+              ],
+              metrics: {
+                setupTime: '1-2 hours',
+                maintenanceEffort: 'Very Low',
+                scalability: 'Low',
+                customization: 'Very Low'
+              }
+            },
+            declarative: {
+              name: 'Copilot Studio Full Declarative Agents',
+              subtitle: 'M365 Copilot-orchestrated agents',
+              icon: Sparkles,
+              color: 'bg-green-500',
+              gradient: 'from-green-400 to-green-600',
+              timeToMarket: '1-2 weeks',
+              technicalLevel: 'Intermediate',
+              shortName: 'Full Declarative',
+              fastTrackSupported: true,
+              description: 'Declarative agents built in Copilot Studio Full that extend Microsoft 365 Copilot using its orchestrator. Customize with specialized instructions, enterprise knowledge, and plugin actions for advanced scenarios.',
+              capabilities: [
+                'Uses M365 Copilot orchestrator',
+                'Custom instructions and behavior',
+                'Enterprise knowledge integration',
+                'Plugin actions for external systems',
+                'Available in M365 Copilot, Teams, Word, PowerPoint',
+                'Inherits M365 Copilot security'
+              ],
+              limitations: [
+                'Requires Microsoft 365 Copilot license for users',
+                'Limited to Microsoft 365 ecosystem',
+                'Plugin development requires technical skills',
+                'RAI validation checks required for publishing'
+              ],
+              whenToUse: [
+                'Extend M365 Copilot for specific business scenarios',
+                'Need enterprise knowledge grounding',
+                'Require external API integrations via plugins',
+                'Want familiar M365 Copilot UI for users'
+              ],
+              metrics: {
+                setupTime: '1-2 weeks',
+                maintenanceEffort: 'Medium',
+                scalability: 'High',
+                customization: 'High'
+              }
+            },
+            toolkit: {
+              name: 'Microsoft 365 Agents Toolkit',
+              subtitle: 'Pro-code declarative agent development',
+              icon: Code,
+              color: 'bg-red-500',
+              gradient: 'from-red-400 to-red-600',
+              timeToMarket: '2-4 weeks',
+              technicalLevel: 'Expert',
+              shortName: 'Toolkit',
+              fastTrackSupported: false,
+              description: 'Build declarative agents with full developer control using Visual Studio Code, TypeScript/JavaScript, and direct API integration.',
+              capabilities: [
+                'Full pro-code development workflow',
+                'TypeSpec for API definitions',
+                'Direct integration with Azure services',
+                'Version control and CI/CD support',
+                'Advanced plugin development'
+              ],
+              limitations: [
+                'Requires software development expertise',
+                'More complex setup and maintenance',
+                'Steeper learning curve',
+                'Requires DevOps practices'
+              ],
+              whenToUse: [
+                'Need full control over agent behavior',
+                'Complex enterprise integrations',
+                'Want version control and CI/CD',
+                'Have dedicated development teams'
+              ],
+              metrics: {
+                setupTime: '2-4 weeks',
+                maintenanceEffort: 'High',
+                scalability: 'Very High',
+                customization: 'Very High'
+              }
+            }
+          }), []);
+
+          const filteredAgents = useMemo(() => {
+            if (!searchTerm) return agentTypes;
+            
+            const term = searchTerm.toLowerCase();
+            return Object.fromEntries(
+              Object.entries(agentTypes).filter(([key, agent]) => 
+                agent.name.toLowerCase().includes(term) ||
+                agent.description.toLowerCase().includes(term) ||
+                agent.capabilities.some(cap => cap.toLowerCase().includes(term))
+              )
+            );
+          }, [searchTerm, agentTypes]);
+
+          const safeSelectedAgentKey = filteredAgents[selectedAgentKey] 
+                ? selectedAgentKey
+                : Object.keys(filteredAgents)[0] || 'lite';
+
+          const currentAgent = agentTypes[safeSelectedAgentKey];
+          const IconComponent = currentAgent.icon;
+
+          useEffect(() => {
+            lucide.createIcons();
+          }, [activeTab, currentAgent]);
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+              <div className="max-w-7xl mx-auto p-6">
+                {/* Header */}
+                <div className="text-center mb-8">
+                  <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+                    Microsoft Copilot Agents Guide
+                  </h1>
+                  <p className="text-xl text-gray-600 mb-6">
+                    Choose the right agent platform for your business needs
+                  </p>
+                  
+                  {/* Search Bar */}
+                  <div className="max-w-2xl mx-auto relative">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <input
+                      type="text"
+                      placeholder="Search capabilities, use cases, or agent types..."
+                      className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none text-lg"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Agent Selection Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                  {Object.entries(filteredAgents).map(([key, agent]) => {
+                    const Icon = agent.icon;
+                    return (
+                      <div
+                        key={key}
+                        onClick={() => setSelectedAgentKey(key)}
+                        className={`cursor-pointer rounded-2xl p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl relative ${
+                          safeSelectedAgentKey === key
+                            ? 'bg-gradient-to-br ' + agent.gradient + ' text-white shadow-2xl scale-105'
+                            : 'bg-white text-gray-800 shadow-lg hover:shadow-xl'
+                        }`}
+                      >
+                        {/* Subtle FastTrack Badge */}
+                        {agent.fastTrackSupported && (
+                          <div className={`absolute top-3 right-3 ${safeSelectedAgentKey === key ? 'bg-white/10' : 'bg-gray-100'} rounded-full px-2 py-0.5 flex items-center gap-1`}>
+                            <Zap className={`w-3 h-3 ${safeSelectedAgentKey === key ? 'text-white/80' : 'text-gray-500'}`} />
+                            <span className={`text-xs ${safeSelectedAgentKey === key ? 'text-white/80' : 'text-gray-500'}`}>
+                              FT
+                            </span>
+                          </div>
+                        )}
+                        
+                        <div className="flex items-start justify-between mb-4">
+                          <div className={`p-3 rounded-xl ${safeSelectedAgentKey === key ? 'bg-white/20' : agent.color + ' bg-opacity-10'}`}>
+                            <Icon className={`w-8 h-8 ${safeSelectedAgentKey === key ? 'text-white' : agent.color.replace('bg-', 'text-')}`} />
+                          </div>
+                          {safeSelectedAgentKey === key && (
+                            <div className="bg-white/20 rounded-full p-1">
+                              <Check className="w-5 h-5 text-white" />
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="text-xl font-bold mb-2 pr-12">{agent.name}</h3>
+                        <p className={`text-sm mb-4 ${safeSelectedAgentKey === key ? 'text-white/90' : 'text-gray-600'}`}>
+                          {agent.subtitle}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <span className={`text-xs px-3 py-1 rounded-full ${
+                            safeSelectedAgentKey === key ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-700'
+                          }`}>
+                            {agent.timeToMarket}
+                          </span>
+                          <span className={`text-xs px-3 py-1 rounded-full ${
+                            safeSelectedAgentKey === key ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-700'
+                          }`}>
+                            {agent.technicalLevel}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Tabs */}
+                <div className="bg-white rounded-t-2xl shadow-lg">
+                  <div className="flex border-b border-gray-200 overflow-x-auto">
+                    {['overview', 'capabilities', 'comparison', 'guidance'].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`px-6 py-4 font-semibold capitalize whitespace-nowrap transition-colors ${
+                          activeTab === tab
+                            ? 'text-purple-600 border-b-4 border-purple-600'
+                            : 'text-gray-500 hover:text-gray-700'
+                        }`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tab Content */}
+                {activeTab === 'overview' && (
+                  <div key={`overview-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                      <div className={`lg:col-span-2 bg-gradient-to-br ${currentAgent.gradient} rounded-2xl p-8 text-white relative`}>
+                        {/* Subtle FastTrack Badge in Overview */}
+                        {currentAgent.fastTrackSupported && (
+                          <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1.5">
+                            <Zap className="w-3.5 h-3.5 text-white/70" />
+                            <span className="text-xs text-white/70">FastTrack</span>
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="p-4 bg-white/20 rounded-2xl">
+                            <IconComponent className="w-12 h-12 text-white" />
+                          </div>
+                          <div>
+                            <h2 className="text-3xl font-bold">{currentAgent.name}</h2>
+                            <p className="text-white/90 text-lg">{currentAgent.subtitle}</p>
+                          </div>
+                        </div>
+                        <p className="text-lg text-white/90 leading-relaxed">
+                          {currentAgent.description}
+                        </p>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Clock className="w-5 h-5 text-blue-600" />
+                            <h4 className="font-semibold text-gray-900">Time to Market</h4>
+                          </div>
+                          <p className="text-2xl font-bold text-blue-600">{currentAgent.timeToMarket}</p>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Brain className="w-5 h-5 text-purple-600" />
+                            <h4 className="font-semibold text-gray-900">Technical Level</h4>
+                          </div>
+                          <p className="text-2xl font-bold text-purple-600">{currentAgent.technicalLevel}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Metrics Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                      {Object.entries(currentAgent.metrics).map(([key, value]) => (
+                        <div key={key} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 text-center">
+                          <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}
+                          </p>
+                          <p className="text-lg font-bold text-gray-900">{value}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* When to Use */}
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 mb-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <Lightbulb className="w-6 h-6 text-green-600" />
+                        When to Use This Agent Type
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {currentAgent.whenToUse.map((useCase, index) => (
+                          <div key={index} className="flex items-start gap-3 bg-white rounded-lg p-3">
+                            <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                            <p className="text-gray-700">{useCase}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'capabilities' && (
+                  <div key={`capabilities-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      {/* Capabilities */}
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                          <Check className="w-7 h-7 text-green-600" />
+                          Key Capabilities
+                        </h3>
+                        <div className="space-y-3">
+                          {currentAgent.capabilities.map((capability, index) => (
+                            <div key={index} className="flex items-start gap-3 bg-green-50 rounded-lg p-4 hover:bg-green-100 transition-colors">
+                              <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                              <p className="text-gray-800 font-medium">{capability}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Limitations */}
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                          <X className="w-7 h-7 text-red-600" />
+                          Limitations & Considerations
+                        </h3>
+                        <div className="space-y-3">
+                          {currentAgent.limitations.map((limitation, index) => (
+                            <div key={index} className="flex items-start gap-3 bg-red-50 rounded-lg p-4 hover:bg-red-100 transition-colors">
+                              <X className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                              <p className="text-gray-800 font-medium">{limitation}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'comparison' && (
+                  <div key={`comparison-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                      <BarChart3 className="w-7 h-7 text-purple-600" />
+                      Feature Comparison Matrix
+                    </h3>
+                    
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-gradient-to-r from-purple-100 to-blue-100">
+                            <th className="p-4 text-left font-bold text-gray-900 border-b-2 border-purple-300">Feature</th>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <th key={key} className="p-4 text-center font-bold text-gray-900 border-b-2 border-purple-300">
+                                <div className="flex flex-col items-center gap-1">
+                                  <span>{agent.shortName}</span>
+                                  {agent.fastTrackSupported && (
+                                    <span className="text-xs bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                                      <Zap className="w-2.5 h-2.5" />
+                                      FT
+                                    </span>
+                                  )}
+                                </div>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">FastTrack Support</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">
+                                {agent.fastTrackSupported ? 
+                                  <Check className="w-5 h-5 text-green-500 mx-auto" /> : 
+                                  <X className="w-5 h-5 text-red-500 mx-auto" />
+                                }
+                              </td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">Setup Time</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">{agent.metrics.setupTime}</td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">Technical Level</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">{agent.technicalLevel}</td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">Scalability</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">{agent.metrics.scalability}</td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">Customization</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">{agent.metrics.customization}</td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">Maintenance</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">{agent.metrics.maintenanceEffort}</td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">External APIs</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">
+                                {key === 'lite' || key === 'sharepoint' ? 
+                                  <X className="w-5 h-5 text-red-500 mx-auto" /> : 
+                                  <Check className="w-5 h-5 text-green-500 mx-auto" />
+                                }
+                              </td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">Multi-channel</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center border-b border-gray-200">
+                                {key === 'full' ? 
+                                  <Check className="w-5 h-5 text-green-500 mx-auto" /> : 
+                                  <X className="w-5 h-5 text-red-500 mx-auto" />
+                                }
+                              </td>
+                            ))}
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="p-4 font-semibold text-gray-900">Code Required</td>
+                            {Object.entries(agentTypes).map(([key, agent]) => (
+                              <td key={key} className="p-4 text-center">
+                                {key === 'toolkit' ? 
+                                  <Check className="w-5 h-5 text-green-500 mx-auto" /> : 
+                                  key === 'full' || key === 'declarative' ?
+                                  <span className="text-gray-600">Optional</span> :
+                                  <X className="w-5 h-5 text-red-500 mx-auto" />
+                                }
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'guidance' && (
+                  <div key={`guidance-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8 space-y-8">
+                    {/* Decision Flow */}
+                    <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border-2 border-purple-200">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <Target className="w-7 h-7 text-purple-600" />
+                        Decision Flow: Choosing Your Agent Platform
+                      </h3>
+                      
+                      <div className="space-y-4">
+                        <div className="bg-white rounded-lg p-5 border-l-4 border-orange-500">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold">1</div>
+                            <h4 className="font-bold text-gray-900 text-lg">Start with Your Use Case</h4>
+                          </div>
+                          <div className="ml-11">
+                            <p className="text-gray-700 mb-3">Ask yourself these key questions:</p>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-600"><span className="font-semibold">Research or data analysis?</span> → Researcher & Analyst</p>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-600"><span className="font-semibold">Single site/dept?</span> → SharePoint Agents</p>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-600"><span className="font-semibold">Personal productivity?</span> → Copilot Studio Lite</p>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-600"><span className="font-semibold">M365 Copilot users?</span> → Declarative Agents</p>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-600"><span className="font-semibold">Public-facing?</span> → Copilot Studio Full Custom</p>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-600"><span className="font-semibold">Developer team?</span> → M365 Agents Toolkit</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-white rounded-lg p-5 border-l-4 border-blue-500">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">2</div>
+                            <h4 className="font-bold text-gray-900 text-lg">Evaluate Your Team's Capabilities</h4>
+                          </div>
+                          <div className="ml-11">
+                            <p className="text-gray-700 mb-3">Match the platform to your team's skill level:</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div className="bg-green-50 rounded p-3">
+                                <p className="font-semibold text-green-800 mb-1">No technical skills needed:</p>
+                                <p className="text-sm text-gray-700">Researcher/Analyst, SharePoint, Copilot Studio Lite</p>
+                              </div>
+                              <div className="bg-yellow-50 rounded p-3">
+                                <p className="font-semibold text-yellow-800 mb-1">Some IT knowledge helpful:</p>
+                                <p className="text-sm text-gray-700">Copilot Studio Full, Declarative Agents</p>
+                              </div>
+                              <div className="bg-orange-50 rounded p-3 md:col-span-2">
+                                <p className="font-semibold text-orange-800 mb-1">Development expertise required:</p>
+                                <p className="text-sm text-gray-700">Microsoft 365 Agents Toolkit (TypeScript, APIs, DevOps)</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-white rounded-lg p-5 border-l-4 border-green-500">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold">3</div>
+                            <h4 className="font-bold text-gray-900 text-lg">Consider Budget & Timeline</h4>
+                          </div>
+                          <div className="ml-11">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <p className="font-semibold text-gray-900 mb-2">Fastest to Deploy:</p>
+                                <div className="space-y-2">
+                                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                                    <Clock className="w-4 h-4 text-green-600" />
+                                    <span>Researcher/Analyst: Immediate</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                                    <Clock className="w-4 h-4 text-green-600" />
+                                    <span>SharePoint: 1-2 hours</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                                    <Clock className="w-4 h-4 text-blue-600" />
+                                    <span>Lite: 2-4 hours</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-900 mb-2">Cost Considerations:</p>
+                                <div className="space-y-2">
+                                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                                    <DollarSign className="w-4 h-4 text-green-600" />
+                                    <span>Included in M365 Copilot licenses</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                                    <DollarSign className="w-4 h-4 text-yellow-600" />
+                                    <span>Full Studio: $200/mo + credits</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-white rounded-lg p-5 border-l-4 border-purple-500">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold">4</div>
+                            <h4 className="font-bold text-gray-900 text-lg">Plan for Growth & Support</h4>
+                          </div>
+                          <div className="ml-11">
+                            <p className="text-gray-700 mb-3">Consider your scaling path:</p>
+                            <div className="bg-purple-50 rounded-lg p-4">
+                              <div className="flex items-center gap-3 text-sm">
+                                <span className="font-semibold text-purple-800">Start Simple</span>
+                                <ArrowRight className="w-4 h-4 text-purple-600" />
+                                <span className="font-semibold text-purple-800">Prove Value</span>
+                                <ArrowRight className="w-4 h-4 text-purple-600" />
+                                <span className="font-semibold text-purple-800">Scale Up</span>
+                              </div>
+                              <p className="text-xs text-gray-600 mt-3">Begin with built-in agents, then move to Lite or SharePoint. Scale to Full Studio or Toolkit as needs grow.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Business Decision Maker Perspective */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-purple-100 rounded-lg">
+                          <Users className="w-6 h-6 text-purple-600" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900">Business Decision Maker: Key Considerations</h3>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="border-2 border-gray-200 rounded-lg p-4">
+                          <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <Clock className="w-5 h-5 text-blue-600" />
+                            Time to Market
+                          </h4>
+                          <div className="space-y-2 text-sm">
+                            <div className="p-3 bg-green-50 rounded">
+                              <p className="font-semibold text-green-800">Immediate: Researcher & Analyst</p>
+                            </div>
+                            <div className="p-3 bg-green-50 rounded">
+                              <p className="font-semibold text-green-800">1-2 hours: SharePoint Agents</p>
+                            </div>
+                            <div className="p-3 bg-blue-50 rounded">
+                              <p className="font-semibold text-blue-800">1-2 days: Copilot Studio Lite</p>
+                            </div>
+                            <div className="p-3 bg-yellow-50 rounded">
+                              <p className="font-semibold text-yellow-800">1-4 weeks: Copilot Studio Full</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="border-2 border-gray-200 rounded-lg p-4">
+                          <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <DollarSign className="w-5 h-5 text-green-600" />
+                            Budget & Cost
+                          </h4>
+                          <div className="space-y-2 text-sm">
+                            <div className="p-3 bg-green-50 rounded">
+                              <p className="font-semibold text-green-800 mb-1">Included (No extra cost):</p>
+                              <p className="text-gray-700 text-xs">Researcher/Analyst, SharePoint, Lite, Declarative Agents</p>
+                            </div>
+                            <div className="p-3 bg-yellow-50 rounded">
+                              <p className="font-semibold text-yellow-800 mb-1">Additional licensing:</p>
+                              <p className="text-gray-700 text-xs">Copilot Studio Full Custom ($200/month + credits)</p>
+                            </div>
+                            <div className="p-3 bg-orange-50 rounded">
+                              <p className="font-semibold text-orange-800 mb-1">Variable costs:</p>
+                              <p className="text-gray-700 text-xs">M365 Agents Toolkit (dev + infrastructure)</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Common Scenarios */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <Target className="w-6 h-6 text-green-600" />
+                        Common Scenarios & Recommendations
+                      </h3>
+
+                      <div className="space-y-4">
+                        <div className="border-2 border-indigo-200 rounded-lg p-4 bg-indigo-50">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">SCENARIO</p>
+                              <p className="font-bold text-gray-900">Complex market research project</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">RECOMMENDATION</p>
+                              <p className="font-bold text-indigo-800 text-lg">Researcher & Analyst</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">WHY?</p>
+                              <p className="text-sm text-gray-700">Built-in reasoning, deep research, immediate access</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="border-2 border-orange-200 rounded-lg p-4 bg-orange-50">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">SCENARIO</p>
+                              <p className="font-bold text-gray-900">Quick knowledge base for department</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">RECOMMENDATION</p>
+                              <p className="font-bold text-orange-800 text-lg">SharePoint Agents</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">WHY?</p>
+                              <p className="text-sm text-gray-700">Site-specific, no coding, immediate deployment</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">SCENARIO</p>
+                              <p className="font-bold text-gray-900">Personal productivity assistant</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">RECOMMENDATION</p>
+                              <p className="font-bold text-blue-800 text-lg">Copilot Studio Lite</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">WHY?</p>
+                              <p className="text-sm text-gray-700">Natural language creation, works in M365 Copilot</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="border-2 border-green-200 rounded-lg p-4 bg-green-50">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">SCENARIO</p>
+                              <p className="font-bold text-gray-900">IT helpdesk with ServiceNow</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">RECOMMENDATION</p>
+                              <p className="font-bold text-green-800 text-lg">Declarative Agents</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">WHY?</p>
+                              <p className="text-sm text-gray-700">M365 Copilot orchestrator, Power Platform connectors</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">SCENARIO</p>
+                              <p className="font-bold text-gray-900">Customer support for website</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">RECOMMENDATION</p>
+                              <p className="font-bold text-purple-800 text-lg">Full Custom Agents</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">WHY?</p>
+                              <p className="text-sm text-gray-700">Multi-channel deployment, complex workflows</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Key Takeaways */}
+                    <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl shadow-xl p-6 border-2 border-purple-200">
+                      <h3 className="text-xl font-bold text-gray-900 mb-4">📌 Key Takeaways</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-white rounded-lg p-4">
+                          <h4 className="font-semibold text-indigo-900 mb-2">Start with Built-In Agents</h4>
+                          <p className="text-sm text-gray-700">Researcher & Analyst provide immediate value for common tasks.</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-4">
+                          <h4 className="font-semibold text-blue-900 mb-2">Then Go Low-Code</h4>
+                          <p className="text-sm text-gray-700">SharePoint or Lite agents for quick wins. Scale up as needs grow.</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-4">
+                          <h4 className="font-semibold text-purple-900 mb-2">Match to Team Skills</h4>
+                          <p className="text-sm text-gray-700">Choose based on your team's capability. Don't over-engineer.</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-4">
+                          <h4 className="font-semibold text-green-900 mb-2">Consider M365 Copilot</h4>
+                          <p className="text-sm text-gray-700">Leverage its orchestrator with Declarative Agents for best integration.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Footer - Subtle FastTrack Reference */}
+                <div className="text-center mt-8 py-6 border-t border-gray-200">
+                  <p className="text-gray-500 text-sm mb-2">
+                    Microsoft Copilot Agents Guide • Updated for 2025
+                  </p>
+                  <p className="text-gray-400 text-xs mb-2">
+                    <span className="inline-flex items-center gap-1">
+                      <Zap className="w-3 h-3" />
+                      FT = FastTrack deployment support available
+                    </span>
+                  </p>
+                  <a 
+                    href="https://learn.microsoft.com/en-us/microsoft-365/fasttrack/microsoft-365-copilot#microsoft-365-copilot-extensibility"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    FastTrack Service Description
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<CopilotAgentsGuide />);
+    </script>
+</body>
+</html>
