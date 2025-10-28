@@ -6,6 +6,8 @@ An interactive decision-making dashboard to help you choose the right Microsoft 
 
 The **Copilot Agents Guide** is a comprehensive, interactive web-based tool that compares all Microsoft Copilot agent types in one place. Whether you're a business leader evaluating options, an IT architect planning deployments, or a developer starting a new project, this guide helps you make informed decisions about which agent platform to use.
 
+![alt text](./images/Recording%202025-10-28%20162156.gif)
+
 ## ✨ Features
 
 ### 📊 Interactive Comparison Dashboard
