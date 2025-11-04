@@ -8,34 +8,47 @@ DELETION CAN'T BE UNDONE.
 
 ### Prerequisites
 
-- You must register an app and generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need itfor the next step below. Detailed instructions on how to generate this can be found in step 2 here: [https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058](https://techcommunity.microsoft.com/discussions/viva_engage_administration/generating-an-administrator-token/97058)
+- You must create a new Yammer app registration in Microsoft Entra ID. This app should be configured to grant the following **delegated** permission:
+  ```
+  Yammer
+   -access_as_user
+  ```
 
 - You'll need to get the ID of the group you want to delete messages from. You can find instructions for getting the group ID here: https://learn.microsoft.com/en-us/viva/engage/manage-communities/manage-communities#find-the-id-of-a-community
 
 
 ### Variables
 
-There are 3 variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
+There are a few variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
 
-1. **$Global:YammerAuthToken = "BearerTokenString"**
+1. **$ClientId = "ClientIDString"**
 
-	  Replace BearerTokenString with the token you created via the instructions in the prerequisites. The line should look something like this:
+	  >Replace ClientIDString with the Client ID of the app registration you created in the prerequisites.
 
-    $Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
+2. **$TenantId = "TenantIDString"**
+  
+     >Replace TenantIDString with the Client ID of the app registration you created in the prerequisites.
 
-2. **$GroupId = 1111111111111**
+3. **$ClientSecret = "ClientSecretString"**
+  
+     >Replace ClientSecretString with the client secret value of the app registration you created in the prerequisites.
+     
+4. **$RedirectUri = "https://localhost"**
+   	 >Replace this with the redirect Url you set in your app registration (if not set to https://localhost)
+
+5. **$GroupId = 1111111111111**
   
     The ID of the group you want to delete all messages from. See prerequisites for info on how to get that ID.
 
-3. **$whatIfMode = $true**
+6. **$whatIfMode = $true**
 
-   The script runs in a WhatIf mode by default since the group deletion can’t be undone, so it’ll only loop through the CSV and tell you which groups it *would* have deleted, it doesn’t actually take hard action. When        you’re ready to have it actually delete groups, change the value to $false. DELETION CAN'T BE UNDONE.
+   The script runs in a WhatIf mode by default since the group deletion can’t be undone, so it’ll only loop through the CSV and tell you which groups it *would* have deleted, it doesn’t actually take hard action. When you’re ready to have it actually delete groups, change the value to $false. DELETION CAN'T BE UNDONE.
 
-4. **$hardDelete = $false**
+7. **$hardDelete = $false**
 
    The script soft-deletes messages by default, set this to true if you want them hard-deleted. If you do, be aware that this is UNRECOVERABLE. Any data export run after this will show the message redacted, so unless you back the messages up first, you have no way of going back to any record of them. Think carefully before setting this to $true.
 
-5. **$messageBackupPath**
+8. **$messageBackupPath**
 
    Path to save the backup of messages to if you choose to back them up before deletion.
   
@@ -63,6 +76,7 @@ Once you’ve completed the pre-reqs, you’re ready to go. Run the script like 
 |----|--------------------------|--------------
 |Dean Cron, Microsoft|October 18, 2024| Version 1.0| 
 |Dean Cron, Microsoft|November 20th, 2024| Version 1.925|
+|Dean Cron, Microsoft|November 4th, 2025| Version 2.0|
 
 ## Issues
 

@@ -22,13 +22,15 @@ This script deletes all messages in an existing Viva Engage community based on t
 Author: Dean Cron - dean.cron@microsoft.com
 
 Version:
-    1.925
-
+    1.0 - June 2024 - Initial release
+    2.0 - November 2025 - Updated auth
 Requirements:
 
-    1. Admin-created bearer token for Yammer app authentication:
-        https://learn.microsoft.com/en-us/rest/api/yammer/app-registration
-        https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+    1. MSAL.PS PowerShell module. Install it from the PowerShell Gallery with the command:
+        Install-Module MSAL.PS
+
+    2. An Azure AD App Registration with the following API permissions:
+        -Yammer: access_as_user
 
     2. ID of the group you want to delete all messages from. See the following article for more information on how to get the group ID:
         https://learn.microsoft.com/en-us/viva/engage/manage-communities/manage-communities#find-the-id-of-a-community
@@ -40,8 +42,11 @@ Requirements:
 
 <############    STUFF YOU NEED TO MODIFY    ############>
 
-#Replace BearerTokenString with the Yammer API bearer token you generated. See "Requirements" near the top of the script.
-$YammerAuthToken = "BearerToken"
+# Change these to match your environment. Instructions:
+# https://learn.microsoft.com/en-us/graph/auth-v2-service?view=graph-rest-1.0
+$ClientId = "clientid"
+$TenantId = "tenantId"
+$RedirectUri = "https://localhost"
 
 #The ID of the group you want to delete all messages from.
 $GroupId = 1111111111111
@@ -58,8 +63,24 @@ $messageBackupPath = "YammerGroupMessagesBackup{0}.csv" -f [DateTime]::Now.ToStr
 
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
 
+$Scopes = @("https://api.yammer.com/.default")
+
+#Check to see if MSAL.PS is installed, if not exit with instructions
+if(-not (Get-Module -ListAvailable -Name MSAL.PS)){
+    Write-Host "MSAL.PS module not found, please install it from the PowerShell Gallery with the command:" -ForegroundColor Red
+    Write-Host "Install-Module MSAL.PS" -ForegroundColor Yellow
+    Return
+}
+
 function Get-YammerAuthHeader {
-    @{ AUTHORIZATION = "Bearer $YammerAuthToken" }
+    $authToken = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -RedirectUri $RedirectUri -Scopes $Scopes -Interactive
+    if (-not $authToken) {
+        Write-Host "Failed to acquire Yammer Auth Token. Please ensure the ClientID, TenantID, and ClientSecret are correct." -ForegroundColor Red
+        Return
+    }
+    else {
+        return @{ AUTHORIZATION = "Bearer $($authToken.AccessToken)" }
+    }
 }
 
 $authHeader = Get-YammerAuthHeader

@@ -39,7 +39,7 @@ There are 4 variables you need to change in the script itself. These are located
   
      >Replace ClientSecretString with the client secret value of the app registration you created in the prerequisites.
      
-4. $RedirectUri = "https://localhost"
+4. **$RedirectUri = "https://localhost"**
    	 >Replace this with the redirect Url you set in your app registration (if not set to https://localhost)
 
 4. **$groupadminsCsvPath = 'C:\temp\groupadmins.csv'**

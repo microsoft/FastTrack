@@ -6,19 +6,38 @@ This sample script calls the Yammer Network Data Export API to export messages a
 
 ### Prerequisites
 
-You must register an app and  generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need itfor the next step below. Detailed instructions on how to generate this can be found in step 2 here: https://support.microsoft.com/en-au/office/export-yammer-group-members-to-a-csv-file-201a78fd-67b8-42c3-9247-79e79f92b535#step2 
+- You must create a new Yammer app registration in Microsoft Entra ID. This app should be configured to grant the following **delegated** permission:
+  ```
+  Yammer
+   -access_as_user
+  ```
 
-There are only 2 variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
+There are a few variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
 
-1. $Global:YammerAuthToken = "BearerTokenString"
+1. **$ClientId = "ClientIDString"**
+
+	  >Replace ClientIDString with the Client ID of the app registration you created in the prerequisites.
+
+2. **$TenantId = "TenantIDString"**
+  
+     >Replace TenantIDString with the Client ID of the app registration you created in the prerequisites.
+
+3. **$ClientSecret = "ClientSecretString"**
+  
+     >Replace ClientSecretString with the client secret value of the app registration you created in the prerequisites.
+     
+4. **$RedirectUri = "https://localhost"**
+   	 >Replace this with the redirect Url you set in your app registration (if not set to https://localhost)
+
+5. $Global:YammerAuthToken = "BearerTokenString"
 
 	Replace BearerTokenString with the token you created via the instructions in the prerequisites. The line should look something like this:
 
 	$Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
 
-2. $rootPath = "C:\Temp"
+6. $rootPath = "C:\Temp"
 
-	Replace the path above with the path you’d like the export data saved to. The script will create separate folders under this root path for each start/end date combination you run it with to try and keep the data 				separate.
+	Replace the path above with the path you’d like the export data saved to. The script will create separate folders under this root path for each start/end date combination you run it with to try and keep the data separate.
   
 ### Parameters
 
@@ -64,6 +83,7 @@ If your network is in native mode, no files will be downloaded. Included among t
 |Author|Original Publish Date
 |----|--------------------------
 |Dean Cron, Microsoft|June 15th, 2023|
+|Dean Cron, Microsoft|November 4th, 2025|
 
 ## Issues
 

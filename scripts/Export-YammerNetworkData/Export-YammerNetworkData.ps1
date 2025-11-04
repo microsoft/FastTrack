@@ -21,11 +21,15 @@ Author:
     Dean Cron
 
 Version:
-    1.0
+    1.0 - June 2024 - Initial release
+    2.0 - November 2025 - Updated authentication
 
 Requirements: 
-    -Admin-created bearer token for Yammer app authentication following the instructions in step 2 here:
-        https://support.microsoft.com/en-au/office/export-yammer-group-members-to-a-csv-file-201a78fd-67b8-42c3-9247-79e79f92b535#step2 
+    1. MSAL.PS PowerShell module. Install it from the PowerShell Gallery with the command:
+        Install-Module MSAL.PS
+
+    2. An Azure AD App Registration with the following API permissions:
+        -Yammer: access_as_user
 
 .PARAMETER StartDate YYYY-MM-DD
     REQUIRED. Sets the start date for the target date range of the export
@@ -78,15 +82,33 @@ Param(
 )
 
 <############    STUFF YOU NEED TO MODIFY    ############>
-#Replace BearerTokenString with the Yammer API bearer token you generated. See "Requirements" near the top of the script.
-$Global:YammerAuthToken = "BearerTokenString"
+# Change these to match your environment. Instructions:
+# https://learn.microsoft.com/en-us/graph/auth-v2-service?view=graph-rest-1.0
+$ClientId = "clientid"
+$TenantId = "tenantId"
+$RedirectUri = "https://localhost"
 
 #Change the folder path to an existing target location you want the output and log saved to
 $rootPath = "C:\Temp"
 
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
+
+$Scopes = @("https://api.yammer.com/.default")
+#Check to see if MSAL.PS is installed, if not exit with instructions
+if(-not (Get-Module -ListAvailable -Name MSAL.PS)){
+    Write-Host "MSAL.PS module not found, please install it from the PowerShell Gallery with the command:" -ForegroundColor Red
+    Write-Host "Install-Module MSAL.PS" -ForegroundColor Yellow
+    Return
+}   
 function Get-YammerAuthHeader {
-    @{ AUTHORIZATION = "Bearer $YammerAuthToken" }
+    $authToken = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -RedirectUri $RedirectUri -Scopes $Scopes -Interactive
+    if (-not $authToken) {
+        Write-Host "Failed to acquire Yammer Auth Token. Please ensure the ClientID, TenantID, and ClientSecret are correct." -ForegroundColor Red
+        Return
+    }
+    else {
+        return @{ AUTHORIZATION = "Bearer $($authToken.AccessToken)" }
+    }
 }
 
 Function Write-Log {

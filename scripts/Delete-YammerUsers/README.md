@@ -6,7 +6,11 @@ This sample script will allow a Yammer admin to bulk-delete Yammer users
 
 ### Prerequisites
 
-- You must register an app and generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need itfor the next step below. Detailed instructions on how to generate this can be found in step 2 here: [https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058](https://techcommunity.microsoft.com/discussions/viva_engage_administration/generating-an-administrator-token/97058)
+- You must create a new Yammer app registration in Microsoft Entra ID. This app should be configured to grant the following **delegated** permission:
+  ```
+  Yammer
+   -access_as_user
+  ```
 
 - You'll need to create a CSV file containing one column:
 	- **UserID**. This will contain the IDs of the users you want to delete.
@@ -22,21 +26,36 @@ This sample script will allow a Yammer admin to bulk-delete Yammer users
 
 ### Variables
 
-There are 3 variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
+There are a few variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
 
-1. **$Global:YammerAuthToken = "BearerTokenString"**
+1. **$ClientId = "ClientIDString"**
+
+	  >Replace ClientIDString with the Client ID of the app registration you created in the prerequisites.
+
+2. **$TenantId = "TenantIDString"**
+  
+     >Replace TenantIDString with the Client ID of the app registration you created in the prerequisites.
+
+3. **$ClientSecret = "ClientSecretString"**
+  
+     >Replace ClientSecretString with the client secret value of the app registration you created in the prerequisites.
+     
+4. **$RedirectUri = "https://localhost"**
+   	 >Replace this with the redirect Url you set in your app registration (if not set to https://localhost)
+
+5. **$Global:YammerAuthToken = "BearerTokenString"**
 
 	  Replace BearerTokenString with the token you created via the instructions in the prerequisites. The line should look something like this:
 
     $Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
 
-2. **$usersToBeDeletedCSV = 'C:\temp\userstobedeleted.csv'**
+6. **$usersToBeDeletedCSV = 'C:\temp\userstobedeleted.csv'**
   
     Point this to the userstobedeleted.csv file you created as mentioned above.
 
-3. **$whatIfMode = $true**
+7. **$whatIfMode = $true**
 
-   The script runs in a WhatIf mode by default since user deletion can’t be undone, so it’ll only loop through the CSV and tell you which users it *would* have deleted, it doesn’t actually take hard action. When        you’re ready to have it actually delete users, change the value to $false
+   The script runs in a WhatIf mode by default since user deletion can’t be undone, so it’ll only loop through the CSV and tell you which users it *would* have deleted, it doesn’t actually take hard action. When you’re ready to have it actually delete users, change the value to $false
   
 ### Parameters
 
@@ -57,6 +76,7 @@ Once you’ve completed the pre-reqs, you’re ready to go. Run the script like 
 |Author|Original Publish Date
 |----|--------------------------
 |Dean Cron, Microsoft|November 28th, 2023|
+|Dean Cron, Microsoft|November 4th, 2025|
 
 ## Issues
 

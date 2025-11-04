@@ -20,15 +20,16 @@ Author:
     Dean Cron
 
 Version:
-    1.0
+    1.0 - Initial Release 2023
+    2.0 - Updated to use MSAL.PS for authentication Nov 2025
 
 Requirements:
 
-    1. Admin-created bearer token for Yammer authentication:
-        https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+    1. MSAL.PS PowerShell module. Install it from the PowerShell Gallery with the command:
+        Install-Module MSAL.PS
 
-        NOTE - The account this token is created under MUST have private content mode enabled:
-        https://learn.microsoft.com/en-us/viva/engage/manage-security-and-compliance/monitor-private-content
+    2. An Azure AD App Registration with the following API permissions:
+        -Yammer: access_as_user
 
 .EXAMPLE
     .\Get-YammerGroupInfo.ps1
@@ -36,13 +37,37 @@ Requirements:
 
 <############    STUFF YOU NEED TO MODIFY    ############>
 
-#Replace BearerTokenString with the Yammer API bearer token you generated. See "Requirements" near the top of the script.
-$Global:YammerAuthToken = "BearerTokenString"
+# Change these to match your environment. Instructions:
+# https://learn.microsoft.com/en-us/graph/auth-v2-service?view=graph-rest-1.0
+$ClientId = "clientid"
+$TenantId = "tenantId"
+$RedirectUri = "https://localhost"
 
 $ReportOutput = "C:\Temp\YammerGroupInfo{0}.csv" -f [DateTime]::Now.ToString("yyyy-MM-dd_hh-mm-ss")
 <############    YOU SHOULD NOT HAVE TO MODIFY ANYTHING BELOW THIS LINE    ############>
 
+$Scopes = @("https://api.yammer.com/.default")
+#Check to see if MSAL.PS is installed, if not exit with instructions
+if(-not (Get-Module -ListAvailable -Name MSAL.PS)){                                     
+    Write-Host "MSAL.PS module not found, please install it from the PowerShell Gallery with the command:" -ForegroundColor Red
+    Write-Host "Install-Module MSAL.PS" -ForegroundColor Yellow
+    Return
+}
+
+function Get-YammerAuthHeader {
+    $authToken = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -RedirectUri $RedirectUri -Scopes $Scopes -Interactive
+    if (-not $authToken) {
+        Write-Host "Failed to acquire Yammer Auth Token. Please ensure the ClientID, TenantID, and ClientSecret are correct." -ForegroundColor Red
+        Return
+    }
+    else {
+        return $authToken.AccessToken
+    }
+    
+}
+
 #Create header with access token
+$YammerAuthToken = Get-YammerAuthHeader
 $Global:header = @{"Authorization" = "Bearer $YammerAuthToken"}
 
 #Function to get all groups
