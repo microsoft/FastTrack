@@ -16,7 +16,7 @@ param(
 )
 
 # --- Config ---
-$BaseUrl = 'http://localhost:9010'
+$BaseUrl = 'https://www.yammer.com/'
 $Paths = @{
   'enforce_user_license'    = '/api/v1/networks/enforce_user_license'                # POST
   'fetch_current_license_state' = '/api/v1/networks/fetch_current_enforce_license_state' # GET
