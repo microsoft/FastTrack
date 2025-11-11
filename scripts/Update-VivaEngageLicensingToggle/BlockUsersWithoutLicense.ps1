@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-#requires -Version 7.0
+#requires -Version 5.1
 <#
 Usage:
   ./license.ps1 enforce_user_license "<AAD_ACCESS_TOKEN>"   # POST  /api/v1/networks/enforce_user_license
