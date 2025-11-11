@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-#requires -Version 7.0
+#requires -Version 5.1
 <#
 Usage:
   ./license.ps1 enforce_user_license "<AAD_ACCESS_TOKEN>"   # POST  /api/v1/networks/enforce_user_license
@@ -16,7 +16,7 @@ param(
 )
 
 # --- Config ---
-$BaseUrl = 'http://localhost:9010'
+$BaseUrl = 'https://www.yammer.com/'
 $Paths = @{
   'enforce_user_license'    = '/api/v1/networks/enforce_user_license'                # POST
   'fetch_current_license_state' = '/api/v1/networks/fetch_current_enforce_license_state' # GET
