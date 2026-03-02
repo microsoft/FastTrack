@@ -25,6 +25,13 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .tab-content {
+          animation: fadeIn 0.3s ease-out;
+        }
     </style>
 </head>
 <body>
@@ -80,13 +87,16 @@
               technicalLevel: 'Beginner',
               shortName: 'Researcher/Analyst',
               fastTrackSupported: true,
-              description: 'First-party reasoning agents built into Microsoft 365 Copilot. Researcher tackles complex multi-step research with deep reasoning, while Analyst works like a data scientist to turn raw data into insights using Python and chain-of-thought reasoning.',
+              description: 'First-party reasoning agents built into Microsoft 365 Copilot, now Generally Available since June 2025. Researcher uses the OpenAI o3 model with 37 language support, while Analyst uses o3-mini with 8 language support (expanding) to turn raw data into insights with Python and chain-of-thought reasoning.',
               capabilities: [
                 'Researcher: Complex multi-step research tasks',
                 'Researcher: Access to work files, emails, meetings, and web',
                 'Researcher: Third-party connector support (Salesforce, ServiceNow)',
                 'Analyst: Advanced data analysis with Python execution',
                 'Analyst: Chain-of-thought reasoning for insights',
+                'Researcher: 37 language support',
+                'Analyst: 8 language support (expanding)',
+                'GA since June 2025 - fully production ready',
                 'Both: Pre-pinned in M365 Copilot app',
                 'Both: 25 combined queries per month per user',
                 'Structured reports with source citations'
@@ -94,7 +104,7 @@
               limitations: [
                 'Requires Microsoft 365 Copilot license',
                 'Limited to 25 combined queries per month',
-                'Cannot be customized or modified',
+                'Query usage tracked per-user across both agents',
                 'No support for external deployment channels'
               ],
               whenToUse: [
@@ -122,12 +132,14 @@
               technicalLevel: 'Beginner',
               shortName: 'Lite',
               fastTrackSupported: true,
-              description: 'Create AI agents using natural language directly within Microsoft 365 Copilot. Perfect for quick prototyping and personal productivity enhancements.',
+              description: 'Create AI agents using natural language directly within Microsoft 365 Copilot, now hosted in a dedicated Microsoft 365 Copilot Chat environment with automatic provisioning. Perfect for quick prototyping and personal productivity enhancements.',
               capabilities: [
                 'Natural language agent creation',
                 'Web search knowledge grounding',
                 'SharePoint content integration',
                 'Microsoft 365 Copilot connectors',
+                'Dedicated M365 Copilot Chat hosting environment',
+                'Automatic environment provisioning',
                 'Basic conversation starters',
                 'Real-time test pane'
               ],
@@ -160,18 +172,24 @@
               technicalLevel: 'Intermediate',
               shortName: 'Full Custom',
               fastTrackSupported: true,
-              description: 'Full-featured Copilot Studio with advanced capabilities, custom connectors, multi-channel publishing, and enterprise-grade features.',
+              description: 'Full-featured Copilot Studio with advanced capabilities, including multi-agent orchestration, Agent Store publishing, Computer Use automation for legacy apps, GPT-5 Chat availability, custom connectors, multi-channel publishing, and enterprise-grade features.',
               capabilities: [
                 'Advanced conversation flows and logic',
                 'Custom connectors and API integrations',
                 'Multi-channel publishing',
+                'Multi-agent orchestration (agent collaboration)',
+                'Agent Store marketplace publishing',
+                'Computer Use automation for legacy apps',
+                'Human-in-the-loop (HITL) controls',
+                'Automated agent evaluation and testing',
+                'GPT-5 Chat model support',
                 'Power Platform integration',
                 'Advanced analytics and monitoring',
                 'Custom authentication and security'
               ],
               limitations: [
                 'Requires technical expertise and training',
-                'More complex licensing and cost structure',
+                'Copilot Studio license required ($200/month + message credits)',
                 'Higher development time investment required',
                 'Ongoing maintenance and monitoring needed'
               ],
@@ -179,6 +197,8 @@
                 'Complex business process automation',
                 'Customer service and support at scale',
                 'Multi-step workflows and approval processes',
+                'Multi-agent workflows requiring orchestration',
+                'Legacy app automation without APIs',
                 'Integration with external systems and APIs'
               ],
               metrics: {
@@ -198,30 +218,36 @@
               technicalLevel: 'Beginner',
               shortName: 'SharePoint',
               fastTrackSupported: true,
-              description: 'AI agents that live within SharePoint sites, helping users navigate content and find information specific to that site.',
+              description: 'AI agents that live within SharePoint, now supporting cross-site querying through Copilot, Teams integration, and Knowledge Agent metadata enrichment for smarter discovery.',
               capabilities: [
                 'Site-specific knowledge grounding',
                 'Automatic content indexing',
                 'SharePoint permissions respect',
-                'Document summarization'
+                'Document summarization',
+                'Cross-site querying via Copilot integration',
+                'Teams 1:1 chat with agents',
+                'Microsoft Lists natural language queries',
+                'Knowledge Agent metadata enrichment (2026)'
               ],
               limitations: [
-                'Limited to single SharePoint site',
-                'No cross-site querying',
                 'Basic conversation capabilities only',
-                'No external integrations'
+                'No external integrations',
+                'Knowledge Agent metadata features still rolling out',
+                'Cross-site requires M365 Copilot license'
               ],
               whenToUse: [
                 'Site-specific knowledge bases',
                 'Department portals',
                 'Project sites',
-                'Team collaboration spaces'
+                'Team collaboration spaces',
+                'Cross-site knowledge discovery and search',
+                'Teams-based document Q&A'
               ],
               metrics: {
                 setupTime: '1-2 hours',
                 maintenanceEffort: 'Very Low',
-                scalability: 'Low',
-                customization: 'Very Low'
+                scalability: 'Medium',
+                customization: 'Low'
               }
             },
             declarative: {
@@ -234,12 +260,15 @@
               technicalLevel: 'Intermediate',
               shortName: 'Full Declarative',
               fastTrackSupported: true,
-              description: 'Declarative agents built in Copilot Studio Full that extend Microsoft 365 Copilot using its orchestrator. Customize with specialized instructions, enterprise knowledge, and plugin actions for advanced scenarios.',
+              description: 'Declarative agents built in Copilot Studio Full that extend Microsoft 365 Copilot using its orchestrator, with Agent Store publishing, multi-agent orchestration support, and Agent-to-Agent (A2A) protocol for advanced scenarios.',
               capabilities: [
                 'Uses M365 Copilot orchestrator',
                 'Custom instructions and behavior',
                 'Enterprise knowledge integration',
                 'Plugin actions for external systems',
+                'Agent Store publishing and distribution',
+                'Multi-agent orchestration support',
+                'Agent-to-Agent (A2A) protocol',
                 'Available in M365 Copilot, Teams, Word, PowerPoint',
                 'Inherits M365 Copilot security'
               ],
@@ -253,6 +282,7 @@
                 'Extend M365 Copilot for specific business scenarios',
                 'Need enterprise knowledge grounding',
                 'Require external API integrations via plugins',
+                'Publishing agents via Agent Store for org-wide use',
                 'Want familiar M365 Copilot UI for users'
               ],
               metrics: {
@@ -271,14 +301,19 @@
               timeToMarket: '2-4 weeks',
               technicalLevel: 'Expert',
               shortName: 'Toolkit',
-              fastTrackSupported: false,
-              description: 'Build declarative agents with full developer control using Visual Studio Code, TypeScript/JavaScript, and direct API integration.',
+              fastTrackSupported: true,
+              description: 'Build declarative and custom engine agents with full developer control using VS Code, Visual Studio, CLI, and GitHub Copilot extensions, plus Agent Store publishing, Microsoft Teams SDK, and MCP/A2A protocol support.',
               capabilities: [
                 'Full pro-code development workflow',
-                'TypeSpec for API definitions',
+                'Microsoft Teams SDK (formerly Teams AI Library)',
                 'Direct integration with Azure services',
                 'Version control and CI/CD support',
-                'Advanced plugin development'
+                'Advanced plugin development',
+                'Agent Store multi-channel publishing',
+                'MCP and Agent-to-Agent (A2A) protocol support',
+                'Agents Playground for local testing',
+                'VS Code, Visual Studio, CLI, and GitHub Copilot extensions',
+                'Custom engine agent support (bring your own LLM)'
               ],
               limitations: [
                 'Requires software development expertise',
@@ -290,6 +325,8 @@
                 'Need full control over agent behavior',
                 'Complex enterprise integrations',
                 'Want version control and CI/CD',
+                'Publishing agents to Agent Store at scale',
+                'Building custom engine agents with your own LLM',
                 'Have dedicated development teams'
               ],
               metrics: {
@@ -327,13 +364,17 @@
 
           return (
             <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-              <div className="max-w-7xl mx-auto p-6">
+              <div className="max-w-7xl mx-auto p-4">
                 {/* Header */}
-                <div className="text-center mb-8">
-                  <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+                <div className="text-center mb-4">
+                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
                     Microsoft Copilot Agents Guide
                   </h1>
-                  <p className="text-xl text-gray-600 mb-6">
+                  <div className="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mt-1 animate-pulse">
+                    <Sparkles className="w-3 h-3" />
+                    Updated March 2026
+                  </div>
+                  <p className="text-base text-gray-600 mb-4 mt-1">
                     Choose the right agent platform for your business needs
                   </p>
                   
@@ -343,27 +384,56 @@
                     <input
                       type="text"
                       placeholder="Search capabilities, use cases, or agent types..."
-                      className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none text-lg"
+                      className="w-full pl-12 pr-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none text-base"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
+                  
+                  <div className="flex flex-wrap justify-center gap-2 mt-3">
+                    <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-white/80 text-gray-600 hover:text-purple-600 hover:bg-purple-50 px-3 py-1.5 rounded-full border border-gray-200 transition-colors">
+                      <Code className="w-3 h-3" />
+                      Agent Samples
+                    </a>
+                    <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-white/80 text-gray-600 hover:text-purple-600 hover:bg-purple-50 px-3 py-1.5 rounded-full border border-gray-200 transition-colors">
+                      <Target className="w-3 h-3" />
+                      Strategy Resources
+                    </a>
+                    <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-white/80 text-gray-600 hover:text-purple-600 hover:bg-purple-50 px-3 py-1.5 rounded-full border border-gray-200 transition-colors">
+                      <BarChart3 className="w-3 h-3" />
+                      Analytics Samples
+                    </a>
+                    <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-prompt-samples" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-white/80 text-gray-600 hover:text-purple-600 hover:bg-purple-50 px-3 py-1.5 rounded-full border border-gray-200 transition-colors">
+                      <MessageSquare className="w-3 h-3" />
+                      Prompt Samples
+                    </a>
+                  </div>
                 </div>
 
                 {/* Agent Selection Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                   {Object.entries(filteredAgents).map(([key, agent]) => {
                     const Icon = agent.icon;
                     return (
                       <div
                         key={key}
                         onClick={() => setSelectedAgentKey(key)}
-                        className={`cursor-pointer rounded-2xl p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl relative ${
+                        className={`cursor-pointer rounded-2xl p-4 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl relative ${
                           safeSelectedAgentKey === key
-                            ? 'bg-gradient-to-br ' + agent.gradient + ' text-white shadow-2xl scale-105'
-                            : 'bg-white text-gray-800 shadow-lg hover:shadow-xl'
+                            ? 'bg-gradient-to-br ' + agent.gradient + ' text-white shadow-2xl scale-105 border-2 border-white/30'
+                            : 'bg-white text-gray-800 shadow-lg hover:shadow-xl border-2 border-transparent hover:border-purple-200'
                         }`}
                       >
+                        {/* New Features Badge */}
+                        {(key === 'sharepoint' || key === 'toolkit') && (
+                          <div className={`absolute top-3 ${agent.fastTrackSupported ? 'right-14' : 'right-3'} ${safeSelectedAgentKey === key ? 'bg-green-400/20' : 'bg-green-100'} rounded-full px-2 py-0.5 flex items-center gap-1`}>
+                            <Sparkles className={`w-3 h-3 ${safeSelectedAgentKey === key ? 'text-green-200' : 'text-green-600'}`} />
+                            <span className={`text-xs ${safeSelectedAgentKey === key ? 'text-green-200' : 'text-green-600'}`}>
+                              New
+                            </span>
+                          </div>
+                        )}
+
                         {/* Subtle FastTrack Badge */}
                         {agent.fastTrackSupported && (
                           <div className={`absolute top-3 right-3 ${safeSelectedAgentKey === key ? 'bg-white/10' : 'bg-gray-100'} rounded-full px-2 py-0.5 flex items-center gap-1`}>
@@ -374,9 +444,9 @@
                           </div>
                         )}
                         
-                        <div className="flex items-start justify-between mb-4">
-                          <div className={`p-3 rounded-xl ${safeSelectedAgentKey === key ? 'bg-white/20' : agent.color + ' bg-opacity-10'}`}>
-                            <Icon className={`w-8 h-8 ${safeSelectedAgentKey === key ? 'text-white' : agent.color.replace('bg-', 'text-')}`} />
+                        <div className="flex items-start justify-between mb-3">
+                          <div className={`p-2 rounded-xl ${safeSelectedAgentKey === key ? 'bg-white/20' : agent.color + ' bg-opacity-10'}`}>
+                            <Icon className={`w-6 h-6 ${safeSelectedAgentKey === key ? 'text-white' : agent.color.replace('bg-', 'text-')}`} />
                           </div>
                           {safeSelectedAgentKey === key && (
                             <div className="bg-white/20 rounded-full p-1">
@@ -384,8 +454,8 @@
                             </div>
                           )}
                         </div>
-                        <h3 className="text-xl font-bold mb-2 pr-12">{agent.name}</h3>
-                        <p className={`text-sm mb-4 ${safeSelectedAgentKey === key ? 'text-white/90' : 'text-gray-600'}`}>
+                        <h3 className="text-lg font-bold mb-1 pr-12">{agent.name}</h3>
+                        <p className={`text-xs mb-3 ${safeSelectedAgentKey === key ? 'text-white/90' : 'text-gray-600'}`}>
                           {agent.subtitle}
                         </p>
                         <div className="flex flex-wrap gap-2">
@@ -426,7 +496,7 @@
 
                 {/* Tab Content */}
                 {activeTab === 'overview' && (
-                  <div key={`overview-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8">
+                  <div key={`overview-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8 tab-content">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                       <div className={`lg:col-span-2 bg-gradient-to-br ${currentAgent.gradient} rounded-2xl p-8 text-white relative`}>
                         {/* Subtle FastTrack Badge in Overview */}
@@ -501,7 +571,7 @@
                 )}
 
                 {activeTab === 'capabilities' && (
-                  <div key={`capabilities-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8">
+                  <div key={`capabilities-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8 tab-content">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                       {/* Capabilities */}
                       <div>
@@ -539,7 +609,7 @@
                 )}
 
                 {activeTab === 'comparison' && (
-                  <div key={`comparison-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8">
+                  <div key={`comparison-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8 tab-content">
                     <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                       <BarChart3 className="w-7 h-7 text-purple-600" />
                       Feature Comparison Matrix
@@ -611,7 +681,7 @@
                             <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">External APIs</td>
                             {Object.entries(agentTypes).map(([key, agent]) => (
                               <td key={key} className="p-4 text-center border-b border-gray-200">
-                                {key === 'lite' || key === 'sharepoint' ? 
+                                {key === 'lite' ? 
                                   <X className="w-5 h-5 text-red-500 mx-auto" /> : 
                                   <Check className="w-5 h-5 text-green-500 mx-auto" />
                                 }
@@ -622,7 +692,7 @@
                             <td className="p-4 font-semibold text-gray-900 border-b border-gray-200">Multi-channel</td>
                             {Object.entries(agentTypes).map(([key, agent]) => (
                               <td key={key} className="p-4 text-center border-b border-gray-200">
-                                {key === 'full' ? 
+                                {key === 'full' || key === 'toolkit' ? 
                                   <Check className="w-5 h-5 text-green-500 mx-auto" /> : 
                                   <X className="w-5 h-5 text-red-500 mx-auto" />
                                 }
@@ -649,7 +719,7 @@
                 )}
 
                 {activeTab === 'guidance' && (
-                  <div key={`guidance-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8 space-y-8">
+                  <div key={`guidance-${safeSelectedAgentKey}`} className="bg-white rounded-b-2xl shadow-lg p-8 space-y-8 tab-content">
                     {/* Decision Flow */}
                     <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border-2 border-purple-200">
                       <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -689,6 +759,10 @@
                               <div className="flex items-start gap-2">
                                 <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
                                 <p className="text-gray-600"><span className="font-semibold">Developer team?</span> → M365 Agents Toolkit</p>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-600"><span className="font-semibold">Agent marketplace?</span> → Agent Store via Copilot Studio or Toolkit</p>
                               </div>
                             </div>
                           </div>
@@ -927,6 +1001,23 @@
                             </div>
                           </div>
                         </div>
+
+                        <div className="border-2 border-cyan-200 rounded-lg p-4 bg-cyan-50">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">SCENARIO</p>
+                              <p className="font-bold text-gray-900">Multi-agent workflow orchestration</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">RECOMMENDATION</p>
+                              <p className="font-bold text-cyan-800 text-lg">Full Custom + Toolkit</p>
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 mb-1">WHY?</p>
+                              <p className="text-sm text-gray-700">A2A protocol, multi-agent orchestration, Agent Store distribution</p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -956,14 +1047,14 @@
                 )}
 
                 {/* Footer - Subtle FastTrack Reference */}
-                <div className="text-center mt-8 py-6 border-t border-gray-200">
+                <div className="text-center mt-8 py-8 border-t border-gray-200 bg-gradient-to-b from-transparent to-gray-50 rounded-b-2xl">
                   <p className="text-gray-500 text-sm mb-2">
-                    Microsoft Copilot Agents Guide • Updated for 2025
+                    Microsoft Copilot Agents Guide • Updated for 2026
                   </p>
                   <p className="text-gray-400 text-xs mb-2">
                     <span className="inline-flex items-center gap-1">
                       <Zap className="w-3 h-3" />
-                      FT = FastTrack deployment support available
+                      FT = FastTrack deployment support available (6 of 6)
                     </span>
                   </p>
                   <a 
@@ -974,6 +1065,16 @@
                   >
                     <ExternalLink className="w-3 h-3" />
                     FastTrack Service Description
+                  </a>
+                  <span className="mx-2 text-gray-300">|</span>
+                  <a 
+                    href="https://github.com/microsoft/FastTrack"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition-colors"
+                  >
+                    <Code className="w-3 h-3" />
+                    GitHub Repository
                   </a>
                 </div>
               </div>
