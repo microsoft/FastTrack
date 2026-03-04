@@ -70,11 +70,81 @@
         const Zap = ({ className, ...props }) => <i data-lucide="zap" className={className} {...props}></i>;
         const ExternalLink = ({ className, ...props }) => <i data-lucide="external-link" className={className} {...props}></i>;
         const FileSearch = ({ className, ...props }) => <i data-lucide="file-search" className={className} {...props}></i>;
+        const AlertTriangle = ({ className, size, ...props }) => <i data-lucide="triangle-alert" className={className} style={size ? {width: size, height: size} : undefined} {...props}></i>;
+        const Info = ({ className, size, ...props }) => <i data-lucide="info" className={className} style={size ? {width: size, height: size} : undefined} {...props}></i>;
+        const Minus = ({ className, size, ...props }) => <i data-lucide="minus" className={className} style={size ? {width: size, height: size} : undefined} {...props}></i>;
+        const Megaphone = ({ className, size, ...props }) => <i data-lucide="megaphone" className={className} style={size ? {width: size, height: size} : undefined} {...props}></i>;
+        const Calendar = ({ className, size, ...props }) => <i data-lucide="calendar" className={className} style={size ? {width: size, height: size} : undefined} {...props}></i>;
+        const ChevronDown = ({ className, size, ...props }) => <i data-lucide="chevron-down" className={className} style={size ? {width: size, height: size} : undefined} {...props}></i>;
+        const Bell = ({ className, size, ...props }) => <i data-lucide="bell" className={className} style={size ? {width: size, height: size} : undefined} {...props}></i>;
+
+        // ─── Message Center Data ─────────────────────────────────────────
+        const messageCenterPosts = [
+          { id: 'MC1243550', title: 'Microsoft 365 Copilot: Updates to PowerPoint on‑canvas features with Agent mode', category: 'Plan for Change', severity: 'medium', datePublished: '2026-03-04', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'PowerPoint will update Microsoft 365 Copilot with Agent mode for rewrite, translate, and speaker notes features, enabling chat-based interaction directly on slides. Rollout starts mid-March 2026 for web, then Windows and Mac, completing by April end. No admin action required; features enabled by default for Copilot users.', tags: ['feature-update', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'declarative'] },
+          { id: 'MC1243546', title: 'Microsoft Teams: Channel Agent feature updates', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-04', actionRequiredBy: null, status: 'active', services: ['Microsoft Teams'], summary: 'Microsoft Teams is updating Channel Agent with customized welcome messages, user control over agent creation, improved scheduling, member addition via prompts, and direct channel posting. Requires Microsoft 365 Copilot license. Rolling out March 2026 for Teams on all platforms; admins should enable and inform helpdesk staff.', tags: ['feature-update', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'declarative', 'toolkit'] },
+          { id: 'MC1242784', title: 'Microsoft Purview Insider Risk Management: Pay-as-you-go model for generative AI apps', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-03', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 suite', 'Microsoft Purview'], summary: 'Microsoft Purview Insider Risk Management will introduce a pay-as-you-go billing model for "Other AI apps" indicators in generative AI apps starting April 1, 2026. Microsoft Copilot indicators remain license-based. An Azure subscription must be linked for PAYG billing; no changes to policy workflows or user impact unless opted in.', tags: ['feature-update', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'declarative', 'toolkit'] },
+          { id: 'MC1240748', title: 'Retiring the Impala connector', category: 'Plan for Change', severity: 'medium', datePublished: '2026-02-28', actionRequiredBy: '2026-03-31', status: 'active', services: ['Microsoft Power Automate in Microsoft 365'], summary: 'The Impala connector will be retired and removed from Copilot Studio, Logic Apps, Power Apps, and Power Automate between April 1-14, 2026. Existing connections will stop working, and new ones won’t be allowed. Users should migrate to alternative connectors and update related documentation to avoid disruption.', tags: ['user-impact', 'admin-impact', 'retirement'], isHighImpact: true, agentAudience: ['lite', 'full'] },
+          { id: 'MC1240699', title: 'Introducing the new SharePoint experience', category: 'Stay Informed', severity: 'medium', datePublished: '2026-02-27', actionRequiredBy: null, status: 'active', services: ['SharePoint Online'], summary: 'A reimagined SharePoint experience with an intuitive design, streamlined architecture, and AI-assisted features (requiring a Microsoft 365 Copilot license) will roll out from March to May 2026. It includes a redesigned app bar with Discover, Publish, Build, OneDrive, and Home features. Enabling it is optional.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'sharepoint', 'declarative', 'toolkit'] },
+          { id: 'MC1238434', title: 'Microsoft Purview | Data Lifecycle Management - Separate Retention policies for Copilots and AI Apps', category: 'Stay Informed', severity: 'medium', datePublished: '2026-02-25', actionRequiredBy: null, status: 'active', services: ['Microsoft Purview'], summary: 'Admins can now set separate retention policies for Copilot and AI app interactions in Microsoft Purview, allowing faster deletion if needed. This feature, rolling out from mid-March to May 2026, enhances data lifecycle management and compliance controls for generative AI content.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'declarative', 'toolkit'] },
+          { id: 'MC1238432', title: 'Microsoft 365 Copilot app: Branded footer customization', category: 'Stay Informed', severity: 'medium', datePublished: '2026-02-25', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Starting late March to April 2026, Microsoft 365 Copilot app will allow admins to add a branded footer with their organization’s logo, confirming a trusted Copilot environment. This feature is off by default, requires admin setup via the Microsoft 365 admin center, and affects all tenants using the app.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'full', 'declarative', 'toolkit'] },
+          { id: 'MC1235084', title: 'Power Apps - Explore and visualize data with data exploration agent', category: 'Stay Informed', severity: 'medium', datePublished: '2026-02-19', actionRequiredBy: null, status: 'active', services: ['Power Apps'], summary: 'We are announcing the ability to explore and visualize data with data exploration agent in Power Apps. This feature will reach general availability on March 2, 2026. How does this affect me?The data exploration agent brings AI-powered capabilities to model-driven apps, allowing users to: Find, f', tags: ['new-feature'], isHighImpact: false, agentAudience: ['lite', 'full'] },
+          { id: 'MC1234661', title: 'DLP policies will be able to block Copilot processing of sensitivity‑labeled files in all storage locations', category: 'Stay Informed', severity: 'medium', datePublished: '2026-02-19', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 suite', 'Microsoft 365 apps', 'Microsoft Purview'], summary: 'DLP policies will block Microsoft 365 Copilot from processing sensitivity-labeled Word, Excel, and PowerPoint files across all storage locations, including local devices. This rollout begins late March 2026, requires no policy changes, and ensures consistent DLP enforcement without altering Copilot capabilities.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'full', 'declarative', 'toolkit'] },
+          { id: 'MC1227627', title: 'Enhancing Model Context Protocol (MCP) based agents with rich interactive UI widgets support', category: 'Stay Informed', severity: 'medium', datePublished: '2026-02-06', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Microsoft 365 Copilot Chat’s MCP-based agents will support rich interactive UI widgets starting late February 2026, enhancing user interactions. Admins manage agents via Microsoft 365 Admin Center with existing controls and Entra ID group access. No action is required, but reviewing governance and documentation is advised.', tags: ['updated-message', 'new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'full', 'declarative', 'toolkit'] },
+          { id: 'MC1227086', title: 'Microsoft 365 Copilot app: Unified plus (+) menu', category: 'Stay Informed', severity: 'medium', datePublished: '2026-02-05', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Microsoft 365 Copilot introduces a unified plus (+) menu consolidating grounding, tools, and sources for easier prompting. Rolling out worldwide from early March to mid-April 2026, it replaces the separate Tools menu, is enabled by default, requires no admin action, and aims to streamline user workflow.', tags: ['updated-message', 'feature-update', 'user-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'full', 'declarative'] },
+          { id: 'MC1225193', title: 'Copilot Studio product terms update for Bing query data', category: 'Stay Informed', severity: 'medium', datePublished: '2026-01-30', actionRequiredBy: null, status: 'completed', services: ['Microsoft Power Automate in Microsoft 365', 'Microsoft 365 Copilot Chat'], summary: 'Microsoft updates Copilot Studio terms effective February 2026, adding commitments on Query Data from Entra ID use with Bing Search. Data is not used for Bing improvement, advertising, or AI training, remains confidential, and no user or admin actions are required.', tags: ['feature-update', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'declarative'] },
+          { id: 'MC1222980', title: 'Microsoft 365 Copilot: Pay-as-you-go consumption for the Copilot Retrieval API', category: 'Stay Informed', severity: 'medium', datePublished: '2026-01-28', actionRequiredBy: null, status: 'completed', services: ['Microsoft 365 Copilot Chat'], summary: 'Microsoft 365 Copilot introduces pay-as-you-go (PAYG) for the Retrieval API, allowing non-Copilot licensed users tenant-level access to SharePoint and connectors under admin control. Rolling out from January to March 2026, it requires at least one Copilot license and explicit admin enablement. User-level data remains restricted.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'full', 'sharepoint', 'declarative', 'toolkit'] },
+          { id: 'MC1215074', title: 'SharePoint Embedded apps can now archive containers to reduce storage costs and improve Copilot results', category: 'Stay Informed', severity: 'medium', datePublished: '2026-01-08', actionRequiredBy: null, status: 'completed', services: ['SharePoint Online'], summary: 'SharePoint Embedded apps now support container archival to reduce storage costs by up to 75% and improve Copilot search relevance. Rollout begins February 2026. Admins must opt in via PowerShell and update apps to manage archived containers using new Graph APIs and SharePoint Admin Center options.', tags: ['updated-message', 'new-feature', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'sharepoint', 'declarative', 'toolkit'] },
+        ];
+
+
+
+        const mcCategoryColors = {
+          'Plan for Change': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', dot: 'bg-blue-500' },
+          'Stay Informed': { bg: 'bg-slate-50', text: 'text-slate-800', border: 'border-slate-200', dot: 'bg-slate-500' },
+          'Prevent or Fix Issues': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', dot: 'bg-amber-500' },
+          'Action Required': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200', dot: 'bg-rose-500' },
+        };
+
+        function mcFilterPosts(posts, { category, severity, service, search } = {}) {
+          return posts.filter(post => {
+            if (category && category !== 'All' && post.category !== category) return false;
+            if (severity && severity !== 'All' && post.severity.toLowerCase() !== severity.toLowerCase()) return false;
+            if (service && service !== 'All' && !post.services.includes(service)) return false;
+            if (search && search.trim()) {
+              const q = search.trim().toLowerCase();
+              const text = [post.id, post.title, post.summary, ...post.tags, ...post.services].join(' ').toLowerCase();
+              if (!text.includes(q)) return false;
+            }
+            return true;
+          });
+        }
+
+        function mcGetAlertNotifications(posts) {
+          const today = new Date();
+          const alertEnd = new Date(today);
+          alertEnd.setDate(alertEnd.getDate() + 14);
+          return posts.filter(post => {
+            if (post.severity === 'high') return true;
+            if (post.category === 'Action Required' && post.actionRequiredBy) {
+              const due = new Date(post.actionRequiredBy);
+              return due >= today && due <= alertEnd;
+            }
+            return false;
+          });
+        }
+        // ─── End Message Center Data ─────────────────────────────────────
 
         const CopilotAgentsGuide = () => {
           const [selectedAgentKey, setSelectedAgentKey] = useState('lite');
           const [activeTab, setActiveTab] = useState('overview');
           const [searchTerm, setSearchTerm] = useState('');
+          
+          // Message Center state
+          const [mcCategory, setMcCategory] = useState('All');
+          const [mcSeverity, setMcSeverity] = useState('All');
+          const [mcService, setMcService] = useState('All');
+          const [mcSearch, setMcSearch] = useState('');
+          const [mcExpandedPosts, setMcExpandedPosts] = useState({});
 
           const agentTypes = useMemo(() => ({
             researcherAnalyst: {
@@ -356,12 +426,30 @@
                 ? selectedAgentKey
                 : Object.keys(filteredAgents)[0] || 'lite';
 
-          const currentAgent = agentTypes[safeSelectedAgentKey];
+          const selectedAgentKeyForContent = agentTypes[selectedAgentKey] ? selectedAgentKey : 'lite';
+          const currentAgent = agentTypes[selectedAgentKeyForContent];
           const IconComponent = currentAgent.icon;
+
+          // Message Center computed values (must be after safeSelectedAgentKey)
+          const mcAgentFiltered = useMemo(() => {
+            return messageCenterPosts.filter(post =>
+              post.agentAudience.includes('all') || post.agentAudience.includes(selectedAgentKeyForContent)
+            );
+          }, [selectedAgentKeyForContent]);
+
+          const mcAvailableServices = useMemo(() => [...new Set(mcAgentFiltered.flatMap(p => p.services))].sort(), [mcAgentFiltered]);
+
+          const mcFiltered = useMemo(() => mcFilterPosts(mcAgentFiltered, { category: mcCategory, severity: mcSeverity, service: mcService, search: mcSearch }), [mcAgentFiltered, mcCategory, mcSeverity, mcService, mcSearch]);
+          const mcAlertPosts = useMemo(() => mcGetAlertNotifications(mcAgentFiltered), [mcAgentFiltered]);
+          const toggleMcPost = (id) => setMcExpandedPosts(prev => ({ ...prev, [id]: !prev[id] }));
+          const getMcBadgeStyle = (cat) => { const c = mcCategoryColors[cat] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' }; return `${c.bg} ${c.text} ${c.border}`; };
+          const getMcSeverityColor = (sev) => ({ high: 'bg-red-500', medium: 'bg-yellow-500', low: 'bg-blue-500' }[sev] || 'bg-gray-400');
+
+          const tabLabels = { overview: '📋 Overview', capabilities: '⚡ Capabilities', comparison: '📊 Comparison', guidance: '🧭 Guidance', 'message-center': '📢 Message Center' };
 
           useEffect(() => {
             lucide.createIcons();
-          }, [activeTab, currentAgent]);
+          }, [activeTab, currentAgent, mcExpandedPosts]);
 
           return (
             <div className="min-h-screen bg-gray-50">
@@ -521,7 +609,7 @@
                 {/* Tabs */}
                 <div className="bg-white rounded-t-xl shadow-sm border border-gray-200 border-b-0">
                   <div className="flex border-b border-gray-200 overflow-x-auto">
-                    {['overview', 'capabilities', 'comparison', 'guidance'].map((tab) => (
+                    {['overview', 'capabilities', 'comparison', 'guidance', 'message-center'].map((tab) => (
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -531,7 +619,7 @@
                             : 'text-gray-500 hover:text-gray-700'
                         }`}
                       >
-                        {tab}
+                        {tabLabels[tab] || tab}
                       </button>
                     ))}
                   </div>
@@ -1091,6 +1179,266 @@
                           <p className="text-sm text-gray-700">Leverage its orchestrator with Declarative Agents for best integration.</p>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Message Center Tab */}
+                {activeTab === 'message-center' && (
+                  <div key={`message-center-${safeSelectedAgentKey}`} className="bg-white rounded-b-xl shadow-sm border border-t-0 border-gray-200 p-8 tab-content">
+                    {/* Header & Agent Context */}
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                          Message Center
+                          <span className={`px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r ${currentAgent.gradient} text-white shadow-sm flex items-center gap-1.5`}>
+                            <Sparkles className="w-3.5 h-3.5" />
+                            {currentAgent.shortName}
+                          </span>
+                          <span className="text-gray-400 text-sm font-normal ml-1">({mcAgentFiltered.length} posts)</span>
+                        </h2>
+                        <p className="text-gray-500 mt-1 text-sm">
+                          Changes & updates relevant to {currentAgent.name} • 60-day lookback & lookahead
+                        </p>
+                      </div>
+                      <div className="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 max-w-fit">
+                        <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>Sourced from <a href="https://mc.merill.net" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-900 font-medium">mc.merill.net</a> — your tenant may have additional posts. Visit the <a href="https://admin.microsoft.com/Adminportal/Home?#/MessageCenter" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-900 font-medium">M365 Admin Center</a> for your tenant-specific messages.</span>
+                      </div>
+                    </div>
+
+                    {/* Important Posts Highlight Section */}
+                    {mcAlertPosts.length > 0 && (
+                      <div className="mb-6 bg-white rounded-xl border border-red-200 shadow-sm overflow-hidden">
+                        <div className="flex items-center justify-between p-4 bg-red-50/50">
+                          <div className="flex items-center gap-2 text-red-700 font-semibold">
+                            <Zap className="w-5 h-5 text-red-600" />
+                            <span>Action Required & High Impact for {currentAgent.shortName}</span>
+                            <span className="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs border border-red-200">{mcAlertPosts.length}</span>
+                          </div>
+                        </div>
+                        <div className="p-4 pt-0 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 bg-red-50/30">
+                          {mcAlertPosts.map((post) => (
+                            <div
+                              key={`alert-${post.id}`}
+                              onClick={() => { toggleMcPost(post.id); }}
+                              className="bg-white p-3 rounded-lg border border-red-100 shadow-sm hover:shadow-md hover:border-red-300 transition-all cursor-pointer relative overflow-hidden"
+                            >
+                              <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+                              <div className="flex justify-between items-start gap-2 mb-2 pl-2">
+                                <span className="text-xs font-mono text-gray-400 bg-gray-50 px-1.5 rounded border border-gray-100">{post.id}</span>
+                                {post.severity === 'high' && (
+                                  <span className="flex h-2 w-2 rounded-full bg-red-500 ring-2 ring-red-100"></span>
+                                )}
+                              </div>
+                              <h4 className="text-sm font-semibold text-gray-900 leading-snug pl-2 hover:text-blue-600 transition-colors line-clamp-2">{post.title}</h4>
+                              {post.actionRequiredBy && (
+                                <div className="mt-2 ml-2 flex items-center gap-2 text-xs text-red-600 font-medium bg-red-50 w-fit px-2 py-1 rounded">
+                                  <Clock className="w-3 h-3" />
+                                  Action by {new Date(post.actionRequiredBy).toLocaleDateString()} ({Math.ceil((new Date(post.actionRequiredBy) - new Date()) / (1000 * 60 * 60 * 24))}d)
+                                </div>
+                              )}
+                              {!post.actionRequiredBy && (
+                                <div className="mt-2 ml-2 flex items-center gap-2 text-xs text-red-600 font-medium bg-red-50 w-fit px-2 py-1 rounded">
+                                  <Clock className="w-3 h-3" />
+                                  Immediate attention
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Filter Bar */}
+                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6 space-y-4">
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <div className="relative flex-1">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                          <input
+                            type="text"
+                            placeholder="Search by ID, title, or keyword..."
+                            className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                            value={mcSearch}
+                            onChange={(e) => setMcSearch(e.target.value)}
+                          />
+                        </div>
+                        <select
+                          className="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-3 pr-8 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer hover:border-gray-300"
+                          value={mcService}
+                          onChange={(e) => setMcService(e.target.value)}
+                        >
+                          <option value="All">All Services</option>
+                          {mcAvailableServices.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                      </div>
+                      <div className="h-px bg-gray-200"></div>
+                      <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+                        <div className="flex flex-wrap gap-2">
+                          {['All', 'Plan for Change', 'Stay Informed', 'Prevent or Fix Issues', 'Action Required'].map(cat => (
+                            <button
+                              key={cat}
+                              onClick={() => setMcCategory(cat)}
+                              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                                mcCategory === cat
+                                  ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
+                                  : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'
+                              }`}
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg px-2 py-1.5">
+                          <span className="text-xs text-gray-500 font-medium px-1">Severity:</span>
+                          {['All', 'High', 'Medium', 'Low'].map((sev) => (
+                            <button
+                              key={sev}
+                              onClick={() => setMcSeverity(sev)}
+                              className={`px-2.5 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                                mcSeverity === sev ? 'bg-gray-800 text-white' : 'text-gray-500 hover:bg-gray-100'
+                              }`}
+                              title={sev}
+                            >
+                              {sev !== 'All' && <span className={`w-1.5 h-1.5 rounded-full ${getMcSeverityColor(sev.toLowerCase())}`}></span>}
+                              {sev}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Active Filters */}
+                      {(mcCategory !== 'All' || mcSeverity !== 'All' || mcService !== 'All' || mcSearch) && (
+                        <div className="flex items-center gap-2 text-xs text-gray-500 pt-2">
+                          <span className="font-medium">Active filters:</span>
+                          {mcCategory !== 'All' && (
+                            <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100 flex items-center gap-1">
+                              {mcCategory}
+                              <button onClick={() => setMcCategory('All')} className="hover:text-blue-900"><X className="w-3 h-3" /></button>
+                            </span>
+                          )}
+                          {mcSeverity !== 'All' && (
+                            <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100 flex items-center gap-1">
+                              {mcSeverity} Severity
+                              <button onClick={() => setMcSeverity('All')} className="hover:text-blue-900"><X className="w-3 h-3" /></button>
+                            </span>
+                          )}
+                          {mcService !== 'All' && (
+                            <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100 flex items-center gap-1">
+                              Service: {mcService}
+                              <button onClick={() => setMcService('All')} className="hover:text-blue-900"><X className="w-3 h-3" /></button>
+                            </span>
+                          )}
+                          {mcSearch && <span className="bg-yellow-50 text-yellow-700 px-2 py-0.5 rounded border border-yellow-100">Search: "{mcSearch}"</span>}
+                          <button onClick={() => { setMcCategory('All'); setMcSeverity('All'); setMcService('All'); setMcSearch(''); }} className="ml-auto text-gray-400 hover:text-gray-600 underline decoration-dotted">Clear all</button>
+                        </div>
+                      )}
+                      
+                      <div className="text-right text-xs text-gray-400 mt-2">
+                        Showing {mcFiltered.length} of {mcAgentFiltered.length} posts
+                      </div>
+                    </div>
+
+                    {/* Posts List */}
+                    <div className="space-y-4">
+                      {mcFiltered.length === 0 ? (
+                        <div className="text-center py-16 rounded-xl border border-dashed border-gray-300">
+                          <div className="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Check className="w-8 h-8 text-green-500" />
+                          </div>
+                          <h3 className="text-lg font-medium text-gray-900">All caught up!</h3>
+                          <p className="text-gray-500 mt-1 max-w-sm mx-auto">
+                            No message center posts found for <span className="font-semibold">{currentAgent.name}</span> matching your current filters.
+                          </p>
+                          <button onClick={() => { setMcCategory('All'); setMcSeverity('All'); setMcService('All'); setMcSearch(''); }} className="mt-4 text-blue-600 font-medium hover:text-blue-700 text-sm">Clear filters to see all posts</button>
+                        </div>
+                      ) : (
+                        mcFiltered.map((post) => {
+                          const isExpanded = mcExpandedPosts[post.id];
+                          const isImportant = post.severity === 'high' || post.category === 'Action Required';
+                          const badgeStyle = getMcBadgeStyle(post.category);
+                          const sevColor = getMcSeverityColor(post.severity);
+                          return (
+                            <div
+                              key={post.id}
+                              className={`bg-white rounded-xl border transition-all duration-200 overflow-hidden border-gray-200 ${
+                                isExpanded ? 'ring-2 ring-blue-500/20 shadow-md' : 'hover:shadow-md hover:border-gray-300'
+                              } ${
+                                isImportant
+                                  ? post.severity === 'high' ? 'border-l-4 border-l-red-500' : 'border-l-4 border-l-amber-500'
+                                  : 'border-l-4 border-l-transparent'
+                              }`}
+                            >
+                              <div className="p-5 cursor-pointer" onClick={() => toggleMcPost(post.id)}>
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="flex-1 space-y-2">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                      <span className={`px-2.5 py-0.5 rounded-md text-xs font-medium border ${badgeStyle}`}>{post.category}</span>
+                                      <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
+                                        post.severity === 'high' ? 'bg-red-100 text-red-700' : post.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600'
+                                      }`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${sevColor}`}></span>
+                                        <span className="capitalize">{post.severity}</span>
+                                      </span>
+                                      <span className="text-xs font-mono text-gray-400">{post.id}</span>
+                                      <span className="text-xs text-gray-400 flex items-center gap-1">
+                                        <Calendar className="w-3 h-3" />
+                                        {new Date(post.datePublished).toLocaleDateString()}
+                                      </span>
+                                      {post.isHighImpact && (
+                                        <span className="bg-red-50 text-red-700 px-1.5 py-0.5 rounded text-[10px] border border-red-200 font-semibold">⚡ High Impact</span>
+                                      )}
+                                    </div>
+                                    <h3 className={`text-base font-semibold leading-snug ${isExpanded ? 'text-blue-700' : 'text-gray-900'}`}>{post.title}</h3>
+                                    <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                                      {post.services.map(svc => (
+                                        <span key={svc} className="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded text-[10px] border border-gray-200">{svc}</span>
+                                      ))}
+                                      {post.tags.slice(0, 2).map(tag => (
+                                        <span key={tag} className="text-gray-400 italic">#{tag}</span>
+                                      ))}
+                                      {post.tags.length > 2 && <span className="text-gray-400">+{post.tags.length - 2}</span>}
+                                    </div>
+                                  </div>
+                                  <div className={`p-1 rounded-full hover:bg-gray-100 text-gray-400 transition-transform duration-200 flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}>
+                                    <ChevronDown className="w-5 h-5" />
+                                  </div>
+                                </div>
+                                {post.actionRequiredBy && (
+                                  <div className="mt-3 bg-amber-50 border border-amber-100 rounded-lg p-2 flex items-center gap-2 text-xs text-amber-800 w-fit">
+                                    <Clock className="w-3.5 h-3.5 text-amber-600" />
+                                    <span className="font-semibold">Action Required by: {new Date(post.actionRequiredBy).toLocaleDateString()}</span>
+                                    <span className="text-amber-600/70 border-l border-amber-200 pl-2 ml-1">
+                                      {Math.ceil((new Date(post.actionRequiredBy) - new Date()) / (1000 * 60 * 60 * 24))} days remaining
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                              {isExpanded && (
+                                <div className="border-t border-gray-100 bg-gray-50/50 p-5">
+                                  <p className="text-sm text-gray-600 leading-relaxed">{post.summary}</p>
+                                  <div className="flex flex-wrap items-center justify-between gap-4 mt-4 pt-4 border-t border-gray-200">
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {post.tags.map(tag => (
+                                        <span key={tag} className="text-xs px-2 py-1 bg-white border border-gray-200 rounded text-gray-500">#{tag}</span>
+                                      ))}
+                                    </div>
+                                    <a
+                                      href="https://admin.microsoft.com/Adminportal/Home?#/MessageCenter"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm"
+                                    >
+                                      View in Admin Center
+                                      <ExternalLink className="w-3.5 h-3.5" />
+                                    </a>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })
+                      )}
                     </div>
                   </div>
                 )}
