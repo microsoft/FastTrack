@@ -384,4 +384,15 @@ A: Yes — add more seats to the model table in the agent file. Keep in mind thi
 
 ---
 
+## Inspiration
+
+This project draws from several ideas in the multi-AI deliberation space:
+
+- [**Allie K. Miller's AI Boardroom**](https://x.com/alliekmiller/status/2021578555034149188) — custom slash commands that simulate boardroom discussions with multiple AI personas
+- **Andrej Karpathy's LLM Council** — the concept of querying multiple LLMs and synthesizing their responses
+- **Satya Nadella's AI Council** — the vision of AI agents collaborating as a council of advisors
+- **Mustafa Suleyman's Chain-of-Debate** — the idea that LLMs produce better outputs when they engage in structured debate
+
+---
+
 *The Council has deliberated. The decision is yours.*
