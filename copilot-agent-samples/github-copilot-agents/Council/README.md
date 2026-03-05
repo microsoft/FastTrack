@@ -51,7 +51,7 @@ copilot
 /agent
 ```
 
-This opens the **Custom Agents** picker. Select `🔥 AI Council · user` from the list and press Enter.
+This opens the **Custom Agents** picker. Select `🏛️ AI Council · user` from the list and press Enter.
 
 ### 4. Ask a Question
 
@@ -72,7 +72,7 @@ That's it. Three models will deliberate and you'll get a synthesized report with
 ### Basic Syntax
 
 ```
-/agent         ← select "🔥 AI Council" from the picker
+/agent         ← select "🏛️ AI Council" from the picker
 [your question] [optional flags]       ← then type your prompt
 ```
 
@@ -206,7 +206,7 @@ Throughout the output, each model is identified by an emoji:
 
 - 🔵 **Claude** (`claude-opus-4.6`)
 - 🟢 **GPT** (`gpt-5.2`)
-- 🟡 **Gemini** (`gemini-3-pro-preview`)
+- 🟡 **Gemini** (`gemini-3.1-pro`)
 
 When personas are active, you'll see both: e.g., `🔵 Claude (as Platform Architect)`
 
@@ -273,7 +273,7 @@ _The Council has deliberated. The decision is yours._
 
 ## How It Works Under the Hood
 
-1. You activate the council agent via `/agent` and select `🔥 AI Council`
+1. You activate the council agent via `/agent` and select `🏛️ AI Council`
 2. You type your question (with optional flags)
 3. The orchestrator parses your input for flags (`--depth`, `--domain`, `--save`)
 4. It delegates to **three sub-agents in parallel**, each with a different `model:` override
@@ -294,7 +294,7 @@ Edit `council.agent.md` and update the model table. Available models in Copilot 
 ```
 claude-opus-4.6          claude-sonnet-4.5       claude-haiku-4.5
 gpt-5.2                  gpt-5.1                 gpt-5-mini
-gemini-3-pro-preview
+gemini-3.1-pro
 ```
 
 Use `/model` in Copilot CLI to see the current full list.

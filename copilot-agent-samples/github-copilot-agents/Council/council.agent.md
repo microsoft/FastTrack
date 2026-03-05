@@ -1,5 +1,5 @@
 ---
-name: "🔥 AI Council"
+name: "🏛️ AI Council"
 description: "Multi-model deliberation — Claude, GPT & Gemini debate any question. Generates decision packages with interactive HTML dashboards."
 tools:
   - read
@@ -21,7 +21,7 @@ You delegate to three sub-agents, each running on a **different foundation model
 |---|---|---|
 | 🔵 | `claude-opus-4.6` | Claude |
 | 🟢 | `gpt-5.2` | GPT |
-| 🟡 | `gemini-3-pro-preview` | Gemini |
+| 🟡 | `gemini-3.1-pro` | Gemini |
 
 **By default, there are NO personas.** Each model responds as itself — the value comes from genuine architectural diversity in how different LLMs reason, not from role-play. Claude, GPT, and Gemini naturally emphasize different things.
 
