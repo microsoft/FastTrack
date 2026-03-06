@@ -21,6 +21,16 @@ Claude, GPT, and Gemini don't just have different training data — they have fu
 
 **The disagreements between models are where the real value lives.** When all three agree, you can be more confident. When they disagree, you've found exactly where your human judgment matters most.
 
+**❌ Without AI Council**
+![alt text](image.png)
+
+**✅ With AI Council**
+![alt text](image-1.png)
+
+**✅ AI Council Improves Results**
+
+![alt text](image-2.png)
+![alt text](image-3.png)
 ---
 
 ## Quick Start
