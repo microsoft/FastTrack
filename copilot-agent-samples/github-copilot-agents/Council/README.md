@@ -33,23 +33,39 @@ Claude, GPT, and Gemini don't just have different training data — they have fu
 ![alt text](image-3.png)
 ---
 
+## Pre-requisites
+
+> **⚠️ This agent requires [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli)** — the terminal-based Copilot experience (invoked by running `copilot` in your terminal). It does **not** run inside the VS Code Copilot Chat panel. If you haven't installed it yet, see [Getting started with Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) and ensure the `copilot` command is available in your terminal before proceeding.
+
+---
+
 ## Quick Start
 
 ### 1. Install the Agent
 
-Copy `council.agent.md` to your global agents directory:
+Copy `council.agent.md` to your global Copilot CLI agents directory:
 
 ```bash
 # macOS / Linux
+mkdir -p ~/.copilot/agents
 cp council.agent.md ~/.copilot/agents/
 
-# Windows
+# Windows (PowerShell)
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.copilot\agents"
+Copy-Item council.agent.md "$env:USERPROFILE\.copilot\agents\"
+
+# Windows (Command Prompt)
+if not exist "%USERPROFILE%\.copilot\agents" mkdir "%USERPROFILE%\.copilot\agents"
 copy council.agent.md %USERPROFILE%\.copilot\agents\
 ```
+
+> **Note:** The `~/.copilot/agents/` directory is specific to the Copilot CLI. It is **not** the same as VS Code's extensions or settings folders. If you don't see this directory, create it — the CLI will pick up any `.agent.md` files placed here.
 
 Or place it in a project: `.github/agents/council.agent.md`
 
 ### 2. Launch Copilot CLI
+
+Open a terminal and run:
 
 ```bash
 copilot
@@ -369,7 +385,7 @@ Over time, this becomes a searchable decision log for your team.
 
 ## Requirements
 
-- [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) installed
+- **[GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) installed** — the `copilot` command must be available in your terminal. This is a separate tool from the Copilot extension in VS Code.
 - Active Copilot subscription with access to multiple models
 - Works on macOS, Linux, and Windows
 

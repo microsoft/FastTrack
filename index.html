@@ -134,6 +134,43 @@
         }
         // ─── End Message Center Data ─────────────────────────────────────
 
+        // ─── MCS Labs Data ───────────────────────────────────────────────
+        const mcsLabs = [
+          { id: "agent-academy-recruit", title: "Copilot Studio Agent Academy - Recruit Level", description: "A 13-lesson curriculum covering agents, LLMs, declarative and custom agents, Topics, Adaptive Cards, Agent Flows, and deployment to Teams and Microsoft 365 Copilot.", url: "https://microsoft.github.io/mcs-labs/labs/agent-academy-recruit/", pdfUrl: null, difficulty: 200, duration: 240, journeys: ["quick-start", "business-user"], section: "external", agentTypes: ["lite", "full", "sharepoint", "declarative", "toolkit"] },
+          { id: "agent-builder-m365", title: "Build Progressive AI Assistants with Agent Builder in Microsoft 365", description: "Learn to create agents in Microsoft 365, from basic web-grounded assistants to more advanced SharePoint-integrated experiences with code interpreter.", url: "https://microsoft.github.io/mcs-labs/labs/agent-builder-m365/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/agent-builder-m365.pdf", difficulty: 100, duration: 30, journeys: ["quick-start", "business-user"], section: "core", agentTypes: ["lite", "declarative", "sharepoint"] },
+          { id: "agent-builder-sharepoint", title: "Create your own SharePoint-based AI assistant with Agent Builder in Microsoft 365", description: "Build a SharePoint-based sales administration assistant that can analyze and answer questions using site content and documents.", url: "https://microsoft.github.io/mcs-labs/labs/agent-builder-sharepoint/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/agent-builder-sharepoint.pdf", difficulty: 200, duration: 20, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["sharepoint", "lite", "declarative"] },
+          { id: "agent-builder-web", title: "Create your own web-based AI assistant with Agent Builder in Microsoft 365", description: "Create an intelligent agent that delivers contextual answers grounded in public web data.", url: "https://microsoft.github.io/mcs-labs/labs/agent-builder-web/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/agent-builder-web.pdf", difficulty: 100, duration: 15, journeys: ["quick-start", "business-user"], section: "core", agentTypes: ["lite", "declarative"] },
+          { id: "ask-me-anything-30-mins", title: "Create an 'Ask me anything' agent for your employees", description: "Build a condensed employee-facing knowledge agent that connects to organizational data and content.", url: "https://microsoft.github.io/mcs-labs/labs/ask-me-anything-30-mins/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/ask-me-anything-30-mins.pdf", difficulty: 200, duration: 30, journeys: ["business-user"], section: "optional", agentTypes: ["lite", "full"] },
+          { id: "ask-me-anything", title: "Create an 'Ask me anything' agent for your employees", description: "Build a fuller employee knowledge agent that connects to organizational data and content for richer answers.", url: "https://microsoft.github.io/mcs-labs/labs/ask-me-anything/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/ask-me-anything.pdf", difficulty: 200, duration: 40, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["lite", "full"] },
+          { id: "autonomous-account-news", title: "Build an Autonomous Account News Assistant Agent", description: "Create an autonomous agent that scans sales opportunities and sends curated account news reports automatically.", url: "https://microsoft.github.io/mcs-labs/labs/autonomous-account-news/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/autonomous-account-news.pdf", difficulty: 200, duration: 30, journeys: ["autonomous-ai", "developer"], section: "advanced", agentTypes: ["full"] },
+          { id: "autonomous-cua", title: "Autonomous Portfolio Lookup Agent with Computer-Using Agents (CUA)", description: "Build an autonomous agent that retrieves financial data from legacy systems even when APIs are unavailable.", url: "https://microsoft.github.io/mcs-labs/labs/autonomous-cua/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/autonomous-cua.pdf", difficulty: 200, duration: 30, journeys: ["autonomous-ai", "developer"], section: "advanced", agentTypes: ["full"] },
+          { id: "autonomous-support-agent", title: "Autonomous Support Agent", description: "Learn how autonomous agents can handle user support inquiries automatically with minimal human intervention.", url: "https://microsoft.github.io/mcs-labs/labs/autonomous-support-agent/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/autonomous-support-agent.pdf", difficulty: 200, duration: 20, journeys: ["autonomous-ai", "developer"], section: "advanced", agentTypes: ["full"] },
+          { id: "component-collections", title: "Using Component Collections in Copilot Studio", description: "Create, share, and manage reusable component collections that can be applied across multiple agents.", url: "https://microsoft.github.io/mcs-labs/labs/component-collections/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/component-collections.pdf", difficulty: 300, duration: 30, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["full"] },
+          { id: "contract-alerts-azure-ai", title: "Proactive Contract Alerts in Teams with Azure AI", description: "Configure an agent for proactive notifications, contract search, and audio transcription in Teams.", url: "https://microsoft.github.io/mcs-labs/labs/contract-alerts-azure-ai/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/contract-alerts-azure-ai.pdf", difficulty: 100, duration: 30, journeys: ["business-user"], section: "core", agentTypes: ["full"] },
+          { id: "copilot-studio-kit", title: "Deliver high-quality, scalable agents with Copilot Studio Kit", description: "Use the Copilot Studio Kit for automated QA, test scenarios, analytics, and governance dashboards.", url: "https://microsoft.github.io/mcs-labs/labs/copilot-studio-kit/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/copilot-studio-kit.pdf", difficulty: 200, duration: 30, journeys: ["developer"], section: "specialized", agentTypes: ["full", "toolkit"] },
+          { id: "core-concepts-agent-knowledge-tools", title: "Build Intelligent Agents with Knowledge Sources, Tools, and Topics", description: "Create an agent from scratch, then add knowledge sources, tools, and custom topics to expand its capabilities.", url: "https://microsoft.github.io/mcs-labs/labs/core-concepts-agent-knowledge-tools/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/core-concepts-agent-knowledge-tools.pdf", difficulty: 200, duration: 45, journeys: ["quick-start", "business-user", "developer"], section: "core", agentTypes: ["full"] },
+          { id: "core-concepts-analytics-evaluations", title: "Monitor Performance and Evaluate Agent Quality", description: "Track analytics, build evaluation test sets, and establish a continuous improvement loop for your agents.", url: "https://microsoft.github.io/mcs-labs/labs/core-concepts-analytics-evaluations/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/core-concepts-analytics-evaluations.pdf", difficulty: 200, duration: 30, journeys: ["quick-start", "business-user", "developer"], section: "core", agentTypes: ["full", "lite"] },
+          { id: "core-concepts-variables-agents-channels", title: "Master Variables, Multi-Agent Architectures, and Channel Deployment", description: "Learn how to use variables, child agents, multi-agent patterns, and multi-channel deployment options.", url: "https://microsoft.github.io/mcs-labs/labs/core-concepts-variables-agents-channels/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/core-concepts-variables-agents-channels.pdf", difficulty: 200, duration: 30, journeys: ["quick-start", "business-user", "developer"], section: "core", agentTypes: ["full", "declarative"] },
+          { id: "data-fabric-agent", title: "Connecting Fabric Data Agents with Microsoft Copilot Studio", description: "Explore agent-to-agent communication patterns that connect Microsoft Fabric data agents with Copilot Studio.", url: "https://microsoft.github.io/mcs-labs/labs/data-fabric-agent/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/data-fabric-agent.pdf", difficulty: 200, duration: 20, journeys: ["business-user"], section: "advanced", agentTypes: ["full", "declarative"] },
+          { id: "dataverse-mcp-connector", title: "Contoso Agent and Dataverse MCP Connector", description: "Integrate a Copilot agent with Dataverse by using an MCP server connector.", url: "https://microsoft.github.io/mcs-labs/labs/dataverse-mcp-connector/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/dataverse-mcp-connector.pdf", difficulty: 100, duration: 30, journeys: ["quick-start", "business-user", "developer"], section: "specialized", agentTypes: ["full", "toolkit"] },
+          { id: "guildhall-custom-mcp", title: "Build and Connect Your Guild's Custom MCP Server", description: "Build a custom MCP server and connect it to an intelligent agent to extend what the agent can do.", url: "https://microsoft.github.io/mcs-labs/labs/guildhall-custom-mcp/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/guildhall-custom-mcp.pdf", difficulty: 100, duration: 30, journeys: ["business-user", "developer"], section: "specialized", agentTypes: ["full", "toolkit"] },
+          { id: "human-in-the-loop", title: "Expense Claims Agent with Approvals (Human-in-the-Loop)", description: "Build an end-to-end expense claims agent that combines AI evaluation with manager approval steps.", url: "https://microsoft.github.io/mcs-labs/labs/human-in-the-loop/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/human-in-the-loop.pdf", difficulty: 200, duration: 45, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["full"] },
+          { id: "mbr-prep-sharepoint-agent", title: "Create a Monthly Business Review (MBR) Agent", description: "Create an MBR preparation agent that streamlines review prep by grounding responses in SharePoint content.", url: "https://microsoft.github.io/mcs-labs/labs/mbr-prep-sharepoint-agent/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/mbr-prep-sharepoint-agent.pdf", difficulty: 100, duration: 20, journeys: ["quick-start", "business-user", "developer"], section: "core", agentTypes: ["sharepoint", "lite", "declarative"] },
+          { id: "mcp-qualify-lead", title: "Prioritize Hot Leads with AI: Connect to Dynamics 365 Sales Using MCP", description: "Use MCP to connect an agent to Dynamics 365 Sales and prioritize the hottest leads with AI.", url: "https://microsoft.github.io/mcs-labs/labs/mcp-qualify-lead/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/mcp-qualify-lead.pdf", difficulty: 200, duration: 15, journeys: ["developer"], section: "specialized", agentTypes: ["full", "toolkit"] },
+          { id: "mcs-alm", title: "Application Lifecycle Management (ALM) in Copilot Studio", description: "Cover the full agent lifecycle in Copilot Studio, from solution structuring through deployment.", url: "https://microsoft.github.io/mcs-labs/labs/mcs-alm/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/mcs-alm.pdf", difficulty: 300, duration: 45, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["full", "toolkit"] },
+          { id: "mcs-byom", title: "Bring Your Own Model (BYOM) Tool in Copilot Studio", description: "Integrate Azure AI Foundry models into Copilot Studio as conversational tools.", url: "https://microsoft.github.io/mcs-labs/labs/mcs-byom/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/mcs-byom.pdf", difficulty: 200, duration: 40, journeys: ["business-user"], section: "intermediate", agentTypes: ["full", "toolkit"] },
+          { id: "mcs-governance", title: "Governance Zones in Copilot Studio", description: "Build agents across Green, Yellow, and Red DLP governance zones while balancing control and flexibility.", url: "https://microsoft.github.io/mcs-labs/labs/mcs-governance/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/mcs-governance.pdf", difficulty: 300, duration: 30, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["full", "declarative", "toolkit"] },
+          { id: "mcs-mcp-external", title: "Model Context Protocol (MCP) & Copilot Studio", description: "Deploy an MCP server externally and integrate it with Copilot Studio to extend agent capabilities.", url: "https://microsoft.github.io/mcs-labs/labs/mcs-mcp-external/", pdfUrl: null, difficulty: 200, duration: 90, journeys: ["developer"], section: "external", agentTypes: ["full", "toolkit"] },
+          { id: "mcs-multi-agent", title: "Using Multi-Agent in Copilot Studio", description: "Configure multi-agent solutions with child agents and connected agents in Copilot Studio.", url: "https://microsoft.github.io/mcs-labs/labs/mcs-multi-agent/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/mcs-multi-agent.pdf", difficulty: 300, duration: 30, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["full", "declarative"] },
+          { id: "mcs-tools", title: "Copilot Studio Tools", description: "Extend agents with connectors, agent flows, MCP servers, and custom prompts.", url: "https://microsoft.github.io/mcs-labs/labs/mcs-tools/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/mcs-tools.pdf", difficulty: 300, duration: 60, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["full", "toolkit"] },
+          { id: "measure-success", title: "Measure success: Track conversation outcomes and user feedback", description: "Track conversation outcomes and collect user feedback to measure how well your agent is performing.", url: "https://microsoft.github.io/mcs-labs/labs/measure-success/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/measure-success.pdf", difficulty: 300, duration: 60, journeys: ["developer"], section: "specialized", agentTypes: ["full", "lite"] },
+          { id: "pipelines-and-source-control", title: "Deploy with confidence: Power Platform pipelines & ALM", description: "Use pipelines and source control to deploy agents safely across environments.", url: "https://microsoft.github.io/mcs-labs/labs/pipelines-and-source-control/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/pipelines-and-source-control.pdf", difficulty: 300, duration: 30, journeys: ["developer"], section: "specialized", agentTypes: ["full", "toolkit"] },
+          { id: "public-website-agent", title: "Give your public website chatbot a brain and make it an agent", description: "Create an agent that delivers contextual answers grounded in your public website content.", url: "https://microsoft.github.io/mcs-labs/labs/public-website-agent/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/public-website-agent.pdf", difficulty: 100, duration: 25, journeys: ["quick-start", "business-user"], section: "core", agentTypes: ["full"] },
+          { id: "setup-for-success", title: "Set yourself up for success & discover ALM best practices", description: "Learn agent lifecycle and ALM best practices that help teams deliver and maintain agents successfully.", url: "https://microsoft.github.io/mcs-labs/labs/setup-for-success/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/setup-for-success.pdf", difficulty: 200, duration: 20, journeys: ["business-user", "developer"], section: "intermediate", agentTypes: ["full", "toolkit"] },
+          { id: "standard-orchestrator", title: "Create Your First Agent in Microsoft Copilot Studio", description: "Create and publish your first intelligent copilot in Microsoft Copilot Studio.", url: "https://microsoft.github.io/mcs-labs/labs/standard-orchestrator/", pdfUrl: "https://microsoft.github.io/mcs-labs/assets/pdfs/standard-orchestrator.pdf", difficulty: 100, duration: 40, journeys: ["quick-start", "developer"], section: "core", agentTypes: ["lite", "full"] },
+        ];
+        // ─── End MCS Labs Data ───────────────────────────────────────────
+
         const CopilotAgentsGuide = () => {
           const [selectedAgentKey, setSelectedAgentKey] = useState('lite');
           const [activeTab, setActiveTab] = useState('overview');
@@ -145,6 +182,10 @@
           const [mcService, setMcService] = useState('All');
           const [mcSearch, setMcSearch] = useState('');
           const [mcExpandedPosts, setMcExpandedPosts] = useState({});
+
+          // Labs state
+          const [labJourneyFilter, setLabJourneyFilter] = useState('all');
+          const [labDifficultyFilter, setLabDifficultyFilter] = useState('all');
 
           const agentTypes = useMemo(() => ({
             researcherAnalyst: {
@@ -445,11 +486,20 @@
           const getMcBadgeStyle = (cat) => { const c = mcCategoryColors[cat] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' }; return `${c.bg} ${c.text} ${c.border}`; };
           const getMcSeverityColor = (sev) => ({ high: 'bg-red-500', medium: 'bg-yellow-500', low: 'bg-blue-500' }[sev] || 'bg-gray-400');
 
-          const tabLabels = { overview: '📋 Overview', capabilities: '⚡ Capabilities', comparison: '📊 Comparison', guidance: '🧭 Guidance', 'message-center': '📢 Message Center' };
+          const filteredLabs = useMemo(() => {
+            return mcsLabs.filter(lab => {
+              const matchesAgent = lab.agentTypes && lab.agentTypes.includes(selectedAgentKeyForContent);
+              const matchesJourney = labJourneyFilter === 'all' || (lab.journeys && lab.journeys.includes(labJourneyFilter));
+              const matchesDifficulty = labDifficultyFilter === 'all' || lab.difficulty.toString() === labDifficultyFilter;
+              return matchesAgent && matchesJourney && matchesDifficulty;
+            });
+          }, [selectedAgentKeyForContent, labJourneyFilter, labDifficultyFilter]);
+
+          const tabLabels = { overview: '📋 Overview', capabilities: '⚡ Capabilities', comparison: '📊 Comparison', guidance: '🧭 Guidance', labs: '🧪 Labs', 'message-center': '📢 Message Center' };
 
           useEffect(() => {
             lucide.createIcons();
-          }, [activeTab, currentAgent, mcExpandedPosts]);
+          }, [activeTab, currentAgent, mcExpandedPosts, filteredLabs]);
 
           return (
             <div className="min-h-screen bg-gray-50">
@@ -495,6 +545,10 @@
                     <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-prompt-samples" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-white/80 text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-colors">
                       <MessageSquare className="w-3 h-3" />
                       Prompt Samples
+                    </a>
+                    <a href="https://microsoft.github.io/mcs-labs/labs/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-white/80 text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-colors">
+                      <BookOpen className="w-3 h-3" />
+                      Copilot Studio Labs
                     </a>
                   </div>
                 </div>
@@ -609,7 +663,7 @@
                 {/* Tabs */}
                 <div className="bg-white rounded-t-xl shadow-sm border border-gray-200 border-b-0">
                   <div className="flex border-b border-gray-200 overflow-x-auto">
-                    {['overview', 'capabilities', 'comparison', 'guidance', 'message-center'].map((tab) => (
+                    {['overview', 'capabilities', 'comparison', 'guidance', 'labs', 'message-center'].map((tab) => (
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -698,6 +752,45 @@
                         ))}
                       </div>
                     </div>
+
+                    {/* Recommended Labs Callout */}
+                    {(() => {
+                      const agentLabs = mcsLabs.filter(lab => lab.agentTypes.includes(selectedAgentKeyForContent));
+                      if (agentLabs.length === 0) return null;
+                      const topLabs = agentLabs.sort((a, b) => a.difficulty - b.difficulty).slice(0, 3);
+                      return (
+                        <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                              <BookOpen className="w-6 h-6 text-blue-600" />
+                              Recommended Labs
+                            </h3>
+                            <button
+                              onClick={() => setActiveTab('labs')}
+                              className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1"
+                            >
+                              View all {agentLabs.length} labs
+                              <ArrowRight className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            {topLabs.map((lab) => (
+                              <a key={lab.id} href={lab.url} target="_blank" rel="noopener noreferrer" className="bg-white rounded-lg p-4 border border-blue-100 hover:border-blue-300 hover:shadow-md transition-all group">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                                    lab.difficulty === 100 ? 'bg-green-100 text-green-700' :
+                                    lab.difficulty === 200 ? 'bg-amber-100 text-amber-700' :
+                                    'bg-orange-100 text-orange-700'
+                                  }`}>L{lab.difficulty}</span>
+                                  <span className="text-xs text-gray-400">⏱ {lab.duration}min</span>
+                                </div>
+                                <h4 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">{lab.title}</h4>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
 
@@ -1180,6 +1273,172 @@
                         </div>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {/* Labs Tab */}
+                {activeTab === 'labs' && (
+                  <div key={`labs-${safeSelectedAgentKey}`} className="bg-white rounded-b-xl shadow-sm border border-t-0 border-gray-200 p-8 tab-content">
+                    {/* Header Section */}
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
+                      <div>
+                        <div className="flex items-center gap-3 mb-1">
+                          <h2 className="text-2xl font-bold text-gray-900">Copilot Studio Labs</h2>
+                          <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-blue-200">
+                            {filteredLabs.length} Available
+                          </span>
+                        </div>
+                        <p className="text-gray-600">
+                          Hands-on labs to build skills with <span className="font-semibold text-gray-800">{currentAgent.name}</span>.
+                        </p>
+                      </div>
+                      <a 
+                        href="https://microsoft.github.io/mcs-labs/labs/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-lg border border-gray-200"
+                      >
+                        <span>Powered by MCS Labs</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+
+                    {/* Filter Bar */}
+                    <div className="space-y-4 mb-8">
+                      {/* Journey Filters */}
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          { id: 'all', label: 'All Journeys' },
+                          { id: 'quick-start', label: '🚀 Quick Start' },
+                          { id: 'business-user', label: '💼 Business User' },
+                          { id: 'autonomous-ai', label: '🤖 Autonomous AI' },
+                          { id: 'developer', label: '🔧 Developer' }
+                        ].map((filter) => (
+                          <button
+                            key={filter.id}
+                            onClick={() => setLabJourneyFilter(filter.id)}
+                            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                              labJourneyFilter === filter.id
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+                            }`}
+                          >
+                            {filter.label}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Difficulty Filters */}
+                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <span className="font-medium mr-2">Difficulty:</span>
+                        {[
+                          { id: 'all', label: 'Any' },
+                          { id: '100', label: 'Level 100' },
+                          { id: '200', label: 'Level 200' },
+                          { id: '300', label: 'Level 300' }
+                        ].map((filter) => (
+                          <button
+                            key={filter.id}
+                            onClick={() => setLabDifficultyFilter(filter.id)}
+                            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
+                              labDifficultyFilter === filter.id
+                                ? 'bg-gray-800 text-white'
+                                : 'bg-white border border-gray-200 text-gray-600 hover:border-gray-300'
+                            }`}
+                          >
+                            {filter.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Labs Grid */}
+                    {filteredLabs.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {filteredLabs.map((lab) => (
+                          <div 
+                            key={lab.id} 
+                            className="flex flex-col bg-white border border-gray-200 rounded-xl p-5 hover:shadow-lg hover:border-blue-200 transition-all duration-200 group h-full"
+                          >
+                            {/* Card Header */}
+                            <div className="mb-3">
+                              <div className="flex justify-between items-start gap-2 mb-2">
+                                <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                                  <a href={lab.url} target="_blank" rel="noopener noreferrer">{lab.title}</a>
+                                </h3>
+                                <span className={`shrink-0 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                                  lab.difficulty === 100 ? 'bg-green-100 text-green-700' :
+                                  lab.difficulty === 200 ? 'bg-amber-100 text-amber-700' :
+                                  'bg-orange-100 text-orange-700'
+                                }`}>
+                                  Level {lab.difficulty}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-600 line-clamp-2 min-h-[2.5em] mb-4">
+                                {lab.description}
+                              </p>
+                            </div>
+
+                            {/* Tags & Metadata */}
+                            <div className="flex flex-wrap gap-2 mb-4">
+                              <span className="inline-flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+                                ⏱ {lab.duration} min
+                              </span>
+                              <span className="inline-flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+                                <BookOpen className="w-2.5 h-2.5 mr-1" /> {lab.section}
+                              </span>
+                              {lab.journeys.slice(0, 2).map((j, i) => (
+                                <span key={i} className="inline-flex items-center text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                                  {j}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Actions Footer */}
+                            <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
+                              <a 
+                                href={lab.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex-1 inline-flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition-colors shadow-sm hover:shadow"
+                              >
+                                <span>🚀 Start Lab</span>
+                                <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                              </a>
+                              
+                              {lab.pdfUrl && (
+                                <a 
+                                  href={lab.pdfUrl} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="inline-flex justify-center items-center gap-1 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+                                  title="Download PDF Guide"
+                                >
+                                  <span>📄 PDF</span>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      /* Empty State */
+                      <div className="text-center py-16 px-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                        <div className="mx-auto w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                          <Target className="w-6 h-6 text-gray-400" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">No labs found</h3>
+                        <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+                          No labs match your current filters for {currentAgent.name}.
+                        </p>
+                        <button 
+                          onClick={() => { setLabJourneyFilter('all'); setLabDifficultyFilter('all'); }}
+                          className="inline-flex items-center gap-2 text-blue-600 font-medium hover:text-blue-800 hover:underline"
+                        >
+                          Clear all filters
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 
