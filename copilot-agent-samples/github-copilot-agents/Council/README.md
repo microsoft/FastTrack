@@ -421,4 +421,12 @@ This project draws from several ideas in the multi-AI deliberation space:
 
 ---
 
+## Author
+
+**Alejandro Lopez** — [alejandro.lopez@microsoft.com](mailto:alejandro.lopez@microsoft.com)
+
+Version: `v20260304`
+
+---
+
 *The Council has deliberated. The decision is yours.*
