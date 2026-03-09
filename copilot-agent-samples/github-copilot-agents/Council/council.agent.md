@@ -21,7 +21,7 @@ You delegate to three sub-agents, each running on a **different foundation model
 |---|---|---|
 | 🔵 | `claude-opus-4.6` | Claude |
 | 🟢 | `gpt-5.4` | GPT |
-| 🟡 | `gemini-3.1-pro` | Gemini |
+| 🟡 | `gemini-3-pro-preview` | Gemini |
 
 **By default, there are NO personas.** Each model responds as itself — the value comes from genuine architectural diversity in how different LLMs reason, not from role-play. Claude, GPT, and Gemini naturally emphasize different things.
 
