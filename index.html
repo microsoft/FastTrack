@@ -95,6 +95,7 @@
 
         // ─── Message Center Data ─────────────────────────────────────────
         const messageCenterPosts = [
+          { id: 'MC1247000', title: 'Wave 3 of Microsoft 365 Copilot: M365 E7 Frontier Suite, Agent 365 GA, and Copilot Cowork', category: 'Plan for Change', severity: 'high', datePublished: '2026-03-09', actionRequiredBy: '2026-05-01', status: 'active', services: ['Microsoft 365 Copilot Chat', 'Microsoft 365 suite'], summary: 'Wave 3 of Microsoft 365 Copilot introduces embedded agentic capabilities across Word, Excel, PowerPoint, and Outlook, plus Copilot Cowork for long-running multi-step tasks (built with Anthropic). Agent 365 — the enterprise control plane for agents — reaches GA on May 1. The new Microsoft 365 E7: The Frontier Suite bundles M365 Copilot, Agent 365, Entra Suite, and M365 E5 security into a single SKU (available May 1). Claude is now available in mainline Copilot Chat via the Frontier program alongside OpenAI models. See microsoft.com/microsoft-365 for current pricing.', tags: ['new-feature', 'user-impact', 'admin-impact', 'licensing'], isHighImpact: true, agentAudience: ['researcherAnalyst', 'full', 'declarative', 'toolkit', 'sharepoint', 'lite'] },
           { id: 'MC1246005', title: 'Microsoft Purview | Insider Risk Management – Enhancements to the Data Security Triage Agent', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-06', actionRequiredBy: null, status: 'active', services: ['Microsoft Purview'], summary: 'Microsoft Purview Insider Risk Management is enhancing the Data Security Triage Agent to prioritize alerts, summarize behavioral risks, and expand user context for more efficient investigations. The update rolls out from March to July 2026, requires admin activation, and includes Security Copilot for Microsoft 365 E5 users.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'declarative', 'toolkit'] },
           { id: 'MC1245224', title: 'Microsoft 365 Copilot: People agent availability update', category: 'Plan for Change', severity: 'medium', datePublished: '2026-03-05', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'The People agent in Frontier will retire in March 2026, with its key features integrated into core Microsoft 365 Copilot. No admin or user action is needed. Users can still use the People companion app and Org Explorer. Feedback via Frontier remains encouraged. No compliance issues identified.', tags: ['user-impact', 'admin-impact', 'retirement'], isHighImpact: true, agentAudience: ['researcherAnalyst', 'full', 'declarative', 'toolkit'] },
           { id: 'MC1243550', title: 'Microsoft 365 Copilot: Updates to PowerPoint on‑canvas features with Agent mode', category: 'Plan for Change', severity: 'medium', datePublished: '2026-03-04', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'PowerPoint will update Microsoft 365 Copilot with Agent mode for rewrite, translate, and speaker notes features, enabling chat-based interaction directly on slides. Rollout starts mid-March 2026 for web, then Windows and Mac, completing by April end. No admin action required; features enabled by default for Copilot users.', tags: ['feature-update', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'declarative'] },
@@ -792,7 +793,7 @@
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Agent governance & management?</span> → Copilot Control System + admin centers</p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Agent governance & management?</span> → Agent 365 + Copilot Control System</p>
                         </div>
                       </div>
                     </div>
@@ -852,6 +853,14 @@
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-green-600" />
                               <span>Core Microsoft 365 Copilot agent experiences are often covered for licensed users</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
+                              <DollarSign className="w-4 h-4 text-blue-600" />
+                              <span>Agent 365 adds enterprise agent governance — <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">see current pricing</a></span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
+                              <DollarSign className="w-4 h-4 text-indigo-600" />
+                              <span>Microsoft 365 E7 Frontier Suite bundles Copilot, Agent 365, Entra, and E5 security — <a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">see current pricing</a></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-yellow-600" />
@@ -927,6 +936,14 @@
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
                         <p className="font-semibold text-green-800 mb-1">Often covered by existing Copilot licensing:</p>
                         <p className="text-gray-700 dark:text-gray-200 text-xs">Researcher, Analyst, Agent Builder, and many agents published to Microsoft 365 Copilot for licensed users</p>
+                      </div>
+                      <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded">
+                        <p className="font-semibold text-blue-800 mb-1"><a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">Agent 365</a> — enterprise agent governance:</p>
+                        <p className="text-gray-700 dark:text-gray-200 text-xs">Control plane for observing, securing, and governing agents at scale via Admin Center, Defender, Entra, and Purview</p>
+                      </div>
+                      <div className="p-3 bg-indigo-50 dark:bg-indigo-950/30 rounded">
+                        <p className="font-semibold text-indigo-800 mb-1"><a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">Microsoft 365 E7 Frontier Suite</a>:</p>
+                        <p className="text-gray-700 dark:text-gray-200 text-xs">Bundles M365 Copilot, Agent 365, Entra Suite, and M365 E5 security (Defender, Intune, Purview) for comprehensive agent + user protection</p>
                       </div>
                       <div className="p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded">
                         <p className="font-semibold text-yellow-800 mb-1">Additional licensing or consumption may apply:</p>
@@ -1075,7 +1092,7 @@
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Govern from Day One</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Plan ownership, sharing, audit, DLP, and lifecycle management with Copilot Control System and Power Platform controls as you scale.</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Plan ownership, sharing, audit, DLP, and lifecycle management with Agent 365 and Copilot Control System as you scale. Consider Microsoft 365 E7 for a unified Copilot + governance + security bundle.</p>
                   </div>
                 </div>
               </div>
@@ -1261,10 +1278,10 @@
                     })}
                     
                     <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/[0.08]">
-                      <a href="https://learn.microsoft.com/en-us/microsoft-365/admin/manage/agent-365-overview" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2.5 text-xs text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg transition-colors">
+                      <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2.5 text-xs text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg transition-colors">
                         <Shield className="w-3.5 h-3.5" />
                         <div className="flex-1 min-w-0">
-                          <span>Agent 365 Governance</span>
+                          <span>Agent 365 — Control Plane</span>
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <span title="Microsoft FastTrack assistance coming soon for this agent type" className="inline-flex items-center gap-0.5 text-[9px] text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-400/10 border border-amber-100 dark:border-amber-400/20 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap leading-none">
                               <Zap className="w-2 h-2" />
