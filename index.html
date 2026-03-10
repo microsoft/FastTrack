@@ -68,7 +68,9 @@
         const TrendingUp = ({ className, ...props }) => <i data-lucide="trending-up" className={className} {...props}></i>;
         const Clock = ({ className, ...props }) => <i data-lucide="clock" className={className} {...props}></i>;
         const DollarSign = ({ className, ...props }) => <i data-lucide="dollar-sign" className={className} {...props}></i>;
+        const GitBranch = ({ className, ...props }) => <i data-lucide="git-branch" className={className} {...props}></i>;
         const Lightbulb = ({ className, ...props }) => <i data-lucide="lightbulb" className={className} {...props}></i>;
+        const Layers = ({ className, ...props }) => <i data-lucide="layers" className={className} {...props}></i>;
         const Search = ({ className, ...props }) => <i data-lucide="search" className={className} {...props}></i>;
         const BarChart3 = ({ className, ...props }) => <i data-lucide="bar-chart-3" className={className} {...props}></i>;
         const ArrowRight = ({ className, ...props }) => <i data-lucide="arrow-right" className={className} {...props}></i>;
@@ -769,6 +771,10 @@
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Multi-step personal tasks or delegated knowledge work?</span> → Copilot Cowork <span className="text-xs text-orange-500 font-medium">(Frontier — Late March 2026)</span></p>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
                           <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Single site/dept knowledge?</span> → SharePoint agents</p>
                         </div>
                         <div className="flex items-start gap-2">
@@ -809,7 +815,7 @@
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="bg-green-50 dark:bg-green-950/30 rounded p-3">
                           <p className="font-semibold text-green-800 mb-1">No technical skills needed:</p>
-                          <p className="text-sm text-gray-700 dark:text-gray-200">Researcher, Analyst, SharePoint agents, Agent Builder</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-200">Researcher, Analyst, SharePoint agents, Agent Builder, Copilot Cowork</p>
                         </div>
                         <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded p-3">
                           <p className="font-semibold text-yellow-800 mb-1">Some IT knowledge helpful:</p>
@@ -836,6 +842,10 @@
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <Clock className="w-4 h-4 text-green-600" />
                               <span>Researcher and Analyst: Immediate once enabled</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
+                              <Clock className="w-4 h-4 text-green-600" />
+                              <span>Copilot Cowork: Immediate for Frontier-licensed users <span className="text-xs text-orange-500 font-medium">(Late March 2026)</span></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <Clock className="w-4 h-4 text-green-600" />
@@ -887,8 +897,117 @@
                           <ArrowRight className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                           <span className="font-semibold text-gray-800 dark:text-gray-100">Scale Up</span>
                         </div>
-                         <p className="text-xs text-gray-600 dark:text-gray-300 mt-3">Start with built-in value like Researcher, Analyst, or SharePoint agents; prove adoption with Agent Builder; then scale to Copilot Studio or the Toolkit when you need broader deployment, actions, governance, or external channels. FastTrack is available to help with deployment planning, governance, and adoption.</p>
+                         <p className="text-xs text-gray-600 dark:text-gray-300 mt-3">Start with Copilot Cowork and built-in experiences like Researcher, Analyst, or SharePoint agents — these are the fastest way to demonstrate personal productivity value. Prove adoption with Agent Builder, then scale to Copilot Studio or the Toolkit when you need repeatable multi-user processes, compliance guardrails, governance, or external channels. <span className="font-semibold">Think of Cowork as the front door — and structured agents as the deeper rooms your organization will explore once inside.</span> FastTrack can help with deployment planning, change management, and adoption at every stage.</p>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              {/* Cowork vs. Structured Agents */}
+              <div className="bg-white dark:bg-transparent rounded-xl border border-gray-100 dark:border-transparent p-8">
+                <div className="bg-gray-50 dark:bg-white/[0.03] rounded-xl p-6 border border-gray-200 dark:border-white/[0.08]">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                  <Layers className="w-7 h-7 text-gray-600 dark:text-gray-300" />
+                  Cowork vs. Structured Agents: Choosing the Right Approach
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">With Copilot Cowork arriving for Frontier companies in late March 2026, customers need clear guidance on when to use adaptive AI delegation vs. structured agent automation.</p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border-2 border-purple-500/30">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Zap className="w-5 h-5 text-purple-500" />
+                      <h4 className="font-bold text-gray-900 dark:text-white">Adaptive — Copilot Cowork</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 dark:text-gray-200 mb-3">Open-ended delegation for personal productivity and knowledge work. End-user-led, multi-step reasoning with autonomous task execution.</p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Long-running research, analysis, and content creation</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Tasks where the approach needs to adapt as new info emerges</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Individual productivity — "do this for me while I focus on something else"</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Users set the goal; Cowork determines the plan and steps</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border-2 border-blue-500/30">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Shield className="w-5 h-5 text-blue-500" />
+                      <h4 className="font-bold text-gray-900 dark:text-white">Structured — Agent Builder, Studio, SharePoint</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 dark:text-gray-200 mb-3">Predefined flows with guardrails for business process automation. IT/admin-led with connectors, governance, and consistent behavior.</p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Compliance-sensitive workflows (HR, Legal, Finance)</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Repeatable, multi-user processes that need consistency</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Governed, IT-controlled deployments with defined scope</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <ArrowRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">Admins define the flow; agents execute within guardrails</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border border-gray-200 dark:border-white/[0.08]">
+                  <div className="flex items-center gap-2 mb-3">
+                    <GitBranch className="w-5 h-5 text-green-500" />
+                    <h4 className="font-bold text-gray-900 dark:text-white">The Composability Advantage</h4>
+                  </div>
+                  <p className="text-sm text-gray-700 dark:text-gray-200 mb-3">Cowork and structured agents are not mutually exclusive — they are composable. Copilot Studio agents can be invoked <span className="font-semibold">within</span> a Cowork plan, enabling sophisticated workflows where:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="bg-purple-50 dark:bg-purple-950/20 rounded p-3 text-center">
+                      <p className="font-semibold text-purple-800 dark:text-purple-300 text-sm">Cowork</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300 mt-1">Handles open-ended orchestration and reasoning</p>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <ArrowRight className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded p-3 text-center">
+                      <p className="font-semibold text-blue-800 dark:text-blue-300 text-sm">Studio Agent</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300 mt-1">Handles structured subprocesses within the plan</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">Don't think of it as "pick one" — combining Cowork's adaptive reasoning with Studio's structured guardrails lets you get the best of both worlds.</p>
+                </div>
+
+                <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border border-gray-200 dark:border-white/[0.08] mt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Target className="w-5 h-5 text-orange-500" />
+                    <h4 className="font-bold text-gray-900 dark:text-white">Getting the Most from Copilot Cowork</h4>
+                  </div>
+                  <p className="text-sm text-gray-700 dark:text-gray-200 mb-3">To see real value from Cowork, invest in these three areas as part of your rollout:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                    <div className="bg-orange-50 dark:bg-orange-950/20 rounded p-3">
+                      <p className="font-semibold text-orange-800 dark:text-orange-300 mb-1">Build Trust in Delegation</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300">Encourage your team to delegate multi-step tasks and let go of manual control — start small, then expand as confidence grows</p>
+                    </div>
+                    <div className="bg-orange-50 dark:bg-orange-950/20 rounded p-3">
+                      <p className="font-semibold text-orange-800 dark:text-orange-300 mb-1">Learn Prompt-to-Plan Thinking</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300">Identify which tasks benefit most from delegation and practice describing outcomes clearly so Cowork can plan effectively</p>
+                    </div>
+                    <div className="bg-orange-50 dark:bg-orange-950/20 rounded p-3">
+                      <p className="font-semibold text-orange-800 dark:text-orange-300 mb-1">Prepare IT for Governance</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300">Review Cowork's audit and transparency features early so your IT team is confident enabling it broadly across the organization</p>
                     </div>
                   </div>
                 </div>
@@ -915,6 +1034,9 @@
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
                         <p className="font-semibold text-green-800">Immediate: Researcher and Analyst</p>
                       </div>
+                      <div className="p-3 bg-purple-50 dark:bg-purple-950/30 rounded">
+                        <p className="font-semibold text-purple-800">Immediate: Copilot Cowork <span className="text-xs font-normal">(Frontier — Late March 2026)</span></p>
+                      </div>
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
                         <p className="font-semibold text-green-800">Minutes to hours: SharePoint agents</p>
                       </div>
@@ -936,6 +1058,10 @@
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
                         <p className="font-semibold text-green-800 mb-1">Often covered by existing Copilot licensing:</p>
                         <p className="text-gray-700 dark:text-gray-200 text-xs">Researcher, Analyst, Agent Builder, and many agents published to Microsoft 365 Copilot for licensed users</p>
+                      </div>
+                      <div className="p-3 bg-purple-50 dark:bg-purple-950/30 rounded">
+                        <p className="font-semibold text-purple-800 mb-1">Copilot Cowork:</p>
+                        <p className="text-gray-700 dark:text-gray-200 text-xs">Available through the Frontier program for Microsoft 365 Copilot licensed users. Check current licensing details for Cowork availability and metered usage.</p>
                       </div>
                       <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded">
                         <p className="font-semibold text-blue-800 mb-1"><a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">Agent 365</a> — enterprise agent governance:</p>
@@ -1023,6 +1149,40 @@
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">SCENARIO</p>
+                        <p className="font-bold text-gray-900 dark:text-white">Long-running research, drafting, or multi-step personal task</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">RECOMMENDATION</p>
+                        <p className="font-bold text-gray-900 dark:text-white text-lg">Copilot Cowork</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-200">Delegate open-ended work that benefits from adaptive reasoning — Cowork runs in the background while you focus elsewhere</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border border-gray-200 dark:border-white/[0.08] rounded-lg p-4 bg-gray-50 dark:bg-white/[0.03]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">SCENARIO</p>
+                        <p className="font-bold text-gray-900 dark:text-white">Orchestrated workflow combining personal delegation with structured business logic</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">RECOMMENDATION</p>
+                        <p className="font-bold text-gray-900 dark:text-white text-lg">Cowork + Copilot Studio agent</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-200">Cowork handles open-ended reasoning and orchestration while Studio agents execute governed subprocesses — the composability advantage</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border border-gray-200 dark:border-white/[0.08] rounded-lg p-4 bg-gray-50 dark:bg-white/[0.03]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">SCENARIO</p>
                         <p className="font-bold text-gray-900 dark:text-white">Internal IT helpdesk with ServiceNow</p>
                       </div>
                       <div>
@@ -1079,20 +1239,28 @@
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">📌 Key Takeaways</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Start with Built-In Value</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Use Researcher, Analyst, and SharePoint agents to prove business value before you build.</p>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">🚪 Use Cowork as the Front Door</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Copilot Cowork is the easiest on-ramp for individual users to see immediate value. Once engaged, they will naturally want to explore structured agents for team and business processes.</p>
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Then Use Agent Builder</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Create lightweight personal or team agents first, then copy successful patterns into Copilot Studio as demand grows.</p>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Start with Built-In Value</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Use Cowork, Researcher, Analyst, and SharePoint agents to prove personal and team productivity value before investing in custom builds.</p>
+                  </div>
+                  <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">🔧 Right Tool for the Right Job</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Cowork excels at personal, adaptive work. Studio agents shine for repeatable, governed, multi-user processes. Help customers understand the spectrum — and the composability between them.</p>
+                  </div>
+                  <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Then Scale with Agent Builder & Studio</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Create lightweight agents with Agent Builder, then scale successful patterns into Copilot Studio for compliance, governance, and broader deployment.</p>
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Match Complexity to Risk</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Choose the simplest platform that still meets your integration, security, compliance, and support needs.</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Choose the simplest platform that still meets your integration, security, compliance, and support needs. Don't over-engineer what Cowork or Agent Builder can handle.</p>
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Govern from Day One</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Plan ownership, sharing, audit, DLP, and lifecycle management with Agent 365 and Copilot Control System as you scale. Consider Microsoft 365 E7 for a unified Copilot + governance + security bundle.</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Plan ownership, sharing, audit, DLP, and lifecycle management with Agent 365 and Copilot Control System. Consider Microsoft 365 E7 for unified Copilot + governance + security.</p>
                   </div>
                 </div>
               </div>
