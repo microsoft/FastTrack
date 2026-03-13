@@ -42,10 +42,10 @@ Claude, GPT, and Gemini don't just have different training data — they have fu
 
 ## ⚡ Quick Install
 
-Open a terminal in VS Code and run:
+In Copilot CLI, run:
 
-```bash
-copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-agents/Council
+```
+/plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-agents/Council
 ```
 
 That's it. The agent is ready to use.
@@ -71,8 +71,8 @@ Or place it in a project: `.github/agents/council.agent.md`
 
 **Verify:**
 
-```bash
-copilot plugin list
+```
+/plugin list
 ```
 
 ### Launch
@@ -385,14 +385,14 @@ Over time, this becomes a searchable decision log for your team.
 
 ## Updating
 
-```bash
-copilot plugin update council
+```
+/plugin update council
 ```
 
 ## Uninstalling
 
-```bash
-copilot plugin uninstall council
+```
+/plugin uninstall council
 ```
 
 ---
@@ -402,7 +402,7 @@ copilot plugin uninstall council
 - **[GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) installed** — the `copilot` command must be available in your terminal. This is a separate tool from the Copilot extension in VS Code.
 - Active Copilot subscription with access to multiple models
 - Works on macOS, Linux, and Windows
-- Plugin support in Copilot CLI (for `copilot plugin install`)
+- Plugin support in Copilot CLI (for `/plugin install`)
 
 ---
 
