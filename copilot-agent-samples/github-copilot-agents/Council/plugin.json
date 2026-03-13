@@ -1,0 +1,26 @@
+{
+  "name": "council",
+  "description": "Multi-model deliberation — Claude, GPT & Gemini debate any question. Generates decision packages with interactive HTML dashboards.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Alejandro Lopez",
+    "email": "alejandro.lopez@microsoft.com"
+  },
+  "homepage": "https://github.com/microsoft/FastTrack/tree/main/copilot-agent-samples/github-copilot-agents/Council",
+  "repository": "https://github.com/microsoft/FastTrack",
+  "license": "MIT",
+  "keywords": [
+    "council",
+    "multi-model",
+    "deliberation",
+    "debate",
+    "claude",
+    "gpt",
+    "gemini",
+    "decision-making",
+    "dashboard"
+  ],
+  "agents": [
+    "./agents/council.agent.md"
+  ]
+}

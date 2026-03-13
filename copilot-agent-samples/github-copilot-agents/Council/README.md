@@ -6,6 +6,7 @@ Get Claude, GPT, and Gemini to debate any question simultaneously — each bring
 
 ![Council Flow](https://img.shields.io/badge/Models-Claude_%7C_GPT_%7C_Gemini-blue?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Copilot_CLI-black?style=for-the-badge)
+[![Install in Copilot CLI](https://img.shields.io/badge/Copilot_CLI-Install_Plugin-2088FF?style=for-the-badge&logo=github&logoColor=white)](#-quick-install)
 
 ---
 
@@ -39,55 +40,52 @@ Claude, GPT, and Gemini don't just have different training data — they have fu
 
 ---
 
-## Quick Start
+## ⚡ Quick Install
 
-### 1. Install the Agent
+Open a terminal in VS Code and run:
 
-Copy `council.agent.md` to your global Copilot CLI agents directory:
+```bash
+copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-agents/Council
+```
+
+That's it. The agent is ready to use.
+
+<details>
+<summary><strong>Alternative: Manual install (copy file)</strong></summary>
+
+Copy `agents/council.agent.md` to your global Copilot CLI agents directory:
 
 ```bash
 # macOS / Linux
 mkdir -p ~/.copilot/agents
-cp council.agent.md ~/.copilot/agents/
+cp agents/council.agent.md ~/.copilot/agents/
 
 # Windows (PowerShell)
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.copilot\agents"
-Copy-Item council.agent.md "$env:USERPROFILE\.copilot\agents\"
-
-# Windows (Command Prompt)
-if not exist "%USERPROFILE%\.copilot\agents" mkdir "%USERPROFILE%\.copilot\agents"
-copy council.agent.md %USERPROFILE%\.copilot\agents\
+Copy-Item agents\council.agent.md "$env:USERPROFILE\.copilot\agents\"
 ```
-
-> **Note:** The `~/.copilot/agents/` directory is specific to the Copilot CLI. It is **not** the same as VS Code's extensions or settings folders. If you don't see this directory, create it — the CLI will pick up any `.agent.md` files placed here.
 
 Or place it in a project: `.github/agents/council.agent.md`
 
-### 2. Launch Copilot CLI
+</details>
 
-Open a terminal and run:
+**Verify:**
 
 ```bash
-copilot
+copilot plugin list
 ```
 
-### 3. Activate the Council Agent
+### Launch
 
-```
-/agent
-```
-
-This opens the **Custom Agents** picker. Select `🏛️ AI Council · user` from the list and press Enter.
-
-### 4. Ask a Question
-
-Once the council agent is active, type your question as a normal prompt:
+1. Open a terminal and run `copilot`
+2. Run `/agent` and select `🏛️ AI Council` from the picker
+3. Ask your question:
 
 ```
 Should we open-source our internal SDK?
 ```
 
-That's it. Three models will deliberate and you'll get a synthesized report with consensus points, disagreements, and a recommendation.
+Three models will deliberate and you'll get a synthesized report with consensus points, disagreements, and a recommendation.
 
 > **Tip:** To switch back to the default agent later, run `/agent` again and select `Default`.
 
@@ -315,7 +313,7 @@ The magic is that Copilot CLI's agent system natively supports `model:` override
 
 ### Change the models
 
-Edit `council.agent.md` and update the model table. Available models in Copilot CLI include:
+Edit `agents/council.agent.md` and update the model table. Available models in Copilot CLI include:
 
 ```
 claude-opus-4.6          claude-sonnet-4.5       claude-haiku-4.5
@@ -327,7 +325,7 @@ Use `/model` in Copilot CLI to see the current full list.
 
 ### Add your own domain presets
 
-The `--domain` flag is fully dynamic — the agent reasons about the best personas. But if you want consistent personas for a domain, you can add a section to the agent file:
+The `--domain` flag is fully dynamic — the agent reasons about the best personas. But if you want consistent personas for a domain, you can add a section to the agent file (`agents/council.agent.md`):
 
 ```markdown
 ## Pinned Domain Personas
@@ -339,7 +337,7 @@ When `--domain devsecops` is used, always assign:
 
 ### Adjust response length
 
-The default cap is 400 words per model. Edit the sub-agent prompt template in `council.agent.md` to change this.
+The default cap is 400 words per model. Edit the sub-agent prompt template in `agents/council.agent.md` to change this.
 
 ---
 
@@ -360,11 +358,13 @@ The default cap is 400 words per model. Edit the sub-agent prompt template in `c
 ## File Structure
 
 ```
-~/.copilot/agents/
-  council.agent.md          # The only file you need
+Council/
+  plugin.json                 # Plugin manifest
+  agents/
+    council.agent.md          # The agent definition
 ```
 
-That's it. One file. The personas, depth modes, deliverables, and all behavior are handled dynamically by the orchestrator.
+That's it. The plugin system handles the rest.
 
 ### What Gets Generated (with `--save`)
 
@@ -383,11 +383,26 @@ Over time, this becomes a searchable decision log for your team.
 
 ---
 
+## Updating
+
+```bash
+copilot plugin update council
+```
+
+## Uninstalling
+
+```bash
+copilot plugin uninstall council
+```
+
+---
+
 ## Requirements
 
 - **[GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/about-copilot-cli) installed** — the `copilot` command must be available in your terminal. This is a separate tool from the Copilot extension in VS Code.
 - Active Copilot subscription with access to multiple models
 - Works on macOS, Linux, and Windows
+- Plugin support in Copilot CLI (for `copilot plugin install`)
 
 ---
 
@@ -397,7 +412,7 @@ Over time, this becomes a searchable decision log for your team.
 A: Yes — each council session uses 4+ premium requests (one per model + synthesis). `--depth deep` uses 10-12. Use `--depth quick` to conserve.
 
 **Q: Can I change which models are on the council?**
-A: Yes — edit the model table in `council.agent.md`. You could even run three versions of the same model family at different sizes (e.g., Claude Haiku vs Sonnet vs Opus).
+A: Yes — edit the model table in `agents/council.agent.md`. You could even run three versions of the same model family at different sizes (e.g., Claude Haiku vs Sonnet vs Opus).
 
 **Q: Can I use this for code review?**
 A: Absolutely. Try: `Review the auth module in src/auth/ for security issues --domain devsecops`
@@ -406,7 +421,7 @@ A: Absolutely. Try: `Review the auth module in src/auth/ for security issues --d
 A: The council will proceed with the available models and note which member was absent.
 
 **Q: Can I add more than 3 models?**
-A: Yes — add more seats to the model table in the agent file. Keep in mind this increases cost and response time proportionally.
+A: Yes — add more seats to the model table in `agents/council.agent.md`. Keep in mind this increases cost and response time proportionally.
 
 ---
 
