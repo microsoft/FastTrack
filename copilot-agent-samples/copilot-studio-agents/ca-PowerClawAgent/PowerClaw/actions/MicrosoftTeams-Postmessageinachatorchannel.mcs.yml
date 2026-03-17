@@ -1,0 +1,21 @@
+mcs.metadata:
+  componentName: Microsoft Teams - Post message in a chat or channel
+kind: TaskDialog
+modelDisplayName: Post message in a chat or channel
+modelDescription: Posts a message to a chat or a channel
+outputs:
+  - propertyName: conversationId
+
+  - propertyName: id
+
+  - propertyName: messageLink
+
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: auto_agent_BmTJh.shared_teams.06d9dd85c77a4d3ebb43ef677f5e5101
+  connectionProperties:
+    mode: Invoker
+
+  operationId: PostMessageToConversation
+
+outputMode: All

@@ -1,0 +1,17 @@
+mcs.metadata:
+  componentName: Office 365 Outlook - Send an email (V2)
+kind: TaskDialog
+modelDisplayName: Send an email (V2)
+modelDescription: This operation sends an email message.
+outputs:
+  - propertyName: Response
+
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: auto_agent_BmTJh.shared_office365.shared-office365-62963f75-2bd1-4792-b902-260a2a22f3c9
+  connectionProperties:
+    mode: Invoker
+
+  operationId: SendEmailV2
+
+outputMode: All

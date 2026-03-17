@@ -1,0 +1,30 @@
+﻿jsonFileName: workflows/HeartbeatFlow-04cf2235-af1c-f111-88b1-6045bd0079f1/workflow.json
+workflowId: 04cf2235-af1c-f111-88b1-6045bd0079f1
+name: Heartbeat Flow
+type: 1
+description: Create a trigger to automatically call your copilot repeatedly
+subprocess: false
+category: 5
+mode: 0
+scope: 4
+onDemand: false
+triggerOnCreate: false
+triggerOnDelete: false
+asyncAutodelete: false
+syncWorkflowLogOnFailure: false
+stateCode: 1
+statusCode: 2
+runAs: 1
+isTransacted: true
+introducedVersion: 1.0.0.0
+isCustomizable:
+  value: true
+  canBeChanged: true
+  managedPropertyLogicalName: iscustomizableanddeletable
+businessProcessType: 0
+isCustomProcessingStepAllowedForOtherPublishers:
+  value: true
+  canBeChanged: true
+  managedPropertyLogicalName: canbedeleted
+modernFlowType: 0
+primaryEntity: none

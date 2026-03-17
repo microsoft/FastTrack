@@ -1,0 +1,12 @@
+mcs.metadata:
+  componentName: Recurring Copilot Trigger
+  description: Create a trigger to automatically call your copilot repeatedly
+kind: ExternalTriggerConfiguration
+externalTriggerSource:
+  kind: WorkflowExternalTrigger
+  flowId: 04cf2235-af1c-f111-88b1-6045bd0079f1
+
+extensionData:
+  flowName: 9b3a2849-c91d-9e3b-9ea7-fa3af92e218f
+  flowUrl: /providers/Microsoft.ProcessSimple/environments/58c6612f-ce8b-e9b5-9d10-de8d8f291502/flows/9b3a2849-c91d-9e3b-9ea7-fa3af92e218f
+  triggerConnectionType: Schedule

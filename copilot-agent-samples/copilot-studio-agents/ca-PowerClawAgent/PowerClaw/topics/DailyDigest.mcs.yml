@@ -1,0 +1,41 @@
+mcs.metadata:
+  componentName: Daily Digest
+  description: Provides an on-demand daily briefing of calendar, tasks, and email highlights when the user asks.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Daily Digest
+    includeInOnSelectIntent: true
+    triggerQueries:
+      - Give me my daily briefing
+      - What's on my plate today
+      - Daily digest
+      - Morning brief
+      - What do I have today
+      - Summarize my day
+      - What's my schedule
+      - Brief me
+      - What should I focus on today
+      - Show me my priorities
+
+  actions:
+    - kind: SendActivity
+      id: sendMessage_digest_intro
+      activity: "Let me pull together your briefing — checking your calendar, tasks, and inbox..."
+
+    - kind: SearchAndSummarizeContent
+      id: generativeAnswer_digest
+      autoSend: true
+      responseCaptureType: FullResponse
+      userInput: =System.Activity.Text
+      additionalInstructions: >-
+        Please provide a comprehensive daily briefing for me. Include:
+        1. **Today's Calendar**: List all meetings for today with times and attendees
+        2. **Overdue Tasks**: Check Planner for any overdue tasks
+        3. **Tasks Due Today**: List tasks due today
+        4. **Priority Emails**: Summarize any unread urgent or important emails
+        5. **Conflicts or Concerns**: Flag any scheduling conflicts or items needing immediate attention
+
+        Format the response as a clean, scannable briefing with emoji indicators (🟢 good, 🟡 attention needed, 🔴 urgent).

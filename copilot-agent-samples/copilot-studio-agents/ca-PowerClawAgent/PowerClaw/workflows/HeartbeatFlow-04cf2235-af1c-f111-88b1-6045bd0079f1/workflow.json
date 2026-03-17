@@ -1,0 +1,763 @@
+﻿{
+  "properties": {
+    "connectionReferences": {
+      "shared_microsoftcopilotstudio": {
+        "api": {
+          "name": "shared_microsoftcopilotstudio"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "cr0b1_sharedmicrosoftcopilotstudio_d1a4f"
+        },
+        "runtimeSource": "embedded"
+      },
+      "shared_sharepointonline": {
+        "api": {
+          "name": "shared_sharepointonline"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedsharepointonline_77d8f"
+        },
+        "runtimeSource": "embedded"
+      },
+      "shared_office365": {
+        "api": {
+          "name": "shared_office365"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedoffice365_9be30"
+        },
+        "runtimeSource": "embedded"
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "Recurrence": {
+          "type": "Recurrence",
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 30
+          },
+          "metadata": {
+            "operationMetadataId": "477c5e0d-a600-48af-b86b-409a6b19d573"
+          }
+        }
+      },
+      "actions": {
+        "Sends_a_prompt_to_the_specified_copilot_for_processing": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "Copilot": "auto_agent_BmTJh",
+              "body/message": "Use content from @{triggerBody()}"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_microsoftcopilotstudio",
+              "operationId": "ExecuteCopilot",
+              "connectionName": "shared_microsoftcopilotstudio"
+            }
+          },
+          "runAfter": {
+            "Scope:_Cleanup": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "367c7f45-be4f-4858-a717-34e5219706c4"
+          }
+        },
+        "Scope:_Execution": {
+          "type": "Scope",
+          "actions": {
+            "Get_file_content:_Soul.md": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "id": "%252fShared%2bDocuments%252fsoul.md",
+                  "inferContentType": true
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetFileContent",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "metadata": {
+                "%252fShared%2bDocuments%252fsoul.md": "/Shared Documents/soul.md"
+              }
+            },
+            "Get_file_content:_User.md": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "id": "%252fShared%2bDocuments%252fuser.md",
+                  "inferContentType": true
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetFileContent",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Get_file_content:_Soul.md": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "%252fShared%2bDocuments%252fuser.md": "/Shared Documents/user.md"
+              }
+            },
+            "Get_file_content:_Agents.md": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "id": "%252fShared%2bDocuments%252fagents.md",
+                  "inferContentType": true
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetFileContent",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Get_file_content:_User.md": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "%252fShared%2bDocuments%252fagents.md": "/Shared Documents/agents.md"
+              }
+            },
+            "Get_file_content:_Tools.md": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "id": "%252fShared%2bDocuments%252ftools.md",
+                  "inferContentType": true
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetFileContent",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Get_file_content:_Agents.md": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "%252fShared%2bDocuments%252ftools.md": "/Shared Documents/tools.md"
+              }
+            },
+            "Compose_PromptPrefix": {
+              "type": "Compose",
+              "inputs": "@{body(\u0027Get_file_content:_Soul.md\u0027)}\n@{body(\u0027Get_file_content:_User.md\u0027)}\n@{body(\u0027Get_file_content:_Agents.md\u0027)}\n@{body(\u0027Get_file_content:_Tools.md\u0027)}",
+              "runAfter": {
+                "Get_file_content:_Tools.md": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Do_until:_Retry_Agent_Loop": {
+              "type": "Until",
+              "expression": "@equals(variables(\u0027AgentSuccess\u0027),true)",
+              "limit": {
+                "count": 4,
+                "timeout": "PT1H"
+              },
+              "actions": {
+                "Execute_Agent_and_wait": {
+                  "type": "OpenApiConnectionWebhook",
+                  "inputs": {
+                    "parameters": {
+                      "Copilot": "auto_agent_BmTJh",
+                      "body/message": "[HEARTBEAT EVENT TRIGGERED]\nTIMESTAMP: @{utcNow()}\n\nRECENT MEMORY (LAST 10 ACTIONS):\n@{body(\u0027Select:_Summary\u0027)}\n\nLATEST CONTEXT PAYLOAD:\n@{outputs(\u0027Compose_PromptPrefix\u0027)}"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_microsoftcopilotstudio",
+                      "operationId": "ExecuteCopilotAsyncV2",
+                      "connectionName": "shared_microsoftcopilotstudio"
+                    }
+                  }
+                },
+                "Condition:_Check_Agent_Output": {
+                  "type": "If",
+                  "expression": {
+                    "and": [
+                      {
+                        "equals": [
+                          "@empty(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027])",
+                          false
+                        ]
+                      },
+                      {
+                        "contains": [
+                          "@outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027]",
+                          "{"
+                        ]
+                      }
+                    ]
+                  },
+                  "actions": {
+                    "Compose:_Sanitize_markdown": {
+                      "type": "Compose",
+                      "inputs": "@replace(substring(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], indexOf(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027{\u0027), add(sub(lastIndexOf(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027}\u0027), indexOf(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027{\u0027)), 1)), decodeUriComponent(\u0027%C2%A0\u0027), \u0027 \u0027)"
+                    },
+                    "Parse_JSON_-_Execute_Agent": {
+                      "type": "ParseJson",
+                      "inputs": {
+                        "content": "@outputs(\u0027Compose:_Sanitize_markdown\u0027)",
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "thoughts": {
+                              "type": "string",
+                              "description": "The agent\u0027s reasoning during the heartbeat."
+                            },
+                            "mcpActionsTaken": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "List of MCP Graph queries executed (e.g., \u0027Checked Calendar\u0027, \u0027Sent Teams Message\u0027)."
+                            },
+                            "memoryUpdateSummary": {
+                              "type": "string",
+                              "description": "A concise summary to be logged in the SharePoint Memory List."
+                            },
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "idle",
+                                "proactive_message_sent",
+                                "error"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "thoughts",
+                            "mcpActionsTaken",
+                            "memoryUpdateSummary",
+                            "status"
+                          ]
+                        }
+                      },
+                      "runAfter": {
+                        "Compose:_Sanitize_markdown": [
+                          "Succeeded"
+                        ]
+                      }
+                    },
+                    "Set_variable:_AgentSuccess_to_True": {
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "AgentSuccess",
+                        "value": true
+                      },
+                      "runAfter": {
+                        "Create_item:_Log_Success_in_Memory": [
+                          "Succeeded"
+                        ]
+                      }
+                    },
+                    "Create_item:_Log_Success_in_Memory": {
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "parameters": {
+                          "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                          "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                          "item/EventType/Value": "MemoryUpdate",
+                          "item/Summary": "@body(\u0027Parse_JSON_-_Execute_Agent\u0027)[\u0027memoryUpdateSummary\u0027]",
+                          "item/FullContextJSON": "@outputs(\u0027Compose:_Sanitize_markdown\u0027)"
+                        },
+                        "host": {
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                          "operationId": "PostItem",
+                          "connectionName": "shared_sharepointonline"
+                        }
+                      },
+                      "runAfter": {
+                        "Parse_JSON_-_Execute_Agent": [
+                          "Succeeded"
+                        ]
+                      }
+                    }
+                  },
+                  "else": {
+                    "actions": {
+                      "Create_item_-_Log_Fail": {
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "parameters": {
+                            "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                            "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                            "item/EventType/Value": "Error",
+                            "item/Summary": "PowerClaw executed successfully but failed to return a text response or JSON payload."
+                          },
+                          "host": {
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                            "operationId": "PostItem",
+                            "connectionName": "shared_sharepointonline"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Execute_Agent_and_wait": [
+                      "Succeeded"
+                    ]
+                  }
+                }
+              },
+              "runAfter": {
+                "Select:_Summary": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Get_items:_Check_memory_log": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                  "$orderby": "Created desc",
+                  "$top": 25
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Compose_PromptPrefix": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Select:_Summary": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs(\u0027Get_items:_Check_memory_log\u0027)?[\u0027body/value\u0027]",
+                "select": "@item()?[\u0027Summary\u0027]"
+              },
+              "runAfter": {
+                "Get_items:_Check_memory_log": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "runAfter": {
+            "Scope:_Initialize": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Scope:_Cleanup": {
+          "type": "Scope",
+          "actions": {
+            "Get_items_-_Release_Lock": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                  "$filter": "SettingName eq \u0027IsRunning\u0027"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "connectionName": "shared_sharepointonline"
+                }
+              }
+            },
+            "Update_item": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                  "id": "@first(outputs(\u0027Get_items_-_Release_Lock\u0027)?[\u0027body/value\u0027])?[\u0027ID\u0027]",
+                  "item/SettingValue": "false"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "PatchItem",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Get_items_-_Release_Lock": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Condition_-_Error_Logging": {
+              "type": "If",
+              "expression": {
+                "and": [
+                  {
+                    "not": {
+                      "equals": [
+                        "@actions(\u0027Scope:_Execution\u0027)?[\u0027status\u0027]",
+                        "Succeeded"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "actions": {
+                "Create_item:_Log_Error": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                      "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                      "item/EventType/Value": "Error",
+                      "item/Summary": "\u0022Heartbeat execution failed or timed out.\u0022",
+                      "item/FullContextJSON": "@string(result(\u0027Scope:_Execution\u0027))"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "operationId": "PostItem",
+                      "connectionName": "shared_sharepointonline"
+                    }
+                  }
+                }
+              },
+              "else": {
+                "actions": {}
+              },
+              "runAfter": {
+                "Update_item": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "runAfter": {
+            "Scope:_Execution": [
+              "Succeeded",
+              "TimedOut",
+              "Skipped",
+              "Failed"
+            ]
+          }
+        },
+        "Scope:_Initialize": {
+          "type": "Scope",
+          "actions": {
+            "Create_item": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                  "item/EventType/Value": "Heartbeat",
+                  "item/Summary": "@concat(\u0027Heartbeat attempt started at \u0027, utcNow())"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "PostItem",
+                  "connectionName": "shared_sharepointonline"
+                }
+              }
+            },
+            "Get_items:_Check_if_KillSwitch_or_IsRunning": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                  "$filter": "(SettingName eq \u0027KillSwitch\u0027 or SettingName eq \u0027IsRunning\u0027) and SettingValue eq \u0027true\u0027"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Create_item": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Condition:_Check_if_KillSwitch_or_IsRunning": {
+              "type": "If",
+              "expression": {
+                "and": [
+                  {
+                    "greater": [
+                      "@length(outputs(\u0027Get_items:_Check_if_KillSwitch_or_IsRunning\u0027)?[\u0027body/value\u0027])",
+                      0
+                    ]
+                  }
+                ]
+              },
+              "actions": {
+                "Log_heartbeat_status_to_memory_log": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                      "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                      "item/EventType/Value": "HeartbeatSkipped",
+                      "item/Summary": "\u0022Skipped due to active lock or kill switch\u0022"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "operationId": "PostItem",
+                      "connectionName": "shared_sharepointonline"
+                    }
+                  }
+                },
+                "Terminate": {
+                  "type": "Terminate",
+                  "inputs": {
+                    "runStatus": "Succeeded"
+                  },
+                  "runAfter": {
+                    "Log_heartbeat_status_to_memory_log": [
+                      "Succeeded"
+                    ]
+                  }
+                }
+              },
+              "else": {
+                "actions": {}
+              },
+              "runAfter": {
+                "Get_items:_Check_if_KillSwitch_or_IsRunning": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Get_items_-_Acquire_Lock_ID": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                  "$filter": "SettingName eq \u0027IsRunning\u0027"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Condition:_Check_if_KillSwitch_or_IsRunning": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Update_item_-_Set_Lock_": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                  "id": "@first(outputs(\u0027Get_items_-_Acquire_Lock_ID\u0027)?[\u0027body/value\u0027])?[\u0027ID\u0027]",
+                  "item/SettingValue": "true"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "PatchItem",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Get_items_-_Acquire_Lock_ID": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Get_items_-_MaxActionsPerHour": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                  "$filter": "SettingName eq \u0027MaxActionsPerHour\u0027"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Update_item_-_Set_Lock_": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Compose_Integer_-_MaxActionsPerHour": {
+              "type": "Compose",
+              "inputs": "@int(first(outputs(\u0027Get_items_-_MaxActionsPerHour\u0027)?[\u0027body/value\u0027])?[\u0027SettingValue\u0027])",
+              "runAfter": {
+                "Get_items_-_MaxActionsPerHour": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Get_items:_Rate_Limit_Query": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                  "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                  "$filter": "Timestamp ge \u0027@{addHours(utcNow(), -1)}\u0027 and (EventType eq \u0027ActionExecuted\u0027 or EventType eq \u0027ToolCalled\u0027 or EventType eq \u0027TaskCompleted\u0027)"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "connectionName": "shared_sharepointonline"
+                }
+              },
+              "runAfter": {
+                "Compose_Integer_-_MaxActionsPerHour": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Condition:_Rate_Limit_Condition": {
+              "type": "If",
+              "expression": {
+                "and": [
+                  {
+                    "greater": [
+                      "@length(outputs(\u0027Get_items:_Rate_Limit_Query\u0027)?[\u0027body/value\u0027])",
+                      "@outputs(\u0027Compose_Integer_-_MaxActionsPerHour\u0027)"
+                    ]
+                  }
+                ]
+              },
+              "actions": {
+                "Send_an_email_(V2)": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "emailMessage/To": "admin@M365CPI23966391.onmicrosoft.com",
+                      "emailMessage/Subject": "PowerClaw Rate Limit Breach",
+                      "emailMessage/Body": "\u003Cp class=\u0022editor-paragraph\u0022\u003EPowerClaw hit a rate limit \uD83D\uDE05\u003C/p\u003E",
+                      "emailMessage/Importance": "Normal"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                      "operationId": "SendEmailV2",
+                      "connectionName": "shared_office365"
+                    }
+                  },
+                  "runAfter": {
+                    "Update_item:_KillSwitch_to_True": [
+                      "Succeeded"
+                    ]
+                  }
+                },
+                "Terminate_:_Due_to_rate_limit": {
+                  "type": "Terminate",
+                  "inputs": {
+                    "runStatus": "Failed"
+                  },
+                  "runAfter": {
+                    "Send_an_email_(V2)": [
+                      "Succeeded"
+                    ]
+                  }
+                },
+                "Update_item:_KillSwitch_to_True": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                      "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                      "id": "@first(outputs(\u0027Get_items:_KillSwitch\u0027)?[\u0027body/value\u0027])?[\u0027ID\u0027]",
+                      "item/SettingValue": "true"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "operationId": "PatchItem",
+                      "connectionName": "shared_sharepointonline"
+                    }
+                  },
+                  "runAfter": {
+                    "Get_items:_KillSwitch": [
+                      "Succeeded"
+                    ]
+                  }
+                },
+                "Get_items:_KillSwitch": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                      "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                      "$filter": "SettingName eq \u0027KillSwitch\u0027"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "operationId": "GetItems",
+                      "connectionName": "shared_sharepointonline"
+                    }
+                  }
+                }
+              },
+              "else": {
+                "actions": {}
+              },
+              "runAfter": {
+                "Get_items:_Rate_Limit_Query": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable:_AgentSuccess": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Initialize_variable:_AgentSuccess": {
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "AgentSuccess",
+                "type": "boolean",
+                "value": false
+              }
+            ]
+          },
+          "runAfter": {}
+        }
+      },
+      "description": "Create a trigger to automatically call your copilot repeatedly"
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

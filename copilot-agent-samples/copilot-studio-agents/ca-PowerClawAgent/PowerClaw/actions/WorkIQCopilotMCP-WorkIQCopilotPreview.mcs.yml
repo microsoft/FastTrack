@@ -1,0 +1,14 @@
+mcs.metadata:
+  componentName: Work IQ Copilot MCP - Work IQ Copilot (Preview)
+kind: TaskDialog
+modelDisplayName: Work IQ Copilot (Preview)
+modelDescription: "Work IQ MCP server for Microsoft Copilot Search operations. This feature is in preview and is part of the Work IQ tools, providing shared work intelligence and actions for agents. Availability and capabilities are subject to change. Learn more: https://aka.ms/AboutWorkIQ"
+action:
+  kind: InvokeExternalAgentTaskAction
+  connectionReference: auto_agent_BmTJh.shared_a365copilotchatmcp.da070d1a1d8d4fd9997e4f0bf07723f0
+  connectionProperties:
+    mode: Invoker
+
+  operationDetails:
+    kind: ModelContextProtocolMetadata
+    operationId: mcp_m365copilot
