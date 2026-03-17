@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="powerclaw-rounded.png" width="120" />
+  <img src="./Images/powerclaw-rounded.png" width="120" />
 </p>
 <h1 align="center">PowerClaw Agent</h1>
 <p align="center"><strong>Your 24/7 AI Chief of Staff — Built Entirely on Microsoft 365</strong></p>
@@ -119,7 +119,7 @@ PowerClaw
 ```
 
 #### Icon
-<img src="powerclaw-rounded.png" width="75" />
+<img src="./Images/powerclaw-rounded.png" width="75" />
 
 #### Description
 ```
@@ -169,33 +169,33 @@ Instructions are embedded in the solution and dynamically loaded at runtime from
 ### Morning Work Briefing
 Start your day with an automated summary of today's calendar, pending tasks, and important emails — delivered before you even open Outlook.
 
-![Morning Work Briefing](Morning%20Work%20Briefing.png)
+![Morning Work Briefing](./Images/Morning%20Work%20Briefing.png)
 
 ### AI News Briefing on a Schedule
 Want the latest AI news in your inbox every morning at 8am? Just add a recurring calendar event. No Power Automate flow to build — just natural language.
 
-![AI News Brief Calendar Event](AINewsBriefMorning.png)
+![AI News Brief Calendar Event](./Images/AINewsBriefMorning.png)
 
 ### Research Task Execution via Kanban Board
 Add a task to the SharePoint board. PowerClaw picks it up, researches the topic, creates a Word document, saves it to OneDrive, and emails you a link — then moves the task to "Human Review."
 
-![Kanban Task Board](PowerclawKanbanTask.png)
+![Kanban Task Board](./Images/PowerclawKanbanTask.png)
 
-![Emailed Research Report](EmailedResearchReport.png)
+![Emailed Research Report](./Images/EmailedResearchReport.png)
 
-![Research Report Detail](ResearchReport2.png)
+![Research Report Detail](./Images/ResearchReport2.png)
 
 > 💡 Want a research report by tomorrow morning? Add it to your calendar for the time window you want it done — PowerClaw will execute during that window and email the deliverable with a link to the Word doc in your OneDrive for Business.
 
 ### Stay on Top of Product Changes
 Have PowerClaw send you a Roadmap Rundown on new Microsoft 365 product releases so you stay abreast of upcoming changes.
 
-![Roadmap Rundown](RoadmapRundown.png)
+![Roadmap Rundown](./Images/RoadmapRundown.png)
 
 ### Proactive Meeting Prep
 PowerClaw detects an upcoming meeting, checks the attendees, reviews recent emails, and sends you prep notes before the meeting starts.
 
-![Meeting Prep Details](MeetingPrepDetails.png)
+![Meeting Prep Details](./Images/MeetingPrepDetails.png)
 
 ## Version history
 | Date | Comments | Author |
