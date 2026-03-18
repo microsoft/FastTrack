@@ -1,0 +1,19 @@
+{
+  "name": "fasttrack-copilot-plugins",
+  "owner": {
+    "name": "Microsoft FastTrack",
+    "email": "ftgithub@microsoft.com"
+  },
+  "metadata": {
+    "description": "Copilot CLI plugins from the Microsoft FastTrack repository — agent templates and tools to accelerate Microsoft 365 Copilot adoption.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "council",
+      "description": "Multi-model deliberation — Claude, GPT & Gemini debate any question. Generates decision packages with interactive HTML dashboards.",
+      "version": "1.0.0",
+      "source": "copilot-agent-samples/github-copilot-agents/Council"
+    }
+  ]
+}
