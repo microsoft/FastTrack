@@ -316,7 +316,7 @@
                         "value": true
                       },
                       "runAfter": {
-                        "Condition:_Has_Task_Actions": [
+                        "Condition:_Has_Proposed_Memories": [
                           "Succeeded"
                         ]
                       }
@@ -387,6 +387,108 @@
                       },
                       "runAfter": {
                         "Create_item:_Log_Success_in_Memory": [
+                          "Succeeded"
+                        ]
+                      }
+                    },
+                    "Condition:_Has_Proposed_Memories": {
+                      "type": "If",
+                      "expression": {
+                        "and": [
+                          {
+                            "greater": [
+                              "@length(body('Parse_JSON_-_Execute_Agent')?['proposedMemories'])",
+                              0
+                            ]
+                          }
+                        ]
+                      },
+                      "actions": {
+                        "Apply_to_each:_Save_Memories": {
+                          "type": "Foreach",
+                          "foreach": "@body('Parse_JSON_-_Execute_Agent')?['proposedMemories']",
+                          "actions": {
+                            "Create_item:_Save_Memory": {
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "parameters": {
+                                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                                  "table": "e3c0c6fd-a67a-470f-967e-727f13814e52",
+                                  "item/Title": "@items('Apply_to_each:_Save_Memories')?['scopeKey']",
+                                  "item/MemoryType/Value": "@items('Apply_to_each:_Save_Memories')?['memoryType']",
+                                  "item/ScopeKey": "@items('Apply_to_each:_Save_Memories')?['scopeKey']",
+                                  "item/CanonicalFact": "@items('Apply_to_each:_Save_Memories')?['canonicalFact']",
+                                  "item/Confidence": "@items('Apply_to_each:_Save_Memories')?['confidence']",
+                                  "item/Importance/Value": "@items('Apply_to_each:_Save_Memories')?['importance']",
+                                  "item/Status/Value": "Active",
+                                  "item/FirstLearnedAt": "@utcNow()",
+                                  "item/LastConfirmedAt": "@utcNow()"
+                                },
+                                "host": {
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                                  "operationId": "PostItem",
+                                  "connectionName": "shared_sharepointonline"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Compose:_Journal_Entry": {
+                          "type": "Compose",
+                          "inputs": "\n## @{utcNow()} - Heartbeat Memory Update\n@{body('Parse_JSON_-_Execute_Agent')?['memoryUpdateSummary']}\n\n**New Memories Saved:** @{length(body('Parse_JSON_-_Execute_Agent')?['proposedMemories'])}\n@{join(body('Parse_JSON_-_Execute_Agent')?['mcpActionsTaken'], ', ')}\n\n---\n",
+                          "runAfter": {
+                            "Apply_to_each:_Save_Memories": [
+                              "Succeeded"
+                            ]
+                          }
+                        },
+                        "Get_file_content:_Journal_for_Append": {
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "parameters": {
+                              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                              "id": "%252fShared%2bDocuments%252fmemory-journal.md",
+                              "inferContentType": true
+                            },
+                            "host": {
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                              "operationId": "GetFileContent",
+                              "connectionName": "shared_sharepointonline"
+                            }
+                          },
+                          "runAfter": {
+                            "Compose:_Journal_Entry": [
+                              "Succeeded"
+                            ]
+                          }
+                        },
+                        "Create_file:_Append_Journal": {
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "parameters": {
+                              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                              "folderPath": "/Shared Documents",
+                              "name": "memory-journal.md",
+                              "body": "@{outputs('Compose:_Journal_Entry')}@{body('Get_file_content:_Journal_for_Append')}"
+                            },
+                            "host": {
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                              "operationId": "CreateFile",
+                              "connectionName": "shared_sharepointonline"
+                            }
+                          },
+                          "runAfter": {
+                            "Get_file_content:_Journal_for_Append": [
+                              "Succeeded"
+                            ]
+                          }
+                        }
+                      },
+                      "else": {
+                        "actions": {}
+                      },
+                      "runAfter": {
+                        "Condition:_Has_Task_Actions": [
                           "Succeeded"
                         ]
                       }
@@ -862,7 +964,7 @@
                     "parameters": {
                       "emailMessage/To": "admin@M365CPI23966391.onmicrosoft.com",
                       "emailMessage/Subject": "PowerClaw Rate Limit Breach",
-                      "emailMessage/Body": "<p class=\"editor-paragraph\">PowerClaw hit a rate limit 😅</p>",
+                      "emailMessage/Body": "<p class=\"editor-paragraph\">PowerClaw hit a rate limit \ud83d\ude05</p>",
                       "emailMessage/Importance": "Normal"
                     },
                     "host": {
