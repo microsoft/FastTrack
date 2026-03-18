@@ -450,7 +450,8 @@
                                   "id": "@items('Apply_to_each:_Process_Task_Actions')?['taskId']",
                                   "item/TaskStatus": "@items('Apply_to_each:_Process_Task_Actions')?['newStatus']",
                                   "item/Notes": "@items('Apply_to_each:_Process_Task_Actions')?['notes']",
-                                  "item/LastActionDate": "@utcNow()"
+                                  "item/LastActionDate": "@utcNow()",
+                                  "item/Title": "@items('Apply_to_each:_Process_Task_Actions')?['taskId']"
                                 },
                                 "host": {
                                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
@@ -596,7 +597,11 @@
               "type": "Select",
               "inputs": {
                 "from": "@outputs('Get_items:_PowerClaw_Memory')?['body/value']",
-                "select": "[\"@{item()?['MemoryType']}\"] @{item()?['ScopeKey']}: @{item()?['CanonicalFact']} (confidence: @{item()?['Confidence']}, importance: @{item()?['Importance']})"
+                "select": {
+                  "fact": "[\"@{item()?['MemoryType']}\"] @{item()?['ScopeKey']}: @{item()?['CanonicalFact']}",
+                  "confidence": "@{item()?['Confidence']}",
+                  "importance": "@{item()?['Importance']}"
+                }
               },
               "runAfter": {
                 "Get_items:_PowerClaw_Memory": [
@@ -630,7 +635,11 @@
               "type": "Select",
               "inputs": {
                 "from": "@outputs('Get_items:_PowerClaw_Tasks')?['body/value']",
-                "select": "Task #@{item()?['ID']}: @{item()?['Title']} | Status: @{item()?['TaskStatus']} | Priority: @{item()?['Priority']} | Due: @{item()?['DueDate']} | Description: @{item()?['TaskDescription']}"
+                "select": {
+                  "summary": "Task #@{item()?['ID']}: @{item()?['Title']} | Status: @{item()?['TaskStatus']} | Priority: @{item()?['Priority']}",
+                  "due": "@{item()?['DueDate']}",
+                  "description": "@{item()?['TaskDescription']}"
+                }
               },
               "runAfter": {
                 "Get_items:_PowerClaw_Tasks": [
@@ -744,7 +753,8 @@
                               "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
                               "table": "e3c0c6fd-a67a-470f-967e-727f13814e52",
                               "id": "@items('Apply_to_each_Expire_Memories')?['ID']",
-                              "item/Status/Value": "Expired"
+                              "item/Status/Value": "Expired",
+                              "item/Title": "@items('Apply_to_each_Expire_Memories')?['Title']"
                             },
                             "host": {
                               "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
