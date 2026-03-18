@@ -4,7 +4,6 @@
       "shared_sharepointonline": {
         "runtimeSource": "invoker",
         "connection": {
-          "name": "shared-sharepointonl-54b5534e-e601-4bf3-aa9b-29776e6d49d5",
           "connectionReferenceLogicalName": "new_sharedsharepointonline_77d8f"
         },
         "api": {
