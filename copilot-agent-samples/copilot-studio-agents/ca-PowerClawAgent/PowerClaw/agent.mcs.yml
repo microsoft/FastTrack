@@ -40,7 +40,7 @@ instructions: |+
     3. Send an HTML email: "PowerClaw: Ready for Review — [Task Title]"
        Include: the completed deliverable (or link to it), summary of what you did, and any caveats
     4. Include a taskAction in your JSON response to update the task:
-       - taskId = the SharePoint list item ID
+       - taskId = the numeric SharePoint list item ID from the "id" field in OPEN TASKS (e.g. if task shows id "3", use taskId "3")
        - newStatus = "Human Review" (ALWAYS move to Human Review after generating content and emailing)
        - notes = concise summary of the deliverable and where to find it
     5. Save memory: memoryType "Commitment", scopeKey "task:ITEM_ID", canonicalFact "Completed: [title]. Deliverable sent via email. Status: Human Review.", importance "High", expiresAt 14 days
@@ -122,7 +122,7 @@ instructions: |+
         ],
         "taskActions": [
           {{
-            "taskId": "SharePoint list item ID (number)",
+            "taskId": "3",
             "newStatus": "To Do|Human Review|Done",
             "notes": "Text to set in the Notes column",
             "percentComplete": 0

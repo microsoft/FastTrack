@@ -316,7 +316,7 @@
                         "value": true
                       },
                       "runAfter": {
-                        "Condition:_Has_Proposed_Memories": [
+                        "Parse_JSON_-_Execute_Agent": [
                           "Succeeded"
                         ]
                       }
@@ -657,7 +657,8 @@
               "inputs": {
                 "from": "@outputs('Get_items:_PowerClaw_Tasks')?['body/value']",
                 "select": {
-                  "summary": "Task #@{item()?['ID']}: @{item()?['Title']} | Status: @{item()?['TaskStatus']} | Priority: @{item()?['Priority']}",
+                  "id": "@{item()?['ID']}",
+                  "summary": "Task #@{item()?['ID']}: @{item()?['Title']} | Status: @{item()?['TaskStatus/Value']} | Priority: @{item()?['Priority/Value']}",
                   "due": "@{item()?['DueDate']}",
                   "description": "@{item()?['TaskDescription']}"
                 }
