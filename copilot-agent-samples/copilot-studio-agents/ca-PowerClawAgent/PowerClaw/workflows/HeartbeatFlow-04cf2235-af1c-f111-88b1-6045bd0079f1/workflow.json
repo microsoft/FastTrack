@@ -367,7 +367,6 @@
                                   "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
                                   "table": "592d6022-8c5d-4a2b-8cb9-1f63f30c4e5b",
                                   "id": "@items('Apply_to_each:_Process_Task_Actions')?['taskId']",
-                                  "item/Title": "@items('Apply_to_each:_Process_Task_Actions')?['taskId']",
                                   "item/TaskStatus/Value": "@items('Apply_to_each:_Process_Task_Actions')?['newStatus']",
                                   "item/Notes": "@items('Apply_to_each:_Process_Task_Actions')?['notes']",
                                   "item/LastActionDate": "@utcNow()"
