@@ -42,6 +42,17 @@ Claude, GPT, and Gemini don't just have different training data — they have fu
 
 ## ⚡ Quick Install
 
+### Option 1: Marketplace (Recommended)
+
+Add the FastTrack marketplace, then install:
+
+```
+copilot plugin marketplace add microsoft/FastTrack
+copilot plugin install council@fasttrack-copilot-plugins
+```
+
+### Option 2: Direct install
+
 In Copilot CLI, run:
 
 ```
