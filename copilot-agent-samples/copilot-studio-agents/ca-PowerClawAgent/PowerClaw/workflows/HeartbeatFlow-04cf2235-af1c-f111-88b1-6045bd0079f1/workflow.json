@@ -995,87 +995,100 @@
                 ]
               },
               "actions": {
-                "Condition:_Is_Stale_Lock": {
+                "Get_KillSwitch_Status": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                      "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                      "$filter": "SettingName eq 'KillSwitch' and SettingValue eq 'true'"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "operationId": "GetItems",
+                      "connectionName": "shared_sharepointonline"
+                    }
+                  }
+                },
+                "Condition:_Is_KillSwitch_Active": {
                   "type": "If",
                   "expression": {
                     "and": [
                       {
-                        "equals": [
-                          "@length(filter(outputs('Get_items:_Check_if_KillSwitch_or_IsRunning')?['body/value'], item(), item()?['SettingName'], 'KillSwitch'))",
+                        "greater": [
+                          "@length(outputs('Get_KillSwitch_Status')?['body/value'])",
                           0
                         ]
                       }
                     ]
                   },
                   "actions": {
-                    "Filter:_IsRunning_Items": {
-                      "type": "Query",
+                    "Log_KillSwitch_Skip": {
+                      "type": "OpenApiConnection",
                       "inputs": {
-                        "from": "@outputs('Get_items:_Check_if_KillSwitch_or_IsRunning')?['body/value']",
-                        "where": "@equals(item()?['SettingName'], 'IsRunning')"
+                        "parameters": {
+                          "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                          "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                          "item/EventType/Value": "HeartbeatSkipped",
+                          "item/Summary": "Skipped due to KillSwitch being active."
+                        },
+                        "host": {
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                          "operationId": "PostItem",
+                          "connectionName": "shared_sharepointonline"
+                        }
                       }
                     },
-                    "Condition:_Lock_Is_Stale": {
-                      "type": "If",
-                      "expression": {
-                        "and": [
-                          {
-                            "less": [
-                              "@first(body('Filter:_IsRunning_Items'))?['Modified']",
-                              "@addMinutes(utcNow(), -35)"
-                            ]
-                          }
-                        ]
+                    "Terminate_KillSwitch": {
+                      "type": "Terminate",
+                      "inputs": {
+                        "runStatus": "Succeeded"
                       },
-                      "actions": {
-                        "Log_Stale_Lock_Recovery": {
-                          "type": "OpenApiConnection",
-                          "inputs": {
-                            "parameters": {
-                              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
-                              "table": "c330bd00-7966-455c-991c-d726485c7ae5",
-                              "item/EventType/Value": "StaleLockRecovery",
-                              "item/Summary": "Stale lock detected (IsRunning=true for 35+ min). Auto-recovering."
-                            },
-                            "host": {
-                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-                              "operationId": "PostItem",
-                              "connectionName": "shared_sharepointonline"
-                            }
-                          }
-                        },
-                        "Force_Release_Lock": {
-                          "type": "OpenApiConnection",
-                          "inputs": {
-                            "parameters": {
-                              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
-                              "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
-                              "id": "@first(body('Filter:_IsRunning_Items'))?['ID']",
-                              "item/SettingValue": "false"
-                            },
-                            "host": {
-                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-                              "operationId": "PatchItem",
-                              "connectionName": "shared_sharepointonline"
-                            }
+                      "runAfter": {
+                        "Log_KillSwitch_Skip": [
+                          "Succeeded"
+                        ]
+                      }
+                    }
+                  },
+                  "else": {
+                    "actions": {
+                      "Get_IsRunning_Item": {
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "parameters": {
+                            "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                            "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                            "$filter": "SettingName eq 'IsRunning' and SettingValue eq 'true'"
                           },
-                          "runAfter": {
-                            "Log_Stale_Lock_Recovery": [
-                              "Succeeded"
-                            ]
+                          "host": {
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                            "operationId": "GetItems",
+                            "connectionName": "shared_sharepointonline"
                           }
                         }
                       },
-                      "else": {
+                      "Condition:_Lock_Is_Stale": {
+                        "type": "If",
+                        "expression": {
+                          "and": [
+                            {
+                              "less": [
+                                "@first(outputs('Get_IsRunning_Item')?['body/value'])?['Modified']",
+                                "@addMinutes(utcNow(), -35)"
+                              ]
+                            }
+                          ]
+                        },
                         "actions": {
-                          "Log_Active_Lock_Skip": {
+                          "Log_Stale_Lock_Recovery": {
                             "type": "OpenApiConnection",
                             "inputs": {
                               "parameters": {
                                 "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
                                 "table": "c330bd00-7966-455c-991c-d726485c7ae5",
-                                "item/EventType/Value": "HeartbeatSkipped",
-                                "item/Summary": "Skipped — another heartbeat is currently running."
+                                "item/EventType/Value": "StaleLockRecovery",
+                                "item/Summary": "Stale lock detected (IsRunning=true for 35+ min). Auto-recovering."
                               },
                               "host": {
                                 "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
@@ -1084,56 +1097,71 @@
                               }
                             }
                           },
-                          "Terminate_Active_Lock": {
-                            "type": "Terminate",
+                          "Force_Release_Lock": {
+                            "type": "OpenApiConnection",
                             "inputs": {
-                              "runStatus": "Succeeded"
+                              "parameters": {
+                                "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                                "table": "390396f9-02ac-4401-b3f5-4808ed84ec24",
+                                "id": "@first(outputs('Get_IsRunning_Item')?['body/value'])?['ID']",
+                                "item/SettingValue": "false"
+                              },
+                              "host": {
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                                "operationId": "PatchItem",
+                                "connectionName": "shared_sharepointonline"
+                              }
                             },
                             "runAfter": {
-                              "Log_Active_Lock_Skip": [
+                              "Log_Stale_Lock_Recovery": [
                                 "Succeeded"
                               ]
                             }
                           }
-                        }
-                      },
-                      "runAfter": {
-                        "Filter:_IsRunning_Items": [
-                          "Succeeded"
-                        ]
-                      }
-                    }
-                  },
-                  "else": {
-                    "actions": {
-                      "Log_KillSwitch_Skip": {
-                        "type": "OpenApiConnection",
-                        "inputs": {
-                          "parameters": {
-                            "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
-                            "table": "c330bd00-7966-455c-991c-d726485c7ae5",
-                            "item/EventType/Value": "HeartbeatSkipped",
-                            "item/Summary": "Skipped due to KillSwitch being active."
-                          },
-                          "host": {
-                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-                            "operationId": "PostItem",
-                            "connectionName": "shared_sharepointonline"
+                        },
+                        "else": {
+                          "actions": {
+                            "Log_Active_Lock_Skip": {
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "parameters": {
+                                  "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+                                  "table": "c330bd00-7966-455c-991c-d726485c7ae5",
+                                  "item/EventType/Value": "HeartbeatSkipped",
+                                  "item/Summary": "Skipped — another heartbeat is currently running."
+                                },
+                                "host": {
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                                  "operationId": "PostItem",
+                                  "connectionName": "shared_sharepointonline"
+                                }
+                              }
+                            },
+                            "Terminate_Active_Lock": {
+                              "type": "Terminate",
+                              "inputs": {
+                                "runStatus": "Succeeded"
+                              },
+                              "runAfter": {
+                                "Log_Active_Lock_Skip": [
+                                  "Succeeded"
+                                ]
+                              }
+                            }
                           }
-                        }
-                      },
-                      "Terminate_KillSwitch": {
-                        "type": "Terminate",
-                        "inputs": {
-                          "runStatus": "Succeeded"
                         },
                         "runAfter": {
-                          "Log_KillSwitch_Skip": [
+                          "Get_IsRunning_Item": [
                             "Succeeded"
                           ]
                         }
                       }
                     }
+                  },
+                  "runAfter": {
+                    "Get_KillSwitch_Status": [
+                      "Succeeded"
+                    ]
                   }
                 }
               },
