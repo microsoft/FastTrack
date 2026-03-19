@@ -40,8 +40,7 @@ instructions: |+
     3. Send an HTML email: "PowerClaw: Ready for Review — [Task Title]"
        Include: the completed deliverable (or link to it), summary of what you did, and any caveats
     4. Include a taskAction in your JSON response to update the task:
-       - taskId = the numeric SharePoint list item ID from the "id" field in OPEN TASKS
-       - title = the original task title (pass through exactly as shown in OPEN TASKS)
+       - taskId = the SharePoint list item ID
        - newStatus = "Human Review" (ALWAYS move to Human Review after generating content and emailing)
        - notes = concise summary of the deliverable and where to find it
     5. Save memory: memoryType "Commitment", scopeKey "task:ITEM_ID", canonicalFact "Completed: [title]. Deliverable sent via email. Status: Human Review.", importance "High", expiresAt 14 days
@@ -106,7 +105,9 @@ instructions: |+
       * Friday afternoon (day 5, hour 15-17): Send a Weekly Recap if not already sent this week.
       * Quiet hours (hour 22-23 or 0-6): Log observations to memory but do NOT send proactive messages.
       * All other times: Check calendar for routines first, then tasks. Notify only if something requires attention.
-    - You MUST respond with valid JSON only — no extra text, no markdown wrappers:
+    - You MUST respond with valid JSON only — no extra text, no markdown wrappers, no ```json blocks.
+      CRITICAL: Even if you encounter errors midway, ALWAYS return valid JSON with what you accomplished.
+      Never return plain text — the flow cannot process it and all your work will be lost from the log:
       {{
         "thoughts": "string (Your reasoning during this heartbeat)",
         "mcpActionsTaken": ["string (e.g., 'Checked Calendar', 'Sent Daily Digest via Teams')"],
@@ -123,8 +124,7 @@ instructions: |+
         ],
         "taskActions": [
           {{
-            "taskId": "3",
-            "title": "Original task title from OPEN TASKS",
+            "taskId": "SharePoint list item ID (number)",
             "newStatus": "To Do|Human Review|Done",
             "notes": "Text to set in the Notes column",
             "percentComplete": 0
