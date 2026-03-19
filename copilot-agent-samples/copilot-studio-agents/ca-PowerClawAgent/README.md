@@ -40,7 +40,7 @@ PowerClaw is a personal AI assistant that runs on a 30-minute heartbeat — proa
 
 PowerClaw is intentionally lightweight — a solid base you can extend. Integrate it with Planner, To Do, or any Power Platform connector. Ask PowerClaw what tools it needs and it will guide you. Customize its context by editing the constitution files — your role, working style, goals — and it adapts accordingly.
 
-📖 **[Setup Guide →](SETUP.md)** · **[Architecture Deep-Dive →](HowItWorks.md)**
+📖 **[Setup Guide →](SETUP.md)**
 
 ---
 
@@ -97,7 +97,6 @@ graph TD
 | `PowerClaw/` | Copilot Studio solution source (agent, flows, connections, actions) |
 | `Setup-PowerClaw.ps1` | SharePoint workspace provisioning script |
 | `SETUP.md` | Detailed setup guide with troubleshooting |
-| `HowItWorks.md` | Architecture deep-dive with screenshots |
 | `Images/` | Screenshots and diagrams |
 | `powerclaw-rounded.png` | Agent logo |
 

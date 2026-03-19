@@ -137,11 +137,11 @@ After import, open the agent in [Copilot Studio](https://copilotstudio.microsoft
 
 ## 6. Step 4: Personalize Your Agent ⚙️
 
-Navigate to your SharePoint site's **Documents** library and edit:
+PowerClaw's personality and operating rules are fully decoupled from code. You can modify its behavior by editing four markdown files in your SharePoint **Documents** library:
 
 - **`user.md`** *(required)*: Fill in your name, role, team, manager, preferences, and focus time
 - **`agents.md`** *(review)*: Default operating rules include calendar monitoring, email triage, SharePoint task management, daily digest (8 AM), weekly recap (Friday), and quiet hours (10 PM–7 AM)
-- **`soul.md`** *(optional)*: Adjust personality and communication style
+- **`soul.md`** *(optional)*: Adjust personality, core values, and communication style
 - **`tools.md`** *(reference)*: Documents available capabilities — update if you add/remove tools
 
 ## 7. Step 5: Verify It's Working 🟢
@@ -171,6 +171,22 @@ Navigate to your SharePoint site's **Documents** library and edit:
 - **Kill switch**: Set `KillSwitch = true` in Settings to pause all autonomous activity
 - **Long-term memory**: PowerClaw learns automatically. Review the **PowerClaw Memory** list to see what it's learned. Edit or delete entries to correct its knowledge. Check `memory-journal.md` for its narrative observations.
 
+### Configuration Reference (Settings List)
+| Setting | Default | Purpose |
+| :--- | :--- | :--- |
+| **KillSwitch** | `false` | Emergency stop for all autonomous activity. |
+| **MaxActionsPerHour** | `20` | Rate limit safety valve. |
+| **HeartbeatIntervalMinutes** | `30` | Frequency of the flow trigger. |
+| **MemoryMaxActiveItems** | `100` | Cap on active long-term memories loaded. |
+
+### Data Retention
+| Data Type | Retention | Action |
+| :--- | :--- | :--- |
+| **Memory Log** | 30 days | Deleted |
+| **Done Tasks** | 30 days | Deleted |
+| **Active Memories** | Max 100 | Lowest confidence archived |
+| **memory-journal.md** | 50KB | Truncated to recent content |
+
 ## 9. Troubleshooting 🚑
 
 | Issue | Check |
@@ -185,6 +201,18 @@ Navigate to your SharePoint site's **Documents** library and edit:
 | **Memory not saving** | Verify the **PowerClaw Memory** list exists on your SharePoint site. Check that the list GUID in the HeartbeatFlow matches. Ensure `memory-journal.md` exists in Shared Documents. |
 
 ## 10. Architecture Overview 📐
+
+### How Memory Works
+PowerClaw uses a three-tier memory architecture:
+1. **Memory Log (Short-Term)** — Audit trail of recent actions (last 25 entries).
+2. **PowerClaw Memory (Semantic)** — Specific facts about preferences, people, and projects.
+3. **Memory Journal (Episodic)** — Rolling narrative of observations and insights.
+
+### Execution Priority
+1. **Calendar Routines** — Checks events flagged for PowerClaw (e.g., "Morning Briefing").
+2. **Proactive Intelligence** — Scans for urgent emails or upcoming meetings.
+3. **Task Management** — Picks up to 2 "To Do" tasks, executes them, and moves to "Human Review".
+4. **Observations** — Updates long-term memory with new insights.
 
 ```mermaid
 graph TD
