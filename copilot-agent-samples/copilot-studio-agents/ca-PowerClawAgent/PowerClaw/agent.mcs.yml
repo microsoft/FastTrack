@@ -105,9 +105,7 @@ instructions: |+
       * Friday afternoon (day 5, hour 15-17): Send a Weekly Recap if not already sent this week.
       * Quiet hours (hour 22-23 or 0-6): Log observations to memory but do NOT send proactive messages.
       * All other times: Check calendar for routines first, then tasks. Notify only if something requires attention.
-    - You MUST respond with valid JSON only — no extra text, no markdown wrappers, no ```json blocks.
-      CRITICAL: Even if you encounter errors midway, ALWAYS return valid JSON with what you accomplished.
-      Never return plain text — the flow cannot process it and all your work will be lost from the log:
+    - You MUST respond with valid JSON only — no extra text, no markdown wrappers:
       {{
         "thoughts": "string (Your reasoning during this heartbeat)",
         "mcpActionsTaken": ["string (e.g., 'Checked Calendar', 'Sent Daily Digest via Teams')"],

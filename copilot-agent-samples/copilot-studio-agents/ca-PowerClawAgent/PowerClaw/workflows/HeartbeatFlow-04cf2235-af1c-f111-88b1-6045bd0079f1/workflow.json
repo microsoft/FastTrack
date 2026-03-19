@@ -519,32 +519,8 @@
                     }
                   },
                   "runAfter": {
-                    "Create_item:_Log_Agent_Response": [
-                      "Succeeded"
-                    ]
-                  }
-                },
-                "Create_item:_Log_Agent_Response": {
-                  "type": "OpenApiConnection",
-                  "inputs": {
-                    "parameters": {
-                      "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
-                      "table": "c330bd00-7966-455c-991c-d726485c7ae5",
-                      "item/EventType/Value": "AgentResponse",
-                      "item/Summary": "@{if(empty(outputs('Execute_Agent_and_wait')?['body/lastResponse']), 'Agent returned empty response', if(contains(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '{'), 'Agent returned JSON response', 'Agent returned non-JSON response'))}",
-                      "item/FullContextJSON": "@coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '(empty)')"
-                    },
-                    "host": {
-                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-                      "operationId": "PostItem",
-                      "connectionName": "shared_sharepointonline"
-                    }
-                  },
-                  "runAfter": {
                     "Execute_Agent_and_wait": [
-                      "Succeeded",
-                      "Failed",
-                      "TimedOut"
+                      "Succeeded"
                     ]
                   }
                 }
