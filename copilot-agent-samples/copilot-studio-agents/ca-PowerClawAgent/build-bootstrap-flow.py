@@ -332,20 +332,32 @@ def sharepoint_http_request_action(*, uri: str, method: str, body: dict | str) -
 
 
 def sharepoint_post_item_action(*, table: str, title: str, field_values: dict[str, str]) -> dict:
-    parameters = {
-        "dataset": SITE_URL_EXPR,
-        "table": table,
-        "item/Title": title,
-    }
-    for field_name, field_value in field_values.items():
-        parameters[f"item/{field_name}"] = field_value
+    """Use HTTP request to create list items (avoids schema validation issues with dynamic lists)."""
+    item_data = {"__metadata": {"type": "SP.Data.{table_type}ListItem"}, "Title": title}
+    item_data.update(field_values)
+    # Build the body as a JSON string with the actual field values
+    body_parts = ['"__metadata":{"type":"SP.Data.OData__x0078_002e_ListItem"}']
+    body_parts = []
+    fields = {"Title": title}
+    fields.update(field_values)
+    body_str = compact_json(fields)
+    uri = f"_api/web/lists/getByTitle('{table}')/items"
     return {
         "type": "OpenApiConnection",
         "inputs": {
-            "parameters": parameters,
+            "parameters": {
+                "dataset": SITE_URL_EXPR,
+                "parameters/uri": uri,
+                "parameters/method": "POST",
+                "parameters/headers": compact_json({
+                    "Accept": "application/json;odata=verbose",
+                    "Content-Type": "application/json;odata=verbose",
+                }),
+                "parameters/body": body_str,
+            },
             "host": {
                 "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-                "operationId": "PostItem",
+                "operationId": "HttpRequest",
                 "connectionName": "shared_sharepointonline",
             },
         },

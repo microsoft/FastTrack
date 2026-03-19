@@ -25,7 +25,7 @@ PowerClaw is a personal AI assistant that runs on a 30-minute heartbeat — proa
 | 🤖 **Autonomous** | Background heartbeat checks your calendar, picks up tasks from a SharePoint Kanban board, and sends proactive briefings and alerts |
 
 
-**🏷️ Interactive Example:** Uses WorkIQ for context on what's relevant to you. Uses Claude which is a great conversationalist. And adapts to your preferred working style using the Sould.md, User.md, etc. that you provide it.
+**🏷️ Interactive Example:** Uses WorkIQ for context on what's relevant to you. Uses Claude which is a great conversationalist. And adapts to your preferred working style using the soul.md, user.md, etc. that you provide it.
 <p align="center">
   <img src="./Images/TeamsChatPowerClaw.gif" alt="PowerClaw Calendar-Driven News Brief" width="800" />
 </p>
@@ -108,6 +108,8 @@ graph TD
 | `Images/` | Screenshots and diagrams |
 | `powerclaw-rounded.png` | Agent logo |
 
+---
+
 ## 📝 Pre-Requisites
 | Requirement | Details |
 |-------------|---------|
@@ -120,38 +122,38 @@ graph TD
 ## 🚀 Setup Agent
 Use `Setup-PowerClaw.ps1` to provision the SharePoint workspace, then follow the detailed import and configuration steps in [SETUP.md](SETUP.md).
 
-#### Name
+### Name
 ```
 PowerClaw
 ```
 
-#### Icon
+### Icon
 <img src="./Images/powerclaw-rounded.png" width="75" />
 
-#### Description
+### Description
 ```
 24/7 Personal Assistant built on Microsoft 365 stack that runs on a scheduled heartbeat, monitors calendar, email, and tasks, uses SharePoint as its operating brain, and supports both proactive autonomous work and interactive Teams chat.
 ```
 
-#### Agent Instructions
+### Agent Instructions
 ```
 Instructions are embedded in the solution and dynamically loaded at runtime from the SharePoint constitution files soul.md, user.md, agents.md, and tools.md. They are not hardcoded in the published agent.
 ```
 
-#### Orchestration
+### Orchestration
 ✅ Generative Orchestration
 
-#### Response Model
+### Response Model
 ✅ Claude Sonnet 4.6
 
-#### Knowledge
+### Knowledge
 - SharePoint workspace site used as PowerClaw's operational brain
 - Constitution files: `soul.md`, `user.md`, `agents.md`, `tools.md`
 - Memory Log list, PowerClaw Memory list, and `memory-journal.md`
 - Open tasks from the SharePoint Kanban board
 - Calendar, email, and user context loaded by the HeartbeatFlow
 
-#### Tools
+### Tools
 | Tool | Configuration Notes |
 |------|-------------------|
 | WorkIQ Calendar MCP | MCP · Use defaults |
@@ -164,7 +166,7 @@ Instructions are embedded in the solution and dynamically loaded at runtime from
 | Office 365 Outlook - Send an email (V2) | Connector · Use defaults |
 | Microsoft Teams - Post message | Connector · Use defaults |
 
-#### Triggers
+### Triggers
 | Trigger | Configuration Notes |
 |---------|-------------------|
 | Recurrence (Power Automate) | Default: every 30 minutes. Configurable. |
@@ -176,33 +178,47 @@ Instructions are embedded in the solution and dynamically loaded at runtime from
 ### Morning Work Briefing
 Start your day with an automated summary of today's calendar, pending tasks, and important emails — delivered before you even open Outlook.
 
-![Morning Work Briefing](./Images/Morning%20Work%20Briefing.png)
+<p align="center">
+  <img src="./Images/Morning%20Work%20Briefing.png" alt="Morning Work Briefing" width="800" />
+</p>
 
 ### AI News Briefing on a Schedule
 Want the latest AI news in your inbox every morning at 8am? Just add a recurring calendar event. No Power Automate flow to build — just natural language.
 
-![AI News Brief Calendar Event](./Images/AINewsBriefMorning.png)
+<p align="center">
+  <img src="./Images/AINewsBriefMorning.png" alt="AI News Brief Calendar Event" width="800" />
+</p>
 
 ### Research Task Execution via Kanban Board
 Add a task to the SharePoint board. PowerClaw picks it up, researches the topic, creates a Word document, saves it to OneDrive, and emails you a link — then moves the task to "Human Review."
 
-![Kanban Task Board](./Images/PowerclawKanbanTask.png)
+<p align="center">
+  <img src="./Images/PowerclawKanbanTask.png" alt="Kanban Task Board" width="800" />
+</p>
 
-![Emailed Research Report](./Images/EmailedResearchReport.png)
+<p align="center">
+  <img src="./Images/EmailedResearchReport.png" alt="Emailed Research Report" width="800" />
+</p>
 
-![Research Report Detail](./Images/ResearchReport2.png)
+<p align="center">
+  <img src="./Images/ResearchReport2.png" alt="Research Report Detail" width="800" />
+</p>
 
 > 💡 Want a research report by tomorrow morning? Add it to your calendar for the time window you want it done — PowerClaw will execute during that window and email the deliverable with a link to the Word doc in your OneDrive for Business.
 
 ### Stay on Top of Product Changes
 Have PowerClaw send you a Roadmap Rundown on new Microsoft 365 product releases so you stay abreast of upcoming changes.
 
-![Roadmap Rundown](./Images/RoadmapRundown.png)
+<p align="center">
+  <img src="./Images/RoadmapRundown.png" alt="Roadmap Rundown" width="800" />
+</p>
 
 ### Proactive Meeting Prep
 PowerClaw detects an upcoming meeting, checks the attendees, reviews recent emails, and sends you prep notes before the meeting starts.
 
-![Meeting Prep Details](./Images/MeetingPrepDetails.png)
+<p align="center">
+  <img src="./Images/MeetingPrepDetails.png" alt="Meeting Prep Details" width="800" />
+</p>
 
 ## Version history
 | Date | Comments | Author |
