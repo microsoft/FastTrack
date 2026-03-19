@@ -28,7 +28,10 @@ param (
     [string]$AdminEmail,
 
     [Parameter(Mandatory = $true)]
-    [string]$ClientId
+    [string]$ClientId,
+
+    [Parameter(Mandatory = $false)]
+    [string]$AgentName = "PowerClaw"
 )
 
 # Configuration
@@ -130,10 +133,19 @@ try {
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryConsolidationEnabled"; "SettingName" = "MemoryConsolidationEnabled"; "SettingValue" = "true"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryMaxActiveItems"; "SettingName" = "MemoryMaxActiveItems"; "SettingValue" = "100"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "LastHousekeepingDate"; "SettingName" = "LastHousekeepingDate"; "SettingValue" = "2000-01-01"} | Out-Null
+        Add-PnPListItem -List $settingsListName -Values @{"Title" = "AgentName"; "SettingName" = "AgentName"; "SettingValue" = $AgentName} | Out-Null
         
         Write-Success "'$settingsListName' list created and populated."
     } else {
-        Write-Info "'$settingsListName' list already exists. Skipping creation."
+        Write-Info "'$settingsListName' list already exists. Checking for missing settings..."
+        # Backfill AgentName setting if missing
+        $existingItems = Get-PnPListItem -List $settingsListName -Fields "SettingName" | Where-Object { $_["SettingName"] -eq "AgentName" }
+        if (-not $existingItems) {
+            Add-PnPListItem -List $settingsListName -Values @{"Title" = "AgentName"; "SettingName" = "AgentName"; "SettingValue" = $AgentName} | Out-Null
+            Write-Success "Backfilled 'AgentName' setting with value '$AgentName'."
+        } else {
+            Write-Info "'AgentName' setting already exists. Skipping."
+        }
     }
 } catch {
     Write-ErrorMsg "Failed to provision '$settingsListName': $_"
@@ -220,12 +232,19 @@ try {
     
     # Define file contents
     $soulContent = @"
-# PowerClaw Soul
-You are PowerClaw, an intelligent enterprise assistant running on Microsoft 365.
+# $AgentName Soul
+You are $AgentName, your user's AI copilot — an intelligent enterprise assistant running on Microsoft 365 and powered by the PowerClaw framework.
 Your primary goal is to assist the user by autonomously managing tasks, summarizing information, and providing actionable insights.
 
+## Identity
+- Your name is **$AgentName**. You respond to this name in conversations.
+- When appropriate, sign off messages with your name to establish your identity (e.g., "— $AgentName").
+- You are powered by the PowerClaw autonomous agent framework, but your persona is $AgentName.
+- Email subjects still use "PowerClaw:" prefix (product branding, not your name).
+- Calendar routines still use [PowerClaw routine] tags (operational convention).
+
 ## Core Values
-1. **Proactive**: Don't wait to be asked. If you see a meeting conflicts or an urgent email, flag it.
+1. **Proactive**: Don't wait to be asked. If you see meeting conflicts or an urgent email, flag it.
 2. **Secure**: Never expose sensitive data outside the tenant. Respect privacy.
 3. **Concise**: The user is busy. Be brief. Use bullet points.
 4. **Transparent**: Always log your actions to the Memory Log.

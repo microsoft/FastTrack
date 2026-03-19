@@ -41,7 +41,7 @@ Register-PnPEntraIDAppForInteractiveLogin `
 3. Run the provisioning script:
 
 ```powershell
-.\Setup-PowerClaw.ps1 -SiteUrl "https://your-tenant.sharepoint.com/sites/PowerClaw-Workspace" -AdminEmail "you@example.com" -ClientId "your-client-id"
+.\Setup-PowerClaw.ps1 -SiteUrl "https://your-tenant.sharepoint.com/sites/PowerClaw-Workspace" -AdminEmail "you@example.com" -ClientId "your-client-id" -AgentName "Goose"
 ```
 
 **What this does:**
@@ -169,6 +169,7 @@ PowerClaw's personality and operating rules are fully decoupled from code. You c
 - **Rate limits**: Adjust `MaxActionsPerHour` in Settings (default: 10)
 - **Operating rules**: Edit `agents.md` to add/change behaviors — no code needed
 - **Kill switch**: Set `KillSwitch = true` in Settings to pause all autonomous activity
+- **Agent name**: Change `AgentName` in the Settings list and update `soul.md` to give your agent a new persona
 - **Long-term memory**: PowerClaw learns automatically. Review the **PowerClaw Memory** list to see what it's learned. Edit or delete entries to correct its knowledge. Check `memory-journal.md` for its narrative observations.
 
 ### Configuration Reference (Settings List)
