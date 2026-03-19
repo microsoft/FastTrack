@@ -199,6 +199,13 @@ try {
         Add-PnPField -List $tasksListName -DisplayName "LastActionDate" -InternalName "LastActionDate" -Type DateTime
         Add-PnPField -List $tasksListName -DisplayName "CompletedDate" -InternalName "CompletedDate" -Type DateTime
 
+        # Make Title not required — PatchItem (task status updates) only changes status/notes,
+        # and the SharePoint connector rejects PatchItem without Title when it's required
+        $titleField = Get-PnPField -List $tasksListName -Identity "Title"
+        $titleField.Required = $false
+        $titleField.Update()
+        Invoke-PnPQuery
+
         Write-Success "'$tasksListName' list created."
     } else {
         Write-Info "'$tasksListName' list already exists. Skipping creation."
