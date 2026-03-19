@@ -16,16 +16,24 @@ PowerClaw is a personal AI assistant that runs on a 30-minute heartbeat — proa
 
 **No manual Power Automate flows to build. No step-by-step workflow setup.** Just describe what you want in natural language — add a calendar event like *"Send me a Microsoft News Brief every morning at 8am"* — and PowerClaw handles the rest.
 
-<p align="center">
-  <img src="PowerClaw Microsoft News Brief.gif" alt="PowerClaw Calendar-Driven News Brief" width="800" />
-</p>
 
 ### Two modes
 
 | Mode | How it works |
-|------|-------------|
+|-------|-------------|
+| 💬 **Interactive** | Chat in Teams: *"brief me"*, *"create a task for..."*, *"what's on my plate today?"* |  
 | 🤖 **Autonomous** | Background heartbeat checks your calendar, picks up tasks from a SharePoint Kanban board, and sends proactive briefings and alerts |
-| 💬 **Interactive** | Chat in Teams: *"brief me"*, *"create a task for..."*, *"what's on my plate today?"* |
+
+
+**🏷️ Interactive Example:** Uses WorkIQ for context on what's relevant to you. Uses Claude which is a great conversationalist. And adapts to your preferred working style using the Sould.md, User.md, etc. that you provide it.
+<p align="center">
+  <img src="./Images/TeamsChatPowerClaw.gif" alt="PowerClaw Calendar-Driven News Brief" width="800" />
+</p>
+
+**🏷️ Autonomous Example:**  Operates 24/7 on a 30-min heartbeat and uses your calendar for event-driven tasks. Schedule PowerClaw to do X on your calendar while you sleep:
+<p align="center">
+  <img src="./Images/CalendarDrivenTasks.gif" alt="PowerClaw Calendar-Driven News Brief" width="800" />
+</p>
 
 ### Key capabilities
 
@@ -40,7 +48,7 @@ PowerClaw is a personal AI assistant that runs on a 30-minute heartbeat — proa
 
 PowerClaw is intentionally lightweight — a solid base you can extend. Integrate it with Planner, To Do, or any Power Platform connector. Ask PowerClaw what tools it needs and it will guide you. Customize its context by editing the constitution files — your role, working style, goals — and it adapts accordingly.
 
-📖 **[Setup Guide →](SETUP.md)** · **[Architecture Deep-Dive →](HowItWorks.md)**
+📖 **[Setup Guide →](SETUP.md)**
 
 ---
 
@@ -97,7 +105,6 @@ graph TD
 | `PowerClaw/` | Copilot Studio solution source (agent, flows, connections, actions) |
 | `Setup-PowerClaw.ps1` | SharePoint workspace provisioning script |
 | `SETUP.md` | Detailed setup guide with troubleshooting |
-| `HowItWorks.md` | Architecture deep-dive with screenshots |
 | `Images/` | Screenshots and diagrams |
 | `powerclaw-rounded.png` | Agent logo |
 

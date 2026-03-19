@@ -4,8 +4,8 @@
 .DESCRIPTION
     This script sets up the backend infrastructure for the PowerClaw agent.
     It creates:
-    1. 'Memory Log' list for tracking agent activities.
-    2. 'Settings' list for configuration flags.
+    1. 'PowerClaw_Memory_Log' list for tracking agent activities.
+    2. 'PowerClaw_Config' list for configuration flags.
     3. 'PowerClaw Memory' list for long-term knowledge storage.
     4. 'PowerClaw Tasks' list for task intake, review, and completion tracking.
     5. Constitution files in 'Shared Documents' with default templates (soul.md, user.md, agents.md, tools.md, memory-journal.md).
@@ -28,7 +28,10 @@ param (
     [string]$AdminEmail,
 
     [Parameter(Mandatory = $true)]
-    [string]$ClientId
+    [string]$ClientId,
+
+    [Parameter(Mandatory = $false)]
+    [string]$AgentName = "PowerClaw"
 )
 
 # Configuration
@@ -78,9 +81,9 @@ try {
     exit 1
 }
 
-# 1. Provision Memory Log List
+# 1. Provision PowerClaw_Memory_Log List
 try {
-    $listName = "Memory Log"
+    $listName = "PowerClaw_Memory_Log"
     $list = Get-PnPList -Identity $listName -ErrorAction SilentlyContinue
 
     if (-not $list) {
@@ -104,9 +107,9 @@ try {
     Write-ErrorMsg "Failed to provision '$listName': $_"
 }
 
-# 2. Provision Settings List
+# 2. Provision PowerClaw_Config List
 try {
-    $settingsListName = "Settings"
+    $settingsListName = "PowerClaw_Config"
     $settingsList = Get-PnPList -Identity $settingsListName -ErrorAction SilentlyContinue
 
     if (-not $settingsList) {
@@ -130,10 +133,20 @@ try {
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryConsolidationEnabled"; "SettingName" = "MemoryConsolidationEnabled"; "SettingValue" = "true"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryMaxActiveItems"; "SettingName" = "MemoryMaxActiveItems"; "SettingValue" = "100"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "LastHousekeepingDate"; "SettingName" = "LastHousekeepingDate"; "SettingValue" = "2000-01-01"} | Out-Null
+        Add-PnPListItem -List $settingsListName -Values @{"Title" = "HeartbeatIntervalMinutes"; "SettingName" = "HeartbeatIntervalMinutes"; "SettingValue" = "30"} | Out-Null
+        Add-PnPListItem -List $settingsListName -Values @{"Title" = "AgentName"; "SettingName" = "AgentName"; "SettingValue" = $AgentName} | Out-Null
         
         Write-Success "'$settingsListName' list created and populated."
     } else {
-        Write-Info "'$settingsListName' list already exists. Skipping creation."
+        Write-Info "'$settingsListName' list already exists. Checking for missing settings..."
+        # Backfill AgentName setting if missing
+        $existingItems = Get-PnPListItem -List $settingsListName -Fields "SettingName" | Where-Object { $_["SettingName"] -eq "AgentName" }
+        if (-not $existingItems) {
+            Add-PnPListItem -List $settingsListName -Values @{"Title" = "AgentName"; "SettingName" = "AgentName"; "SettingValue" = $AgentName} | Out-Null
+            Write-Success "Backfilled 'AgentName' setting with value '$AgentName'."
+        } else {
+            Write-Info "'AgentName' setting already exists. Skipping."
+        }
     }
 } catch {
     Write-ErrorMsg "Failed to provision '$settingsListName': $_"
@@ -199,6 +212,13 @@ try {
         Add-PnPField -List $tasksListName -DisplayName "LastActionDate" -InternalName "LastActionDate" -Type DateTime
         Add-PnPField -List $tasksListName -DisplayName "CompletedDate" -InternalName "CompletedDate" -Type DateTime
 
+        # Make Title not required — PatchItem (task status updates) only changes status/notes,
+        # and the SharePoint connector rejects PatchItem without Title when it's required
+        $titleField = Get-PnPField -List $tasksListName -Identity "Title"
+        $titleField.Required = $false
+        $titleField.Update()
+        Invoke-PnPQuery
+
         Write-Success "'$tasksListName' list created."
     } else {
         Write-Info "'$tasksListName' list already exists. Skipping creation."
@@ -213,15 +233,22 @@ try {
     
     # Define file contents
     $soulContent = @"
-# PowerClaw Soul
-You are PowerClaw, an intelligent enterprise assistant running on Microsoft 365.
+# $AgentName Soul
+You are $AgentName, your user's AI copilot — an intelligent enterprise assistant running on Microsoft 365 and powered by the PowerClaw framework.
 Your primary goal is to assist the user by autonomously managing tasks, summarizing information, and providing actionable insights.
 
+## Identity
+- Your name is **$AgentName**. You respond to this name in conversations.
+- When appropriate, sign off messages with your name to establish your identity (e.g., "— $AgentName").
+- You are powered by the PowerClaw autonomous agent framework, but your persona is $AgentName.
+- Email subjects still use "PowerClaw:" prefix (product branding, not your name).
+- Calendar routines still use [PowerClaw routine] tags (operational convention).
+
 ## Core Values
-1. **Proactive**: Don't wait to be asked. If you see a meeting conflicts or an urgent email, flag it.
+1. **Proactive**: Don't wait to be asked. If you see meeting conflicts or an urgent email, flag it.
 2. **Secure**: Never expose sensitive data outside the tenant. Respect privacy.
 3. **Concise**: The user is busy. Be brief. Use bullet points.
-4. **Transparent**: Always log your actions to the Memory Log.
+4. **Transparent**: Always log your actions to the PowerClaw_Memory_Log.
 "@
 
     $userContent = @"
@@ -268,7 +295,7 @@ On each heartbeat, evaluate what actions to take based on the current time and c
 
 ### Daily Digest (Morning Brief)
 - Send between 07:00-09:00 UTC (adjustable via DigestTimeUTC setting)
-- Only send ONCE per day — check memory log for existing DailyDigest entry today
+- Only send ONCE per day — check PowerClaw_Memory_Log for an existing DailyDigest entry today
 - Include: today's calendar, overdue tasks, tasks due today, urgent emails, any conflicts
 - Send via Teams message
 
@@ -287,7 +314,7 @@ On each heartbeat, evaluate what actions to take based on the current time and c
 - If you cannot identify the correct 1:1 chat, fall back to email instead
 - Only post to group chats or channels if the user explicitly asks you to in an interactive conversation
 - Be concise — use bullet points
-- Always log what you did to the Memory Log with appropriate EventType
+- Always log what you did to the PowerClaw_Memory_Log with appropriate EventType
 "@
 
     $toolsContent = @"
@@ -329,8 +356,8 @@ You have access to Microsoft 365 through WorkIQ MCP servers:
 ## Usage Guidelines
 - Prefer WorkIQ MCP tools for read operations
 - Use connector actions (Teams Post, Outlook Send) for write operations
-- Always check memory log before sending digests to avoid duplicates
-- Log all actions to the Memory Log for audit trail
+- Always check PowerClaw_Memory_Log before sending digests to avoid duplicates
+- Log all actions to the PowerClaw_Memory_Log for audit trail
 "@
 
     # Helper to create file if not exists

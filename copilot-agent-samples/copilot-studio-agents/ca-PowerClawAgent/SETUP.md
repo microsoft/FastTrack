@@ -41,12 +41,12 @@ Register-PnPEntraIDAppForInteractiveLogin `
 3. Run the provisioning script:
 
 ```powershell
-.\Setup-PowerClaw.ps1 -SiteUrl "https://your-tenant.sharepoint.com/sites/PowerClaw-Workspace" -AdminEmail "you@example.com" -ClientId "your-client-id"
+.\Setup-PowerClaw.ps1 -SiteUrl "https://your-tenant.sharepoint.com/sites/PowerClaw-Workspace" -AdminEmail "you@example.com" -ClientId "your-client-id" -AgentName "Goose"
 ```
 
 **What this does:**
-- ✅ Creates the **Memory Log** list — audit trail for all agent activity
-- ✅ Creates the **Settings** list — configuration flags (KillSwitch, rate limits, quiet hours, digest schedule)
+- ✅ Creates the **PowerClaw_Memory_Log** list — audit trail for all agent activity
+- ✅ Creates the **PowerClaw_Config** list — configuration flags (KillSwitch, rate limits, quiet hours, digest schedule)
 - ✅ Creates the **PowerClaw Memory** list — long-term knowledge store (preferences, people, projects, patterns)
 - ✅ Creates the **PowerClaw Tasks** list — task intake and workflow tracking (`To Do` → `Human Review` → `Done`)
 - ✅ Uploads **Constitution Files** to Shared Documents:
@@ -56,7 +56,7 @@ Register-PnPEntraIDAppForInteractiveLogin `
   - `tools.md` — Available capabilities reference
   - `memory-journal.md` — Rolling narrative journal for observations and insights
 
-> **Automatic retention:** The heartbeat flow also performs daily housekeeping. Memory Log entries and completed tasks older than 30 days are removed automatically, expired memories are marked accordingly, and `memory-journal.md` is trimmed to keep the recent working set small.
+> **Automatic retention:** The heartbeat flow also performs daily housekeeping. PowerClaw_Memory_Log entries and completed tasks older than 30 days are removed automatically, expired memories are marked accordingly, and `memory-journal.md` is trimmed to keep the recent working set small.
 
 ### PowerClaw Tasks List Workflow 📋
 
@@ -137,16 +137,16 @@ After import, open the agent in [Copilot Studio](https://copilotstudio.microsoft
 
 ## 6. Step 4: Personalize Your Agent ⚙️
 
-Navigate to your SharePoint site's **Documents** library and edit:
+PowerClaw's personality and operating rules are fully decoupled from code. You can modify its behavior by editing four markdown files in your SharePoint **Documents** library:
 
 - **`user.md`** *(required)*: Fill in your name, role, team, manager, preferences, and focus time
 - **`agents.md`** *(review)*: Default operating rules include calendar monitoring, email triage, SharePoint task management, daily digest (8 AM), weekly recap (Friday), and quiet hours (10 PM–7 AM)
-- **`soul.md`** *(optional)*: Adjust personality and communication style
+- **`soul.md`** *(optional)*: Adjust personality, core values, and communication style
 - **`tools.md`** *(reference)*: Documents available capabilities — update if you add/remove tools
 
 ## 7. Step 5: Verify It's Working 🟢
 
-1. **Check Settings list**: Ensure `KillSwitch = false` and `IsRunning = false`
+1. **Check PowerClaw_Config list**: Ensure `KillSwitch = false` and `IsRunning = false`
 2. **Interactive test**: Chat with PowerClaw in Teams — say *"Hi, what can you do?"*
    - ✅ You should get a natural language response (not JSON)
 3. **Digest test**: Say *"brief me"* or *"daily digest"*
@@ -156,7 +156,7 @@ Navigate to your SharePoint site's **Documents** library and edit:
     - ✅ The task should remain visible in the **PowerClaw Tasks** list with updated `Notes` / `LastActionDate`
     - ✅ When PowerClaw completes the work, the item should move to **Human Review**
 5. **Heartbeat test**: Trigger the Heartbeat Flow manually in Power Automate
-   - ✅ Check the Memory Log list for a `MemoryUpdate` entry
+   - ✅ Check the PowerClaw_Memory_Log list for a `MemoryUpdate` entry
    - ✅ Check the PowerClaw Memory list for new `Tentative` entries (the agent learns over time)
    - ✅ Check `memory-journal.md` in Shared Documents for a new timestamped entry
 6. **Wait for automation**: The heartbeat runs every 30 minutes by default
@@ -164,27 +164,56 @@ Navigate to your SharePoint site's **Documents** library and edit:
 ## 8. Step 6: Customize Further 🎨
 
 - **Heartbeat frequency**: Edit the Power Automate recurrence trigger (default: 30 minutes)
-- **Digest schedule**: Adjust `DigestTimeUTC` in Settings list (default: 08:00)
-- **Quiet hours**: Adjust `QuietHoursStart`/`QuietHoursEnd` in Settings (default: 22:00–07:00 UTC)
-- **Rate limits**: Adjust `MaxActionsPerHour` in Settings (default: 10)
+- **Digest schedule**: Adjust `DigestTimeUTC` in the PowerClaw_Config list (default: 08:00)
+- **Quiet hours**: Adjust `QuietHoursStart`/`QuietHoursEnd` in PowerClaw_Config (default: 22:00–07:00 UTC)
+- **Rate limits**: Adjust `MaxActionsPerHour` in PowerClaw_Config (default: 10)
 - **Operating rules**: Edit `agents.md` to add/change behaviors — no code needed
-- **Kill switch**: Set `KillSwitch = true` in Settings to pause all autonomous activity
+- **Kill switch**: Set `KillSwitch = true` in PowerClaw_Config to pause all autonomous activity
+- **Agent name**: Change `AgentName` in the PowerClaw_Config list and update `soul.md` to give your agent a new persona
 - **Long-term memory**: PowerClaw learns automatically. Review the **PowerClaw Memory** list to see what it's learned. Edit or delete entries to correct its knowledge. Check `memory-journal.md` for its narrative observations.
+
+### Configuration Reference (PowerClaw_Config List)
+| Setting | Default | Purpose |
+| :--- | :--- | :--- |
+| **KillSwitch** | `false` | Emergency stop for all autonomous activity. |
+| **MaxActionsPerHour** | `20` | Rate limit safety valve. |
+| **HeartbeatIntervalMinutes** | `30` | Frequency of the flow trigger. |
+| **MemoryMaxActiveItems** | `100` | Cap on active long-term memories loaded. |
+
+### Data Retention
+| Data Type | Retention | Action |
+| :--- | :--- | :--- |
+| **PowerClaw_Memory_Log** | 30 days | Deleted |
+| **Done Tasks** | 30 days | Deleted |
+| **Active Memories** | Max 100 | Lowest confidence archived |
+| **memory-journal.md** | 50KB | Truncated to recent content |
 
 ## 9. Troubleshooting 🚑
 
 | Issue | Check |
 | :--- | :--- |
-| **Heartbeat skipped** | Check Settings list — is `KillSwitch` set to `true`? Reset to `false`. |
+| **Heartbeat skipped** | Check PowerClaw_Config list — is `KillSwitch` set to `true`? Reset to `false`. |
 | **Flow fails / No response** | Check your **Connections** in Power Automate — they may need re-authentication. |
 | **"Lock stuck"** | If `IsRunning` is `true` for 35+ minutes, the stale lock recovery will auto-fix it on the next heartbeat. Or manually set it to `false`. |
 | **Agent returns JSON in chat** | Ensure the agent instructions have dual-mode logic. The message must NOT start with `[HEARTBEAT EVENT TRIGGERED]` for interactive mode. |
 | **Duplicate task emails** | Check the PowerClaw Memory list for entries with scopeKey starting with "task:". Delete stale entries if needed. The agent checks memory before acting on each task. |
-| **Rate limit triggered** | Check `MaxActionsPerHour` in Settings. Reset `KillSwitch` to `false` after reviewing. |
+| **Rate limit triggered** | Check `MaxActionsPerHour` in PowerClaw_Config. Reset `KillSwitch` to `false` after reviewing. |
 | **Permissions errors** | Ensure the account running the flow has Edit access to the SharePoint site and all connections are authorized. |
 | **Memory not saving** | Verify the **PowerClaw Memory** list exists on your SharePoint site. Check that the list GUID in the HeartbeatFlow matches. Ensure `memory-journal.md` exists in Shared Documents. |
 
 ## 10. Architecture Overview 📐
+
+### How Memory Works
+PowerClaw uses a three-tier memory architecture:
+1. **PowerClaw_Memory_Log (Short-Term)** — Audit trail of recent actions (last 25 entries).
+2. **PowerClaw Memory (Semantic)** — Specific facts about preferences, people, and projects.
+3. **Memory Journal (Episodic)** — Rolling narrative of observations and insights.
+
+### Execution Priority
+1. **Calendar Routines** — Checks events flagged for PowerClaw (e.g., "Morning Briefing").
+2. **Proactive Intelligence** — Scans for urgent emails or upcoming meetings.
+3. **Task Management** — Picks up to 2 "To Do" tasks, executes them, and moves to "Human Review".
+4. **Observations** — Updates long-term memory with new insights.
 
 ```mermaid
 graph TD
@@ -205,7 +234,7 @@ graph TD
     Agent -->|Send| Teams[💬 Teams Connector]
     Agent -->|Search| Copilot[🔍 Copilot MCP]
     
-    Agent -->|Log| MemLog[📝 Memory Log List]
+    Agent -->|Log| MemLog[📝 PowerClaw_Memory_Log List]
     Agent -->|Learn| LTMStore[🧠 PowerClaw Memory List]
     Agent -->|Journal| Journal[📓 memory-journal.md]
     
