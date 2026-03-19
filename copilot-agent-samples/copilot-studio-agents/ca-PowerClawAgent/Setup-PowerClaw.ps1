@@ -133,6 +133,7 @@ try {
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryConsolidationEnabled"; "SettingName" = "MemoryConsolidationEnabled"; "SettingValue" = "true"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryMaxActiveItems"; "SettingName" = "MemoryMaxActiveItems"; "SettingValue" = "100"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "LastHousekeepingDate"; "SettingName" = "LastHousekeepingDate"; "SettingValue" = "2000-01-01"} | Out-Null
+        Add-PnPListItem -List $settingsListName -Values @{"Title" = "HeartbeatIntervalMinutes"; "SettingName" = "HeartbeatIntervalMinutes"; "SettingValue" = "30"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "AgentName"; "SettingName" = "AgentName"; "SettingValue" = $AgentName} | Out-Null
         
         Write-Success "'$settingsListName' list created and populated."
