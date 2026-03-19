@@ -314,13 +314,13 @@ def sharepoint_http_request_action(*, uri: str, method: str, body: dict | str) -
         "inputs": {
             "parameters": {
                 "dataset": SITE_URL_EXPR,
-                "uri": uri,
-                "method": method,
-                "headers": {
+                "parameters/uri": uri,
+                "parameters/method": method,
+                "parameters/headers": compact_json({
                     "Accept": "application/json;odata=verbose",
                     "Content-Type": "application/json;odata=verbose",
-                },
-                "body": request_body,
+                }),
+                "parameters/body": request_body,
             },
             "host": {
                 "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
