@@ -17,24 +17,23 @@ PowerClaw is a personal AI assistant that runs on a 30-minute heartbeat — proa
 **No manual Power Automate flows to build. No step-by-step workflow setup.** Just describe what you want in natural language — add a calendar event like *"Send me a Microsoft News Brief every morning at 8am"* — and PowerClaw handles the rest.
 
 
-**🏷️ Talk with PowerClaw in Teams and adapt it to your needs and work style. Uses WorkIQ for context on what's relevant to you. Uses Claude which is a great conversationalist. And adapts to your preferred working style using the Sould.md, User.md, etc. that you provide it.** 
+### Two modes
+
+| Mode | How it works |
+|-------|-------------|
+| 💬 **Interactive** | Chat in Teams: *"brief me"*, *"create a task for..."*, *"what's on my plate today?"* |  
+| 🤖 **Autonomous** | Background heartbeat checks your calendar, picks up tasks from a SharePoint Kanban board, and sends proactive briefings and alerts |
+
+
+**🏷️ Interactive Example:** Uses WorkIQ for context on what's relevant to you. Uses Claude which is a great conversationalist. And adapts to your preferred working style using the Sould.md, User.md, etc. that you provide it.
 <p align="center">
   <img src="./Images/TeamsChatPowerClaw.gif" alt="PowerClaw Calendar-Driven News Brief" width="800" />
 </p>
 
-**🏷️ Because it operates 24/7 on a 30-min heartbeat, you can schedule work for PowerClaw to work on while you sleep just by adding it to your calendar:**
+**🏷️ Autonomous Example:**  Operates 24/7 on a 30-min heartbeat and uses your calendar for event-driven tasks. Schedule PowerClaw to do X on your calendar while you sleep:
 <p align="center">
   <img src="./Images/CalendarDrivenTasks.gif" alt="PowerClaw Calendar-Driven News Brief" width="800" />
 </p>
-
-
-
-### Two modes
-
-| Mode | How it works |
-|------|-------------|
-| 🤖 **Autonomous** | Background heartbeat checks your calendar, picks up tasks from a SharePoint Kanban board, and sends proactive briefings and alerts |
-| 💬 **Interactive** | Chat in Teams: *"brief me"*, *"create a task for..."*, *"what's on my plate today?"* |
 
 ### Key capabilities
 
