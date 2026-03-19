@@ -354,8 +354,8 @@ def sharepoint_post_item_action(*, table: str, title: str, field_values: dict[st
                 "parameters/uri": uri,
                 "parameters/method": "POST",
                 "parameters/headers": {
-                    "Accept": "application/json;odata=verbose",
-                    "Content-Type": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=nometadata",
+                    "Content-Type": "application/json;odata=nometadata",
                 },
                 "parameters/body": body_str,
             },
@@ -465,7 +465,7 @@ def build_bootstrap_definition() -> dict:
             sharepoint_http_request_action(
                 uri="_api/web/lists/getByTitle('PowerClaw Tasks')/fields/getByTitle('Title')",
                 method="POST",
-                body={"Required": False},
+                body={"__metadata": {"type": "SP.Field"}, "Required": False},
                 headers={
                     "IF-MATCH": "*",
                     "X-HTTP-Method": "MERGE",
