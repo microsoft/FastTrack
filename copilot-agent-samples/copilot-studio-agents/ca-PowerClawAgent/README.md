@@ -103,6 +103,7 @@ graph TD
 | File/Folder | Purpose |
 |-------------|---------|
 | `PowerClaw/` | Copilot Studio solution source (agent, flows, connections, actions) |
+| `build-bootstrap-flow.py` | Bootstrap flow definition generator |
 | `Setup-PowerClaw.ps1` | SharePoint workspace provisioning script |
 | `SETUP.md` | Detailed setup guide with troubleshooting |
 | `Images/` | Screenshots and diagrams |
@@ -116,11 +117,11 @@ graph TD
 | Microsoft 365 | E3 or E5 (for Graph API, SharePoint, Teams) |
 | Copilot Studio | Per-user or capacity-based license |
 | Power Automate | Premium license (for Copilot Studio connector) |
-| PnP PowerShell | Free module — setup script installs if missing |
+| PnP PowerShell | *Optional* — only for script-based setup |
 | Permissions | Ability to create a SharePoint site |
 
 ## 🚀 Setup Agent
-Use `Setup-PowerClaw.ps1` to provision the SharePoint workspace, then follow the detailed import and configuration steps in [SETUP.md](SETUP.md).
+Import the solution, then run the **Bootstrap Flow** to provision your SharePoint workspace automatically — no scripts required. For advanced setups, `Setup-PowerClaw.ps1` is also available. See [SETUP.md](SETUP.md) for the full guide.
 
 ### Name
 ```
