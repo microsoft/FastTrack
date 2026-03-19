@@ -12,8 +12,8 @@ triggerOnCreate: false
 triggerOnDelete: false
 asyncAutodelete: false
 syncWorkflowLogOnFailure: false
-stateCode: 0
-statusCode: 1
+stateCode: 1
+statusCode: 2
 runAs: 1
 isTransacted: true
 introducedVersion: 1.0.0.0
