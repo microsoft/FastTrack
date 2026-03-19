@@ -276,6 +276,39 @@ LIST_DEFINITIONS = [
 ]
 
 
+VIEW_FIELDS = {
+    "PowerClaw_Config": [
+        "SettingName",
+        "SettingValue",
+    ],
+    "PowerClaw_Memory_Log": [
+        "EventType",
+        "Summary",
+        "Timestamp",
+        "FullContextJSON",
+    ],
+    "PowerClaw Memory": [
+        "MemoryType",
+        "ScopeKey",
+        "CanonicalFact",
+        "Confidence",
+        "Status",
+        "Importance",
+        "FirstLearnedAt",
+        "LastConfirmedAt",
+    ],
+    "PowerClaw Tasks": [
+        "TaskStatus",
+        "Priority",
+        "TaskDescription",
+        "Source",
+        "DueDate",
+        "Notes",
+        "LastActionDate",
+    ],
+}
+
+
 SETTINGS_TO_SEED = [
     ("KillSwitch", "false"),
     ("IsRunning", "false"),
@@ -387,6 +420,18 @@ def sharepoint_create_file_action(*, file_name: str, body: str) -> dict:
     }
 
 
+def add_view_field_action(*, list_title: str, field_name: str) -> dict:
+    return sharepoint_http_request_action(
+        uri=f"_api/web/lists/getByTitle('{list_title}')/views/getByTitle('All Items')/viewfields/addviewfield('{field_name}')",
+        method="POST",
+        body="{}",
+        headers={
+            "Accept": "application/json;odata=nometadata",
+            "Content-Type": "application/json;odata=nometadata",
+        },
+    )
+
+
 def chain_actions(actions: list[tuple[str, dict]]) -> dict[str, dict]:
     chained_actions: dict[str, dict] = {}
     previous_name: str | None = None
@@ -428,6 +473,7 @@ def make_scope(actions: list[tuple[str, dict]], *, run_after: dict | None = None
 def build_bootstrap_definition() -> dict:
     create_list_actions: list[tuple[str, dict]] = []
     add_column_actions: list[tuple[str, dict]] = []
+    configure_view_actions: list[tuple[str, dict]] = []
 
     for list_definition in LIST_DEFINITIONS:
         list_title = list_definition["title"]
@@ -473,6 +519,17 @@ def build_bootstrap_definition() -> dict:
             ),
         )
     )
+
+    for list_title, field_names in VIEW_FIELDS.items():
+        list_key = sanitize_name(list_title)
+        for field_name in field_names:
+            field_key = sanitize_name(field_name)
+            configure_view_actions.append(
+                (
+                    f"Add_View_Field_{list_key}_{field_key}",
+                    add_view_field_action(list_title=list_title, field_name=field_name),
+                )
+            )
 
     seed_setting_actions = [
         (
@@ -546,9 +603,13 @@ def build_bootstrap_definition() -> dict:
                 add_column_actions,
                 run_after={"Scope_Create_Lists": CONTINUE_AFTER_FAILURE},
             ),
+            "Scope_Configure_Views": make_scope(
+                configure_view_actions,
+                run_after={"Scope_Add_Columns": CONTINUE_AFTER_FAILURE},
+            ),
             "Scope_Seed_Settings": make_scope(
                 seed_setting_actions,
-                run_after={"Scope_Add_Columns": CONTINUE_AFTER_FAILURE},
+                run_after={"Scope_Configure_Views": CONTINUE_AFTER_FAILURE},
             ),
             "Scope_Upload_Constitution_Files": make_scope(
                 upload_file_actions,
