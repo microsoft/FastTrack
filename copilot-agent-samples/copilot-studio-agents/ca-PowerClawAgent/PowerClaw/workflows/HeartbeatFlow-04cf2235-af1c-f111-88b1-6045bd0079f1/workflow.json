@@ -372,8 +372,7 @@
                                   "id": "@items('Apply_to_each:_Process_Task_Actions')?['taskId']",
                                   "item/TaskStatus/Value": "@items('Apply_to_each:_Process_Task_Actions')?['newStatus']",
                                   "item/Notes": "@items('Apply_to_each:_Process_Task_Actions')?['notes']",
-                                  "item/LastActionDate": "@utcNow()",
-                                  "item/Title": "@items('Apply_to_each:_Process_Task_Actions')?['title']"
+                                  "item/LastActionDate": "@utcNow()"
                                 },
                                 "host": {
                                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
