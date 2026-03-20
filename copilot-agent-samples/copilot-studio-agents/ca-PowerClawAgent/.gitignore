@@ -22,7 +22,9 @@ Desktop.ini
 *.bak
 *.log
 
-# Solution exports
-*.zip
-PowerClaw_unpacked/
+# Solution exports (temp files)
 PowerClaw_export.zip
+PowerClaw_unpacked/
+
+# Allow the distributable solution zip
+!PowerClaw_Solution.zip
