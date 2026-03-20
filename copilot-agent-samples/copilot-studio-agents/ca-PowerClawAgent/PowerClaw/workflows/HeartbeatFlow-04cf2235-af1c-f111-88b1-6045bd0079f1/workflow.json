@@ -76,6 +76,23 @@
           },
           "runAfter": {}
         },
+        "Initialize_variable:_RetryCount": {
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "RetryCount",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          },
+          "runAfter": {
+            "Initialize_variable:_AgentSuccess": [
+              "Succeeded"
+            ]
+          }
+        },
         "Scope:_Initialize": {
           "type": "Scope",
           "actions": {
@@ -348,7 +365,7 @@
             }
           },
           "runAfter": {
-            "Initialize_variable:_AgentSuccess": [
+            "Initialize_variable:_RetryCount": [
               "Succeeded"
             ]
           }
@@ -454,12 +471,19 @@
             },
             "Do_until:_Retry_Agent_Loop": {
               "type": "Until",
-              "expression": "@equals(variables('AgentSuccess'),true)",
+              "expression": "@or(equals(variables('AgentSuccess'),true),greaterOrEquals(variables('RetryCount'),3))",
               "limit": {
-                "count": 4,
-                "timeout": "PT1H"
+                "count": 3,
+                "timeout": "PT30M"
               },
               "actions": {
+                "Increment_variable:_RetryCount": {
+                  "type": "IncrementVariable",
+                  "inputs": {
+                    "name": "RetryCount",
+                    "value": 1
+                  }
+                },
                 "Execute_Agent_and_wait": {
                   "type": "OpenApiConnectionWebhook",
                   "inputs": {
@@ -472,26 +496,16 @@
                       "operationId": "ExecuteCopilotAsyncV2",
                       "connectionName": "shared_microsoftcopilotstudio"
                     }
+                  },
+                  "runAfter": {
+                    "Increment_variable:_RetryCount": [
+                      "Succeeded"
+                    ]
                   }
                 },
                 "Condition:_Check_Agent_Output": {
                   "type": "If",
-                  "expression": {
-                    "and": [
-                      {
-                        "equals": [
-                          "@empty(outputs('Execute_Agent_and_wait')?['body/lastResponse'])",
-                          false
-                        ]
-                      },
-                      {
-                        "contains": [
-                          "@outputs('Execute_Agent_and_wait')?['body/lastResponse']",
-                          "{"
-                        ]
-                      }
-                    ]
-                  },
+                  "expression": "@and(equals(empty(outputs('Execute_Agent_and_wait')?['body/lastResponse']), false), contains(coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], ''), '{'), contains(coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], ''), '}'))",
                   "actions": {
                     "Compose:_Sanitize_markdown": {
                       "type": "Compose",
@@ -781,7 +795,7 @@
                             "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                             "table": "PowerClaw_Memory_Log",
                             "item/EventType/Value": "Error",
-                            "item/Summary": "Agent executed (may have sent emails/done work) but response was not valid JSON. See FullContextJSON for raw output.",
+                            "item/Summary": "Agent call failed or returned output that could not be parsed as JSON. See FullContextJSON for raw output.",
                             "item/FullContextJSON": "@coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '(empty response)')"
                           },
                           "host": {
@@ -795,7 +809,10 @@
                   },
                   "runAfter": {
                     "Execute_Agent_and_wait": [
-                      "Succeeded"
+                      "Succeeded",
+                      "Failed",
+                      "TimedOut",
+                      "Skipped"
                     ]
                   }
                 }
