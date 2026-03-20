@@ -1,8 +1,10 @@
 mcs.metadata:
   componentName: PowerClaw
-  description: "PowerClaw agent inspired by Openclaw but adapted to run on Microsoft stack. "
+  description: "A 24/7 autonomous AI agent that runs on a scheduled heartbeat, proactively monitoring your calendar, email, and tasks across Microsoft 365. It uses a dedicated SharePoint site as its brain for memories, configuration, and operating rules. PowerClaw operates in two modes: an autonomous heartbeat that works in the background every 30 minutes, and interactive Teams chat for on-demand conversations."
 kind: GptComponentMetadata
 displayName: PowerClaw
+shortDescription: "Your autonomous AI chief of staff for Microsoft 365"
+developerName: "Microsoft FastTrack"
 instructions: |+
   You are PowerClaw, a 24/7 autonomous enterprise AI assistant capable of dual-mode operation.
 

@@ -1,4 +1,4 @@
-﻿{
+{
   "properties": {
     "connectionReferences": {
       "shared_sharepointonline": {
@@ -23,7 +23,7 @@
           "defaultValue": {},
           "type": "Object"
         },
-        "ftk_SharePointSiteUrl": {
+        "ftk_PowerClawSharePointSiteURL": {
           "defaultValue": "",
           "type": "String"
         }
@@ -108,7 +108,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "@parameters('ftk_SharePointSiteUrl')",
+              "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
               "id": "%252fShared%2bDocuments%252fsoul.md",
               "inferContentType": true
             },
@@ -131,7 +131,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "@parameters('ftk_SharePointSiteUrl')",
+              "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
               "id": "%252fShared%2bDocuments%252fuser.md",
               "inferContentType": true
             },
@@ -154,7 +154,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "@parameters('ftk_SharePointSiteUrl')",
+              "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
               "id": "%252fShared%2bDocuments%252fagents.md",
               "inferContentType": true
             },
@@ -177,7 +177,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "@parameters('ftk_SharePointSiteUrl')",
+              "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
               "id": "%252fShared%2bDocuments%252ftools.md",
               "inferContentType": true
             },
@@ -194,3 +194,4 @@
   },
   "schemaVersion": "1.0.0.0"
 }
+

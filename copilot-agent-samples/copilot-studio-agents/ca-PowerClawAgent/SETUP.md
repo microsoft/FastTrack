@@ -10,14 +10,15 @@
 
 ## Quick-Start Checklist
 
-> Follow these six steps in order. Each one expands with full details below.
+> Follow these seven steps in order. Each one expands with full details below.
 
 - [ ] **1.** [Create a SharePoint site](#step-1-create-sharepoint-site)
 - [ ] **2.** [Import the solution](#step-2-import-the-solution)
-- [ ] **3.** [Provision the workspace](#step-3-provision-the-workspace)
-- [ ] **4.** [Verify tools in Copilot Studio](#step-4-verify-tools)
-- [ ] **5.** [Personalize your agent](#step-5-personalize-your-agent)
-- [ ] **6.** [Verify it's working](#step-6-verify-its-working)
+- [ ] **3.** [Manage connections](#step-3-manage-connections)
+- [ ] **4.** [Provision the workspace](#step-4-provision-the-workspace)
+- [ ] **5.** [Verify tools in Copilot Studio](#step-5-verify-tools)
+- [ ] **6.** [Personalize your agent](#step-6-personalize-your-agent)
+- [ ] **7.** [Verify it's working](#step-7-verify-its-working)
 
 <details>
 <summary><strong>📋 Prerequisites</strong></summary>
@@ -57,9 +58,25 @@ PowerClaw needs a dedicated SharePoint site as its workspace.
    - WorkIQ MCP servers (Calendar, Mail, Teams, User, Word, Copilot)
 6. **Environment Variables** — enter the SharePoint site URL from Step 1 and your admin email
 
+> ℹ️ **Expected warning:** You may see *"Solution imported successfully with warnings: The original workflow definition has been deactivated and replaced."* This is normal — all flows are imported in an **OFF** state so you can complete setup before activating them.
+
 ---
 
-## Step 3: Provision the Workspace
+## Step 3: Manage Connections
+
+Before running any flows, verify that all connection references are properly linked.
+
+1. Go to [**Power Apps Maker Portal**](https://make.powerapps.com) → **Solutions** → **PowerClaw**
+2. Click **Connection References** in the left nav (or filter by type)
+3. For each connection reference, click it and verify a valid connection is selected
+   - If no connection exists, click **+ New connection**, authenticate, and select it
+4. Repeat for all connection references (SharePoint, Outlook, Teams, Copilot Studio)
+
+> 💡 This ensures all flows can authenticate when turned on. Skipping this step is the most common cause of flow failures.
+
+---
+
+## Step 4: Provision the Workspace
 
 Choose one method to create the SharePoint lists and constitution files.
 
@@ -75,7 +92,7 @@ The solution includes a helper flow that provisions everything — no scripts re
    - **AgentName** — name for your agent (default: "PowerClaw")
 4. The flow creates all lists, columns, and uploads the default constitution files
 
-> *AgentName personalizes how the agent refers to itself in conversations and constitution files. Product branding (email subjects, calendar tags) stays as "PowerClaw".*
+> 💡 **Tip:** Enter the same SharePoint site URL and admin email you provided as environment variables during the solution import in Step 2. **AgentName** defaults to "PowerClaw" if left blank.
 
 <details>
 <summary><strong>Option B: PowerShell (Advanced)</strong></summary>
@@ -126,9 +143,19 @@ Regardless of method, the following resources are provisioned:
 
 </details>
 
+### Activate the Flows
+
+After provisioning completes, turn on the flows **in this specific order**:
+
+1. **Bootstrap** — Turn on and run first. This creates all SharePoint lists and uploads constitution files. Wait for it to complete successfully before proceeding.
+2. **HeartbeatFlow** — Turn on only after Bootstrap has succeeded. This is the recurring 30-minute heartbeat.
+3. **HousekeepingFlow** — Turn on anytime after Bootstrap. This handles daily cleanup of old logs, completed tasks, and memory trimming.
+
+> ⚠️ Do **not** turn on HeartbeatFlow before Bootstrap has run successfully — the heartbeat depends on the SharePoint lists and files that Bootstrap creates.
+
 ---
 
-## Step 4: Verify Tools
+## Step 5: Verify Tools
 
 Open the agent in [**Copilot Studio**](https://copilotstudio.microsoft.com) and confirm these **9 tools** are enabled:
 
@@ -148,7 +175,7 @@ Open the agent in [**Copilot Studio**](https://copilotstudio.microsoft.com) and 
 
 ---
 
-## Step 5: Personalize Your Agent
+## Step 6: Personalize Your Agent
 
 PowerClaw's personality and operating rules are fully decoupled from code. Edit these markdown files in your SharePoint **Documents** library:
 
@@ -159,9 +186,11 @@ PowerClaw's personality and operating rules are fully decoupled from code. Edit 
 | `soul.md` | Optional | Personality, core values, communication style |
 | `tools.md` | Reference | Available capabilities — update if you add/remove tools |
 
+> 🎨 **Custom icon:** To change the agent's avatar, upload a custom icon through the **Copilot Studio UI** under the agent's channel settings. Icon upload is not supported via YAML or solution import.
+
 ---
 
-## Step 6: Verify It's Working
+## Step 7: Verify It's Working
 
 Run through these checks to confirm everything is connected:
 
