@@ -8,9 +8,9 @@ from typing import Any
 
 
 HARDCODED_SITE_URL = "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace"
-SITE_URL_PARAMETER = "@parameters('ftk_SharePointSiteUrl')"
+SITE_URL_PARAMETER = "@parameters('ftk_PowerClawSharePointSiteURL')"
 ADMIN_EMAIL = "admin@M365CPI23966391.onmicrosoft.com"
-ADMIN_EMAIL_PARAMETER = "@parameters('ftk_AdminEmail')"
+ADMIN_EMAIL_PARAMETER = "@parameters('ftk_PowerClawAdminEmail')"
 LIST_GUID_TO_NAME = {
     "c330bd00-7966-455c-991c-d726485c7ae5": "PowerClaw_Memory_Log",
     "390396f9-02ac-4401-b3f5-4808ed84ec24": "PowerClaw_Config",
@@ -49,12 +49,12 @@ def ensure_parameters(
     if not isinstance(parameters, dict):
         raise ValueError("Flow definition parameters must be an object.")
 
-    if "ftk_SharePointSiteUrl" not in parameters:
-        parameters["ftk_SharePointSiteUrl"] = {"defaultValue": "", "type": "String"}
+    if "ftk_PowerClawSharePointSiteURL" not in parameters:
+        parameters["ftk_PowerClawSharePointSiteURL"] = {"defaultValue": "", "type": "String"}
         summary["parameters_added"] += 1
 
-    if include_admin_email and "ftk_AdminEmail" not in parameters:
-        parameters["ftk_AdminEmail"] = {"defaultValue": "", "type": "String"}
+    if include_admin_email and "ftk_PowerClawAdminEmail" not in parameters:
+        parameters["ftk_PowerClawAdminEmail"] = {"defaultValue": "", "type": "String"}
         summary["parameters_added"] += 1
 
 
@@ -138,3 +138,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

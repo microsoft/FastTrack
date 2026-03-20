@@ -1,4 +1,4 @@
-﻿{
+{
   "properties": {
     "connectionReferences": {
       "shared_microsoftcopilotstudio": {
@@ -41,11 +41,11 @@
           "defaultValue": {},
           "type": "Object"
         },
-        "ftk_SharePointSiteUrl": {
+        "ftk_PowerClawSharePointSiteURL": {
           "defaultValue": "",
           "type": "String"
         },
-        "ftk_AdminEmail": {
+        "ftk_PowerClawAdminEmail": {
           "defaultValue": "",
           "type": "String"
         }
@@ -83,7 +83,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Memory_Log",
                   "item/EventType/Value": "Heartbeat",
                   "item/Summary": "@concat('Heartbeat attempt started at ', utcNow())"
@@ -99,7 +99,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Config",
                   "$filter": "(SettingName eq 'KillSwitch' or SettingName eq 'IsRunning') and SettingValue eq 'true'"
                 },
@@ -132,7 +132,7 @@
                   "type": "OpenApiConnection",
                   "inputs": {
                     "parameters": {
-                      "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                      "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                       "table": "PowerClaw_Memory_Log",
                       "item/EventType/Value": "HeartbeatSkipped",
                       "item/Summary": "\"Skipped due to active lock or kill switch\""
@@ -169,7 +169,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Config",
                   "$filter": "SettingName eq 'IsRunning'"
                 },
@@ -189,7 +189,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Config",
                   "id": "@first(outputs('Get_items_-_Acquire_Lock_ID')?['body/value'])?['ID']",
                   "item/SettingValue": "true"
@@ -210,7 +210,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Config",
                   "$filter": "SettingName eq 'MaxActionsPerHour'"
                 },
@@ -239,7 +239,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Memory_Log",
                   "$filter": "Timestamp ge '@{addHours(utcNow(), -1)}' and (EventType eq 'ActionExecuted' or EventType eq 'ToolCalled' or EventType eq 'TaskCompleted')"
                 },
@@ -272,7 +272,7 @@
                   "type": "OpenApiConnection",
                   "inputs": {
                     "parameters": {
-                      "emailMessage/To": "@parameters('ftk_AdminEmail')",
+                      "emailMessage/To": "@parameters('ftk_PowerClawAdminEmail')",
                       "emailMessage/Subject": "PowerClaw Rate Limit Breach",
                       "emailMessage/Body": "<p class=\"editor-paragraph\">PowerClaw hit a rate limit 😅</p>",
                       "emailMessage/Importance": "Normal"
@@ -304,7 +304,7 @@
                   "type": "OpenApiConnection",
                   "inputs": {
                     "parameters": {
-                      "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                      "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                       "table": "PowerClaw_Config",
                       "id": "@first(outputs('Get_items:_KillSwitch')?['body/value'])?['ID']",
                       "item/SettingValue": "true"
@@ -325,7 +325,7 @@
                   "type": "OpenApiConnection",
                   "inputs": {
                     "parameters": {
-                      "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                      "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                       "table": "PowerClaw_Config",
                       "$filter": "SettingName eq 'KillSwitch'"
                     },
@@ -360,7 +360,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "id": "%252fShared%2bDocuments%252fsoul.md",
                   "inferContentType": true
                 },
@@ -378,7 +378,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "id": "%252fShared%2bDocuments%252fuser.md",
                   "inferContentType": true
                 },
@@ -401,7 +401,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "id": "%252fShared%2bDocuments%252fagents.md",
                   "inferContentType": true
                 },
@@ -424,7 +424,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "id": "%252fShared%2bDocuments%252ftools.md",
                   "inferContentType": true
                 },
@@ -604,7 +604,7 @@
                       "type": "OpenApiConnection",
                       "inputs": {
                         "parameters": {
-                          "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                          "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                           "table": "PowerClaw_Memory_Log",
                           "item/EventType/Value": "MemoryUpdate",
                           "item/Summary": "@body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary']",
@@ -643,7 +643,7 @@
                               "type": "OpenApiConnection",
                               "inputs": {
                                 "parameters": {
-                                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                                   "table": "PowerClaw Tasks",
                                   "id": "@items('Apply_to_each:_Process_Task_Actions')?['taskId']",
                                   "item/TaskStatus/Value": "@items('Apply_to_each:_Process_Task_Actions')?['newStatus']",
@@ -690,7 +690,7 @@
                               "type": "OpenApiConnection",
                               "inputs": {
                                 "parameters": {
-                                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                                   "table": "PowerClaw Memory",
                                   "item/Title": "@items('Apply_to_each:_Save_Memories')?['scopeKey']",
                                   "item/MemoryType/Value": "@items('Apply_to_each:_Save_Memories')?['memoryType']",
@@ -724,7 +724,7 @@
                           "type": "OpenApiConnection",
                           "inputs": {
                             "parameters": {
-                              "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                              "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                               "id": "%252fShared%2bDocuments%252fmemory-journal.md",
                               "inferContentType": true
                             },
@@ -744,7 +744,7 @@
                           "type": "OpenApiConnection",
                           "inputs": {
                             "parameters": {
-                              "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                              "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                               "folderPath": "/Shared Documents",
                               "name": "memory-journal.md",
                               "body": "@{outputs('Compose:_Journal_Entry')}@{body('Get_file_content:_Journal_for_Append')}"
@@ -778,7 +778,7 @@
                         "type": "OpenApiConnection",
                         "inputs": {
                           "parameters": {
-                            "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                            "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                             "table": "PowerClaw_Memory_Log",
                             "item/EventType/Value": "Error",
                             "item/Summary": "Agent executed (may have sent emails/done work) but response was not valid JSON. See FullContextJSON for raw output.",
@@ -819,7 +819,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Memory_Log",
                   "$orderby": "Created desc",
                   "$top": 25
@@ -852,7 +852,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw Memory",
                   "$filter": "Status ne 'Expired' and Status ne 'Superseded'",
                   "$orderby": "Importance desc, LastConfirmedAt desc",
@@ -874,7 +874,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "id": "%252fShared%2bDocuments%252fmemory-journal.md",
                   "inferContentType": true
                 },
@@ -913,7 +913,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw Tasks",
                   "$filter": "TaskStatus ne 'Done'",
                   "$orderby": "Priority asc, Created asc",
@@ -962,7 +962,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Config",
                   "$filter": "SettingName eq 'IsRunning'"
                 },
@@ -977,7 +977,7 @@
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
-                  "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                  "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                   "table": "PowerClaw_Config",
                   "id": "@first(outputs('Get_items_-_Release_Lock')?['body/value'])?['ID']",
                   "item/SettingValue": "false"
@@ -1013,7 +1013,7 @@
                   "type": "OpenApiConnection",
                   "inputs": {
                     "parameters": {
-                      "dataset": "@parameters('ftk_SharePointSiteUrl')",
+                      "dataset": "@parameters('ftk_PowerClawSharePointSiteURL')",
                       "table": "PowerClaw_Memory_Log",
                       "item/EventType/Value": "Error",
                       "item/Summary": "\"Heartbeat execution failed or timed out.\"",
@@ -1074,3 +1074,4 @@
   },
   "schemaVersion": "1.0.0.0"
 }
+
