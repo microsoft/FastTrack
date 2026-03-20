@@ -22,6 +22,10 @@
         "$connections": {
           "defaultValue": {},
           "type": "Object"
+        },
+        "ftk_SharePointSiteUrl": {
+          "defaultValue": "",
+          "type": "String"
         }
       },
       "triggers": {
@@ -89,10 +93,10 @@
             },
             "statusCode": 200,
             "body": {
-              "soultext": "@{body(\u0027Get_file_content:_soul.md\u0027)}",
-              "usertext": "@{body(\u0027Get_file_content:_user.md\u0027)}",
-              "agentstext": "@{body(\u0027Get_file_content:_agents.md\u0027)}",
-              "toolstext": "@{body(\u0027Get_file_content:_tools.md\u0027)}"
+              "soultext": "@{body('Get_file_content:_soul.md')}",
+              "usertext": "@{body('Get_file_content:_user.md')}",
+              "agentstext": "@{body('Get_file_content:_agents.md')}",
+              "toolstext": "@{body('Get_file_content:_tools.md')}"
             }
           }
         },
@@ -104,7 +108,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+              "dataset": "@parameters('ftk_SharePointSiteUrl')",
               "id": "%252fShared%2bDocuments%252fsoul.md",
               "inferContentType": true
             },
@@ -127,7 +131,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+              "dataset": "@parameters('ftk_SharePointSiteUrl')",
               "id": "%252fShared%2bDocuments%252fuser.md",
               "inferContentType": true
             },
@@ -150,7 +154,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+              "dataset": "@parameters('ftk_SharePointSiteUrl')",
               "id": "%252fShared%2bDocuments%252fagents.md",
               "inferContentType": true
             },
@@ -173,7 +177,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "parameters": {
-              "dataset": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
+              "dataset": "@parameters('ftk_SharePointSiteUrl')",
               "id": "%252fShared%2bDocuments%252ftools.md",
               "inferContentType": true
             },
