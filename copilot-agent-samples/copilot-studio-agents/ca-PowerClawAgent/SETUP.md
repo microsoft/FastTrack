@@ -10,15 +10,16 @@
 
 ## Quick-Start Checklist
 
-> Follow these seven steps in order. Each one expands with full details below.
+> Follow these eight steps in order. Each one expands with full details below.
 
 - [ ] **1.** [Create a SharePoint site](#step-1-create-sharepoint-site)
 - [ ] **2.** [Import the solution](#step-2-import-the-solution)
 - [ ] **3.** [Manage connections](#step-3-manage-connections)
-- [ ] **4.** [Provision the workspace](#step-4-provision-the-workspace)
-- [ ] **5.** [Verify tools in Copilot Studio](#step-5-verify-tools)
-- [ ] **6.** [Personalize your agent](#step-6-personalize-your-agent)
-- [ ] **7.** [Verify it's working](#step-7-verify-its-working)
+- [ ] **4.** [Configure flows](#step-4-configure-flows)
+- [ ] **5.** [Provision the workspace](#step-5-provision-the-workspace)
+- [ ] **6.** [Verify tools in Copilot Studio](#step-6-verify-tools)
+- [ ] **7.** [Personalize your agent](#step-7-personalize-your-agent)
+- [ ] **8.** [Verify it's working](#step-8-verify-its-working)
 
 <details>
 <summary><strong>📋 Prerequisites</strong></summary>
@@ -40,7 +41,7 @@
 PowerClaw needs a dedicated SharePoint site as its workspace.
 
 1. Create a new **SharePoint Team site** (e.g., `https://contoso.sharepoint.com/sites/PowerClaw-Workspace`)
-2. Note the **Site URL** — you'll need it in Step 3
+2. Note the **Site URL** — you'll need it in Steps 4 and 5
 
 ---
 
@@ -56,7 +57,7 @@ PowerClaw needs a dedicated SharePoint site as its workspace.
    - Microsoft Teams
    - Microsoft Copilot Studio
    - WorkIQ MCP servers (Calendar, Mail, Teams, User, Word, Copilot)
-6. **Environment Variables** — enter the SharePoint site URL from Step 1 and your admin email
+6. **Environment Variables** — if environment variables appear during import, it's fine to enter your actual SharePoint site URL and admin email from Step 1, but the flows themselves are configured in **Step 4: Configure Flows** using Compose actions
 
 > ℹ️ **Expected warning:** You may see *"Solution imported successfully with warnings: The original workflow definition has been deactivated and replaced."* This is normal — all flows are imported in an **OFF** state so you can complete setup before activating them.
 
@@ -76,7 +77,24 @@ Before running any flows, verify that all connection references are properly lin
 
 ---
 
-## Step 4: Provision the Workspace
+## Step 4: Configure Flows
+
+After importing the solution and setting up connections, configure the flows to point at your workspace.
+
+1. Go to **Power Automate** → **My flows** (or find the flows in the **PowerClaw** solution)
+2. Open **Heartbeat Flow** → click **Edit**
+3. Find the **`Compose:_Config_SiteURL`** action near the top of the flow
+4. Replace `https://contoso.sharepoint.com/sites/PowerClaw-Workspace` with your actual SharePoint site URL from Step 1
+5. Find the **`Compose:_Config_AdminEmail`** action
+6. Replace `admin@contoso.com` with your email address
+7. Click **Save**
+8. Repeat for the **GetContext** flow — update **`Compose:_Config_SiteURL`** only (no email change needed)
+
+> 💡 This is the only manual flow configuration needed. All 30+ SharePoint actions in the flows automatically use these Compose values.
+
+---
+
+## Step 5: Provision the Workspace
 
 Choose one method to create the SharePoint lists and constitution files.
 
@@ -87,12 +105,12 @@ The solution includes a helper flow that provisions everything — no scripts re
 1. Go to **Power Automate** → **My flows**
 2. Find the **Bootstrap** flow (inside the PowerClaw solution)
 3. Click **Run** and enter:
-   - **SiteUrl** — the SharePoint site URL from Step 1
-   - **AdminEmail** — your email address
-   - **AgentName** — name for your agent (default: "PowerClaw")
+    - **SiteUrl** — the SharePoint site URL from Step 1
+    - **AdminEmail** — your email address
+    - **AgentName** — name for your agent (default: "PowerClaw")
 4. The flow creates all lists, columns, and uploads the default constitution files
 
-> 💡 **Tip:** Enter the same SharePoint site URL and admin email you provided as environment variables during the solution import in Step 2. **AgentName** defaults to "PowerClaw" if left blank.
+> 💡 **Tip:** The Bootstrap flow is separate from the Compose-based flow configuration in Step 4. It uses its own run inputs — **SiteUrl**, **AdminEmail**, and **AgentName** — which you enter when running the flow. **AgentName** defaults to "PowerClaw" if left blank.
 
 <details>
 <summary><strong>Option B: PowerShell (Advanced)</strong></summary>
@@ -155,7 +173,7 @@ After provisioning completes, turn on the flows **in this specific order**:
 
 ---
 
-## Step 5: Verify Tools
+## Step 6: Verify Tools
 
 Open the agent in [**Copilot Studio**](https://copilotstudio.microsoft.com) and confirm these **9 tools** are enabled:
 
@@ -175,7 +193,7 @@ Open the agent in [**Copilot Studio**](https://copilotstudio.microsoft.com) and 
 
 ---
 
-## Step 6: Personalize Your Agent
+## Step 7: Personalize Your Agent
 
 PowerClaw's personality and operating rules are fully decoupled from code. Edit these markdown files in your SharePoint **Documents** library:
 
@@ -190,7 +208,7 @@ PowerClaw's personality and operating rules are fully decoupled from code. Edit 
 
 ---
 
-## Step 7: Verify It's Working
+## Step 8: Verify It's Working
 
 Run through these checks to confirm everything is connected:
 
