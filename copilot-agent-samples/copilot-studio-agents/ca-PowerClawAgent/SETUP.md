@@ -41,7 +41,8 @@
 PowerClaw needs a dedicated SharePoint site as its workspace.
 
 1. Create a new **SharePoint Team site** (e.g., `https://contoso.sharepoint.com/sites/PowerClaw-Workspace`)
-2. Note the **Site URL** — you'll need it in Steps 4 and 5
+2. Ensure the account importing the solution has **Owner or Edit** permissions on this site
+3. Note the **Site URL** — you'll need it in Steps 4 and 5
 
 ---
 
