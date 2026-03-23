@@ -41,7 +41,8 @@
 PowerClaw needs a dedicated SharePoint site as its workspace.
 
 1. Create a new **SharePoint Team site** (e.g., `https://contoso.sharepoint.com/sites/PowerClaw-Workspace`)
-2. Note the **Site URL** — you'll need it in Steps 4 and 5
+2. Ensure the account importing the solution has **Owner or Edit** permissions on this site
+3. Note the **Site URL** — you'll need it in Steps 4 and 5
 
 ---
 
@@ -89,8 +90,9 @@ After importing the solution and setting up connections, configure the flows to 
 6. Replace `admin@contoso.com` with your email address
 7. Click **Save**
 8. Repeat for the **GetContext** flow — update **`Compose:_Config_SiteURL`** only (no email change needed)
+9. Repeat for the **Housekeeping** flow — update **`Compose:_Config_SiteURL`** only
 
-> 💡 This is the only manual flow configuration needed. All 30+ SharePoint actions in the flows automatically use these Compose values.
+> 💡 This is the only manual flow configuration needed. All SharePoint actions in the flows automatically use these Compose values.
 
 ---
 

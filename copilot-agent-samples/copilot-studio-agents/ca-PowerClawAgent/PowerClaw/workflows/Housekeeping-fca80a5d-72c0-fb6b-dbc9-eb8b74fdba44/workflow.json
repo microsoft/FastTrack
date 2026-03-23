@@ -1,0 +1,256 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "api": {
+          "name": "shared_sharepointonline"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedsharepointonline_77d8f"
+        },
+        "runtimeSource": "embedded"
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "undefined",
+      "triggers": {
+        "Recurrence": {
+          "type": "Recurrence",
+          "recurrence": {
+            "frequency": "Day",
+            "interval": "1",
+            "startTime": "2026-03-20T04:00:00Z"
+          }
+        }
+      },
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "actions": {
+        "Compose:_Config_SiteURL": {
+          "type": "Compose",
+          "inputs": "https://contoso.sharepoint.com/sites/PowerClaw-Workspace",
+          "runAfter": {}
+        },
+        "Get_items:_Old_Memory_Log": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "@outputs('Compose:_Config_SiteURL')",
+              "parameters/uri": "_api/web/lists/getByTitle('PowerClaw_Memory_Log')/items?$filter=Created lt '@{addDays(utcNow(), -30)}'&$top=100",
+              "parameters/method": "GET",
+              "parameters/headers": {
+                "Accept": "application/json;odata=nometadata",
+                "Content-Type": "application/json;odata=nometadata"
+              },
+              "parameters/body": "{}"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "operationId": "HttpRequest",
+              "connectionName": "shared_sharepointonline"
+            }
+          },
+          "runAfter": {
+            "Compose:_Config_SiteURL": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Apply_to_each:_Delete_Old_Logs": {
+          "type": "Foreach",
+          "foreach": "@outputs('Get_items:_Old_Memory_Log')?['body/value']",
+          "actions": {
+            "Delete_item:_Old_Log": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "parameters/uri": "@concat('_api/web/lists/getByTitle(''PowerClaw_Memory_Log'')/items(', items('Apply_to_each:_Delete_Old_Logs')?['ID'], ')')",
+                  "parameters/method": "POST",
+                  "parameters/headers": {
+                    "Accept": "application/json;odata=nometadata",
+                    "Content-Type": "application/json;odata=nometadata",
+                    "IF-MATCH": "*",
+                    "X-HTTP-Method": "DELETE"
+                  },
+                  "parameters/body": "{}"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "HttpRequest",
+                  "connectionName": "shared_sharepointonline"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items:_Old_Memory_Log": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Get_items:_Done_Tasks": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "@outputs('Compose:_Config_SiteURL')",
+              "parameters/uri": "_api/web/lists/getByTitle('PowerClaw Tasks')/items?$filter=TaskStatus eq 'Done'&$top=100",
+              "parameters/method": "GET",
+              "parameters/headers": {
+                "Accept": "application/json;odata=nometadata",
+                "Content-Type": "application/json;odata=nometadata"
+              },
+              "parameters/body": "{}"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "operationId": "HttpRequest",
+              "connectionName": "shared_sharepointonline"
+            }
+          },
+          "runAfter": {
+            "Compose:_Config_SiteURL": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Apply_to_each:_Delete_Done_Tasks": {
+          "type": "Foreach",
+          "foreach": "@outputs('Get_items:_Done_Tasks')?['body/value']",
+          "actions": {
+            "Delete_item:_Done_Task": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "parameters/uri": "@concat('_api/web/lists/getByTitle(''PowerClaw Tasks'')/items(', items('Apply_to_each:_Delete_Done_Tasks')?['ID'], ')')",
+                  "parameters/method": "POST",
+                  "parameters/headers": {
+                    "Accept": "application/json;odata=nometadata",
+                    "Content-Type": "application/json;odata=nometadata",
+                    "IF-MATCH": "*",
+                    "X-HTTP-Method": "DELETE"
+                  },
+                  "parameters/body": "{}"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "operationId": "HttpRequest",
+                  "connectionName": "shared_sharepointonline"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items:_Done_Tasks": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Get_items:_Active_Memories": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "@outputs('Compose:_Config_SiteURL')",
+              "parameters/uri": "_api/web/lists/getByTitle('PowerClaw Memory')/items?$filter=Status eq 'Active'&$top=200",
+              "parameters/method": "GET",
+              "parameters/headers": {
+                "Accept": "application/json;odata=nometadata",
+                "Content-Type": "application/json;odata=nometadata"
+              },
+              "parameters/body": "{}"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "operationId": "HttpRequest",
+              "connectionName": "shared_sharepointonline"
+            }
+          },
+          "runAfter": {
+            "Compose:_Config_SiteURL": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Apply_to_each:_Check_Expiry": {
+          "type": "Foreach",
+          "foreach": "@outputs('Get_items:_Active_Memories')?['body/value']",
+          "actions": {
+            "Condition:_Is_Expired": {
+              "type": "If",
+              "expression": {
+                "and": [
+                  {
+                    "not": {
+                      "equals": [
+                        "@items('Apply_to_each:_Check_Expiry')?['ExpiresAt']",
+                        null
+                      ]
+                    }
+                  },
+                  {
+                    "not": {
+                      "equals": [
+                        "@items('Apply_to_each:_Check_Expiry')?['ExpiresAt']",
+                        ""
+                      ]
+                    }
+                  },
+                  {
+                    "less": [
+                      "@items('Apply_to_each:_Check_Expiry')?['ExpiresAt']",
+                      "@utcNow()"
+                    ]
+                  }
+                ]
+              },
+              "actions": {
+                "Update_item:_Set_Expired": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "dataset": "@outputs('Compose:_Config_SiteURL')",
+                      "parameters/uri": "@concat('_api/web/lists/getByTitle(''PowerClaw Memory'')/items(', items('Apply_to_each:_Check_Expiry')?['ID'], ')')",
+                      "parameters/method": "POST",
+                      "parameters/headers": {
+                        "Accept": "application/json;odata=nometadata",
+                        "Content-Type": "application/json;odata=nometadata",
+                        "IF-MATCH": "*",
+                        "X-HTTP-Method": "MERGE"
+                      },
+                      "parameters/body": "@string(setProperty(setProperty(json('{}'), 'Status', 'Expired'), 'Title', items('Apply_to_each:_Check_Expiry')?['Title']))"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "operationId": "HttpRequest",
+                      "connectionName": "shared_sharepointonline"
+                    }
+                  }
+                }
+              },
+              "else": {
+                "actions": {}
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items:_Active_Memories": [
+              "Succeeded"
+            ]
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}
