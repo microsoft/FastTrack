@@ -193,6 +193,14 @@
                     "not": {
                       "equals": [
                         "@items('Apply_to_each:_Check_Expiry')?['ExpiresAt']",
+                        null
+                      ]
+                    }
+                  },
+                  {
+                    "not": {
+                      "equals": [
+                        "@items('Apply_to_each:_Check_Expiry')?['ExpiresAt']",
                         ""
                       ]
                     }
