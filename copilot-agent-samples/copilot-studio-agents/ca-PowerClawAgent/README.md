@@ -5,6 +5,8 @@
 <p align="center"><strong>Your 24/7 AI Chief of Staff — Built Entirely on Microsoft 365</strong></p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/Released-March_2026-lightgrey?style=flat-square" alt="Released" />
   <img src="https://img.shields.io/badge/Setup-~15_minutes-0078D4?style=flat-square" alt="Time to Value" />
   <img src="https://img.shields.io/badge/Stack-M365_·_Copilot_Studio_·_Power_Automate-742774?style=flat-square" alt="Stack" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License" />
@@ -151,9 +153,11 @@ PowerClaw is intentionally lightweight — a starting point you can extend. Inte
 
 ## Version History
 
-| Date | Comments | Author |
+| Version | Date | Changes |
 |---|---|---|
-| March 2026 | Initial release | Alejandro Lopez — alejanl@microsoft.com |
+| **1.0.0** | March 2026 | Initial release — Heartbeat + Bootstrap + Housekeeping flows, HttpRequest-based SharePoint ops for cross-environment portability, configurable agent identity, Compose-based flow configuration, loop safety guards |
+
+> 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow and GetContext with your site URL.
 
 ## Disclaimer
 
