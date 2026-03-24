@@ -309,7 +309,6 @@ VIEW_FIELDS = {
     "PowerClaw_Memory_Log": [
         "EventType",
         "Summary",
-        "Timestamp",
         "FullContextJSON",
     ],
     "PowerClaw Memory": [
@@ -457,6 +456,24 @@ def add_view_field_action(*, list_title: str, field_name: str) -> dict:
     )
 
 
+def remove_view_field_action(*, list_title: str, field_name: str) -> dict:
+    return sharepoint_http_request_action(
+        uri=f"_api/web/lists/getByTitle('{list_title}')/views/getByTitle('All Items')/viewfields/removeviewfield('{field_name}')",
+        method="POST",
+        body="{}",
+        headers={
+            "Accept": "application/json;odata=nometadata",
+            "Content-Type": "application/json;odata=nometadata",
+        },
+    )
+
+
+# Fields to remove from default view (Title is added by default, remove where not needed)
+REMOVE_VIEW_FIELDS = {
+    "PowerClaw_Memory_Log": ["Title", "Timestamp"],
+}
+
+
 def chain_actions(actions: list[tuple[str, dict]]) -> dict[str, dict]:
     chained_actions: dict[str, dict] = {}
     previous_name: str | None = None
@@ -553,6 +570,18 @@ def build_bootstrap_definition() -> dict:
                 (
                     f"Add_View_Field_{list_key}_{field_key}",
                     add_view_field_action(list_title=list_title, field_name=field_name),
+                )
+            )
+
+    # Remove unwanted default fields from views
+    for list_title, field_names in REMOVE_VIEW_FIELDS.items():
+        list_key = sanitize_name(list_title)
+        for field_name in field_names:
+            field_key = sanitize_name(field_name)
+            configure_view_actions.append(
+                (
+                    f"Remove_View_Field_{list_key}_{field_key}",
+                    remove_view_field_action(list_title=list_title, field_name=field_name),
                 )
             )
 
