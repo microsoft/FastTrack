@@ -251,6 +251,24 @@ After verification, the heartbeat runs automatically every 30 minutes.
 - **Agent name** — Change `AgentName` in PowerClaw_Config and update `soul.md`
 - **Long-term memory** — Review the PowerClaw Memory list to see what the agent has learned; edit or delete entries to correct its knowledge
 
+### Calendar-Driven Routines 📅
+
+PowerClaw can execute recurring tasks based on your calendar. Add a calendar event with **`[PowerClaw Routine]`** in the title, and describe the task in the event body. PowerClaw will execute it during that time window.
+
+**Example — Morning AI News Brief:**
+
+| Field | Value |
+|---|---|
+| **Subject** | `[PowerClaw Routine] Morning AI News Brief` |
+| **Body** | `Research what's the latest in AI News. Anything interesting or exciting send to me via Email. Format it well for readability, use a dark theme, and make it engaging.` |
+| **When** | Recurring daily, 8:00 AM – 8:30 AM |
+
+> 💡 **Tips:**
+> - The `[PowerClaw Routine]` tag in the title is required — PowerClaw scans for this exact tag
+> - Make the body descriptive — this is the instruction PowerClaw follows
+> - Set the event to the time window when you want the task executed
+> - PowerClaw checks Sent Items to avoid duplicate execution if the heartbeat fires twice in the same window
+
 ### Data Retention
 
 | Data Type | Retention | Action |

@@ -552,6 +552,9 @@
                       "connectionName": "shared_microsoftcopilotstudio"
                     }
                   },
+                  "limit": {
+                    "timeout": "PT15M"
+                  },
                   "runAfter": {
                     "Increment_variable:_RetryCount": [
                       "Succeeded"
