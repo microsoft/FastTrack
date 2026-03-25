@@ -5,7 +5,7 @@
 <p align="center"><strong>Your 24/7 AI Chief of Staff — Built Entirely on Microsoft 365</strong></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-1.0.1-blue?style=flat-square" alt="Version" />
   <img src="https://img.shields.io/badge/Released-March_2026-lightgrey?style=flat-square" alt="Released" />
   <img src="https://img.shields.io/badge/Setup-~15_minutes-0078D4?style=flat-square" alt="Time to Value" />
   <img src="https://img.shields.io/badge/Stack-M365_·_Copilot_Studio_·_Power_Automate-742774?style=flat-square" alt="Stack" />
@@ -155,9 +155,10 @@ PowerClaw is intentionally lightweight — a starting point you can extend. Inte
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.0.1** | March 2026 | Fix: Reliable context loading in M365 Copilot & Teams (JIT OnActivity init replaces OnConversationStart), improved soul.md personality template, removed canned Greeting topic |
 | **1.0.0** | March 2026 | Initial release — Heartbeat + Bootstrap + Housekeeping flows, HttpRequest-based SharePoint ops for cross-environment portability, configurable agent identity, Compose-based flow configuration, loop safety guards |
 
-> 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow and GetContext with your site URL.
+> 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow, GetContext, and Housekeeping with your site URL. **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place.
 
 ## Disclaimer
 
