@@ -1,0 +1,9 @@
+# Name: Soul Text
+# Agent constitution and personality loaded from soul.md via GetContext flow
+name: SoulText
+aIVisibility: HideFromAIContext
+scope: Conversation
+description: Agent constitution and personality loaded from SharePoint soul.md at conversation start
+schemaName: auto_agent_BmTJh.globalvariable.SoulText
+kind: GlobalVariableComponent
+defaultValue: DEFAULT

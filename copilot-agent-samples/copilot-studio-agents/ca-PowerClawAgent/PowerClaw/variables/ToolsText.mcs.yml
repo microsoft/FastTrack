@@ -1,0 +1,9 @@
+# Name: Tools Text
+# Available MCP capabilities loaded from tools.md via GetContext flow
+name: ToolsText
+aIVisibility: HideFromAIContext
+scope: Conversation
+description: Available MCP capabilities loaded from SharePoint tools.md at conversation start
+schemaName: auto_agent_BmTJh.globalvariable.ToolsText
+kind: GlobalVariableComponent
+defaultValue: DEFAULT

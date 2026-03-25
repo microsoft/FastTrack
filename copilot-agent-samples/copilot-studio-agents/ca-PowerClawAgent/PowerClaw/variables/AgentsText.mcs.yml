@@ -1,0 +1,9 @@
+# Name: Agents Text
+# Operating rules loaded from agents.md via GetContext flow
+name: AgentsText
+aIVisibility: HideFromAIContext
+scope: Conversation
+description: Operating rules loaded from SharePoint agents.md at conversation start
+schemaName: auto_agent_BmTJh.globalvariable.AgentsText
+kind: GlobalVariableComponent
+defaultValue: DEFAULT
