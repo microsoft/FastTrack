@@ -19,9 +19,9 @@
     Also rebuild PowerClaw_Solution.zip with placeholder URLs for distribution.
 
 .EXAMPLE
-    .\deploy-to-prod.ps1
-    .\deploy-to-prod.ps1 -SiteUrl "https://contoso.sharepoint.com/sites/PowerClaw" -AdminEmail "admin@contoso.com"
-    .\deploy-to-prod.ps1 -RebuildZip
+    .\scripts\deploy-to-prod.ps1
+    .\scripts\deploy-to-prod.ps1 -SiteUrl "https://contoso.sharepoint.com/sites/PowerClaw" -AdminEmail "admin@contoso.com"
+    .\scripts\deploy-to-prod.ps1 -RebuildZip
 #>
 param(
     [string]$SiteUrl = "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace",
@@ -30,7 +30,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$base = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$base = (Get-Item $scriptDir).Parent.FullName
 $placeholderUrl = "https://contoso.sharepoint.com/sites/PowerClaw-Workspace"
 $placeholderEmail = "admin@contoso.com"
 
@@ -84,13 +85,13 @@ foreach ($flow in $flows) {
 
 # Step 3b: Inject Bootstrap flow
 Write-Host "💉 Injecting Bootstrap flow..." -ForegroundColor Yellow
-python "$base\build-bootstrap-flow.py" "$base\PowerClaw_unpacked" --flow-name "Bootstrap" 2>&1 | Out-Null
+python "$scriptDir\build-bootstrap-flow.py" "$base\PowerClaw_unpacked" --flow-name "Bootstrap" 2>&1 | Out-Null
 # Fallback: direct injection if script can't find the flow
 $bsPath = "$base\PowerClaw_unpacked\Workflows\Bootstrap-B927E94B-4651-DFE8-00EB-A2E34D3EE199.json"
 if (Test-Path $bsPath) {
     python -c "
 import json, importlib.util, pathlib
-spec = importlib.util.spec_from_file_location('bbf', r'$base\build-bootstrap-flow.py')
+spec = importlib.util.spec_from_file_location('bbf', r'$scriptDir\build-bootstrap-flow.py')
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 with open(r'$bsPath', encoding='utf-8-sig') as f:

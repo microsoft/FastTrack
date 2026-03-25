@@ -134,7 +134,7 @@ This requests **only** the permission needed. Save the **Client ID** it outputs.
 **2. Run the provisioning script:**
 
 ```powershell
-.\Setup-PowerClaw.ps1 `
+.\scripts\Setup-PowerClaw.ps1 `
   -SiteUrl "https://your-tenant.sharepoint.com/sites/PowerClaw-Workspace" `
   -AdminEmail "you@example.com" `
   -ClientId "your-client-id" `
@@ -456,9 +456,9 @@ graph TD
 | File | Purpose |
 |---|---|
 | `PowerClaw_Solution.zip` | Unmanaged solution (Agent + Flows including Bootstrap) |
-| `build-bootstrap-flow.py` | Bootstrap flow definition generator |
-| `deploy-to-prod.ps1` | Deployment script (export → inject URLs → import → optional zip rebuild) |
-| `Setup-PowerClaw.ps1` | SharePoint workspace provisioning script (advanced, PowerShell alternative) |
+| `scripts/build-bootstrap-flow.py` | Bootstrap flow definition generator |
+| `scripts/deploy-to-prod.ps1` | Deployment script (export → inject URLs → import → optional zip rebuild) |
+| `scripts/Setup-PowerClaw.ps1` | SharePoint workspace provisioning script (advanced, PowerShell alternative) |
 | `SETUP.md` | This guide |
 | `Images/` | Screenshots and diagrams |
 
