@@ -58,46 +58,23 @@ Schedule PowerClaw to do work while you sleep. Add a recurring calendar event an
   <img src="./Images/CalendarDrivenTasks.gif" alt="PowerClaw autonomous calendar-driven tasks" width="800" />
 </p>
 
----
-
-## 📸 Example Scenarios
-
-### 📬 Morning Work Briefing
-Start your day with an automated summary of today's calendar, pending tasks, and important emails — delivered before you even open Outlook.
+### 📋 Autonomous — Task-Board-Driven Research
+Ask PowerClaw to add a task its list OR drop a task on the SharePoint Kanban board. PowerClaw picks it up, researches the topic, saves a Word doc to OneDrive, and emails you the report.
 
 <p align="center">
-  <img src="./Images/Morning%20Work%20Briefing.png" alt="Morning Work Briefing" width="800" />
+  <img src="./Images/KanbanBoardResearchReport.gif" alt="PowerClaw Kanban to research report flow" width="800" />
 </p>
 
 ---
 
-### 📋 Research via Kanban Board
-Drop a task on the SharePoint board. PowerClaw picks it up, researches the topic, saves a Word doc to OneDrive, and emails you the link — then moves the task to "Human Review."
+## Example Scenarios
 
-<p align="center">
-  <img src="./Images/PowerclawKanbanTask.png" alt="Kanban Task Board" width="800" />
-</p>
-<p align="center">
-  <img src="./Images/EmailedResearchReport.png" alt="Emailed Research Report" width="800" />
-</p>
-
----
-
-### 🔔 Proactive Meeting Prep
-PowerClaw detects an upcoming meeting, reviews attendees and recent emails, and sends you prep notes before it starts — without being asked.
-
-<p align="center">
-  <img src="./Images/MeetingPrepDetails.png" alt="Meeting Prep Details" width="800" />
-</p>
-
----
-
-### 📰 Scheduled Intelligence
-Want an AI News Brief every morning at 8am? A Roadmap Rundown on Fridays? Just add a recurring calendar event — PowerClaw handles the rest.
-
-<p align="center">
-  <img src="./Images/AINewsBriefMorning.png" alt="AI News Brief Calendar Event" width="800" />
-</p>
+| | Scenario | What Happens |
+|---|---|---|
+| 📬 | **Morning Work Briefing** | Start your day with an automated summary of today's calendar, pending tasks, and important emails — delivered before you even open Outlook |
+| 📋 | **Research via Kanban Board** | Drop a task on the SharePoint board — PowerClaw picks it up, researches the topic, saves a Word doc to OneDrive, and emails you the link |
+| 🔔 | **Proactive Meeting Prep** | PowerClaw detects an upcoming meeting, reviews attendees and recent emails, and sends you prep notes before it starts — without being asked |
+| 📰 | **Scheduled Intelligence** | Want an AI News Brief every morning at 8am? A Roadmap Rundown on Fridays? Just add a recurring calendar event — PowerClaw handles the rest |
 
 ---
 
@@ -148,6 +125,16 @@ That's it. The heartbeat starts automatically.
 PowerClaw is intentionally lightweight — a starting point you can extend. Integrate it with Planner, To Do, or any Power Platform connector. Customize its personality, operating rules, and behavior by editing simple markdown files — no code changes required.
 
 **Best for:** Innovation teams · Executive productivity · Internal AI enablement · Copilot Studio pilots
+
+### 🔌 Extend PowerClaw
+
+Power Platform provides 1000+ connectors to build on. A few ideas:
+
+- **Meeting follow-ups** — After a meeting ends, draft a recap with action items and send it to attendees automatically
+- **CRM pulse** — Before every customer call, pull open opportunities, last touchpoints, and recent support tickets into a one-pager
+- **Copilot Analytics brief** — Connect to Power BI and M365 Copilot usage reports. Every Monday, get an AI adoption summary with top users, underutilized licenses, and trends
+- **Team standup digest** — Collect async updates from a Teams channel and compile a weekly summary for leadership
+- **Event-driven reflexes** — Expose a Power Automate HTTP trigger so external events (a form submission, a new lead, a Teams mention) wake the agent instantly instead of waiting for the next heartbeat
 
 ---
 
