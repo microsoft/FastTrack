@@ -1,9 +1,8 @@
-# Name: User Text
-# User context and preferences loaded from user.md via GetContext flow
-name: UserText
-aIVisibility: HideFromAIContext
-scope: Conversation
-description: User context and preferences loaded from SharePoint user.md at conversation start
-schemaName: auto_agent_BmTJh.globalvariable.UserText
 kind: GlobalVariableComponent
-defaultValue: DEFAULT
+schemaName: auto_agent_BmTJh.globalvariable.UserText
+description: User context and preferences loaded from SharePoint user.md at conversation start
+variable:
+  name: UserText
+  scope: Conversation
+  defaultValue: DEFAULT
+  aIVisibility: Hidden
