@@ -5,7 +5,7 @@
 <p align="center"><strong>Your 24/7 AI Chief of Staff — Built Entirely on Microsoft 365</strong></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-1.0.1-blue?style=flat-square" alt="Version" />
   <img src="https://img.shields.io/badge/Released-March_2026-lightgrey?style=flat-square" alt="Released" />
   <img src="https://img.shields.io/badge/Setup-~15_minutes-0078D4?style=flat-square" alt="Time to Value" />
   <img src="https://img.shields.io/badge/Stack-M365_·_Copilot_Studio_·_Power_Automate-742774?style=flat-square" alt="Stack" />
@@ -58,46 +58,23 @@ Schedule PowerClaw to do work while you sleep. Add a recurring calendar event an
   <img src="./Images/CalendarDrivenTasks.gif" alt="PowerClaw autonomous calendar-driven tasks" width="800" />
 </p>
 
----
-
-## 📸 Example Scenarios
-
-### 📬 Morning Work Briefing
-Start your day with an automated summary of today's calendar, pending tasks, and important emails — delivered before you even open Outlook.
+### 📋 Autonomous — Task-Board-Driven Research
+Ask PowerClaw to add a task its list OR drop a task on the SharePoint Kanban board. PowerClaw picks it up, researches the topic, saves a Word doc to OneDrive, and emails you the report.
 
 <p align="center">
-  <img src="./Images/Morning%20Work%20Briefing.png" alt="Morning Work Briefing" width="800" />
+  <img src="./Images/KanbanBoardResearchReport.gif" alt="PowerClaw Kanban to research report flow" width="800" />
 </p>
 
 ---
 
-### 📋 Research via Kanban Board
-Drop a task on the SharePoint board. PowerClaw picks it up, researches the topic, saves a Word doc to OneDrive, and emails you the link — then moves the task to "Human Review."
+## Example Scenarios
 
-<p align="center">
-  <img src="./Images/PowerclawKanbanTask.png" alt="Kanban Task Board" width="800" />
-</p>
-<p align="center">
-  <img src="./Images/EmailedResearchReport.png" alt="Emailed Research Report" width="800" />
-</p>
-
----
-
-### 🔔 Proactive Meeting Prep
-PowerClaw detects an upcoming meeting, reviews attendees and recent emails, and sends you prep notes before it starts — without being asked.
-
-<p align="center">
-  <img src="./Images/MeetingPrepDetails.png" alt="Meeting Prep Details" width="800" />
-</p>
-
----
-
-### 📰 Scheduled Intelligence
-Want an AI News Brief every morning at 8am? A Roadmap Rundown on Fridays? Just add a recurring calendar event — PowerClaw handles the rest.
-
-<p align="center">
-  <img src="./Images/AINewsBriefMorning.png" alt="AI News Brief Calendar Event" width="800" />
-</p>
+| | Scenario | What Happens |
+|---|---|---|
+| 📬 | **Morning Work Briefing** | Start your day with an automated summary of today's calendar, pending tasks, and important emails — delivered before you even open Outlook |
+| 📋 | **Research via Kanban Board** | Drop a task on the SharePoint board — PowerClaw picks it up, researches the topic, saves a Word doc to OneDrive, and emails you the link |
+| 🔔 | **Proactive Meeting Prep** | PowerClaw detects an upcoming meeting, reviews attendees and recent emails, and sends you prep notes before it starts — without being asked |
+| 📰 | **Scheduled Intelligence** | Want an AI News Brief every morning at 8am? A Roadmap Rundown on Fridays? Just add a recurring calendar event — PowerClaw handles the rest |
 
 ---
 
@@ -149,15 +126,26 @@ PowerClaw is intentionally lightweight — a starting point you can extend. Inte
 
 **Best for:** Innovation teams · Executive productivity · Internal AI enablement · Copilot Studio pilots
 
+### 🔌 Extend PowerClaw
+
+Power Platform provides 1000+ connectors to build on. A few ideas:
+
+- **Meeting follow-ups** — After a meeting ends, draft a recap with action items and send it to attendees automatically
+- **CRM pulse** — Before every customer call, pull open opportunities, last touchpoints, and recent support tickets into a one-pager
+- **Copilot Analytics brief** — Connect to Power BI and M365 Copilot usage reports. Every Monday, get an AI adoption summary with top users, underutilized licenses, and trends
+- **Team standup digest** — Collect async updates from a Teams channel and compile a weekly summary for leadership
+- **Event-driven reflexes** — Expose a Power Automate HTTP trigger so external events (a form submission, a new lead, a Teams mention) wake the agent instantly instead of waiting for the next heartbeat
+
 ---
 
 ## Version History
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.0.1** | March 2026 | Fix: Reliable context loading in M365 Copilot & Teams (JIT OnActivity init replaces OnConversationStart), improved soul.md personality template, removed canned Greeting topic |
 | **1.0.0** | March 2026 | Initial release — Heartbeat + Bootstrap + Housekeeping flows, HttpRequest-based SharePoint ops for cross-environment portability, configurable agent identity, Compose-based flow configuration, loop safety guards |
 
-> 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow and GetContext with your site URL.
+> 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow, GetContext, and Housekeeping with your site URL. **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place.
 
 ## Disclaimer
 

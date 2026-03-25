@@ -22,6 +22,9 @@ Desktop.ini
 *.bak
 *.log
 
+# Dev notes (internal reference, not shipped)
+.dev/
+
 # Solution exports (temp files)
 PowerClaw_export.zip
 PowerClaw_unpacked/

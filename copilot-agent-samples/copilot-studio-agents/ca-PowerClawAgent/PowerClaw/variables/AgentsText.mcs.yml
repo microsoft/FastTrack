@@ -1,0 +1,8 @@
+kind: GlobalVariableComponent
+schemaName: auto_agent_BmTJh.globalvariable.AgentsText
+description: Operating rules loaded from SharePoint agents.md at conversation start
+variable:
+  name: AgentsText
+  scope: Conversation
+  defaultValue: DEFAULT
+  aIVisibility: Hidden

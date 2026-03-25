@@ -167,7 +167,7 @@ Regardless of method, the following resources are provisioned:
 
 After provisioning completes, turn on the flows **in this specific order**:
 
-1. **Bootstrap** — Turn on and run first. This creates all SharePoint lists and uploads constitution files. Wait for it to complete successfully before proceeding.
+1. **Bootstrap** — This is a manual instant flow. You already ran it in the step above. No need to turn it on/off — it runs on demand.
 2. **HeartbeatFlow** — Turn on only after Bootstrap has succeeded. This is the recurring 30-minute heartbeat.
 3. **HousekeepingFlow** — Turn on anytime after Bootstrap. This handles daily cleanup of old logs, completed tasks, and memory trimming.
 
@@ -338,7 +338,13 @@ both proactive autonomous work and interactive Teams chat.
 ```
 Instructions are embedded in the solution and dynamically loaded at runtime from the
 SharePoint constitution files soul.md, user.md, agents.md, and tools.md.
-They are not hardcoded in the published agent.
+
+In Interactive Mode (Teams / M365 Copilot), constitution files are loaded just-in-time
+on the first user message via the ConversationInit topic, which calls the GetContext flow.
+A JIT guard (IsBlank check) ensures the flow runs only once per conversation.
+
+In Autonomous Mode (Heartbeat), the HeartbeatFlow loads constitution files independently
+from SharePoint and injects them directly into the prompt.
 ```
 
 ### Settings
@@ -354,6 +360,22 @@ They are not hardcoded in the published agent.
 - Calendar, email, and user context loaded by the HeartbeatFlow
 
 </details>
+
+---
+
+## Updating an Existing Installation
+
+To update PowerClaw to a newer version:
+
+1. Download the latest `PowerClaw_Solution.zip`
+2. Re-import into your existing environment (same steps as [Step 2](#step-2-import-the-solution))
+3. **Re-authorize connections** if prompted
+4. **Re-edit `Compose:_Config_SiteURL`** in HeartbeatFlow, GetContext, and Housekeeping with your site URL
+5. **Turn on** HeartbeatFlow and HousekeepingFlow (they are deactivated on import)
+
+> ⚠️ **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place. Re-running Bootstrap may create duplicate lists or overwrite your customized constitution files.
+
+Your SharePoint data (config settings, memories, tasks, constitution files) is fully preserved during solution re-import.
 
 ---
 
@@ -433,9 +455,10 @@ graph TD
 
 | File | Purpose |
 |---|---|
-| `PowerClaw_Solution.zip` | Managed solution (Agent + Flows including Bootstrap) |
+| `PowerClaw_Solution.zip` | Unmanaged solution (Agent + Flows including Bootstrap) |
 | `build-bootstrap-flow.py` | Bootstrap flow definition generator |
-| `Setup-PowerClaw.ps1` | SharePoint workspace provisioning script |
+| `deploy-to-prod.ps1` | Deployment script (export → inject URLs → import → optional zip rebuild) |
+| `Setup-PowerClaw.ps1` | SharePoint workspace provisioning script (advanced, PowerShell alternative) |
 | `SETUP.md` | This guide |
 | `Images/` | Screenshots and diagrams |
 
