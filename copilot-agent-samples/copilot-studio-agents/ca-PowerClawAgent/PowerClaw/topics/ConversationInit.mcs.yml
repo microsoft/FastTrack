@@ -1,0 +1,22 @@
+mcs.metadata:
+  componentName: Conversation Init
+  description: JIT provisioning of agent context globals on every incoming message. Guards with IsBlank so the flow runs only once per conversation. Works reliably in M365 Copilot and Teams where OnConversationStart may not fire.
+kind: AdaptiveDialog
+modelDescription: null
+beginDialog:
+  kind: OnActivity
+  id: main
+  type: Message
+  condition: =IsBlank(Global.SoulText)
+  actions:
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_Rk7mWp
+      input: {}
+      output:
+        binding:
+          agentstext: Global.AgentsText
+          soultext: Global.SoulText
+          toolstext: Global.ToolsText
+          usertext: Global.UserText
+
+      flowId: ff84c862-c7f6-819b-5ec6-7201f9389c85
