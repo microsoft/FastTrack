@@ -4,7 +4,7 @@
   <img src="./Images/powerclaw-rounded.png" alt="PowerClaw" width="120" />
 </p>
 
-<p align="center"><strong>From zero to first heartbeat in ~15 minutes</strong></p>
+<p align="center"><strong>From zero to first heartbeat in ~30 minutes</strong></p>
 
 ---
 
@@ -26,9 +26,9 @@
 
 | Requirement | Details |
 |---|---|
-| **Microsoft 365** | E3 or E5 (for Graph API, SharePoint, Teams) |
-| **Copilot Studio** | Per-user or capacity-based license |
-| **Power Automate** | Premium license (for Copilot Studio connector) |
+| **Microsoft 365** | E3 or E5 (for SharePoint, Teams, Outlook, Graph API) |
+| **Copilot Studio** | Credit pack or pay-as-you-go — [see pricing](https://aka.ms/copilotstudio/licensingguide) |
+| **Power Automate** | Premium plan — required because HeartbeatFlow uses the Copilot Studio connector |
 | **Permissions** | Ability to create a SharePoint site |
 | **PnP PowerShell** | *Optional* — only needed if using the script-based setup path |
 
