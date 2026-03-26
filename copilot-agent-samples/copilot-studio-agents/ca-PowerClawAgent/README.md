@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-1.0.1-blue?style=flat-square" alt="Version" />
   <img src="https://img.shields.io/badge/Released-March_2026-lightgrey?style=flat-square" alt="Released" />
-  <img src="https://img.shields.io/badge/Setup-~15_minutes-0078D4?style=flat-square" alt="Time to Value" />
+  <img src="https://img.shields.io/badge/Setup-~30_minutes-0078D4?style=flat-square" alt="Time to Value" />
   <img src="https://img.shields.io/badge/Stack-M365_·_Copilot_Studio_·_Power_Automate-742774?style=flat-square" alt="Stack" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License" />
 </p>
@@ -88,7 +88,7 @@ PowerClaw is inspired by [**OpenClaw**](https://github.com/openclaw/openclaw), t
 | **Data residency** | Your machine | Your M365 tenant |
 | **Security** | Self-managed | Inherits your M365 policies |
 | **Chat** | WhatsApp, Telegram, Discord | Microsoft Teams |
-| **Setup** | Docker compose + config files | Import solution + run a flow (~15 min) |
+| **Setup** | Docker compose + config files | Import solution + run a flow (~30 min) |
 
 > 💡 If security, compliance, or organizational policy is a blocker for external AI infrastructure, PowerClaw gets you started using tools your IT team already approves.
 
@@ -96,7 +96,7 @@ PowerClaw is inspired by [**OpenClaw**](https://github.com/openclaw/openclaw), t
 
 ## Getting Started
 
-PowerClaw is designed to be up and running in about 15 minutes. The setup is three steps:
+PowerClaw is designed to be up and running in about 30 minutes. The setup is three steps:
 
 1. **Import** the Copilot Studio solution into your environment
 2. **Provision** your SharePoint workspace by running the included Bootstrap Flow
@@ -111,10 +111,12 @@ That's it. The heartbeat starts automatically.
 
 | Requirement | Details |
 |---|---|
-| Microsoft 365 | E3 or E5 (for Graph API, SharePoint, Teams) |
-| Copilot Studio | Per-user or capacity-based license |
-| Power Automate | Premium license (for Copilot Studio connector) |
+| Microsoft 365 | E3 or E5 (for SharePoint, Teams, Outlook, Graph API) |
+| Copilot Studio | Credit pack or pay-as-you-go — [see pricing](https://aka.ms/copilotstudio/licensingguide) |
+| Power Automate | Premium plan — required because HeartbeatFlow uses the Copilot Studio connector |
 | Permissions | Ability to create a SharePoint site |
+
+> 💡 See the [FAQ](#frequently-asked-questions) for detailed licensing guidance. M365 Copilot is **not** required.
 
 </details>
 
@@ -135,6 +137,101 @@ Power Platform provides 1000+ connectors to build on. A few ideas:
 - **Copilot Analytics brief** — Connect to Power BI and M365 Copilot usage reports. Every Monday, get an AI adoption summary with top users, underutilized licenses, and trends
 - **Team standup digest** — Collect async updates from a Teams channel and compile a weekly summary for leadership
 - **Event-driven reflexes** — Expose a Power Automate HTTP trigger so external events (a form submission, a new lead, a Teams mention) wake the agent instantly instead of waiting for the next heartbeat
+
+---
+
+## Frequently Asked Questions
+
+<details>
+<summary><strong>💰 Why does PowerClaw require Power Automate Premium?</strong></summary>
+
+The HeartbeatFlow uses the **Microsoft Copilot Studio connector** — a premium connector — to invoke the agent on a schedule. Any Power Automate flow using a premium connector requires a Power Automate Premium plan. The SharePoint and Outlook connectors used in the other flows are standard and don't require premium on their own.
+
+</details>
+
+<details>
+<summary><strong>💳 How much does the 30-minute heartbeat cost?</strong></summary>
+
+The heartbeat runs ~1,440 times per month (48 runs/day × 30 days). This is well within the flow run limits included in a Power Automate Premium plan. You won't pay extra per run.
+
+Each heartbeat also consumes **Copilot Studio credits** (typically 2–25 credits depending on the complexity of the agent's actions). With a standard credit pack, a typical heartbeat pattern uses a small fraction of the monthly allotment — leaving plenty for interactive chat and complex tasks.
+
+You can also adjust the heartbeat frequency (e.g., every hour instead of 30 minutes) by editing the recurrence trigger in the HeartbeatFlow.
+
+> 📖 Check the [Copilot Studio licensing guide](https://aka.ms/copilotstudio/licensingguide) and [Power Automate pricing](https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing) for current rates.
+
+</details>
+
+<details>
+<summary><strong>🪪 Is a Microsoft 365 Copilot license required?</strong></summary>
+
+**No.** PowerClaw runs on Copilot Studio + Power Automate — it does not require a Microsoft 365 Copilot license.
+
+However, if users **do** have M365 Copilot, their interactive chats with the agent inside Teams and M365 may be included at no extra Copilot Studio credit cost (subject to fair-use limits). Without M365 Copilot, interactive chats consume credits from your Copilot Studio credit pack.
+
+The autonomous heartbeat always consumes Copilot Studio credits regardless of M365 Copilot licensing.
+
+> 📖 See the [M365 Copilot licensing guide](https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-licensing) for current bundling details.
+
+</details>
+
+<details>
+<summary><strong>📦 What licenses do I actually need?</strong></summary>
+
+| License | Required? | Why |
+|---|---|---|
+| **Microsoft 365** (E3/E5) | ✅ Yes | SharePoint, Teams, Outlook, Graph API |
+| **Copilot Studio** | ✅ Yes | Powers the AI agent (credit pack or pay-as-you-go) |
+| **Power Automate Premium** | ✅ Yes | HeartbeatFlow uses the Copilot Studio connector (premium) |
+| **Microsoft 365 Copilot** | ❌ Optional | If present, interactive chats in Teams don't consume credits |
+
+> 📖 Licensing changes frequently. Always verify with the official [Copilot Studio licensing guide](https://aka.ms/copilotstudio/licensingguide) and [Power Automate pricing](https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing) for current plans and rates.
+
+</details>
+
+<details>
+<summary><strong>🔒 Does any data leave my tenant?</strong></summary>
+
+**No.** PowerClaw runs entirely within your Microsoft 365 environment. All data — SharePoint lists, constitution files, emails, calendar — stays in your tenant. The AI model is accessed via Copilot Studio's built-in model endpoint, which follows your tenant's data residency and compliance policies.
+
+</details>
+
+<details>
+<summary><strong>👥 Can multiple users share one PowerClaw agent?</strong></summary>
+
+PowerClaw is designed as a **personal assistant** — one agent instance per user. The SharePoint workspace, constitution files, and memory are all scoped to a single user's context. Multiple users would each need their own SharePoint site and flow configuration.
+
+For team-level scenarios, consider customizing PowerClaw to monitor shared resources (team mailbox, shared calendar, team channel) instead.
+
+</details>
+
+<details>
+<summary><strong>⏱️ Can I change the heartbeat frequency?</strong></summary>
+
+Yes. Open the **HeartbeatFlow** in Power Automate, find the **Recurrence** trigger at the top, and change the interval. Common options:
+- **Every 15 minutes** — more responsive but uses more credits
+- **Every 30 minutes** — default, good balance
+- **Every hour** — lower cost, still proactive
+
+Remember: more frequent heartbeats = more Copilot Studio credit consumption.
+
+</details>
+
+<details>
+<summary><strong>🧠 What AI model does PowerClaw use?</strong></summary>
+
+PowerClaw uses **Claude Sonnet 4.6** via Copilot Studio's model selection. You can change this in the Copilot Studio agent settings under "Select your agent's model." Different models may affect response quality, speed, and credit consumption.
+
+</details>
+
+<details>
+<summary><strong>🔄 What happens if I run out of Copilot Studio credits?</strong></summary>
+
+If your credit pack is exhausted, the agent stops responding to both heartbeat and interactive requests until the next billing cycle or until you add more capacity. The HeartbeatFlow will still trigger (it's a Power Automate flow), but the Copilot Studio connector call will fail gracefully. No data is lost — tasks remain in the SharePoint list and will be processed when credits are available again.
+
+> 💡 Set up [usage monitoring](https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-billed-sessions) in Copilot Studio to track credit consumption and avoid surprises.
+
+</details>
 
 ---
 
