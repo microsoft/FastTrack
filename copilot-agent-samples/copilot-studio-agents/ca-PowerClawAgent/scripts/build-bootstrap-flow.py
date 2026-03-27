@@ -15,6 +15,10 @@ ADMIN_EMAIL_EXPR = "@triggerBody()['text_1']"
 AGENT_NAME_EXPR = "@triggerBody()['text_2']"
 AGENT_NAME_INLINE_EXPR = "@{triggerBody()['text_2']}"
 CONTINUE_AFTER_FAILURE = ["Succeeded", "Failed", "TimedOut", "Skipped"]
+DEFAULT_SITE_URL = "https://contoso.sharepoint.com/sites/PowerClaw-Workspace"
+DEFAULT_ADMIN_EMAIL = "admin@contoso.com"
+DEFAULT_AGENT_NAME = "PowerClaw"
+MANUAL_TRIGGER_OPERATION_METADATA_ID = "0f2c0c43-9499-4e77-9f1d-3ccdb6d53b27"
 
 
 SOUL_MD = dedent(
@@ -520,6 +524,25 @@ def make_scope(actions: list[tuple[str, dict]], *, run_after: dict | None = None
 
 
 def build_bootstrap_definition() -> dict:
+    def manual_trigger_text_input(
+        *,
+        title: str,
+        description: str,
+        content_hint: str,
+        default: str | None = None,
+    ) -> dict:
+        input_schema = {
+            "title": title,
+            "description": description,
+            "type": "string",
+            "x-ms-content-hint": content_hint,
+            "x-ms-dynamically-added": True,
+            "x-ms-visibility": "important",
+        }
+        if default is not None:
+            input_schema["default"] = default
+        return input_schema
+
     create_list_actions: list[tuple[str, dict]] = []
     add_column_actions: list[tuple[str, dict]] = []
     configure_view_actions: list[tuple[str, dict]] = []
@@ -630,28 +653,33 @@ def build_bootstrap_definition() -> dict:
         },
         "triggers": {
             "manual": {
+                "metadata": {
+                    "operationMetadataId": MANUAL_TRIGGER_OPERATION_METADATA_ID,
+                },
                 "type": "Request",
                 "kind": "Button",
                 "inputs": {
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "text": {
-                                "title": "SiteUrl",
-                                "type": "string",
-                                "x-ms-visibility": "important",
-                            },
-                            "text_1": {
-                                "title": "AdminEmail",
-                                "type": "string",
-                                "x-ms-visibility": "important",
-                            },
-                            "text_2": {
-                                "title": "AgentName",
-                                "type": "string",
-                                "default": "PowerClaw",
-                                "x-ms-visibility": "important",
-                            },
+                            "text": manual_trigger_text_input(
+                                title="SiteUrl",
+                                description="SharePoint site URL for the PowerClaw workspace.",
+                                content_hint="TEXT",
+                                default=DEFAULT_SITE_URL,
+                            ),
+                            "text_1": manual_trigger_text_input(
+                                title="AdminEmail",
+                                description="Admin email address for PowerClaw notifications and ownership.",
+                                content_hint="EMAIL",
+                                default=DEFAULT_ADMIN_EMAIL,
+                            ),
+                            "text_2": manual_trigger_text_input(
+                                title="AgentName",
+                                description="Display name for the PowerClaw agent persona.",
+                                content_hint="TEXT",
+                                default=DEFAULT_AGENT_NAME,
+                            ),
                         },
                         "required": ["text", "text_1"],
                     }
