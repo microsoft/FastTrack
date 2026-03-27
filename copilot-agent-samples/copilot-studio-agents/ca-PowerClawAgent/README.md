@@ -48,7 +48,7 @@ No manual Power Automate flows to build. No step-by-step workflow setup. Just de
 Ask PowerClaw anything: a daily briefing, a task update, a research request. It adapts to your working style using customizable personality files.
 
 <p align="center">
-  <img src="./Images/TeamsChatPowerClaw.gif" alt="PowerClaw interactive chat in Teams" width="800" />
+  <img src="./Images/WalterPowerClaw-TeamsMorningSync.gif" alt="PowerClaw morning sync chat in Teams" width="800" />
 </p>
 
 ### 🤖 Autonomous — Calendar-Driven Tasks
@@ -243,6 +243,10 @@ If your credit pack is exhausted, the agent stops responding to both heartbeat a
 | **1.0.0** | March 2026 | Initial release — Heartbeat + Bootstrap + Housekeeping flows, HttpRequest-based SharePoint ops for cross-environment portability, configurable agent identity, Compose-based flow configuration, loop safety guards |
 
 > 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow, GetContext, and Housekeeping with your site URL. **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place.
+
+---
+
+<p align="center"><sub>Created by <a href="mailto:alejanl@microsoft.com">Alejandro Lopez</a> · Contributions welcome</sub></p>
 
 ## Disclaimer
 
