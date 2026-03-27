@@ -481,7 +481,8 @@ def remove_view_field_action(*, list_title: str, field_name: str) -> dict:
 
 # Fields to remove from default view (Title is added by default, remove where not needed)
 REMOVE_VIEW_FIELDS = {
-    "PowerClaw_Memory_Log": ["Title", "Timestamp"],
+    # Views expose Title as "LinkTitle" (linked-to-item variant), not "Title"
+    "PowerClaw_Memory_Log": ["LinkTitle", "Timestamp"],
 }
 
 
