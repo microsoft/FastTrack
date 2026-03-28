@@ -479,11 +479,10 @@ def remove_view_field_action(*, list_title: str, field_name: str) -> dict:
     )
 
 
-# Fields to remove from default view (Title is added by default, remove where not needed)
-REMOVE_VIEW_FIELDS = {
-    # Views expose Title as "LinkTitle" (linked-to-item variant), not "Title"
-    "PowerClaw_Memory_Log": ["LinkTitle", "Timestamp"],
-}
+# Fields to remove from default view — disabled (cosmetic only, can cause
+# errors across different SharePoint configurations).  Users can manually
+# hide the Title column from list views after setup if desired.
+REMOVE_VIEW_FIELDS: dict[str, list[str]] = {}
 
 
 def chain_actions(actions: list[tuple[str, dict]]) -> dict[str, dict]:
