@@ -137,6 +137,7 @@ Power Platform provides 1000+ connectors to build on. A few ideas:
 - **Copilot Analytics brief** — Connect to Power BI and M365 Copilot usage reports. Every Monday, get an AI adoption summary with top users, underutilized licenses, and trends
 - **Team standup digest** — Collect async updates from a Teams channel and compile a weekly summary for leadership
 - **Event-driven reflexes** — Expose a Power Automate HTTP trigger so external events (a form submission, a new lead, a Teams mention) wake the agent instantly instead of waiting for the next heartbeat
+- **Code Interpreter for data analysis** — Enable [Code Interpreter](https://learn.microsoft.com/en-us/microsoft-copilot-studio/code-interpreter-for-prompts) in the agent settings and ask PowerClaw to analyze data for you. Example: *"Here's last quarter's expense report — break down spending by category, flag anything over budget, and give me a chart"* (premium credits apply)
 
 ---
 
