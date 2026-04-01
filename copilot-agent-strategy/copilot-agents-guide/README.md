@@ -52,7 +52,7 @@ The **Copilot Agents Guide** is a comprehensive, interactive web-based tool that
 
 ### 1. **Researcher & Analyst Agents** 
 Built-in reasoning agents for research and data analysis
-- **Researcher:** Complex multi-step research with OpenAI o3
+- **Researcher:** Complex multi-step research with multi-model Critique (generation + evaluation) and Model Council (side-by-side model comparison)
 - **Analyst:** Data analysis with Python execution using o3-mini
 - **Availability:** Immediate (pre-pinned in M365 Copilot)
 - **Cost:** Included with M365 Copilot license (25 queries/month)
@@ -181,7 +181,7 @@ All agent information verified from official Microsoft sources:
 - FastTrack for Microsoft 365 service descriptions
 - Official Microsoft 365 Blog announcements
 
-**Last Verified:** October 2025
+**Last Verified:** April 2026
 
 ## 🔄 Updates & Maintenance
 
@@ -229,6 +229,9 @@ We're always looking to enhance the guide with:
 - [Microsoft 365 Agents Toolkit](https://github.com/officedev/microsoft-365-agents-toolkit)
 - [FastTrack for Microsoft 365](https://learn.microsoft.com/en-us/microsoft-365/fasttrack/)
 - [Researcher & Analyst Announcement](https://www.microsoft.com/en-us/microsoft-365/blog/2025/03/25/introducing-researcher-and-analyst-in-microsoft-365-copilot/)
+- [Wave 3 — Powering Frontier Transformation](https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/09/powering-frontier-transformation-with-copilot-and-agents/)
+- [Copilot Cowork Announcement](https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/09/copilot-cowork-a-new-way-of-getting-work-done/)
+- [Researcher Critique & Model Council](https://techcommunity.microsoft.com/blog/microsoft365copilotblog/introducing-the-new-and-improved-researcher-%E2%80%93-powered-by-multi-model-intelligenc/4506011)
 
 ## 📄 License
 
@@ -236,8 +239,8 @@ This guide is provided as-is for informational and planning purposes. Microsoft,
 
 ---
 
-**Version:** 2.0 (October 2025)  
-**Includes:** Researcher & Analyst agents, FastTrack indicators, updated comparison matrix  
+**Version:** 3.0 (April 2026)  
+**Includes:** Researcher Critique & Model Council, Copilot Cowork (Frontier), Agent 365 GA, Wave 3 updates, E7 Frontier Suite  
 **Format:** Single-file HTML application  
 
 *Built to help you navigate the Microsoft Copilot agent ecosystem with confidence.*
