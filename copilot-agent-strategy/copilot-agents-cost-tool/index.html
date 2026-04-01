@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 Copilot Agents Cost Calculator</title>
+<meta name="description" content="Estimate production costs for M365 Copilot agents — custom Copilot Studio agents, Agent Builder agents, SharePoint agents, and Azure Foundry agents. Based on Microsoft Learn and Azure pricing.">
+<meta property="og:title" content="M365 Copilot Agents Cost Calculator">
+<meta property="og:description" content="Plan production costs for Microsoft 365 Copilot Studio agents, Agent Builder agents, SharePoint agents, and Azure Foundry agents, with quick-start templates and Microsoft Learn-based billing rates.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230078d4'/%3E%3Cpath d='M18 20h28v6H18zm0 10h28v6H18zm0 10h18v6H18z' fill='white'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230078d4'/%3E%3Cpath d='M18 20h28v6H18zm0 10h28v6H18zm0 10h18v6H18z' fill='white'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #1b1b1b;
+    --card: #2d2d2d;
+    --card-alt: #252525;
+    --accent: #0078d4;
+    --accent-light: #4da3ff;
+    --green: #2ea043;
+    --yellow: #ffb900;
+    --red: #d13438;
+    --white: #ffffff;
+    --light: #cccccc;
+    --muted: #999999;
+    --border: #444444;
+    --input-bg: #1e1e1e;
+    --header-start: #0078d4;
+    --header-end: #005a9e;
+    --shadow: rgba(0,0,0,0.4);
+  }
+  body.theme-light {
+    --bg: #f3f6fb;
+    --card: #ffffff;
+    --card-alt: #f7f9fc;
+    --accent: #0f6cbd;
+    --accent-light: #004578;
+    --green: #107c10;
+    --yellow: #8a6f00;
+    --red: #a4262c;
+    --white: #1b1a19;
+    --light: #323130;
+    --muted: #605e5c;
+    --border: #d2d0ce;
+    --input-bg: #ffffff;
+    --header-start: #deecf9;
+    --header-end: #c7e0f4;
+    --shadow: rgba(15, 30, 60, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--white); line-height: 1.5; min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--header-start) 0%, var(--header-end) 100%);
+    padding: 2rem 2rem 1.5rem;
+  }
+  .header h1 { font-size: 1.75rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--white); }
+  .header p { color: color-mix(in srgb, var(--white) 85%, transparent); font-size: 0.95rem; }
+  .header .badges { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+  .badge {
+    display: inline-block; background: color-mix(in srgb, var(--white) 15%, transparent);
+    padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+  /* Steps */
+  .step { margin-bottom: 2rem; }
+  .step-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem; }
+  .step-num {
+    width: 28px; height: 28px; background: var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 600; flex-shrink: 0;
+  }
+  .step-title { font-size: 1.1rem; font-weight: 600; }
+  .step-subtitle {
+    font-size: 0.85rem; color: var(--muted);
+    margin-bottom: 1rem; margin-left: 2.6rem;
+  }
+  .learn-link {
+    font-size: 0.78rem; margin-left: 2.6rem; margin-bottom: 0.75rem;
+    display: block;
+  }
+  .learn-link a {
+    color: var(--accent-light); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.3rem;
+  }
+  .learn-link a:hover { text-decoration: underline; }
+
+  /* Cards */
+  .card {
+    background: var(--card); border-radius: 10px; padding: 1.25rem;
+    margin-bottom: 1rem; border: 1px solid transparent;
+  }
+  .card:hover { border-color: var(--border); }
+  .card h3 { font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--light); }
+
+  /* Form elements */
+  .form-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;
+  }
+  .field label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.2rem; }
+  .field .hint { font-size: 0.7rem; color: var(--accent-light); }
+  .field input[type="number"], .field select {
+    width: 100%; background: var(--input-bg); border: 1px solid var(--border);
+    color: var(--white); padding: 0.45rem 0.65rem; border-radius: 6px; font-size: 0.9rem;
+  }
+  .field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .field select option { background: var(--input-bg); color: var(--white); }
+
+  /* Info button */
+  .info-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--border); color: var(--light); font-size: 0.7rem;
+    font-weight: 700; cursor: pointer; border: none;
+    vertical-align: middle; margin-left: 0.35rem;
+    position: relative; font-style: italic; font-family: Georgia, serif;
+    transition: background 0.2s;
+  }
+  .info-btn:hover { background: var(--accent); }
+  .info-btn:focus { outline: 2px solid var(--white); outline-offset: 1px; background: var(--accent); }
+
+  /* Tooltip */
+  .tooltip {
+    display: none; position: absolute; z-index: 100;
+    background: #393939; border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.85rem 1rem;
+    font-size: 0.82rem; line-height: 1.5; color: var(--light);
+    width: 340px; left: 50%; transform: translateX(-50%);
+    top: calc(100% + 8px); font-style: normal; font-family: 'Segoe UI', sans-serif;
+    font-weight: 400; box-shadow: 0 4px 16px var(--shadow);
+  }
+  body.theme-light .tooltip { background: #ffffff; }
+  .tooltip::before {
+    content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-bottom: 6px solid #393939;
+  }
+  body.theme-light .tooltip::before { border-bottom-color: #ffffff; }
+  .info-btn:hover .tooltip,
+  .info-btn:focus .tooltip { display: block; }
+  .tooltip a { color: var(--accent-light); text-decoration: underline; }
+  .tooltip strong { color: var(--white); }
+
+  /* Knowledge source rows */
+  .ks-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.6rem 0; border-bottom: 1px solid var(--border); flex-wrap: wrap;
+  }
+  .ks-row:last-child { border-bottom: none; }
+  .ks-check {
+    display: flex; align-items: center; gap: 0.5rem;
+    flex: 0 0 220px; font-size: 0.88rem;
+  }
+  .ks-check input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
+  .ks-check input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .ks-count {
+    display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--muted);
+  }
+  .ks-count input {
+    width: 60px; background: var(--input-bg); border: 1px solid var(--border);
+    color: var(--white); padding: 0.3rem 0.5rem; border-radius: 5px;
+    font-size: 0.85rem; text-align: center;
+  }
+  .ks-count input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .ks-count input:disabled { opacity: 0.3; }
+  .ks-cost { font-size: 0.75rem; color: var(--accent-light); margin-left: auto; }
+
+  /* Toggle row */
+  .toggle-row {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0; font-size: 0.88rem;
+  }
+  .toggle-row input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
+  .toggle-row input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .toggle-row .cost-hint { font-size: 0.75rem; color: var(--accent-light); margin-left: auto; }
+  .toggle-row.free-row .cost-hint { color: var(--green); }
+
+  /* Sub-toggle (indented) */
+  .sub-toggle {
+    margin-left: 2rem; padding: 0.35rem 0; font-size: 0.82rem; color: var(--muted);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .sub-toggle input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; }
+
+  /* Example prompts */
+  .example-card {
+    background: var(--card-alt); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+  }
+  .example-card .prompt {
+    font-style: italic; color: var(--light); margin-bottom: 0.6rem; font-size: 0.9rem;
+    padding-left: 0.75rem; border-left: 3px solid var(--accent);
+  }
+  .trace-step {
+    display: flex; gap: 0.5rem; align-items: baseline;
+    padding: 0.2rem 0; font-size: 0.78rem; color: var(--muted);
+  }
+  .trace-step .arrow { color: var(--accent); flex-shrink: 0; }
+  .trace-step .credits { margin-left: auto; color: var(--white); font-weight: 500; white-space: nowrap; }
+  .example-total {
+    margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border);
+    font-size: 0.85rem; font-weight: 600; display: flex; justify-content: space-between;
+  }
+
+  /* Results */
+  .results {
+    background: var(--card); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;
+  }
+  .results h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+  .results-summary {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem; margin-bottom: 1.25rem;
+  }
+  .summary-box { background: var(--input-bg); border-radius: 8px; padding: 1rem; text-align: center; }
+  .summary-box .big { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .summary-box .big.blue { color: var(--accent); }
+  .summary-box .big.green { color: var(--green); }
+  .summary-box .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+  .results-table {
+    width: 100%; border-collapse: collapse; margin-bottom: 1.25rem; font-size: 0.82rem;
+  }
+  .results-table th {
+    text-align: left; padding: 0.5rem 0.6rem;
+    background: var(--accent); color: var(--white); font-weight: 500; font-size: 0.78rem;
+  }
+  .results-table th:first-child { border-radius: 6px 0 0 0; }
+  .results-table th:last-child { border-radius: 0 6px 0 0; }
+  .results-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); }
+  .results-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .results-table .total-row td {
+    font-weight: 600; background: rgba(0,120,212,0.1); border-top: 2px solid var(--accent);
+  }
+  .results-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* Bars */
+  .bar-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.45rem; font-size: 0.78rem; }
+  .bar-label { flex: 0 0 150px; color: var(--muted); text-align: right; }
+  .bar-track { flex: 1; height: 18px; background: var(--input-bg); border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s; min-width: 2px; }
+  .bar-value { flex: 0 0 90px; font-variant-numeric: tabular-nums; }
+
+  .breakdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem; }
+  @media (max-width: 768px) { .breakdown-grid { grid-template-columns: 1fr; } }
+  .breakdown-section h3 { font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--light); }
+
+  /* Capacity */
+  .capacity-panel { background: var(--input-bg); border-radius: 8px; padding: 1rem 1.25rem; }
+  .capacity-panel h3 { font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--light); }
+  .capacity-stat {
+    display: flex; justify-content: space-between; padding: 0.3rem 0;
+    font-size: 0.82rem; border-bottom: 1px solid var(--border);
+  }
+  .capacity-stat:last-child { border-bottom: none; }
+  .capacity-stat .label { color: var(--muted); }
+  .capacity-stat .value { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .capacity-stat .value.ok { color: var(--green); }
+  .capacity-stat .value.warn { color: var(--yellow); }
+  .capacity-stat .value.danger { color: var(--red); }
+  .capacity-bar-container { margin: 0.75rem 0; }
+  .capacity-bar-bg { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; position: relative; }
+  .capacity-bar-fill { height: 100%; border-radius: 5px; transition: width 0.3s, background 0.3s; }
+  .capacity-bar-marker { position: absolute; top: -4px; width: 2px; height: 18px; background: var(--red); }
+
+  /* Buttons */
+  .actions-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+  .btn-export {
+    padding: 0.5rem 1.25rem; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--card); color: var(--light); font-size: 0.85rem; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-export:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-export:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn-reset {
+    padding: 0.5rem 1.25rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.12); color: #ffffff; font-size: 0.85rem; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { background: rgba(255,255,255,0.25); border-color: #ffffff; }
+  .btn-reset:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
+
+  .note { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+  .note a { color: var(--accent-light); text-decoration: none; }
+  .note a:hover { text-decoration: underline; }
+  .banner {
+    background: rgba(255,185,0,0.08);
+    border: 1px solid rgba(255,185,0,0.28);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.82rem;
+    color: var(--light);
+  }
+  .banner strong { color: var(--white); }
+  .info-banner {
+    background: rgba(0,120,212,0.08);
+    border: 1px solid rgba(0,120,212,0.22);
+    border-radius: 8px;
+    padding: 0.8rem 0.9rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: var(--light);
+  }
+  .info-banner strong { color: var(--white); }
+  .inline-toolbar {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: end;
+  }
+  .toolbar-field {
+    min-width: 240px;
+    flex: 1 1 280px;
+  }
+  .theme-toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--light);
+    font-size: 0.82rem;
+  }
+  .theme-toggle select {
+    background: var(--input-bg);
+    color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.35rem 0.55rem;
+  }
+  .footer-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+  .version-badge {
+    font-size: 0.75rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    background: var(--card);
+  }
+  @media (max-width: 768px) {
+    .theme-toggle { margin-left: 0; width: 100%; justify-content: space-between; }
+  }
+
+  .empty-state { text-align: center; padding: 2rem; color: var(--muted); }
+
+  /* ═══════════════════════════════════
+     Light theme: accessibility & contrast fixes
+     ═══════════════════════════════════ */
+
+  /* Header: use solid brand blue so its children (h1, p, badges, buttons) remain on a dark bg */
+  body.theme-light .header {
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+  }
+  /* Force white text for elements that sit on the accent-coloured backgrounds */
+  body.theme-light .step-num,
+  body.theme-light .results-table th {
+    color: #ffffff;
+  }
+
+  /* btn-reset: replace the ghost-white style with a clear outlined accent button */
+  body.theme-light .btn-reset {
+    border: 1.5px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+  }
+  body.theme-light .btn-reset:hover {
+    background: rgba(15, 108, 189, 0.09);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  body.theme-light .btn-reset:focus-visible {
+    outline-color: var(--accent);
+    background: rgba(15, 108, 189, 0.09);
+  }
+  /* btn-reset that lives in the dark-blue header stays white */
+  body.theme-light .header .btn-reset {
+    border-color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+  }
+  body.theme-light .header .btn-reset:hover {
+    background: rgba(255,255,255,0.28);
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  /* btn-export in light mode: subtle border */
+  body.theme-light .btn-export {
+    border-color: var(--border);
+    background: var(--card);
+    color: var(--white);
+  }
+  body.theme-light .btn-export:hover { border-color: var(--accent); color: var(--accent); background: rgba(15,108,189,0.06); }
+
+  /* Summary boxes and capacity panel: tinted bg so they stand out on white cards */
+  body.theme-light .summary-box {
+    background: #eef2f9;
+    border: 1px solid var(--border);
+  }
+  body.theme-light .capacity-panel {
+    background: #eef2f9;
+    border: 1px solid var(--border);
+  }
+
+  /* Bar track: visible on white */
+  body.theme-light .bar-track { background: #dde3ec; }
+
+  /* Table: tinted alternate rows and total row */
+  body.theme-light .results-table tr:nth-child(even) td { background: rgba(0,0,0,0.03); }
+  body.theme-light .results-table .total-row td { background: rgba(15,108,189,0.07); }
+
+  /* Example card border: more visible on white bg */
+  body.theme-light .example-card { border-color: #c4d3e8; }
+
+  /* Banner/info-banner text: ensure readable in light mode */
+  body.theme-light .banner { background: rgba(255,185,0,0.10); border-color: rgba(200,140,0,0.35); }
+  body.theme-light .info-banner { background: rgba(15,108,189,0.07); border-color: rgba(15,108,189,0.22); }
+
+  /* Theme-toggle widget inside the dark header: invert colours */
+  body.theme-light .header .theme-toggle {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+  }
+  body.theme-light .header .theme-toggle select {
+    background: #003a6e;   /* explicit dark bg so options stay readable */
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.3);
+  }
+  body.theme-light .header .theme-toggle select option {
+    background: #003a6e;
+    color: #ffffff;
+  }
+
+  /* Print styles */
+  @media print {
+    body { background: #fff; color: #000; }
+    .header { background: #0078d4 !important; -webkit-print-color-adjust: exact; }
+    .card, .results, .example-card { background: #f5f5f5; border: 1px solid #ccc; }
+    .info-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>M365 Copilot Agents Cost Calculator</h1>
+  <p>Estimate production costs for Copilot Studio agents, Agent Builder agents, SharePoint agents, and Azure Foundry agents</p>
+  <div class="badges">
+    <label class="theme-toggle" for="theme_mode">
+      <span>Theme</span>
+      <select id="theme_mode" onchange="setTheme(this.value)">
+        <option value="dark" selected>Dark</option>
+        <option value="light">Light</option>
+      </select>
+    </label>
+    <button class="btn-reset" onclick="resetAll()" style="margin-left:auto;">&#8635; Start Over</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="banner">
+    <strong>Planning estimate only.</strong> This calculator is intended for cost modeling before rollout. It is not a billing commitment, and actual charges can vary based on runtime behavior, orchestration paths, tenant configuration, model usage, Microsoft licensing changes, and feature availability.
+  </div>
+
+  <!-- ─── AGENT TYPE SELECTOR ─── -->
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num" style="background:var(--green)">&#9733;</span>
+      <span class="step-title">Agent Type</span>
+      <button class="info-btn" aria-label="Info about agent types">i
+        <span class="tooltip">
+          Choose the type of agent you are building. This determines which features and billing rules apply.<br><br>
+          &bull; <strong>Custom agent (Copilot Studio)</strong> &mdash; Full-featured agent with topics, tools, flows, AI prompts, and all knowledge sources. All billing rates apply.<br>
+          &bull; <strong>Agent Builder agent (M365 Copilot)</strong> &mdash; Declarative agent created in Agent Builder. Supports instructions and knowledge sources. No topics, tools, flows, or AI prompts. Public website grounding is <strong>free</strong>. When pay-as-you-go is used, billing is configured in the Microsoft 365 admin center and billed to the linked Azure subscription under Microsoft 365 Copilot pay-as-you-go.<br>
+          &bull; <strong>SharePoint agent</strong> &mdash; Auto-created from SharePoint sites. Grounded in SharePoint content via graph. No topics, tools, flows, or AI prompts. When pay-as-you-go is used, billing is configured in the Microsoft 365 admin center and billed to the linked Azure subscription under Microsoft 365 Copilot pay-as-you-go.<br><br>
+          <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/cost-considerations#agents-in-copilot" target="_blank" rel="noopener noreferrer">Licensing &amp; cost considerations &rarr;</a>
+          &nbsp;|&nbsp;
+          <a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/pay-as-you-go/overview" target="_blank" rel="noopener noreferrer">M365 Copilot PAYG overview &rarr;</a>
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">What type of agent are you estimating costs for?</p>
+    <div class="card">
+      <div class="inline-toolbar" style="margin-bottom:1rem;">
+        <div class="field toolbar-field">
+          <label>
+            Quick start template
+            <button class="info-btn" aria-label="Info about quick start templates">i
+              <span class="tooltip">
+                Apply a common enterprise agent archetype to prefill the calculator with a realistic starting point. These templates bias toward internal tenant knowledge such as SharePoint and enterprise connectors. You can adjust any field afterwards.
+              </span>
+            </button>
+          </label>
+          <select id="quickStartTemplate" onchange="applyTemplate(this.value)">
+            <option value="">Choose a template...</option>
+            <optgroup label="Copilot Studio agents">
+              <option value="faq">Enterprise FAQ agent</option>
+              <option value="hr">HR policy agent (internal knowledge)</option>
+              <option value="it">IT helpdesk with tools + flows</option>
+            </optgroup>
+            <optgroup label="Azure Foundry agents">
+              <option value="foundry_general">General purpose assistant (GPT-4o)</option>
+              <option value="foundry_code">Code assistant (GPT-4.1)</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+        <label id="at_custom_label" style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;cursor:pointer;padding:0.5rem 0.75rem;border-radius:6px;border:2px solid var(--accent);background:rgba(0,120,212,0.08);">
+          <input type="radio" name="agentType" value="custom" checked onchange="onAgentTypeChange()" style="accent-color:var(--accent);width:16px;height:16px;">
+          <span>Custom agent<br><span style="font-size:0.72rem;color:var(--muted);">Copilot Studio</span></span>
+        </label>
+        <label id="at_builder_label" style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;cursor:pointer;padding:0.5rem 0.75rem;border-radius:6px;border:2px solid var(--border);">
+          <input type="radio" name="agentType" value="builder" onchange="onAgentTypeChange()" style="accent-color:var(--accent);width:16px;height:16px;">
+          <span>Agent Builder<br><span style="font-size:0.72rem;color:var(--muted);">M365 Copilot</span></span>
+        </label>
+        <label id="at_sharepoint_label" style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;cursor:pointer;padding:0.5rem 0.75rem;border-radius:6px;border:2px solid var(--border);">
+          <input type="radio" name="agentType" value="sharepoint" onchange="onAgentTypeChange()" style="accent-color:var(--accent);width:16px;height:16px;">
+          <span>SharePoint agent</span>
+        </label>
+        <label id="at_foundry_label" style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;cursor:pointer;padding:0.5rem 0.75rem;border-radius:6px;border:2px solid var(--border);">
+          <input type="radio" name="agentType" value="foundry" onchange="onAgentTypeChange()" style="accent-color:var(--accent);width:16px;height:16px;">
+          <span>Foundry Agent<br><span style="font-size:0.72rem;color:var(--muted);">Azure AI</span></span>
+        </label>
+      </div>
+      <div id="agentTypeNote" style="font-size:0.78rem;color:var(--accent-light);margin-top:0.75rem;padding:0.4rem 0.6rem;background:rgba(0,120,212,0.06);border-radius:6px;display:none;"></div>
+    </div>
+  </div>
+
+  <!-- ─── FOUNDRY AGENT CONFIGURATION ─── -->
+  <div class="step" id="step_foundry" style="display:none;">
+    <div class="step-header">
+      <span class="step-num" style="background:var(--accent);font-size:0.8rem;">F</span>
+      <span class="step-title">Foundry Agent Configuration</span>
+      <button class="info-btn" aria-label="Info about Foundry agents">i
+        <span class="tooltip">
+          <strong>Microsoft Foundry Agent Service</strong> is a fully managed platform for building, deploying, and scaling AI agents on Azure. Unlike Copilot Studio, billing is <strong>token-based</strong> (input + output tokens, USD per 1M tokens) charged directly to your Azure subscription &mdash; no Copilot Studio credits apply.<br><br>
+          Context accumulates each turn: every user message adds the full conversation history to the input, so costs grow with conversation length.<br><br>
+          <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer">Foundry Agent Service overview &rarr;</a>
+          &nbsp;|&nbsp;
+          <a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer">Azure OpenAI pricing &rarr;</a>
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">Foundry agents are billed by tokens (input + output) via Azure. Configure your model and conversation pattern below.</p>
+    <span class="learn-link"><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer">&#128218; Microsoft Foundry Agent Service (Microsoft Learn)</a></span>
+
+    <div class="card">
+      <h3 style="margin-top:0;margin-bottom:1rem;">Model &amp; Token Configuration</h3>
+      <div class="form-grid">
+        <div class="field">
+          <label>
+            Model
+            <button class="info-btn" aria-label="Info about Foundry models">i
+              <span class="tooltip">
+                Choose the language model your Foundry agent uses. This sets the token price.<br><br>
+                <strong>Global Standard pay-as-you-go (USD / 1M tokens):</strong><br>
+                &bull; GPT-4.1-nano: $0.10 in / $0.40 out<br>
+                &bull; GPT-4o mini: $0.15 in / $0.60 out<br>
+                &bull; GPT-5-mini: $0.25 in / $2.00 out<br>
+                &bull; GPT-4.1-mini: $0.40 in / $1.60 out<br>
+                &bull; GPT-4.1: $2.00 in / $8.00 out<br>
+                &bull; GPT-4o: $2.50 in / $10.00 out<br>
+                &bull; o4-mini: $1.10 in / $4.40 out<br>
+                &bull; o3: $2.00 in / $8.00 out<br>
+                &bull; GPT-5: $1.25 in / $10.00 out<br><br>
+                <a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer">Full Azure OpenAI pricing &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <select id="foundry_model" onchange="recalculate()">
+            <option value="gpt4o_mini">GPT-4o mini &mdash; $0.15 / $0.60 per 1M tokens</option>
+            <option value="gpt4o" selected>GPT-4o (2024-11-20) &mdash; $2.50 / $10.00 per 1M tokens</option>
+            <option value="gpt41_nano">GPT-4.1-nano &mdash; $0.10 / $0.40 per 1M tokens</option>
+            <option value="gpt41_mini">GPT-4.1-mini &mdash; $0.40 / $1.60 per 1M tokens</option>
+            <option value="gpt41">GPT-4.1 &mdash; $2.00 / $8.00 per 1M tokens</option>
+            <option value="gpt5_mini">GPT-5-mini &mdash; $0.25 / $2.00 per 1M tokens</option>
+            <option value="gpt5">GPT-5 &mdash; $1.25 / $10.00 per 1M tokens</option>
+            <option value="o4_mini">o4-mini &mdash; $1.10 / $4.40 per 1M tokens</option>
+            <option value="o3">o3 &mdash; $2.00 / $8.00 per 1M tokens</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>
+            System prompt size (tokens)
+            <button class="info-btn" aria-label="Info about system prompt tokens">i
+              <span class="tooltip">
+                The number of tokens in your agent's system prompt (instructions). Sent with <strong>every turn</strong> as part of the input context, so it directly multiplies cost.<br><br>
+                Typical sizes:<br>
+                &bull; Simple instructions: 200&ndash;500 tokens<br>
+                &bull; Detailed persona + rules: 500&ndash;2,000 tokens<br>
+                &bull; Complex multi-step guidance: 2,000+ tokens<br><br>
+                1 token &asymp; 4 characters in English.
+              </span>
+            </button>
+          </label>
+          <input type="number" id="foundry_systemTokens" min="0" value="500" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            Avg user message (tokens/turn)
+            <button class="info-btn" aria-label="Info about user tokens">i
+              <span class="tooltip">
+                Average tokens in each user message per turn.<br><br>
+                Typical sizes:<br>
+                &bull; Short question: 20&ndash;100 tokens<br>
+                &bull; Detailed query: 100&ndash;300 tokens<br>
+                &bull; Long document or code: 1,000+ tokens<br><br>
+                1 token &asymp; 4 characters in English.
+              </span>
+            </button>
+          </label>
+          <input type="number" id="foundry_userTokens" min="1" value="150" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            Avg assistant response (tokens/turn)
+            <button class="info-btn" aria-label="Info about output tokens">i
+              <span class="tooltip">
+                Average tokens in the agent's response per turn. Billed at the <strong>output token rate</strong> (typically 4&ndash;8&times; higher than input).<br><br>
+                Typical sizes:<br>
+                &bull; Short answer: 50&ndash;200 tokens<br>
+                &bull; Detailed explanation: 200&ndash;800 tokens<br>
+                &bull; Long report or code: 800&ndash;2,000+ tokens
+              </span>
+            </button>
+          </label>
+          <input type="number" id="foundry_outputTokens" min="1" value="400" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            Turns per conversation
+            <button class="info-btn" aria-label="Info about turns for Foundry">i
+              <span class="tooltip">
+                Number of user&thinsp;&harr;&thinsp;assistant exchange pairs in a typical conversation.<br><br>
+                <strong>Context accumulation:</strong> each turn re-sends all previous messages as input. Input tokens grow with each turn, so longer conversations cost progressively more.
+              </span>
+            </button>
+          </label>
+          <input type="number" id="foundry_turns" min="1" value="5" oninput="recalculate()">
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem;">
+      <h3 style="margin-top:0;margin-bottom:1rem;">Foundry Built-in Tools</h3>
+      <div class="form-grid">
+        <div class="field">
+          <label>
+            File Search calls per conversation
+            <span class="hint">($2.50 / 1K calls)</span>
+            <button class="info-btn" aria-label="Info about file search">i
+              <span class="tooltip">
+                The Foundry <strong>File Search</strong> tool lets your agent search uploaded files using vector search. Files are chunked, embedded, and indexed automatically.<br><br>
+                Billing: <strong>$2.50 per 1,000 tool calls</strong> + vector storage at $0.11&thinsp;/&thinsp;GB&thinsp;/&thinsp;day (first 1&thinsp;GB free).<br><br>
+                <a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer">Built-in tools pricing &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="foundry_fileSearchCalls" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            Code Interpreter sessions per conversation
+            <span class="hint">($0.033 / session)</span>
+            <button class="info-btn" aria-label="Info about code interpreter">i
+              <span class="tooltip">
+                The Foundry <strong>Code Interpreter</strong> allows your agent to write and execute code in a sandboxed environment &mdash; useful for data analysis, chart generation, and Math.<br><br>
+                Billing: <strong>$0.033 per session</strong>. A session is active for one hour from the first invocation.<br><br>
+                <a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer">Built-in tools pricing &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="foundry_codeInterpreterSessions" min="0" value="0" oninput="recalculate()">
+        </div>
+      </div>
+      <p style="font-size:0.78rem;color:var(--muted);margin-top:0.75rem;">
+        &#9432; Web search (Bing Grounding) and MCP server calls incur additional charges not modeled here.
+        See <a href="https://www.microsoft.com/en-us/bing/apis/grounding-pricing" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Bing Grounding pricing</a> and the
+        <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/tool-catalog" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Foundry tool catalog</a> for details.
+      </p>
+    </div>
+  </div>
+
+  <!-- ─── STEP 1: KNOWLEDGE SOURCES ─── -->
+  <div class="step" id="step_knowledge">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Knowledge Sources</span>
+      <button class="info-btn" aria-label="Info about knowledge sources">i
+        <span class="tooltip">
+          <strong>Knowledge sources</strong> let your agent find and present information from internal or external data.
+          When a user asks a question, the agent searches the configured knowledge source and generates an answer using AI (generative answer).
+          Different sources have different credit costs depending on the retrieval method used.<br><br>
+          <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio" target="_blank" rel="noopener noreferrer">Learn more on Microsoft Learn &rarr;</a>
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">Which knowledge sources does your agent use? Select all that apply.</p>
+    <span class="learn-link"><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio#supported-knowledge-sources" target="_blank" rel="noopener noreferrer">&#128218; Supported knowledge sources (Microsoft Learn)</a></span>
+
+    <div class="card" id="knowledgeCard">
+
+      <!-- SharePoint / OneDrive -->
+      <div class="ks-row">
+        <label class="ks-check">
+          <input type="checkbox" id="ks_sharepoint" onchange="toggleKS(this,'ks_sharepoint_n');recalculate()">
+          SharePoint / OneDrive
+          <button class="info-btn" aria-label="Info about SharePoint">i
+            <span class="tooltip">
+              Connects to a SharePoint URL and uses <strong>GraphSearch</strong> to return results.
+              Requires the agent user's Microsoft Entra ID authentication.
+              When <em>Tenant graph grounding</em> is enabled (recommended), each query costs <strong>12 credits</strong> (10 graph + 2 generative answer).
+              Without it, each query costs <strong>2 credits</strong> (generative answer only).<br><br>
+              <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio#tenant-graph-grounding-with-semantic-search" target="_blank" rel="noopener noreferrer">Tenant graph grounding &rarr;</a>
+            </span>
+          </button>
+        </label>
+        <div class="ks-count">
+          <span>sites:</span>
+          <input type="number" id="ks_sharepoint_n" min="0" value="1" disabled oninput="recalculate()">
+        </div>
+        <span class="ks-cost" id="ks_sharepoint_cost">12 cr/query (with graph)</span>
+      </div>
+      <div class="sub-toggle" id="ks_sharepoint_graph_row" style="display:none;">
+        <label style="display:flex;align-items:center;gap:0.5rem;">
+          <input type="checkbox" id="ks_sharepoint_graph" checked onchange="recalculate()">
+          Tenant graph grounding enabled
+        </label>
+        <button class="info-btn" aria-label="Info about tenant graph grounding">i
+          <span class="tooltip">
+            Provides significantly better knowledge retrieval and response quality by using semantic search over your tenant-wide Microsoft Graph.
+            Requires a Microsoft 365 Copilot license in the tenant. Turned on by default in Copilot Studio.
+            Adds <strong>10 credits</strong> per query for tenant graph grounding. Graph/Copilot connectors should be modeled with this grounding path enabled.<br><br>
+            <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio#tenant-graph-grounding-with-semantic-search" target="_blank" rel="noopener noreferrer">Learn more &rarr;</a>
+          </span>
+        </button>
+      </div>
+
+      <!-- Dataverse -->
+      <div class="ks-row" id="ks_row_dataverse">
+        <label class="ks-check">
+          <input type="checkbox" id="ks_dataverse" onchange="toggleKS(this,'ks_dataverse_n');recalculate()">
+          Dataverse
+          <button class="info-btn" aria-label="Info about Dataverse">i
+            <span class="tooltip">
+              Connects to the configured Dataverse environment and uses a <strong>retrieval-augmented generation (RAG)</strong> technique to return results.
+              Requires the agent user's Microsoft Entra ID authentication.
+              Limits: 2 Dataverse knowledge sources (up to 15 tables each) in classic mode; unlimited in generative mode.<br><br>
+              <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio#supported-knowledge-sources" target="_blank" rel="noopener noreferrer">Learn more &rarr;</a>
+            </span>
+          </button>
+        </label>
+        <div class="ks-count">
+          <span>tables:</span>
+          <input type="number" id="ks_dataverse_n" min="0" value="1" disabled oninput="recalculate()">
+        </div>
+        <span class="ks-cost">2 cr/query (generative answer)</span>
+      </div>
+
+      <!-- Public websites -->
+      <div class="ks-row" id="ks_row_website">
+        <label class="ks-check">
+          <input type="checkbox" id="ks_website" onchange="toggleKS(this,'ks_website_n');recalculate()">
+          Public websites
+          <button class="info-btn" aria-label="Info about websites">i
+            <span class="tooltip">
+              Searches the query input on <strong>Bing</strong>, only returns results from the provided websites.
+              Limits: 4 URLs in classic mode; 25 in generative mode.
+              No authentication required.<br><br>
+              <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio#supported-knowledge-sources" target="_blank" rel="noopener noreferrer">Learn more &rarr;</a>
+            </span>
+          </button>
+        </label>
+        <div class="ks-count">
+          <span>URLs:</span>
+          <input type="number" id="ks_website_n" min="0" value="1" disabled oninput="recalculate()">
+        </div>
+        <span class="ks-cost">2 cr/query (generative answer)</span>
+      </div>
+
+      <!-- Uploaded files -->
+      <div class="ks-row" id="ks_row_files">
+        <label class="ks-check">
+          <input type="checkbox" id="ks_files" onchange="toggleKS(this,'ks_files_n');recalculate()">
+          Uploaded files
+          <button class="info-btn" aria-label="Info about files">i
+            <span class="tooltip">
+              Searches documents uploaded to <strong>Dataverse</strong> and returns results from the document contents.
+              Supports language-agnostic querying across all supported file types.
+              Limits: unlimited in classic mode (limited by Dataverse storage); not counted in the 25 knowledge source limit in generative mode.<br><br>
+              <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio#supported-knowledge-sources" target="_blank" rel="noopener noreferrer">Learn more &rarr;</a>
+            </span>
+          </button>
+        </label>
+        <div class="ks-count">
+          <span>files:</span>
+          <input type="number" id="ks_files_n" min="0" value="1" disabled oninput="recalculate()">
+        </div>
+        <span class="ks-cost">2 cr/query (generative answer)</span>
+      </div>
+
+      <!-- Enterprise data connectors -->
+      <div class="ks-row" id="ks_row_connectors">
+        <label class="ks-check">
+          <input type="checkbox" id="ks_connectors" onchange="toggleKS(this,'ks_connectors_n');recalculate()">
+          Enterprise data (Graph/Copilot connectors)
+          <button class="info-btn" aria-label="Info about enterprise connectors">i
+            <span class="tooltip">
+              Connects to data synced into <strong>Microsoft Graph</strong> through Graph/Copilot connectors and indexed for enterprise retrieval.
+              Requires the agent user's Microsoft Entra ID authentication.
+              For graph-grounded connector scenarios, billing is <strong>10 credits</strong> for tenant graph grounding plus <strong>2 credits</strong> for the generative answer = <strong>12 credits total per query</strong>.
+              This source should be modeled as graph-grounded retrieval, not as a plain 2-credit knowledge lookup.
+              Limits: 2 per custom agent in classic mode; unlimited in generative mode.<br><br>
+              <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio#supported-knowledge-sources" target="_blank" rel="noopener noreferrer">Learn more &rarr;</a>
+            </span>
+          </button>
+        </label>
+        <div class="ks-count">
+          <span>connectors:</span>
+          <input type="number" id="ks_connectors_n" min="0" value="1" disabled oninput="recalculate()">
+        </div>
+        <span class="ks-cost" id="ks_connectors_cost">12 cr/query (with graph)</span>
+      </div>
+
+      <p style="font-size:0.78rem;color:var(--muted);margin-top:0.75rem;">&#9432; Source counts (sites, tables, URLs, files, connectors) are for planning reference and are included in the CSV export — they do not affect credit calculations. Billing is determined by query <em>type</em> and turn mix, not by the number of connected sources.</p>
+    </div>
+  </div>
+
+  <!-- ─── STEP 2: AGENT COMPONENTS ─── -->
+  <div class="step" id="step_components">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Topics, Tools, Prompts &amp; Flows</span>
+      <button class="info-btn" aria-label="Info about agent components">i
+        <span class="tooltip">
+          Agent components determine what your agent can do.<br>
+          &bull; <strong>Topics</strong> define conversation paths and authored responses.<br>
+          &bull; <strong>Tools/Connectors</strong> let the agent call external APIs and services.<br>
+          &bull; <strong>AI Prompts</strong> (text and generative AI tools) direct the AI model to perform specific tasks.<br>
+          &bull; <strong>Agent Flows</strong> automate repetitive tasks with predefined, deterministic sequences.<br><br>
+          <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio" target="_blank" rel="noopener noreferrer">Copilot Studio overview &rarr;</a>
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">How many of each does your agent have?</p>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label>
+            Authored (classic) topics
+            <span class="hint">(1 credit when triggered)</span>
+            <button class="info-btn" aria-label="Info about classic topics">i
+              <span class="tooltip">
+                Predefined responses manually authored by agent makers. Static and don't change unless manually updated.
+                Use them where you want precise, controlled responses. Each triggers <strong>1 Copilot Credit</strong> (classic answer).<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-create-edit-topics" target="_blank" rel="noopener noreferrer">Create and edit topics &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="comp_classicTopics" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            Tools / Connectors
+            <span class="hint">(5 cr per action + 2 cr gen answer)</span>
+            <button class="info-btn" aria-label="Info about tools">i
+              <span class="tooltip">
+                Tools let your agent interact with external systems: send emails, query databases, call APIs, etc.
+                Types include: prebuilt connectors, custom connectors, agent flows, prompts, REST APIs, MCP servers, and computer use.
+                Each tool call is an <strong>agent action</strong> (5 credits). The AI also generates a response (+2 credits for generative answer).<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-tools-custom-agent" target="_blank" rel="noopener noreferrer">Add tools to custom agents &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="comp_tools" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            AI Prompt actions
+            <span class="hint">(text &amp; generative AI tools &mdash; see tier below)</span>
+            <button class="info-btn" aria-label="Info about AI prompts">i
+              <span class="tooltip">
+                Prompt tools direct the underlying AI model to perform specific tasks: summarize text, generate code, classify data, etc.
+                Billed as <strong>Text and generative AI tools</strong> in three tiers based on the underlying model:<br>
+                &bull; <strong>Basic</strong>: 1 credit per 10 responses<br>
+                &bull; <strong>Standard</strong>: 15 credits per 10 responses<br>
+                &bull; <strong>Premium</strong>: 100 credits per 10 responses<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-prompt-node" target="_blank" rel="noopener noreferrer">Use prompts &rarr;</a>
+                &nbsp;|&nbsp;
+                <a href="https://learn.microsoft.com/en-us/ai-builder/message-management" target="_blank" rel="noopener noreferrer">Prompt builder licensing &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="comp_prompts" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            Text &amp; generative AI tools tier
+            <button class="info-btn" aria-label="Info about AI tools tiers">i
+              <span class="tooltip">
+                The official billing category is <strong>Text and generative AI tools</strong>.
+                The three tiers &mdash; basic, standard, and premium &mdash; are based on <strong>the underlying language model</strong> used by the prompt.<br>
+                &bull; <strong>Basic</strong>: simpler/lighter models (1 cr / 10 responses)<br>
+                &bull; <strong>Standard</strong>: mid-tier models (15 cr / 10 responses)<br>
+                &bull; <strong>Premium</strong>: advanced reasoning models (100 cr / 10 responses)<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates" target="_blank" rel="noopener noreferrer">Billing rates &rarr;</a>
+                &nbsp;|&nbsp;
+                <a href="https://learn.microsoft.com/en-us/ai-builder/licensing-prompt-tokens" target="_blank" rel="noopener noreferrer">Prompt tokens &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <select id="comp_promptTier" onchange="recalculate()">
+            <option value="basic">Basic (1 cr / 10 responses)</option>
+            <option value="standard" selected>Standard (15 cr / 10 responses)</option>
+            <option value="premium">Premium (100 cr / 10 responses)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>
+            Agent flows
+            <span class="hint">(7 cr trigger + 13 cr/100 actions)</span>
+            <button class="info-btn" aria-label="Info about agent flows">i
+              <span class="tooltip">
+                <strong>Agent flows</strong> are created natively in Copilot Studio and automate repetitive tasks with predefined sequences of actions.
+                They are deterministic &mdash; the same input always produces the same output.
+                Each flow run costs <strong>5 cr</strong> (agent action trigger) + <strong>2 cr</strong> (generative answer) + <strong>13 cr per 100 flow actions</strong>.
+                Example: 50 actions = 5 + 2 + &lceil;50&times;13/100&rceil; = <strong>14 cr</strong>.
+                Testing from the flow designer or agent test chat doesn't consume capacity.
+                Power Automate cloud flows can be <em>converted</em> to agent flows (one-way operation).<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-overview" target="_blank" rel="noopener noreferrer">Agent flows overview &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="comp_flows" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>
+            Actions per flow run
+            <span class="hint">(avg. steps in each flow)</span>
+            <button class="info-btn" aria-label="Info about flow actions">i
+              <span class="tooltip">
+                Each agent flow consists of a series of actions (steps). Every action counts toward the <strong>13 credits per 100 actions</strong> billing rate.
+                Estimate the average number of actions (e.g., triggers, conditions, connectors, loops, AI steps) in your typical agent flow.
+                Example: a flow with 5 actions = 5 (action trigger) + 2 (gen answer) + &lceil;5&times;13/100&rceil; = <strong>8 credits per flow run</strong>.<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-overview#manage-agent-flow-capacity-usage" target="_blank" rel="noopener noreferrer">Agent flow capacity &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="comp_flowActions" min="1" value="5" oninput="recalculate()">
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <label class="toggle-row">
+          <input type="checkbox" id="comp_reasoning" onchange="recalculate()">
+          Uses reasoning model
+          <button class="info-btn" aria-label="Info about reasoning model">i
+            <span class="tooltip">
+              When an agent uses a reasoning-capable model, Copilot Studio bills two meters:<br>
+              1. The <strong>feature rate</strong> for the core action (e.g., 2 cr for generative answer, 5 cr for agent action)<br>
+              2. A <strong>premium AI tools surcharge</strong> (100 credits per 10 responses = +10 per response)<br><br>
+              The surcharge applies to <strong>generative answers, agent actions, and flow executions</strong>.<br>
+              Example: A generative answer with reasoning = 2 + 10 = <strong>12 credits</strong>.<br>
+              An agent action with reasoning = 5 + 10 = <strong>15 credits</strong>.<br><br>
+              <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#reasoning-model-billing-rates" target="_blank" rel="noopener noreferrer">Reasoning model billing &rarr;</a>
+            </span>
+          </button>
+          <span class="cost-hint">+10 cr per generative answer and agent action</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STEP 2b: CONTENT PROCESSING ─── -->
+  <div class="step" id="step_contentProcessing">
+    <div class="step-header">
+      <span class="step-num" style="background:var(--border);font-size:0.75rem;">+</span>
+      <span class="step-title">Content Processing (Optional)</span>
+      <button class="info-btn" aria-label="Info about content processing">i
+        <span class="tooltip">
+          <strong>Content processing tools</strong> handle document and image processing tasks within your agent.
+          Billed at <strong>8 Copilot Credits per page</strong> processed.
+          This applies when an agent uses AI to extract, analyze, or transform document/image content.<br><br>
+          <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates" target="_blank" rel="noopener noreferrer">Billing rates &rarr;</a>
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">Does your agent process documents or images?</p>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label>
+            Pages processed per conversation
+            <span class="hint">(8 cr per page)</span>
+            <button class="info-btn" aria-label="Info about content processing pages">i
+              <span class="tooltip">
+                The number of document or image pages your agent processes per conversation using content processing tools.
+                Each page costs <strong>8 Copilot Credits</strong>.
+                Set to 0 if your agent doesn't use document/image processing.<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates" target="_blank" rel="noopener noreferrer">Billing rates &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="comp_contentPages" min="0" value="0" oninput="recalculate()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STEP 3: TEST CONVERSATION PROFILE ─── -->
+  <div class="step" id="step_conversation">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Typical Test Conversation</span>
+      <button class="info-btn" aria-label="Info about conversation profile">i
+        <span class="tooltip">
+          Each interaction with an agent might use <strong>multiple feature types</strong> at the same time.
+          For example, an agent grounded in a tenant graph could use 12 Copilot Credits (10 for tenant graph + 2 for generative answers) to respond to a single prompt.
+          Describe what happens in a typical test conversation to estimate the cost per conversation.<br><br>
+          <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#billing-examples" target="_blank" rel="noopener noreferrer">See billing examples &rarr;</a>
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">How many user turns does a typical test conversation have, and what happens in each turn?</p>
+    <span class="learn-link"><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#billing-examples" target="_blank" rel="noopener noreferrer">&#128218; Billing examples (Microsoft Learn)</a></span>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label>User turns per conversation <span class="hint">(sum of turn types below)</span></label>
+          <input type="number" id="conv_turns" value="0" readonly tabindex="-1" style="opacity:0.6;cursor:default;">
+        </div>
+      </div>
+      <h3 style="margin-top:1rem;">Of those turns, how many involve&hellip;</h3>
+      <div class="form-grid" style="margin-top:0.5rem;">
+        <div class="field">
+          <label>
+            Knowledge lookups
+            <span class="hint">(searches a knowledge source)</span>
+            <button class="info-btn" aria-label="Info about knowledge turns">i
+              <span class="tooltip">
+                A turn where the agent searches your configured knowledge sources to generate an answer.
+                Cost per turn: <strong>2 cr</strong> (generative answer). If tenant graph grounding is on and a graph-enabled source (SharePoint, connectors) is configured, add <strong>+10 cr</strong> per turn.<br><br>
+                <strong>Note:</strong> The number of knowledge sources configured determines <em>what</em> the agent can search, not <em>how many times</em> it searches. Cost is driven by the number of knowledge lookups here, not the number of sources in Step 1.
+              </span>
+            </button>
+          </label>
+          <input type="number" id="conv_knowledgeTurns" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field" id="field_toolTurns">
+          <label>
+            Tool / Connector calls
+            <span class="hint">(calls an action — 5 cr + 2 cr gen answer)</span>
+            <button class="info-btn" aria-label="Info about tool turns">i
+              <span class="tooltip">
+                A turn where the agent calls a tool or connector to perform an action (e.g., send an email, query a database, create a record).
+                Each call costs <strong>5 credits</strong> (agent action) plus <strong>2 credits</strong> (generative answer for the response) = <strong>7 credits</strong>.
+                <strong>Autonomous triggers</strong> (e.g., triggered by a new email or order without user interaction) also count as agent actions at 5 cr each.<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates" target="_blank" rel="noopener noreferrer">Billing rates &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="conv_toolTurns" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field" id="field_promptTurns">
+          <label>
+            AI Prompt runs
+            <span class="hint">(runs a prompt action)</span>
+            <button class="info-btn" aria-label="Info about prompt turns">i
+              <span class="tooltip">
+                A turn where the agent runs an AI prompt action (e.g., summarize, translate, classify).
+                Cost depends on the prompt tier: basic (0.1 cr), standard (1.5 cr), or premium (10 cr) per call.
+              </span>
+            </button>
+          </label>
+          <input type="number" id="conv_promptTurns" min="0" value="0" oninput="recalculate()">
+        </div>
+        <div class="field" id="field_classicTurns">
+          <label>
+            Classic topic responses
+            <span class="hint">(authored, no AI)</span>
+            <button class="info-btn" aria-label="Info about classic turns">i
+              <span class="tooltip">
+                A turn where the agent matches an authored topic and returns a static, predefined response.
+                Costs <strong>1 credit</strong> per response. No AI generation is involved.
+              </span>
+            </button>
+          </label>
+          <input type="number" id="conv_classicTurns" min="0" value="1" oninput="recalculate()">
+        </div>
+        <div class="field" id="field_flowTurns">
+          <label>
+            Agent flow runs
+            <span class="hint">(7 cr trigger + 13 cr/100 actions)</span>
+            <button class="info-btn" aria-label="Info about flow turns">i
+              <span class="tooltip">
+                A turn that triggers an <strong>agent flow</strong> (created natively in Copilot Studio).<br><br>
+                Each flow run costs:<br>
+                &bull; <strong>5 cr</strong> agent action (the flow invocation)<br>
+                &bull; <strong>2 cr</strong> generative answer (orchestration response)<br>
+                &bull; <strong>13 cr per 100 flow actions</strong> (steps executed inside the flow)<br><br>
+                Example: a flow with 50 actions = 5 + 2 + &lceil;50&times;13/100&rceil; = <strong>14 cr</strong>.<br>
+                Note: testing from the flow designer or agent test chat doesn't consume capacity.<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#agent-flow-enforcement" target="_blank" rel="noopener noreferrer">Agent flow enforcement &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="conv_flowTurns" min="0" value="0" oninput="recalculate()">
+        </div>
+      </div>
+      <div id="ksWarning" style="display:none;font-size:0.78rem;color:var(--yellow);margin-top:0.5rem;padding:0.4rem 0.6rem;background:rgba(255,185,0,0.08);border-radius:6px;">
+        &#9888; You configured knowledge lookup turns but no knowledge sources are enabled in Step 1. Those turns won&rsquo;t incur credit cost.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STEP 4: TEST SCALE ─── -->
+  <div class="step" id="step_scale">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <span class="step-title">Test Plan Scale</span>
+      <button class="info-btn" aria-label="Info about test scale">i
+        <span class="tooltip">
+          Define how many test scenarios you plan to run and how many times to repeat each one.
+          This determines the total number of test conversations and the overall credit consumption.
+          If you have prepaid capacity, you can see how testing impacts your monthly allocation.
+          <strong>Overage enforcement</strong> triggers at 125% of prepaid capacity.<br><br>
+          <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#overage-enforcement" target="_blank" rel="noopener noreferrer">Overage enforcement &rarr;</a>
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">How many test scenarios and iterations do you plan to run?</p>
+    <div class="learn-link" style="margin-bottom:0.9rem;">
+      Users with a <strong>Microsoft 365 Copilot</strong> license typically consume <strong>zero credits for eligible authenticated usage</strong>. Use the `% users with M365 Copilot license` field below to model that blended scenario.
+    </div>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label>Distinct test scenarios</label>
+          <input type="number" id="scale_scenarios" min="1" value="5" oninput="recalculate()">
+        </div>
+        <div class="field">
+          <label>Iterations per scenario</label>
+          <input type="number" id="scale_iterations" min="1" value="3" oninput="recalculate()">
+        </div>
+        <div class="field" id="scale_prepaid_row">
+          <label>
+            Monthly prepaid credits (optional)
+            <button class="info-btn" aria-label="Info about prepaid credits">i
+              <span class="tooltip">
+                Your total monthly Copilot Studio credit allocation pooled across the tenant.
+                When capacity reaches <strong>125%</strong>, custom agents are disabled.
+                Agent flow enforcement triggers separately when prepaid capacity is fully consumed (new flow runs blocked, agent itself keeps working).<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#overage-enforcement" target="_blank" rel="noopener noreferrer">Overage enforcement &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="scale_prepaid" min="0" value="0" placeholder="e.g. 25000" oninput="recalculate()">
+        </div>
+        <div class="field" id="scale_pricing_row">
+          <label>
+            Pricing model
+            <button class="info-btn" aria-label="Info about pricing model">i
+              <span class="tooltip">
+                <strong>Pay-as-you-go (PAYG)</strong>: $0.01 per credit. Billed via Azure subscription.<br>
+                <strong>Prepaid pack</strong>: $200 for 25,000 credits = $0.008/credit (20% cheaper).<br>
+                This affects only the dollar estimate — credit counts are the same either way.<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management" target="_blank" rel="noopener noreferrer">Billing rates &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <select id="scale_pricingModel" onchange="recalculate()">
+            <option value="payg" selected>Pay-as-you-go ($0.01 / credit)</option>
+            <option value="prepaid">Prepaid pack ($0.008 / credit)</option>
+          </select>
+        </div>
+        <div class="field" id="scale_m365_row">
+          <label>
+            % users with M365 Copilot license
+            <button class="info-btn" aria-label="Info about M365 Copilot license">i
+              <span class="tooltip">
+                Users with a <strong>Microsoft 365 Copilot</strong> license consume <strong>zero credits for all features</strong> &mdash; classic answers, generative answers, agent actions, graph grounding, AI tools, agent flow actions, and content processing &mdash; when the agent operates using their authenticated M365 Copilot identity. Subject to fair-use limits.
+                Set this to estimate the blended cost for a mixed user population.<br>
+                0% = all users consume credits. 100% = all usage is zero-rated.<br><br>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates" target="_blank" rel="noopener noreferrer">M365 Copilot included usage &rarr;</a>
+              </span>
+            </button>
+          </label>
+          <input type="number" id="scale_m365pct" min="0" max="100" value="0" placeholder="0" oninput="recalculate()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── EXAMPLE PROMPT ─── -->
+  <div class="step" id="step_example">
+    <div class="step-header">
+      <span class="step-num">5</span>
+      <span class="step-title">Example Prompt &amp; Cost Trace</span>
+      <button class="info-btn" aria-label="Info about example prompt">i
+        <span class="tooltip">
+          This section shows a sample test conversation based on your configuration above.
+          Each turn displays the user's prompt, what the agent does behind the scenes, and the exact credit cost.
+          The example uses realistic prompts for the knowledge sources and tools you selected.
+        </span>
+      </button>
+    </div>
+    <p class="step-subtitle">Here is what a single test conversation costs, step by step, based on your configuration.</p>
+
+    <div id="exampleContainer"></div>
+  </div>
+
+  <!-- ─── RESULTS ─── -->
+  <div id="resultsPanel"></div>
+
+  <div class="footer-meta">
+    <p class="note">
+      Rates source:
+      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates" target="_blank" rel="noopener noreferrer">
+        Copilot Credits billing rates (learn.microsoft.com)
+      </a>
+      &nbsp;|&nbsp;
+      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#reasoning-model-billing-rates" target="_blank" rel="noopener noreferrer">
+        Reasoning model billing
+      </a>
+      &nbsp;|&nbsp;
+      <a href="https://microsoft.github.io/copilot-studio-estimator/" target="_blank" rel="noopener noreferrer">
+        Production usage estimator
+      </a>
+      &nbsp;|&nbsp;
+      <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/cost-considerations" target="_blank" rel="noopener noreferrer">
+        Cost considerations for extensibility
+      </a>
+      &nbsp;|&nbsp;
+      <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer">
+        Foundry Agent Service
+      </a>
+      &nbsp;|&nbsp; Last verified: March 2026
+    </p>
+    <span class="version-badge" id="versionBadge">v1.3.0</span>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   Billing rates (verified against Microsoft Learn 03/2026)
+   https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management
+   ═══════════════════════════════════════ */
+const CREDIT_TO_USD_PAYG = 0.01;
+const CREDIT_TO_USD_PREPAID = 0.008; // $200 / 25,000 credits
+const REASONING_SURCHARGE = 10; // premium AI tools: 100 credits / 10 responses
+const CONTENT_PROCESSING_RATE = 8; // 8 credits per page
+const PROMPT_RATES = { basic: 1/10, standard: 15/10, premium: 100/10 };
+const APP_VERSION = 'v1.3.0';
+const TEMPLATES = {
+  faq: {
+    label: 'Enterprise FAQ agent',
+    agentType: 'custom',
+    ks: { sharepoint: 2, connectors: 1 },
+    sharepointGraph: true,
+    classicTopics: 2,
+    tools: 0,
+    prompts: 0,
+    promptTier: 'standard',
+    flows: 0,
+    flowActions: 5,
+    contentPages: 0,
+    reasoning: false,
+    knowledgeTurns: 3,
+    toolTurns: 0,
+    promptTurns: 0,
+    classicTurns: 1,
+    flowTurns: 0,
+    scenarios: 6,
+    iterations: 4,
+    prepaid: 25000,
+    pricingModel: 'prepaid',
+    m365pct: 20,
+    examples: {
+      knowledge: {
+        sharepoint: [
+          'What is the current travel reimbursement policy?',
+          'Where is the new-hire onboarding guide stored?',
+          'Summarize the employee equipment request process.'
+        ],
+        connectors: [
+          'Search our enterprise knowledge base for password reset guidance.',
+          'Find the published FAQ for remote work allowances.'
+        ]
+      },
+      classic: [
+        'What can this internal FAQ agent help me with?',
+        'Show me the common policy topics.',
+        'Thanks, that answered my question.'
+      ]
+    }
+  },
+  hr: {
+    label: 'HR policy agent (internal knowledge)',
+    agentType: 'custom',
+    ks: { sharepoint: 4, connectors: 1, files: 8 },
+    sharepointGraph: true,
+    classicTopics: 2,
+    tools: 0,
+    prompts: 0,
+    promptTier: 'standard',
+    flows: 0,
+    flowActions: 5,
+    contentPages: 0,
+    reasoning: false,
+    knowledgeTurns: 4,
+    toolTurns: 0,
+    promptTurns: 0,
+    classicTurns: 1,
+    flowTurns: 0,
+    scenarios: 8,
+    iterations: 4,
+    prepaid: 25000,
+    pricingModel: 'prepaid',
+    m365pct: 35,
+    examples: {
+      knowledge: {
+        sharepoint: [
+          'What is our parental leave policy for salaried employees?',
+          'Explain the open enrollment deadlines for benefits this year.',
+          'Where can I find the manager guidance for compensation reviews?'
+        ],
+        connectors: [
+          'Search the HR knowledge connector for relocation policy exceptions.',
+          'Find the internal HR FAQ about visa sponsorship support.'
+        ],
+        files: [
+          'Summarize the bereavement leave section from the employee handbook.',
+          'Find the policy language about performance improvement plans.'
+        ]
+      },
+      classic: [
+        'I need help with an HR policy question.',
+        'Show me the HR topics this agent covers.',
+        'Thanks, I found the policy I needed.'
+      ]
+    }
+  },
+  it: {
+    label: 'IT helpdesk with tools + flows',
+    agentType: 'custom',
+    ks: { sharepoint: 2, connectors: 2 },
+    sharepointGraph: true,
+    classicTopics: 1,
+    tools: 2,
+    prompts: 1,
+    promptTier: 'standard',
+    flows: 1,
+    flowActions: 12,
+    contentPages: 0,
+    reasoning: true,
+    knowledgeTurns: 2,
+    toolTurns: 2,
+    promptTurns: 1,
+    classicTurns: 1,
+    flowTurns: 1,
+    scenarios: 10,
+    iterations: 5,
+    prepaid: 25000,
+    pricingModel: 'prepaid',
+    m365pct: 10,
+    examples: {
+      knowledge: {
+        sharepoint: [
+          'What is the approved process for requesting admin access?',
+          'Show me the standard operating steps for laptop replacement.'
+        ],
+        connectors: [
+          'Search ServiceNow for the VPN troubleshooting article.',
+          'Find the latest Jira incidents related to Outlook login failures.'
+        ]
+      },
+      tool: [
+        'Create an IT ticket for my VPN issue and assign it to the network queue.',
+        'Send a Teams message to the helpdesk with my device details.'
+      ],
+      prompt: [
+        'Summarize the incident update for the end user.',
+        'Draft a concise technician handoff note.'
+      ],
+      classic: [
+        'I need IT help.',
+        'Show me the helpdesk options.',
+        'Thanks, that resolved it.'
+      ],
+      flow: [
+        'Run the device replacement approval flow.',
+        'Submit the privileged access request workflow.'
+      ]
+    }
+  }
+};
+
+/* ─── Foundry Agent billing rates (Azure OpenAI Global Standard PAYG, March 2026) ───
+   Source: https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/ */
+const FOUNDRY_MODELS = {
+  'gpt4o_mini': { label: 'GPT-4o mini',          inputPer1M:  0.15, outputPer1M:  0.60 },
+  'gpt4o':      { label: 'GPT-4o (2024-11-20)',  inputPer1M:  2.50, outputPer1M: 10.00 },
+  'gpt41_nano': { label: 'GPT-4.1-nano',         inputPer1M:  0.10, outputPer1M:  0.40 },
+  'gpt41_mini': { label: 'GPT-4.1-mini',         inputPer1M:  0.40, outputPer1M:  1.60 },
+  'gpt41':      { label: 'GPT-4.1',              inputPer1M:  2.00, outputPer1M:  8.00 },
+  'gpt5_mini':  { label: 'GPT-5-mini',           inputPer1M:  0.25, outputPer1M:  2.00 },
+  'gpt5':       { label: 'GPT-5 (2025-08-07)',   inputPer1M:  1.25, outputPer1M: 10.00 },
+  'o4_mini':    { label: 'o4-mini',              inputPer1M:  1.10, outputPer1M:  4.40 },
+  'o3':         { label: 'o3',                   inputPer1M:  2.00, outputPer1M:  8.00 },
+};
+
+const FOUNDRY_TEMPLATES = {
+  foundry_general: {
+    label: 'Foundry: General purpose assistant (GPT-4o)',
+    model: 'gpt4o',
+    systemTokens: 600,
+    userTokens: 150,
+    outputTokens: 400,
+    foundryTurns: 5,
+    fileSearchCalls: 3,
+    codeInterpreterSessions: 0,
+    scenarios: 5,
+    iterations: 3,
+  },
+  foundry_code: {
+    label: 'Foundry: Code assistant (GPT-4.1)',
+    model: 'gpt41',
+    systemTokens: 1200,
+    userTokens: 350,
+    outputTokens: 900,
+    foundryTurns: 6,
+    fileSearchCalls: 0,
+    codeInterpreterSessions: 2,
+    scenarios: 5,
+    iterations: 3,
+  },
+};
+
+/* Foundry example turn prompts, keyed by template */
+const FOUNDRY_CONV_EXAMPLES = {
+  foundry_general: [
+    'What are the key findings in the uploaded Q4 report?',
+    'Summarize the main risks identified across the documents.',
+    'Which recommendations have the highest priority?',
+    'Draft a brief executive summary based on those findings.',
+    'Translate the key points into a bullet-point action list.',
+    'Are there any compliance issues flagged in the uploaded files?',
+  ],
+  foundry_code: [
+    'Review this Python function for potential bugs.',
+    'Suggest how to improve the error handling in this module.',
+    'Write unit tests for the revised version of the function.',
+    'Refactor this loop to use a list comprehension.',
+    'Add type hints to all function parameters.',
+    'Generate a docstring for the updated method.',
+    'Can you spot any performance bottlenecks in this snippet?',
+  ],
+  _default: [
+    'What data sources does this agent have access to?',
+    'Search the knowledge base for the incident response procedure.',
+    'Draft a concise summary of the findings.',
+    'Can you clarify that last point?',
+    'What actions can you take on my behalf?',
+  ],
+};
+
+/* Knowledge-source cost per query (verified from billing rates page) */
+const KS_PROFILES = {
+  sharepoint:  { label: 'SharePoint / OneDrive', queryVerb: 'searches SharePoint via Graph',     hasGraphToggle: true },
+  dataverse:   { label: 'Dataverse',             queryVerb: 'queries Dataverse using RAG',        hasGraphToggle: false, credits: 2 },
+  website:     { label: 'Public website',         queryVerb: 'searches public website via Bing',   hasGraphToggle: false, credits: 2 },
+  files:       { label: 'Uploaded files',         queryVerb: 'searches uploaded file contents',     hasGraphToggle: false, credits: 2 },
+  connectors:  { label: 'Enterprise data (connectors)', queryVerb: 'queries enterprise connector data', hasGraphToggle: true },
+};
+
+function getKSCredits(key) {
+  const p = KS_PROFILES[key];
+  /* Agent Builder agents: public website grounding is free (no generative answer charge) */
+  if (key === 'website' && getAgentType() === 'builder') return 0;
+  if (p.hasGraphToggle) {
+    /* SharePoint and connectors: depends on tenant graph grounding toggle */
+    const graphOn = el('ks_sharepoint_graph').checked;
+    return graphOn ? 12 : 2; // 10 graph + 2 gen, or 2 gen only
+  }
+  return p.credits;
+}
+
+function setTheme(theme) {
+  document.body.classList.toggle('theme-light', theme === 'light');
+  el('theme_mode').value = theme;
+}
+
+function getSelectedTemplateKey() {
+  return el('quickStartTemplate') ? el('quickStartTemplate').value : '';
+}
+
+function getSelectedTemplate() {
+  const templateKey = getSelectedTemplateKey();
+  return templateKey && TEMPLATES[templateKey] ? TEMPLATES[templateKey] : null;
+}
+
+function applyTemplate(templateKey) {
+  if (!templateKey) return;
+
+  /* Foundry template */
+  if (FOUNDRY_TEMPLATES[templateKey]) {
+    const t = FOUNDRY_TEMPLATES[templateKey];
+    document.querySelector('input[name="agentType"][value="foundry"]').checked = true;
+    onAgentTypeChange();
+    if (el('foundry_model'))                   el('foundry_model').value = t.model;
+    if (el('foundry_systemTokens'))             el('foundry_systemTokens').value = t.systemTokens;
+    if (el('foundry_userTokens'))               el('foundry_userTokens').value = t.userTokens;
+    if (el('foundry_outputTokens'))             el('foundry_outputTokens').value = t.outputTokens;
+    if (el('foundry_turns'))                    el('foundry_turns').value = t.foundryTurns;
+    if (el('foundry_fileSearchCalls'))          el('foundry_fileSearchCalls').value = t.fileSearchCalls;
+    if (el('foundry_codeInterpreterSessions'))  el('foundry_codeInterpreterSessions').value = t.codeInterpreterSessions;
+    el('scale_scenarios').value  = t.scenarios;
+    el('scale_iterations').value = t.iterations;
+    recalculate();
+    return;
+  }
+
+  /* Copilot Studio template */
+  if (!TEMPLATES[templateKey]) return;
+  const template = TEMPLATES[templateKey];
+
+  document.querySelector('input[name="agentType"][value="' + template.agentType + '"]').checked = true;
+  onAgentTypeChange();
+
+  ['sharepoint','dataverse','website','files','connectors'].forEach(key => {
+    const checked = Object.prototype.hasOwnProperty.call(template.ks, key);
+    el('ks_' + key).checked = checked;
+    el('ks_' + key + '_n').value = checked ? template.ks[key] : 1;
+    el('ks_' + key + '_n').disabled = !checked;
+  });
+  el('ks_sharepoint_graph').checked = template.sharepointGraph;
+  el('ks_sharepoint_graph_row').style.display = (el('ks_sharepoint').checked || el('ks_connectors').checked) ? 'flex' : 'none';
+
+  el('comp_classicTopics').value = template.classicTopics;
+  el('comp_tools').value = template.tools;
+  el('comp_prompts').value = template.prompts;
+  el('comp_promptTier').value = template.promptTier;
+  el('comp_flows').value = template.flows;
+  el('comp_flowActions').value = template.flowActions;
+  el('comp_contentPages').value = template.contentPages;
+  el('comp_reasoning').checked = template.reasoning;
+
+  el('conv_knowledgeTurns').value = template.knowledgeTurns;
+  el('conv_toolTurns').value = template.toolTurns;
+  el('conv_promptTurns').value = template.promptTurns;
+  el('conv_classicTurns').value = template.classicTurns;
+  el('conv_flowTurns').value = template.flowTurns;
+
+  el('scale_scenarios').value = template.scenarios;
+  el('scale_iterations').value = template.iterations;
+  el('scale_prepaid').value = template.prepaid;
+  el('scale_pricingModel').value = template.pricingModel;
+  el('scale_m365pct').value = template.m365pct;
+
+  recalculate();
+}
+
+/* Example user questions per knowledge source */
+const KS_EXAMPLES = {
+  sharepoint:  ["What is our company's PTO policy?", "Show me the latest Q3 sales report.", "Where can I find the onboarding checklist?"],
+  dataverse:   ["Look up account details for Contoso Ltd.", "What is the status of case #20456?", "Show me all high-priority tickets assigned to me."],
+  website:     ["What are the current product pricing tiers?", "Summarize the return policy from our website."],
+  files:       ["What does the training manual say about safety procedures?", "Find the section about data retention in the compliance doc."],
+  connectors:  ["Search our ServiceNow knowledge base for VPN setup.", "Find the latest Jira tickets about the login issue."],
+};
+const TOOL_EXAMPLES = ["Create a new support ticket for this issue.", "Send a Teams notification to the project team.", "Look up the weather in Seattle."];
+const PROMPT_EXAMPLES = ["Summarize this conversation so far.", "Draft a professional reply to the customer.", "Translate this response into Spanish."];
+const CLASSIC_EXAMPLES = ["Hi, what can you help me with?", "Thanks, that's all I need.", "Show me the main menu."];
+const FLOW_EXAMPLES = ["Submit my timesheet for this week.", "Approve the pending expense report.", "Run the data refresh agent flow."];
+
+function pickTemplateExample(cfg, type, key, fallback) {
+  const template = getSelectedTemplate();
+  if (!template || !template.examples) return pickRandom(fallback);
+  if (type === 'knowledge') {
+    const examples = template.examples.knowledge && template.examples.knowledge[key];
+    return examples && examples.length > 0 ? pickRandom(examples) : pickRandom(fallback);
+  }
+  const examples = template.examples[type];
+  return examples && examples.length > 0 ? pickRandom(examples) : pickRandom(fallback);
+}
+
+/* ───── Helpers ───── */
+function el(id) { return document.getElementById(id); }
+function numVal(id) { return Math.max(0, parseInt(el(id).value) || 0); }
+function toggleKS(checkbox, inputId) {
+  el(inputId).disabled = !checkbox.checked;
+  /* Show/hide SharePoint graph toggle */
+  if (checkbox.id === 'ks_sharepoint' || checkbox.id === 'ks_connectors') {
+    el('ks_sharepoint_graph_row').style.display =
+      (el('ks_sharepoint').checked || el('ks_connectors').checked) ? 'flex' : 'none';
+  }
+  if (el('ks_connectors').checked) {
+    el('ks_sharepoint_graph').checked = true;
+    el('ks_sharepoint_graph').disabled = true;
+  } else {
+    el('ks_sharepoint_graph').disabled = false;
+  }
+  /* Auto-set knowledge turns when first KS checked / last KS unchecked */
+  const anyKS = ['ks_sharepoint','ks_dataverse','ks_website','ks_files','ks_connectors'].some(id => el(id).checked);
+  const kTurns = el('conv_knowledgeTurns');
+  if (anyKS && numVal('conv_knowledgeTurns') === 0) {
+    kTurns.value = 2; // sensible default
+  } else if (!anyKS && numVal('conv_knowledgeTurns') > 0) {
+    kTurns.value = 0;
+  }
+  recalculate();
+}
+function getCreditToUSD() {
+  return el('scale_pricingModel').value === 'prepaid' ? CREDIT_TO_USD_PREPAID : CREDIT_TO_USD_PAYG;
+}
+function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+/* ───── Agent type ───── */
+function getAgentType() {
+  return document.querySelector('input[name="agentType"]:checked').value; // 'custom' | 'builder' | 'sharepoint'
+}
+
+function onAgentTypeChange() {
+  const at = getAgentType();
+
+  /* Highlight selected radio label */
+  ['at_custom_label','at_builder_label','at_sharepoint_label','at_foundry_label'].forEach(id => {
+    const lbl = el(id); if (!lbl) return;
+    lbl.style.borderColor = 'var(--border)';
+    lbl.style.background  = 'transparent';
+  });
+  const selLabel = { custom: 'at_custom_label', builder: 'at_builder_label', sharepoint: 'at_sharepoint_label', foundry: 'at_foundry_label' }[at];
+  if (el(selLabel)) { el(selLabel).style.borderColor = 'var(--accent)'; el(selLabel).style.background = 'rgba(0,120,212,0.08)'; }
+
+  const show = (id, vis) => { const e = el(id); if (e) e.style.display = vis ? '' : 'none'; };
+  const isFoundry = at === 'foundry';
+
+  /* Foundry-specific step vs. Copilot Studio steps */
+  show('step_foundry', isFoundry);
+  show('step_knowledge',       !isFoundry);
+  show('step_components',       at === 'custom');
+  show('step_contentProcessing', at === 'custom');
+
+  /* KS rows visibility (Copilot Studio only) */
+  show('ks_row_dataverse',   at === 'custom');
+  show('ks_row_website',     at === 'custom' || at === 'builder');
+  show('ks_row_files',       at === 'custom');
+  show('ks_row_connectors',  at === 'custom' || at === 'builder');
+
+  /* Step 3 turn-type fields hidden for non-custom and hidden entirely for Foundry */
+  show('step_conversation',  !isFoundry);
+  show('field_toolTurns',    at === 'custom');
+  show('field_promptTurns',  at === 'custom');
+  show('field_classicTurns', at === 'custom');
+  show('field_flowTurns',    at === 'custom');
+
+  /* Scale fields: prepaid/pricing/M365 don't apply to Foundry */
+  show('scale_prepaid_row', !isFoundry);
+  show('scale_pricing_row', !isFoundry);
+  show('scale_m365_row',    !isFoundry);
+
+  /* Example prompt step always visible */
+  show('step_example', true);
+
+  /* Agent type context note */
+  const noteEl = el('agentTypeNote');
+  if (at === 'builder') {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '&#9432; Agent Builder agents (declarative agents in M365 Copilot): <strong>public website grounding is free</strong>. ' +
+      'When pay-as-you-go is used, billing is configured in the <strong>Microsoft 365 admin center</strong> and billed to the linked Azure subscription under <strong>Microsoft 365 Copilot pay-as-you-go</strong>, not Copilot Studio billing. No topics, tools, flows, or AI prompts. ' +
+      '<a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/cost-considerations#declarative-agents" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Learn more</a> | ' +
+      '<a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/pay-as-you-go/overview" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">PAYG setup</a>';
+  } else if (at === 'sharepoint') {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '&#9432; SharePoint agents are grounded in selected SharePoint sites using tenant graph grounding. ' +
+      'When pay-as-you-go is used, billing is configured in the <strong>Microsoft 365 admin center</strong> and billed to the linked Azure subscription under <strong>Microsoft 365 Copilot pay-as-you-go</strong>. No topics, tools, flows, or AI prompts. ' +
+      '<a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/pay-as-you-go/meters" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">PAYG meters</a>';
+    /* Auto-check SharePoint and graph */
+    el('ks_sharepoint').checked = true;
+    el('ks_sharepoint_n').disabled = false;
+    el('ks_sharepoint_graph_row').style.display = 'flex';
+    el('ks_sharepoint_graph').checked = true;
+  } else if (at === 'foundry') {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '&#9432; <strong>Microsoft Foundry Agent Service</strong> &mdash; billed by tokens (input + output) to your Azure subscription. No Copilot Studio credits apply. '
+      + 'Models: GPT-4o, GPT-4.1, GPT-5, o3, o4-mini, and more. '
+      + '<a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Foundry Agent Service overview</a> | '
+      + '<a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Azure OpenAI pricing</a>';
+  } else {
+    noteEl.style.display = 'none';
+  }
+
+  /* Update cost labels for public website row */
+  const wsCost = el('ks_row_website')?.querySelector('.ks-cost');
+  if (wsCost) wsCost.textContent = at === 'builder' ? '0 cr (free for Agent Builder)' : '2 cr/query (generative answer)';
+
+  /* Zero out hidden Copilot Studio fields so they don't affect calculation */
+  if (at !== 'custom') {
+    el('comp_classicTopics').value = 0;
+    el('comp_tools').value = 0;
+    el('comp_prompts').value = 0;
+    el('comp_flows').value = 0;
+    el('comp_flowActions').value = 5;
+    el('comp_contentPages').value = 0;
+    el('comp_reasoning').checked = false;
+    el('conv_toolTurns').value = 0;
+    el('conv_promptTurns').value = 0;
+    el('conv_classicTurns').value = 0;
+    el('conv_flowTurns').value = 0;
+  }
+
+  recalculate();
+}
+
+/* ───── Weighted knowledge source cost ───── */
+function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+/* ───── Core calculation ───── */
+function getConfig() {
+  const agentType = getAgentType();
+  const ksSources = [];
+  for (const [key] of Object.entries(KS_PROFILES)) {
+    if (el('ks_' + key) && el('ks_' + key).checked) {
+      const credits = getKSCredits(key);
+      ksSources.push({ key, ...KS_PROFILES[key], credits, count: numVal('ks_' + key + '_n') });
+    }
+  }
+  /* Primary KS = highest cost (for per-query estimate) */
+  const primaryKS = ksSources.length > 0
+    ? ksSources.reduce((a, b) => a.credits > b.credits ? a : b)
+    : null;
+
+  const classicTopics = numVal('comp_classicTopics');
+  const tools = numVal('comp_tools');
+  const prompts = numVal('comp_prompts');
+  const promptTier = el('comp_promptTier').value;
+  const promptCostPer = PROMPT_RATES[promptTier];
+  const flows = numVal('comp_flows');
+  const flowActions = Math.max(1, numVal('comp_flowActions'));
+  const contentPages = numVal('comp_contentPages');
+  const reasoning = el('comp_reasoning').checked;
+
+  const turns = Math.max(1, numVal('conv_turns'));
+  const knowledgeTurns = numVal('conv_knowledgeTurns');
+  const toolTurns = numVal('conv_toolTurns');
+  const promptTurns = numVal('conv_promptTurns');
+  const classicTurns = numVal('conv_classicTurns');
+  const flowTurns = numVal('conv_flowTurns');
+
+  const scenarios = Math.max(1, numVal('scale_scenarios'));
+  const iterations = Math.max(1, numVal('scale_iterations'));
+  const prepaid = numVal('scale_prepaid');
+  const pricingModel = el('scale_pricingModel').value;
+  const m365pct = Math.min(100, Math.max(0, numVal('scale_m365pct')));
+
+  return {
+    agentType, ksSources, primaryKS, templateKey: getSelectedTemplateKey(),
+    classicTopics, tools, prompts, promptTier, promptCostPer, flows, flowActions, contentPages, reasoning,
+    turns, knowledgeTurns, toolTurns, promptTurns, classicTurns, flowTurns,
+    scenarios, iterations, prepaid, pricingModel, m365pct,
+  };
+}
+
+function calcPerConversation(cfg) {
+  const breakdown = {
+    classicAnswers: 0, genAnswers: 0, actions: 0,
+    graphMsgs: 0, promptCredits: 0, flowCredits: 0, contentCredits: 0, reasoningCredits: 0,
+  };
+  const graphOn = el('ks_sharepoint_graph').checked;
+
+  /* Knowledge turns */
+  if (cfg.ksSources.length > 0 && cfg.knowledgeTurns > 0) {
+    /* For Agent Builder: public website grounding is free (0 cr), no gen answer charged.
+       Only charge gen answers for turns hitting paid sources. */
+    const hasPaidKS = cfg.ksSources.some(ks => ks.credits > 0);
+    if (hasPaidKS) {
+      breakdown.genAnswers += cfg.knowledgeTurns; // each knowledge query produces 1 gen answer
+    }
+    /* If ANY graph-enabled source is active with graph on, ALL knowledge turns incur graph cost */
+    const hasGraphSource = cfg.ksSources.some(ks => ks.hasGraphToggle);
+    if (graphOn && hasGraphSource) {
+      breakdown.graphMsgs += cfg.knowledgeTurns;
+    }
+  }
+
+  /* Tool turns → agent action + gen answer */
+  breakdown.actions    += cfg.toolTurns;
+  breakdown.genAnswers += cfg.toolTurns;
+
+  /* AI Prompt turns */
+  breakdown.promptCredits += Math.ceil(cfg.promptTurns * cfg.promptCostPer);
+
+  /* Classic turns */
+  breakdown.classicAnswers += cfg.classicTurns;
+
+  /* Agent flow turns: trigger cost + flow actions (13 cr / 100 actions)
+     Per docs: generative orchestration = 1 agent action (5cr) + gen answer (2cr) + flow actions
+              from topic = 1 classic answer (1cr) + flow actions */
+  if (cfg.flowTurns > 0) {
+    breakdown.actions    += cfg.flowTurns; // each flow invocation is an agent action
+    breakdown.genAnswers += cfg.flowTurns; // plus a generative answer
+    const totalFlowActions = cfg.flowTurns * cfg.flowActions;
+    breakdown.flowCredits = Math.ceil(totalFlowActions * 13 / 100);
+  }
+
+  /* Content processing: 8 credits per page */
+  breakdown.contentCredits = cfg.contentPages * CONTENT_PROCESSING_RATE;
+
+  /* Reasoning surcharge on generative answers AND agent actions */
+  if (cfg.reasoning) {
+    breakdown.reasoningCredits = (breakdown.genAnswers + breakdown.actions) * REASONING_SURCHARGE;
+  }
+
+  const creditItems = {
+    'Classic answers':           { credits: breakdown.classicAnswers * 1,  rate: '1 cr each' },
+    'Generative answers':        { credits: breakdown.genAnswers * 2,     rate: '2 cr each' },
+    'Agent actions (tools)':     { credits: breakdown.actions * 5,        rate: '5 cr each' },
+    'Tenant graph grounding':    { credits: breakdown.graphMsgs * 10,    rate: '10 cr each' },
+    'AI prompt actions':         { credits: breakdown.promptCredits,      rate: cfg.promptTier + ' tier' },
+    'Agent flow actions':        { credits: breakdown.flowCredits,        rate: '13 cr / 100 actions' },
+    'Content processing':        { credits: breakdown.contentCredits,     rate: '8 cr / page' },
+    'Reasoning surcharge':       { credits: breakdown.reasoningCredits,   rate: '+10 cr/gen answer & action' },
+  };
+
+  const perConv = Object.values(creditItems).reduce((s, i) => s + i.credits, 0);
+  return { perConv, creditItems, breakdown };
+}
+
+/* ───── Update dynamic cost labels next to checkboxes ───── */
+function updateCostLabels() {
+  const graphOn = el('ks_sharepoint_graph').checked;
+  const spCost = graphOn ? '12 cr/query (10 graph + 2 gen)' : '2 cr/query (gen answer only)';
+  el('ks_sharepoint_cost').textContent = spCost;
+  el('ks_connectors_cost').textContent = '12 cr/query (10 graph + 2 gen)';
+}
+
+/* ───── Example prompt builder ───── */
+function buildExamples(cfg, calc) {
+  const container = el('exampleContainer');
+  const turns = [];
+
+  for (let i = 0; i < cfg.classicTurns; i++) turns.push({ type: 'classic' });
+  if (cfg.ksSources.length > 0) {
+    for (let i = 0; i < cfg.knowledgeTurns; i++) turns.push({ type: 'knowledge' });
+  }
+  for (let i = 0; i < cfg.toolTurns; i++) turns.push({ type: 'tool' });
+  for (let i = 0; i < cfg.promptTurns; i++) turns.push({ type: 'prompt' });
+  for (let i = 0; i < cfg.flowTurns; i++) turns.push({ type: 'flow' });
+
+  if (turns.length === 0) {
+    container.innerHTML = '<div class="empty-state">Configure your agent above to see an example conversation.</div>';
+    return;
+  }
+
+  const graphOn = el('ks_sharepoint_graph').checked;
+  const selectedTemplate = getSelectedTemplate();
+  let html = '<div class="example-card">';
+  html += '<div style="font-size:0.82rem;color:var(--muted);margin-bottom:0.75rem;">Example test conversation (' + turns.length + ' turns)' + (selectedTemplate ? ' based on the ' + escapeHtml(selectedTemplate.label) + ' template' : '') + ':</div>';
+
+  let totalCr = 0, turnNum = 0;
+  for (const turn of turns) {
+    turnNum++;
+    let prompt = '', traceHtml = '', cr = 0;
+
+    if (turn.type === 'classic') {
+      prompt = pickTemplateExample(cfg, 'classic', null, CLASSIC_EXAMPLES);
+      cr = 1;
+      traceHtml = '<div class="trace-step"><span class="arrow">&rarr;</span> Matches authored topic <span class="credits">+1 cr (classic answer)</span></div>';
+    } else if (turn.type === 'knowledge') {
+      /* Pick a random KS from all selected sources for the example prompt */
+      const ks = cfg.ksSources[turnNum % cfg.ksSources.length] || cfg.primaryKS;
+      if (!ks) continue;
+      prompt = pickTemplateExample(cfg, 'knowledge', ks.key, KS_EXAMPLES[ks.key] || KS_EXAMPLES.sharepoint);
+      let lines = '';
+      /* Graph cost applies if ANY graph source is enabled, regardless of which source is shown */
+      const hasGraphSource = cfg.ksSources.some(s => s.hasGraphToggle);
+      if (graphOn && hasGraphSource) {
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Agent searches knowledge sources (graph grounding active) <span class="credits">+10 cr (tenant graph grounding)</span></div>';
+        cr += 10;
+      }
+      lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates answer from ' + ks.label + ' <span class="credits">+2 cr (generative answer)</span></div>';
+      cr += 2;
+      if (cfg.reasoning) {
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Reasoning model active <span class="credits">+' + REASONING_SURCHARGE + ' cr (premium AI surcharge)</span></div>';
+        cr += REASONING_SURCHARGE;
+      }
+      traceHtml = lines;
+    } else if (turn.type === 'tool') {
+      prompt = pickTemplateExample(cfg, 'tool', null, TOOL_EXAMPLES);
+      cr = 5 + 2;
+      let lines = '<div class="trace-step"><span class="arrow">&rarr;</span> Calls tool / connector <span class="credits">+5 cr (agent action)</span></div>';
+      lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates response <span class="credits">+2 cr (generative answer)</span></div>';
+      if (cfg.reasoning) {
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Reasoning model active <span class="credits">+' + REASONING_SURCHARGE + ' cr (premium AI surcharge on gen answer)</span></div>';
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Reasoning model active <span class="credits">+' + REASONING_SURCHARGE + ' cr (premium AI surcharge on action)</span></div>';
+        cr += REASONING_SURCHARGE * 2;
+      }
+      traceHtml = lines;
+    } else if (turn.type === 'prompt') {
+      prompt = pickTemplateExample(cfg, 'prompt', null, PROMPT_EXAMPLES);
+      cr = cfg.promptCostPer; // fractional — ceiled across all prompt turns at total, not per-turn
+      const promptCrDisplay = Number.isInteger(cr) ? String(cr) : cr.toFixed(2);
+      traceHtml = '<div class="trace-step"><span class="arrow">&rarr;</span> Runs AI prompt action (' + cfg.promptTier + ') <span class="credits">+' + promptCrDisplay + ' cr (billed per 10 responses)</span></div>';
+    } else if (turn.type === 'flow') {
+      prompt = pickTemplateExample(cfg, 'flow', null, FLOW_EXAMPLES);
+      const flowActionsCr = Math.ceil(cfg.flowActions * 13 / 100);
+      cr = 5 + 2 + flowActionsCr; // agent action + gen answer + flow actions
+      let lines = '<div class="trace-step"><span class="arrow">&rarr;</span> Invokes agent flow <span class="credits">+5 cr (agent action)</span></div>';
+      lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates response <span class="credits">+2 cr (generative answer)</span></div>';
+      lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Executes flow (' + cfg.flowActions + ' actions) <span class="credits">+' + flowActionsCr + ' cr (13 cr/100 actions)</span></div>';
+      if (cfg.reasoning) {
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Reasoning model active <span class="credits">+' + REASONING_SURCHARGE + ' cr (premium AI surcharge on gen answer)</span></div>';
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Reasoning model active <span class="credits">+' + REASONING_SURCHARGE + ' cr (premium AI surcharge on action)</span></div>';
+        cr += REASONING_SURCHARGE * 2;
+      }
+      traceHtml = lines;
+    }
+
+    totalCr += cr;
+    html += '<div style="margin-bottom:0.75rem;">';
+    html += '  <div class="prompt"><strong>Turn ' + turnNum + ':</strong> &ldquo;' + escapeHtml(prompt) + '&rdquo;</div>';
+    html += '  <div class="trace">' + traceHtml + '</div>';
+    html += '</div>';
+  }
+
+  const displayTotalCr = Math.ceil(totalCr);
+  html += '<div class="example-total"><span>Cost for this conversation</span>';
+  html += '<span style="color:var(--accent)">' + displayTotalCr + ' credits ($' + (displayTotalCr * getCreditToUSD()).toFixed(2) + ')</span></div>';
+  html += '</div>';
+  html += '<div style="font-size:0.78rem;color:var(--muted);margin-top:0.25rem;">Estimated per conversation: <strong style="color:var(--white)">' + calc.perConv + ' credits</strong>. The example above illustrates one possible conversation path.</div>';
+
+  container.innerHTML = html;
+}
+
+/* ───── Results renderer ───── */
+function renderResults(cfg, calc) {
+  const panel = el('resultsPanel');
+  const creditRate = getCreditToUSD();
+  const pricingLabel = cfg.pricingModel === 'prepaid' ? 'Prepaid ($0.008/cr)' : 'PAYG ($0.01/cr)';
+  const totalConversations = cfg.scenarios * cfg.iterations;
+
+  /* M365 Copilot deduction: zero-rate classic, gen, actions, and graph for licensed user % */
+  const adjustedPerConv = getM365AdjustedPerConv(cfg, calc);
+  const grandTotal = adjustedPerConv * totalConversations;
+  const grandUSD = (grandTotal * creditRate).toFixed(2);
+
+  let m365Note = '';
+  if (cfg.m365pct > 0) {
+    m365Note = '<div style="font-size:0.8rem;color:var(--accent-light);margin-bottom:1rem;padding:0.5rem 0.75rem;background:rgba(0,120,212,0.1);border-radius:6px;">' +
+      '&#9432; M365 Copilot licensed users (' + cfg.m365pct + '%) consume <strong>zero credits for all features</strong> (classic, generative, actions, graph, AI tools, flow actions, content processing) when operating under their authenticated M365 Copilot identity. Subject to fair-use limits. ' +
+      'Adjusted per-conversation cost: ' + adjustedPerConv + ' cr (blended). ' +
+      '<a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Learn more</a></div>';
+  }
+
+  const runMeaningNote = '<div class="info-banner">' +
+    '<strong>What “per run” means:</strong> this estimate is calculated <strong>per conversation run</strong>, not per unique user. ' +
+    'One run = one full agent interaction based on the turn mix you defined above. ' +
+    'If one user runs the agent 20 times, that counts as 20 runs. If 20 users each run it once, that also counts as 20 runs.' +
+    '</div>';
+
+  let summaryHtml = runMeaningNote + m365Note + '<div class="results-summary">' +
+    '<div class="summary-box"><div class="big blue">' + adjustedPerConv + '</div><div class="lbl">Credits per conversation run' + (cfg.m365pct > 0 ? ' (blended)' : '') + '</div></div>' +
+    '<div class="summary-box"><div class="big">' + totalConversations + '</div><div class="lbl">Total conversations<br>(' + cfg.scenarios + ' scenarios &times; ' + cfg.iterations + ' iterations)</div></div>' +
+    '<div class="summary-box"><div class="big blue">' + grandTotal.toLocaleString() + '</div><div class="lbl">Total credits</div></div>' +
+    '<div class="summary-box"><div class="big green">$' + grandUSD + '</div><div class="lbl">Estimated total cost (' + pricingLabel + ')</div></div></div>';
+
+  let tableRows = '';
+  for (const [label, item] of Object.entries(calc.creditItems)) {
+    if (item.credits === 0) continue;
+    const tot = item.credits * totalConversations;
+    tableRows += '<tr><td>' + label + '</td><td class="num">' + item.credits + '</td><td class="num" style="color:var(--muted)">' + item.rate + '</td><td class="num">' + tot.toLocaleString() + '</td></tr>';
+  }
+  /* P2 fix: add M365 discount as a row so column sums match the adjusted total */
+  if (cfg.m365pct > 0) {
+    const discountPerConv = calc.perConv - adjustedPerConv;
+    const discountTotal = discountPerConv * totalConversations;
+    tableRows += '<tr style="color:var(--green)"><td>M365 Copilot license discount (' + cfg.m365pct + '% users)</td><td class="num">−' + discountPerConv + '</td><td class="num" style="color:var(--muted)">zero-credit all meters</td><td class="num">−' + discountTotal.toLocaleString() + '</td></tr>';
+  }
+
+  const featureVals = Object.entries(calc.creditItems).filter(([, i]) => i.credits > 0).map(([label, i]) => ({ label, val: i.credits * totalConversations }));
+  const maxBar = Math.max(1, ...featureVals.map(f => f.val));
+  let barRows = featureVals.map(f => {
+    const pct = grandTotal > 0 ? ((f.val / grandTotal) * 100).toFixed(1) : 0;
+    const barPct = ((f.val / maxBar) * 100).toFixed(1);
+    return '<div class="bar-row"><span class="bar-label">' + f.label + '</span><div class="bar-track"><div class="bar-fill" style="width:' + barPct + '%"></div></div><span class="bar-value">' + f.val.toLocaleString() + ' (' + pct + '%)</span></div>';
+  }).join('');
+
+  let capacityHtml = '';
+  if (cfg.prepaid > 0) {
+    const pctUsed = ((grandTotal / cfg.prepaid) * 100).toFixed(2);
+    const remaining = cfg.prepaid - grandTotal;
+    const overageAt = Math.floor(cfg.prepaid * 1.25);
+    const barPct = Math.min(100, (grandTotal / overageAt) * 100).toFixed(1);
+    const markerPct = ((cfg.prepaid / overageAt) * 100).toFixed(1);
+    let statusClass = 'ok', barColor = 'var(--green)';
+    if (pctUsed > 100) { statusClass = 'danger'; barColor = 'var(--red)'; }
+    else if (pctUsed > 25) { statusClass = 'warn'; barColor = 'var(--yellow)'; }
+
+    capacityHtml = '<div class="capacity-panel"><h3>Capacity Impact</h3>' +
+      '<div class="capacity-bar-container"><div class="capacity-bar-bg">' +
+      '<div class="capacity-bar-fill" style="width:' + barPct + '%;background:' + barColor + '"></div>' +
+      '<div class="capacity-bar-marker" style="left:' + markerPct + '%" title="100% capacity"></div>' +
+      '</div></div>' +
+      '<div class="capacity-stat"><span class="label">Monthly prepaid capacity</span><span class="value">' + cfg.prepaid.toLocaleString() + ' credits</span></div>' +
+      '<div class="capacity-stat"><span class="label">Estimated usage</span><span class="value ' + statusClass + '">' + grandTotal.toLocaleString() + ' credits (' + pctUsed + '%)</span></div>' +
+      '<div class="capacity-stat"><span class="label">' + (remaining >= 0 ? 'Remaining after usage' : 'Over capacity by') + '</span><span class="value ' + (remaining >= 0 ? 'ok' : 'danger') + '">' + Math.abs(remaining).toLocaleString() + ' credits</span></div>' +
+      '<div class="capacity-stat"><span class="label">Overage enforcement at</span><span class="value">' + overageAt.toLocaleString() + ' credits (125%)</span></div></div>';
+  }
+
+  panel.innerHTML = '<div class="results">' +
+    '<div class="step-header" style="margin-bottom:1rem;"><span class="step-num" style="background:var(--green)">$</span><span class="step-title">Production Cost Estimate</span></div>' +
+    summaryHtml +
+    '<table class="results-table"><thead><tr><th>Feature</th><th style="text-align:right">Per Conv.</th><th style="text-align:right">Rate</th><th style="text-align:right">Total Credits</th></tr></thead><tbody>' +
+    tableRows +
+    '<tr class="total-row"><td>TOTAL</td><td class="num">' + adjustedPerConv + '</td><td class="num">' + (cfg.m365pct > 0 ? cfg.m365pct + '% M365 adj.' : '') + '</td><td class="num">' + grandTotal.toLocaleString() + '</td></tr></tbody></table>' +
+    '<div class="breakdown-grid"><div class="breakdown-section"><h3>Credit Breakdown by Feature</h3>' + (barRows || '<span style="color:var(--muted);font-size:0.85rem;">No credits consumed.</span>') + '</div><div class="breakdown-section">' + capacityHtml + '</div></div>' +
+    '<div class="actions-bar"><button class="btn-export" onclick="exportCSV()">Export CSV</button><button class="btn-export" onclick="window.print()">Print</button><button class="btn-reset" onclick="resetAll()">&#8635; Start Over</button></div></div>';
+}
+
+/* ───── Auto-sync Step 3 turns from Step 2 components ───── */
+function autoSyncTurns() {
+  /* If the user has components configured but zero matching turns, set a sensible default.
+     If the user zeroes out a component, clear the matching turns. */
+  const pairs = [
+    { comp: 'comp_classicTopics', turn: 'conv_classicTurns', dflt: 1 },
+    { comp: 'comp_tools',         turn: 'conv_toolTurns',    dflt: 1 },
+    { comp: 'comp_prompts',       turn: 'conv_promptTurns',  dflt: 1 },
+    { comp: 'comp_flows',         turn: 'conv_flowTurns',    dflt: 1 },
+  ];
+  for (const p of pairs) {
+    const compVal = numVal(p.comp);
+    const turnEl = el(p.turn);
+    const turnVal = numVal(p.turn);
+    if (compVal > 0 && turnVal === 0) {
+      turnEl.value = p.dflt;
+    } else if (compVal === 0 && turnVal > 0) {
+      turnEl.value = 0;
+    }
+  }
+}
+
+/* ───── Auto-compute total turns ───── */
+function updateTurnTotal() {
+  const total = numVal('conv_knowledgeTurns') + numVal('conv_toolTurns') + numVal('conv_promptTurns') + numVal('conv_classicTurns') + numVal('conv_flowTurns');
+  el('conv_turns').value = Math.max(0, total);
+}
+
+/* ───── M365 Copilot adjusted per-conversation cost ───── */
+function getM365AdjustedPerConv(cfg, calc) {
+  if (cfg.m365pct === 0) return calc.perConv;
+  const m365Factor = 1 - (cfg.m365pct / 100);
+  /* M365 Copilot licensed users: zero credits for ALL features (per billing rates table) */
+  return Math.ceil(calc.perConv * m365Factor);
+}
+
+/* ─── Recalculate ─── */
+function recalculate() {
+  const at = getAgentType();
+  if (at === 'foundry') {
+    const cfg  = getFoundryConfig();
+    const calc = calcFoundryCost(cfg);
+    buildFoundryExample(cfg, calc);
+    renderFoundryResults(cfg, calc);
+    return;
+  }
+  autoSyncTurns();
+  updateTurnTotal();
+  updateCostLabels();
+  const cfg  = getConfig();
+  const calc = calcPerConversation(cfg);
+  buildExamples(cfg, calc);
+  renderResults(cfg, calc);
+  /* Show/hide knowledge-turns-without-KS warning */
+  const ksWarn = el('ksWarning');
+  if (ksWarn) ksWarn.style.display = (cfg.knowledgeTurns > 0 && cfg.ksSources.length === 0) ? 'block' : 'none';
+}
+
+/* ─── Foundry: config reader ─── */
+function getFoundryConfig() {
+  const modelKey = el('foundry_model') ? el('foundry_model').value : 'gpt4o';
+  const model = FOUNDRY_MODELS[modelKey] || FOUNDRY_MODELS['gpt4o'];
+  const systemTokens    = Math.max(0, numVal('foundry_systemTokens'));
+  const userTokens      = Math.max(1, numVal('foundry_userTokens'));
+  const outputTokens    = Math.max(1, numVal('foundry_outputTokens'));
+  const foundryTurns    = Math.max(1, numVal('foundry_turns'));
+  const fileSearchCalls = numVal('foundry_fileSearchCalls');
+  const codeInterpreterSessions = numVal('foundry_codeInterpreterSessions');
+  const scenarios  = Math.max(1, numVal('scale_scenarios'));
+  const iterations = Math.max(1, numVal('scale_iterations'));
+  return { modelKey, model, systemTokens, userTokens, outputTokens, foundryTurns,
+           fileSearchCalls, codeInterpreterSessions, scenarios, iterations };
+}
+
+/* ─── Foundry: cost calculation ─── */
+function calcFoundryCost(cfg) {
+  // Context accumulates each turn: turn k input = S + k*U + (k-1)*O
+  // Total input over T turns = T*S + U*(T*(T+1)/2) + O*(T*(T-1)/2)
+  const { model, systemTokens: S, userTokens: U, outputTokens: O, foundryTurns: T } = cfg;
+  const totalInputTokens  = T * S + U * (T * (T + 1) / 2) + O * (T * (T - 1) / 2);
+  const totalOutputTokens = T * O;
+  const inputCost  = (totalInputTokens  / 1_000_000) * model.inputPer1M;
+  const outputCost = (totalOutputTokens / 1_000_000) * model.outputPer1M;
+  const fileSearchCost         = (cfg.fileSearchCalls         / 1000) * 2.50;  // $2.50/1K calls
+  const codeInterpreterCost    = cfg.codeInterpreterSessions  * 0.033;          // $0.033/session
+  const totalPerConv = inputCost + outputCost + fileSearchCost + codeInterpreterCost;
+  return {
+    totalInputTokens: Math.round(totalInputTokens), totalOutputTokens,
+    inputCost, outputCost, fileSearchCost, codeInterpreterCost, totalPerConv,
+  };
+}
+
+/* ─── Foundry: example conversation trace ─── */
+function buildFoundryExample(cfg, calc) {
+  const container = el('exampleContainer');
+  const { model, systemTokens: S, userTokens: U, outputTokens: O, foundryTurns: T, modelKey } = cfg;
+  const pool = FOUNDRY_CONV_EXAMPLES[getSelectedTemplateKey()] ||
+               FOUNDRY_CONV_EXAMPLES[modelKey] ||
+               FOUNDRY_CONV_EXAMPLES['_default'];
+  const prompts = [...pool].sort(() => 0.5 - Math.random());
+
+  let html = '<div class="example-card">';
+  html += '<div style="font-size:0.82rem;color:var(--muted);margin-bottom:0.75rem;">Example Foundry conversation (' + T + ' turns &bull; ' + model.label + '):</div>';
+
+  const showTurns = Math.min(T, 4);
+  for (let k = 1; k <= showTurns; k++) {
+    const historyTokens  = (k - 1) * (U + O);
+    const turnInputTokens  = S + historyTokens + U;
+    const turnOutputTokens = O;
+    const prompt = prompts[(k - 1) % prompts.length] || 'Tell me more.';
+    html += '<div style="margin-bottom:0.75rem;">';
+    html += '  <div class="prompt"><strong>Turn ' + k + ':</strong> &ldquo;' + escapeHtml(prompt) + '&rdquo;</div>';
+    html += '  <div class="trace">';
+    html += '    <div class="trace-step"><span class="arrow">&rarr;</span> Input context: system ('
+      + S.toLocaleString() + ') + history (' + historyTokens.toLocaleString() + ') + user ('
+      + U.toLocaleString() + ') = <strong>' + turnInputTokens.toLocaleString() + ' tokens</strong></div>';
+    html += '    <div class="trace-step"><span class="arrow">&rarr;</span> Output: <strong>'
+      + turnOutputTokens.toLocaleString() + ' tokens</strong></div>';
+    html += '  </div>';
+    html += '</div>';
+  }
+  if (T > 4) {
+    html += '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;">...('
+      + (T - 4) + ' more turn' + (T - 4 !== 1 ? 's' : '') + ' — context grows with each turn)</div>';
+  }
+  if (cfg.fileSearchCalls > 0 || cfg.codeInterpreterSessions > 0) {
+    html += '<div><div class="trace">';
+    if (cfg.fileSearchCalls > 0) {
+      html += '<div class="trace-step"><span class="arrow">&rarr;</span> File Search: '
+        + cfg.fileSearchCalls + ' call(s) across conversation <span class="credits">$' + calc.fileSearchCost.toFixed(5) + '</span></div>';
+    }
+    if (cfg.codeInterpreterSessions > 0) {
+      html += '<div class="trace-step"><span class="arrow">&rarr;</span> Code Interpreter: '
+        + cfg.codeInterpreterSessions + ' session(s) <span class="credits">$' + calc.codeInterpreterCost.toFixed(4) + '</span></div>';
+    }
+    html += '</div></div>';
+  }
+  html += '<div class="example-total"><span>Cost for this conversation</span>';
+  html += '<span style="color:var(--accent)">$' + calc.totalPerConv.toFixed(5) + '</span></div>';
+  html += '</div>';
+  html += '<div style="font-size:0.78rem;color:var(--muted);margin-top:0.25rem;">Total context per conversation: <strong style="color:var(--white)">'
+    + calc.totalInputTokens.toLocaleString() + ' input</strong> + <strong style="color:var(--white)">'
+    + calc.totalOutputTokens.toLocaleString() + ' output</strong> tokens. Context accumulates each turn.</div>';
+  container.innerHTML = html;
+}
+
+/* ─── Foundry: results panel ─── */
+function renderFoundryResults(cfg, calc) {
+  const panel = el('resultsPanel');
+  const totalConv = cfg.scenarios * cfg.iterations;
+  const grandCost = calc.totalPerConv * totalConv;
+  const grandInputTok  = calc.totalInputTokens  * totalConv;
+  const grandOutputTok = calc.totalOutputTokens * totalConv;
+
+  const infoNote = '<div class="info-banner"><strong>Foundry "per run" means:</strong> one full conversation of '
+    + cfg.foundryTurns + ' turns with the ' + cfg.model.label + ' model. Billed as input + output tokens to your '
+    + '<strong>Azure subscription</strong> &mdash; no Copilot Studio credits apply. '
+    + '<a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Foundry Agent Service</a></div>';
+
+  const summaryHtml = infoNote + '<div class="results-summary">'
+    + '<div class="summary-box"><div class="big blue">$' + calc.totalPerConv.toFixed(5) + '</div><div class="lbl">Cost per conversation<br>(' + cfg.foundryTurns + ' turns, ' + cfg.model.label + ')</div></div>'
+    + '<div class="summary-box"><div class="big">' + totalConv + '</div><div class="lbl">Total conversations<br>(' + cfg.scenarios + ' scenarios &times; ' + cfg.iterations + ' iterations)</div></div>'
+    + '<div class="summary-box"><div class="big blue">' + (grandInputTok + grandOutputTok).toLocaleString() + '</div><div class="lbl">Total tokens<br>(' + grandInputTok.toLocaleString() + ' in + ' + grandOutputTok.toLocaleString() + ' out)</div></div>'
+    + '<div class="summary-box"><div class="big green">$' + grandCost.toFixed(4) + '</div><div class="lbl">Estimated total cost<br>(Azure PAYG)</div></div>'
+    + '</div>';
+
+  const componentRows = [
+    { label: 'Input tokens (' + cfg.model.label + ')', rate: '$' + cfg.model.inputPer1M + ' / 1M tokens', perConv: '$' + calc.inputCost.toFixed(5), total: '$' + (calc.inputCost * totalConv).toFixed(4) },
+    { label: 'Output tokens', rate: '$' + cfg.model.outputPer1M + ' / 1M tokens', perConv: '$' + calc.outputCost.toFixed(5), total: '$' + (calc.outputCost * totalConv).toFixed(4) },
+    ...(calc.fileSearchCost > 0 ? [{ label: 'File Search', rate: '$2.50 / 1K calls', perConv: '$' + calc.fileSearchCost.toFixed(5), total: '$' + (calc.fileSearchCost * totalConv).toFixed(4) }] : []),
+    ...(calc.codeInterpreterCost > 0 ? [{ label: 'Code Interpreter', rate: '$0.033 / session', perConv: '$' + calc.codeInterpreterCost.toFixed(4), total: '$' + (calc.codeInterpreterCost * totalConv).toFixed(4) }] : []),
+  ];
+  const tableRows = componentRows.map(r =>
+    '<tr><td>' + r.label + '</td><td class="num" style="color:var(--muted)">' + r.rate + '</td><td class="num">' + r.perConv + '</td><td class="num">' + r.total + '</td></tr>'
+  ).join('');
+
+  panel.innerHTML = '<div class="results">'
+    + '<div class="step-header" style="margin-bottom:1rem;"><span class="step-num" style="background:var(--green)">$</span><span class="step-title">Foundry Agent Cost Estimate</span></div>'
+    + summaryHtml
+    + '<table class="results-table"><thead><tr><th>Cost Component</th><th style="text-align:right">Rate</th><th style="text-align:right">Per Conv.</th><th style="text-align:right">Total (' + totalConv + ' runs)</th></tr></thead><tbody>'
+    + tableRows
+    + '<tr class="total-row"><td>TOTAL &mdash; ' + totalConv + ' conversations</td><td class="num"></td><td class="num">$' + calc.totalPerConv.toFixed(5) + '</td><td class="num">$' + grandCost.toFixed(4) + '</td></tr>'
+    + '</tbody></table>'
+    + '<p style="font-size:0.78rem;color:var(--muted);margin-top:0.75rem;">'
+    + 'Token breakdown per conversation: <strong>' + calc.totalInputTokens.toLocaleString() + ' input</strong> + '
+    + '<strong>' + calc.totalOutputTokens.toLocaleString() + ' output</strong>. '
+    + '<strong>Upper-bound estimate:</strong> assumes full context accumulation each turn (no context-window truncation); actual costs may be lower. '
+    + 'Rates are Global Standard pay-as-you-go. <a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Azure OpenAI pricing &rarr;</a></p>'
+    + '<div class="actions-bar"><button class="btn-export" onclick="exportFoundryCSV()">Export CSV</button><button class="btn-export" onclick="window.print()">Print</button><button class="btn-reset" onclick="resetAll()">&#8635; Start Over</button></div></div>';
+}
+
+/* ─── Foundry: CSV export ─── */
+function exportFoundryCSV() {
+  const cfg  = getFoundryConfig();
+  const calc = calcFoundryCost(cfg);
+  const totalConv = cfg.scenarios * cfg.iterations;
+  const grandCost = calc.totalPerConv * totalConv;
+  const rows = [
+    'Section,Item,Value',
+    'Agent,Type,foundry',
+    'Model,Name,' + cfg.model.label,
+    'Model,Input per 1M tokens,$' + cfg.model.inputPer1M,
+    'Model,Output per 1M tokens,$' + cfg.model.outputPer1M,
+    'Config,System prompt tokens,' + cfg.systemTokens,
+    'Config,Avg user tokens per turn,' + cfg.userTokens,
+    'Config,Avg output tokens per turn,' + cfg.outputTokens,
+    'Config,Turns per conversation,' + cfg.foundryTurns,
+    'Tools,File Search calls per conv,' + cfg.fileSearchCalls,
+    'Tools,Code Interpreter sessions per conv,' + cfg.codeInterpreterSessions,
+    'Scale,Scenarios,' + cfg.scenarios,
+    'Scale,Iterations per scenario,' + cfg.iterations,
+    'Tokens,Total input tokens per conv,' + calc.totalInputTokens,
+    'Tokens,Total output tokens per conv,' + calc.totalOutputTokens,
+    'Cost,Input cost per conv,$' + calc.inputCost.toFixed(6),
+    'Cost,Output cost per conv,$' + calc.outputCost.toFixed(6),
+    'Cost,File Search cost per conv,$' + calc.fileSearchCost.toFixed(6),
+    'Cost,Code Interpreter cost per conv,$' + calc.codeInterpreterCost.toFixed(6),
+    'Cost,Total per conv,$' + calc.totalPerConv.toFixed(6),
+    'Cost,Total conversations,' + totalConv,
+    'Cost,Grand total,$' + grandCost.toFixed(4),
+  ];
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'foundry-agent-cost-estimate.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ─── CSV export ─── */
+function exportCSV() {
+  const cfg = getConfig();
+  const calc = calcPerConversation(cfg);
+  const totalConv = cfg.scenarios * cfg.iterations;
+  const adjustedPerConv = getM365AdjustedPerConv(cfg, calc);
+  const grandTotal = adjustedPerConv * totalConv;
+  const graphOn = el('ks_sharepoint_graph').checked;
+
+  const rows = [
+    'Section,Item,Value',
+    'Agent,Type,' + cfg.agentType,
+    'Knowledge Sources,SharePoint/OneDrive,' + (el('ks_sharepoint').checked ? numVal('ks_sharepoint_n') : 0),
+    'Knowledge Sources,Dataverse,' + (el('ks_dataverse').checked ? numVal('ks_dataverse_n') : 0),
+    'Knowledge Sources,Public Websites,' + (el('ks_website').checked ? numVal('ks_website_n') : 0),
+    'Knowledge Sources,Uploaded Files,' + (el('ks_files').checked ? numVal('ks_files_n') : 0),
+    'Knowledge Sources,Enterprise Connectors,' + (el('ks_connectors').checked ? numVal('ks_connectors_n') : 0),
+    'Knowledge Sources,Tenant Graph Grounding,' + (graphOn ? 'Yes' : 'No'),
+    'Components,Authored Topics,' + cfg.classicTopics,
+    'Components,Tools/Connectors,' + cfg.tools,
+    'Components,AI Prompts (' + cfg.promptTier + '),' + cfg.prompts,
+    'Components,Agent Flows,' + cfg.flows,
+
+    'Components,Reasoning Model,' + (cfg.reasoning ? 'Yes' : 'No'),
+    'Conversation,Turns Per Conversation,' + cfg.turns,
+    'Conversation,Knowledge Lookups,' + cfg.knowledgeTurns,
+    'Conversation,Tool Calls,' + cfg.toolTurns,
+    'Conversation,AI Prompt Runs,' + cfg.promptTurns,
+    'Conversation,Classic Responses,' + cfg.classicTurns,
+    'Conversation,Flow Runs,' + cfg.flowTurns,
+    'Conversation,Actions Per Flow Run,' + cfg.flowActions,
+    'Conversation,Content Processing Pages,' + cfg.contentPages,
+    'Scale,Scenarios,' + cfg.scenarios,
+    'Scale,Iterations Per Scenario,' + cfg.iterations,
+    'Scale,Prepaid Credits,' + cfg.prepaid,
+    'Scale,Pricing Model,' + cfg.pricingModel,
+    'Scale,M365 Copilot Licensed Users %,' + cfg.m365pct,
+    'Estimate,Credits Per Conversation,' + calc.perConv,
+    'Estimate,Total Conversations,' + totalConv,
+    'Estimate,Total Credits,' + grandTotal,
+    'Estimate,Total USD,$' + (grandTotal * getCreditToUSD()).toFixed(2),
+  ];
+
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'agent-cost-estimate.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ─── Reset all fields ─── */
+function resetAll() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  /* Agent type */
+  document.querySelector('input[name="agentType"][value="custom"]').checked = true;
+  el('quickStartTemplate').value = '';
+  el('theme_mode').value = 'dark';
+  setTheme('dark');
+
+  /* Foundry fields */
+  if (el('foundry_model')) {
+    el('foundry_model').value = 'gpt4o';
+    el('foundry_systemTokens').value = 500;
+    el('foundry_userTokens').value = 150;
+    el('foundry_outputTokens').value = 400;
+    el('foundry_turns').value = 5;
+    el('foundry_fileSearchCalls').value = 0;
+    el('foundry_codeInterpreterSessions').value = 0;
+  }
+
+  /* Knowledge sources */
+  ['ks_sharepoint','ks_dataverse','ks_website','ks_files','ks_connectors'].forEach(id => {
+    el(id).checked = false;
+    el(id + '_n').value = 1;
+    el(id + '_n').disabled = true;
+  });
+  el('ks_sharepoint_graph').checked = true;
+  el('ks_sharepoint_graph_row').style.display = 'none';
+
+  /* Components */
+  el('comp_classicTopics').value = 0;
+  el('comp_tools').value = 0;
+  el('comp_prompts').value = 0;
+  el('comp_promptTier').value = 'standard';
+  el('comp_flows').value = 0;
+  el('comp_flowActions').value = 5;
+  el('comp_contentPages').value = 0;
+  el('comp_reasoning').checked = false;
+
+  /* Conversation profile */
+  el('conv_knowledgeTurns').value = 0;
+  el('conv_toolTurns').value = 0;
+  el('conv_promptTurns').value = 0;
+  el('conv_classicTurns').value = 1;
+  el('conv_flowTurns').value = 0;
+
+  /* Scale */
+  el('scale_scenarios').value = 5;
+  el('scale_iterations').value = 3;
+  el('scale_prepaid').value = 0;
+  el('scale_pricingModel').value = 'payg';
+  el('scale_m365pct').value = 0;
+
+  onAgentTypeChange();
+}
+
+/* ───── Init ───── */
+el('versionBadge').textContent = APP_VERSION;
+setTheme('dark');
+onAgentTypeChange();
+</script>
+
+</body>
+</html>

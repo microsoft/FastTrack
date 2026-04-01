@@ -20,6 +20,7 @@ We have a collection of [scripts](scripts) to help with deploying Microsoft 365.
 |Sample|Description
 |----|--------------------------
 |[Copilot Agent Samples](./copilot-agent-samples/)|Collection of Copilot Agent samples including Declarative Agents and Custom Agents.|
+|[Copilot Agent Strategy](./copilot-agent-strategy/)|Strategic planning tools including an interactive agents guide, brainstorming template, and cost calculator.|
 |[Copilot Analytics Samples](./copilot-analytics-samples/)|Collection of Copilot Analytics samples including PowerBI templates.|
 
 
