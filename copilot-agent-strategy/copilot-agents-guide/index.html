@@ -99,6 +99,10 @@
 
         // ─── Message Center Data ─────────────────────────────────────────
         const messageCenterPosts = [
+          { id: 'MC1254100', title: 'Microsoft 365 Copilot: Copilot Cowork now available in Frontier', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-30', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Copilot Cowork — designed for long-running, multi-step work in Microsoft 365 — is now available via the Frontier program. Built on Anthropic\'s Claude Cowork technology, it lets users delegate complex tasks that run in the background with visible progress, checkpoints, and steering. Enterprise security and governance apply by default.', tags: ['new-feature', 'user-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'declarative', 'toolkit'] },
+          { id: 'MC1254099', title: 'Microsoft 365 Copilot: Researcher Critique and Model Council now available in Frontier', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-30', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Researcher now includes Critique — a multi-model architecture where one model generates and another reviews, scoring 13.8% higher on the DRACO deep research benchmark. Model Council enables side-by-side comparison of responses from Anthropic and OpenAI models with a cover letter highlighting agreement and divergence. Both features are available in Frontier.', tags: ['new-feature', 'user-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'declarative', 'toolkit'] },
+          { id: 'MC1253500', title: 'Microsoft 365 Copilot: Wave 3 — Agentic capabilities in Word, Excel, PowerPoint, and Outlook', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-09', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat', 'Microsoft 365 apps'], summary: 'Wave 3 of Microsoft 365 Copilot embeds agentic capabilities directly into Word, Excel, PowerPoint, and Outlook. What was previously called "Agent Mode" is now core Copilot — creating, editing, and refining content end-to-end inside documents. Claude is now available in mainline chat in Copilot via the Frontier program alongside OpenAI models. Multi-model intelligence selects the right model for each task automatically.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'sharepoint', 'declarative', 'toolkit'] },
+          { id: 'MC1253499', title: 'Agent 365 generally available May 1 — Microsoft 365 E7 Frontier Suite announced', category: 'Plan for Change', severity: 'medium', datePublished: '2026-03-09', actionRequiredBy: '2026-05-01', status: 'active', services: ['Microsoft 365 suite'], summary: 'Agent 365, the control plane for AI agents, will be generally available on May 1 at $15/user/month. Microsoft 365 E7: The Frontier Suite bundles Copilot, Agent 365, Entra Suite, and E5 security at $99/user/month. Agent 365 gives IT one place to observe, secure, and govern every agent across the organization regardless of platform.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: true, agentAudience: ['researcherAnalyst', 'lite', 'full', 'sharepoint', 'declarative', 'toolkit'] },
           { id: 'MC1251206', title: 'Microsoft Teams: Identify external bots joining your Teams meetings', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-13', actionRequiredBy: null, status: 'active', services: ['Microsoft Teams'], summary: 'Microsoft Teams will detect and label external meeting assistant bots joining meetings, giving organizers control to approve, deny, or remove them. A new admin policy will manage bot handling, with detection enabled by default starting mid-May to mid-June 2026. This enhances security and compliance visibility.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'declarative', 'toolkit'] },
           { id: 'MC1250069', title: 'Power Apps - Public preview for Microsoft 365 Copilot chat in model-driven apps', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-12', actionRequiredBy: null, status: 'active', services: ['Power Apps'], summary: 'We are announcing Microsoft 365 Copilot chat for model-driven apps in Power Apps. This feature is now available for public preview. How does this affect me? This feature introduces an AI assistant that enables users to understand the data in your apps by engaging in natural language conversations. ', tags: ['new-feature'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full'] },
           { id: 'MC1250062', title: 'Power Apps - Public preview for Microsoft 365 Copilot chat in canvas apps', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-12', actionRequiredBy: null, status: 'active', services: ['Power Apps'], summary: 'We are announcing Microsoft 365 Copilot chat for canvas apps in Power Apps. This feature is now available for public preview. How does this affect me? This feature introduces an AI assistant that enables users to understand the data in your apps by engaging in natural language conversations. I', tags: ['new-feature'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full'] },
@@ -247,7 +251,7 @@
               technicalLevel: 'Beginner',
               shortName: 'First-Party Agents',
               fastTrackSupported: true,
-              description: 'Ready-to-use agents built into Microsoft 365 Copilot that deliver immediate value without custom development. From deep research and data analysis to community knowledge sharing and workflow automation, these agents cover the most common productivity scenarios out of the box.',
+              description: 'Ready-to-use agents built into Microsoft 365 Copilot that deliver immediate value without custom development. Powered by multi-model intelligence from OpenAI and Anthropic, with Researcher Critique and Model Council for enterprise-grade research. From deep research and data analysis to community knowledge sharing and workflow automation, these agents cover the most common productivity scenarios out of the box.',
               subAgents: [
                 {
                   id: 'researcher',
@@ -258,15 +262,17 @@
                   borderColor: 'border-indigo-200 dark:border-indigo-800/30',
                   status: 'GA',
                   statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-                  description: 'Complex multi-step research across work files, emails, meetings, and the web. Uses OpenAI o3 with 37 language support.',
+                  description: 'Complex multi-step research powered by multi-model intelligence. Critique separates generation from evaluation using models from Anthropic and OpenAI for 13.8% higher accuracy (DRACO benchmark). Model Council lets you compare responses from different models side by side.',
                   capabilities: [
-                    'Multi-source research synthesis',
-                    'Access to work files, emails, meetings, and web',
+                    'Critique: multi-model architecture — one model generates, another reviews and refines',
+                    'Model Council: side-by-side model comparison with agreement/divergence analysis',
+                    'Multi-source research synthesis across work files, emails, meetings, and web',
                     'Third-party connector support (Salesforce, ServiceNow)',
-                    'Structured reports with source citations',
-                    '37 language support'
+                    'Structured reports with source citations and rubric-based evaluation',
+                    '37 language support',
+                    '13.8% higher on DRACO deep research quality benchmark'
                   ],
-                  whenToUse: 'Complex research projects, go-to-market strategies, competitive analysis, policy synthesis'
+                  whenToUse: 'Complex research projects, go-to-market strategies, competitive analysis, policy synthesis, cross-model validation'
                 },
                 {
                   id: 'analyst',
@@ -294,8 +300,8 @@
                   color: 'text-rose-500',
                   bgColor: 'bg-rose-50 dark:bg-rose-950/20',
                   borderColor: 'border-rose-200 dark:border-rose-800/30',
-                  status: 'GA — Late March 2026',
-                  statusColor: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
+                  status: 'GA',
+                  statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
                   description: 'Proactive AI agent inside Viva Engage communities that identifies unanswered questions and drafts expert-verified responses grounded in community conversations and SharePoint.',
                   capabilities: [
                     'Proactive identification of unanswered questions',
@@ -327,12 +333,13 @@
                 }
               ],
               capabilities: [
-                'Researcher: Multi-step research with web, files, emails, and meetings',
+                'Researcher: Multi-step research with Critique (multi-model generation + evaluation) and Model Council (side-by-side comparison)',
                 'Analyst: Advanced data analysis with Python and chain-of-thought reasoning',
                 'Viva Engage: Proactive community Q&A with expert verification',
                 'Workflows: Natural language task automation and approvals',
                 'All: Pre-built into Microsoft 365 Copilot — no custom development',
                 'All: Immediate or same-day deployment',
+                'Researcher: Multi-model intelligence with Critique and Model Council (Frontier)',
                 'Researcher: 37 language support; Analyst: 8 languages (expanding)',
                 'Researcher & Analyst: 25 combined queries per month per user',
                 'Viva Engage: Grounded in community conversations and SharePoint',
@@ -369,7 +376,7 @@
                   { step: 6, title: 'Explore Workflows Agent', description: 'Ask Copilot to automate a routine task — try "Create an approval flow for expense reports" to see natural language automation.' }
                 ],
                 bestPractices: [
-                  'Use Researcher for multi-source synthesis — it excels at combining web, email, and file data',
+                  'Use Researcher for multi-source synthesis — Critique (default) uses multi-model review for higher accuracy, or use Model Council to compare models side by side',
                   'Use Analyst for structured data — spreadsheets, CSVs, and datasets with Python execution',
                   'Enable Viva Engage Community Agent in communities with active discussions and identified subject-matter experts',
                   'Designate community experts to verify and mark AI-drafted answers as "Trusted" for knowledge curation',
@@ -860,7 +867,7 @@
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Multi-step personal tasks or delegated knowledge work?</span> → Copilot Cowork <span className="text-xs text-orange-500 font-medium">(Frontier — Late March 2026)</span></p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Multi-step personal tasks or delegated knowledge work?</span> → Copilot Cowork <span className="text-xs text-green-600 font-medium">(Available — Frontier)</span></p>
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
@@ -942,7 +949,7 @@
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <Clock className="w-4 h-4 text-green-600" />
-                              <span>Copilot Cowork: Immediate for Frontier-licensed users <span className="text-xs text-orange-500 font-medium">(Late March 2026)</span></span>
+                              <span>Copilot Cowork: Immediate for Frontier-licensed users <span className="text-xs text-green-600 font-medium">(Available)</span></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <Clock className="w-4 h-4 text-green-600" />
@@ -963,11 +970,11 @@
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-blue-600" />
-                              <span>Agent 365 adds enterprise agent governance — <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">see current pricing</a></span>
+                              <span>Agent 365 adds enterprise agent governance — GA May 1 at $15/user/mo — <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">see current pricing</a></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-indigo-600" />
-                              <span>Microsoft 365 E7 Frontier Suite bundles Copilot, Agent 365, Entra, and E5 security — <a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">see current pricing</a></span>
+                              <span>Microsoft 365 E7 Frontier Suite bundles Copilot, Agent 365, Entra, and E5 security — GA May 1 at $99/user/mo — <a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">see current pricing</a></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-yellow-600" />
@@ -1009,7 +1016,7 @@
                   <Layers className="w-7 h-7 text-gray-600 dark:text-gray-300" />
                   Cowork vs. Structured Agents: Choosing the Right Approach
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">With Copilot Cowork arriving for Frontier companies in late March 2026, customers need clear guidance on when to use adaptive AI delegation vs. structured agent automation.</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Copilot Cowork is now available for Frontier companies, giving customers clear guidance on when to use adaptive AI delegation vs. structured agent automation.</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border-2 border-purple-500/30">
@@ -1132,7 +1139,7 @@
                         <p className="font-semibold text-green-800">Immediate: First-party agents (Researcher, Analyst, Viva Engage, Workflows)</p>
                       </div>
                       <div className="p-3 bg-purple-50 dark:bg-purple-950/30 rounded">
-                        <p className="font-semibold text-purple-800">Immediate: Copilot Cowork <span className="text-xs font-normal">(Frontier — Late March 2026)</span></p>
+                        <p className="font-semibold text-purple-800">Immediate: Copilot Cowork <span className="text-xs font-normal">(Available — Frontier)</span></p>
                       </div>
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
                         <p className="font-semibold text-green-800">Minutes to hours: SharePoint agents</p>
@@ -1507,7 +1514,7 @@
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 text-xs px-2.5 py-1 rounded-full border border-transparent dark:border-white/[0.08]">
                       <Clock className="w-3 h-3" />
-                      <span>Updated March 2026</span>
+                      <span>Updated April 2026</span>
                     </div>
                     <button
                       onClick={() => setIsDark(!isDark)}
@@ -1565,9 +1572,8 @@
                         <div className="flex-1 min-w-0">
                           <span>Agent 365 — Control Plane</span>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <span title="Microsoft FastTrack assistance coming soon for this agent type" className="inline-flex items-center gap-0.5 text-[9px] text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-400/10 border border-amber-100 dark:border-amber-400/20 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap leading-none">
-                              <Zap className="w-2 h-2" />
-                              FastTrack Coming Soon
+                            <span title="Agent 365 generally available May 1, 2026 at $15/user/month" className="inline-flex items-center gap-0.5 text-[9px] text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-400/10 border border-green-100 dark:border-green-400/20 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap leading-none">
+                              GA May 1 • $15/user/mo
                             </span>
                           </div>
                         </div>
