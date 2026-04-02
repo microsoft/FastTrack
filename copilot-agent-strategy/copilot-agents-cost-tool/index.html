@@ -794,7 +794,7 @@
           <span>URLs:</span>
           <input type="number" id="ks_website_n" min="0" value="1" disabled oninput="recalculate()">
         </div>
-        <span class="ks-cost">2 cr/query (generative answer)</span>
+        <span class="ks-cost">0 cr (free — not graph-grounded)</span>
       </div>
 
       <!-- Uploaded files -->
@@ -1498,8 +1498,8 @@ const KS_PROFILES = {
 
 function getKSCredits(key) {
   const p = KS_PROFILES[key];
-  /* Agent Builder agents: public website grounding is free (no generative answer charge) */
-  if (key === 'website' && getAgentType() === 'builder') return 0;
+  /* Public website grounding is free for ALL agent types — not graph-grounded, no credit charge */
+  if (key === 'website') return 0;
   if (p.hasGraphToggle) {
     /* SharePoint and connectors: depends on tenant graph grounding toggle */
     const graphOn = el('ks_sharepoint_graph').checked;
@@ -1715,7 +1715,7 @@ function onAgentTypeChange() {
 
   /* Update cost labels for public website row */
   const wsCost = el('ks_row_website')?.querySelector('.ks-cost');
-  if (wsCost) wsCost.textContent = at === 'builder' ? '0 cr (free for Agent Builder)' : '2 cr/query (generative answer)';
+  if (wsCost) wsCost.textContent = '0 cr (free — not graph-grounded)';
 
   /* Zero out hidden Copilot Studio fields so they don't affect calculation */
   if (at !== 'custom') {
