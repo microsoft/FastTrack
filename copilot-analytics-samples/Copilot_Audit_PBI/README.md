@@ -1,7 +1,7 @@
 # 🔍 Copilot Audit Dashboard
 
 > [!IMPORTANT]
-> **New & Improved Data Workflow\!** This guide has been updated to use the Microsoft Purview UI for exporting audit logs. This method is more reliable and complete, especially for large organizations. Latest version includes Copilot interactions including Copilot Studio lite & Copilot Studio full agent events. 
+> **New & Improved Data Workflow\!** This guide has been updated to use the Microsoft Purview UI for exporting audit logs. This method is more reliable and complete, especially for large organizations. Latest version includes Copilot interactions including Copilot Studio lite & Copilot Studio full agent events. Now with **comprehensive AppHost mapping** (30+ values) and a grouped **AppCategory** column for clean executive reporting.
 
 ## 📊 Overview
 
@@ -20,6 +20,17 @@ This solution uses a simple, two-step data export process followed by a Power BI
 2.  **Entra User Export (PowerShell)**: A simple PowerShell script is used to export user details (like department and manager) to add organizational context to the report.
 
 These two CSV files are then loaded into the Power BI template.
+
+### Key Data Columns
+
+The Power Query script produces two app-identification columns from the `CopilotEventData.AppHost` field:
+
+| Column | Purpose | Example Values |
+| :--- | :--- | :--- |
+| **App** (detailed) | Friendly name for every documented AppHost value (30+). Case-insensitive, future-proof fallback for new values. | `Copilot Chat (BizChat)`, `Copilot Chat (Office.com)`, `Word`, `Copilot Studio Agent` |
+| **AppCategory** (grouped) | ~10 clean buckets for executive dashboards and matrix visuals. | `Copilot Chat`, `Word`, `Excel`, `Teams`, `Copilot Studio`, `Other M365 Apps` |
+
+Use **AppCategory** in your matrix/pivot column visuals for clean headers. Use **App** as a drill-down for detailed analysis.
 
 ## 🚀 Getting Started (3 Simple Steps)
 
@@ -109,22 +120,14 @@ If you choose to use this method, run the `Export-M365CopilotReports.ps1` script
 
 Please report any issues you find to the [issues list](../../../../issues). This is an open-source community solution, and support is not available through official Microsoft channels.
 
-## ⚖️ Legal Notices
-
-This project is provided as-is under the [MIT License](https://www.google.com/search?q=LICENSE). Microsoft and any contributors reserve all other rights.
-
 ## 👨‍💻 Publish Details
 
 | Publisher | Original Publish Date | Latest Publish Date |
 | :--- | :--- | :--- |
-| Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | October 14th, 2025 |
+| Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | April 3rd, 2026 |
 
 ## ✨ Inspiration
 This solution builds on top of the great work from Bojan: [M365 Copilot Audit PowerBI Report](https://github.com/BojanBuhac/M365-Copilot-Audit-Report). The original report provided a foundation that has been expanded with additional features and visualizations.
-
-## ❓ Issues
-
-Please report any issues you find to the [issues list](../../../../issues).
 
 ## ⚖️ Support Statement
 
