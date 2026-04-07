@@ -1,6 +1,0 @@
-{
-  "version": "1.0.1",
-  "released": "2026-03-25",
-  "solutionVersion": "1.0.0.0",
-  "changelog": "Fix context loading for M365 Copilot/Teams (JIT OnActivity init), improved soul.md personality template, removed canned Greeting topic"
-}

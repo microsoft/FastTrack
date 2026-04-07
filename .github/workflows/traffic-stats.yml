@@ -1,0 +1,154 @@
+name: Collect Traffic Data
+
+on:
+  schedule:
+    # Runs daily at 06:00 UTC to capture traffic before the 14-day window expires
+    - cron: "0 6 * * *"
+  workflow_dispatch: # Allow manual runs
+
+permissions:
+  contents: write
+
+jobs:
+  collect-traffic:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Collect and persist traffic data
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          REPO="microsoft/FastTrack"
+          DATA_DIR="traffic-data"
+          DATE=$(date -u +"%Y-%m-%d")
+
+          mkdir -p "$DATA_DIR"
+
+          echo "📊 Fetching traffic data for $REPO on $DATE..."
+
+          # Fetch all four traffic endpoints
+          views=$(gh api "repos/$REPO/traffic/views" 2>&1) || {
+            echo "::error::Failed to fetch views: $views"
+            exit 1
+          }
+
+          clones=$(gh api "repos/$REPO/traffic/clones" 2>&1) || {
+            echo "::error::Failed to fetch clones: $clones"
+            exit 1
+          }
+
+          referrers=$(gh api "repos/$REPO/traffic/popular/referrers" 2>&1) || {
+            echo "::error::Failed to fetch referrers: $referrers"
+            exit 1
+          }
+
+          paths=$(gh api "repos/$REPO/traffic/popular/paths" 2>&1) || {
+            echo "::error::Failed to fetch paths: $paths"
+            exit 1
+          }
+
+          # Build a combined JSON snapshot for today
+
+          # Fetch star count and repo metadata
+          echo "⭐ Fetching star data..."
+          star_count=$(gh api "repos/$REPO" --jq '.stargazers_count')
+          forks_count=$(gh api "repos/$REPO" --jq '.forks_count')
+
+          # Fetch stargazer timeline (with starred_at dates)
+          echo "📅 Fetching stargazer timeline..."
+          star_timeline=$(gh api "repos/$REPO/stargazers" \
+            -H "Accept: application/vnd.github.star+json" \
+            --paginate --jq '.[].starred_at' 2>/dev/null | sort | jq -R -s 'split("\n") | map(select(length > 0))') || star_timeline="[]"
+
+          # Fetch a sample of stargazer locations (last 30 stargazers)
+          echo "🌍 Fetching stargazer locations..."
+          locations="[]"
+          stargazer_logins=$(gh api "repos/$REPO/stargazers" \
+            -H "Accept: application/vnd.github.star+json" \
+            --jq '.[-30:][].user.login' 2>/dev/null || true)
+
+          if [ -n "$stargazer_logins" ]; then
+            loc_array="[]"
+            for login in $stargazer_logins; do
+              loc=$(gh api "users/$login" --jq '.location // empty' 2>/dev/null || true)
+              if [ -n "$loc" ]; then
+                loc_array=$(echo "$loc_array" | jq --arg l "$loc" '. + [$l]')
+              fi
+            done
+            locations="$loc_array"
+          fi
+
+          # Build combined JSON snapshot
+          jq -n \
+            --arg date "$DATE" \
+            --argjson views "$views" \
+            --argjson clones "$clones" \
+            --argjson referrers "$referrers" \
+            --argjson paths "$paths" \
+            --argjson star_count "$star_count" \
+            --argjson forks_count "$forks_count" \
+            --argjson star_timeline "$star_timeline" \
+            --argjson stargazer_locations "$locations" \
+            '{
+              collected_at: $date,
+              views: $views,
+              clones: $clones,
+              referrers: $referrers,
+              paths: $paths,
+              stars: $star_count,
+              forks: $forks_count,
+              star_timeline: $star_timeline,
+              stargazer_locations: $stargazer_locations
+            }' > "$DATA_DIR/$DATE.json"
+
+          echo "✅ Saved $DATA_DIR/$DATE.json"
+
+          # Also maintain a rolling summary file with unique daily totals
+          SUMMARY_FILE="$DATA_DIR/summary.json"
+
+          # Extract today's totals from the 14-day data
+          today_views=$(echo "$views" | jq "[.views[] | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
+          today_clones=$(echo "$clones" | jq "[.clones[] | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
+
+          new_entry=$(jq -n \
+            --arg date "$DATE" \
+            --argjson views "$today_views" \
+            --argjson clones "$today_clones" \
+            '{
+              date: $date,
+              views_count: ($views.count // 0),
+              views_uniques: ($views.uniques // 0),
+              clones_count: ($clones.count // 0),
+              clones_uniques: ($clones.uniques // 0)
+            }')
+
+          if [ -f "$SUMMARY_FILE" ]; then
+            # Append if date doesn't already exist, otherwise update
+            jq --argjson entry "$new_entry" '
+              if any(.[]; .date == $entry.date)
+              then map(if .date == $entry.date then $entry else . end)
+              else . + [$entry]
+              end
+            ' "$SUMMARY_FILE" > "${SUMMARY_FILE}.tmp" && mv "${SUMMARY_FILE}.tmp" "$SUMMARY_FILE"
+          else
+            echo "[$new_entry]" | jq '.' > "$SUMMARY_FILE"
+          fi
+
+          echo "✅ Updated $SUMMARY_FILE"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add traffic-data/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "📊 Traffic data for $(date -u +%Y-%m-%d)"
+            git push
+          fi
