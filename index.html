@@ -928,7 +928,7 @@
               </div>
             </div>
             <div class="mt-8 space-y-4">
-              <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI" target="_blank" rel="noreferrer" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
+              <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI" target="_blank" rel="noreferrer" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Copilot Audit PBI</div>
@@ -937,7 +937,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
+              <a href="copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Viva Insights Dashboard</div>
@@ -946,7 +946,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-analytics-samples/copilot-usage-users-and-apps/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
+              <a href="copilot-analytics-samples/copilot-usage-users-and-apps/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Usage Dashboard</div>
@@ -969,7 +969,7 @@
               </div>
             </div>
             <div class="mt-8 space-y-4">
-              <a href="copilot-agent-strategy/copilot-agents-guide/index.html" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
+              <a href="copilot-agent-strategy/copilot-agents-guide/index.html" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Agents Guide</div>
@@ -978,7 +978,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-agent-strategy/copilot-agent-brainstorm/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
+              <a href="copilot-agent-strategy/copilot-agent-brainstorm/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Agent Brainstorm Template</div>
@@ -987,7 +987,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-agent-strategy/copilot-agents-cost-tool/index.html" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
+              <a href="copilot-agent-strategy/copilot-agents-cost-tool/index.html" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Agents Cost Calculator</div>
@@ -996,7 +996,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-prompt-samples/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
+              <a href="copilot-prompt-samples/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Prompt Samples</div>
@@ -1106,7 +1106,7 @@
             <span class="ml-auto rounded-full border border-white/8 bg-white/[0.03] px-3 py-1 text-xs text-white/40">from stargazer profiles</span>
           </div>
           <div class="mt-6 flex items-center justify-center" style="min-height:260px;">
-            <svg id="world-map" viewBox="-10 -5 220 115" class="w-full max-w-lg" style="max-height:280px;"></svg>
+            <svg id="world-map" viewBox="-5 -2 225 100" class="w-full max-w-2xl" style="max-height:320px;"></svg>
           </div>
         </div>
       </div>
@@ -1477,26 +1477,52 @@
         return null;
       }
 
-      // Simplified world map paths (Natural Earth inspired)
+      // World map with detailed continent outlines
       const mapSvg = document.getElementById('world-map');
       if (mapSvg) {
         const mapPaths = [
-          // North America
-          'M60,25 L65,22 L72,20 L80,18 L90,17 L100,18 L108,20 L115,25 L118,30 L115,35 L112,40 L108,42 L105,45 L100,48 L95,50 L90,52 L85,50 L80,48 L78,45 L80,42 L82,38 L78,35 L72,32 L68,30 L62,28 Z',
+          // North America (detailed coastline)
+          'M55,18 L58,16 L62,14 L68,12 L74,11 L80,10 L86,11 L90,12 L94,10 L98,11 L102,13 L106,15 L109,14 L112,16 L115,19 L117,22 L118,26 L116,28 L114,30 L116,32 L118,34 L116,36 L114,38 L112,40 L109,42 L107,44 L104,46 L101,48 L98,50 L96,52 L94,50 L92,48 L90,50 L88,48 L86,46 L84,44 L82,46 L80,44 L78,42 L76,40 L74,38 L72,36 L70,34 L68,32 L66,30 L64,28 L62,26 L60,24 L58,22 L56,20 Z',
+          // Greenland
+          'M108,6 L112,5 L116,6 L119,8 L120,11 L118,14 L115,16 L112,15 L109,13 L107,10 L108,8 Z',
+          // Central America & Caribbean
+          'M86,48 L88,49 L90,50 L92,51 L94,52 L96,54 L94,55 L92,54 L90,53 L88,52 L86,50 Z',
           // South America
-          'M95,55 L100,53 L105,55 L110,58 L115,62 L118,68 L120,75 L118,80 L115,85 L110,88 L105,86 L102,80 L100,72 L98,65 L95,60 Z',
+          'M96,56 L100,54 L104,55 L108,56 L112,58 L114,60 L116,63 L118,66 L119,70 L120,74 L119,78 L117,82 L114,85 L111,88 L108,90 L105,91 L102,90 L100,87 L99,84 L98,80 L97,76 L96,72 L95,68 L94,64 L95,60 Z',
           // Europe
-          'M142,22 L148,20 L155,22 L162,25 L168,28 L165,32 L160,35 L155,38 L150,40 L145,38 L142,35 L140,30 L141,25 Z',
+          'M140,20 L143,18 L146,19 L148,21 L150,20 L153,21 L156,22 L158,20 L161,21 L164,23 L166,26 L168,28 L165,30 L163,32 L160,34 L158,36 L155,38 L152,39 L150,41 L147,40 L145,38 L143,36 L141,34 L140,31 L139,28 L138,25 L139,22 Z',
+          // UK & Ireland
+          'M142,24 L144,23 L146,24 L145,27 L143,28 L141,27 L142,25 Z',
+          'M139,24 L140,23 L141,25 L140,27 L139,26 Z',
+          // Scandinavia
+          'M152,14 L154,12 L157,13 L159,15 L160,18 L158,20 L155,19 L153,17 Z',
           // Africa
-          'M140,42 L148,42 L155,45 L162,48 L168,52 L170,58 L168,65 L165,72 L160,78 L155,82 L150,80 L145,75 L142,68 L140,60 L138,52 L140,45 Z',
-          // Asia
-          'M162,18 L170,15 L180,16 L190,18 L198,22 L202,28 L200,35 L198,40 L195,45 L190,48 L185,52 L180,55 L175,52 L170,48 L165,42 L162,35 L160,28 L161,22 Z',
+          'M140,42 L143,41 L147,42 L150,43 L154,42 L158,43 L162,44 L166,46 L168,49 L170,52 L171,56 L170,60 L169,64 L168,68 L166,72 L163,76 L160,79 L157,81 L154,82 L151,80 L148,78 L146,75 L144,72 L142,68 L140,64 L139,60 L138,56 L137,52 L138,48 L139,44 Z',
+          // Madagascar
+          'M172,72 L174,70 L175,73 L174,76 L172,75 Z',
+          // Middle East
+          'M166,36 L170,34 L174,36 L176,38 L178,40 L176,42 L174,44 L172,46 L170,44 L168,42 L166,40 L165,38 Z',
+          // Russia / Central Asia
+          'M166,14 L170,12 L176,11 L182,12 L188,13 L194,14 L200,16 L205,18 L208,20 L207,23 L204,25 L200,26 L196,28 L192,30 L188,32 L184,34 L180,36 L176,38 L172,36 L170,33 L168,30 L166,27 L165,24 L164,20 L165,17 Z',
+          // East Asia (China, Korea, Japan)
+          'M182,30 L186,28 L190,30 L194,32 L198,34 L200,36 L202,38 L200,40 L198,42 L196,44 L194,46 L190,48 L186,50 L184,48 L182,46 L180,44 L178,42 L180,38 L181,34 Z',
+          // Japan
+          'M202,32 L204,30 L206,32 L205,35 L203,37 L201,36 L202,34 Z',
+          // Southeast Asia
+          'M186,50 L190,50 L194,52 L196,54 L198,56 L196,58 L194,56 L192,54 L190,56 L188,58 L186,56 L184,54 L185,52 Z',
+          // Indonesia
+          'M188,60 L192,59 L196,60 L200,62 L204,63 L202,65 L198,64 L194,63 L190,62 L188,61 Z',
+          // India / South Asia
+          'M176,40 L178,42 L180,44 L182,46 L184,48 L182,52 L180,56 L178,58 L176,56 L174,52 L174,48 L175,44 Z',
           // Australia
-          'M185,68 L192,66 L200,68 L205,72 L208,78 L205,82 L200,85 L195,84 L190,80 L187,75 L185,70 Z',
+          'M188,70 L192,68 L196,67 L200,68 L204,70 L208,72 L210,76 L208,80 L205,83 L201,85 L197,84 L193,82 L190,80 L188,76 L187,73 Z',
+          // New Zealand
+          'M210,82 L211,80 L213,82 L212,85 L210,84 Z',
+          'M211,86 L212,85 L213,87 L212,89 L210,88 Z',
         ];
 
         const isLightMode = document.documentElement.classList.contains('light');
-        const landFill = isLightMode ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)';
+        const landFill = isLightMode ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.07)';
 
         mapPaths.forEach(d => {
           const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
