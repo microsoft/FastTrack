@@ -19,6 +19,7 @@
     };
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
   <script>
     (() => {
       try {
@@ -482,6 +483,7 @@
       <div class="flex items-center gap-3">
         <nav class="hidden items-center gap-6 text-sm text-white/60 md:flex">
           <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples" target="_blank" rel="noreferrer" class="transition hover:text-white/90">Agents</a>
+          <a href="#repo-analytics" class="transition hover:text-white/90">Analytics</a>
           <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="transition hover:text-white/90">GitHub</a>
           <a href="mailto:ftgithub@microsoft.com" class="transition hover:text-white/90">Contact</a>
         </nav>
@@ -503,6 +505,7 @@
         <span data-theme-icon></span>
       </button>
       <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples" target="_blank" rel="noreferrer" class="block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">Agents</a>
+      <a href="#repo-analytics" class="block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">Analytics</a>
       <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="mt-1 block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">GitHub</a>
       <a href="mailto:ftgithub@microsoft.com" class="mt-1 block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">Contact</a>
     </div>
@@ -946,6 +949,138 @@
     </section>
   </main>
 
+  <!-- ═══════════════════════ Repo Analytics ═══════════════════════ -->
+  <section id="repo-analytics" class="section-divider">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <div class="fade-section flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div class="max-w-2xl">
+          <p class="text-sm uppercase tracking-[0.28em] text-white/45">Repo Analytics</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
+            Community Engagement
+          </h2>
+          <p class="mt-4 text-base leading-7 text-white/55">
+            Live traffic data from the Microsoft FastTrack repository — updated daily.
+          </p>
+        </div>
+        <div id="analytics-updated" class="shrink-0 rounded-full border border-white/8 bg-white/[0.02] px-4 py-2 text-xs text-white/40">
+          Loading…
+        </div>
+      </div>
+
+      <!-- ── KPI Cards ── -->
+      <div class="fade-section mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="surface-card rounded-[28px] p-6 text-center">
+          <p class="text-xs uppercase tracking-[0.22em] text-white/45">Page Views <span class="text-white/25">(14 d)</span></p>
+          <p id="stat-views" class="mt-2 text-3xl font-bold text-sky-300">—</p>
+          <p id="stat-views-unique" class="mt-1 text-sm text-white/45">— unique</p>
+          <p id="stat-views-trend" class="mt-2 text-xs font-medium"></p>
+        </div>
+        <div class="surface-card rounded-[28px] p-6 text-center">
+          <p class="text-xs uppercase tracking-[0.22em] text-white/45">Git Clones <span class="text-white/25">(14 d)</span></p>
+          <p id="stat-clones" class="mt-2 text-3xl font-bold text-violet-300">—</p>
+          <p id="stat-clones-unique" class="mt-1 text-sm text-white/45">— unique</p>
+          <p id="stat-clones-trend" class="mt-2 text-xs font-medium"></p>
+        </div>
+        <div class="surface-card rounded-[28px] p-6 text-center">
+          <p class="text-xs uppercase tracking-[0.22em] text-white/45">GitHub Stars</p>
+          <p id="stat-stars" class="mt-2 text-3xl font-bold text-amber-300">—</p>
+          <p id="stat-stars-sub" class="mt-1 text-sm text-white/45">all-time</p>
+        </div>
+        <div class="surface-card rounded-[28px] p-6 text-center">
+          <p class="text-xs uppercase tracking-[0.22em] text-white/45">Forks</p>
+          <p id="stat-forks" class="mt-2 text-3xl font-bold text-rose-300">—</p>
+          <p id="stat-forks-sub" class="mt-1 text-sm text-white/45">all-time</p>
+        </div>
+      </div>
+
+      <!-- ── Row 1: Views + Clones ── -->
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-300">
+              <i data-lucide="eye" class="h-5 w-5"></i>
+            </span>
+            <h3 class="text-lg font-semibold text-white/92">Page Views</h3>
+          </div>
+          <div class="mt-6" style="position:relative;height:260px;">
+            <canvas id="chart-views"></canvas>
+          </div>
+        </div>
+
+        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-violet-300">
+              <i data-lucide="git-branch" class="h-5 w-5"></i>
+            </span>
+            <h3 class="text-lg font-semibold text-white/92">Git Clones</h3>
+          </div>
+          <div class="mt-6" style="position:relative;height:260px;">
+            <canvas id="chart-clones"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Row 2: Star History + World Map ── -->
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-amber-300">
+              <i data-lucide="star" class="h-5 w-5"></i>
+            </span>
+            <h3 class="text-lg font-semibold text-white/92">Star History</h3>
+          </div>
+          <div class="mt-6" style="position:relative;height:260px;">
+            <canvas id="chart-stars"></canvas>
+          </div>
+        </div>
+
+        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-emerald-300">
+              <i data-lucide="globe" class="h-5 w-5"></i>
+            </span>
+            <h3 class="text-lg font-semibold text-white/92">Global Reach</h3>
+            <span class="ml-auto rounded-full border border-white/8 bg-white/[0.03] px-3 py-1 text-xs text-white/40">from stargazer profiles</span>
+          </div>
+          <div class="mt-6 flex items-center justify-center" style="min-height:260px;">
+            <svg id="world-map" viewBox="-10 -5 220 115" class="w-full max-w-lg" style="max-height:280px;"></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Row 3: Referrers + Popular Pages ── -->
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-emerald-300">
+              <i data-lucide="link" class="h-5 w-5"></i>
+            </span>
+            <h3 class="text-lg font-semibold text-white/92">Where Visitors Come From</h3>
+          </div>
+          <div class="mt-6 space-y-2" id="referrer-list">
+            <p class="text-sm text-white/50">Loading…</p>
+          </div>
+        </div>
+
+        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-cyan-300">
+              <i data-lucide="file-text" class="h-5 w-5"></i>
+            </span>
+            <h3 class="text-lg font-semibold text-white/92">Most Visited Content</h3>
+          </div>
+          <div class="mt-6 space-y-2" id="popular-pages">
+            <p class="text-sm text-white/50">Loading…</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="fade-section mt-10 text-center text-xs text-white/30">
+        Data collected daily via GitHub Actions · Traffic data covers 14-day rolling window · Stars &amp; forks are all-time
+      </p>
+    </div>
+  </section>
+
   <footer class="border-t border-white/10 bg-black">
     <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-12 text-sm text-white/40 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
       <div>
@@ -1053,6 +1188,408 @@
     });
 
     updateThemeToggleButtons();
+
+    // ─── Repo Analytics Dashboard ────────────────────────────────
+    (async () => {
+      const DATA_BASE = 'https://raw.githubusercontent.com/soyalejolopez/FastTrack/master/traffic-data';
+
+      async function fetchLatest() {
+        const today = new Date();
+        for (let i = 0; i < 14; i++) {
+          const d = new Date(today);
+          d.setDate(d.getDate() - i);
+          const dateStr = d.toISOString().slice(0, 10);
+          try {
+            const res = await fetch(`${DATA_BASE}/${dateStr}.json`);
+            if (res.ok) return await res.json();
+          } catch (_) { /* try previous day */ }
+        }
+        return null;
+      }
+
+      const data = await fetchLatest();
+      if (!data) return;
+
+      const isLight = document.documentElement.classList.contains('light');
+      const gridColor = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.06)';
+      const labelColor = isLight ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.55)';
+
+      // "Last updated" badge
+      const updatedEl = document.getElementById('analytics-updated');
+      if (updatedEl && data.collected_at) {
+        const d = new Date(data.collected_at + 'T06:00:00Z');
+        updatedEl.textContent = `📅 Data as of ${d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+      }
+
+      // ── KPI stat cards ──
+      const setKpi = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setKpi('stat-views', data.views.count.toLocaleString());
+      setKpi('stat-views-unique', `${data.views.uniques.toLocaleString()} unique visitors`);
+      setKpi('stat-clones', data.clones.count.toLocaleString());
+      setKpi('stat-clones-unique', `${data.clones.uniques.toLocaleString()} unique`);
+      setKpi('stat-stars', (data.stars || 0).toLocaleString());
+      setKpi('stat-forks', (data.forks || 0).toLocaleString());
+
+      // Week-over-week trend for views & clones
+      function calcTrend(dailyArray) {
+        if (!dailyArray || dailyArray.length < 8) return null;
+        const mid = Math.floor(dailyArray.length / 2);
+        const recent = dailyArray.slice(mid).reduce((s, v) => s + v.count, 0);
+        const prior = dailyArray.slice(0, mid).reduce((s, v) => s + v.count, 0);
+        if (prior === 0) return null;
+        return ((recent - prior) / prior * 100).toFixed(0);
+      }
+
+      function renderTrend(elId, pct) {
+        const el = document.getElementById(elId);
+        if (!el || pct === null) return;
+        const up = Number(pct) >= 0;
+        el.textContent = `${up ? '↑' : '↓'} ${Math.abs(pct)}% vs prior week`;
+        el.className = `mt-2 text-xs font-medium ${up ? 'text-emerald-400' : 'text-rose-400'}`;
+      }
+
+      renderTrend('stat-views-trend', calcTrend(data.views.views));
+      renderTrend('stat-clones-trend', calcTrend(data.clones.clones));
+
+      // ── Chart setup ──
+      Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+      Chart.defaults.font.size = 12;
+      Chart.defaults.color = labelColor;
+
+      const chartOpts = (yTitle) => ({
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: { legend: { display: true, labels: { boxWidth: 10, padding: 14 } } },
+        scales: {
+          x: { grid: { color: gridColor }, ticks: { maxRotation: 45 } },
+          y: { grid: { color: gridColor }, beginAtZero: true, title: { display: true, text: yTitle, color: labelColor } }
+        }
+      });
+
+      const fmtDate = (ts) => new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+      // Views chart
+      new Chart(document.getElementById('chart-views'), {
+        type: 'bar',
+        data: {
+          labels: data.views.views.map(v => fmtDate(v.timestamp)),
+          datasets: [
+            { label: 'Total', data: data.views.views.map(v => v.count), backgroundColor: 'rgba(56,189,248,0.25)', borderColor: 'rgba(56,189,248,0.7)', borderWidth: 1, borderRadius: 6 },
+            { label: 'Unique', data: data.views.views.map(v => v.uniques), backgroundColor: 'rgba(56,189,248,0.6)', borderColor: 'rgba(56,189,248,1)', borderWidth: 1, borderRadius: 6 }
+          ]
+        },
+        options: chartOpts('Views')
+      });
+
+      // Clones chart
+      new Chart(document.getElementById('chart-clones'), {
+        type: 'bar',
+        data: {
+          labels: data.clones.clones.map(v => fmtDate(v.timestamp)),
+          datasets: [
+            { label: 'Total', data: data.clones.clones.map(v => v.count), backgroundColor: 'rgba(139,92,246,0.25)', borderColor: 'rgba(139,92,246,0.7)', borderWidth: 1, borderRadius: 6 },
+            { label: 'Unique', data: data.clones.clones.map(v => v.uniques), backgroundColor: 'rgba(139,92,246,0.6)', borderColor: 'rgba(139,92,246,1)', borderWidth: 1, borderRadius: 6 }
+          ]
+        },
+        options: chartOpts('Clones')
+      });
+
+      // ── Star History chart ──
+      if (data.star_timeline && data.star_timeline.length > 0) {
+        // Group stars by month
+        const monthly = {};
+        data.star_timeline.forEach(dateStr => {
+          const m = dateStr.slice(0, 7); // YYYY-MM
+          monthly[m] = (monthly[m] || 0) + 1;
+        });
+        const months = Object.keys(monthly).sort();
+        let cumulative = 0;
+        const cumData = months.map(m => { cumulative += monthly[m]; return cumulative; });
+
+        new Chart(document.getElementById('chart-stars'), {
+          type: 'line',
+          data: {
+            labels: months.map(m => { const [y, mo] = m.split('-'); return new Date(y, mo - 1).toLocaleDateString('en-US', { month: 'short', year: '2-digit' }); }),
+            datasets: [{
+              label: 'Cumulative Stars',
+              data: cumData,
+              borderColor: 'rgba(251,191,36,0.7)',
+              backgroundColor: 'rgba(251,191,36,0.05)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: 'rgba(251,191,36,0.9)',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            ...chartOpts('Stars'),
+            plugins: { legend: { display: false } }
+          }
+        });
+      } else {
+        document.getElementById('chart-stars').parentElement.innerHTML = '<p class="text-sm text-white/40 text-center mt-16">Star history will appear after the next workflow run.</p>';
+      }
+
+      // ── World Map ──
+      const CITY_COORDS = {
+        'united states': [100, 45], 'usa': [100, 45], 'us': [100, 45],
+        'new york': [107, 42], 'san francisco': [78, 42], 'seattle': [80, 38],
+        'los angeles': [80, 44], 'chicago': [96, 40], 'austin': [92, 48],
+        'boston': [109, 40], 'denver': [88, 42], 'atlanta': [100, 46],
+        'washington': [105, 42], 'portland': [80, 38], 'miami': [102, 51],
+        'dallas': [92, 46], 'houston': [92, 48], 'phoenix': [84, 46],
+        'detroit': [100, 40], 'minneapolis': [94, 38], 'philadelphia': [107, 42],
+        'canada': [95, 35], 'toronto': [103, 38], 'vancouver': [78, 36], 'montreal': [107, 37],
+        'united kingdom': [148, 34], 'uk': [148, 34], 'london': [149, 35], 'england': [148, 34],
+        'germany': [155, 34], 'berlin': [156, 33], 'munich': [156, 36], 'frankfurt': [154, 35],
+        'france': [150, 37], 'paris': [150, 36],
+        'netherlands': [152, 33], 'amsterdam': [152, 33],
+        'spain': [147, 40], 'madrid': [147, 40],
+        'italy': [155, 39], 'rome': [156, 39],
+        'switzerland': [153, 37], 'zurich': [154, 36],
+        'sweden': [157, 28], 'stockholm': [158, 28],
+        'norway': [154, 27], 'oslo': [154, 28],
+        'denmark': [155, 31], 'copenhagen': [155, 31],
+        'poland': [159, 33], 'warsaw': [160, 33],
+        'ireland': [145, 34], 'dublin': [145, 34],
+        'portugal': [144, 40], 'lisbon': [144, 41],
+        'belgium': [151, 34], 'brussels': [151, 34],
+        'austria': [157, 36], 'vienna': [158, 36],
+        'czech republic': [157, 34], 'prague': [157, 34],
+        'india': [178, 52], 'bangalore': [179, 56], 'mumbai': [176, 54],
+        'hyderabad': [179, 55], 'delhi': [178, 49], 'pune': [177, 54],
+        'chennai': [180, 57], 'kolkata': [182, 52],
+        'brazil': [115, 72], 'são paulo': [118, 74], 'rio': [117, 73],
+        'mexico': [88, 52], 'mexico city': [90, 53],
+        'argentina': [112, 80], 'buenos aires': [112, 80],
+        'colombia': [106, 58], 'bogota': [106, 58],
+        'chile': [108, 80], 'santiago': [108, 80],
+        'australia': [195, 80], 'sydney': [200, 80], 'melbourne': [198, 82],
+        'japan': [200, 44], 'tokyo': [200, 44],
+        'china': [190, 44], 'beijing': [190, 42], 'shanghai': [193, 46],
+        'south korea': [196, 42], 'seoul': [196, 42],
+        'singapore': [190, 60],
+        'israel': [164, 46], 'tel aviv': [164, 46],
+        'turkey': [163, 42], 'istanbul': [162, 40],
+        'south africa': [162, 80], 'johannesburg': [162, 78], 'cape town': [158, 82],
+        'nigeria': [152, 58], 'lagos': [151, 58],
+        'kenya': [165, 60], 'nairobi': [165, 60],
+        'egypt': [163, 48], 'cairo': [163, 48],
+        'uae': [170, 50], 'dubai': [170, 50],
+        'saudi arabia': [168, 50], 'riyadh': [168, 50],
+        'pakistan': [175, 48], 'karachi': [175, 50], 'lahore': [177, 47],
+        'bangladesh': [183, 52], 'dhaka': [183, 52],
+        'indonesia': [192, 62], 'jakarta': [191, 62],
+        'vietnam': [190, 55], 'philippines': [194, 56], 'manila': [194, 56],
+        'thailand': [188, 56], 'bangkok': [188, 56],
+        'malaysia': [190, 60], 'kuala lumpur': [190, 60],
+        'taiwan': [194, 50], 'taipei': [194, 50],
+        'russia': [175, 28], 'moscow': [165, 30],
+        'ukraine': [163, 34], 'kyiv': [163, 34],
+        'romania': [161, 37], 'bucharest': [161, 37],
+        'greece': [160, 40], 'athens': [160, 40],
+        'finland': [160, 26], 'helsinki': [160, 26],
+        'new zealand': [205, 85], 'auckland': [205, 83],
+        'peru': [106, 68], 'lima': [105, 68],
+        'costa rica': [98, 55],
+        'puerto rico': [107, 52],
+        'hawaii': [66, 52],
+        'earth': [100, 50], 'remote': [100, 50], 'worldwide': [100, 50],
+      };
+
+      function geolocate(locationStr) {
+        if (!locationStr) return null;
+        const lower = locationStr.toLowerCase().trim();
+        for (const [key, coords] of Object.entries(CITY_COORDS)) {
+          if (lower.includes(key)) return coords;
+        }
+        // Try individual words
+        const words = lower.split(/[\s,]+/);
+        for (const word of words) {
+          if (CITY_COORDS[word]) return CITY_COORDS[word];
+        }
+        return null;
+      }
+
+      // Simplified world map paths (Natural Earth inspired)
+      const mapSvg = document.getElementById('world-map');
+      if (mapSvg) {
+        const mapPaths = [
+          // North America
+          'M60,25 L65,22 L72,20 L80,18 L90,17 L100,18 L108,20 L115,25 L118,30 L115,35 L112,40 L108,42 L105,45 L100,48 L95,50 L90,52 L85,50 L80,48 L78,45 L80,42 L82,38 L78,35 L72,32 L68,30 L62,28 Z',
+          // South America
+          'M95,55 L100,53 L105,55 L110,58 L115,62 L118,68 L120,75 L118,80 L115,85 L110,88 L105,86 L102,80 L100,72 L98,65 L95,60 Z',
+          // Europe
+          'M142,22 L148,20 L155,22 L162,25 L168,28 L165,32 L160,35 L155,38 L150,40 L145,38 L142,35 L140,30 L141,25 Z',
+          // Africa
+          'M140,42 L148,42 L155,45 L162,48 L168,52 L170,58 L168,65 L165,72 L160,78 L155,82 L150,80 L145,75 L142,68 L140,60 L138,52 L140,45 Z',
+          // Asia
+          'M162,18 L170,15 L180,16 L190,18 L198,22 L202,28 L200,35 L198,40 L195,45 L190,48 L185,52 L180,55 L175,52 L170,48 L165,42 L162,35 L160,28 L161,22 Z',
+          // Australia
+          'M185,68 L192,66 L200,68 L205,72 L208,78 L205,82 L200,85 L195,84 L190,80 L187,75 L185,70 Z',
+        ];
+
+        const isLightMode = document.documentElement.classList.contains('light');
+        const landFill = isLightMode ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)';
+
+        mapPaths.forEach(d => {
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', d);
+          path.setAttribute('fill', landFill);
+          path.setAttribute('stroke', 'none');
+          mapSvg.appendChild(path);
+        });
+
+        // Plot stargazer locations
+        const locations = data.stargazer_locations || [];
+        const plotted = {};
+        let dotCount = 0;
+
+        locations.forEach(loc => {
+          const coords = geolocate(loc);
+          if (!coords) return;
+          const key = coords.join(',');
+          if (plotted[key]) {
+            plotted[key].count++;
+            return;
+          }
+          plotted[key] = { x: coords[0], y: coords[1], count: 1, loc };
+        });
+
+        Object.values(plotted).forEach(pt => {
+          const r = Math.min(2 + pt.count * 0.4, 4.5);
+          dotCount++;
+
+          // Soft outer glow (no border)
+          const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          glow.setAttribute('cx', pt.x);
+          glow.setAttribute('cy', pt.y);
+          glow.setAttribute('r', r + 3);
+          glow.setAttribute('fill', 'rgba(52,211,153,0.08)');
+          mapSvg.appendChild(glow);
+
+          // Inner glow
+          const mid = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          mid.setAttribute('cx', pt.x);
+          mid.setAttribute('cy', pt.y);
+          mid.setAttribute('r', r + 1.2);
+          mid.setAttribute('fill', 'rgba(52,211,153,0.15)');
+          mapSvg.appendChild(mid);
+
+          // Core dot (solid, no stroke)
+          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dot.setAttribute('cx', pt.x);
+          dot.setAttribute('cy', pt.y);
+          dot.setAttribute('r', r);
+          dot.setAttribute('fill', 'rgba(52,211,153,0.7)');
+          mapSvg.appendChild(dot);
+        });
+
+        if (dotCount === 0) {
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', '100');
+          text.setAttribute('y', '55');
+          text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('fill', isLightMode ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)');
+          text.setAttribute('font-size', '6');
+          text.textContent = 'Location data will appear after next workflow run';
+          mapSvg.appendChild(text);
+        }
+      }
+
+      // ── Referrers list (categorized, full names visible) ──
+      const refContainer = document.getElementById('referrer-list');
+      if (refContainer && data.referrers) {
+        refContainer.innerHTML = '';
+        const maxRef = data.referrers[0]?.count || 1;
+
+        // Categorize referrers
+        function categorize(name) {
+          const n = name.toLowerCase();
+          if (/google|bing|yahoo|duckduckgo|baidu|yandex/.test(n)) return { icon: '🔍', cat: 'Search' };
+          if (/linkedin|twitter|x\.com|facebook|reddit|hacker\s?news|youtube|social/.test(n)) return { icon: '💬', cat: 'Social' };
+          if (/teams|office|microsoft|sharepoint|outlook|engage/.test(n)) return { icon: '🏢', cat: 'Enterprise' };
+          if (/github/.test(n)) return { icon: '🐙', cat: 'GitHub' };
+          if (/learn\.microsoft|docs|stackoverflow|medium|dev\.to/.test(n)) return { icon: '📚', cat: 'Developer' };
+          return { icon: '🔗', cat: 'Direct' };
+        }
+
+        data.referrers.slice(0, 8).forEach(ref => {
+          const barW = Math.max(6, (ref.count / maxRef) * 100);
+          const { icon, cat } = categorize(ref.referrer);
+          refContainer.innerHTML += `
+            <div class="group relative overflow-hidden rounded-2xl bg-white/[0.02] px-4 py-3 transition hover:bg-white/[0.05]">
+              <div class="absolute inset-y-0 left-0 rounded-2xl bg-emerald-400/[0.04]" style="width:${barW}%"></div>
+              <div class="relative flex items-center gap-3">
+                <span class="shrink-0 text-base">${icon}</span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-medium text-white/85 break-all">${ref.referrer}</p>
+                  <p class="text-xs text-white/35">${cat}</p>
+                </div>
+                <div class="shrink-0 text-right">
+                  <span class="text-sm font-semibold text-emerald-300">${ref.count.toLocaleString()}</span>
+                  <span class="ml-1 text-xs text-white/35">${ref.uniques} unique</span>
+                </div>
+              </div>
+            </div>`;
+        });
+      }
+
+      // ── Popular Pages (friendly names, no truncation) ──
+      const pagesContainer = document.getElementById('popular-pages');
+      if (pagesContainer && data.paths) {
+        pagesContainer.innerHTML = '';
+        const maxP = data.paths[0]?.count || 1;
+
+        // Map deep paths to friendly display names
+        function friendlyName(fullPath) {
+          const p = fullPath.replace('/microsoft/FastTrack', '');
+          if (!p || p === '/') return '📂 Repository Overview';
+          const parts = p.split('/').filter(Boolean);
+          // Get the last meaningful segment(s)
+          if (parts.length >= 3) {
+            const last = parts[parts.length - 1];
+            const parent = parts[parts.length - 2];
+            return `${parent} / ${last}`;
+          }
+          return parts.join(' / ');
+        }
+
+        function pathIcon(fullPath) {
+          if (fullPath.includes('agent')) return '🤖';
+          if (fullPath.includes('analytics') || fullPath.includes('Audit')) return '📊';
+          if (fullPath.includes('prompt')) return '💬';
+          if (fullPath.includes('SETUP') || fullPath.includes('README')) return '📖';
+          if (fullPath.includes('/tree/')) return '📁';
+          if (fullPath.includes('/blob/')) return '📄';
+          return '📂';
+        }
+
+        data.paths.slice(0, 8).forEach(p => {
+          const barW = Math.max(6, (p.count / maxP) * 100);
+          const friendly = friendlyName(p.path);
+          const icon = pathIcon(p.path);
+          const href = `https://github.com${p.path}`;
+          pagesContainer.innerHTML += `
+            <a href="${href}" target="_blank" rel="noreferrer" class="group relative block overflow-hidden rounded-2xl bg-white/[0.02] px-4 py-3 transition hover:bg-white/[0.05]" title="${p.path.replace('/microsoft/FastTrack', '')}">
+              <div class="absolute inset-y-0 left-0 rounded-2xl bg-cyan-400/[0.04]" style="width:${barW}%"></div>
+              <div class="relative flex items-center gap-3">
+                <span class="shrink-0 text-base">${icon}</span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-medium text-white/85 break-words leading-snug group-hover:text-cyan-300 transition">${friendly}</p>
+                </div>
+                <div class="shrink-0 text-right">
+                  <span class="text-sm font-semibold text-cyan-300">${p.count.toLocaleString()}</span>
+                  <span class="ml-1 text-xs text-white/35">${p.uniques} unique</span>
+                </div>
+              </div>
+            </a>`;
+        });
+      }
+    })();
   </script>
 </body>
 </html>

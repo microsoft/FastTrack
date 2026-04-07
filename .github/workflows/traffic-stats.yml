@@ -53,18 +53,57 @@ jobs:
           }
 
           # Build a combined JSON snapshot for today
+
+          # Fetch star count and repo metadata
+          echo "⭐ Fetching star data..."
+          star_count=$(gh api "repos/$REPO" --jq '.stargazers_count')
+          forks_count=$(gh api "repos/$REPO" --jq '.forks_count')
+
+          # Fetch stargazer timeline (with starred_at dates)
+          echo "📅 Fetching stargazer timeline..."
+          star_timeline=$(gh api "repos/$REPO/stargazers" \
+            -H "Accept: application/vnd.github.star+json" \
+            --paginate --jq '.[].starred_at' 2>/dev/null | sort | jq -R -s 'split("\n") | map(select(length > 0))') || star_timeline="[]"
+
+          # Fetch a sample of stargazer locations (last 30 stargazers)
+          echo "🌍 Fetching stargazer locations..."
+          locations="[]"
+          stargazer_logins=$(gh api "repos/$REPO/stargazers" \
+            -H "Accept: application/vnd.github.star+json" \
+            --jq '.[-30:][].user.login' 2>/dev/null || true)
+
+          if [ -n "$stargazer_logins" ]; then
+            loc_array="[]"
+            for login in $stargazer_logins; do
+              loc=$(gh api "users/$login" --jq '.location // empty' 2>/dev/null || true)
+              if [ -n "$loc" ]; then
+                loc_array=$(echo "$loc_array" | jq --arg l "$loc" '. + [$l]')
+              fi
+            done
+            locations="$loc_array"
+          fi
+
+          # Build combined JSON snapshot
           jq -n \
             --arg date "$DATE" \
             --argjson views "$views" \
             --argjson clones "$clones" \
             --argjson referrers "$referrers" \
             --argjson paths "$paths" \
+            --argjson star_count "$star_count" \
+            --argjson forks_count "$forks_count" \
+            --argjson star_timeline "$star_timeline" \
+            --argjson stargazer_locations "$locations" \
             '{
               collected_at: $date,
               views: $views,
               clones: $clones,
               referrers: $referrers,
-              paths: $paths
+              paths: $paths,
+              stars: $star_count,
+              forks: $forks_count,
+              star_timeline: $star_timeline,
+              stargazer_locations: $stargazer_locations
             }' > "$DATA_DIR/$DATE.json"
 
           echo "✅ Saved $DATA_DIR/$DATE.json"
