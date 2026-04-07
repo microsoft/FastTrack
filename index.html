@@ -1100,13 +1100,13 @@
         <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
           <div class="flex items-center gap-3">
             <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-emerald-300">
-              <i data-lucide="globe" class="h-5 w-5"></i>
+              <i data-lucide="map-pin" class="h-5 w-5"></i>
             </span>
             <h3 class="text-lg font-semibold text-white/92">Global Reach</h3>
             <span class="ml-auto rounded-full border border-white/8 bg-white/[0.03] px-3 py-1 text-xs text-white/40">from stargazer profiles</span>
           </div>
-          <div class="mt-6 flex items-center justify-center" style="min-height:260px;">
-            <svg id="world-map" viewBox="-5 -2 225 100" class="w-full max-w-2xl" style="max-height:320px;"></svg>
+          <div id="location-chart-container" class="mt-6" style="min-height:260px;">
+            <canvas id="chart-locations"></canvas>
           </div>
         </div>
       </div>
@@ -1396,197 +1396,129 @@
         document.getElementById('chart-stars').parentElement.innerHTML = '<p class="text-sm text-white/40 text-center mt-16">Star history will appear after the next workflow run.</p>';
       }
 
-      // ── World Map ──
-      const CITY_COORDS = {
-        'united states': [100, 45], 'usa': [100, 45], 'us': [100, 45],
-        'new york': [107, 42], 'san francisco': [78, 42], 'seattle': [80, 38],
-        'los angeles': [80, 44], 'chicago': [96, 40], 'austin': [92, 48],
-        'boston': [109, 40], 'denver': [88, 42], 'atlanta': [100, 46],
-        'washington': [105, 42], 'portland': [80, 38], 'miami': [102, 51],
-        'dallas': [92, 46], 'houston': [92, 48], 'phoenix': [84, 46],
-        'detroit': [100, 40], 'minneapolis': [94, 38], 'philadelphia': [107, 42],
-        'canada': [95, 35], 'toronto': [103, 38], 'vancouver': [78, 36], 'montreal': [107, 37],
-        'united kingdom': [148, 34], 'uk': [148, 34], 'london': [149, 35], 'england': [148, 34],
-        'germany': [155, 34], 'berlin': [156, 33], 'munich': [156, 36], 'frankfurt': [154, 35],
-        'france': [150, 37], 'paris': [150, 36],
-        'netherlands': [152, 33], 'amsterdam': [152, 33],
-        'spain': [147, 40], 'madrid': [147, 40],
-        'italy': [155, 39], 'rome': [156, 39],
-        'switzerland': [153, 37], 'zurich': [154, 36],
-        'sweden': [157, 28], 'stockholm': [158, 28],
-        'norway': [154, 27], 'oslo': [154, 28],
-        'denmark': [155, 31], 'copenhagen': [155, 31],
-        'poland': [159, 33], 'warsaw': [160, 33],
-        'ireland': [145, 34], 'dublin': [145, 34],
-        'portugal': [144, 40], 'lisbon': [144, 41],
-        'belgium': [151, 34], 'brussels': [151, 34],
-        'austria': [157, 36], 'vienna': [158, 36],
-        'czech republic': [157, 34], 'prague': [157, 34],
-        'india': [178, 52], 'bangalore': [179, 56], 'mumbai': [176, 54],
-        'hyderabad': [179, 55], 'delhi': [178, 49], 'pune': [177, 54],
-        'chennai': [180, 57], 'kolkata': [182, 52],
-        'brazil': [115, 72], 'são paulo': [118, 74], 'rio': [117, 73],
-        'mexico': [88, 52], 'mexico city': [90, 53],
-        'argentina': [112, 80], 'buenos aires': [112, 80],
-        'colombia': [106, 58], 'bogota': [106, 58],
-        'chile': [108, 80], 'santiago': [108, 80],
-        'australia': [195, 80], 'sydney': [200, 80], 'melbourne': [198, 82],
-        'japan': [200, 44], 'tokyo': [200, 44],
-        'china': [190, 44], 'beijing': [190, 42], 'shanghai': [193, 46],
-        'south korea': [196, 42], 'seoul': [196, 42],
-        'singapore': [190, 60],
-        'israel': [164, 46], 'tel aviv': [164, 46],
-        'turkey': [163, 42], 'istanbul': [162, 40],
-        'south africa': [162, 80], 'johannesburg': [162, 78], 'cape town': [158, 82],
-        'nigeria': [152, 58], 'lagos': [151, 58],
-        'kenya': [165, 60], 'nairobi': [165, 60],
-        'egypt': [163, 48], 'cairo': [163, 48],
-        'uae': [170, 50], 'dubai': [170, 50],
-        'saudi arabia': [168, 50], 'riyadh': [168, 50],
-        'pakistan': [175, 48], 'karachi': [175, 50], 'lahore': [177, 47],
-        'bangladesh': [183, 52], 'dhaka': [183, 52],
-        'indonesia': [192, 62], 'jakarta': [191, 62],
-        'vietnam': [190, 55], 'philippines': [194, 56], 'manila': [194, 56],
-        'thailand': [188, 56], 'bangkok': [188, 56],
-        'malaysia': [190, 60], 'kuala lumpur': [190, 60],
-        'taiwan': [194, 50], 'taipei': [194, 50],
-        'russia': [175, 28], 'moscow': [165, 30],
-        'ukraine': [163, 34], 'kyiv': [163, 34],
-        'romania': [161, 37], 'bucharest': [161, 37],
-        'greece': [160, 40], 'athens': [160, 40],
-        'finland': [160, 26], 'helsinki': [160, 26],
-        'new zealand': [205, 85], 'auckland': [205, 83],
-        'peru': [106, 68], 'lima': [105, 68],
-        'costa rica': [98, 55],
-        'puerto rico': [107, 52],
-        'hawaii': [66, 52],
-        'earth': [100, 50], 'remote': [100, 50], 'worldwide': [100, 50],
-      };
+      // ── Global Reach (location bar chart) ──
+      const locContainer = document.getElementById('chart-locations');
+      const locations = data.stargazer_locations || [];
+      if (locContainer && locations.length > 0) {
+        // Normalize locations to country/region level
+        const COUNTRY_MAP = {
+          'us': '🇺🇸 United States', 'usa': '🇺🇸 United States', 'united states': '🇺🇸 United States',
+          'new york': '🇺🇸 United States', 'san francisco': '🇺🇸 United States', 'seattle': '🇺🇸 United States',
+          'los angeles': '🇺🇸 United States', 'chicago': '🇺🇸 United States', 'austin': '🇺🇸 United States',
+          'boston': '🇺🇸 United States', 'denver': '🇺🇸 United States', 'atlanta': '🇺🇸 United States',
+          'washington': '🇺🇸 United States', 'portland': '🇺🇸 United States', 'miami': '🇺🇸 United States',
+          'dallas': '🇺🇸 United States', 'houston': '🇺🇸 United States', 'phoenix': '🇺🇸 United States',
+          'detroit': '🇺🇸 United States', 'minneapolis': '🇺🇸 United States', 'philadelphia': '🇺🇸 United States',
+          'california': '🇺🇸 United States', 'texas': '🇺🇸 United States', 'florida': '🇺🇸 United States',
+          'virginia': '🇺🇸 United States', 'ohio': '🇺🇸 United States', 'colorado': '🇺🇸 United States',
+          'canada': '🇨🇦 Canada', 'toronto': '🇨🇦 Canada', 'vancouver': '🇨🇦 Canada', 'montreal': '🇨🇦 Canada',
+          'united kingdom': '🇬🇧 United Kingdom', 'uk': '🇬🇧 United Kingdom', 'london': '🇬🇧 United Kingdom', 'england': '🇬🇧 United Kingdom',
+          'germany': '🇩🇪 Germany', 'berlin': '🇩🇪 Germany', 'munich': '🇩🇪 Germany', 'frankfurt': '🇩🇪 Germany',
+          'france': '🇫🇷 France', 'paris': '🇫🇷 France',
+          'netherlands': '🇳🇱 Netherlands', 'amsterdam': '🇳🇱 Netherlands',
+          'spain': '🇪🇸 Spain', 'madrid': '🇪🇸 Spain', 'barcelona': '🇪🇸 Spain',
+          'italy': '🇮🇹 Italy', 'rome': '🇮🇹 Italy', 'milan': '🇮🇹 Italy',
+          'switzerland': '🇨🇭 Switzerland', 'zurich': '🇨🇭 Switzerland',
+          'sweden': '🇸🇪 Sweden', 'stockholm': '🇸🇪 Sweden',
+          'norway': '🇳🇴 Norway', 'oslo': '🇳🇴 Norway',
+          'denmark': '🇩🇰 Denmark', 'copenhagen': '🇩🇰 Denmark',
+          'poland': '🇵🇱 Poland', 'warsaw': '🇵🇱 Poland',
+          'ireland': '🇮🇪 Ireland', 'dublin': '🇮🇪 Ireland',
+          'portugal': '🇵🇹 Portugal', 'lisbon': '🇵🇹 Portugal',
+          'austria': '🇦🇹 Austria', 'vienna': '🇦🇹 Austria',
+          'belgium': '🇧🇪 Belgium', 'brussels': '🇧🇪 Belgium',
+          'czech': '🇨🇿 Czechia', 'prague': '🇨🇿 Czechia',
+          'romania': '🇷🇴 Romania', 'bucharest': '🇷🇴 Romania',
+          'greece': '🇬🇷 Greece', 'athens': '🇬🇷 Greece',
+          'finland': '🇫🇮 Finland', 'helsinki': '🇫🇮 Finland',
+          'china': '🇨🇳 China', 'beijing': '🇨🇳 China', 'shanghai': '🇨🇳 China', 'shenzhen': '🇨🇳 China', 'guangzhou': '🇨🇳 China',
+          'japan': '🇯🇵 Japan', 'tokyo': '🇯🇵 Japan', 'osaka': '🇯🇵 Japan',
+          'south korea': '🇰🇷 South Korea', 'korea': '🇰🇷 South Korea', 'seoul': '🇰🇷 South Korea',
+          'india': '🇮🇳 India', 'mumbai': '🇮🇳 India', 'bangalore': '🇮🇳 India', 'delhi': '🇮🇳 India', 'hyderabad': '🇮🇳 India', 'pune': '🇮🇳 India', 'chennai': '🇮🇳 India',
+          'australia': '🇦🇺 Australia', 'sydney': '🇦🇺 Australia', 'melbourne': '🇦🇺 Australia',
+          'new zealand': '🇳🇿 New Zealand', 'auckland': '🇳🇿 New Zealand',
+          'brazil': '🇧🇷 Brazil', 'são paulo': '🇧🇷 Brazil', 'sao paulo': '🇧🇷 Brazil', 'rio': '🇧🇷 Brazil',
+          'mexico': '🇲🇽 Mexico', 'mexico city': '🇲🇽 Mexico',
+          'argentina': '🇦🇷 Argentina', 'buenos aires': '🇦🇷 Argentina',
+          'colombia': '🇨🇴 Colombia', 'bogota': '🇨🇴 Colombia', 'bogotá': '🇨🇴 Colombia',
+          'chile': '🇨🇱 Chile', 'santiago': '🇨🇱 Chile',
+          'peru': '🇵🇪 Peru', 'lima': '🇵🇪 Peru',
+          'israel': '🇮🇱 Israel', 'tel aviv': '🇮🇱 Israel',
+          'turkey': '🇹🇷 Turkey', 'türkiye': '🇹🇷 Turkey', 'istanbul': '🇹🇷 Turkey',
+          'singapore': '🇸🇬 Singapore',
+          'malaysia': '🇲🇾 Malaysia', 'kuala lumpur': '🇲🇾 Malaysia',
+          'indonesia': '🇮🇩 Indonesia', 'jakarta': '🇮🇩 Indonesia',
+          'philippines': '🇵🇭 Philippines', 'manila': '🇵🇭 Philippines',
+          'thailand': '🇹🇭 Thailand', 'bangkok': '🇹🇭 Thailand',
+          'vietnam': '🇻🇳 Vietnam', 'hanoi': '🇻🇳 Vietnam',
+          'taiwan': '🇹🇼 Taiwan', 'taipei': '🇹🇼 Taiwan',
+          'south africa': '🇿🇦 South Africa', 'cape town': '🇿🇦 South Africa', 'johannesburg': '🇿🇦 South Africa',
+          'nigeria': '🇳🇬 Nigeria', 'lagos': '🇳🇬 Nigeria',
+          'egypt': '🇪🇬 Egypt', 'cairo': '🇪🇬 Egypt',
+          'kenya': '🇰🇪 Kenya', 'nairobi': '🇰🇪 Kenya',
+          'uae': '🇦🇪 UAE', 'dubai': '🇦🇪 UAE', 'abu dhabi': '🇦🇪 UAE',
+          'saudi': '🇸🇦 Saudi Arabia', 'riyadh': '🇸🇦 Saudi Arabia',
+          'pakistan': '🇵🇰 Pakistan', 'karachi': '🇵🇰 Pakistan', 'lahore': '🇵🇰 Pakistan',
+          'bangladesh': '🇧🇩 Bangladesh', 'dhaka': '🇧🇩 Bangladesh',
+          'ukraine': '🇺🇦 Ukraine', 'kyiv': '🇺🇦 Ukraine',
+          'russia': '🇷🇺 Russia', 'moscow': '🇷🇺 Russia',
+          'costa rica': '🇨🇷 Costa Rica',
+          'puerto rico': '🇵🇷 Puerto Rico',
+          'hawaii': '🇺🇸 United States',
+        };
 
-      function geolocate(locationStr) {
-        if (!locationStr) return null;
-        const lower = locationStr.toLowerCase().trim();
-        for (const [key, coords] of Object.entries(CITY_COORDS)) {
-          if (lower.includes(key)) return coords;
-        }
-        // Try individual words
-        const words = lower.split(/[\s,]+/);
-        for (const word of words) {
-          if (CITY_COORDS[word]) return CITY_COORDS[word];
-        }
-        return null;
-      }
-
-      // World map with detailed continent outlines
-      const mapSvg = document.getElementById('world-map');
-      if (mapSvg) {
-        const mapPaths = [
-          // North America (detailed coastline)
-          'M55,18 L58,16 L62,14 L68,12 L74,11 L80,10 L86,11 L90,12 L94,10 L98,11 L102,13 L106,15 L109,14 L112,16 L115,19 L117,22 L118,26 L116,28 L114,30 L116,32 L118,34 L116,36 L114,38 L112,40 L109,42 L107,44 L104,46 L101,48 L98,50 L96,52 L94,50 L92,48 L90,50 L88,48 L86,46 L84,44 L82,46 L80,44 L78,42 L76,40 L74,38 L72,36 L70,34 L68,32 L66,30 L64,28 L62,26 L60,24 L58,22 L56,20 Z',
-          // Greenland
-          'M108,6 L112,5 L116,6 L119,8 L120,11 L118,14 L115,16 L112,15 L109,13 L107,10 L108,8 Z',
-          // Central America & Caribbean
-          'M86,48 L88,49 L90,50 L92,51 L94,52 L96,54 L94,55 L92,54 L90,53 L88,52 L86,50 Z',
-          // South America
-          'M96,56 L100,54 L104,55 L108,56 L112,58 L114,60 L116,63 L118,66 L119,70 L120,74 L119,78 L117,82 L114,85 L111,88 L108,90 L105,91 L102,90 L100,87 L99,84 L98,80 L97,76 L96,72 L95,68 L94,64 L95,60 Z',
-          // Europe
-          'M140,20 L143,18 L146,19 L148,21 L150,20 L153,21 L156,22 L158,20 L161,21 L164,23 L166,26 L168,28 L165,30 L163,32 L160,34 L158,36 L155,38 L152,39 L150,41 L147,40 L145,38 L143,36 L141,34 L140,31 L139,28 L138,25 L139,22 Z',
-          // UK & Ireland
-          'M142,24 L144,23 L146,24 L145,27 L143,28 L141,27 L142,25 Z',
-          'M139,24 L140,23 L141,25 L140,27 L139,26 Z',
-          // Scandinavia
-          'M152,14 L154,12 L157,13 L159,15 L160,18 L158,20 L155,19 L153,17 Z',
-          // Africa
-          'M140,42 L143,41 L147,42 L150,43 L154,42 L158,43 L162,44 L166,46 L168,49 L170,52 L171,56 L170,60 L169,64 L168,68 L166,72 L163,76 L160,79 L157,81 L154,82 L151,80 L148,78 L146,75 L144,72 L142,68 L140,64 L139,60 L138,56 L137,52 L138,48 L139,44 Z',
-          // Madagascar
-          'M172,72 L174,70 L175,73 L174,76 L172,75 Z',
-          // Middle East
-          'M166,36 L170,34 L174,36 L176,38 L178,40 L176,42 L174,44 L172,46 L170,44 L168,42 L166,40 L165,38 Z',
-          // Russia / Central Asia
-          'M166,14 L170,12 L176,11 L182,12 L188,13 L194,14 L200,16 L205,18 L208,20 L207,23 L204,25 L200,26 L196,28 L192,30 L188,32 L184,34 L180,36 L176,38 L172,36 L170,33 L168,30 L166,27 L165,24 L164,20 L165,17 Z',
-          // East Asia (China, Korea, Japan)
-          'M182,30 L186,28 L190,30 L194,32 L198,34 L200,36 L202,38 L200,40 L198,42 L196,44 L194,46 L190,48 L186,50 L184,48 L182,46 L180,44 L178,42 L180,38 L181,34 Z',
-          // Japan
-          'M202,32 L204,30 L206,32 L205,35 L203,37 L201,36 L202,34 Z',
-          // Southeast Asia
-          'M186,50 L190,50 L194,52 L196,54 L198,56 L196,58 L194,56 L192,54 L190,56 L188,58 L186,56 L184,54 L185,52 Z',
-          // Indonesia
-          'M188,60 L192,59 L196,60 L200,62 L204,63 L202,65 L198,64 L194,63 L190,62 L188,61 Z',
-          // India / South Asia
-          'M176,40 L178,42 L180,44 L182,46 L184,48 L182,52 L180,56 L178,58 L176,56 L174,52 L174,48 L175,44 Z',
-          // Australia
-          'M188,70 L192,68 L196,67 L200,68 L204,70 L208,72 L210,76 L208,80 L205,83 L201,85 L197,84 L193,82 L190,80 L188,76 L187,73 Z',
-          // New Zealand
-          'M210,82 L211,80 L213,82 L212,85 L210,84 Z',
-          'M211,86 L212,85 L213,87 L212,89 L210,88 Z',
-        ];
-
-        const isLightMode = document.documentElement.classList.contains('light');
-        const landFill = isLightMode ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.07)';
-
-        mapPaths.forEach(d => {
-          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('d', d);
-          path.setAttribute('fill', landFill);
-          path.setAttribute('stroke', 'none');
-          mapSvg.appendChild(path);
-        });
-
-        // Plot stargazer locations
-        const locations = data.stargazer_locations || [];
-        const plotted = {};
-        let dotCount = 0;
-
-        locations.forEach(loc => {
-          const coords = geolocate(loc);
-          if (!coords) return;
-          const key = coords.join(',');
-          if (plotted[key]) {
-            plotted[key].count++;
-            return;
+        function toCountry(loc) {
+          if (!loc) return null;
+          const lower = loc.toLowerCase().trim();
+          for (const [key, country] of Object.entries(COUNTRY_MAP)) {
+            if (lower.includes(key)) return country;
           }
-          plotted[key] = { x: coords[0], y: coords[1], count: 1, loc };
-        });
-
-        Object.values(plotted).forEach(pt => {
-          const r = Math.min(2 + pt.count * 0.4, 4.5);
-          dotCount++;
-
-          // Soft outer glow (no border)
-          const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          glow.setAttribute('cx', pt.x);
-          glow.setAttribute('cy', pt.y);
-          glow.setAttribute('r', r + 3);
-          glow.setAttribute('fill', 'rgba(52,211,153,0.08)');
-          mapSvg.appendChild(glow);
-
-          // Inner glow
-          const mid = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          mid.setAttribute('cx', pt.x);
-          mid.setAttribute('cy', pt.y);
-          mid.setAttribute('r', r + 1.2);
-          mid.setAttribute('fill', 'rgba(52,211,153,0.15)');
-          mapSvg.appendChild(mid);
-
-          // Core dot (solid, no stroke)
-          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          dot.setAttribute('cx', pt.x);
-          dot.setAttribute('cy', pt.y);
-          dot.setAttribute('r', r);
-          dot.setAttribute('fill', 'rgba(52,211,153,0.7)');
-          mapSvg.appendChild(dot);
-        });
-
-        if (dotCount === 0) {
-          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          text.setAttribute('x', '100');
-          text.setAttribute('y', '55');
-          text.setAttribute('text-anchor', 'middle');
-          text.setAttribute('fill', isLightMode ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)');
-          text.setAttribute('font-size', '6');
-          text.textContent = 'Location data will appear after next workflow run';
-          mapSvg.appendChild(text);
+          return '🌍 ' + loc.split(',').pop().trim();
         }
+
+        const countryCounts = {};
+        locations.forEach(loc => {
+          const country = toCountry(loc);
+          if (country) countryCounts[country] = (countryCounts[country] || 0) + 1;
+        });
+
+        const sorted = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]);
+        const chartHeight = Math.max(200, sorted.length * 32);
+        locContainer.parentElement.style.height = chartHeight + 'px';
+
+        new Chart(locContainer, {
+          type: 'bar',
+          data: {
+            labels: sorted.map(s => s[0]),
+            datasets: [{
+              data: sorted.map(s => s[1]),
+              backgroundColor: 'rgba(52,211,153,0.35)',
+              borderColor: 'rgba(52,211,153,0.7)',
+              borderWidth: 1,
+              borderRadius: 6,
+              borderSkipped: false,
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                grid: { color: gridColor },
+                ticks: { color: labelColor, stepSize: 1 },
+                title: { display: true, text: 'Stargazers', color: labelColor }
+              },
+              y: {
+                grid: { display: false },
+                ticks: { color: labelColor, font: { size: 13 } }
+              }
+            }
+          }
+        });
+      } else if (locContainer) {
+        locContainer.parentElement.innerHTML = '<p class="text-sm text-white/40 text-center mt-16">Location data will appear after the next workflow run.</p>';
       }
 
       // ── Referrers list (categorized, full names visible) ──
