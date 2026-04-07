@@ -19,7 +19,7 @@ jobs:
 
       - name: Collect and persist traffic data
         env:
-          GITHUB_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
         run: |
           set -euo pipefail
 
