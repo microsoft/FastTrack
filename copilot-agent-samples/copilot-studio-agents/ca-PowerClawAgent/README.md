@@ -130,14 +130,14 @@ PowerClaw is intentionally lightweight — a starting point you can extend. Inte
 
 ### 🔌 Extend PowerClaw
 
-Power Platform provides 1000+ connectors to build on. A few ideas:
+Power Platform provides 1000+ connectors to build on. A few ideas that play to PowerClaw's strengths — autonomous follow-through, cross-source synthesis, and proactive intelligence:
 
-- **Meeting follow-ups** — After a meeting ends, draft a recap with action items and send it to attendees automatically
-- **CRM pulse** — Before every customer call, pull open opportunities, last touchpoints, and recent support tickets into a one-pager
-- **Copilot Analytics brief** — Connect to Power BI and M365 Copilot usage reports. Every Monday, get an AI adoption summary with top users, underutilized licenses, and trends
-- **Team standup digest** — Collect async updates from a Teams channel and compile a weekly summary for leadership
+- **CRM pulse** — Before every customer call, pull open opportunities, last touchpoints, and recent support tickets into a one-pager. Heartbeat delivers it before the meeting starts.
+- **Copilot Analytics brief** — Connect to Power BI and M365 Copilot usage reports. Every Monday, get an AI adoption summary with top users, underutilized licenses, and trends — automatically.
 - **Event-driven reflexes** — Expose a Power Automate HTTP trigger so external events (a form submission, a new lead, a Teams mention) wake the agent instantly instead of waiting for the next heartbeat
-- **Code Interpreter for data analysis** — Enable [Code Interpreter](https://learn.microsoft.com/en-us/microsoft-copilot-studio/code-interpreter-for-prompts) in the agent settings and ask PowerClaw to analyze data for you. Example: *"Here's last quarter's expense report — break down spending by category, flag anything over budget, and give me a chart"* (premium credits apply)
+- **Risk & escalation monitor** — Scan email and Teams for escalation signals (keywords, VIP senders, overdue threads) and surface a daily risk digest before things spiral
+
+> 📚 **Looking for step-by-step guides?** The **[Skills Library](skills/README.md)** has ready-to-use skill guides with setup instructions, copy-paste prompts, and recommended AI models for use cases like these and more.
 
 ---
 
