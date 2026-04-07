@@ -1,0 +1,269 @@
+{
+  "collected_at": "2026-04-07",
+  "views": {
+    "count": 3239,
+    "uniques": 939,
+    "views": [
+      {
+        "timestamp": "2026-03-24T00:00:00Z",
+        "count": 304,
+        "uniques": 79
+      },
+      {
+        "timestamp": "2026-03-25T00:00:00Z",
+        "count": 336,
+        "uniques": 86
+      },
+      {
+        "timestamp": "2026-03-26T00:00:00Z",
+        "count": 331,
+        "uniques": 124
+      },
+      {
+        "timestamp": "2026-03-27T00:00:00Z",
+        "count": 260,
+        "uniques": 96
+      },
+      {
+        "timestamp": "2026-03-28T00:00:00Z",
+        "count": 45,
+        "uniques": 24
+      },
+      {
+        "timestamp": "2026-03-29T00:00:00Z",
+        "count": 62,
+        "uniques": 33
+      },
+      {
+        "timestamp": "2026-03-30T00:00:00Z",
+        "count": 221,
+        "uniques": 105
+      },
+      {
+        "timestamp": "2026-03-31T00:00:00Z",
+        "count": 209,
+        "uniques": 64
+      },
+      {
+        "timestamp": "2026-04-01T00:00:00Z",
+        "count": 201,
+        "uniques": 69
+      },
+      {
+        "timestamp": "2026-04-02T00:00:00Z",
+        "count": 583,
+        "uniques": 207
+      },
+      {
+        "timestamp": "2026-04-03T00:00:00Z",
+        "count": 285,
+        "uniques": 104
+      },
+      {
+        "timestamp": "2026-04-04T00:00:00Z",
+        "count": 180,
+        "uniques": 48
+      },
+      {
+        "timestamp": "2026-04-05T00:00:00Z",
+        "count": 82,
+        "uniques": 39
+      },
+      {
+        "timestamp": "2026-04-06T00:00:00Z",
+        "count": 140,
+        "uniques": 67
+      }
+    ]
+  },
+  "clones": {
+    "count": 442,
+    "uniques": 135,
+    "clones": [
+      {
+        "timestamp": "2026-03-24T00:00:00Z",
+        "count": 37,
+        "uniques": 10
+      },
+      {
+        "timestamp": "2026-03-25T00:00:00Z",
+        "count": 110,
+        "uniques": 21
+      },
+      {
+        "timestamp": "2026-03-26T00:00:00Z",
+        "count": 31,
+        "uniques": 16
+      },
+      {
+        "timestamp": "2026-03-27T00:00:00Z",
+        "count": 48,
+        "uniques": 14
+      },
+      {
+        "timestamp": "2026-03-28T00:00:00Z",
+        "count": 23,
+        "uniques": 15
+      },
+      {
+        "timestamp": "2026-03-29T00:00:00Z",
+        "count": 8,
+        "uniques": 6
+      },
+      {
+        "timestamp": "2026-03-30T00:00:00Z",
+        "count": 18,
+        "uniques": 17
+      },
+      {
+        "timestamp": "2026-03-31T00:00:00Z",
+        "count": 51,
+        "uniques": 11
+      },
+      {
+        "timestamp": "2026-04-01T00:00:00Z",
+        "count": 38,
+        "uniques": 18
+      },
+      {
+        "timestamp": "2026-04-02T00:00:00Z",
+        "count": 16,
+        "uniques": 10
+      },
+      {
+        "timestamp": "2026-04-03T00:00:00Z",
+        "count": 33,
+        "uniques": 18
+      },
+      {
+        "timestamp": "2026-04-04T00:00:00Z",
+        "count": 9,
+        "uniques": 8
+      },
+      {
+        "timestamp": "2026-04-05T00:00:00Z",
+        "count": 10,
+        "uniques": 8
+      },
+      {
+        "timestamp": "2026-04-06T00:00:00Z",
+        "count": 10,
+        "uniques": 9
+      }
+    ]
+  },
+  "referrers": [
+    {
+      "referrer": "statics.teams.cdn.office.net",
+      "count": 445,
+      "uniques": 166
+    },
+    {
+      "referrer": "Bing",
+      "count": 286,
+      "uniques": 89
+    },
+    {
+      "referrer": "github.com",
+      "count": 201,
+      "uniques": 44
+    },
+    {
+      "referrer": "learn.microsoft.com",
+      "count": 64,
+      "uniques": 24
+    },
+    {
+      "referrer": "com.linkedin.android",
+      "count": 52,
+      "uniques": 23
+    },
+    {
+      "referrer": "Google",
+      "count": 36,
+      "uniques": 17
+    },
+    {
+      "referrer": "linkedin.com",
+      "count": 35,
+      "uniques": 15
+    },
+    {
+      "referrer": "teams.df.onecdn.static.microsoft",
+      "count": 34,
+      "uniques": 8
+    },
+    {
+      "referrer": "staticsint.teams.cdn.office.net",
+      "count": 20,
+      "uniques": 12
+    },
+    {
+      "referrer": "engage.cloud.microsoft",
+      "count": 15,
+      "uniques": 8
+    }
+  ],
+  "paths": [
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+      "title": "/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+      "count": 646,
+      "uniques": 391
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents",
+      "title": "/tree/master/copilot-agent-samples/copilot-studio-agents",
+      "count": 163,
+      "uniques": 111
+    },
+    {
+      "path": "/microsoft/FastTrack",
+      "title": "Overview",
+      "count": 160,
+      "uniques": 89
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+      "title": "/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+      "count": 125,
+      "uniques": 71
+    },
+    {
+      "path": "/microsoft/FastTrack/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/SETUP.md",
+      "title": "/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/SETUP.md",
+      "count": 120,
+      "uniques": 69
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples",
+      "title": "/tree/master/copilot-agent-samples",
+      "count": 96,
+      "uniques": 71
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+      "title": "/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+      "count": 78,
+      "uniques": 61
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples",
+      "title": "/tree/master/copilot-analytics-samples",
+      "count": 61,
+      "uniques": 45
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master",
+      "title": "/tree/master",
+      "count": 47,
+      "uniques": 34
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent",
+      "title": "/tree/master/copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent",
+      "count": 43,
+      "uniques": 33
+    }
+  ]
+}
