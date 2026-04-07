@@ -29,5 +29,10 @@ Desktop.ini
 PowerClaw_export.zip
 PowerClaw_unpacked/
 
+# Internal dev/packaging scripts (not customer-facing)
+scripts/build-bootstrap-flow.py
+scripts/deploy-to-prod.ps1
+scripts/version.json
+
 # Allow the distributable solution zip
 !PowerClaw_Solution.zip
