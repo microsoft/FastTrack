@@ -928,7 +928,7 @@
               </div>
             </div>
             <div class="mt-8 space-y-4">
-              <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI" target="_blank" rel="noreferrer" class="block rounded-3xl border border-white/8 bg-white/[0.02] p-5 transition hover:border-white/15 hover:bg-white/[0.04]">
+              <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI" target="_blank" rel="noreferrer" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Copilot Audit PBI</div>
@@ -937,7 +937,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/" class="block rounded-3xl border border-white/8 bg-white/[0.02] p-5 transition hover:border-white/15 hover:bg-white/[0.04]">
+              <a href="copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Viva Insights Dashboard</div>
@@ -946,7 +946,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-analytics-samples/copilot-usage-users-and-apps/" class="block rounded-3xl border border-white/8 bg-white/[0.02] p-5 transition hover:border-white/15 hover:bg-white/[0.04]">
+              <a href="copilot-analytics-samples/copilot-usage-users-and-apps/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Usage Dashboard</div>
@@ -969,7 +969,7 @@
               </div>
             </div>
             <div class="mt-8 space-y-4">
-              <a href="copilot-agent-strategy/copilot-agents-guide/index.html" class="block rounded-3xl border border-white/8 bg-white/[0.02] p-5 transition hover:border-white/15 hover:bg-white/[0.04]">
+              <a href="copilot-agent-strategy/copilot-agents-guide/index.html" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Agents Guide</div>
@@ -978,7 +978,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-agent-strategy/copilot-agent-brainstorm/" class="block rounded-3xl border border-white/8 bg-white/[0.02] p-5 transition hover:border-white/15 hover:bg-white/[0.04]">
+              <a href="copilot-agent-strategy/copilot-agent-brainstorm/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Agent Brainstorm Template</div>
@@ -987,7 +987,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-agent-strategy/copilot-agents-cost-tool/index.html" class="block rounded-3xl border border-white/8 bg-white/[0.02] p-5 transition hover:border-white/15 hover:bg-white/[0.04]">
+              <a href="copilot-agent-strategy/copilot-agents-cost-tool/index.html" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Agents Cost Calculator</div>
@@ -996,7 +996,7 @@
                   <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
                 </div>
               </a>
-              <a href="copilot-prompt-samples/" class="block rounded-3xl border border-white/8 bg-white/[0.02] p-5 transition hover:border-white/15 hover:bg-white/[0.04]">
+              <a href="copilot-prompt-samples/" class="block rounded-3xl bg-white/[0.02] p-5 transition hover:bg-white/[0.05]">
                 <div class="flex items-start justify-between gap-4">
                   <div>
                     <div class="text-base font-medium text-white/88">Prompt Samples</div>
@@ -1274,8 +1274,8 @@
       if (!data) return;
 
       const isLight = document.documentElement.classList.contains('light');
-      const gridColor = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.06)';
-      const labelColor = isLight ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.55)';
+      const gridColor = isLight ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.12)';
+      const labelColor = isLight ? 'rgba(0,0,0,0.65)' : 'rgba(255,255,255,0.7)';
 
       // "Last updated" badge
       const updatedEl = document.getElementById('analytics-updated');
@@ -1325,8 +1325,8 @@
         interaction: { intersect: false, mode: 'index' },
         plugins: { legend: { display: true, labels: { boxWidth: 10, padding: 14 } } },
         scales: {
-          x: { grid: { color: gridColor }, ticks: { maxRotation: 45 } },
-          y: { grid: { color: gridColor }, beginAtZero: true, title: { display: true, text: yTitle, color: labelColor } }
+          x: { grid: { color: gridColor }, ticks: { maxRotation: 45, color: labelColor } },
+          y: { grid: { color: gridColor }, beginAtZero: true, ticks: { color: labelColor }, title: { display: true, text: yTitle, color: labelColor } }
         }
       });
 
