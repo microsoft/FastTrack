@@ -26,6 +26,10 @@ It pulls together:
 
 The result is a short, scannable radar ordered by urgency, with a recommended next action for each item.
 
+> 💡 **Quick start — PowerClaw is already scanning:** The heartbeat already checks for urgent email, upcoming meetings, task drift, and follow-ups every 30 minutes, and a routine like **`[PowerClaw Routine] Morning Radar`** can make that even more focused.
+>
+> This skill adds the on-demand, deeper-triage version: ask what matters right now, get 🔴🟡🟢 prioritization plus recommended actions, and use PowerClaw’s memory to weigh who matters most and what commitments may be slipping.
+
 ## Why This Beats "Show Me My Unread Emails"
 
 A normal email or calendar assistant reports what exists. Executive Radar judges what matters.

@@ -35,6 +35,10 @@ The report is organized into:
 5. **Upcoming Priorities**
 6. **Follow-ups Needed**
 
+> 💡 **Quick start — no setup needed:** Add a recurring calendar event named **`[PowerClaw Routine] Weekly Status Report`** and PowerClaw can pick it up on heartbeat and generate the report automatically.
+>
+> This skill is the more interactive version: use it any time, tailor the report for your manager vs. leadership vs. project team, change the date range, skip or emphasize sections, and review the draft before anything gets sent.
+
 ## When to Use It
 
 Use this skill when you need to:

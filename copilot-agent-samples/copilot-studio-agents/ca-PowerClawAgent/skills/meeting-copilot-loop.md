@@ -22,6 +22,10 @@ It supports three modes:
 
 This is where PowerClaw becomes more than “meeting summarization.” It connects **before**, **after**, and **what happened next** into one continuous operating loop.
 
+> 💡 **Quick start — already built in:** PowerClaw’s heartbeat already watches for meetings starting soon and can send a prep brief automatically, so you may not need any extra setup for the prep half.
+>
+> This skill adds the interactive, full-loop version: ask for prep on demand, recap a meeting after it ends, extract commitments, and push follow-through into the SharePoint task board instead of stopping at a one-time brief.
+
 ## Why This Beats Native M365 Copilot Recaps
 - **It remembers history** — prior commitments, unresolved issues, and relationship context can carry forward across recurring meetings.
 - **It works proactively** — PowerClaw’s heartbeat can brief the user automatically before a meeting starts, without being asked.
