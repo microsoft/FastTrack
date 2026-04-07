@@ -20,6 +20,13 @@
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "w810tntgw1");
+  </script>
   <script>
     (() => {
       try {
@@ -545,8 +552,6 @@
 
       <div class="flex items-center gap-3">
         <nav class="hidden items-center gap-6 text-sm text-white/60 md:flex">
-          <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples" target="_blank" rel="noreferrer" class="transition hover:text-white/90">Agents</a>
-          <a href="#repo-analytics" class="transition hover:text-white/90">Analytics</a>
           <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="transition hover:text-white/90">GitHub</a>
           <a href="mailto:ftgithub@microsoft.com" class="transition hover:text-white/90">Contact</a>
         </nav>
@@ -567,8 +572,6 @@
         <span id="mobile-theme-label">Light theme</span>
         <span data-theme-icon></span>
       </button>
-      <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples" target="_blank" rel="noreferrer" class="block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">Agents</a>
-      <a href="#repo-analytics" class="block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">Analytics</a>
       <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="mt-1 block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">GitHub</a>
       <a href="mailto:ftgithub@microsoft.com" class="mt-1 block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">Contact</a>
     </div>
@@ -1083,8 +1086,8 @@
         </div>
       </div>
 
-      <!-- ── Row 2: Star History + World Map ── -->
-      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+      <!-- ── Row 2: Star History (full width) ── -->
+      <div class="mt-8">
         <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
           <div class="flex items-center gap-3">
             <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-amber-300">
@@ -1094,19 +1097,6 @@
           </div>
           <div class="mt-6" style="position:relative;height:260px;">
             <canvas id="chart-stars"></canvas>
-          </div>
-        </div>
-
-        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-emerald-300">
-              <i data-lucide="map-pin" class="h-5 w-5"></i>
-            </span>
-            <h3 class="text-lg font-semibold text-white/92">Global Reach</h3>
-            <span class="ml-auto rounded-full border border-white/8 bg-white/[0.03] px-3 py-1 text-xs text-white/40">from stargazer profiles</span>
-          </div>
-          <div id="location-chart-container" class="mt-6" style="min-height:260px;">
-            <canvas id="chart-locations"></canvas>
           </div>
         </div>
       </div>
@@ -1396,130 +1386,6 @@
         document.getElementById('chart-stars').parentElement.innerHTML = '<p class="text-sm text-white/40 text-center mt-16">Star history will appear after the next workflow run.</p>';
       }
 
-      // ── Global Reach (location bar chart) ──
-      const locContainer = document.getElementById('chart-locations');
-      const locations = data.stargazer_locations || [];
-      if (locContainer && locations.length > 0) {
-        // Normalize locations to country/region level
-        const COUNTRY_MAP = {
-          'us': '🇺🇸 United States', 'usa': '🇺🇸 United States', 'united states': '🇺🇸 United States',
-          'new york': '🇺🇸 United States', 'san francisco': '🇺🇸 United States', 'seattle': '🇺🇸 United States',
-          'los angeles': '🇺🇸 United States', 'chicago': '🇺🇸 United States', 'austin': '🇺🇸 United States',
-          'boston': '🇺🇸 United States', 'denver': '🇺🇸 United States', 'atlanta': '🇺🇸 United States',
-          'washington': '🇺🇸 United States', 'portland': '🇺🇸 United States', 'miami': '🇺🇸 United States',
-          'dallas': '🇺🇸 United States', 'houston': '🇺🇸 United States', 'phoenix': '🇺🇸 United States',
-          'detroit': '🇺🇸 United States', 'minneapolis': '🇺🇸 United States', 'philadelphia': '🇺🇸 United States',
-          'california': '🇺🇸 United States', 'texas': '🇺🇸 United States', 'florida': '🇺🇸 United States',
-          'virginia': '🇺🇸 United States', 'ohio': '🇺🇸 United States', 'colorado': '🇺🇸 United States',
-          'canada': '🇨🇦 Canada', 'toronto': '🇨🇦 Canada', 'vancouver': '🇨🇦 Canada', 'montreal': '🇨🇦 Canada',
-          'united kingdom': '🇬🇧 United Kingdom', 'uk': '🇬🇧 United Kingdom', 'london': '🇬🇧 United Kingdom', 'england': '🇬🇧 United Kingdom',
-          'germany': '🇩🇪 Germany', 'berlin': '🇩🇪 Germany', 'munich': '🇩🇪 Germany', 'frankfurt': '🇩🇪 Germany',
-          'france': '🇫🇷 France', 'paris': '🇫🇷 France',
-          'netherlands': '🇳🇱 Netherlands', 'amsterdam': '🇳🇱 Netherlands',
-          'spain': '🇪🇸 Spain', 'madrid': '🇪🇸 Spain', 'barcelona': '🇪🇸 Spain',
-          'italy': '🇮🇹 Italy', 'rome': '🇮🇹 Italy', 'milan': '🇮🇹 Italy',
-          'switzerland': '🇨🇭 Switzerland', 'zurich': '🇨🇭 Switzerland',
-          'sweden': '🇸🇪 Sweden', 'stockholm': '🇸🇪 Sweden',
-          'norway': '🇳🇴 Norway', 'oslo': '🇳🇴 Norway',
-          'denmark': '🇩🇰 Denmark', 'copenhagen': '🇩🇰 Denmark',
-          'poland': '🇵🇱 Poland', 'warsaw': '🇵🇱 Poland',
-          'ireland': '🇮🇪 Ireland', 'dublin': '🇮🇪 Ireland',
-          'portugal': '🇵🇹 Portugal', 'lisbon': '🇵🇹 Portugal',
-          'austria': '🇦🇹 Austria', 'vienna': '🇦🇹 Austria',
-          'belgium': '🇧🇪 Belgium', 'brussels': '🇧🇪 Belgium',
-          'czech': '🇨🇿 Czechia', 'prague': '🇨🇿 Czechia',
-          'romania': '🇷🇴 Romania', 'bucharest': '🇷🇴 Romania',
-          'greece': '🇬🇷 Greece', 'athens': '🇬🇷 Greece',
-          'finland': '🇫🇮 Finland', 'helsinki': '🇫🇮 Finland',
-          'china': '🇨🇳 China', 'beijing': '🇨🇳 China', 'shanghai': '🇨🇳 China', 'shenzhen': '🇨🇳 China', 'guangzhou': '🇨🇳 China',
-          'japan': '🇯🇵 Japan', 'tokyo': '🇯🇵 Japan', 'osaka': '🇯🇵 Japan',
-          'south korea': '🇰🇷 South Korea', 'korea': '🇰🇷 South Korea', 'seoul': '🇰🇷 South Korea',
-          'india': '🇮🇳 India', 'mumbai': '🇮🇳 India', 'bangalore': '🇮🇳 India', 'delhi': '🇮🇳 India', 'hyderabad': '🇮🇳 India', 'pune': '🇮🇳 India', 'chennai': '🇮🇳 India',
-          'australia': '🇦🇺 Australia', 'sydney': '🇦🇺 Australia', 'melbourne': '🇦🇺 Australia',
-          'new zealand': '🇳🇿 New Zealand', 'auckland': '🇳🇿 New Zealand',
-          'brazil': '🇧🇷 Brazil', 'são paulo': '🇧🇷 Brazil', 'sao paulo': '🇧🇷 Brazil', 'rio': '🇧🇷 Brazil',
-          'mexico': '🇲🇽 Mexico', 'mexico city': '🇲🇽 Mexico',
-          'argentina': '🇦🇷 Argentina', 'buenos aires': '🇦🇷 Argentina',
-          'colombia': '🇨🇴 Colombia', 'bogota': '🇨🇴 Colombia', 'bogotá': '🇨🇴 Colombia',
-          'chile': '🇨🇱 Chile', 'santiago': '🇨🇱 Chile',
-          'peru': '🇵🇪 Peru', 'lima': '🇵🇪 Peru',
-          'israel': '🇮🇱 Israel', 'tel aviv': '🇮🇱 Israel',
-          'turkey': '🇹🇷 Turkey', 'türkiye': '🇹🇷 Turkey', 'istanbul': '🇹🇷 Turkey',
-          'singapore': '🇸🇬 Singapore',
-          'malaysia': '🇲🇾 Malaysia', 'kuala lumpur': '🇲🇾 Malaysia',
-          'indonesia': '🇮🇩 Indonesia', 'jakarta': '🇮🇩 Indonesia',
-          'philippines': '🇵🇭 Philippines', 'manila': '🇵🇭 Philippines',
-          'thailand': '🇹🇭 Thailand', 'bangkok': '🇹🇭 Thailand',
-          'vietnam': '🇻🇳 Vietnam', 'hanoi': '🇻🇳 Vietnam',
-          'taiwan': '🇹🇼 Taiwan', 'taipei': '🇹🇼 Taiwan',
-          'south africa': '🇿🇦 South Africa', 'cape town': '🇿🇦 South Africa', 'johannesburg': '🇿🇦 South Africa',
-          'nigeria': '🇳🇬 Nigeria', 'lagos': '🇳🇬 Nigeria',
-          'egypt': '🇪🇬 Egypt', 'cairo': '🇪🇬 Egypt',
-          'kenya': '🇰🇪 Kenya', 'nairobi': '🇰🇪 Kenya',
-          'uae': '🇦🇪 UAE', 'dubai': '🇦🇪 UAE', 'abu dhabi': '🇦🇪 UAE',
-          'saudi': '🇸🇦 Saudi Arabia', 'riyadh': '🇸🇦 Saudi Arabia',
-          'pakistan': '🇵🇰 Pakistan', 'karachi': '🇵🇰 Pakistan', 'lahore': '🇵🇰 Pakistan',
-          'bangladesh': '🇧🇩 Bangladesh', 'dhaka': '🇧🇩 Bangladesh',
-          'ukraine': '🇺🇦 Ukraine', 'kyiv': '🇺🇦 Ukraine',
-          'russia': '🇷🇺 Russia', 'moscow': '🇷🇺 Russia',
-          'costa rica': '🇨🇷 Costa Rica',
-          'puerto rico': '🇵🇷 Puerto Rico',
-          'hawaii': '🇺🇸 United States',
-        };
-
-        function toCountry(loc) {
-          if (!loc) return null;
-          const lower = loc.toLowerCase().trim();
-          for (const [key, country] of Object.entries(COUNTRY_MAP)) {
-            if (lower.includes(key)) return country;
-          }
-          return '🌍 ' + loc.split(',').pop().trim();
-        }
-
-        const countryCounts = {};
-        locations.forEach(loc => {
-          const country = toCountry(loc);
-          if (country) countryCounts[country] = (countryCounts[country] || 0) + 1;
-        });
-
-        const sorted = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]);
-        const chartHeight = Math.max(200, sorted.length * 32);
-        locContainer.parentElement.style.height = chartHeight + 'px';
-
-        new Chart(locContainer, {
-          type: 'bar',
-          data: {
-            labels: sorted.map(s => s[0]),
-            datasets: [{
-              data: sorted.map(s => s[1]),
-              backgroundColor: 'rgba(52,211,153,0.35)',
-              borderColor: 'rgba(52,211,153,0.7)',
-              borderWidth: 1,
-              borderRadius: 6,
-              borderSkipped: false,
-            }]
-          },
-          options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              x: {
-                grid: { color: gridColor },
-                ticks: { color: labelColor, stepSize: 1 },
-                title: { display: true, text: 'Stargazers', color: labelColor }
-              },
-              y: {
-                grid: { display: false },
-                ticks: { color: labelColor, font: { size: 13 } }
-              }
-            }
-          }
-        });
-      } else if (locContainer) {
-        locContainer.parentElement.innerHTML = '<p class="text-sm text-white/40 text-center mt-16">Location data will appear after the next workflow run.</p>';
-      }
 
       // ── Referrers list (categorized, full names visible) ──
       const refContainer = document.getElementById('referrer-list');
