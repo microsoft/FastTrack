@@ -138,8 +138,9 @@ PowerClaw is designed to be extensible — you can layer in guided skills for sp
 | Meeting Copilot Loop | Prompt Tool | Full meeting lifecycle: prep, recap, commitment tracking |
 | Commitment Tracker | Prompt Tool | Autonomous follow-through on promises and deadlines |
 | Agent Fleet Governor | MCP Server | Monitor and govern your org's AI agent fleet |
+| Workplace Intelligence Monitor | MCP Server | Viva Insights + Power BI workforce analytics |
 
-> **[Browse all skills →](skills/README.md)** — 7 guided extensions with step-by-step setup, copy-paste prompts, and recommended AI models.
+> **[Browse all skills →](skills/README.md)** — 8 guided extensions with step-by-step setup, copy-paste prompts, and recommended AI models.
 
 **💡 More ideas:**
 - **CRM pulse** — Before every customer call, pull open opportunities and recent context into a one-pager
