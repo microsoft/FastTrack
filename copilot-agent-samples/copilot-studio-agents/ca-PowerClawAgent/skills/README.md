@@ -12,11 +12,12 @@ PowerClaw is already a strong 24/7 AI Chief of Staff out of the box. This librar
 
 ## What is a Skill?
 
-A **skill** is a self-contained capability that teaches PowerClaw how to do a specific job especially well using:
+A **skill** is a guided PowerClaw extension for a specific job to be done. Skills are activated through:
 
-- **Prompt tools** in Copilot Studio
-- **Code Interpreter** for file analysis, charts, slides, and generated outputs
-- **Existing MCPs and connectors** already available to PowerClaw
+- **Prompt Tool** — add a prompt tool with copy-paste instructions in Copilot Studio
+- **MCP Server** — enable an MCP server and toggle on the required tools
+
+Some skills also use **Code Interpreter** or existing connectors.
 
 Skills are **not** the same thing as:
 
@@ -34,11 +35,13 @@ Think of PowerClaw as the operating system, and skills as optional apps you laye
 Most skills follow the same simple pattern:
 
 1. A user asks for a job to be done in natural language
-2. An admin adds the needed **prompt tool(s)** in Copilot Studio
+2. An admin activates the skill through the right path in Copilot Studio:
+   - Add the needed **prompt tool**
+   - Or enable the needed **MCP server** and toggle on the required tools
 3. Optional capabilities are enabled if needed:
    - **Code Interpreter**
    - **File upload**
-   - Relevant **MCPs/connectors**
+   - Relevant **connectors**
 4. The user invokes the skill conversationally in Teams or Microsoft 365 Copilot
 
 No PowerClaw YAML surgery required. The goal is to keep the foundation stable while making capability expansion easy.
@@ -47,14 +50,20 @@ No PowerClaw YAML surgery required. The goal is to keep the foundation stable wh
 
 ## Skills Catalog
 
-| Skill | Complexity | Best For | Requires | Summary |
-|---|---|---|---|---|
-| [Weekly Status Report](weekly-status-report.md) | Medium | Managers, ICs, execs | WorkIQ MCPs | Compile weekly wins, progress, blockers, and priorities |
-| [Meeting Copilot Loop](meeting-copilot-loop.md) | Medium | Execs, managers, PMs, account teams | WorkIQ MCPs | Prep before, recap after, track commitments between — full meeting lifecycle |
-| [Decision Memo Builder](decision-memo-builder.md) | Hard | Strategy, PMs, execs | WorkIQ MCPs | Transform rough notes into structured decision memos |
-| [Commitment Tracker](commitment-tracker.md) | Medium | Managers, execs, PMs | WorkIQ MCPs, SharePoint Lists MCP | Extract commitments, track them, and chase follow-through autonomously |
-| [Executive Radar](executive-radar.md) | Medium | Execs, managers, chiefs of staff | WorkIQ MCPs, SharePoint Lists MCP | "What needs my attention?" — prioritized triage across mail, calendar, tasks, and memory |
-| [Stakeholder Brief](stakeholder-brief.md) | Medium | Execs, PMs, account teams | WorkIQ MCPs | Living dossier on a person, account, or project with recommended next moves |
+> **Activation types:**
+> 🔧 **Prompt Tool** — create a prompt tool in Copilot Studio with the provided instructions
+> 🔌 **MCP Server** — enable an MCP server and toggle on the required tools (no prompt needed)
+
+| Skill | Activation | Audience | Summary |
+|---|---|---|---|
+| [Weekly Status Report](weekly-status-report.md) | Prompt Tool | Managers, ICs, execs | Compile weekly wins, progress, blockers, and priorities |
+| [Meeting Copilot Loop](meeting-copilot-loop.md) | Prompt Tool | Execs, managers, PMs | Prep before, recap after, track commitments between |
+| [Commitment Tracker](commitment-tracker.md) | Prompt Tool | Managers, execs, PMs | Extract commitments, track them, chase follow-through autonomously |
+| [Executive Radar](executive-radar.md) | Prompt Tool | Execs, managers, chiefs of staff | Prioritized triage across mail, calendar, tasks, and memory |
+| [Stakeholder Brief](stakeholder-brief.md) | Prompt Tool | Execs, PMs, account teams | Living dossier on a person, account, or project |
+| [Decision Memo Builder](decision-memo-builder.md) | Prompt Tool | Strategy, PMs, execs | Transform rough notes into structured decision memos |
+| [Agent Fleet Governor](agent-fleet-governor.md) | MCP Server | IT admins, governance teams | Monitor, audit, and govern your org's AI agent fleet |
+| [Workplace Intelligence Monitor](workplace-intelligence-monitor.md) | MCP Server | HR analytics, chiefs of staff, business leaders | Query Viva Insights and Power BI models for workforce health trends |
 
 ---
 
@@ -81,6 +90,8 @@ If you're building out the library over time, this is the smoothest path:
 4. **Executive Radar** — synthesized "what needs my attention" triage
 5. **Stakeholder Brief** — living dossiers that compound over time
 6. **Decision Memo Builder** — highest complexity, strongest executive output
+7. **Agent Fleet Governor** — first MCP-powered skill, strong for IT admins and governance teams
+8. **Workplace Intelligence Monitor** — Power BI + Viva Insights workforce analytics via MCP
 
 This sequence starts with the most immediately useful skills and progresses toward richer capabilities that benefit from accumulated memory and context.
 

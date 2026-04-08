@@ -130,14 +130,22 @@ PowerClaw is intentionally lightweight — a starting point you can extend. Inte
 
 ### 🔌 Extend PowerClaw
 
-Power Platform provides 1000+ connectors to build on. A few ideas that play to PowerClaw's strengths — autonomous follow-through, cross-source synthesis, and proactive intelligence:
+PowerClaw is designed to be extensible — you can layer in guided skills for specific jobs without changing the core foundation.
 
-- **CRM pulse** — Before every customer call, pull open opportunities, last touchpoints, and recent support tickets into a one-pager. Heartbeat delivers it before the meeting starts.
-- **Copilot Analytics brief** — Connect to Power BI and M365 Copilot usage reports. Every Monday, get an AI adoption summary with top users, underutilized licenses, and trends — automatically.
-- **Event-driven reflexes** — Expose a Power Automate HTTP trigger so external events (a form submission, a new lead, a Teams mention) wake the agent instantly instead of waiting for the next heartbeat
-- **Risk & escalation monitor** — Scan email and Teams for escalation signals (keywords, VIP senders, overdue threads) and surface a daily risk digest before things spiral
+| Skill | Type | What it does |
+|---|---|---|
+| Weekly Status Report | Prompt Tool | Cross-source weekly synthesis via heartbeat |
+| Meeting Copilot Loop | Prompt Tool | Full meeting lifecycle: prep, recap, commitment tracking |
+| Commitment Tracker | Prompt Tool | Autonomous follow-through on promises and deadlines |
+| Agent Fleet Governor | MCP Server | Monitor and govern your org's AI agent fleet |
+| Workplace Intelligence Monitor | MCP Server | Viva Insights + Power BI workforce analytics |
 
-> 📚 **Looking for step-by-step guides?** The **[Skills Library](skills/README.md)** has ready-to-use skill guides with setup instructions, copy-paste prompts, and recommended AI models for use cases like these and more.
+> **[Browse all skills →](skills/README.md)** — 8 guided extensions with step-by-step setup, copy-paste prompts, and recommended AI models.
+
+**💡 More ideas:**
+- **CRM pulse** — Before every customer call, pull open opportunities and recent context into a one-pager
+- **Copilot Analytics brief** — Weekly AI adoption summary with usage trends from Power BI
+- **Risk & escalation monitor** — Daily risk digest from email and Teams escalation signals
 
 ---
 
