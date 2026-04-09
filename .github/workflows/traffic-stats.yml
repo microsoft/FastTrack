@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Collect and persist traffic data
         env:
@@ -24,63 +24,106 @@ jobs:
           set -euo pipefail
 
           REPO="microsoft/FastTrack"
+          REPO_OWNER="${REPO%/*}"
+          REPO_NAME="${REPO#*/}"
           DATA_DIR="traffic-data"
           DATE=$(date -u +"%Y-%m-%d")
+
+          fetch_required_json() {
+            local label="$1"
+            local endpoint="$2"
+            local response
+
+            if ! response=$(gh api "$endpoint" 2>&1); then
+              echo "::error::Failed to fetch $label: $response"
+              exit 1
+            fi
+
+            if ! printf '%s' "$response" | jq -e . >/dev/null 2>&1; then
+              echo "::error::Invalid JSON returned for $label"
+              exit 1
+            fi
+
+            printf '%s' "$response"
+          }
 
           mkdir -p "$DATA_DIR"
 
           echo "📊 Fetching traffic data for $REPO on $DATE..."
 
           # Fetch all four traffic endpoints
-          views=$(gh api "repos/$REPO/traffic/views" 2>&1) || {
-            echo "::error::Failed to fetch views: $views"
-            exit 1
-          }
-
-          clones=$(gh api "repos/$REPO/traffic/clones" 2>&1) || {
-            echo "::error::Failed to fetch clones: $clones"
-            exit 1
-          }
-
-          referrers=$(gh api "repos/$REPO/traffic/popular/referrers" 2>&1) || {
-            echo "::error::Failed to fetch referrers: $referrers"
-            exit 1
-          }
-
-          paths=$(gh api "repos/$REPO/traffic/popular/paths" 2>&1) || {
-            echo "::error::Failed to fetch paths: $paths"
-            exit 1
-          }
+          views=$(fetch_required_json "views" "repos/$REPO/traffic/views")
+          clones=$(fetch_required_json "clones" "repos/$REPO/traffic/clones")
+          referrers=$(fetch_required_json "referrers" "repos/$REPO/traffic/popular/referrers")
+          paths=$(fetch_required_json "paths" "repos/$REPO/traffic/popular/paths")
 
           # Build a combined JSON snapshot for today
 
-          # Fetch star count and repo metadata
-          echo "⭐ Fetching star data..."
-          star_count=$(gh api "repos/$REPO" --jq '.stargazers_count')
-          forks_count=$(gh api "repos/$REPO" --jq '.forks_count')
+          # Fetch star/fork metadata with graceful fallback
+          echo "⭐ Fetching repository metadata..."
+          star_count=0
+          forks_count=0
+          repo_metadata="{}"
+
+          if repo_response=$(gh api "repos/$REPO" 2>&1); then
+            if printf '%s' "$repo_response" | jq -e . >/dev/null 2>&1; then
+              repo_metadata="$repo_response"
+              star_count=$(printf '%s' "$repo_metadata" | jq -r '.stargazers_count // 0' 2>/dev/null || printf '0')
+              forks_count=$(printf '%s' "$repo_metadata" | jq -r '.forks_count // 0' 2>/dev/null || printf '0')
+            else
+              echo "::warning::Invalid JSON returned for repository metadata. Using fallback values."
+            fi
+          else
+            echo "::warning::Failed to fetch repository metadata: $repo_response"
+          fi
 
           # Fetch stargazer timeline (with starred_at dates)
           echo "📅 Fetching stargazer timeline..."
-          star_timeline=$(gh api "repos/$REPO/stargazers" \
+          star_timeline="[]"
+          if star_timeline_response=$(gh api --paginate --slurp \
             -H "Accept: application/vnd.github.star+json" \
-            --paginate --jq '.[].starred_at' 2>/dev/null | sort | jq -R -s 'split("\n") | map(select(length > 0))') || star_timeline="[]"
+            "repos/$REPO/stargazers" 2>&1); then
+            if star_timeline_json=$(printf '%s' "$star_timeline_response" | jq -ce '[.[].[]? | .starred_at | select(type == "string" and length > 0)] | sort' 2>/dev/null); then
+              star_timeline="$star_timeline_json"
+            else
+              echo "::warning::Failed to parse stargazer timeline. Using empty array."
+            fi
+          else
+            echo "::warning::Failed to fetch stargazer timeline: $star_timeline_response"
+          fi
 
-          # Fetch a sample of stargazer locations (last 30 stargazers)
+          # Fetch a sample of stargazer locations (last 30 stargazers) in one GraphQL call
           echo "🌍 Fetching stargazer locations..."
           locations="[]"
-          stargazer_logins=$(gh api "repos/$REPO/stargazers" \
-            -H "Accept: application/vnd.github.star+json" \
-            --jq '.[-30:][].user.login' 2>/dev/null || true)
+          location_query='query($owner: String!, $name: String!) {
+            repository(owner: $owner, name: $name) {
+              stargazers(last: 30) {
+                nodes {
+                  ... on User {
+                    location
+                  }
+                }
+              }
+            }
+          }'
 
-          if [ -n "$stargazer_logins" ]; then
-            loc_array="[]"
-            for login in $stargazer_logins; do
-              loc=$(gh api "users/$login" --jq '.location // empty' 2>/dev/null || true)
-              if [ -n "$loc" ]; then
-                loc_array=$(echo "$loc_array" | jq --arg l "$loc" '. + [$l]')
-              fi
-            done
-            locations="$loc_array"
+          if location_response=$(gh api graphql \
+            -f query="$location_query" \
+            -F owner="$REPO_OWNER" \
+            -F name="$REPO_NAME" 2>&1); then
+            if location_json=$(printf '%s' "$location_response" | jq -ce '
+              if ((.errors // []) | length) > 0 then
+                error("graphql errors")
+              else
+                [.data.repository.stargazers.nodes[]?.location | select(type == "string" and length > 0)]
+              end
+            ' 2>/dev/null); then
+              locations="$location_json"
+            else
+              echo "::warning::Failed to parse stargazer locations. Using empty array."
+            fi
+          else
+            echo "::warning::Failed to fetch stargazer locations: $location_response"
           fi
 
           # Build combined JSON snapshot
@@ -112,8 +155,8 @@ jobs:
           SUMMARY_FILE="$DATA_DIR/summary.json"
 
           # Extract today's totals from the 14-day data
-          today_views=$(echo "$views" | jq "[.views[] | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
-          today_clones=$(echo "$clones" | jq "[.clones[] | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
+          today_views=$(printf '%s' "$views" | jq "[.views[]? | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
+          today_clones=$(printf '%s' "$clones" | jq "[.clones[]? | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
 
           new_entry=$(jq -n \
             --arg date "$DATE" \
