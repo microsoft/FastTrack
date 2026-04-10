@@ -1,436 +1,1197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>copilot-studio-workflow Showcase</title>
+  <title>copilot-studio-workflow | FastTrack Showcase</title>
+  <meta
+    name="description"
+    content="Build Copilot Studio agents like software with the FastTrack copilot-studio-workflow skill."
+  />
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='16' y='22' font-size='20' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E"
+    type="image/svg+xml"
+  />
+  <script>
+    (() => {
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+          document.documentElement.classList.add('light');
+        }
+      } catch (error) {
+        // Ignore storage access issues and fall back to dark mode.
+      }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          boxShadow: {
+            glow: '0 0 0 1px rgba(255,255,255,0.06), 0 24px 80px rgba(59,130,246,0.12)',
+          },
+        },
+      },
+    };
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
-      --sidebar-bg:#1e1b4b; --sidebar-border:rgba(255,255,255,.12); --page-bg:#f6f3ff; --panel-bg:#fff; --panel-muted:#f8f7ff;
-      --text:#1f2937; --muted:#5b6475; --heading:#111827; --accent:#7c3aed; --accent-strong:#6d28d9; --accent-soft:#ede9fe;
-      --accent-line:#d8c8ff; --line:#e5e7eb; --shadow:0 28px 70px rgba(30,27,75,.11); --warning-bg:#fffbeb; --warning-border:#f59e0b;
-      --warning-text:#92400e; --success-bg:#f5f3ff; --success-border:#c4b5fd; --radius-xl:26px; --radius-lg:20px; --radius-md:16px;
+      color-scheme: dark;
+      --bg: #000000;
+      --surface: rgba(255, 255, 255, 0.02);
+      --surface-strong: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --text-primary: rgba(255, 255, 255, 0.92);
+      --text-secondary: rgba(255, 255, 255, 0.55);
+      --accent-a: rgba(56, 189, 248, 0.22);
+      --accent-b: rgba(139, 92, 246, 0.2);
     }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
+
+    html.light {
+      color-scheme: light;
+      --bg: #fafafa;
+      --surface: rgba(0, 0, 0, 0.025);
+      --surface-strong: rgba(0, 0, 0, 0.05);
+      --border: rgba(0, 0, 0, 0.08);
+      --border-strong: rgba(0, 0, 0, 0.15);
+      --text-primary: rgba(0, 0, 0, 0.87);
+      --text-secondary: rgba(0, 0, 0, 0.5);
+      --accent-a: rgba(56, 189, 248, 0.08);
+      --accent-b: rgba(139, 92, 246, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      margin:0; color:var(--text); font-family:"Segoe UI Variable","Segoe UI","Trebuchet MS",sans-serif; line-height:1.6;
-      background:radial-gradient(circle at top right, rgba(124,58,237,.12), transparent 24%), linear-gradient(180deg, #fcfbff 0%, var(--page-bg) 100%);
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text-primary);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 35%),
+        radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.06), transparent 30%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    a { color:var(--accent-strong); text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    code, pre, kbd { font-family:"Cascadia Code","Consolas","Courier New",monospace; }
-    .layout { display:grid; grid-template-columns:300px minmax(0,1fr); min-height:100vh; }
-    .sidebar {
-      position:sticky; top:0; height:100vh; padding:28px 22px; color:#f5f3ff;
-      background:radial-gradient(circle at top, rgba(255,255,255,.08), transparent 26%), linear-gradient(180deg, #23195f 0%, var(--sidebar-bg) 68%);
-      border-right:1px solid var(--sidebar-border);
+
+    html.light body {
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.04), transparent 35%),
+        radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.03), transparent 30%),
+        var(--bg);
     }
-    .brand { display:grid; gap:10px; padding-bottom:22px; margin-bottom:20px; border-bottom:1px solid var(--sidebar-border); }
-    .brand-mark {
-      width:46px; height:46px; display:inline-grid; place-items:center; border-radius:14px; background:rgba(255,255,255,.12); color:#fff; font-size:1.4rem;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    .brand h1 { margin:0; color:#fff; font-size:1.3rem; line-height:1.15; letter-spacing:-.03em; }
-    .brand p, .sidebar-note, .sidebar-meta { margin:0; color:rgba(245,243,255,.76); }
-    .sidebar-stack { display:grid; gap:16px; }
-    .nav-label { margin:0 0 12px; font-size:.72rem; text-transform:uppercase; letter-spacing:.14em; color:rgba(245,243,255,.5); }
-    .nav-list { list-style:none; padding:0; margin:0; display:grid; gap:6px; }
-    .nav-list a {
-      display:block; padding:10px 12px; border-radius:12px; color:rgba(245,243,255,.82);
-      transition:transform 180ms ease, background-color 180ms ease, color 180ms ease;
+
+    button {
+      font: inherit;
     }
-    .nav-list a:hover, .nav-list a:focus-visible, .nav-list a.active {
-      text-decoration:none; color:#fff; background:rgba(124,58,237,.35); transform:translateX(2px); outline:none;
+
+    ::selection {
+      background: rgba(56, 189, 248, 0.2);
+      color: rgba(255, 255, 255, 0.96);
     }
-    .sidebar-note, .sidebar-meta {
-      padding:14px; border-radius:16px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); font-size:.92rem;
+
+    html.light ::selection {
+      background: rgba(14, 165, 233, 0.16);
+      color: rgba(0, 0, 0, 0.92);
     }
-    .sidebar-note strong, .sidebar-meta strong { color:#fff; }
-    .main { padding:34px; }
-    .content { max-width:1160px; margin:0 auto; }
-    .hero, .section-card {
-      background:var(--panel-bg); border:1px solid rgba(17,24,39,.06); border-radius:var(--radius-xl); box-shadow:var(--shadow);
+
+    .mesh {
+      position: absolute;
+      inset: -20%;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(59, 130, 246, 0.14), transparent),
+        radial-gradient(ellipse 500px 350px at 75% 30%, rgba(139, 92, 246, 0.12), transparent),
+        radial-gradient(ellipse 450px 300px at 55% 75%, rgba(96, 165, 250, 0.08), transparent);
+      opacity: 0.8;
+      pointer-events: none;
     }
-    .hero { position:relative; overflow:hidden; padding:36px; margin-bottom:24px; }
-    .hero::after {
-      content:""; position:absolute; inset:auto -90px -110px auto; width:280px; height:280px; border-radius:50%;
-      background:radial-gradient(circle, rgba(124,58,237,.18), rgba(124,58,237,0) 72%); pointer-events:none;
+
+    html.light .mesh {
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(59, 130, 246, 0.06), transparent),
+        radial-gradient(ellipse 500px 350px at 75% 30%, rgba(139, 92, 246, 0.06), transparent),
+        radial-gradient(ellipse 450px 300px at 55% 75%, rgba(96, 165, 250, 0.04), transparent);
+      opacity: 0.35;
     }
-    .eyebrow, .section-kicker, .badge, .workflow-label {
-      display:inline-flex; align-items:center; gap:8px; border-radius:999px; font-weight:700; letter-spacing:.03em;
+
+    .hero-grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+      opacity: 0.45;
+      pointer-events: none;
     }
-    .eyebrow { padding:8px 13px; background:var(--accent-soft); color:var(--accent-strong); font-size:.82rem; }
-    .hero h2, .section-header h2 { margin:0; color:var(--heading); font-family:"Cambria","Georgia",serif; letter-spacing:-.04em; }
-    .hero h2 { margin-top:18px; font-size:clamp(2.2rem, 5vw, 4rem); line-height:.98; max-width:10.5ch; }
-    .hero .tagline { margin:14px 0 0; color:var(--heading); font-size:clamp(1.15rem, 2vw, 1.45rem); font-weight:700; }
-    .hero .subtagline, .section-header p, .lede, .feature-copy, .workflow-card p, .problem-card p, .step-card p, .install-note p, .footer { color:var(--muted); }
-    .hero .subtagline { margin:8px 0 0; font-size:1.06rem; max-width:60ch; }
-    .hero-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(320px,.95fr); gap:20px; align-items:stretch; margin-top:28px; }
-    .hero-panel, .install-panel, .stat-card, .problem-card, .feature-card, .step-card, .workflow-card, .gotcha-card, .install-note {
-      border-radius:var(--radius-lg); border:1px solid var(--line); background:linear-gradient(180deg, #fff 0%, #fcfbff 100%);
+
+    html.light .hero-grid::before {
+      background-image:
+        linear-gradient(rgba(15,23,42,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,23,42,0.045) 1px, transparent 1px);
+      opacity: 0.16;
     }
-    .hero-panel { padding:20px; background:linear-gradient(180deg, #fbfaff 0%, #f7f4ff 100%); border-color:var(--accent-line); }
-    .hero-panel h3, .install-panel h3, .problem-card h3, .feature-card h3, .step-card h3, .workflow-card h3, .gotcha-card h3, .chat-example h3, .install-note h3 {
-      margin:0 0 10px; color:var(--heading); font-size:1rem; line-height:1.3;
+
+    .surface-card {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 28px;
+      transition: transform 220ms ease, border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
     }
-    .hero-panel ul, .feature-card ul, .install-note ul { margin:12px 0 0; padding-left:18px; }
-    .hero-panel li + li, .feature-card li + li, .install-note li + li { margin-top:8px; }
-    .install-panel {
-      padding:22px; position:relative; z-index:1; background:linear-gradient(180deg, rgba(124,58,237,.08), rgba(124,58,237,.03)), #fff;
-      border-color:rgba(124,58,237,.24);
+
+    .surface-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+      background: var(--surface-strong);
+      box-shadow: 0 20px 80px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
     }
-    .install-panel h3, .section-kicker { font-size:.76rem; text-transform:uppercase; }
-    .install-panel h3 { letter-spacing:.14em; color:var(--accent-strong); }
-    .command-block, .flow-band, .terminal, .path-strip {
-      background:#120f2f; color:#f5f3ff; border-radius:18px; border:1px solid rgba(124,58,237,.28); overflow:hidden;
+
+    html.light .surface-card {
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04), 0 16px 42px rgba(15, 23, 42, 0.06);
     }
-    .command-label, .terminal-bar {
-      display:flex; align-items:center; gap:8px; padding:10px 14px; font-size:.83rem; color:rgba(245,243,255,.72);
-      border-bottom:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04);
+
+    html.light .surface-card:hover {
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08), 0 24px 60px rgba(15, 23, 42, 0.08);
     }
-    .dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.28); }
-    .command-block pre, .flow-band pre { margin:0; padding:16px 18px; background:transparent; border:none; color:#ede9fe; overflow-x:auto; }
-    .command-footnote { margin:12px 0 0; color:var(--muted); font-size:.94rem; }
-    .stats-grid, .problem-grid, .feature-grid, .steps-grid, .chat-grid, .workflow-grid, .gotcha-grid, .install-grid { display:grid; gap:16px; }
-    .stats-grid { margin-top:18px; grid-template-columns:repeat(3, minmax(0,1fr)); }
-    .stat-card { padding:16px; background:#fff; }
-    .stat-card strong { display:block; font-size:1.7rem; color:var(--heading); line-height:1; margin-bottom:6px; }
-    .stat-card span { color:var(--muted); font-size:.95rem; }
-    .section-card { padding:30px; margin-bottom:22px; scroll-margin-top:18px; }
-    .section-header { display:flex; flex-wrap:wrap; justify-content:space-between; gap:14px; align-items:end; margin-bottom:18px; }
-    .section-header h2 { font-size:clamp(1.55rem, 2vw, 2.1rem); line-height:1.06; }
-    .section-header p { margin:0; max-width:46ch; }
-    .section-kicker { padding:6px 12px; background:var(--accent-soft); color:var(--accent-strong); }
-    .lede { margin:0 0 18px; font-size:1.02rem; max-width:72ch; }
-    .callout { margin-top:18px; padding:16px 18px; border-radius:16px; border:1px solid var(--success-border); background:var(--success-bg); }
-    .callout strong { color:var(--heading); }
-    .problem-grid { grid-template-columns:repeat(2, minmax(0,1fr)); margin-top:20px; }
-    .problem-card, .step-card, .feature-card, .workflow-card, .gotcha-card, .install-note { padding:18px 20px; }
-    .problem-card p, .step-card p, .gotcha-card p { margin:0; font-size:.95rem; }
-    .flow-band { margin:20px 0 18px; }
-    .steps-grid { grid-template-columns:repeat(7, minmax(0,1fr)); }
-    .badge { min-width:34px; justify-content:center; padding:6px 10px; margin-bottom:12px; background:var(--accent-soft); color:var(--accent-strong); font-size:.82rem; }
-    .feature-grid { grid-template-columns:repeat(2, minmax(0,1fr)); margin-top:20px; }
-    .feature-card { background:linear-gradient(180deg, #fff 0%, #faf9ff 100%); }
-    .feature-head { display:flex; gap:14px; align-items:flex-start; }
-    .feature-icon {
-      width:42px; height:42px; display:grid; place-items:center; flex:0 0 42px; border-radius:14px; background:var(--accent-soft); color:var(--accent-strong); font-size:1.1rem;
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-secondary);
+      padding: 0.55rem 0.95rem;
+      line-height: 1;
     }
-    .feature-copy { margin:0; }
-    .chat-grid { grid-template-columns:repeat(2, minmax(0,1fr)); margin-top:18px; }
-    .chat-example { border:1px solid var(--line); border-radius:22px; background:linear-gradient(180deg, #fff 0%, #fbfaff 100%); overflow:hidden; }
-    .chat-example h3 { padding:18px 20px 0; margin-bottom:6px; }
-    .chat-example p { margin:0; padding:0 20px 16px; color:var(--muted); font-size:.95rem; }
-    .terminal-thread { padding:18px; display:grid; gap:12px; background:linear-gradient(180deg, #16122f 0%, #1a1739 100%); }
-    .message {
-      max-width:92%; padding:12px 14px; border-radius:16px; font-size:.95rem; line-height:1.55; border:1px solid transparent;
+
+    html.light .pill {
+      background: rgba(255, 255, 255, 0.85);
     }
-    .message strong { display:block; margin-bottom:6px; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; }
-    .message.user { margin-left:auto; background:rgba(124,58,237,.24); border-color:rgba(196,181,253,.35); color:#f5f3ff; }
-    .message.assistant { background:rgba(255,255,255,.92); border-color:rgba(255,255,255,.16); color:#1f2937; }
-    .message.assistant code, .install-note code { background:#efe9ff; }
-    .workflow-grid { grid-template-columns:repeat(2, minmax(0,1fr)); margin-top:18px; }
-    .workflow-label { margin-bottom:12px; padding:6px 10px; background:var(--accent-soft); color:var(--accent-strong); font-size:.82rem; }
-    .path-strip { margin-top:14px; padding:12px 14px; font-size:.88rem; line-height:1.55; }
-    .gotcha-grid { grid-template-columns:repeat(3, minmax(0,1fr)); margin-top:18px; }
-    .gotcha-card {
-      background:linear-gradient(180deg, var(--warning-bg) 0%, #fffef6 100%); border-color:rgba(245,158,11,.42); box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);
+
+    .section-label {
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
     }
-    .gotcha-card h3 { color:#7c2d12; }
-    .gotcha-card p { color:var(--warning-text); }
-    .install-grid { grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); margin-top:18px; align-items:start; }
-    .compatibility { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 0; }
-    .compatibility span {
-      padding:7px 12px; border-radius:999px; background:#f4f1ff; border:1px solid var(--accent-line); color:var(--accent-strong); font-size:.86rem; font-weight:600;
+
+    .hero-gradient-text {
+      background-image: linear-gradient(to right, rgb(125 211 252), rgba(255,255,255,0.98), rgb(196 181 253));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    table { width:100%; border-collapse:collapse; margin-top:18px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
-    th, td { padding:14px 16px; border-bottom:1px solid var(--line); vertical-align:top; text-align:left; }
-    th { background:#f2eeff; color:#4c1d95; font-size:.9rem; }
-    tbody tr:nth-child(even) { background:var(--panel-muted); }
-    tbody tr:last-child td { border-bottom:none; }
-    .footer { padding:10px 4px 24px; text-align:center; font-size:.92rem; }
-    .footer strong { color:var(--heading); }
-    @media (max-width:1180px) {
-      .layout { grid-template-columns:1fr; }
-      .sidebar { position:relative; height:auto; }
-      .hero-grid, .install-grid, .problem-grid, .feature-grid, .chat-grid, .workflow-grid, .gotcha-grid { grid-template-columns:1fr; }
-      .steps-grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
+
+    html.light .hero-gradient-text {
+      background-image: linear-gradient(to right, #0284c7, #1e3a8a, #7c3aed);
     }
-    @media (max-width:760px) {
-      .main { padding:16px; }
-      .sidebar { padding:22px 18px; }
-      .hero, .section-card { padding:22px; border-radius:22px; }
-      .hero-grid, .stats-grid, .steps-grid { grid-template-columns:1fr; }
-      .section-header { display:block; }
-      th, td { padding:12px; }
+
+    .fade-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 800ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 800ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: opacity, transform;
     }
+
+    .fade-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .theme-toggle {
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    html.light .theme-toggle {
+      background: rgba(255, 255, 255, 0.84) !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+      color: rgba(0, 0, 0, 0.72) !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    html.light .bg-black {
+      background-color: #fafafa !important;
+    }
+
+    html.light .bg-white {
+      background-color: #111111 !important;
+    }
+
+    html.light .bg-white\/5,
+    html.light .bg-white\/\[0\.03\],
+    html.light .bg-white\/\[0\.04\],
+    html.light .bg-white\/\[0\.05\] {
+      background-color: rgba(255, 255, 255, 0.88) !important;
+    }
+
+    html.light .hover\:bg-white\/\[0\.05\]:hover {
+      background-color: rgba(255, 255, 255, 0.96) !important;
+    }
+
+    html.light .hover\:bg-white\/90:hover {
+      background-color: rgba(17, 17, 17, 0.92) !important;
+    }
+
+    html.light .border-white\/10 {
+      border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+
+    html.light .border-white\/20 {
+      border-color: rgba(0, 0, 0, 0.16) !important;
+    }
+
+    html.light .hover\:border-white\/20:hover {
+      border-color: rgba(0, 0, 0, 0.16) !important;
+    }
+
+    html.light .text-white,
+    html.light .text-white\/90,
+    html.light .text-white\/92,
+    html.light .text-white\/95 {
+      color: rgba(0, 0, 0, 0.87) !important;
+    }
+
+    html.light .text-white\/88,
+    html.light .text-white\/85,
+    html.light .text-white\/82,
+    html.light .text-white\/80 {
+      color: rgba(0, 0, 0, 0.72) !important;
+    }
+
+    html.light .text-white\/70,
+    html.light .text-white\/65,
+    html.light .text-white\/55 {
+      color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    html.light .text-white\/45 {
+      color: rgba(0, 0, 0, 0.4) !important;
+    }
+
+    html.light .text-black {
+      color: rgba(255, 255, 255, 0.96) !important;
+    }
+
+    html.light .hover\:text-white:hover,
+    html.light .hover\:text-white\/90:hover {
+      color: rgba(0, 0, 0, 0.87) !important;
+    }
+
+    html.light .shadow-glow {
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04), 0 18px 44px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    html.light .text-sky-300 {
+      color: #0284c7 !important;
+    }
+
+    html.light .text-violet-300 {
+      color: #7c3aed !important;
+    }
+
+    html.light .text-emerald-300 {
+      color: #047857 !important;
+    }
+
+    html.light .text-cyan-300 {
+      color: #0e7490 !important;
+    }
+
+    html.light .text-amber-300 {
+      color: #b45309 !important;
+    }
+
+    html.light .text-rose-300 {
+      color: #be123c !important;
+    }
+
+    .terminal-window {
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
+      overflow: hidden;
+    }
+
+    html.light .terminal-window {
+      border-color: rgba(0, 0, 0, 0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9));
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+    }
+
+    html.light .terminal-bar {
+      border-bottom-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .terminal-dot {
+      width: 0.65rem;
+      height: 0.65rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.26);
+    }
+
+    html.light .terminal-dot {
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .code-shell {
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(3, 7, 18, 0.92);
+      overflow: hidden;
+    }
+
+    html.light .code-shell {
+      border-color: rgba(0, 0, 0, 0.08);
+      background: rgba(247, 247, 248, 0.96);
+    }
+
+    .code-shell pre {
+      margin: 0;
+      overflow-x: auto;
+      padding: 1rem 1.15rem 1.15rem;
+      color: rgba(255, 255, 255, 0.88);
+      font-family: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    html.light .code-shell pre {
+      color: rgba(0, 0, 0, 0.84);
+    }
+
+    .workflow-track {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .workflow-step {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      gap: 0 1.25rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .workflow-step:last-child {
+      border-bottom: none;
+    }
+
+    .step-number {
+      grid-row: 1 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-strong);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .chat-shell {
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(3,7,18,0.96), rgba(7,10,20,0.92));
+      overflow: hidden;
+    }
+
+    html.light .chat-shell {
+      border-color: rgba(0, 0, 0, 0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,247,249,0.98));
+    }
+
+    .chat-body {
+      display: grid;
+      gap: 1rem;
+      padding: 1.25rem;
+    }
+
+    .chat-line {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1rem 1rem 1.05rem;
+    }
+
+    .chat-line.user {
+      margin-left: auto;
+      width: min(100%, 27rem);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .chat-line.assistant {
+      background: rgba(255, 255, 255, 0.96);
+      color: rgba(0, 0, 0, 0.86);
+      width: min(100%, 32rem);
+    }
+
+    html.light .chat-line.user {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    html.light .chat-line.assistant {
+      background: rgba(245, 247, 250, 0.96);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .chat-role {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .severity-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border-radius: 999px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .severity-critical {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(248, 113, 113, 0.28);
+      color: rgb(252 165 165);
+    }
+
+    .severity-high {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.28);
+      color: rgb(253 224 71);
+    }
+
+    html.light .severity-critical {
+      color: #b91c1c;
+    }
+
+    html.light .severity-high {
+      color: #b45309;
+    }
+
+    .copy-button {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+    }
+
+    html.light .copy-button {
+      border-color: rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .section-divider {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 40%);
+    }
+
+    html.light .section-divider {
+      border-top-color: rgba(0, 0, 0, 0.08);
+      background: linear-gradient(180deg, rgba(0,0,0,0.025), transparent 40%);
+    }
+
+    .print-link::after {
+      content: attr(href);
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .workflow-track {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 3rem;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero-grid::before {
+        background-size: 44px 44px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .fade-section {
+        opacity: 1;
+        transform: none;
+        transition: none !important;
+      }
+
+      .surface-card,
+      .theme-toggle {
+        transition: none !important;
+      }
+    }
+
     @media print {
-      body { background:#fff; }
-      .layout { display:block; }
-      .sidebar { display:none; }
-      .main { padding:0; }
-      .hero, .section-card, .chat-example, .workflow-card, .gotcha-card { box-shadow:none; border:1px solid #d1d5db; break-inside:avoid; }
-      a { color:inherit; text-decoration:none; }
+      body {
+        background: #ffffff !important;
+        color: #111111 !important;
+      }
+
+      .mesh,
+      .hero-grid::before,
+      #theme-toggle,
+      .copy-button,
+      .no-print {
+        display: none !important;
+      }
+
+      .surface-card,
+      .code-shell,
+      .chat-shell,
+      .terminal-window {
+        border: 1px solid #d4d4d8 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+      }
+
+      .chat-line.assistant,
+      .chat-line.user,
+      .code-shell pre {
+        color: #111111 !important;
+        background: #ffffff !important;
+      }
+
+      a {
+        color: #111111 !important;
+      }
+
+      .print-link::after {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: #525252;
+      }
     }
   </style>
 </head>
-<body>
-  <div class="layout">
-    <aside class="sidebar" aria-label="Showcase navigation">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">✦</div>
-        <div>
-          <h1>copilot-studio-workflow</h1>
-          <p>FastTrack’s workflow skill for building Copilot Studio agents with engineering discipline.</p>
-        </div>
-      </div>
-      <div class="sidebar-stack">
-        <div>
-          <p class="nav-label">Navigate</p>
-          <ul class="nav-list">
-            <li><a href="#hero">Overview</a></li>
-            <li><a href="#problem">The Problem</a></li>
-            <li><a href="#solution">The Solution</a></li>
-            <li><a href="#teaches">What It Teaches</a></li>
-            <li><a href="#conversations">Example Conversations</a></li>
-            <li><a href="#variations">Workflow Variations</a></li>
-            <li><a href="#gotchas">Platform Gotchas</a></li>
-            <li><a href="#install">Install</a></li>
-          </ul>
-        </div>
-        <div class="sidebar-note"><strong>Core mental model:</strong> YAML in git is the source of truth, the cloud is the integration target, and the solution zip is the production handoff.</div>
-        <div class="sidebar-meta"><strong>Community spark:</strong> inspired by Alvin Abia-Williams’ AI-assisted Power Platform workflow and refined through the PowerClaw team’s real-world Copilot Studio delivery loop.</div>
-      </div>
-    </aside>
-
-    <main class="main">
-      <div class="content">
-        <header class="hero" id="hero">
-          <span class="eyebrow">FastTrack skill showcase</span>
-          <h2>copilot-studio-workflow</h2>
-          <p class="tagline">Build Copilot Studio agents like software.</p>
-          <p class="subtagline">Source control. Repeatable workflows. AI that knows the platform’s sharp edges.</p>
-          <div class="hero-grid">
-            <section class="hero-panel" aria-labelledby="value-heading">
-              <h3 id="value-heading">Why builders install this</h3>
-              <p class="feature-copy">This skill teaches your AI assistant the full professional loop: how to pull safely, scrub environment noise, edit YAML locally, package with PAC CLI, publish deliberately, and avoid the undocumented mistakes that normally cost hours.</p>
-              <ul>
-                <li>Works with GitHub Copilot CLI, Claude Code, VS Code, and cloud agents.</li>
-                <li>Encodes the PowerClaw team’s repeatable workflow instead of generic portal advice.</li>
-                <li>Turns natural language prompts into platform-aware guidance and helper-script actions.</li>
-              </ul>
-            </section>
-            <section class="install-panel" aria-labelledby="install-command-heading">
-              <h3 id="install-command-heading">Install command</h3>
-              <div class="command-block" aria-label="Install command">
-                <div class="command-label"><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span>Terminal</span></div>
-                <pre><code>copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow</code></pre>
-              </div>
-              <p class="command-footnote">Install once, then ask naturally: “Help me safely push my Copilot Studio changes.”</p>
-            </section>
-          </div>
-          <section class="stats-grid" aria-label="Showcase stats">
-            <div class="stat-card"><strong>5</strong><span>5 workflows covered</span></div>
-            <div class="stat-card"><strong>11</strong><span>11 platform gotchas encoded</span></div>
-            <div class="stat-card"><strong>4</strong><span>4 helper scripts included</span></div>
-          </section>
-        </header>
-
-        <section class="section-card" id="problem">
-          <div class="section-header">
-            <div><span class="section-kicker">1 · The Problem</span><h2>Copilot Studio is powerful, but the default workflow is still portal-first.</h2></div>
-            <p>Without an engineering workflow, every change becomes harder to review, harder to package, and harder to trust.</p>
-          </div>
-          <p class="lede">Teams can absolutely ship serious agents with Copilot Studio. The friction comes from the process around it: too much portal state, too little source-control discipline, and too many rules that are only learned after something breaks.</p>
-          <div class="problem-grid">
-            <article class="problem-card"><h3>Portal-heavy editing</h3><p>Important agent changes still feel like point-and-click project work instead of clean, reviewable software development.</p></article>
-            <article class="problem-card"><h3>No default ALM mindset</h3><p>Source control, repeatable packaging, and CI/CD habits are possible, but they are not the path most builders start with.</p></article>
-            <article class="problem-card"><h3>Undocumented platform gotchas</h3><p>Pulls dirty workflow files, pushes miss solution membership, imports disable flows, and helpers often learn that too late.</p></article>
-            <article class="problem-card"><h3>Environment sharing is fragile</h3><p>Moving an agent between environments can leak live URLs, break packaging, or produce artifacts that do not reflect the intended source.</p></article>
-            <article class="problem-card"><h3>AI assistants lack platform context</h3><p>Generic coding help does not know the Copilot Studio sync model, Power Platform solution rules, or the PowerClaw team’s proven sequence.</p></article>
-            <article class="problem-card"><h3>Manual recovery wastes hours</h3><p>When the loop is unclear, teams debug repo drift, packaging gaps, and import failures instead of building better agent behavior.</p></article>
-          </div>
-        </section>
-
-        <section class="section-card" id="solution">
-          <div class="section-header">
-            <div><span class="section-kicker">2 · The Solution</span><h2>Teach your AI assistant the full dev loop — not just isolated commands.</h2></div>
-            <p>The skill turns a professional Copilot Studio workflow into natural-language guidance your assistant can apply consistently.</p>
-          </div>
-          <div class="flow-band" aria-label="Workflow loop">
-            <div class="terminal-bar"><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span>Professional development loop</span></div>
-            <pre><code>Pull from Cloud → Revert Env Files → Edit YAML Locally → Push to Cloud → Publish → Test in Teams → Commit to Git</code></pre>
-          </div>
-          <div class="steps-grid">
-            <article class="step-card"><span class="badge">01</span><h3>Pull from Cloud</h3><p>Start from the current agent state so your local copy matches the active environment before you touch YAML.</p></article>
-            <article class="step-card"><span class="badge">02</span><h3>Revert Env Files</h3><p>Remove cloud-introduced URLs and settings churn so git only shows intentional source changes.</p></article>
-            <article class="step-card"><span class="badge">03</span><h3>Edit YAML Locally</h3><p>Make agent changes where they belong: versioned <code>.mcs.yml</code> files, reviewed like software.</p></article>
-            <article class="step-card"><span class="badge">04</span><h3>Push to Cloud</h3><p>Sync local source into Copilot Studio deliberately, with the skill guarding against stale or unsafe assumptions.</p></article>
-            <article class="step-card"><span class="badge">05</span><h3>Publish</h3><p>A pushed draft is not done. The loop includes publishing so the real agent is actually running the new logic.</p></article>
-            <article class="step-card"><span class="badge">06</span><h3>Test in Teams</h3><p>Validate in the real channel, where auth, triggers, and runtime behavior reflect production reality.</p></article>
-            <article class="step-card"><span class="badge">07</span><h3>Commit to Git</h3><p>Capture what worked after validation, with clean source and repeatable packaging discipline intact.</p></article>
-          </div>
-          <div class="callout"><strong>What changes with this skill:</strong> instead of memorizing every step, you can work through natural language — and your AI assistant already knows when to pull first, when to revert, when to add a component, and when packaging requires PAC CLI instead of portal clicks.</div>
-        </section>
-
-        <section class="section-card" id="teaches">
-          <div class="section-header">
-            <div><span class="section-kicker">3 · What the Skill Teaches Your AI</span><h2>A platform-aware operating manual for real Copilot Studio delivery.</h2></div>
-            <p>It is more than instructions. It is workflow logic, guardrails, and helper tooling encoded for day-to-day use.</p>
-          </div>
-          <div class="feature-grid">
-            <article class="feature-card">
-              <div class="feature-head"><div class="feature-icon" aria-hidden="true">🔄</div><div><h3>Development Loop</h3><p class="feature-copy">The proven pull → revert → edit → push → publish loop, including when real-channel testing is part of “done.”</p></div></div>
-              <ul><li>Fresh-pull discipline before every push</li><li>Git-safe cleanup after cloud sync</li><li>Natural language help for first-time setup and daily work</li></ul>
-            </article>
-            <article class="feature-card">
-              <div class="feature-head"><div class="feature-icon" aria-hidden="true">📦</div><div><h3>Solution Packaging</h3><p class="feature-copy">How to export, unpack, scrub environment URLs, and repack a production-ready solution with PAC CLI.</p></div></div>
-              <ul><li>Clean handoff artifacts for other environments</li><li>Explicit solution membership management</li><li>Production packaging without portal guesswork</li></ul>
-            </article>
-            <article class="feature-card">
-              <div class="feature-head"><div class="feature-icon" aria-hidden="true">⚠️</div><div><h3>Platform Gotchas</h3><p class="feature-copy">Eleven hard-won lessons from PowerClaw: initialization behavior, solution quirks, sync limits, import issues, and more.</p></div></div>
-              <ul><li><code>OnConversationStart</code> is unreliable</li><li>Push does not equal solution membership</li><li>Cloud pulls bring live URLs back into source</li></ul>
-            </article>
-            <article class="feature-card">
-              <div class="feature-head"><div class="feature-icon" aria-hidden="true">✅</div><div><h3>Best Practices</h3><p class="feature-copy">Architecture guidance for YAML hygiene, testing, memory design, initialization, packaging, and governance.</p></div></div>
-              <ul><li>Reliable channel-aware initialization patterns</li><li>Real-channel testing, not just test-pane confidence</li><li>Security-minded use of connectors, tools, and memory</li></ul>
-            </article>
-            <article class="feature-card">
-              <div class="feature-head"><div class="feature-icon" aria-hidden="true">🔧</div><div><h3>Helper Scripts</h3><p class="feature-copy">Four PowerShell helpers make the workflow faster: status, revert, preflight, and component management.</p></div></div>
-              <ul><li><code>cps-status.ps1</code> for project health</li><li><code>cps-revert.ps1</code> after cloud pulls</li><li><code>cps-preflight.ps1</code> before pushes</li><li><code>cps-add-component.ps1</code> for solution membership</li></ul>
-            </article>
-            <article class="feature-card">
-              <div class="feature-head"><div class="feature-icon" aria-hidden="true">🧠</div><div><h3>AI-Assisted ALM</h3><p class="feature-copy">Inspired by community workflows and refined through production delivery: version-controlled, reviewable, deployable, and explainable.</p></div></div>
-              <ul><li>Better prompts because the assistant knows the domain</li><li>Less time rediscovering platform rules</li><li>More time designing agent behavior that matters</li></ul>
-            </article>
-          </div>
-        </section>
-
-        <section class="section-card" id="conversations">
-          <div class="section-header">
-            <div><span class="section-kicker">4 · Example Conversations</span><h2>The skill makes AI help feel operational, not generic.</h2></div>
-            <p>These are the kinds of prompts builders use when they want a capable assistant that understands the platform’s actual workflow.</p>
-          </div>
-          <div class="chat-grid">
-            <article class="chat-example">
-              <h3>Starting a new agent project</h3><p>The skill can establish the workflow before the first risky pull or push.</p>
-              <div class="terminal">
-                <div class="terminal-bar"><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span>Copilot session</span></div>
-                <div class="terminal-thread">
-                  <div class="message user"><strong>You</strong>I need to start building a Copilot Studio agent.</div>
-                  <div class="message assistant"><strong>Copilot</strong>I’ll walk you through the local dev loop, check prerequisites with <code>cps-status.ps1</code>, and make sure you use YAML + git as the source of truth before your first sync.</div>
-                </div>
-              </div>
-            </article>
-            <article class="chat-example">
-              <h3>Dirty workflow files after pull</h3><p>The assistant recognizes cloud URL leakage immediately.</p>
-              <div class="terminal">
-                <div class="terminal-bar"><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span>Copilot session</span></div>
-                <div class="terminal-thread">
-                  <div class="message user"><strong>You</strong>I just pulled and git shows dirty workflow files.</div>
-                  <div class="message assistant"><strong>Copilot</strong>That’s the environment URL translation problem. A cloud pull brought live values into repo files. Run <code>cps-revert.ps1</code> now, then review a clean diff that only shows intentional source edits.</div>
-                </div>
-              </div>
-            </article>
-            <article class="chat-example">
-              <h3>New topic missing from solution export</h3><p>The skill knows the boundary between push and packaging.</p>
-              <div class="terminal">
-                <div class="terminal-bar"><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span>Copilot session</span></div>
-                <div class="terminal-thread">
-                  <div class="message user"><strong>You</strong>My new topic isn’t in the solution export.</div>
-                  <div class="message assistant"><strong>Copilot</strong>Push created the Dataverse component, but it did not add that component to the solution. Run <code>cps-add-component.ps1</code>, confirm membership, then re-export the package.</div>
-                </div>
-              </div>
-            </article>
-            <article class="chat-example">
-              <h3>Preflight before push</h3><p>The assistant can catch problems before they become cloud state.</p>
-              <div class="terminal">
-                <div class="terminal-bar"><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span>Copilot session</span></div>
-                <div class="terminal-thread">
-                  <div class="message user"><strong>You</strong>I’m about to push — anything I should check?</div>
-                  <div class="message assistant"><strong>Copilot</strong>Run <code>cps-preflight.ps1</code>. It will catch dirty workflow files, missing variable definitions, and basic repo hygiene issues before the push becomes a platform problem.</div>
-                </div>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="section-card" id="variations">
-          <div class="section-header">
-            <div><span class="section-kicker">5 · The Workflow Variations</span><h2>Five paths, one consistent mental model.</h2></div>
-            <p>Different jobs need different sequences. The skill helps your assistant pick the right one instead of mixing them together.</p>
-          </div>
-          <div class="workflow-grid">
-            <article class="workflow-card"><span class="workflow-label">A · YAML-only changes</span><h3>Most common day-to-day workflow</h3><p>Edit topics, instructions, actions, triggers, and variables locally, then sync safely.</p><div class="path-strip"><code>pull → revert → edit → push → publish → test → commit</code></div></article>
-            <article class="workflow-card"><span class="workflow-label">B · Flow changes</span><h3>Edit JSON, then deploy with translated environment values</h3><p>Use this when Power Automate flow definitions are the thing you are changing, not just YAML.</p><div class="path-strip"><code>edit JSON → deploy script injects URLs → import to env → test → commit placeholders</code></div></article>
-            <article class="workflow-card"><span class="workflow-label">C · Rebuild solution zip</span><h3>Refresh the production-ready package</h3><p>Export the exact environment state you want to ship, unpack it, scrub environment specifics, then repack cleanly.</p><div class="path-strip"><code>export → unpack → scrub URLs → repack → handoff</code></div></article>
-            <article class="workflow-card"><span class="workflow-label">D · Add new component</span><h3>Push creates the component; packaging still needs the solution step</h3><p>Find the Dataverse GUID and add the new bot component so exports contain what the demo environment already has.</p><div class="path-strip"><code>push via VS Code → find GUID → pac add-solution-component</code></div></article>
-            <article class="workflow-card"><span class="workflow-label">E · Remove component</span><h3>Deletion order matters</h3><p>Cleanly remove references, delete in Studio, delete the local file, and confirm the next export is actually clean.</p><div class="path-strip"><code>delete in Studio → delete local file → re-export</code></div></article>
-          </div>
-        </section>
-
-        <section class="section-card" id="gotchas">
-          <div class="section-header">
-            <div><span class="section-kicker">6 · Platform Gotchas</span><h2>The six issues most likely to burn time if your assistant does not know them.</h2></div>
-            <p>The skill encodes eleven total gotchas. These six are the ones builders hit first and hardest.</p>
-          </div>
-          <div class="gotcha-grid">
-            <article class="gotcha-card"><h3>OnConversationStart is unreliable</h3><p>Use <code>OnActivity(type: Message)</code> with an <code>IsBlank()</code> guard for just-in-time initialization across real channels.</p></article>
-            <article class="gotcha-card"><h3>Push ≠ solution component</h3><p>A new topic can exist in Dataverse and still be missing from your exported solution until you add it explicitly.</p></article>
-            <article class="gotcha-card"><h3>Global variables need YAML files</h3><p>UI references are not enough. If the variable definition is missing from <code>variables/</code>, packaging can break.</p></article>
-            <article class="gotcha-card"><h3>Cloud pull brings environment URLs</h3><p>Workflow JSON and settings can come back dirty with live values. Revert immediately unless you intentionally need them.</p></article>
-            <article class="gotcha-card"><h3>Solution import deactivates flows</h3><p>Successful import does not mean operational automation. Reconnect and re-enable flows as part of the checklist.</p></article>
-            <article class="gotcha-card"><h3>Extension sync is all-or-nothing</h3><p>There is no selective push or pull. Coordinate edits, pull first, and avoid overlapping cloud changes.</p></article>
-          </div>
-        </section>
-
-        <section class="section-card" id="install">
-          <div class="section-header">
-            <div><span class="section-kicker">7 · Install</span><h2>Install once. Build smarter immediately.</h2></div>
-            <p>This is for builders who want source control, repeatable workflows, and an AI assistant that understands the platform’s real rules.</p>
-          </div>
-          <div class="install-grid">
-            <section class="install-panel" aria-labelledby="primary-install-heading">
-              <h3 id="primary-install-heading">Primary install path</h3>
-              <div class="command-block">
-                <div class="command-label"><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span><span>GitHub Copilot CLI</span></div>
-                <pre><code>copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow</code></pre>
-              </div>
-              <div class="compatibility" aria-label="Compatibility badges"><span>GitHub Copilot CLI</span><span>Claude Code</span><span>VS Code</span><span>Cloud Agent</span></div>
-            </section>
-            <section class="install-note">
-              <h3>Why install now</h3>
-              <p>Because the difference between “it works in the portal” and “we can maintain this like software” is workflow clarity.</p>
-              <ul><li>Use your assistant for setup, sync, packaging, preflight, and troubleshooting.</li><li>Reduce time lost to hidden platform behavior and packaging gaps.</li><li>Adopt the same ALM posture that made PowerClaw repeatable and reviewable.</li></ul>
-            </section>
-          </div>
-          <table aria-label="Included helper scripts">
-            <thead><tr><th>Included helper</th><th>What it helps with</th></tr></thead>
-            <tbody>
-              <tr><td><code>cps-status.ps1</code></td><td>Checks project health, agent structure, git status, and local tooling readiness.</td></tr>
-              <tr><td><code>cps-revert.ps1</code></td><td>Reverts workflow and settings churn introduced by cloud pulls.</td></tr>
-              <tr><td><code>cps-preflight.ps1</code></td><td>Runs a pre-push hygiene check for dirty workflow files, missing variables, and repo state.</td></tr>
-              <tr><td><code>cps-add-component.ps1</code></td><td>Finds the Dataverse component and adds it to the Power Platform solution export path.</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-        <div class="footer"><strong>Built by the FastTrack team. Inspired by the community.</strong> <span>·</span> <a href="https://github.com/microsoft/FastTrack">FastTrack repository</a></div>
-      </div>
-    </main>
+<body class="bg-black text-white antialiased selection:bg-sky-400/20 selection:text-white">
+  <div class="fixed inset-x-0 top-0 z-50">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
+      <a
+        href="../../../../index.html"
+        class="no-print inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-white/70 backdrop-blur transition hover:border-white/20 hover:bg-white/[0.05] hover:text-white/90"
+      >
+        <i data-lucide="corner-up-left" class="h-4 w-4"></i>
+        FastTrack
+      </a>
+      <button
+        id="theme-toggle"
+        type="button"
+        class="theme-toggle inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/80"
+        aria-pressed="false"
+        aria-label="Toggle theme"
+      >
+        <span class="sr-only">Toggle theme</span>
+        <span data-theme-icon></span>
+      </button>
+    </div>
   </div>
 
+  <main id="top">
+    <section class="hero-grid relative isolate overflow-hidden pt-28 sm:pt-32">
+      <div class="mesh"></div>
+      <div class="relative mx-auto max-w-5xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
+        <div class="fade-section">
+          <div class="pill inline-flex text-[11px] font-semibold uppercase tracking-[0.28em] text-white/65">
+            <span aria-hidden="true">⚡</span>
+            Copilot CLI Skill
+          </div>
+
+          <h1 class="mt-8 text-5xl font-semibold leading-[0.94] tracking-tight text-white/95 sm:text-6xl lg:text-7xl">
+            copilot-studio-workflow
+          </h1>
+
+          <p class="mt-5 text-2xl font-medium tracking-tight sm:text-3xl lg:text-4xl">
+            <span class="hero-gradient-text">Build Copilot Studio agents like software.</span>
+          </p>
+
+          <p class="mt-6 max-w-3xl text-lg leading-8 text-white/55 sm:text-xl">
+            Source control. Repeatable workflows. AI that knows the platform's sharp edges.
+          </p>
+
+          <div class="mt-10 max-w-3xl">
+            <div class="code-shell shadow-glow">
+              <div class="terminal-bar justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span>Install command</span>
+                </div>
+                <button
+                  type="button"
+                  class="copy-button inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition hover:text-white/90"
+                  data-copy="copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow"
+                >
+                  <i data-lucide="copy" class="h-3.5 w-3.5"></i>
+                  Copy
+                </button>
+              </div>
+              <pre><code>copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow</code></pre>
+            </div>
+          </div>
+
+          <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+            <a
+              href="#get-started"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white px-6 py-3 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:bg-white/90"
+            >
+              Get Started
+              <i data-lucide="arrow-down" class="h-4 w-4"></i>
+            </a>
+            <a
+              href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-skills/copilot-studio-workflow"
+              target="_blank"
+              rel="noreferrer"
+              class="print-link inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-3 text-sm font-medium text-white/85 transition hover:border-white/20 hover:bg-white/[0.05]"
+            >
+              View on GitHub
+              <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="fade-section mt-16 grid gap-4 sm:grid-cols-3">
+          <article class="surface-card p-6 sm:p-7">
+            <p class="text-sm font-medium uppercase tracking-[0.24em] text-white/45">Coverage</p>
+            <p class="mt-3 text-3xl font-semibold text-white/92">5 workflows</p>
+          </article>
+          <article class="surface-card p-6 sm:p-7">
+            <p class="text-sm font-medium uppercase tracking-[0.24em] text-white/45">Encoded lessons</p>
+            <p class="mt-3 text-3xl font-semibold text-white/92">11 gotchas encoded</p>
+          </article>
+          <article class="surface-card p-6 sm:p-7">
+            <p class="text-sm font-medium uppercase tracking-[0.24em] text-white/45">Tooling</p>
+            <p class="mt-3 text-3xl font-semibold text-white/92">4 scripts included</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="challenge" class="section-divider">
+      <div class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <div class="fade-section max-w-3xl">
+          <p class="section-label">The Challenge</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
+            Building agents shouldn't feel like archaeology
+          </h2>
+        </div>
+
+        <div class="mt-12 grid gap-5 md:grid-cols-2">
+          <article class="fade-section surface-card p-7">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-300">
+              <i data-lucide="layout-template" class="h-5 w-5"></i>
+            </div>
+            <h3 class="mt-6 text-2xl font-semibold text-white/92">Portal-heavy workflow</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              No source control, no diff, no rollback. Too much of the build loop lives in opaque portal state.
+            </p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-violet-300">
+              <i data-lucide="triangle-alert" class="h-5 w-5"></i>
+            </div>
+            <h3 class="mt-6 text-2xl font-semibold text-white/92">Undocumented platform gotchas</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              Hours disappear into trial and error because critical rules only show up after something breaks.
+            </p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-emerald-300">
+              <i data-lucide="package" class="h-5 w-5"></i>
+            </div>
+            <h3 class="mt-6 text-2xl font-semibold text-white/92">Manual packaging</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              There is no repeatable path from dev to production unless you know the exact export and cleanup steps.
+            </p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-cyan-300">
+              <i data-lucide="sparkles" class="h-5 w-5"></i>
+            </div>
+            <h3 class="mt-6 text-2xl font-semibold text-white/92">AI assistants are blind</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              Generic helpers do not know Copilot Studio's rules, the ALM sequence, or where the sharp edges really are.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <div class="fade-section max-w-3xl">
+          <p class="section-label">The Workflow</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
+            A proven development loop
+          </h2>
+        </div>
+
+        <div class="fade-section mt-12 surface-card rounded-[28px] p-8 sm:p-10">
+          <div class="workflow-track">
+            <div class="workflow-step">
+              <div class="step-number">01</div>
+              <h3 class="text-base font-semibold" style="color:var(--text-primary)">Pull from cloud</h3>
+              <p class="text-sm leading-6" style="color:var(--text-secondary)">Sync the latest agent YAML from the environment before editing.</p>
+            </div>
+
+            <div class="workflow-step">
+              <div class="step-number">02</div>
+              <h3 class="text-base font-semibold" style="color:var(--text-primary)">Revert workflow files</h3>
+              <p class="text-sm leading-6" style="color:var(--text-secondary)">Scrub environment-specific URLs so the repo stays clean and portable.</p>
+            </div>
+
+            <div class="workflow-step">
+              <div class="step-number">03</div>
+              <h3 class="text-base font-semibold" style="color:var(--text-primary)">Edit locally</h3>
+              <p class="text-sm leading-6" style="color:var(--text-secondary)">Update YAML topics, actions, variables, and instructions with full diff visibility.</p>
+            </div>
+
+            <div class="workflow-step">
+              <div class="step-number">04</div>
+              <h3 class="text-base font-semibold" style="color:var(--text-primary)">Push to cloud</h3>
+              <p class="text-sm leading-6" style="color:var(--text-secondary)">Sync changes to the environment via the VS Code Copilot Studio extension.</p>
+            </div>
+
+            <div class="workflow-step">
+              <div class="step-number">05</div>
+              <h3 class="text-base font-semibold" style="color:var(--text-primary)">Publish</h3>
+              <p class="text-sm leading-6" style="color:var(--text-secondary)">Make the draft live in Copilot Studio so users get the new version.</p>
+            </div>
+
+            <div class="workflow-step">
+              <div class="step-number">06</div>
+              <h3 class="text-base font-semibold" style="color:var(--text-primary)">Test in Teams</h3>
+              <p class="text-sm leading-6" style="color:var(--text-secondary)">Validate on the real channel — the test pane is not representative of production.</p>
+            </div>
+
+            <div class="workflow-step">
+              <div class="step-number">07</div>
+              <h3 class="text-base font-semibold" style="color:var(--text-primary)">Commit to git</h3>
+              <p class="text-sm leading-6" style="color:var(--text-secondary)">Commit the verified YAML — your durable source of truth.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="capabilities" class="section-divider">
+      <div class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <div class="fade-section max-w-3xl">
+          <p class="section-label">Capabilities</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
+            Everything your AI assistant needs to know
+          </h2>
+        </div>
+
+        <div class="mt-12 grid gap-5 lg:grid-cols-6">
+          <article class="fade-section surface-card p-7 lg:col-span-2">
+            <div class="text-3xl" aria-hidden="true">🔄</div>
+            <h3 class="mt-5 text-2xl font-semibold text-white/92">Development Loop</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              The proven pull → revert → edit → push → publish → test workflow, with guardrails between each step.
+            </p>
+          </article>
+
+          <article class="fade-section surface-card p-7 lg:col-span-2">
+            <div class="text-3xl" aria-hidden="true">📦</div>
+            <h3 class="mt-5 text-2xl font-semibold text-white/92">Solution Packaging</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              Export, unpack, scrub URLs, repack, and handle PAC CLI steps without losing the production artifact chain.
+            </p>
+          </article>
+
+          <article class="fade-section surface-card p-7 lg:col-span-2">
+            <div class="text-3xl" aria-hidden="true">⚠️</div>
+            <h3 class="mt-5 text-2xl font-semibold text-white/92">Platform Gotchas</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              Eleven hard-won lessons encoded as instructions so the assistant can warn before you hit the trap.
+            </p>
+          </article>
+
+          <article class="fade-section surface-card p-7 lg:col-span-3">
+            <div class="text-3xl" aria-hidden="true">✅</div>
+            <h3 class="mt-5 text-2xl font-semibold text-white/92">Best Practices</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              Architecture, YAML hygiene, testing discipline, memory usage, and security reminders tailored to Copilot Studio work.
+            </p>
+          </article>
+
+          <article class="fade-section surface-card p-7 lg:col-span-3">
+            <div class="text-3xl" aria-hidden="true">🔧</div>
+            <h3 class="mt-5 text-2xl font-semibold text-white/92">Helper Scripts</h3>
+            <p class="mt-3 text-base leading-7 text-white/55">
+              Status, revert, preflight, and add-component helpers that turn common workflow pain into one reliable command.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="examples">
+      <div class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <div class="fade-section max-w-3xl">
+          <p class="section-label">Examples</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
+            Natural language, expert guidance
+          </h2>
+        </div>
+
+        <div class="mt-12 grid gap-5 lg:grid-cols-2">
+          <article class="fade-section chat-shell">
+            <div class="terminal-bar">
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span>Setup</span>
+            </div>
+            <div class="chat-body">
+              <div class="chat-line user">
+                <span class="chat-role">You</span>
+                <p class="m-0 font-mono text-sm text-white/88">I need to start building a Copilot Studio agent</p>
+              </div>
+              <div class="chat-line assistant">
+                <span class="chat-role">Copilot</span>
+                <p class="m-0 text-sm leading-7">
+                  I'll walk you through the professional loop: clone or pull the agent locally, clean workflow noise, confirm the solution connection, then edit YAML in source before any push or publish.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="fade-section chat-shell">
+            <div class="terminal-bar">
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span>Pull safety</span>
+            </div>
+            <div class="chat-body">
+              <div class="chat-line user">
+                <span class="chat-role">You</span>
+                <p class="m-0 font-mono text-sm text-white/88">I just pulled and git shows dirty workflow files</p>
+              </div>
+              <div class="chat-line assistant">
+                <span class="chat-role">Copilot</span>
+                <p class="m-0 text-sm leading-7">
+                  That's the environment URL drift problem. Cloud pulls can bring workflow and settings URLs into git. Run the revert helper now so your repo keeps clean, reusable source instead of environment-specific noise.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="fade-section chat-shell">
+            <div class="terminal-bar">
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span>Solution gap</span>
+            </div>
+            <div class="chat-body">
+              <div class="chat-line user">
+                <span class="chat-role">You</span>
+                <p class="m-0 font-mono text-sm text-white/88">My new topic isn't in the solution export</p>
+              </div>
+              <div class="chat-line assistant">
+                <span class="chat-role">Copilot</span>
+                <p class="m-0 text-sm leading-7">
+                  Push updates the cloud draft, but it does not add new components to the Power Platform solution. Use the add-component helper or pac solution tooling so the export contains the topic you actually shipped.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="fade-section chat-shell">
+            <div class="terminal-bar">
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span>Preflight</span>
+            </div>
+            <div class="chat-body">
+              <div class="chat-line user">
+                <span class="chat-role">You</span>
+                <p class="m-0 font-mono text-sm text-white/88">I'm about to push — anything I should check?</p>
+              </div>
+              <div class="chat-line assistant">
+                <span class="chat-role">Copilot</span>
+                <p class="m-0 text-sm leading-7">
+                  Run preflight first. It checks dirty workflows, pending changes, variable definitions, and project structure so you catch obvious deployment issues before syncing cloud state.
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="gotchas" class="section-divider">
+      <div class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <div class="fade-section max-w-3xl">
+          <p class="section-label">Gotchas</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
+            11 platform traps we've already mapped
+          </h2>
+        </div>
+
+        <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article class="fade-section surface-card p-7">
+            <span class="severity-pill severity-critical">🔴 Critical</span>
+            <h3 class="mt-5 text-xl font-semibold text-white/92">OnConversationStart is unreliable</h3>
+            <p class="mt-3 text-sm leading-7 text-white/55">Use the safer initialization patterns instead of assuming the trigger will always behave.</p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <span class="severity-pill severity-critical">🔴 Critical</span>
+            <h3 class="mt-5 text-xl font-semibold text-white/92">Push does not update the solution</h3>
+            <p class="mt-3 text-sm leading-7 text-white/55">Cloud sync and solution membership are separate paths, so exported artifacts can silently miss new components.</p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <span class="severity-pill severity-critical">🔴 Critical</span>
+            <h3 class="mt-5 text-xl font-semibold text-white/92">Global vars need YAML definitions</h3>
+            <p class="mt-3 text-sm leading-7 text-white/55">If the definition is missing or inconsistent, behavior will drift even when the topic logic looks correct.</p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <span class="severity-pill severity-critical">🔴 Critical</span>
+            <h3 class="mt-5 text-xl font-semibold text-white/92">Cloud pull brings live URLs</h3>
+            <p class="mt-3 text-sm leading-7 text-white/55">Workflow and settings files can come back dirty after a pull, so revert them before you commit polluted state.</p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <span class="severity-pill severity-high">🟡 High</span>
+            <h3 class="mt-5 text-xl font-semibold text-white/92">Solution import deactivates flows</h3>
+            <p class="mt-3 text-sm leading-7 text-white/55">Post-import checks matter because a clean package does not guarantee the downstream automation stays active.</p>
+          </article>
+
+          <article class="fade-section surface-card p-7">
+            <span class="severity-pill severity-high">🟡 High</span>
+            <h3 class="mt-5 text-xl font-semibold text-white/92">Extension sync is all-or-nothing</h3>
+            <p class="mt-3 text-sm leading-7 text-white/55">One broken file can derail the wider extension sync, so hygiene and validation are part of the workflow, not extras.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="get-started">
+      <div class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <div class="fade-section max-w-3xl">
+          <p class="section-label">Get Started</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
+            One command away
+          </h2>
+        </div>
+
+        <div class="fade-section mt-12 surface-card p-6 sm:p-8">
+          <div class="terminal-window">
+            <div class="terminal-bar justify-between">
+              <div class="flex items-center gap-2">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span>Terminal</span>
+              </div>
+              <button
+                type="button"
+                class="copy-button inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition hover:text-white/90"
+                data-copy="copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow"
+              >
+                <i data-lucide="copy" class="h-3.5 w-3.5"></i>
+                Copy
+              </button>
+            </div>
+            <div class="code-shell rounded-none border-0 bg-transparent">
+              <pre><code>copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow</code></pre>
+            </div>
+          </div>
+
+          <div class="mt-6 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+            <div>
+              <p class="text-sm font-medium uppercase tracking-[0.24em] text-white/45">Update command</p>
+              <div class="mt-3 code-shell">
+                <pre><code>copilot plugin update microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow</code></pre>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-medium uppercase tracking-[0.24em] text-white/45">Compatibility</p>
+              <div class="mt-3 flex flex-wrap gap-3">
+                <span class="pill text-sm">Copilot CLI</span>
+                <span class="pill text-sm">VS Code</span>
+                <span class="pill text-sm">Claude Code</span>
+                <span class="pill text-sm">Cloud Agent</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <a
+              href="../../../../index.html"
+              class="inline-flex items-center gap-2 text-sm font-medium text-white/82 transition hover:text-white"
+            >
+              <i data-lucide="arrow-left" class="h-4 w-4"></i>
+              Back to FastTrack
+            </a>
+            <p class="m-0 text-sm leading-7 text-white/55">
+              Install once, then ask naturally for setup help, pull safety, preflight checks, packaging guidance, or solution fixes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10">
+    <div class="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-8 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+      <p class="m-0">Built by the FastTrack team.</p>
+      <a
+        href="https://github.com/microsoft/FastTrack"
+        target="_blank"
+        rel="noreferrer"
+        class="print-link inline-flex items-center gap-2 text-white/80 transition hover:text-white"
+      >
+        View repository
+        <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+      </a>
+    </div>
+  </footer>
+
   <script>
-    const navLinks = Array.from(document.querySelectorAll('.nav-list a'));
-    const sections = navLinks.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
+    (() => {
+      const root = document.documentElement;
+      const themeButtons = document.querySelectorAll('#theme-toggle');
+      const themeIconTargets = document.querySelectorAll('[data-theme-icon]');
+      const copyButtons = document.querySelectorAll('[data-copy]');
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const renderThemeIcons = () => {
+        const isLight = root.classList.contains('light');
+        themeIconTargets.forEach((target) => {
+          target.innerHTML = isLight
+            ? '<i data-lucide="moon-star" class="h-[1.1rem] w-[1.1rem]"></i>'
+            : '<i data-lucide="sun-medium" class="h-[1.1rem] w-[1.1rem]"></i>';
+        });
+        themeButtons.forEach((button) => {
+          button.setAttribute('aria-pressed', String(isLight));
+          button.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+        });
+        lucide.createIcons();
+      };
+
+      const toggleTheme = () => {
+        root.classList.toggle('light');
+        try {
+          localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+        } catch (error) {
+          // Ignore storage access issues.
+        }
+        renderThemeIcons();
+      };
+
+      themeButtons.forEach((button) => {
+        button.addEventListener('click', toggleTheme);
       });
-    }, { rootMargin: '-30% 0px -55% 0px', threshold: 0.1 });
-    sections.forEach((section) => observer.observe(section));
+
+      copyButtons.forEach((button) => {
+        button.addEventListener('click', async () => {
+          const value = button.getAttribute('data-copy') || '';
+          try {
+            await navigator.clipboard.writeText(value);
+            const previous = button.innerHTML;
+            button.innerHTML = '<i data-lucide="check" class="h-3.5 w-3.5"></i>Copied';
+            lucide.createIcons();
+            window.setTimeout(() => {
+              button.innerHTML = previous;
+              lucide.createIcons();
+            }, 1800);
+          } catch (error) {
+            button.innerHTML = '<i data-lucide="x" class="h-3.5 w-3.5"></i>Copy failed';
+            lucide.createIcons();
+          }
+        });
+      });
+
+      if (!prefersReducedMotion) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.18, rootMargin: '0px 0px -40px 0px' }
+        );
+
+        document.querySelectorAll('.fade-section').forEach((section) => observer.observe(section));
+      } else {
+        document.querySelectorAll('.fade-section').forEach((section) => section.classList.add('is-visible'));
+      }
+
+      renderThemeIcons();
+      lucide.createIcons();
+    })();
   </script>
 </body>
 </html>
