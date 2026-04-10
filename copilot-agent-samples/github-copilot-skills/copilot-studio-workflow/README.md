@@ -10,7 +10,7 @@
 copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow
 ```
 
-> 📖 **[View the interactive showcase →](skills/copilot-studio-workflow/docs/showcase.html)** — see the full workflow, example conversations, and platform gotchas in a visual guide.
+> 📖 **[View the interactive showcase →](https://microsoft.github.io/FastTrack/copilot-agent-samples/github-copilot-skills/copilot-studio-workflow/docs/showcase.html)** — see the full workflow, example conversations, and platform gotchas in a visual guide.
 
 ## Why This Exists
 Copilot Studio is powerful, but the default workflow is still portal-heavy: click through the UI, hope you remember what changed, and figure out packaging only when it is time to ship. That is workable for demos. It is not a good engineering workflow.
@@ -78,17 +78,16 @@ After install, just ask naturally:
 <details>
 <summary><strong>Manual install — personal skill (all repos)</strong></summary>
 
-Copy the inner skill folder to your personal skills directory.
+Copy the folder to your personal skills directory.
 
 **Windows**
 ```powershell
-$src = "path\\to\\copilot-studio-workflow\\skills\\copilot-studio-workflow"
-Copy-Item -Recurse $src "$env:USERPROFILE\\.copilot\\skills\\copilot-studio-workflow"
+Copy-Item -Recurse path\to\copilot-studio-workflow "$env:USERPROFILE\.copilot\skills\copilot-studio-workflow"
 ```
 
 **macOS / Linux**
 ```bash
-cp -r path/to/copilot-studio-workflow/skills/copilot-studio-workflow ~/.copilot/skills/
+cp -r path/to/copilot-studio-workflow ~/.copilot/skills/copilot-studio-workflow
 ```
 </details>
 
@@ -97,12 +96,12 @@ cp -r path/to/copilot-studio-workflow/skills/copilot-studio-workflow ~/.copilot/
 
 **Windows**
 ```powershell
-Copy-Item -Recurse .\skills\copilot-studio-workflow .\.github\skills\copilot-studio-workflow
+Copy-Item -Recurse path\to\copilot-studio-workflow .\.github\skills\copilot-studio-workflow
 ```
 
 **macOS / Linux**
 ```bash
-cp -r skills/copilot-studio-workflow .github/skills/copilot-studio-workflow
+cp -r path/to/copilot-studio-workflow .github/skills/copilot-studio-workflow
 ```
 </details>
 
@@ -110,21 +109,21 @@ cp -r skills/copilot-studio-workflow .github/skills/copilot-studio-workflow
 <summary><strong>Claude Code</strong></summary>
 
 ```bash
-cp -r skills/copilot-studio-workflow ~/.claude/skills/copilot-studio-workflow
+cp -r path/to/copilot-studio-workflow ~/.claude/skills/copilot-studio-workflow
 ```
 </details>
 
 ## What's Inside
 | File | Why it matters |
 |---|---|
-| `skills/copilot-studio-workflow/SKILL.md` | Core workflow logic, triggers, and operational guidance |
-| `skills/copilot-studio-workflow/scripts/cps-status.ps1` | Checks project health, tool availability, and repo state |
-| `skills/copilot-studio-workflow/scripts/cps-revert.ps1` | Cleans up pull-induced workflow and settings churn |
-| `skills/copilot-studio-workflow/scripts/cps-preflight.ps1` | Runs pre-push hygiene checks before you sync |
-| `skills/copilot-studio-workflow/scripts/cps-add-component.ps1` | Adds pushed components to the Power Platform solution |
-| `skills/copilot-studio-workflow/reference/gotchas.md` | Documents platform traps and workarounds |
-| `skills/copilot-studio-workflow/reference/workflow-guide.md` | Expands the day-to-day development and packaging loop |
-| `skills/copilot-studio-workflow/docs/showcase.html` | Interactive visual guide to the skill and workflow |
+| `SKILL.md` | Core workflow logic, triggers, and operational guidance |
+| `scripts/cps-status.ps1` | Checks project health, tool availability, and repo state |
+| `scripts/cps-revert.ps1` | Cleans up pull-induced workflow and settings churn |
+| `scripts/cps-preflight.ps1` | Runs pre-push hygiene checks before you sync |
+| `scripts/cps-add-component.ps1` | Adds pushed components to the Power Platform solution |
+| `reference/gotchas.md` | Documents platform traps and workarounds |
+| `reference/workflow-guide.md` | Expands the day-to-day development and packaging loop |
+| `docs/showcase.html` | Interactive visual guide to the skill and workflow |
 | `plugin.json` | Plugin manifest for `copilot plugin install` |
 | `CHANGELOG.md` | Release history |
 
