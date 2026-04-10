@@ -1,0 +1,29 @@
+{
+  "name": "copilot-studio-workflow",
+  "description": "Development workflow skill for building, syncing, packaging, and shipping Copilot Studio agents. Encodes the proven pull-revert-push-publish loop, platform gotchas, best practices, and helper scripts.",
+  "version": "1.0.0",
+  "author": {
+    "name": "FastTrack Team",
+    "url": "https://github.com/microsoft/FastTrack"
+  },
+  "homepage": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-skills/copilot-studio-workflow",
+  "repository": "https://github.com/microsoft/FastTrack.git",
+  "license": "MIT",
+  "keywords": [
+    "copilot-studio",
+    "power-platform",
+    "agent-development",
+    "yaml-workflow",
+    "pac-cli"
+  ],
+  "category": "development",
+  "tags": [
+    "copilot-studio",
+    "mcs",
+    "power-platform",
+    "agent",
+    "yaml",
+    "pac"
+  ],
+  "skills": "skills/"
+}
