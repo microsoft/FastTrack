@@ -64,6 +64,7 @@ It works across four modes:
 - **Entra ID app registration** is created as a **multi-tenant** app
 - **API permission** is granted: **Power BI Service → Delegated → `Dataset.Read.All`**
 - **Power BI admin tenant setting** is enabled: **Users can use the Power BI Model Context Protocol server endpoint (preview)**
+- **Premium capacity or PPU license** — the Execute Queries REST API requires a **Premium Per User (PPU)** license (~$24/user/mo) or a workspace backed by **Fabric capacity (F64+)**. Without this, schema retrieval and DAX generation still work, but live query execution returns 401. A 60-day PPU trial is available from Power BI workspace settings.
 - Relevant **Power BI semantic models** exist and are accessible to the signed-in user
 - For Viva scenarios, **Viva Advanced Insights data** is flowing into a Power BI semantic model
 
@@ -208,6 +209,7 @@ Example autonomous pattern:
 
 ## Limitations
 
+- **Live query execution requires Premium capacity or PPU.** The Execute Queries REST API (`POST /datasets/{datasetId}/executeQueries`) returns 401 on standard Pro/shared workspaces. Schema retrieval and DAX generation work on any license — only execution is gated. See [Microsoft docs](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries) for details.
 - Results depend on the quality, freshness, and access permissions of the underlying Power BI semantic model.
 - Viva Advanced Insights data is not universal; it must already be available in a Power BI model for those scenarios.
 - Some workforce metrics may lag depending on data refresh schedules.

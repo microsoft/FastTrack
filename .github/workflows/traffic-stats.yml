@@ -9,9 +9,14 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: traffic-data-collection
+  cancel-in-progress: false
+
 jobs:
   collect-traffic:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -29,13 +34,31 @@ jobs:
           DATA_DIR="traffic-data"
           DATE=$(date -u +"%Y-%m-%d")
 
+          gh_api_retry() {
+            local max_attempts=3
+            local delay=5
+            local attempt=1
+            local output
+            while [ "$attempt" -le "$max_attempts" ]; do
+              if output=$(gh api "$@" 2>/dev/null); then
+                printf '%s' "$output"
+                return 0
+              fi
+              echo "::warning::gh api attempt $attempt/$max_attempts failed, retrying in ${delay}s..." >&2
+              sleep "$delay"
+              delay=$((delay * 2))
+              attempt=$((attempt + 1))
+            done
+            return 1
+          }
+
           fetch_required_json() {
             local label="$1"
             local endpoint="$2"
             local response
 
-            if ! response=$(gh api "$endpoint" 2>&1); then
-              echo "::error::Failed to fetch $label: $response"
+            if ! response=$(gh_api_retry "$endpoint"); then
+              echo "::error::Failed to fetch $label after retries"
               exit 1
             fi
 
@@ -65,7 +88,7 @@ jobs:
           forks_count=0
           repo_metadata="{}"
 
-          if repo_response=$(gh api "repos/$REPO" 2>&1); then
+          if repo_response=$(gh_api_retry "repos/$REPO"); then
             if printf '%s' "$repo_response" | jq -e . >/dev/null 2>&1; then
               repo_metadata="$repo_response"
               star_count=$(printf '%s' "$repo_metadata" | jq -r '.stargazers_count // 0' 2>/dev/null || printf '0')
@@ -74,22 +97,22 @@ jobs:
               echo "::warning::Invalid JSON returned for repository metadata. Using fallback values."
             fi
           else
-            echo "::warning::Failed to fetch repository metadata: $repo_response"
+            echo "::warning::Failed to fetch repository metadata. Using fallback values."
           fi
 
           # Fetch stargazer timeline (with starred_at dates)
           echo "📅 Fetching stargazer timeline..."
           star_timeline="[]"
-          if star_timeline_response=$(gh api --paginate --slurp \
+          if star_timeline_response=$(gh_api_retry --paginate --slurp \
             -H "Accept: application/vnd.github.star+json" \
-            "repos/$REPO/stargazers" 2>&1); then
+            "repos/$REPO/stargazers"); then
             if star_timeline_json=$(printf '%s' "$star_timeline_response" | jq -ce '[.[].[]? | .starred_at | select(type == "string" and length > 0)] | sort' 2>/dev/null); then
               star_timeline="$star_timeline_json"
             else
               echo "::warning::Failed to parse stargazer timeline. Using empty array."
             fi
           else
-            echo "::warning::Failed to fetch stargazer timeline: $star_timeline_response"
+            echo "::warning::Failed to fetch stargazer timeline. Using empty array."
           fi
 
           # Fetch a sample of stargazer locations (last 30 stargazers) in one GraphQL call
@@ -107,10 +130,10 @@ jobs:
             }
           }'
 
-          if location_response=$(gh api graphql \
+          if location_response=$(gh_api_retry graphql \
             -f query="$location_query" \
             -F owner="$REPO_OWNER" \
-            -F name="$REPO_NAME" 2>&1); then
+            -F name="$REPO_NAME"); then
             if location_json=$(printf '%s' "$location_response" | jq -ce '
               if ((.errors // []) | length) > 0 then
                 error("graphql errors")
@@ -123,7 +146,7 @@ jobs:
               echo "::warning::Failed to parse stargazer locations. Using empty array."
             fi
           else
-            echo "::warning::Failed to fetch stargazer locations: $location_response"
+            echo "::warning::Failed to fetch stargazer locations. Using empty array."
           fi
 
           # Build combined JSON snapshot
