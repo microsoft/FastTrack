@@ -1,40 +1,66 @@
-# 🚀 FastTrack for Copilot Agents 🚀
+# 🚀 FastTrack for Copilot Agents
 
-Welcome to the official FastTrack repository for agent templates! 👋 This is your one-stop-shop for getting a head start on building powerful and intelligent agents for both **Microsoft Copilot Studio** and **Agent Builder**.
+Welcome to the official FastTrack repository for agent samples, skills, and templates. Whether you're building on **Copilot Studio**, **Agent Builder**, or **GitHub Copilot CLI** — start here.
 
-Whether you're a seasoned pro or just getting started, these templates are designed to accelerate your development process and showcase what's possible.
+---
 
-## 📂 Repository Structure
+## 📂 What's Inside
 
-This repository is organized into two main directories, one for each platform:
+### 🤖 Copilot Studio Agents
 
-* `copilot-studio-agents/`
-    * Contains agent templates, examples, and solutions specifically designed for **Microsoft Copilot Studio**. These are great for building sophisticated, enterprise-grade agents. Our sample **custom agents** are prefixed with `ca-` . 
+Enterprise-grade agents built on Microsoft Copilot Studio with Power Platform.
 
-* `agent-builder-agents/`
-    * Contains agent templates tailored for the **Agent Builder** in Copilot. These are perfect for creating more focused, task-oriented agents quickly. Note these can also be easily repurposed to be used with SharePoint Agents. Our sample **declarative agents** are prefixed with `da-` . 
+| Agent | Description |
+|---|---|
+| [**PowerClaw**](copilot-studio-agents/ca-PowerClawAgent/) | 24/7 AI Chief of Staff — autonomous heartbeat, persistent memory, SharePoint brain, and a [Skills Library](copilot-studio-agents/ca-PowerClawAgent/skills/) with 8 extensible capabilities |
+
+→ Browse [`copilot-studio-agents/`](copilot-studio-agents/) for all samples (prefixed `ca-`)
+
+### 🏗️ Agent Builder Agents
+
+Declarative agents for M365 Copilot and Teams — lightweight, task-focused, fast to deploy.
+
+→ Browse [`agent-builder-agents/`](agent-builder-agents/) for all samples (prefixed `da-`)
+
+### 🖥️ GitHub Copilot Agents
+
+Custom agents for the GitHub Copilot CLI — multi-model, terminal-native, plugin-installable.
+
+| Agent | Description |
+|---|---|
+| [**AI Council**](github-copilot-agents/Council/) | Multi-model deliberation — Claude, GPT & Gemini debate any question and produce interactive decision dashboards |
+
+→ Browse [`github-copilot-agents/`](github-copilot-agents/) for all samples
+
+### 🔧 GitHub Copilot Skills
+
+Reusable skill plugins that teach Copilot CLI (and Claude Code) how to perform specialized tasks.
+
+| Skill | Description | Install |
+|---|---|---|
+| [**copilot-studio-workflow**](github-copilot-skills/copilot-studio-workflow/) | Dev workflow for building Copilot Studio agents — pull/push loop, packaging, gotchas, best practices | `copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow` |
+
+→ Browse [`github-copilot-skills/`](github-copilot-skills/) for all skills
+
+---
 
 ## ✨ Getting Started
 
-Using these templates is simple!
+1. **Clone** this repo
+2. **Navigate** to the agent or skill that interests you
+3. **Follow** the README inside each sample for setup instructions
+4. **Customize** — adapt it to your needs, make it your own
 
-1.  **Clone or Download:** Clone this repository or download the ZIP file to your local machine.
-2.  **Explore:** Navigate into either the `copilot-studio-agents` or `agent-builder-agents` directory.
-3.  **Import:** Follow the instructions within each template's own README to import it into your Copilot Studio or Agent Builder environment.
-4.  **Customize:** Adapt the template to your specific needs. Change the logic, add new capabilities, and make it your own!
+---
 
 ## 🤝 Contributing
 
-Have a great agent template you'd like to share with the community? We'd love your contributions!
+Have a great agent, skill, or template to share? We'd love your contributions!
 
-1.  **Fork** this repository.
-2.  **Create a new branch** for your feature (`git checkout -b feature/my-awesome-agent`).
-3.  **Add your template** to the appropriate directory, including a clear README.md file explaining what it does and how to use it.
-4.  **Commit your changes** (`git commit -m 'Add some awesome agent'`).
-5.  **Push to the branch** (`git push origin feature/my-awesome-agent`).
-6.  **Open a Pull Request** and we'll review it.
-
-Let's build an amazing collection of agent templates together! 🎉
+1. **Fork** this repository
+2. **Create a branch** (`git checkout -b feature/my-awesome-agent`)
+3. **Add your sample** to the appropriate directory with a clear README
+4. **Open a Pull Request** and we'll review it
 
 ---
 

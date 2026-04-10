@@ -1,137 +1,174 @@
 # copilot-studio-workflow
+**Build Copilot Studio agents like software: local YAML, source control, repeatable packaging, and an AI assistant that already knows the platform's sharp edges.**
 
-A development workflow skill for building, syncing, packaging, and shipping Copilot Studio agents.
-
-## What this skill does
-- Teaches the proven **pull → revert → edit → push → publish → test → commit** loop
-- Captures platform gotchas around sync, solution packaging, variables, and flows
-- Ships helper PowerShell scripts for project status, workflow reverts, preflight checks, and solution component adds
-- Includes best practices for agent architecture, YAML hygiene, testing, memory, and security
-- Provides deeper reference docs for day-to-day development and production packaging
-
-## Install
-
-### From GitHub (recommended)
-
-Install directly from the FastTrack repository:
+![Version](https://img.shields.io/badge/version-1.0.0-2563eb?style=for-the-badge)
+![Platform](https://img.shields.io/badge/platform-Copilot%20CLI%20%7C%20VS%20Code%20%7C%20Claude%20Code%20%7C%20Cloud%20Agent-111827?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-16a34a?style=for-the-badge)
+[![Install](https://img.shields.io/badge/install-copilot%20plugin%20install-7c3aed?style=for-the-badge&logo=github)](#quick-install)
 
 ```sh
 copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow
 ```
 
-Update to the latest version:
+> 📖 **[View the interactive showcase →](skills/copilot-studio-workflow/docs/showcase.html)** — see the full workflow, example conversations, and platform gotchas in a visual guide.
 
-```sh
-copilot plugin update copilot-studio-workflow
-```
+## Why This Exists
+Copilot Studio is powerful, but the default workflow is still portal-heavy: click through the UI, hope you remember what changed, and figure out packaging only when it is time to ship. That is workable for demos. It is not a good engineering workflow.
 
-### From the CLI (interactive)
+This skill gives builders a better model. Your agent definition lives as YAML in git. You pull from the cloud, revert environment-specific artifacts, edit locally, push intentionally, publish, test in the real channel, and package for deployment with a repeatable process. Instead of learning the platform by trial and error, you can ask for the next step in plain English and get workflow-aware guidance.
 
+It also bakes in the painful lessons most teams discover the hard way: why pull dirties workflow files, why push does not update solution membership, why variable hygiene matters for imports, and how to move from dev environment to clean solution zip without surprises. The result is a Copilot Studio workflow that feels like engineering, not archaeology.
+
+## What You Can Do
+### 1) First-time setup
 ```text
-/plugin add
+You: I need to start building a Copilot Studio agent. What's the workflow?
+
+Copilot: I'll walk you through the local dev loop, run cps-status.ps1, and
+make sure VS Code plus the Copilot Studio extension are ready before you pull
+or push anything.
 ```
 
-Then search for `copilot-studio-workflow`.
+### 2) Pull changes safely
+```text
+You: I just pulled my agent from the cloud and git shows a bunch of changed
+workflow files. What happened?
 
-### Manual — personal skill (all repos)
+Copilot: That's the environment URL translation problem. A pull can bring
+live URLs and settings into repo files. Run cps-revert.ps1 now, then review a
+clean diff that only shows intentional source changes.
+```
+
+### 3) Add a new topic to the solution
+```text
+You: I pushed a new topic via VS Code but it's not showing up in my solution
+export. What's wrong?
+
+Copilot: Push created the Dataverse component, but it did not add that
+component to the Power Platform solution. Run cps-add-component.ps1 with the
+solution name and schema pattern, then re-export.
+```
+
+### 4) Validate before push
+```text
+You: I'm about to push my changes. Anything I should check first?
+
+Copilot: Run cps-preflight.ps1. It will catch dirty workflow files, missing
+variable definitions, and basic repo hygiene issues before the push becomes a
+cloud problem.
+```
+
+## Quick Install
+### GitHub Copilot CLI
+Run this in your terminal:
+```sh
+copilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow
+```
+Update later with `copilot plugin update copilot-studio-workflow`.
+
+After install, just ask naturally:
+- `Help me safely push my Copilot Studio YAML changes.`
+- `Why did my pull dirty workflow JSON files?`
+- `How do I package this agent for production?`
+- `Run a preflight check before I push.`
+
+> Tip: If needed, force activation by including `/copilot-studio-workflow` in your prompt.
+
+## Other Install Methods
+<details>
+<summary><strong>Manual install — personal skill (all repos)</strong></summary>
 
 Copy the inner skill folder to your personal skills directory.
 
-**Windows:**
-
+**Windows**
 ```powershell
 $src = "path\\to\\copilot-studio-workflow\\skills\\copilot-studio-workflow"
 Copy-Item -Recurse $src "$env:USERPROFILE\\.copilot\\skills\\copilot-studio-workflow"
 ```
 
-**macOS / Linux:**
-
+**macOS / Linux**
 ```bash
 cp -r path/to/copilot-studio-workflow/skills/copilot-studio-workflow ~/.copilot/skills/
 ```
+</details>
 
-### Manual — project skill (single repo)
+<details>
+<summary><strong>Manual install — project skill (single repo)</strong></summary>
 
-Copy the inner skill folder into your repository.
-
-**Windows:**
-
+**Windows**
 ```powershell
 Copy-Item -Recurse .\skills\copilot-studio-workflow .\.github\skills\copilot-studio-workflow
 ```
 
-**macOS / Linux:**
-
+**macOS / Linux**
 ```bash
 cp -r skills/copilot-studio-workflow .github/skills/copilot-studio-workflow
 ```
+</details>
 
-### Claude Code
-
-Copy the inner skill folder to your Claude skills directory:
+<details>
+<summary><strong>Claude Code</strong></summary>
 
 ```bash
 cp -r skills/copilot-studio-workflow ~/.claude/skills/copilot-studio-workflow
 ```
+</details>
 
-## Prerequisites
-- Git
-- PowerShell (7+ recommended, 5.1 works on Windows)
-- `pac` CLI is optional but recommended for solution packaging
+## What's Inside
+| File | Why it matters |
+|---|---|
+| `skills/copilot-studio-workflow/SKILL.md` | Core workflow logic, triggers, and operational guidance |
+| `skills/copilot-studio-workflow/scripts/cps-status.ps1` | Checks project health, tool availability, and repo state |
+| `skills/copilot-studio-workflow/scripts/cps-revert.ps1` | Cleans up pull-induced workflow and settings churn |
+| `skills/copilot-studio-workflow/scripts/cps-preflight.ps1` | Runs pre-push hygiene checks before you sync |
+| `skills/copilot-studio-workflow/scripts/cps-add-component.ps1` | Adds pushed components to the Power Platform solution |
+| `skills/copilot-studio-workflow/reference/gotchas.md` | Documents platform traps and workarounds |
+| `skills/copilot-studio-workflow/reference/workflow-guide.md` | Expands the day-to-day development and packaging loop |
+| `skills/copilot-studio-workflow/docs/showcase.html` | Interactive visual guide to the skill and workflow |
+| `plugin.json` | Plugin manifest for `copilot plugin install` |
+| `CHANGELOG.md` | Release history |
 
 ## Compatibility
+![Copilot CLI](https://img.shields.io/badge/GitHub_Copilot_CLI-supported-000000?style=flat-square&logo=github)
+![VS Code](https://img.shields.io/badge/VS_Code_Copilot-supported-007acc?style=flat-square&logo=visualstudiocode)
+![Claude Code](https://img.shields.io/badge/Claude_Code-supported-d97706?style=flat-square)
+![Cloud Agent](https://img.shields.io/badge/Copilot_Cloud_Agent-supported-2563eb?style=flat-square)
 
-| Tool | Install method |
-|---|---|
-| **GitHub Copilot CLI** | `copilot plugin install` or personal skill at `~/.copilot/skills/` |
-| **Claude Code** | Personal skill at `~/.claude/skills/` |
-| **VS Code Copilot** | Project skill at `.github/skills/` |
-| **Copilot Cloud Agent** | Project skill at `.github/skills/` |
+| Tool | Status | Install path |
+|---|---|---|
+| GitHub Copilot CLI | Recommended | Plugin install or `~/.copilot/skills/` |
+| VS Code Copilot | Supported | `.github/skills/` |
+| Claude Code | Supported | `~/.claude/skills/` |
+| Copilot Cloud Agent | Supported | `.github/skills/` |
 
-The `SKILL.md` format is an [open standard](https://github.com/agentskills/agentskills) supported across multiple AI coding tools.
+The `SKILL.md` format follows the [Agent Skills](https://github.com/agentskills/agentskills) open standard, so the same workflow knowledge travels across tools.
 
-## What's included
+## Prerequisites
+Keep this short list in place and the workflow becomes smooth:
+- **Git** for version control
+- **VS Code** plus the **Copilot Studio VS Code extension** for pull/push
+- **PowerShell** (7+ recommended; Windows PowerShell 5.1 works on Windows)
+- **Power Platform CLI (`pac`)** recommended for solution packaging and exports
+- Access to a **Copilot Studio-enabled Power Platform environment**
 
-| File | Purpose |
-|---|---|
-| `plugin.json` | Plugin manifest for `copilot plugin install` |
-| `CHANGELOG.md` | Version history |
-| `skills/copilot-studio-workflow/SKILL.md` | Core skill instructions |
-| `skills/copilot-studio-workflow/scripts/cps-status.ps1` | Project health check |
-| `skills/copilot-studio-workflow/scripts/cps-revert.ps1` | Workflow file revert |
-| `skills/copilot-studio-workflow/scripts/cps-preflight.ps1` | Pre-push hygiene checks |
-| `skills/copilot-studio-workflow/scripts/cps-add-component.ps1` | Add component to solution |
-| `skills/copilot-studio-workflow/reference/gotchas.md` | Platform gotchas deep-dive |
-| `skills/copilot-studio-workflow/reference/workflow-guide.md` | Workflow documentation |
-
-## How to use
-
-After installing, the skill activates automatically when your prompts mention Copilot Studio, `.mcs.yml`, solution packaging, `pac` CLI, or related topics.
-
-Examples:
-- "Help me push these Copilot Studio YAML changes safely."
-- "How do I package this Copilot Studio agent for production?"
-- "Why did my pull dirty workflow JSON files?"
-- "Run a preflight check before I push."
-
-Force activation: include `/copilot-studio-workflow` in your prompt.
+Run `skills\copilot-studio-workflow\scripts\cps-status.ps1` to validate the local setup.
 
 ## Versioning
-
-This plugin uses [Semantic Versioning](https://semver.org/). Check `CHANGELOG.md` for the full version history.
-
-To update:
-
-```sh
-copilot plugin update copilot-studio-workflow
-```
+This plugin uses [Semantic Versioning](https://semver.org/). Current version: **1.0.0**.
+- Release notes: `CHANGELOG.md`
+- Update: `copilot plugin update copilot-studio-workflow`
 
 ## Contributing
-- Keep `SKILL.md` concise — it is loaded directly into context
-- Put detailed explanations in `reference/`
+Keep the skill lean and operational:
+- Put core instructions in `SKILL.md`
+- Put deeper explanations in `reference/`
 - Keep scripts safe to run repeatedly
-- Bump the version in both `plugin.json` and `CHANGELOG.md` on every release
-- Test scripts: `powershell -NoProfile -File skills\\copilot-studio-workflow\\scripts\\<name>.ps1 -?`
+- Bump `plugin.json` and `CHANGELOG.md` together on release
+
+Quick script check:
+```powershell
+powershell -NoProfile -File skills\copilot-studio-workflow\scripts\<name>.ps1 -?
+```
 
 ## License
 MIT
