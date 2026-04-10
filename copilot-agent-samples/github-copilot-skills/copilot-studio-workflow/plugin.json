@@ -25,5 +25,5 @@
     "yaml",
     "pac"
   ],
-  "skills": "skills/"
+  "skills": ["."]
 }
