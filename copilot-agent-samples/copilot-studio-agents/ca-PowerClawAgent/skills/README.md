@@ -62,7 +62,7 @@ No PowerClaw YAML surgery required. The goal is to keep the foundation stable wh
 | [Executive Radar](executive-radar.md) | Prompt Tool | Execs, managers, chiefs of staff | Prioritized triage across mail, calendar, tasks, and memory |
 | [Stakeholder Brief](stakeholder-brief.md) | Prompt Tool | Execs, PMs, account teams | Living dossier on a person, account, or project |
 | [Decision Memo Builder](decision-memo-builder.md) | Prompt Tool | Strategy, PMs, execs | Transform rough notes into structured decision memos |
-| [Agent Fleet Governor](agent-fleet-governor.md) | MCP Server | IT admins, governance teams | Monitor, audit, and govern your org's AI agent fleet |
+| [Agent Fleet Governor](agent-fleet-governor.md) | MCP Server + optional Prompt Tool | IT admins, governance teams | Monitor, audit, govern, and rationalize your org's AI agent fleet |
 | [Workplace Intelligence Monitor](workplace-intelligence-monitor.md) | MCP Server | HR analytics, chiefs of staff, business leaders | Query Viva Insights and Power BI models for workforce health trends |
 
 ---
@@ -90,7 +90,7 @@ If you're building out the library over time, this is the smoothest path:
 4. **Executive Radar** — synthesized "what needs my attention" triage
 5. **Stakeholder Brief** — living dossiers that compound over time
 6. **Decision Memo Builder** — highest complexity, strongest executive output
-7. **Agent Fleet Governor** — first MCP-powered skill, strong for IT admins and governance teams
+7. **Agent Fleet Governor** — MCP-powered governance skill with optional Catalog Intelligence prompt tool for duplicate detection and consolidation
 8. **Workplace Intelligence Monitor** — Power BI + Viva Insights workforce analytics via MCP
 
 This sequence starts with the most immediately useful skills and progresses toward richer capabilities that benefit from accumulated memory and context.
