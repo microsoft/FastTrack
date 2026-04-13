@@ -36,6 +36,7 @@ Never treat pulled workflow JSON as repo-safe by default. Revert `workflows/*.js
 
 ### 1. YAML-only change
 Use this for topics, actions, triggers, variables, or agent instructions.
+- If you are working in Copilot CLI, pair this workflow with the Microsoft Copilot Studio CAT Team's `copilot-studio` plugin (`skills-for-copilot-studio`) for YAML authoring and validation; this skill covers the surrounding engineering loop.
 - Pull
 - Revert workflow files
 - Edit YAML

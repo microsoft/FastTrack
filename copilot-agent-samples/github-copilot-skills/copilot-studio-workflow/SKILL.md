@@ -35,14 +35,17 @@ When starting work on a Copilot Studio project for the first time, verify the fo
 | Tool | Purpose | Install |
 |---|---|---|
 | **Power Platform CLI (`pac`)** | Solution export/import, component management | [Microsoft docs](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction) |
-| **Copilot Studio Skills Plugin** | Additional CPS authoring tools in Copilot CLI | `/plugin add` → search for Copilot Studio |
+| **Copilot Studio Plugin** (by Microsoft CAT Team) | YAML authoring, schema validation, topic creation, agent testing, push/pull management — 30+ specialized skills | `copilot plugin marketplace add microsoft/skills-for-copilot-studio` then `copilot plugin install copilot-studio@skills-for-copilot-studio` |
 | **PowerShell 7+** | Cross-platform script execution | [github.com/PowerShell](https://github.com/PowerShell/PowerShell) |
+
+> **How this skill relates to the Copilot Studio Plugin:** The CAT Team plugin handles YAML authoring, schema validation, and agent management. This workflow skill handles the surrounding engineering workflow — source control, environment sync, solution packaging, and platform gotchas. They are complementary: install both for the best experience.
 
 ### First session checklist
 1. Run `.\scripts\cps-status.ps1` to detect the project and check tool availability.
-2. If no `agent.mcs.yml` exists, clone an agent from the cloud using the VS Code extension or Copilot Studio manage flow.
-3. If `pac` CLI is needed for solution packaging, authenticate: `pac auth create --environment <URL>`.
-4. Verify the VS Code Copilot Studio extension can connect to your environment (open the agent folder, **Sync → Pull**).
+2. Install the Copilot Studio Plugin if not already installed (see Recommended table above).
+3. If no `agent.mcs.yml` exists, clone an agent from the cloud using the VS Code extension or Copilot Studio manage flow.
+4. If `pac` CLI is needed for solution packaging, authenticate: `pac auth create --environment <URL>`.
+5. Verify the VS Code Copilot Studio extension can connect to your environment (open the agent folder, **Sync → Pull**).
 
 ## Development Loop
 1. **Pull from cloud** using the VS Code Copilot Studio extension (**Sync → Pull**) or the Copilot Studio manage flow.

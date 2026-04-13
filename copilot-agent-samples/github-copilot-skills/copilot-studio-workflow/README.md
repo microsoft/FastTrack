@@ -150,6 +150,8 @@ Keep this short list in place and the workflow becomes smooth:
 - **Power Platform CLI (`pac`)** recommended for solution packaging and exports
 - Access to a **Copilot Studio-enabled Power Platform environment**
 
+For YAML authoring, schema validation, topic creation, and agent testing in Copilot CLI, also install the **Copilot Studio Plugin** by the Microsoft Copilot Studio CAT Team (`copilot-studio` from `skills-for-copilot-studio`). It complements this skill's engineering workflow guidance; see `SKILL.md` for details.
+
 Run `skills\copilot-studio-workflow\scripts\cps-status.ps1` to validate the local setup.
 
 ## Versioning
