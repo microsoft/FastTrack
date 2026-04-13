@@ -2,7 +2,7 @@
 
 > Monitor workforce health, collaboration patterns, and Viva Advanced Insights trends through Power BI semantic models — powered by the Power BI Remote MCP Server.
 
-> ⚠️ **Preview Status (April 2026):** The Power BI Remote MCP Server is in preview. We have confirmed that schema retrieval (`GetSemanticModelSchema`) works through Copilot Studio, but query execution (`ExecuteQuery`) may not yet be fully supported in all Copilot Studio configurations. We are actively investigating with the product team. If you encounter issues, please [open an issue](https://github.com/microsoft/FastTrack/issues) so we can track and resolve them together.
+> ⚠️ **Preview.** Power BI Remote MCP Server is in preview. Hit a snag? [Open an issue](https://github.com/microsoft/FastTrack/issues).
 
 ## At a Glance
 
@@ -10,7 +10,7 @@
 |---|---|
 | **Best for** | Enterprise IT admins, HR analytics leaders, chiefs of staff, business leaders |
 | **Complexity** | Medium |
-| **Status** | Preview — Power BI Remote MCP Server support in Copilot Studio is under active validation |
+| **Status** | Preview |
 | **Activation** | MCP Server (Power BI Remote) |
 | **Requires** | Power BI Remote MCP Server, Entra app registration, Power BI admin tenant setting, semantic models with relevant data |
 | **Outputs** | Workforce health answers, threshold alerts, trend comparisons, proactive recommendations |
