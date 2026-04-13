@@ -2,12 +2,15 @@
 
 > Monitor workforce health, collaboration patterns, and Viva Advanced Insights trends through Power BI semantic models — powered by the Power BI Remote MCP Server.
 
+> ⚠️ **Preview Status (April 2026):** The Power BI Remote MCP Server is in preview. We have confirmed that schema retrieval (`GetSemanticModelSchema`) works through Copilot Studio, but query execution (`ExecuteQuery`) may not yet be fully supported in all Copilot Studio configurations. We are actively investigating with the product team. If you encounter issues, please [open an issue](https://github.com/microsoft/FastTrack/issues) so we can track and resolve them together.
+
 ## At a Glance
 
 | | |
 |---|---|
 | **Best for** | Enterprise IT admins, HR analytics leaders, chiefs of staff, business leaders |
 | **Complexity** | Medium |
+| **Status** | Preview — Power BI Remote MCP Server support in Copilot Studio is under active validation |
 | **Activation** | MCP Server (Power BI Remote) |
 | **Requires** | Power BI Remote MCP Server, Entra app registration, Power BI admin tenant setting, semantic models with relevant data |
 | **Outputs** | Workforce health answers, threshold alerts, trend comparisons, proactive recommendations |
@@ -64,7 +67,7 @@ It works across four modes:
 - **Entra ID app registration** is created as a **multi-tenant** app
 - **API permission** is granted: **Power BI Service → Delegated → `Dataset.Read.All`**
 - **Power BI admin tenant setting** is enabled: **Users can use the Power BI Model Context Protocol server endpoint (preview)**
-- **Premium capacity or PPU license** — the Execute Queries REST API requires a **Premium Per User (PPU)** license (~$24/user/mo) or a workspace backed by **Fabric capacity (F64+)**. Without this, schema retrieval and DAX generation still work, but live query execution returns 401. A 60-day PPU trial is available from Power BI workspace settings.
+- **Power BI Pro (or higher) license** — the user executing queries must have at least a Pro license and Build permissions on the target semantic model. No Premium capacity or PPU is required for schema retrieval or query execution. The GenerateQuery tool (Copilot-powered DAX generation) requires a Copilot license or Fabric capacity (F2+).
 - Relevant **Power BI semantic models** exist and are accessible to the signed-in user
 - For Viva scenarios, **Viva Advanced Insights data** is flowing into a Power BI semantic model
 
@@ -124,6 +127,8 @@ This skill does not use a prompt tool. Instead, PowerClaw routes requests direct
 - **`GetSemanticModelSchema`** — retrieves the model metadata so PowerClaw can understand tables, measures, relationships, and available metrics.
 - **`GenerateQuery`** — generates a DAX query from the relevant schema context. **PowerClaw should always try this first** for natural-language requests.
 - **`ExecuteQuery`** — runs the DAX query and returns the result set.
+
+> 💡 **Cost note:** GenerateQuery uses Power BI's built-in Copilot capacity to generate DAX. If you prefer not to consume Copilot capacity, disable this tool and let PowerClaw's LLM generate DAX directly from the schema.
 
 Typical orchestration flow:
 
@@ -209,7 +214,7 @@ Example autonomous pattern:
 
 ## Limitations
 
-- **Live query execution requires Premium capacity or PPU.** The Execute Queries REST API (`POST /datasets/{datasetId}/executeQueries`) returns 401 on standard Pro/shared workspaces. Schema retrieval and DAX generation work on any license — only execution is gated. See [Microsoft docs](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries) for details.
+- **GenerateQuery consumes Copilot capacity.** The GenerateQuery tool uses Power BI Copilot to generate DAX and requires a Copilot license or Fabric capacity (F2+). As a cost-conscious alternative, you can disable GenerateQuery and let PowerClaw's own LLM generate DAX directly — it just won't use the Power BI-native DAX generation. See [Microsoft docs](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries) for details.
 - Results depend on the quality, freshness, and access permissions of the underlying Power BI semantic model.
 - Viva Advanced Insights data is not universal; it must already be available in a Power BI model for those scenarios.
 - Some workforce metrics may lag depending on data refresh schedules.
