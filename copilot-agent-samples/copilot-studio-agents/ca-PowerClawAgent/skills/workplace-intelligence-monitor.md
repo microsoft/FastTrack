@@ -2,7 +2,7 @@
 
 > Monitor workforce health, collaboration patterns, and Viva Advanced Insights trends through Power BI semantic models — powered by the Power BI Remote MCP Server.
 
-> ⚠️ **Preview.** Power BI Remote MCP Server is in preview. Hit a snag? [Open an issue](https://github.com/microsoft/FastTrack/issues).
+> ℹ️ **Preview.** Power BI Remote MCP Server is in preview.  We've seen intermittent 401 errors with ExecuteQuery in some Copilot Studio configurations — actively investigating. Hit a snag? [Open an issue](https://github.com/microsoft/FastTrack/issues).
 
 ## At a Glance
 
@@ -101,7 +101,7 @@ It works across four modes:
    - **Authorization URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
    - **Token URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/token`
    - **Refresh URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/token`
-   - **Scope:** `https://analysis.windows.net/powerbi/api/.default`
+   - **Scope:** `https://api.fabric.microsoft.com/.default`
    - **Client ID:** your Entra app’s client ID
    - **Client Secret:** the secret you created in Step 1
 4. Authenticate the connection.
