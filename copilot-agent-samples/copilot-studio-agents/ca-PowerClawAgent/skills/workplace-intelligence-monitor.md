@@ -2,7 +2,7 @@
 
 > Monitor workforce health, collaboration patterns, and Viva Advanced Insights trends through Power BI semantic models — powered by the Power BI Remote MCP Server.
 
-> ℹ️ **Preview.** Power BI Remote MCP Server is in preview.  We've seen intermittent 401 errors with ExecuteQuery in some Copilot Studio configurations — actively investigating. Hit a snag? [Open an issue](https://github.com/microsoft/FastTrack/issues).
+> ℹ️ **Preview.** Power BI Remote MCP Server is in preview. Hit a snag? [Open an issue](https://github.com/microsoft/FastTrack/issues).
 
 ## At a Glance
 
@@ -65,7 +65,16 @@ It works across four modes:
 
 - **Power BI Remote MCP Server** is available in Copilot Studio
 - **Entra ID app registration** is created as a **multi-tenant** app
-- **API permission** is granted: **Power BI Service → Delegated → `Dataset.Read.All`**
+- **API permissions** are granted and admin-consented: **Power BI Service → Delegated**:
+
+  | Permission | Description |
+  |---|---|
+  | `Item.Execute.All` | Make API calls that require execute permissions on all Fabric items |
+  | `MLModel.Execute.All` | Execute ML models |
+  | `SemanticModel.Read.All` | Read semantic models |
+  | `Workspace.Read.All` | View all workspaces |
+
+  > ⚠️ All four permissions must have **admin consent granted** (green checkmark in the Status column). Without admin consent, schema retrieval may work but query execution will return 401.
 - **Power BI admin tenant setting** is enabled: **Users can use the Power BI Model Context Protocol server endpoint (preview)**
 - **Power BI Pro (or higher) license** — the user executing queries must have at least a Pro license and Build permissions on the target semantic model. No Premium capacity or PPU is required for schema retrieval or query execution. The GenerateQuery tool (Copilot-powered DAX generation) requires a Copilot license or Fabric capacity (F2+).
 - Relevant **Power BI semantic models** exist and are accessible to the signed-in user
@@ -80,9 +89,10 @@ It works across four modes:
 3. Set **Supported account types** to **Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant)**.
 4. Add a redirect URI that matches your Copilot Studio OAuth flow requirements.
 5. After creation, go to **API permissions** → **Add a permission** → **Power BI Service** → **Delegated permissions**.
-6. Add **`Dataset.Read.All`**.
-7. Go to **Certificates & secrets** and create a **client secret**. Save the secret value securely.
-8. Record the **Application (client) ID**, **Directory (tenant) ID**, and secret for Copilot Studio setup.
+6. Add all four permissions: **`Item.Execute.All`**, **`MLModel.Execute.All`**, **`SemanticModel.Read.All`**, **`Workspace.Read.All`**.
+7. Click **Grant admin consent for [your tenant]** — all four must show a green checkmark.
+8. Go to **Certificates & secrets** and create a **client secret**. Save the secret value securely.
+9. Record the **Application (client) ID**, **Directory (tenant) ID**, and secret for Copilot Studio setup.
 
 ### Step 2 — Enable the Power BI admin tenant setting
 
@@ -229,6 +239,16 @@ Example autonomous pattern:
 - Escalation workflows when collaboration or after-hours risk crosses a set threshold
 - Combine workforce signals with project delivery metrics for a broader operating review
 - Export monthly workforce summaries into Word or SharePoint for leadership review
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| Schema works but ExecuteQuery returns 401 | Missing API permissions or admin consent not granted | Verify all 4 Power BI Service permissions are added **and** admin consent is granted (green checkmark). Delete and re-create the Copilot Studio connection after fixing. |
+| Connection fails during OAuth | App not configured as multi-tenant | Set Supported account types to "Accounts in any organizational directory" in the Entra app registration. |
+| MCP server not available in Copilot Studio | Tenant setting not propagated | Enable the Power BI MCP tenant setting and wait ~15 minutes. |
+| GenerateQuery returns empty or errors | Missing Copilot license or Fabric capacity | GenerateQuery requires a Copilot license or Fabric capacity (F2+). Alternatively, disable it and let PowerClaw's LLM generate DAX directly. |
+| No semantic models found | User lacks workspace access | The signed-in user needs at least Viewer role on the workspace containing the semantic model. |
 
 ## Related Skills
 
