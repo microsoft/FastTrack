@@ -20,6 +20,10 @@
 
 Workplace Intelligence Monitor turns PowerClaw into a workforce analytics operator. It can query **any Power BI semantic model**, but the killer use case is **Viva Advanced Insights** data: focus time, meeting hours, collaboration patterns, manager 1:1 frequency, and after-hours work.
 
+<p align="center">
+  <img src="../Images/PowerClaw-PowerBIUseCase.gif" alt="PowerClaw querying Power BI through the MCP Server" width="800" />
+</p>
+
 It works across four modes:
 
 1. **Explore** — discover what semantic models, tables, measures, and workforce metrics are available.
