@@ -18,10 +18,15 @@
 
 ## What This Skill Does
 
-Workplace Intelligence Monitor turns PowerClaw into a workforce analytics operator. It can query **any Power BI semantic model**, but the killer use case is **Viva Advanced Insights** data: focus time, meeting hours, collaboration patterns, manager 1:1 frequency, and after-hours work.
+Workplace Intelligence Monitor turns PowerClaw into a workforce analytics operator. It can query **any Power BI semantic model**, including:
+
+- **Copilot & Agent Analytics** — adoption trends, active users, agent usage, and interaction patterns via Purview audit logs (see the [FastTrack Copilot Audit Dashboard](https://aka.ms/CopilotAuditPBI))
+- **Viva Advanced Insights** — focus time, meeting hours, collaboration patterns, manager 1:1 frequency, and after-hours work
+
+> The GIF below shows PowerClaw querying the **Copilot Audit Dashboard** — a Power BI semantic model built on Purview audit logs that tracks Copilot and agent adoption across your tenant.
 
 <p align="center">
-  <img src="../Images/PowerClaw-PowerBIUseCase.gif" alt="PowerClaw querying Power BI through the MCP Server" width="800" />
+  <img src="../Images/PowerClaw-PowerBIUseCase.gif" alt="PowerClaw querying Copilot Audit Dashboard through the Power BI MCP Server" width="800" />
 </p>
 
 It works across four modes:
