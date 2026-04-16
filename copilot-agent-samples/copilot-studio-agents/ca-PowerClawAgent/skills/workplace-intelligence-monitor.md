@@ -121,6 +121,7 @@ It works across four modes:
    - **Token URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/token`
    - **Refresh URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/token`
    - **Scope:** `https://analysis.windows.net/powerbi/api/Item.Execute.All https://analysis.windows.net/powerbi/api/MLModel.Execute.All https://analysis.windows.net/powerbi/api/SemanticModel.Read.All https://analysis.windows.net/powerbi/api/Workspace.Read.All offline_access`
+     > ⚠️ Enter all scopes on **one line**, separated by spaces. Do not use line breaks or commas.
    - **Client ID:** your Entra app’s client ID
    - **Client Secret:** the secret you created in Step 1
 4. Authenticate the connection.
