@@ -85,7 +85,7 @@ It works across four modes:
 
   > ⚠️ All four permissions must have **admin consent granted** (green checkmark in the Status column). Without admin consent, schema retrieval may work but query execution will return 401.
 - **Power BI admin tenant setting** is enabled: **Users can use the Power BI Model Context Protocol server endpoint (preview)**
-- **Power BI Pro (or higher) license** — the user executing queries must have at least a Pro license and Build permissions on the target semantic model. No Premium capacity or PPU is required for schema retrieval or query execution. The GenerateQuery tool (Copilot-powered DAX generation) requires a Copilot license or Fabric capacity (F2+).
+- **Power BI Pro (or higher) license** — the user executing queries must have at least a Pro license and Build permissions on the target semantic model. No Premium capacity or PPU is required for schema retrieval or query execution. The **GenerateQuery** tool requires **Fabric capacity (F2+)** on the workspace.
 - Relevant **Power BI semantic models** exist and are accessible to the signed-in user
 - For Viva scenarios, **Viva Advanced Insights data** is flowing into a Power BI semantic model
 
@@ -120,7 +120,8 @@ It works across four modes:
    - **Authorization URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
    - **Token URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/token`
    - **Refresh URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/token`
-   - **Scope:** `https://api.fabric.microsoft.com/.default`
+   - **Scope:** `https://analysis.windows.net/powerbi/api/Item.Execute.All https://analysis.windows.net/powerbi/api/MLModel.Execute.All https://analysis.windows.net/powerbi/api/SemanticModel.Read.All https://analysis.windows.net/powerbi/api/Workspace.Read.All offline_access`
+     > ⚠️ Enter all scopes on **one line**, separated by spaces. Do not use line breaks or commas.
    - **Client ID:** your Entra app’s client ID
    - **Client Secret:** the secret you created in Step 1
 4. Authenticate the connection.
@@ -144,10 +145,10 @@ It works across four modes:
 This skill does not use a prompt tool. Instead, PowerClaw routes requests directly across the three Power BI Remote MCP tools:
 
 - **`GetSemanticModelSchema`** — retrieves the model metadata so PowerClaw can understand tables, measures, relationships, and available metrics.
-- **`GenerateQuery`** — generates a DAX query from the relevant schema context. **PowerClaw should always try this first** for natural-language requests.
+- **`GenerateQuery`** — generates a DAX query from the relevant schema context. **Requires Fabric capacity (F2+).** PowerClaw should always try this first for natural-language requests.
 - **`ExecuteQuery`** — runs the DAX query and returns the result set.
 
-> 💡 **Cost note:** GenerateQuery uses Power BI's built-in Copilot capacity to generate DAX. If you prefer not to consume Copilot capacity, disable this tool and let PowerClaw's LLM generate DAX directly from the schema.
+> 💡 **Cost note:** GenerateQuery requires **Fabric capacity (F2+)** to generate DAX via Power BI Copilot. If your workspace doesn't have Fabric capacity, disable this tool and let PowerClaw's LLM generate DAX directly from the schema.
 
 Typical orchestration flow:
 
@@ -233,7 +234,7 @@ Example autonomous pattern:
 
 ## Limitations
 
-- **GenerateQuery consumes Copilot capacity.** The GenerateQuery tool uses Power BI Copilot to generate DAX and requires a Copilot license or Fabric capacity (F2+). As a cost-conscious alternative, you can disable GenerateQuery and let PowerClaw's own LLM generate DAX directly — it just won't use the Power BI-native DAX generation. See [Microsoft docs](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries) for details.
+- **GenerateQuery requires Fabric capacity (F2+).** The GenerateQuery tool uses Power BI Copilot to generate DAX. If your workspace doesn't have Fabric capacity, disable GenerateQuery and let PowerClaw's own LLM generate DAX directly from the schema.
 - Results depend on the quality, freshness, and access permissions of the underlying Power BI semantic model.
 - Viva Advanced Insights data is not universal; it must already be available in a Power BI model for those scenarios.
 - Some workforce metrics may lag depending on data refresh schedules.
@@ -254,9 +255,10 @@ Example autonomous pattern:
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Schema works but ExecuteQuery returns 401 | Missing API permissions or admin consent not granted | Verify all 4 Power BI Service permissions are added **and** admin consent is granted (green checkmark). Delete and re-create the Copilot Studio connection after fixing. |
+| Connection goes stale after ~1 hour | Using `.default` scope instead of explicit scopes | Use the explicit scopes listed in Step 3 with `offline_access` — this enables token refresh and keeps the connection alive. |
 | Connection fails during OAuth | App not configured as multi-tenant | Set Supported account types to "Accounts in any organizational directory" in the Entra app registration. |
 | MCP server not available in Copilot Studio | Tenant setting not propagated | Enable the Power BI MCP tenant setting and wait ~15 minutes. |
-| GenerateQuery returns empty or errors | Missing Copilot license or Fabric capacity | GenerateQuery requires a Copilot license or Fabric capacity (F2+). Alternatively, disable it and let PowerClaw's LLM generate DAX directly. |
+| GenerateQuery returns empty or errors | Workspace not backed by Fabric capacity | GenerateQuery requires Fabric capacity (F2+). Alternatively, disable it and let PowerClaw's LLM generate DAX directly. |
 | No semantic models found | User lacks workspace access | The signed-in user needs at least Viewer role on the workspace containing the semantic model. |
 
 ## Related Skills
