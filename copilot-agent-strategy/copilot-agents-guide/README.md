@@ -53,7 +53,7 @@ The **Copilot Agents Guide** is a comprehensive, interactive web-based tool that
 ### 1. **Researcher & Analyst Agents** 
 Built-in reasoning agents for research and data analysis
 - **Researcher:** Complex multi-step research with multi-model Critique (generation + evaluation) and Model Council (side-by-side model comparison)
-- **Analyst:** Data analysis with Python execution using o3-mini
+- **Analyst:** Data analysis with Python execution
 - **Availability:** Immediate (pre-pinned in M365 Copilot)
 - **Cost:** Included with M365 Copilot license (25 queries/month)
 
@@ -91,7 +91,7 @@ Pro-code development with full control
 ## 🚀 How to Use
 
 ### Option 1: Open Directly
-Simply open `copilot-agents-guide-final.html` in any modern web browser.
+Simply open `index.html` in any modern web browser.
 
 ### Option 2: Host Locally
 ```bash
@@ -104,7 +104,7 @@ python -m http.server 8000
 # Or with Node.js
 npx http-server
 
-# Then open http://localhost:8000/copilot-agents-guide-final.html
+# Then open http://localhost:8000/index.html
 ```
 
 ### Option 3: Deploy to Web Server

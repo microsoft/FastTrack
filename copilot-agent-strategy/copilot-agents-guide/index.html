@@ -100,9 +100,9 @@
         // ─── Message Center Data ─────────────────────────────────────────
         const messageCenterPosts = [
           { id: 'MC1254100', title: 'Microsoft 365 Copilot: Copilot Cowork now available in Frontier', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-30', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Copilot Cowork — designed for long-running, multi-step work in Microsoft 365 — is now available via the Frontier program. Built on Anthropic\'s Claude Cowork technology, it lets users delegate complex tasks that run in the background with visible progress, checkpoints, and steering. Enterprise security and governance apply by default.', tags: ['new-feature', 'user-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'declarative', 'toolkit'] },
-          { id: 'MC1254099', title: 'Microsoft 365 Copilot: Researcher Critique and Model Council now available in Frontier', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-30', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Researcher now includes Critique — a multi-model architecture where one model generates and another reviews, scoring 13.8% higher on the DRACO deep research benchmark. Model Council enables side-by-side comparison of responses from Anthropic and OpenAI models with a cover letter highlighting agreement and divergence. Both features are available in Frontier.', tags: ['new-feature', 'user-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'declarative', 'toolkit'] },
+          { id: 'MC1254099', title: 'Microsoft 365 Copilot: Researcher Critique and Model Council now available in Frontier', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-30', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat'], summary: 'Researcher now includes Critique — a multi-model architecture where one model generates and another reviews, for higher accuracy on deep research tasks. Model Council enables side-by-side comparison of responses from Anthropic and OpenAI models with a cover letter highlighting agreement and divergence. Both features are available in Frontier.', tags: ['new-feature', 'user-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'declarative', 'toolkit'] },
           { id: 'MC1253500', title: 'Microsoft 365 Copilot: Wave 3 — Agentic capabilities in Word, Excel, PowerPoint, and Outlook', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-09', actionRequiredBy: null, status: 'active', services: ['Microsoft 365 Copilot Chat', 'Microsoft 365 apps'], summary: 'Wave 3 of Microsoft 365 Copilot embeds agentic capabilities directly into Word, Excel, PowerPoint, and Outlook. What was previously called "Agent Mode" is now core Copilot — creating, editing, and refining content end-to-end inside documents. Claude is now available in mainline chat in Copilot via the Frontier program alongside OpenAI models. Multi-model intelligence selects the right model for each task automatically.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full', 'sharepoint', 'declarative', 'toolkit'] },
-          { id: 'MC1253499', title: 'Agent 365 generally available May 1 — Microsoft 365 E7 Frontier Suite announced', category: 'Plan for Change', severity: 'medium', datePublished: '2026-03-09', actionRequiredBy: '2026-05-01', status: 'active', services: ['Microsoft 365 suite'], summary: 'Agent 365, the control plane for AI agents, will be generally available on May 1 at $15/user/month. Microsoft 365 E7: The Frontier Suite bundles Copilot, Agent 365, Entra Suite, and E5 security at $99/user/month. Agent 365 gives IT one place to observe, secure, and govern every agent across the organization regardless of platform.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: true, agentAudience: ['researcherAnalyst', 'lite', 'full', 'sharepoint', 'declarative', 'toolkit'] },
+          { id: 'MC1253499', title: 'Agent 365 generally available May 1 — Microsoft 365 E7 Frontier Suite announced', category: 'Plan for Change', severity: 'medium', datePublished: '2026-03-09', actionRequiredBy: '2026-05-01', status: 'active', services: ['Microsoft 365 suite'], summary: 'Agent 365, the control plane for AI agents, will be generally available on May 1. Microsoft 365 E7: The Frontier Suite bundles Copilot, Agent 365, Entra Suite, and E5 security. Agent 365 gives IT one place to observe, secure, and govern every agent across the organization regardless of platform.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: true, agentAudience: ['researcherAnalyst', 'lite', 'full', 'sharepoint', 'declarative', 'toolkit'] },
           { id: 'MC1251206', title: 'Microsoft Teams: Identify external bots joining your Teams meetings', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-13', actionRequiredBy: null, status: 'active', services: ['Microsoft Teams'], summary: 'Microsoft Teams will detect and label external meeting assistant bots joining meetings, giving organizers control to approve, deny, or remove them. A new admin policy will manage bot handling, with detection enabled by default starting mid-May to mid-June 2026. This enhances security and compliance visibility.', tags: ['new-feature', 'user-impact', 'admin-impact'], isHighImpact: false, agentAudience: ['full', 'declarative', 'toolkit'] },
           { id: 'MC1250069', title: 'Power Apps - Public preview for Microsoft 365 Copilot chat in model-driven apps', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-12', actionRequiredBy: null, status: 'active', services: ['Power Apps'], summary: 'We are announcing Microsoft 365 Copilot chat for model-driven apps in Power Apps. This feature is now available for public preview. How does this affect me? This feature introduces an AI assistant that enables users to understand the data in your apps by engaging in natural language conversations. ', tags: ['new-feature'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full'] },
           { id: 'MC1250062', title: 'Power Apps - Public preview for Microsoft 365 Copilot chat in canvas apps', category: 'Stay Informed', severity: 'medium', datePublished: '2026-03-12', actionRequiredBy: null, status: 'active', services: ['Power Apps'], summary: 'We are announcing Microsoft 365 Copilot chat for canvas apps in Power Apps. This feature is now available for public preview. How does this affect me? This feature introduces an AI assistant that enables users to understand the data in your apps by engaging in natural language conversations. I', tags: ['new-feature'], isHighImpact: false, agentAudience: ['researcherAnalyst', 'lite', 'full'] },
@@ -262,15 +262,14 @@
                   borderColor: 'border-indigo-200 dark:border-indigo-800/30',
                   status: 'GA',
                   statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-                  description: 'Complex multi-step research powered by multi-model intelligence. Critique separates generation from evaluation using models from Anthropic and OpenAI for 13.8% higher accuracy (DRACO benchmark). Model Council lets you compare responses from different models side by side.',
+                  description: 'Complex multi-step research powered by multi-model intelligence. Critique separates generation from evaluation using models from Anthropic and OpenAI for higher accuracy on deep research tasks. Model Council lets you compare responses from different models side by side.',
                   capabilities: [
                     'Critique: multi-model architecture — one model generates, another reviews and refines',
                     'Model Council: side-by-side model comparison with agreement/divergence analysis',
                     'Multi-source research synthesis across work files, emails, meetings, and web',
-                    'Third-party connector support (Salesforce, ServiceNow)',
+                    'Microsoft Graph connector support',
                     'Structured reports with source citations and rubric-based evaluation',
-                    '37 language support',
-                    '13.8% higher on DRACO deep research quality benchmark'
+                    'Over 30 languages supported'
                   ],
                   whenToUse: 'Complex research projects, go-to-market strategies, competitive analysis, policy synthesis, cross-model validation'
                 },
@@ -283,13 +282,12 @@
                   borderColor: 'border-blue-200 dark:border-blue-800/30',
                   status: 'GA',
                   statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-                  description: 'Advanced data analysis with Python execution and chain-of-thought reasoning. Uses OpenAI o3-mini with 8 language support (expanding).',
+                  description: 'Advanced data analysis with Python execution and chain-of-thought reasoning.',
                   capabilities: [
                     'Advanced data analysis with Python execution',
                     'Chain-of-thought reasoning for insights',
                     'Visualizations and trend identification',
-                    'Works across messy or multiple datasets',
-                    '8 language support (expanding)'
+                    'Works across messy or multiple datasets'
                   ],
                   whenToUse: 'Data analysis, trend identification, customer behavior insights, dataset exploration'
                 },
@@ -300,14 +298,14 @@
                   color: 'text-rose-500',
                   bgColor: 'bg-rose-50 dark:bg-rose-950/20',
                   borderColor: 'border-rose-200 dark:border-rose-800/30',
-                  status: 'GA',
-                  statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                  status: 'Preview',
+                  statusColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
                   description: 'Proactive AI agent inside Viva Engage communities that identifies unanswered questions and drafts expert-verified responses grounded in community conversations and SharePoint.',
                   capabilities: [
                     'Proactive identification of unanswered questions',
                     'Responses grounded in community threads and SharePoint',
-                    'Expert verification workflow with "Trusted" marking',
-                    '@mention for on-demand Q&A by Copilot-licensed members',
+                    'Expert verification workflow with "Verified" marking',
+                    '@mentions coming soon for on-demand Q&A by Copilot-licensed members',
                     'Admin controls: auto-post vs. review mode'
                   ],
                   whenToUse: 'Community knowledge sharing, recurring Q&A deflection, expert-verified organizational knowledge'
@@ -319,9 +317,9 @@
                   color: 'text-amber-500',
                   bgColor: 'bg-amber-50 dark:bg-amber-950/20',
                   borderColor: 'border-amber-200 dark:border-amber-800/30',
-                  status: 'GA',
-                  statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-                  description: 'Automate routine tasks directly from Microsoft 365 Copilot — create flows, set reminders, send notifications, and manage approvals using natural language.',
+                  status: 'Preview',
+                  statusColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+                  description: 'Automate routine tasks directly from Microsoft 365 Copilot — create flows, set reminders, send notifications, and manage approvals using natural language. Rolling out in Frontier; English-first.',
                   capabilities: [
                     'Natural language workflow creation',
                     'Pre-built templates for common automations',
@@ -333,21 +331,21 @@
                 }
               ],
               capabilities: [
-                'Researcher: Multi-step research with Critique (multi-model generation + evaluation) and Model Council (side-by-side comparison)',
+                'Researcher: Multi-source synthesis with Microsoft Graph connector support',
                 'Analyst: Advanced data analysis with Python and chain-of-thought reasoning',
-                'Viva Engage: Proactive community Q&A with expert verification',
-                'Workflows: Natural language task automation and approvals',
+                'Viva Engage: Proactive community Q&A with expert verification (preview)',
+                'Workflows: Natural language task automation and approvals (Frontier preview)',
                 'All: Pre-built into Microsoft 365 Copilot — no custom development',
                 'All: Immediate or same-day deployment',
-                'Researcher: Multi-model intelligence with Critique and Model Council (Frontier)',
-                'Researcher: 37 language support; Analyst: 8 languages (expanding)',
-                'Researcher & Analyst: 25 combined queries per month per user',
+                'Researcher: Multi-model intelligence with Critique and Model Council',
+                'Researcher: Over 30 languages supported',
+                'Researcher: 25 queries per user per month',
                 'Viva Engage: Grounded in community conversations and SharePoint',
                 'Workflows: Integration with Power Automate templates'
               ],
               limitations: [
                 'Requires Microsoft 365 Copilot license',
-                'Researcher & Analyst: Limited to 25 combined queries per month per user',
+                'Researcher: 25 queries per user per month',
                 'No support for external deployment channels',
                 'Viva Engage: Requires active communities with conversation history for best results',
                 'Limited customization — designed for specific built-in scenarios'
@@ -381,7 +379,7 @@
                   'Enable Viva Engage Community Agent in communities with active discussions and identified subject-matter experts',
                   'Designate community experts to verify and mark AI-drafted answers as "Trusted" for knowledge curation',
                   'Use Workflows Agent for repetitive tasks first — approvals, notifications, and reminders are quick wins',
-                  'Monitor the 25 queries/month limit for Researcher & Analyst and plan usage accordingly'
+                  'Monitor the 25 queries/month limit for Researcher and plan usage accordingly'
                 ],
                 deploymentChecklist: [
                   { item: 'M365 Copilot licenses assigned', critical: true },
@@ -389,7 +387,7 @@
                   { item: 'Viva Engage communities identified for agent enablement', critical: false },
                   { item: 'Community experts designated for answer verification', critical: false },
                   { item: 'Sample prompts shared with team for each agent', critical: false },
-                  { item: 'Usage monitoring configured for Researcher & Analyst', critical: false }
+                  { item: 'Usage monitoring configured for Researcher', critical: false }
                 ]
               }
             },
@@ -403,7 +401,7 @@
               technicalLevel: 'Beginner',
               shortName: 'SharePoint',
               fastTrackSupported: true,
-              description: 'AI agents that live within SharePoint, now supporting cross-site querying through Copilot, Teams integration, and Knowledge Agent metadata enrichment for smarter discovery.',
+              description: 'AI agents that live within SharePoint, now supporting cross-site querying through Copilot, Teams integration, and Knowledge Agent metadata enrichment (preview) for smarter discovery.',
               capabilities: [
                 'Site-specific knowledge grounding',
                 'Automatic content indexing',
@@ -412,7 +410,7 @@
                 'Cross-site querying via Copilot integration',
                 'Teams 1:1 chat with agents',
                 'Microsoft Lists natural language queries',
-                'Knowledge Agent metadata enrichment (2026)'
+                'Knowledge Agent metadata enrichment (preview)'
               ],
               limitations: [
                 'Basic conversation capabilities only',
@@ -437,7 +435,7 @@
               guidance: {
                 gettingStarted: [
                   { step: 1, title: 'Choose your SharePoint site', description: 'Identify the site with the content you want your agent to access.' },
-                  { step: 2, title: 'Create the agent', description: 'Go to site Settings → Copilot Agents → Create to build your SharePoint agent.' },
+                  { step: 2, title: 'Create the agent', description: 'From the site home, a library, or a list: choose New > Agent (or use the AI actions > Create an agent option) to build your SharePoint agent.' },
                   { step: 3, title: 'Configure knowledge sources', description: 'Select document libraries and lists the agent should reference.' },
                   { step: 4, title: 'Test and share', description: 'Test the agent with sample questions, then share with your team via the site.' }
                 ],
@@ -465,14 +463,12 @@
               technicalLevel: 'Beginner',
               shortName: 'Agent Builder',
               fastTrackSupported: true,
-              description: 'Create AI agents using natural language directly within Microsoft 365 Copilot, now hosted in a dedicated Microsoft 365 Copilot Chat environment with automatic provisioning. Perfect for quick prototyping and personal productivity enhancements.',
+              description: 'Create AI agents using natural language directly within Microsoft 365 Copilot. Perfect for quick prototyping and personal productivity enhancements.',
               capabilities: [
                 'Natural language agent creation',
                 'Web search knowledge grounding',
                 'SharePoint content integration',
                 'Microsoft 365 Copilot connectors',
-                'Dedicated M365 Copilot Chat hosting environment',
-                'Automatic environment provisioning',
                 'Basic conversation starters',
                 'Real-time test pane'
               ],
@@ -525,16 +521,15 @@
               technicalLevel: 'Intermediate',
               shortName: 'Copilot Studio Declarative',
               fastTrackSupported: true,
-              description: 'Declarative agents built in Copilot Studio Full that extend Microsoft 365 Copilot using its orchestrator, with Agent Store publishing, multi-agent orchestration support, and Agent-to-Agent (A2A) protocol for advanced scenarios.',
+              description: 'Declarative agents built in Copilot Studio Full that extend Microsoft 365 Copilot using its orchestrator, with Agent Store publishing and support for Copilot Studio connected-agent patterns (preview) for advanced scenarios.',
               capabilities: [
                 'Uses M365 Copilot orchestrator',
                 'Custom instructions and behavior',
                 'Enterprise knowledge integration',
                 'Plugin actions for external systems',
                 'Agent Store publishing and distribution',
-                'Multi-agent orchestration support',
-                'Agent-to-Agent (A2A) protocol',
-                'Available in M365 Copilot, Teams, Word, PowerPoint',
+                'Copilot Studio connected-agent scenarios (preview), including external A2A connections',
+                'Available in Microsoft 365 Copilot and Microsoft 365 apps (Teams, Word, Excel, Outlook)',
                 'Inherits M365 Copilot security'
               ],
               limitations: [
@@ -588,14 +583,14 @@
               technicalLevel: 'Intermediate',
               shortName: 'Copilot Studio Custom Engine',
               fastTrackSupported: true,
-              description: 'Full-featured Copilot Studio with advanced capabilities, including multi-agent orchestration, Agent Store publishing, Computer Use automation for legacy apps, GPT-5 Chat availability, custom connectors, multi-channel publishing, and enterprise-grade features.',
+              description: 'Full-featured Copilot Studio with advanced capabilities, including multi-agent orchestration, Agent Store publishing, Computer Use automation for legacy apps (preview), GPT-5 Chat availability, custom connectors, multi-channel publishing, and enterprise-grade features.',
               capabilities: [
                 'Advanced conversation flows and logic',
                 'Custom connectors and API integrations',
                 'Multi-channel publishing',
                 'Multi-agent orchestration (agent collaboration)',
                 'Agent Store marketplace publishing',
-                'Computer Use automation for legacy apps',
+                'Computer Use automation for legacy apps (preview)',
                 'Human-in-the-loop (HITL) controls',
                 'Automated agent evaluation and testing',
                 'GPT-5 Chat model support',
@@ -605,7 +600,7 @@
               ],
               limitations: [
                 'Requires technical expertise and training',
-                'Copilot Studio license required (see Microsoft pricing for current rates)',
+                'Copilot Studio license required',
                 'Higher development time investment required',
                 'Ongoing maintenance and monitoring needed'
               ],
@@ -659,7 +654,7 @@
               technicalLevel: 'Expert',
               shortName: 'M365 Agents Toolkit',
               fastTrackSupported: false,
-              description: 'Build declarative and custom engine agents with full developer control using VS Code, Visual Studio, CLI, and GitHub Copilot extensions, plus Agent Store publishing, Microsoft Teams SDK, and MCP/A2A protocol support. Note: Pro-code development is outside FastTrack deployment scope.',
+              description: 'Build declarative and custom engine agents with full developer control using VS Code, Visual Studio, and CLI extensions, with Agent Store publishing, Microsoft Teams SDK, and MCP protocol support (A2A via Teams SDK). Note: Pro-code development is outside FastTrack deployment scope.',
               capabilities: [
                 'Full pro-code development workflow',
                 'Microsoft Teams SDK (formerly Teams AI Library)',
@@ -667,9 +662,9 @@
                 'Version control and CI/CD support',
                 'Advanced plugin development',
                 'Agent Store multi-channel publishing',
-                'MCP and Agent-to-Agent (A2A) protocol support',
+                'MCP protocol support (A2A available via Teams SDK)',
                 'Agents Playground for local testing',
-                'VS Code, Visual Studio, CLI, and GitHub Copilot extensions',
+                'VS Code, Visual Studio, and CLI extensions',
                 'Custom engine agent support (bring your own LLM)'
               ],
               limitations: [
@@ -703,7 +698,7 @@
                 bestPractices: [
                   'Use Agents Playground for fast local iteration before cloud deployment',
                   'Implement proper error handling and telemetry from day one',
-                  'Follow the MCP and A2A protocol patterns for interoperability',
+                  'Follow the MCP protocol patterns for interoperability',
                   'Set up CI/CD early — version control and automated testing save time long-term'
                 ],
                 deploymentChecklist: [
@@ -970,11 +965,11 @@
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-blue-600" />
-                              <span>Agent 365 adds enterprise agent governance — GA May 1 at $15/user/mo — <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">see current pricing</a></span>
+                              <span>Agent 365 adds enterprise agent governance — GA May 1 — <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">see current licensing</a></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-indigo-600" />
-                              <span>Microsoft 365 E7 Frontier Suite bundles Copilot, Agent 365, Entra, and E5 security — GA May 1 at $99/user/mo — <a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">see current pricing</a></span>
+                              <span>Microsoft 365 E7 Frontier Suite bundles Copilot, Agent 365, Entra, and E5 security — GA May 1 — <a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">see current licensing</a></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-yellow-600" />
@@ -1572,8 +1567,8 @@
                         <div className="flex-1 min-w-0">
                           <span>Agent 365 — Control Plane</span>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <span title="Agent 365 generally available May 1, 2026 at $15/user/month" className="inline-flex items-center gap-0.5 text-[9px] text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-400/10 border border-green-100 dark:border-green-400/20 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap leading-none">
-                              GA May 1 • $15/user/mo
+                            <span title="Agent 365 generally available May 1, 2026" className="inline-flex items-center gap-0.5 text-[9px] text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-400/10 border border-green-100 dark:border-green-400/20 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap leading-none">
+                              GA May 1
                             </span>
                           </div>
                         </div>
