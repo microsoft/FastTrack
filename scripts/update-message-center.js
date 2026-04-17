@@ -19,7 +19,13 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const INDEX_PATH = path.resolve(__dirname, '..', 'index.html');
+const INDEX_PATH = path.resolve(
+  __dirname,
+  '..',
+  'copilot-agent-strategy',
+  'copilot-agents-guide',
+  'index.html'
+);
 const MC_DATA_URL =
   'https://raw.githubusercontent.com/merill/mc/main/%40data/messages.json';
 
