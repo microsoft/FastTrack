@@ -97,12 +97,13 @@ It works across four modes:
 1. Open **Microsoft Entra admin center** → **App registrations** → **New registration**.
 2. Name the app something clear, such as **PowerClaw Power BI MCP**.
 3. Set **Supported account types** to **Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant)**.
-4. Add a redirect URI that matches your Copilot Studio OAuth flow requirements.
+4. Add the Copilot Studio redirect URI as a **Web** platform redirect URI. Do **not** register it under **Single-page application** or **Mobile and desktop applications**.
 5. After creation, go to **API permissions** → **Add a permission** → **Power BI Service** → **Delegated permissions**.
 6. Add all five permissions: **`Dataset.Read.All`**, **`Item.Execute.All`**, **`MLModel.Execute.All`**, **`SemanticModel.Read.All`**, **`Workspace.Read.All`**.
-7. Click **Grant admin consent for [your tenant]** — all four must show a green checkmark.
-8. Go to **Certificates & secrets** and create a **client secret**. Save the secret value securely.
-9. Record the **Application (client) ID**, **Directory (tenant) ID**, and secret for Copilot Studio setup.
+7. Click **Grant admin consent for [your tenant]** — all five must show a green checkmark.
+8. In **Authentication**, leave **Allow public client flows** **Disabled**. Leave both **Implicit grant and hybrid flows** checkboxes unchecked for this setup.
+9. Go to **Certificates & secrets** and create a **client secret**. Save the secret value securely.
+10. Record the **Application (client) ID**, **Directory (tenant) ID**, and secret for Copilot Studio setup.
 
 ### Step 2 — Enable the Power BI admin tenant setting
 
@@ -123,6 +124,8 @@ It works across four modes:
    - **Refresh URL:** `https://login.microsoftonline.com/common/oauth2/v2.0/token`
    - **Scope:** `https://analysis.windows.net/powerbi/api/Dataset.Read.All https://analysis.windows.net/powerbi/api/Item.Execute.All https://analysis.windows.net/powerbi/api/MLModel.Execute.All https://analysis.windows.net/powerbi/api/SemanticModel.Read.All https://analysis.windows.net/powerbi/api/Workspace.Read.All offline_access`
      > ⚠️ Enter all scopes on **one line**, separated by spaces. Do not use line breaks or commas.
+     >
+     > `offline_access` belongs in the **Scope** field above. Do **not** add it as a separate Power BI API permission in Entra.
    - **Client ID:** your Entra app’s client ID
    - **Client Secret:** the secret you created in Step 1
 4. Authenticate the connection.
@@ -256,7 +259,8 @@ Example autonomous pattern:
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Schema works but ExecuteQuery returns 401 | Missing API permissions or admin consent not granted | Verify all 5 Power BI Service permissions are added **and** admin consent is granted (green checkmark). Delete and re-create the Copilot Studio connection after fixing. |
-| Connection goes stale after ~1 hour | Using `.default` scope instead of explicit scopes | Use the explicit scopes listed in Step 3 with `offline_access` — this enables token refresh and keeps the connection alive. |
+| Connection goes stale after ~1 hour | Using `.default` scope instead of explicit scopes | Use the explicit scopes listed in Step 3, including `offline_access`. Do **not** use `.default`. |
+| Connection authenticates but later won't refresh | Redirect URI registered under **SPA** or **Mobile/Desktop** instead of **Web** | Re-add the Copilot Studio redirect URI under **Authentication** → **Web**, keep **Allow public client flows** **Disabled**, and re-create the Copilot Studio connection. |
 | Connection fails during OAuth | App not configured as multi-tenant | Set Supported account types to "Accounts in any organizational directory" in the Entra app registration. |
 | MCP server not available in Copilot Studio | Tenant setting not propagated | Enable the Power BI MCP tenant setting and wait ~15 minutes. |
 | GenerateQuery returns empty or errors | Workspace not backed by Fabric capacity | GenerateQuery requires Fabric capacity (F2+). Alternatively, disable it and let PowerClaw's LLM generate DAX directly. |
