@@ -24,6 +24,7 @@ The calculator is also available via GitHub Pages at:
 
 - **4 agent types**: Custom Agent (Copilot Studio), Agent Builder (M365 Copilot), SharePoint Agent, Azure Foundry Agent
 - **Quick start templates**: Enterprise FAQ, HR Policy, IT Helpdesk with tools + flows, General Purpose (GPT-4o), Code Assistant (GPT-4.1)
+- **12 Azure OpenAI models**: GPT-4o family, GPT-4.1 family, GPT-5 family (incl. nano, 5.1, 5.2, 5.3), o3, o4-mini
 - **Full cost modeling**: Knowledge sources, tools/connectors, AI prompts, agent flows, reasoning models, content processing
 - **Copilot Credits & Azure tokens**: Models both billing systems depending on agent type
 - **Capacity tracking**: Prepaid vs. pay-as-you-go comparison with overage visualization

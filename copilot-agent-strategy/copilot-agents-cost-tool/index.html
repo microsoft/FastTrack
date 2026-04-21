@@ -583,13 +583,18 @@
                 <strong>Global Standard pay-as-you-go (USD / 1M tokens):</strong><br>
                 &bull; GPT-4.1-nano: $0.10 in / $0.40 out<br>
                 &bull; GPT-4o mini: $0.15 in / $0.60 out<br>
+                &bull; GPT-5-nano: $0.05 in / $0.40 out<br>
                 &bull; GPT-5-mini: $0.25 in / $2.00 out<br>
+                &bull; GPT-5.1-codex-mini: $0.25 in / $2.00 out<br>
                 &bull; GPT-4.1-mini: $0.40 in / $1.60 out<br>
                 &bull; GPT-4.1: $2.00 in / $8.00 out<br>
                 &bull; GPT-4o: $2.50 in / $10.00 out<br>
                 &bull; o4-mini: $1.10 in / $4.40 out<br>
                 &bull; o3: $2.00 in / $8.00 out<br>
-                &bull; GPT-5: $1.25 in / $10.00 out<br><br>
+                &bull; GPT-5: $1.25 in / $10.00 out<br>
+                &bull; GPT-5.1: $1.25 in / $10.00 out<br>
+                &bull; GPT-5.2: $1.75 in / $14.00 out<br>
+                &bull; GPT-5.3: $1.75 in / $14.00 out<br><br>
                 <a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer">Full Azure OpenAI pricing &rarr;</a>
               </span>
             </button>
@@ -600,8 +605,13 @@
             <option value="gpt41_nano">GPT-4.1-nano &mdash; $0.10 / $0.40 per 1M tokens</option>
             <option value="gpt41_mini">GPT-4.1-mini &mdash; $0.40 / $1.60 per 1M tokens</option>
             <option value="gpt41">GPT-4.1 &mdash; $2.00 / $8.00 per 1M tokens</option>
+            <option value="gpt5_nano">GPT-5-nano &mdash; $0.05 / $0.40 per 1M tokens</option>
             <option value="gpt5_mini">GPT-5-mini &mdash; $0.25 / $2.00 per 1M tokens</option>
-            <option value="gpt5">GPT-5 &mdash; $1.25 / $10.00 per 1M tokens</option>
+            <option value="gpt5">GPT-5 (2025-08-07) &mdash; $1.25 / $10.00 per 1M tokens</option>
+            <option value="gpt5_1_codex_mini">GPT-5.1-codex-mini &mdash; $0.25 / $2.00 per 1M tokens</option>
+            <option value="gpt5_1">GPT-5.1 &mdash; $1.25 / $10.00 per 1M tokens</option>
+            <option value="gpt5_2">GPT-5.2 &mdash; $1.75 / $14.00 per 1M tokens</option>
+            <option value="gpt5_3">GPT-5.3 &mdash; $1.75 / $14.00 per 1M tokens</option>
             <option value="o4_mini">o4-mini &mdash; $1.10 / $4.40 per 1M tokens</option>
             <option value="o3">o3 &mdash; $2.00 / $8.00 per 1M tokens</option>
           </select>
@@ -1265,15 +1275,15 @@
       <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer">
         Foundry Agent Service
       </a>
-      &nbsp;|&nbsp; Last verified: March 2026
+      &nbsp;|&nbsp; Last verified: April 2026
     </p>
-    <span class="version-badge" id="versionBadge">v1.3.0</span>
+    <span class="version-badge" id="versionBadge">v1.4.0</span>
   </div>
 </div>
 
 <script>
 /* ═══════════════════════════════════════
-   Billing rates (verified against Microsoft Learn 03/2026)
+   Billing rates (verified against Microsoft Learn 04/2026)
    https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management
    ═══════════════════════════════════════ */
 const CREDIT_TO_USD_PAYG = 0.01;
@@ -1281,7 +1291,7 @@ const CREDIT_TO_USD_PREPAID = 0.008; // $200 / 25,000 credits
 const REASONING_SURCHARGE = 10; // premium AI tools: 100 credits / 10 responses
 const CONTENT_PROCESSING_RATE = 8; // 8 credits per page
 const PROMPT_RATES = { basic: 1/10, standard: 15/10, premium: 100/10 };
-const APP_VERSION = 'v1.3.0';
+const APP_VERSION = 'v1.4.0';
 const TEMPLATES = {
   faq: {
     label: 'Enterprise FAQ agent',
@@ -1426,18 +1436,23 @@ const TEMPLATES = {
   }
 };
 
-/* ─── Foundry Agent billing rates (Azure OpenAI Global Standard PAYG, March 2026) ───
+/* ─── Foundry Agent billing rates (Azure OpenAI Global Standard PAYG, April 2026) ───
    Source: https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/ */
 const FOUNDRY_MODELS = {
-  'gpt4o_mini': { label: 'GPT-4o mini',          inputPer1M:  0.15, outputPer1M:  0.60 },
-  'gpt4o':      { label: 'GPT-4o (2024-11-20)',  inputPer1M:  2.50, outputPer1M: 10.00 },
-  'gpt41_nano': { label: 'GPT-4.1-nano',         inputPer1M:  0.10, outputPer1M:  0.40 },
-  'gpt41_mini': { label: 'GPT-4.1-mini',         inputPer1M:  0.40, outputPer1M:  1.60 },
-  'gpt41':      { label: 'GPT-4.1',              inputPer1M:  2.00, outputPer1M:  8.00 },
-  'gpt5_mini':  { label: 'GPT-5-mini',           inputPer1M:  0.25, outputPer1M:  2.00 },
-  'gpt5':       { label: 'GPT-5 (2025-08-07)',   inputPer1M:  1.25, outputPer1M: 10.00 },
-  'o4_mini':    { label: 'o4-mini',              inputPer1M:  1.10, outputPer1M:  4.40 },
-  'o3':         { label: 'o3',                   inputPer1M:  2.00, outputPer1M:  8.00 },
+  'gpt4o_mini':      { label: 'GPT-4o mini',           inputPer1M:  0.15, outputPer1M:  0.60 },
+  'gpt4o':           { label: 'GPT-4o (2024-11-20)',   inputPer1M:  2.50, outputPer1M: 10.00 },
+  'gpt41_nano':      { label: 'GPT-4.1-nano',          inputPer1M:  0.10, outputPer1M:  0.40 },
+  'gpt41_mini':      { label: 'GPT-4.1-mini',          inputPer1M:  0.40, outputPer1M:  1.60 },
+  'gpt41':           { label: 'GPT-4.1',               inputPer1M:  2.00, outputPer1M:  8.00 },
+  'gpt5_nano':       { label: 'GPT-5-nano',            inputPer1M:  0.05, outputPer1M:  0.40 },
+  'gpt5_mini':       { label: 'GPT-5-mini',            inputPer1M:  0.25, outputPer1M:  2.00 },
+  'gpt5':            { label: 'GPT-5 (2025-08-07)',    inputPer1M:  1.25, outputPer1M: 10.00 },
+  'gpt5_1_codex_mini': { label: 'GPT-5.1-codex-mini', inputPer1M:  0.25, outputPer1M:  2.00 },
+  'gpt5_1':          { label: 'GPT-5.1',               inputPer1M:  1.25, outputPer1M: 10.00 },
+  'gpt5_2':          { label: 'GPT-5.2',               inputPer1M:  1.75, outputPer1M: 14.00 },
+  'gpt5_3':          { label: 'GPT-5.3',               inputPer1M:  1.75, outputPer1M: 14.00 },
+  'o4_mini':         { label: 'o4-mini',               inputPer1M:  1.10, outputPer1M:  4.40 },
+  'o3':              { label: 'o3',                    inputPer1M:  2.00, outputPer1M:  8.00 },
 };
 
 const FOUNDRY_TEMPLATES = {
@@ -1714,7 +1729,7 @@ function onAgentTypeChange() {
   } else if (at === 'foundry') {
     noteEl.style.display = 'block';
     noteEl.innerHTML = '&#9432; <strong>Microsoft Foundry Agent Service</strong> &mdash; billed by tokens (input + output) to your Azure subscription. No Copilot Studio credits apply. '
-      + 'Models: GPT-4o, GPT-4.1, GPT-5, o3, o4-mini, and more. '
+      + 'Models: GPT-4o, GPT-4.1, GPT-5, GPT-5-nano, GPT-5.1, GPT-5.2, GPT-5.3, o3, o4-mini, and more. '
       + '<a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Foundry Agent Service overview</a> | '
       + '<a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Azure OpenAI pricing</a>';
   } else {
