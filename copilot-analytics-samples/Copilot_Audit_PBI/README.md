@@ -1,7 +1,7 @@
 # 🔍 Copilot Audit Dashboard
 
 > [!IMPORTANT]
-> **New version (April 20, 2026).** More accurate app & agent classification — Microsoft pre-built agents (Word Drafting Agent, Researcher, Analyst, etc.) no longer inflate host-app counts, and third-party agents are cleanly separated from first-party Copilot Chat. See the [Changelog](#-changelog) for details.
+> **New version (April 21, 2026).** More accurate app & agent classification — Microsoft pre-built agents (Word Drafting Agent, Researcher, Analyst, etc.) no longer inflate host-app counts, and third-party agents are cleanly separated from first-party Copilot Chat. Agent name and ID now populate for autonomous agents. See the [Changelog](#-changelog) for details.
 
 ## 📊 Overview
 
@@ -106,9 +106,13 @@ Please report issues to the [issues list](../../../../issues). This is an open-s
 
 | Publisher | Original Publish Date | Latest Publish Date |
 | :--- | :--- | :--- |
-| Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | April 20th, 2026 |
+| Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | April 21st, 2026 |
 
 ## 📝 Changelog
+
+### April 21, 2026
+- **Agent name & ID for autonomous agents.** Autonomous (Copilot Studio) agents now show their name and ID parsed from AppIdentity, with a 3-tier fallback (AgentName → AppIdentity → ConnectorUsage).
+- **Fixed blank-row detection bug.** `HasCopilotEventDataRecord` now correctly reads from the parsed AuditData record, preventing valid rows from being silently dropped.
 
 ### April 20, 2026
 - **More accurate agent classification.** Microsoft pre-built agents (Word Drafting Agent, Researcher, Analyst, Outlook Coaching, etc.) now route to a dedicated **Microsoft Agents** category instead of counting toward their host app (Word, Outlook, etc.).
