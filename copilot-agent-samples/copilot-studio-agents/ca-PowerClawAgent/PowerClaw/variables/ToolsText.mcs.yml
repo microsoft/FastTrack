@@ -1,8 +1,7 @@
 kind: GlobalVariableComponent
 schemaName: auto_agent_BmTJh.globalvariable.ToolsText
 description: Available MCP capabilities loaded from SharePoint tools.md at conversation start
-variable:
-  name: ToolsText
-  scope: Conversation
-  defaultValue: DEFAULT
-  aIVisibility: Hidden
+name: ToolsText
+scope: Conversation
+defaultValue: DEFAULT
+aIVisibility: Hidden
