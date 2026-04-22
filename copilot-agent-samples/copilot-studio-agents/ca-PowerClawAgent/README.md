@@ -234,6 +234,20 @@ PowerClaw uses **Claude Sonnet 4.6** via Copilot Studio's model selection. You c
 </details>
 
 <details>
+<summary><strong>🗂️ Should I shorten conversation transcript retention?</strong></summary>
+
+**Recommended, yes.** Because PowerClaw runs a heartbeat every 30 minutes (~1,440 invocations/month), conversation transcripts accumulate quickly and can dominate your Dataverse storage. Transcript volume is higher than a typical interactive-only agent, so the default retention is often longer than you need.
+
+**How to change it (per-agent, recommended):**
+Copilot Studio → open the PowerClaw agent → **Settings** → **Security** → **Conversation transcript retention** → set to **14 days** (or whatever your compliance policy allows).
+
+This only affects how long Copilot Studio keeps the transcript records — it does **not** affect PowerClaw's own long-term memory (stored in the SharePoint **PowerClaw Memory** list) or the **PowerClaw_Memory_Log** list, which have their own 30-day lifecycle managed by the Housekeeping flow.
+
+> 💡 If you also want tenant-wide control, an admin can set a tenant-level retention floor in the [Power Platform admin center](https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-data-retention).
+
+</details>
+
+<details>
 <summary><strong>🔄 What happens if I run out of Copilot Studio credits?</strong></summary>
 
 If your credit pack is exhausted, the agent stops responding to both heartbeat and interactive requests until the next billing cycle or until you add more capacity. The HeartbeatFlow will still trigger (it's a Power Automate flow), but the Copilot Studio connector call will fail gracefully. No data is lost — tasks remain in the SharePoint list and will be processed when credits are available again.
@@ -248,10 +262,13 @@ If your credit pack is exhausted, the agent stops responding to both heartbeat a
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.0.2** | April 2026 | Fix: solution portability — added 4 global variable component declarations (AgentsText / SoulText / ToolsText / UserText) to the packaged solution so fresh customer imports no longer fail to publish with `IdentifierNotRecognized` on `Global.SoulText` / `Global.UserText` / `Global.AgentsText` / `Global.ToolsText`; corrected GlobalVariableComponent YAML shape for current schema |
 | **1.0.1** | March 2026 | Fix: Reliable context loading in M365 Copilot & Teams (JIT OnActivity init replaces OnConversationStart), improved soul.md personality template, removed canned Greeting topic |
 | **1.0.0** | March 2026 | Initial release — Heartbeat + Bootstrap + Housekeeping flows, HttpRequest-based SharePoint ops for cross-environment portability, configurable agent identity, Compose-based flow configuration, loop safety guards |
 
 > 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow, GetContext, and Housekeeping with your site URL. **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place.
+>
+> ⚠️ **Upgrading from 1.0.0 or 1.0.1 — check your `tools.md`:** Bootstrap does not overwrite existing files in SharePoint. If your `/Shared Documents/tools.md` predates v1.0.2 (for example, it references tools like `CreatePlannerTask`, `SearchMemoryLog`, or `EscalateWithApproval` that don't exist on the real agent), replace its contents with the current template (seeded by `Setup-PowerClaw.ps1`) or delete the file and re-run Bootstrap. Stale tool catalogs in `tools.md` have been observed to contribute to `AsyncResponsePayloadTooLarge` errors during the heartbeat, because the orchestrator is told it has tools that don't exist and improvises against the real MCP surface without any preview-first guidance.
 
 ---
 
