@@ -1,6 +1,6 @@
 # Microsoft FastTrack Open Source - Get-GroupsMembersManagers.ps1
 
-This sample script generates a report of Groups, their members and their managers from Entra. This can be used to build the Organizational Data file which is later uploaded into M365 or Viva Advanced Insights.
+This sample script generates a report of Microsoft Entra groups, their members, and their managers. It supports three input modes: all groups, a single group by display name, or users supplied from a CSV file. The output can be used to build the Organizational Data file later uploaded into M365 or Viva Advanced Insights.
 
 ## Usage
 
@@ -14,14 +14,38 @@ None
 
 ### Output
 
-The following properties are exported: 
-|GroupName|DisplayName|UserPrincipalName|Department|ManagerUPN 
+The following properties are exported:
+
+| Column | Description |
+|---|---|
+| GroupName | Source Entra group display name. Blank when CSV mode is used. |
+| DisplayName | User display name. |
+| JobTitle | User job title. |
+| Department | User department. |
+| OfficeLocation | User office location. |
+| CompanyName | User company name. |
+| UsageLocation | User usage location. |
+| PreferredLanguage | User preferred language. |
+| StreetAddress | User street address. |
+| City | User city. |
+| State | User state or province. |
+| Country | User country or region. |
+| PostalCode | User postal code. |
+| UserPrincipalName | User sign-in UPN. |
+| ManagerUPN | Manager user principal name, when available. |
 
 ### Execution
 
 Run the script like so:
 
 	.\Get-GroupsMembersManagers.ps1
+
+When the script starts, choose one of the interactive menu options:
+
+- **1** - Export all users from all Entra groups
+- **2** - Export members from one group (search by display name)
+- **3** - Export users from a CSV file with a required **UPN** column
+- **4** - Exit without exporting
     
 ## Applies To
 
@@ -33,6 +57,7 @@ Run the script like so:
 |----|--------------------------
 |Alejandro Lopez, Microsoft|July 26th,2024|
 |Dean Cron, Microsoft|July 26th, 2024|
+|J.G. Parra, Microsoft|April 22nd, 2026|
 
 ## Issues
 
