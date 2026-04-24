@@ -1,7 +1,9 @@
+mcs.metadata:
+  componentName: ToolsText
 kind: GlobalVariableComponent
 schemaName: auto_agent_BmTJh.globalvariable.ToolsText
-description: Available MCP capabilities loaded from SharePoint tools.md at conversation start
+description: Tool descriptions and usage guidelines loaded from SharePoint tools.md at conversation start
 name: ToolsText
 scope: Conversation
 defaultValue: DEFAULT
-aIVisibility: Hidden
+aIVisibility: UseInAIContext

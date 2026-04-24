@@ -1,7 +1,9 @@
+mcs.metadata:
+  componentName: AgentsText
 kind: GlobalVariableComponent
 schemaName: auto_agent_BmTJh.globalvariable.AgentsText
-description: Operating rules loaded from SharePoint agents.md at conversation start
+description: Agent capabilities and sub-agent definitions loaded from SharePoint agents.md at conversation start
 name: AgentsText
 scope: Conversation
 defaultValue: DEFAULT
-aIVisibility: Hidden
+aIVisibility: UseInAIContext

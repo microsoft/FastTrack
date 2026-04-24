@@ -1,7 +1,9 @@
+mcs.metadata:
+  componentName: SoulText
 kind: GlobalVariableComponent
 schemaName: auto_agent_BmTJh.globalvariable.SoulText
 description: Agent constitution and personality loaded from SharePoint soul.md at conversation start
 name: SoulText
 scope: Conversation
 defaultValue: DEFAULT
-aIVisibility: Hidden
+aIVisibility: UseInAIContext

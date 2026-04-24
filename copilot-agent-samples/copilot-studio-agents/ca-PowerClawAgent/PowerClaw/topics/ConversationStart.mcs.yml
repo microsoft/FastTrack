@@ -10,6 +10,6 @@ beginDialog:
       id: sendMessage_M0LuhV
       activity:
         text:
-          - "Hello, I'm {System.Bot.Name}. How can I help?"
+          - "Hey! How can I help?"
         speak:
-          - "Hello, I'm {System.Bot.Name}. How can I help?"
+          - "Hey! How can I help?"
