@@ -5,7 +5,7 @@
 <p align="center"><strong>Your 24/7 AI Chief of Staff — Built Entirely on Microsoft 365</strong></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.1-blue?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square" alt="Version" />
   <img src="https://img.shields.io/badge/Released-March_2026-lightgrey?style=flat-square" alt="Released" />
   <img src="https://img.shields.io/badge/Setup-~30_minutes-0078D4?style=flat-square" alt="Time to Value" />
   <img src="https://img.shields.io/badge/Stack-M365_·_Copilot_Studio_·_Power_Automate-742774?style=flat-square" alt="Stack" />
@@ -262,11 +262,14 @@ If your credit pack is exhausted, the agent stops responding to both heartbeat a
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.1.0** | April 2026 | Simplified agent instructions (14K→4K chars) to fit 8K portal limit; moved detailed task/email/memory rules to constitution .md files; HeartbeatFlow: 200K journal cap to prevent AsyncResponsePayloadTooLarge, memory upsert for proposedMemories, proposedTasks for agent-initiated task creation, conditional journalEntry, string() guards; generic ConversationStart greeting (agent identity now fully driven by soul.md); variables recreated in cloud-canonical flat format |
 | **1.0.2** | April 2026 | Fix: solution portability — added 4 global variable component declarations (AgentsText / SoulText / ToolsText / UserText) to the packaged solution so fresh customer imports no longer fail to publish with `IdentifierNotRecognized` on `Global.SoulText` / `Global.UserText` / `Global.AgentsText` / `Global.ToolsText`; corrected GlobalVariableComponent YAML shape for current schema |
 | **1.0.1** | March 2026 | Fix: Reliable context loading in M365 Copilot & Teams (JIT OnActivity init replaces OnConversationStart), improved soul.md personality template, removed canned Greeting topic |
 | **1.0.0** | March 2026 | Initial release — Heartbeat + Bootstrap + Housekeeping flows, HttpRequest-based SharePoint ops for cross-environment portability, configurable agent identity, Compose-based flow configuration, loop safety guards |
 
 > 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow, GetContext, and Housekeeping with your site URL. **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place.
+>
+> ⚠️ **Upgrading to 1.1.0 — update your constitution files:** v1.1.0 moved detailed task management, email formatting, memory management, and Teams safety rules from agent instructions into constitution `.md` files. After importing, add the following content to your SharePoint files: **agents.md** (task workflow, time/quiet-hour rules, Teams safety, memory governance, dedup rules); **tools.md** (HTML email dark theme template, subject patterns, document generation rules, task list field details). See the bootstrap script's templates for reference content. Without these updates, the agent will still work but may lack detailed behavioral guidance for tasks and email formatting.
 >
 > ⚠️ **Upgrading from 1.0.0 or 1.0.1 — check your `tools.md`:** Bootstrap does not overwrite existing files in SharePoint. If your `/Shared Documents/tools.md` predates v1.0.2 (for example, it references tools like `CreatePlannerTask`, `SearchMemoryLog`, or `EscalateWithApproval` that don't exist on the real agent), replace its contents with the current template (seeded by `Setup-PowerClaw.ps1`) or delete the file and re-run Bootstrap. Stale tool catalogs in `tools.md` have been observed to contribute to `AsyncResponsePayloadTooLarge` errors during the heartbeat, because the orchestrator is told it has tools that don't exist and improvises against the real MCP surface without any preview-first guidance.
 
