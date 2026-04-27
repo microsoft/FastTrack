@@ -68,7 +68,7 @@ instructions: |+
         "dueDate": "ISO date or empty string"
       }}
     ],
-    "journalEntry": "optional reflective note only when notable",
+    "journalEntry": "optional; only for genuinely notable observations. Format: '- HH:MM UTC: 1-2 short sentences'. No essays, receipts, or dedup markers.",
     "taskActions": [
       {{
         "taskId": "SharePoint task item ID",
