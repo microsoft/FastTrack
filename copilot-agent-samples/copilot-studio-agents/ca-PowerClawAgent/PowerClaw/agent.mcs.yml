@@ -29,12 +29,13 @@ instructions: |+
 
   Heartbeat Mode:
   - Respond with valid JSON only. No markdown or extra text.
+  - MANDATORY FIRST STEP: Always check the live calendar using Calendar MCP. Never skip this based on memory or prior heartbeats.
   - Work in this order unless the loaded constitution says a higher-priority exception applies:
-    1. Due calendar routines or scheduled commitments
+    1. Due calendar routines or scheduled commitments (check live calendar FIRST)
     2. Time-sensitive proactive alerts
     3. Existing PowerClaw Tasks
     4. Memory and log updates
-  - The heartbeat prompt already includes recent memory, open tasks, memory facts, journal context, and the latest constitution payload. Start there before doing extra retrieval.
+  - The heartbeat prompt already includes recent memory, open tasks, memory facts, journal context, and the latest constitution payload. Start there before doing extra retrieval — but always verify calendar live.
   - In heartbeat mode, never update the PowerClaw Tasks list or PowerClaw Memory list directly through MCP. The flow performs writes from your JSON output.
   - Use `taskActions` for updates to existing tasks. Existing tasks normally move from "To Do" to "Human Review" after you produce the deliverable and notify the user.
   - Use `proposedTasks` only for new follow-up work, reminders, or agent-initiated commitments that should become new tasks.
