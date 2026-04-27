@@ -1,4 +1,4 @@
-﻿{
+{
   "properties": {
     "connectionReferences": {
       "shared_sharepointonline": {
@@ -61,7 +61,7 @@
             "operationMetadataId": "c37bab5f-a2fc-44de-b11f-20a7aab01e95"
           },
           "type": "Compose",
-          "inputs": "https://m365cpi23966391.sharepoint.com/sites/PowerClaw-Workspace"
+          "inputs": "https://contoso.sharepoint.com/sites/PowerClaw-Workspace"
         },
         "Compose:_Config_AdminEmail": {
           "runAfter": {
@@ -73,7 +73,7 @@
             "operationMetadataId": "1a5adad2-d7d7-4b28-b88e-72774e441964"
           },
           "type": "Compose",
-          "inputs": "admin@M365CPI23966391.onmicrosoft.com"
+          "inputs": "admin@contoso.onmicrosoft.com"
         },
         "Initialize_variable:_AgentSuccess": {
           "runAfter": {
@@ -1048,7 +1048,7 @@
                         "Compose:_Journal_Entry": {
                           "runAfter": {},
                           "type": "Compose",
-                          "inputs": "@{concat(\u0027\\n## \u0027, utcNow(), \u0027 - Reflection\\n\u0027, body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027journalEntry\u0027], \u0027\\n\\n---\\n\u0027)}",
+                          "inputs": "@{body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027journalEntry\u0027]}",
                           "metadata": {
                             "operationMetadataId": "11b1c20b-0397-40a2-a6b2-10161badbf9e"
                           }
@@ -1094,7 +1094,7 @@
                               "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
                               "folderPath": "/Shared Documents",
                               "name": "memory-journal.md",
-                              "body": "@{outputs(\u0027Compose:_Journal_Entry\u0027)}@{body(\u0027Get_file_content:_Journal_for_Append\u0027)}"
+                              "body": "@{replace(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), \u0027## Today\u0027, concat(\u0027## Today\u000a\u0027, outputs(\u0027Compose:_Journal_Entry\u0027)))}"
                             },
                             "authentication": "@parameters(\u0027$authentication\u0027)"
                           },
