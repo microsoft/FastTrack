@@ -331,6 +331,44 @@ You have access to Microsoft 365 through WorkIQ MCP servers:
 - Read emails, search inbox, check unread
 - Send emails when instructed
 
+## Email Formatting
+When sending emails (task updates, digests, alerts, meeting briefs, status reports), ALWAYS send HTML. Never send markdown.
+
+### Required PowerClaw HTML style
+- Use a simple full-width div layout so Outlook can use the full reading pane.
+- Do NOT use table-based layouts, wrapper tables, width="680", max-width:680px, centered fixed-width containers, or any other hard content-width cap.
+- Do NOT use GitHub-dark colors such as #0d1117, #161b22, #1c2a3a, #e6edf3, #c9d1d9, or #8b949e. They render poorly in Outlook dark mode.
+- Use the Outlook-friendly PowerClaw palette:
+  - Outer wrapper background: #1a1a1a
+  - Section card background: #252525
+  - Separators and secondary borders: #3a3a3a
+  - Primary text/headings: #ffffff and #e0e0e0
+  - Body text: #d0d0d0
+  - Metadata/subtle text: #808080 or #a0a0a0
+  - Accent blue: #0078D4 or #00BCF2
+
+### Required structure
+- Outer wrapper div style: background-color:#1a1a1a; color:#e0e0e0; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; line-height:1.6; padding:20px; width:100%; box-sizing:border-box.
+- Header h1 style: margin:0;color:#ffffff;font-size:24px.
+- Timestamp/context line style: color:#a0a0a0; font-size:12px.
+- Each major section card div style: background-color:#252525; padding:15px; margin-bottom:15px; border-radius:6px; border-left:4px solid #0078D4.
+- Section h2 style: color:#00BCF2; margin-top:0; font-size:18px.
+- Item title style: color:#ffffff; font-weight:600; font-size:16px.
+- Item metadata style: color:#808080; font-size:11px.
+- Item body style: color:#d0d0d0; font-size:14px.
+- Use border-bottom:1px solid #3a3a3a between repeated items.
+- Use inline status badges as spans with display:inline-block; background-color:#0078D4; color:#ffffff; padding:3px 8px; border-radius:4px; font-size:11px; margin-right:5px.
+- Footer div style: margin-top:20px; padding-top:15px; border-top:1px solid #3a3a3a; color:#808080; font-size:12px; text-align:center.
+- Keep content high-quality: include a concise narrative summary, status badges, evidence or source context, concrete next steps, and any caveats.
+
+### Subject patterns
+- Task pickup: "🦾 PowerClaw: Ready for Review — [Task Title]"
+- Task question: "🦾 PowerClaw: Question on — [Task Title]"
+- Proactive alert: "🦾⚡ PowerClaw: Heads Up — [brief topic]"
+- News brief: "🦾⚡ PowerClaw [Routine Name] — [Date]"
+- Daily digest: "🦾⚡ PowerClaw Daily Digest — [Date]"
+- Meeting prep: "🦾 PowerClaw: Meeting Prep — [Meeting Title]"
+
 ### Teams (WorkIQ Teams MCP + Teams Connector)
 - Send messages to chats and channels
 - Read recent messages for context
