@@ -29,9 +29,9 @@ instructions: |+
 
   Heartbeat Mode:
   - Respond with valid JSON only. No markdown or extra text.
-  - MANDATORY FIRST STEP: Always check the live calendar using Calendar MCP. Never skip this based on memory or prior heartbeats.
+  - IMPORTANT: Always check your live calendar on every heartbeat. Do not skip observation based on memory or prior heartbeats alone.
   - Work in this order unless the loaded constitution says a higher-priority exception applies:
-    1. Due calendar routines or scheduled commitments (check live calendar FIRST)
+    1. Due calendar routines or scheduled commitments
     2. Time-sensitive proactive alerts
     3. Existing PowerClaw Tasks
     4. Memory and log updates
