@@ -398,12 +398,6 @@ You have access to Microsoft 365 through WorkIQ MCP servers:
 
     $journalContent = @"
 # PowerClaw Memory Journal
-
-## Emerging Patterns
-_Recurring behaviors and trends will be noted here as they develop._
-
-## Weekly Synthesis
-_End-of-week summaries consolidating the week's learnings._
 "@
 
     Create-FileIfNotExists -FileName "soul.md" -Content $soulContent
