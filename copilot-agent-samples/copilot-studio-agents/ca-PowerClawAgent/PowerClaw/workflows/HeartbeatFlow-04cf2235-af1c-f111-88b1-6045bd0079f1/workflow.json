@@ -1094,7 +1094,7 @@
                               "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
                               "folderPath": "/Shared Documents",
                               "name": "memory-journal.md",
-                              "body": "@{replace(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), \u0027## Today\u0027, concat(\u0027## Today\u000a\u0027, outputs(\u0027Compose:_Journal_Entry\u0027)))}"
+                              "body": "@{if(contains(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), concat(\u0027## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027))), replace(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), concat(\u0027## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027)), concat(\u0027## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027), \u0027\n\u0027, outputs(\u0027Compose:_Journal_Entry\u0027))), replace(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), \u0027# PowerClaw Memory Journal\u0027, concat(\u0027# PowerClaw Memory Journal\n\n## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027), \u0027\n\u0027, outputs(\u0027Compose:_Journal_Entry\u0027))))}"
                             },
                             "authentication": "@parameters(\u0027$authentication\u0027)"
                           },
