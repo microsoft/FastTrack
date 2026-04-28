@@ -399,9 +399,6 @@ You have access to Microsoft 365 through WorkIQ MCP servers:
     $journalContent = @"
 # PowerClaw Memory Journal
 
-## Today
-_No entries yet. PowerClaw will append observations, patterns, and insights here._
-
 ## Emerging Patterns
 _Recurring behaviors and trends will be noted here as they develop._
 
