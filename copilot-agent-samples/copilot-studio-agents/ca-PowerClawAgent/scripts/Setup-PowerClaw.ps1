@@ -1,13 +1,13 @@
 <#
 .SYNOPSIS
-    Provisions the PowerClaw-Workspace SharePoint site with required lists, including the PowerClaw Tasks list, and constitution files.
+    Provisions the PowerClaw-Workspace SharePoint site with required lists, including the PowerClaw_Tasks list, and constitution files.
 .DESCRIPTION
     This script sets up the backend infrastructure for the PowerClaw agent.
     It creates:
     1. 'PowerClaw_Memory_Log' list for tracking agent activities.
     2. 'PowerClaw_Config' list for configuration flags.
-    3. 'PowerClaw Memory' list for long-term knowledge storage.
-    4. 'PowerClaw Tasks' list for task intake, review, and completion tracking.
+    3. 'PowerClaw_Memory' list for long-term knowledge storage.
+    4. 'PowerClaw_Tasks' list for task intake, review, and completion tracking.
     5. Constitution files in 'Shared Documents' with default templates (soul.md, user.md, agents.md, tools.md, memory-journal.md).
 .PARAMETER SiteUrl
     The full URL to the target SharePoint site (e.g., https://contoso.sharepoint.com/sites/PowerClaw-Workspace).
@@ -152,9 +152,9 @@ try {
     Write-ErrorMsg "Failed to provision '$settingsListName': $_"
 }
 
-# 3. Provision PowerClaw Memory List (Long-Term Knowledge Store)
+# 3. Provision PowerClaw_Memory List (Long-Term Knowledge Store)
 try {
-    $memoryListName = "PowerClaw Memory"
+    $memoryListName = "PowerClaw_Memory"
     $memoryList = Get-PnPList -Identity $memoryListName -ErrorAction SilentlyContinue
 
     if (-not $memoryList) {
@@ -189,9 +189,9 @@ try {
     Write-ErrorMsg "Failed to provision '$memoryListName': $_"
 }
 
-# 4. Provision PowerClaw Tasks List
+# 4. Provision PowerClaw_Tasks List
 try {
-    $tasksListName = "PowerClaw Tasks"
+    $tasksListName = "PowerClaw_Tasks"
     $tasksList = Get-PnPList -Identity $tasksListName -ErrorAction SilentlyContinue
 
     if (-not $tasksList) {
@@ -288,7 +288,7 @@ You may summarize, draft, classify, create/update tasks, prepare briefs, send di
 - Check unread mail from VIPs in ``user.md``; flag urgent, ASAP, action required, blocked, or equivalent language.
 - Summarize only mail needing attention, decision, follow-up, or calendar/task action.
 - Create/update tasks for commitments, deadlines, requests, events, or follow-ups.
-Tasks live in the **PowerClaw Tasks** SharePoint list on this workspace site. Status flow: **To Do -> Human Review -> Done**. On heartbeat, inspect **To Do**, act, notify, and move completed work to **Human Review** with notes. User marks **Done**. Never duplicate work: check tasks, memory, journal, and Memory Log first.
+Tasks live in the **PowerClaw_Tasks** SharePoint list on this workspace site. Status flow: **To Do -> Human Review -> Done**. On heartbeat, inspect **To Do**, act, notify, and move completed work to **Human Review** with notes. User marks **Done**. Never duplicate work: check tasks, memory, journal, and Memory Log first.
 ## Digests and Notifications
 - Daily Digest: once per day between 07:00-09:00 UTC unless configured otherwise; include calendar, conflicts, due tasks, urgent mail, and follow-ups.
 - Weekly Recap: once per Friday between 15:00-17:00 UTC unless configured otherwise; include meetings, completed tasks, decisions, risks, Monday priorities.
@@ -327,7 +327,7 @@ You have access to Microsoft 365 through WorkIQ MCP servers:
 - Read recent messages for context
 
 ### Task Management (SharePoint Lists MCP)
-- Read and manage tasks in the "PowerClaw Tasks" SharePoint list
+- Read and manage tasks in the "PowerClaw_Tasks" SharePoint list
 - Create new tasks with Title, TaskStatus, Priority, Source, DueDate, TaskDescription
 - Update task status: To Do -> Human Review -> Done
 - Add notes and deliverables to tasks via the Notes column
@@ -397,7 +397,7 @@ You have access to Microsoft 365 through WorkIQ MCP servers:
     }
 
     $journalContent = @"
-# PowerClaw Memory Journal
+# PowerClaw_Memory Journal
 "@
 
     Create-FileIfNotExists -FileName "soul.md" -Content $soulContent

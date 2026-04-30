@@ -596,7 +596,7 @@
                   "inputs": {
                     "parameters": {
                       "Copilot": "auto_agent_BmTJh",
-                      "body/message": "[HEARTBEAT EVENT TRIGGERED]\nTIMESTAMP: @{utcNow()}\n\nRECENT MEMORY (LAST 10 ACTIONS):\n@{body('Select:_Summary')}\n\nOPEN TASKS (from PowerClaw Tasks list):\n@{body('Select:_Task_Summary')}\n\nLONG-TERM MEMORY (Active Semantic Facts):\n@{body('Select:_Memory_Facts')}\n\nMEMORY JOURNAL (Recent Narrative):\n@{if(greater(length(string(body('Get_file_content:_memory-journal.md'))),200000),substring(string(body('Get_file_content:_memory-journal.md')),sub(length(string(body('Get_file_content:_memory-journal.md'))),200000),200000),string(body('Get_file_content:_memory-journal.md')))}\n\nLATEST CONTEXT PAYLOAD:\n@{outputs('Compose_PromptPrefix')}"
+                      "body/message": "[HEARTBEAT EVENT TRIGGERED]\nTIMESTAMP: @{utcNow()}\n\nRECENT MEMORY (LAST 10 ACTIONS):\n@{body('Select:_Summary')}\n\nOPEN TASKS (from PowerClaw_Tasks list):\n@{body('Select:_Task_Summary')}\n\nLONG-TERM MEMORY (Active Semantic Facts):\n@{body('Select:_Memory_Facts')}\n\nMEMORY JOURNAL (Recent Narrative):\n@{if(greater(length(string(body('Get_file_content:_memory-journal.md'))),200000),substring(string(body('Get_file_content:_memory-journal.md')),sub(length(string(body('Get_file_content:_memory-journal.md'))),200000),200000),string(body('Get_file_content:_memory-journal.md')))}\n\nLATEST CONTEXT PAYLOAD:\n@{outputs('Compose_PromptPrefix')}"
                     },
                     "host": {
                       "connectionName": "shared_microsoftcopilotstudio",
@@ -771,7 +771,7 @@
                                 },
                                 "parameters": {
                                   "dataset": "@outputs('Compose:_Config_SiteURL')",
-                                  "table": "PowerClaw Tasks",
+                                  "table": "PowerClaw_Tasks",
                                   "id": "@{items('Apply_to_each:_Process_Task_Actions')?['taskId']}",
                                   "item": {
                                     "TaskStatus": "@{items('Apply_to_each:_Process_Task_Actions')?['newStatus']}",
@@ -826,7 +826,7 @@
                                 },
                                 "parameters": {
                                   "dataset": "@outputs('Compose:_Config_SiteURL')",
-                                  "table": "PowerClaw Memory",
+                                  "table": "PowerClaw_Memory",
                                   "$filter": "ScopeKey eq '@{items('Apply_to_each:_Save_Memories')?['scopeKey']}' and (Status eq 'Active' or Status eq 'Tentative')",
                                   "$orderby": "Modified desc",
                                   "$top": 5
@@ -866,7 +866,7 @@
                                     },
                                     "parameters": {
                                       "dataset": "@outputs('Compose:_Config_SiteURL')",
-                                      "table": "PowerClaw Memory",
+                                      "table": "PowerClaw_Memory",
                                       "id": "@{first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Id']}",
                                       "item": {
                                         "LastConfirmedAt": "@{utcNow()}",
@@ -896,7 +896,7 @@
                                       },
                                       "parameters": {
                                         "dataset": "@outputs('Compose:_Config_SiteURL')",
-                                        "table": "PowerClaw Memory",
+                                        "table": "PowerClaw_Memory",
                                         "item": {
                                           "Title": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}",
                                           "MemoryType": "@{items('Apply_to_each:_Save_Memories')?['memoryType']}",
@@ -965,7 +965,7 @@
                                 },
                                 "parameters": {
                                   "dataset": "@outputs('Compose:_Config_SiteURL')",
-                                  "table": "PowerClaw Tasks",
+                                  "table": "PowerClaw_Tasks",
                                   "item": {
                                     "Title": "@{items('Apply_to_each:_Create_Tasks')?['title']}",
                                     "TaskDescription": "@{items('Apply_to_each:_Create_Tasks')?['description']}",
@@ -1059,7 +1059,7 @@
                               "dataset": "@outputs('Compose:_Config_SiteURL')",
                               "folderPath": "/Shared Documents",
                               "name": "memory-journal.md",
-                              "body": "@{if(contains(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'))), replace(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))), replace(string(body('Get_file_content:_Journal_for_Append')), '# PowerClaw Memory Journal', concat('# PowerClaw Memory Journal\n\n## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))))}"
+                              "body": "@{if(contains(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'))), replace(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))), replace(string(body('Get_file_content:_Journal_for_Append')), '# PowerClaw_Memory Journal', concat('# PowerClaw_Memory Journal\n\n## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))))}"
                             },
                             "authentication": "@parameters('$authentication')"
                           },
@@ -1216,7 +1216,7 @@
                 },
                 "parameters": {
                   "dataset": "@outputs('Compose:_Config_SiteURL')",
-                  "table": "PowerClaw Memory",
+                  "table": "PowerClaw_Memory",
                   "$filter": "Status ne 'Expired' and Status ne 'Superseded'",
                   "$orderby": "Importance desc, LastConfirmedAt desc",
                   "$top": 15
@@ -1286,7 +1286,7 @@
                 },
                 "parameters": {
                   "dataset": "@outputs('Compose:_Config_SiteURL')",
-                  "table": "PowerClaw Tasks",
+                  "table": "PowerClaw_Tasks",
                   "$filter": "TaskStatus ne 'Done'",
                   "$orderby": "Priority asc, Created asc",
                   "$top": 10

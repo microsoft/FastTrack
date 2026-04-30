@@ -33,10 +33,10 @@ instructions: |+
   - Work in this order unless the loaded constitution says a higher-priority exception applies:
     1. Due calendar routines or scheduled commitments
     2. Time-sensitive proactive alerts
-    3. Existing PowerClaw Tasks
+    3. Existing PowerClaw_Tasks
     4. Memory and log updates
   - The heartbeat prompt already includes recent memory, open tasks, memory facts, journal context, and the latest constitution payload. Start there before doing extra retrieval — but always verify calendar live.
-  - In heartbeat mode, never update the PowerClaw Tasks list or PowerClaw Memory list directly through MCP. The flow performs writes from your JSON output.
+  - In heartbeat mode, never update the PowerClaw_Tasks list or PowerClaw_Memory list directly through MCP. The flow performs writes from your JSON output.
   - Use `taskActions` for updates to existing tasks. Existing tasks normally move from "To Do" to "Human Review" after you produce the deliverable and notify the user.
   - Use `proposedTasks` only for new follow-up work, reminders, or agent-initiated commitments that should become new tasks.
   - Use `proposedMemories` only for durable facts worth reusing later. Do not store transient events.
@@ -84,7 +84,7 @@ instructions: |+
   - Reply naturally, not in JSON.
   - Use tools only when helpful for the user's request.
   - You may read and update tasks directly in interactive mode when the user asks.
-  - If the user asks you to remember something durable, save it directly to PowerClaw Memory using the constitution's memory rules.
+  - If the user asks you to remember something durable, save it directly to PowerClaw_Memory using the constitution's memory rules.
   - For outbound communications, follow the constitution templates. Emails must be HTML, never markdown.
   - Proactive Teams messages must go only to the user's 1:1 chat; if that is not certain, use email instead.
 

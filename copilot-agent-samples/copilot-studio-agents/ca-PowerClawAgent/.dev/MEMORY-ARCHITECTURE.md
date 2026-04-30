@@ -1,4 +1,4 @@
-# PowerClaw Memory Architecture (Final)
+# PowerClaw_Memory Architecture (Final)
 
 > **Status:** Design reference for PowerClaw v1.1.0. Captures the agreed memory model across the 4 existing stores + constitution files. v1.0.2 ships the minimum stability patch from §7; v1.1.0 delivers §4–§6.
 
@@ -6,7 +6,7 @@
 
 ## 1. One-paragraph memory model
 
-PowerClaw uses **four persistent stores plus constitution files**, each with a distinct job: `memory-journal.md` is the **reflective working-synthesis** layer for curated narrative, `PowerClaw_Memory_Log` is the **episodic event stream plus dedupe memory** for "what happened / did I already do this?", `PowerClaw Memory` is the **semantic store** for durable facts that should shape future behavior, and `PowerClaw Tasks` is the **prospective store** for anything that still needs to happen. The design borrows from human memory only where it helps engineering: narrative reflection stays separate from canonical facts, raw events stay separate from knowledge, and open commitments become tasks instead of floating notes.
+PowerClaw uses **four persistent stores plus constitution files**, each with a distinct job: `memory-journal.md` is the **reflective working-synthesis** layer for curated narrative, `PowerClaw_Memory_Log` is the **episodic event stream plus dedupe memory** for "what happened / did I already do this?", `PowerClaw_Memory` is the **semantic store** for durable facts that should shape future behavior, and `PowerClaw_Tasks` is the **prospective store** for anything that still needs to happen. The design borrows from human memory only where it helps engineering: narrative reflection stays separate from canonical facts, raw events stay separate from knowledge, and open commitments become tasks instead of floating notes.
 
 ---
 
@@ -80,7 +80,7 @@ PowerClaw uses **four persistent stores plus constitution files**, each with a d
 ```
 - **Use OData** when `EventType + time window` is enough.
 
-### `PowerClaw Memory`
+### `PowerClaw_Memory`
 
 | Rule | Contract |
 |---|---|
@@ -90,7 +90,7 @@ PowerClaw uses **four persistent stores plus constitution files**, each with a d
 | **Writers** | Interactive mode when user explicitly states a durable fact; HeartbeatFlow via gated `proposedMemories`; Housekeeping may archive/supersede. |
 | **Lifecycle / rotation** | Status-driven: `Tentative → Active → Superseded/Archived`; stale tentative items archived quickly; active items reviewed periodically; no blind insert. |
 
-### `PowerClaw Tasks`
+### `PowerClaw_Tasks`
 
 | Rule | Contract |
 |---|---|
@@ -194,7 +194,7 @@ Conservative relative to the observed failure point while still keeping the agen
 ### File shape
 
 ```md
-# PowerClaw Memory Journal
+# PowerClaw_Memory Journal
 
 ## Today
 ### 2026-04-22
@@ -264,13 +264,13 @@ New Memories Saved: 2
 
 ### Promotion test
 
-A proposed fact may enter `PowerClaw Memory` only if **all** are true:
+A proposed fact may enter `PowerClaw_Memory` only if **all** are true:
 
 1. **Type is semantic**: `Preference | Person | Project | Pattern | Insight`
 2. **Scope is stable**: `user`, `person:sarah`, `project:alpha`, etc.
 3. **Fact is durable**: likely useful beyond the current day/run
 4. **Fact is singular**: one clear canonical statement
-5. **Not a commitment**: if it implies future work, it belongs in `PowerClaw Tasks`
+5. **Not a commitment**: if it implies future work, it belongs in `PowerClaw_Tasks`
 6. **Evidence threshold met**:
    - user explicitly said it, **or**
    - observed twice on separate days, **or**
@@ -309,11 +309,11 @@ A proposed fact may enter `PowerClaw Memory` only if **all** are true:
 
 **Replace blind POST** (current HeartbeatFlow lines **851–876**) with **find → compare → update/insert**:
 
-1. **Skip non-semantic proposals** — if `memoryType = Commitment`, do **not** save to `PowerClaw Memory`; route to `PowerClaw Tasks`.
+1. **Skip non-semantic proposals** — if `memoryType = Commitment`, do **not** save to `PowerClaw_Memory`; route to `PowerClaw_Tasks`.
 
 2. **Find existing active/tentative rows** — GET:
 ```text
-_api/web/lists/getByTitle('PowerClaw Memory')/items?$filter=
+_api/web/lists/getByTitle('PowerClaw_Memory')/items?$filter=
 ScopeKey eq '<scopeKey>' and
 MemoryType eq '<memoryType>' and
 (Status eq 'Tentative' or Status eq 'Active')
@@ -361,7 +361,7 @@ Treat Housekeeping as an **existing flow to rewrite**, not a new flow.
 **Budget:** one daily run, aim **<10 minutes**, batch-oriented
 
 1. **Memory log cleanup** — delete `PowerClaw_Memory_Log` rows older than **30 days**
-2. **Done task cleanup** — delete `PowerClaw Tasks` where `TaskStatus = Done` and `CompletedDate < now-30d` (current flow deletes all Done tasks; too aggressive)
+2. **Done task cleanup** — delete `PowerClaw_Tasks` where `TaskStatus = Done` and `CompletedDate < now-30d` (current flow deletes all Done tasks; too aggressive)
 3. **Semantic memory review**
    - archive `Tentative` facts not reconfirmed in **30 days**
    - archive weak `Active` facts not reconfirmed in **180 days**
@@ -386,8 +386,8 @@ Treat Housekeeping as an **existing flow to rewrite**, not a new flow.
 |---|---|---|
 | `memory-journal.md` | current file | condensed current file, weekly archive file |
 | `PowerClaw_Memory_Log` | recent event slices, old rows | delete old rows, log housekeeping errors/rolls |
-| `PowerClaw Memory` | active/tentative/superseded rows | archive/supersede weak or stale rows |
-| `PowerClaw Tasks` | done tasks, stale Human Review tasks if needed | delete aged done tasks, optional reminder tasks |
+| `PowerClaw_Memory` | active/tentative/superseded rows | archive/supersede weak or stale rows |
+| `PowerClaw_Tasks` | done tasks, stale Human Review tasks if needed | delete aged done tasks, optional reminder tasks |
 | Constitution files | none normally | none |
 
 ### Retention rules
@@ -482,7 +482,7 @@ At **line 634**, HeartbeatFlow injects the **entire** journal:
 ### Constitution files
 - `agents.md`: update operating rules for
   - dedupe via `PowerClaw_Memory_Log`
-  - commitments via `PowerClaw Tasks`
+  - commitments via `PowerClaw_Tasks`
   - journal = reflective only
 - `soul.md`: likely no major change
 - `tools.md`: optional note that task follow-ups live in Tasks
@@ -490,7 +490,7 @@ At **line 634**, HeartbeatFlow injects the **entire** journal:
 
 ### Data migration
 - **One-time journal cleanup:** archive current noisy file as `memory-journal-legacy-YYYYMMDD.md`, create curated v1.1.0 journal
-- **One-time semantic cleanup:** review/archive noisy transient rows in `PowerClaw Memory`, especially old `Commitment` entries
+- **One-time semantic cleanup:** review/archive noisy transient rows in `PowerClaw_Memory`, especially old `Commitment` entries
 - **No new list migration**
 - **No need to rebuild Memory_Log**, but widen `EventType` choices if current field blocks new values
 

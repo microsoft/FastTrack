@@ -20,7 +20,7 @@ It pulls together:
 
 - **Calendar signals** such as risky upcoming meetings, conflicts, missing prep, and overloaded schedules
 - **Mail signals** such as unread VIP messages, stale reply threads, and flagged items
-- **Task signals** from the PowerClaw Tasks list, including overdue work and stale priorities
+- **Task signals** from the PowerClaw_Tasks list, including overdue work and stale priorities
 - **Memory signals** such as commitments, deadlines, and learned relationship context
 - **Org signals** such as topics gaining momentum that may affect the user’s role or priorities
 
@@ -72,7 +72,7 @@ Use this skill when you want a fast, judgment-driven scan of your workload, espe
 - **WorkIQ Calendar MCP** is available
 - **WorkIQ Mail MCP** is available
 - **WorkIQ Copilot MCP** is available for trending org signals
-- **Microsoft SharePoint Lists MCP** is connected to the **PowerClaw Tasks** list and memory list
+- **Microsoft SharePoint Lists MCP** is connected to the **PowerClaw_Tasks** list and memory list
 - A **Prompt** tool is configured in Copilot Studio
 - PowerClaw’s SharePoint brain includes `user.md` and the standard constitution files so VIPs, role context, and operating norms can be inferred
 - Optional for proactive delivery: **HeartbeatFlow** is enabled
@@ -133,8 +133,8 @@ You may use:
 - WorkIQ Calendar MCP
 - WorkIQ Mail MCP
 - WorkIQ Copilot MCP
-- SharePoint Lists / PowerClaw Tasks list
-- PowerClaw memory list
+- SharePoint Lists / PowerClaw_Tasks list
+- PowerClaw_Memory list
 - User context from the PowerClaw SharePoint brain, including VIP clues from user.md when available
 
 Workflow:
@@ -151,7 +151,7 @@ Workflow:
    - overdue commitments
    - approaching deadlines
    - important promises, decisions, or follow-ups stored as Commitment, Project, Person, Pattern, or Insight memories
-4. Check the PowerClaw Tasks list:
+4. Check the PowerClaw_Tasks list:
    - overdue tasks
    - tasks in Human Review
    - stale tasks that have not moved and may indicate slipping priorities
@@ -249,7 +249,7 @@ Over time, the radar improves as the memory system accumulates better signals ab
 - Weekly radar trend report showing repeated risk themes
 - Team radar for managers covering directs, escalations, and staffing gaps
 - Custom alert thresholds for VIPs, overdue replies, or meeting overload
-- Auto-create PowerClaw Tasks for red-flag items surfaced repeatedly across heartbeat runs
+- Auto-create PowerClaw_Tasks for red-flag items surfaced repeatedly across heartbeat runs
 
 ## Related Skills
 

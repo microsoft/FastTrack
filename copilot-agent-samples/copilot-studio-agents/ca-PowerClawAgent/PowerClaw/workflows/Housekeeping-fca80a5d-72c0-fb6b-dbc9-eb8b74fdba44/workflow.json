@@ -92,7 +92,7 @@
           "inputs": {
             "parameters": {
               "dataset": "@outputs('Compose:_Config_SiteURL')",
-              "table": "PowerClaw Tasks",
+              "table": "PowerClaw_Tasks",
               "$filter": "TaskStatus eq 'Done'",
               "$top": 100
             },
@@ -117,7 +117,7 @@
               "inputs": {
                 "parameters": {
                   "dataset": "@outputs('Compose:_Config_SiteURL')",
-                  "table": "PowerClaw Tasks",
+                  "table": "PowerClaw_Tasks",
                   "id": "@items('Apply_to_each:_Delete_Done_Tasks')?['ID']"
                 },
                 "host": {
@@ -139,7 +139,7 @@
           "inputs": {
             "parameters": {
               "dataset": "@outputs('Compose:_Config_SiteURL')",
-              "table": "PowerClaw Memory",
+              "table": "PowerClaw_Memory",
               "$filter": "Status eq 'Active'",
               "$top": 200
             },
@@ -193,7 +193,7 @@
                   "inputs": {
                     "parameters": {
                       "dataset": "@outputs('Compose:_Config_SiteURL')",
-                      "table": "PowerClaw Memory",
+                      "table": "PowerClaw_Memory",
                       "id": "@items('Apply_to_each:_Check_Expiry')?['ID']",
                       "item": {
                         "Status": "Expired",

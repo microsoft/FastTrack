@@ -241,7 +241,7 @@ PowerClaw uses **Claude Sonnet 4.6** via Copilot Studio's model selection. You c
 **How to change it (per-agent, recommended):**
 Copilot Studio → open the PowerClaw agent → **Settings** → **Security** → **Conversation transcript retention** → set to **14 days** (or whatever your compliance policy allows).
 
-This only affects how long Copilot Studio keeps the transcript records — it does **not** affect PowerClaw's own long-term memory (stored in the SharePoint **PowerClaw Memory** list) or the **PowerClaw_Memory_Log** list, which have their own 30-day lifecycle managed by the Housekeeping flow.
+This only affects how long Copilot Studio keeps the transcript records — it does **not** affect PowerClaw's own long-term memory (stored in the SharePoint **PowerClaw_Memory** list) or the **PowerClaw_Memory_Log** list, which have their own 30-day lifecycle managed by the Housekeeping flow.
 
 > 💡 If you also want tenant-wide control, an admin can set a tenant-level retention floor in the [Power Platform admin center](https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-data-retention).
 
