@@ -1,11 +1,13 @@
 <#
 .SYNOPSIS
-    Provisions the PowerClaw-Workspace SharePoint site with required lists, including the PowerClaw_Tasks list, and constitution files.
+    Provisions the PowerClaw-Workspace SharePoint site with required lists and constitution files using PnP PowerShell.
 .DESCRIPTION
+    Backup provisioning path for environments where the Bootstrap flow cannot be used.
+    Requires a PnP PowerShell app registration (`-ClientId`) and admin consent for delegated SharePoint access.
     This script sets up the backend infrastructure for the PowerClaw agent.
     It creates:
     1. 'PowerClaw_Memory_Log' list for tracking agent activities.
-    2. 'PowerClaw_Config' list for configuration flags.
+    2. 'PowerClaw_Config' list with only these seeded settings: KillSwitch, IsRunning, MaxActionsPerHour, AdminEmail.
     3. 'PowerClaw_Memory' list for long-term knowledge storage.
     4. 'PowerClaw_Tasks' list for task intake, review, and completion tracking.
     5. Constitution files in 'Shared Documents' with default templates (soul.md, user.md, agents.md, tools.md, memory-journal.md).
@@ -123,29 +125,38 @@ try {
         # Add default items
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "KillSwitch"; "SettingName" = "KillSwitch"; "SettingValue" = "false"} | Out-Null
         Add-PnPListItem -List $settingsListName -Values @{"Title" = "IsRunning"; "SettingName" = "IsRunning"; "SettingValue" = "false"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "MaxActionsPerHour"; "SettingName" = "MaxActionsPerHour"; "SettingValue" = "10"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "DigestEnabled"; "SettingName" = "DigestEnabled"; "SettingValue" = "true"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "DigestTimeUTC"; "SettingName" = "DigestTimeUTC"; "SettingValue" = "08:00"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "WeeklyRecapDay"; "SettingName" = "WeeklyRecapDay"; "SettingValue" = "Friday"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "QuietHoursStart"; "SettingName" = "QuietHoursStart"; "SettingValue" = "22"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "QuietHoursEnd"; "SettingName" = "QuietHoursEnd"; "SettingValue" = "07"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "TeamsMessageMode"; "SettingName" = "TeamsMessageMode"; "SettingValue" = "direct_chat_only"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryConsolidationEnabled"; "SettingName" = "MemoryConsolidationEnabled"; "SettingValue" = "true"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "MemoryMaxActiveItems"; "SettingName" = "MemoryMaxActiveItems"; "SettingValue" = "100"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "LastHousekeepingDate"; "SettingName" = "LastHousekeepingDate"; "SettingValue" = "2000-01-01"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "HeartbeatIntervalMinutes"; "SettingName" = "HeartbeatIntervalMinutes"; "SettingValue" = "30"} | Out-Null
-        Add-PnPListItem -List $settingsListName -Values @{"Title" = "AgentName"; "SettingName" = "AgentName"; "SettingValue" = $AgentName} | Out-Null
+        Add-PnPListItem -List $settingsListName -Values @{"Title" = "MaxActionsPerHour"; "SettingName" = "MaxActionsPerHour"; "SettingValue" = "20"} | Out-Null
+        Add-PnPListItem -List $settingsListName -Values @{"Title" = "AdminEmail"; "SettingName" = "AdminEmail"; "SettingValue" = $AdminEmail} | Out-Null
         
         Write-Success "'$settingsListName' list created and populated."
     } else {
-        Write-Info "'$settingsListName' list already exists. Checking for missing settings..."
-        # Backfill AgentName setting if missing
-        $existingItems = Get-PnPListItem -List $settingsListName -Fields "SettingName" | Where-Object { $_["SettingName"] -eq "AgentName" }
-        if (-not $existingItems) {
-            Add-PnPListItem -List $settingsListName -Values @{"Title" = "AgentName"; "SettingName" = "AgentName"; "SettingValue" = $AgentName} | Out-Null
-            Write-Success "Backfilled 'AgentName' setting with value '$AgentName'."
-        } else {
-            Write-Info "'AgentName' setting already exists. Skipping."
+        Write-Info "'$settingsListName' list already exists. Checking for missing required settings..."
+        $requiredSettings = @(
+            @{ Title = "KillSwitch"; SettingName = "KillSwitch"; SettingValue = "false" },
+            @{ Title = "IsRunning"; SettingName = "IsRunning"; SettingValue = "false" },
+            @{ Title = "MaxActionsPerHour"; SettingName = "MaxActionsPerHour"; SettingValue = "20" },
+            @{ Title = "AdminEmail"; SettingName = "AdminEmail"; SettingValue = $AdminEmail }
+        )
+
+        $existingSettings = @{}
+        foreach ($item in (Get-PnPListItem -List $settingsListName -Fields "SettingName")) {
+            if ($item["SettingName"]) {
+                $existingSettings[$item["SettingName"]] = $true
+            }
+        }
+
+        foreach ($setting in $requiredSettings) {
+            if ($existingSettings.ContainsKey($setting.SettingName)) {
+                Write-Info "'$($setting.SettingName)' setting already exists. Skipping."
+                continue
+            }
+
+            Add-PnPListItem -List $settingsListName -Values @{
+                "Title" = $setting.Title
+                "SettingName" = $setting.SettingName
+                "SettingValue" = $setting.SettingValue
+            } | Out-Null
+            Write-Success "Backfilled '$($setting.SettingName)' setting."
         }
     }
 } catch {
@@ -273,7 +284,7 @@ Your primary goal is to assist the user by autonomously managing tasks, summariz
 ## OODA, Checks, and Autonomy
 On each heartbeat or request:
 - **Observe:** read context, calendar, mail, tasks, memory facts, journal, and Memory Log.
-- **Orient:** compare signals with preferences, time, quiet hours, task state, and prior actions.
+- **Orient:** compare signals with preferences, time, task state, and prior actions.
 - **Act:** take the smallest useful safe action; prefer drafts, summaries, briefs, and task updates over noisy alerts.
 - **Conclude:** record the outcome and stop when no action is needed.
 Before acting, check memory facts, journal, Memory Log, and task state for duplicates or recent completion. Proactive Teams messages use the user's 1:1 chat only; else email. Respect quiet hours and safeguards.
@@ -290,10 +301,10 @@ You may summarize, draft, classify, create/update tasks, prepare briefs, send di
 - Create/update tasks for commitments, deadlines, requests, events, or follow-ups.
 Tasks live in the **PowerClaw_Tasks** SharePoint list on this workspace site. Status flow: **To Do -> Human Review -> Done**. On heartbeat, inspect **To Do**, act, notify, and move completed work to **Human Review** with notes. User marks **Done**. Never duplicate work: check tasks, memory, journal, and Memory Log first.
 ## Digests and Notifications
-- Daily Digest: once per day between 07:00-09:00 UTC unless configured otherwise; include calendar, conflicts, due tasks, urgent mail, and follow-ups.
-- Weekly Recap: once per Friday between 15:00-17:00 UTC unless configured otherwise; include meetings, completed tasks, decisions, risks, Monday priorities.
+- Daily Digest: once per day between 07:00-09:00 UTC; include calendar, conflicts, due tasks, urgent mail, and follow-ups.
+- Weekly Recap: once per Friday between 15:00-17:00 UTC; include meetings, completed tasks, decisions, risks, Monday priorities.
 - Check Memory Log first for an existing digest/recap in the period.
-- During QuietHoursStart-QuietHoursEnd, do not send proactive notifications; continue checks/logging. Notify only for urgent, time-sensitive risks.
+- Avoid noisy proactive notifications; notify only for urgent, time-sensitive risks.
 - Never post proactively to group chats/channels; only when explicitly asked. Use concise bullets and log actions.
 ## Memory Management
 ### Journal Entries

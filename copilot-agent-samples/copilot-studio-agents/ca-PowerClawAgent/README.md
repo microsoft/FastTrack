@@ -99,12 +99,15 @@ PowerClaw is inspired by [**OpenClaw**](https://github.com/openclaw/openclaw), t
 PowerClaw is designed to be up and running in about 30 minutes. The setup is three steps:
 
 1. **Import** the Copilot Studio solution into your environment
-2. **Provision** your SharePoint workspace by running the included Bootstrap Flow
+2. **Provision** your SharePoint workspace using one of three paths:
+   - **Bootstrap Flow** *(recommended)* — run after importing the solution
+   - **PowerShell Script** *(backup)* — for DLP-restricted environments; requires app registration + admin consent
+   - **Manual Setup** *(universal fallback)* — browser-only, zero dependencies
 3. **Personalize** by editing `user.md` with your name, role, and preferences
 
 That's it. The heartbeat starts automatically.
 
-📖 **[Full Setup Guide →](SETUP.md)**
+📖 **[Full Setup Guide →](SETUP.md)** · **[Manual Setup Guide →](docs/MANUAL-SETUP.md)**
 
 <details>
 <summary><strong>Prerequisites</strong></summary>

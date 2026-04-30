@@ -30,7 +30,7 @@
 | **Copilot Studio** | Credit pack or pay-as-you-go — [see pricing](https://aka.ms/copilotstudio/licensingguide) |
 | **Power Automate** | Premium plan — required because HeartbeatFlow uses the Copilot Studio connector |
 | **Permissions** | Ability to create a SharePoint site |
-| **PnP PowerShell** | *Optional* — only needed if using the script-based setup path |
+| **PnP PowerShell** | *Optional* — only needed for the backup script path, which also requires an app registration + admin consent |
 
 </details>
 
@@ -98,9 +98,13 @@ After importing the solution and setting up connections, configure the flows to 
 
 ## Step 5: Provision the Workspace
 
-Choose one method to create the SharePoint lists and constitution files.
+Choose **one** provisioning path to create the SharePoint lists and constitution files. All three paths target the same workspace shape:
 
-### Option A: Bootstrap Flow *(Recommended)*
+1. **Bootstrap Flow** *(recommended)* — run after importing the solution
+2. **PowerShell Script** *(backup)* — for DLP-restricted environments; requires app registration + admin consent
+3. **Manual Setup** *(universal fallback)* — browser-only, zero dependencies
+
+### Option A: Bootstrap Flow *(Recommended — run after solution import)*
 
 The solution includes a helper flow that provisions everything — no scripts required.
 
@@ -115,9 +119,9 @@ The solution includes a helper flow that provisions everything — no scripts re
 > 💡 **Tip:** The Bootstrap flow is separate from the Compose-based flow configuration in Step 4. It uses its own run inputs — **SiteUrl**, **AdminEmail**, and **AgentName** — which you enter when running the flow. **AgentName** defaults to "PowerClaw" if left blank.
 
 <details>
-<summary><strong>Option B: PowerShell (Advanced)</strong></summary>
+<summary><strong>Option B: PowerShell Script (Backup — DLP-restricted environments)</strong></summary>
 
-For admins who prefer scripting or need to customize the setup.
+Use this when the Bootstrap flow is blocked but you can obtain app registration + admin consent for delegated SharePoint access.
 
 **1. Register a PnP PowerShell app** (one-time per tenant):
 
@@ -144,18 +148,30 @@ This requests **only** the permission needed. The consent screen will show **"re
 </details>
 
 <details>
+<summary><strong>Option C: Manual Setup (Universal fallback)</strong></summary>
+
+Use this when you want a browser-only path with zero script dependencies.
+
+- Follow [`docs/MANUAL-SETUP.md`](docs/MANUAL-SETUP.md)
+- Estimated time: **~15 minutes**
+- Works anywhere you can create SharePoint lists and upload files
+
+</details>
+
+<details>
 <summary><strong>What gets created</strong></summary>
 
 Regardless of method, the following resources are provisioned:
 
 - ✅ **PowerClaw_Memory_Log** list — audit trail for all agent activity
-- ✅ **PowerClaw_Config** list — configuration flags (KillSwitch, rate limits, quiet hours)
+- ✅ **PowerClaw_Config** list — heartbeat safeguards and admin contact settings
+  - Seeded items: `KillSwitch = false`, `IsRunning = false`, `MaxActionsPerHour = 20`, `AdminEmail = <your email>`
 - ✅ **PowerClaw_Memory** list — long-term knowledge store (preferences, people, projects)
 - ✅ **PowerClaw_Tasks** list — task workflow: `To Do → Human Review → Done`
 - ✅ **Constitution files** uploaded to Shared Documents:
   - `soul.md` — Agent personality and core values
   - `user.md` — Your role, team, and preferences
-  - `agents.md` — Operating rules (calendar, email triage, task management, digest schedule)
+  - `agents.md` — Operating rules (calendar, email triage, task management, notifications)
   - `tools.md` — Available capabilities reference
   - `memory-journal.md` — Rolling narrative journal
 
@@ -216,7 +232,7 @@ Run through these checks to confirm everything is connected:
 
 | Test | What to do | Expected result |
 |---|---|---|
-| **Config check** | Open the PowerClaw_Config list | `KillSwitch = false`, `IsRunning = false` |
+| **Config check** | Open the PowerClaw_Config list | `KillSwitch = false`, `IsRunning = false`, `MaxActionsPerHour = 20`, `AdminEmail = <your email>` |
 | **Interactive chat** | Say *"Hi, what can you do?"* in Teams | Natural language response (not JSON) |
 | **Briefing** | Say *"brief me"* in Teams | Calendar + tasks + email summary |
 | **Task execution** | Add an item with `TaskStatus = To Do` to the PowerClaw_Tasks list, then trigger the Heartbeat Flow | "Starting" email → task moves to "Human Review" |
@@ -236,19 +252,16 @@ After verification, the heartbeat runs automatically every 30 minutes.
 | Setting | Default | Purpose |
 |---|---|---|
 | **KillSwitch** | `false` | Emergency stop for all autonomous activity |
-| **MaxActionsPerHour** | `10` | Rate limit safety valve |
-| **HeartbeatIntervalMinutes** | `30` | Frequency of the flow trigger |
-| **DigestTimeUTC** | `08:00` | When to send the daily digest |
-| **QuietHoursStart** | `22:00` | Start of quiet hours (UTC) |
-| **QuietHoursEnd** | `07:00` | End of quiet hours (UTC) |
-| **MemoryMaxActiveItems** | `100` | Cap on active long-term memories loaded |
+| **IsRunning** | `false` | Runtime coordination flag used by the heartbeat |
+| **MaxActionsPerHour** | `20` | Rate limit safety valve |
+| **AdminEmail** | `you@example.com` | Admin contact for alerts and setup ownership |
 
 ### Common Customizations
 
 - **Heartbeat frequency** — Edit the Power Automate recurrence trigger
 - **Operating rules** — Edit `agents.md` to add/change behaviors (no code needed)
 - **Kill switch** — Set `KillSwitch = true` in PowerClaw_Config to pause all autonomous activity
-- **Agent name** — Change `AgentName` in PowerClaw_Config and update `soul.md`
+- **Agent name** — Update `soul.md` (or rerun Bootstrap / setup with `AgentName`)
 - **Long-term memory** — Review the PowerClaw_Memory list to see what the agent has learned; edit or delete entries to correct its knowledge
 
 ### Calendar-Driven Routines 📅
@@ -456,9 +469,8 @@ graph TD
 | File | Purpose |
 |---|---|
 | `PowerClaw_Solution.zip` | Unmanaged solution (Agent + Flows including Bootstrap) |
-| `scripts/build-bootstrap-flow.py` | Bootstrap flow definition generator |
-| `scripts/deploy-to-prod.ps1` | Deployment script (export → inject URLs → import → optional zip rebuild) |
-| `scripts/Setup-PowerClaw.ps1` | SharePoint workspace provisioning script (advanced, PnP PowerShell alternative) |
+| `scripts/Setup-PowerClaw.ps1` | SharePoint workspace provisioning script (backup path; requires app registration + admin consent) |
+| `docs/MANUAL-SETUP.md` | Universal browser-only manual setup guide |
 | `SETUP.md` | This guide |
 | `Images/` | Screenshots and diagrams |
 
