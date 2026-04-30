@@ -89,7 +89,7 @@
 2. Create each of the following 5 files. You can create them by clicking **New** → **Text file**, renaming to `.md`, and pasting the content below.
 
 ### soul.md
-> Replace `[Your Agent Name]` with whatever you want to call your agent (e.g., "Goose", "Atlas", "PowerClaw").
+> Replace `[Your Agent Name]` with whatever you want to call your agent (e.g., "Goose", "TARS", "Jarvis").
 
 ```markdown
 # [Your Agent Name] Soul
