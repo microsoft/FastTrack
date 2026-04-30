@@ -185,12 +185,9 @@ try {
         # Lifecycle dates
         Add-PnPField -List $memoryListName -DisplayName "FirstLearnedAt" -InternalName "FirstLearnedAt" -Type DateTime
         Add-PnPField -List $memoryListName -DisplayName "LastConfirmedAt" -InternalName "LastConfirmedAt" -Type DateTime -AddToDefaultView
-        Add-PnPField -List $memoryListName -DisplayName "ReviewAfter" -InternalName "ReviewAfter" -Type DateTime
         Add-PnPField -List $memoryListName -DisplayName "ExpiresAt" -InternalName "ExpiresAt" -Type DateTime
         
         # Provenance
-        Add-PnPField -List $memoryListName -DisplayName "EvidenceSummary" -InternalName "EvidenceSummary" -Type Note
-        Add-PnPField -List $memoryListName -DisplayName "UsageCount" -InternalName "UsageCount" -Type Number
         
         Write-Success "'$memoryListName' list created."
     } else {

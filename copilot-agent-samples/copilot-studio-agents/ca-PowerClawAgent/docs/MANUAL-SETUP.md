@@ -63,10 +63,7 @@
 | Importance | Choice (`Low`, `Med`, `High`, `Critical`) |
 | FirstLearnedAt | Date and time |
 | LastConfirmedAt | Date and time |
-| ReviewAfter | Date and time |
 | ExpiresAt | Date and time |
-| EvidenceSummary | Multiple lines of text |
-| UsageCount | Number |
 
 ### List 4: PowerClaw_Tasks
 1. **New** → **List** → **Blank list**
