@@ -107,7 +107,7 @@ PowerClaw is designed to be up and running in about 30 minutes. The setup is thr
 
 That's it. The heartbeat starts automatically.
 
-📖 **[Full Setup Guide →](SETUP.md)** · **[Manual Setup Guide →](docs/MANUAL-SETUP.md)**
+📖 **[Full Setup Guide →](SETUP.md)**
 
 <details>
 <summary><strong>Prerequisites</strong></summary>
