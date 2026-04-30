@@ -1,4 +1,4 @@
-{
+﻿{
   "properties": {
     "connectionReferences": {
       "shared_sharepointonline": {
@@ -1059,7 +1059,7 @@
                               "dataset": "@outputs('Compose:_Config_SiteURL')",
                               "folderPath": "/Shared Documents",
                               "name": "memory-journal.md",
-                              "body": "@{if(contains(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'))), replace(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))), replace(string(body('Get_file_content:_Journal_for_Append')), '# PowerClaw_Memory Journal', concat('# PowerClaw_Memory Journal\n\n## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))))}"
+                              "body": "@{if(contains(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'))), replace(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))), replace(string(body('Get_file_content:_Journal_for_Append')), '# PowerClaw Memory Journal', concat('# PowerClaw Memory Journal\n\n## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))))}"
                             },
                             "authentication": "@parameters('$authentication')"
                           },
