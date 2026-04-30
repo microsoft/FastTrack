@@ -86,7 +86,7 @@
 
 ## Step 3: Create Constitution Files
 1. Go to **Documents** (or **Shared Documents**)
-2. Create each of the following 5 files. You can create them by clicking **New** → **Text file**, renaming to `.md`, and pasting the content below.
+2. Create each of the following 5 files by clicking **+ Create or upload** → **Markdown document**, naming it accordingly, and pasting the content below.
 
 ### soul.md
 > Replace `[Your Agent Name]` with whatever you want to call your agent (e.g., "Goose", "TARS", "Jarvis").
