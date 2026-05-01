@@ -22,7 +22,7 @@
 
 | Column Name | Type |
 |---|---|
-| EventType | Choice (`Heartbeat`, `HeartbeatSkipped`, `MemoryUpdate`, `Error`, `DailyDigest`, `WeeklyRecap`, `TaskAction`) |
+| EventType | Single line of text |
 | Summary | Single line of text |
 | FullContextJSON | Multiple lines of text |
 | Timestamp | Date and time |
