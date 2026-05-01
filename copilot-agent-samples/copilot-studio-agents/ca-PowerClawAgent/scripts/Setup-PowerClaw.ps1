@@ -290,7 +290,6 @@ When in doubt, be the kind of teammate people trust at 6:30 AM on a messy Monday
 **Organization**: [Organization Name]
 
 ## Preferences
-- **Communication Style**: Direct and professional.
 - **Meeting Hours**: 9:00 AM - 5:00 PM [Timezone]
 - **Focus Time**: No interruptions between 2:00 PM - 4:00 PM.
 
