@@ -659,5 +659,126 @@
         "uniques": 27
       }
     ]
+  },
+  {
+    "date": "2026-05-01",
+    "views_count": 0,
+    "views_uniques": 0,
+    "clones_count": 0,
+    "clones_uniques": 0,
+    "top_referrers": [
+      {
+        "referrer": "Bing",
+        "count": 283,
+        "uniques": 57
+      },
+      {
+        "referrer": "statics.teams.cdn.office.net",
+        "count": 204,
+        "uniques": 82
+      },
+      {
+        "referrer": "github.com",
+        "count": 124,
+        "uniques": 44
+      },
+      {
+        "referrer": "learn.microsoft.com",
+        "count": 88,
+        "uniques": 32
+      },
+      {
+        "referrer": "engage.cloud.microsoft",
+        "count": 44,
+        "uniques": 9
+      },
+      {
+        "referrer": "Google",
+        "count": 25,
+        "uniques": 16
+      },
+      {
+        "referrer": "linkedin.com",
+        "count": 21,
+        "uniques": 11
+      },
+      {
+        "referrer": "com.linkedin.android",
+        "count": 21,
+        "uniques": 10
+      },
+      {
+        "referrer": "DuckDuckGo",
+        "count": 16,
+        "uniques": 6
+      },
+      {
+        "referrer": "teams.public.onecdn.static.microsoft",
+        "count": 12,
+        "uniques": 7
+      }
+    ],
+    "top_paths": [
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+        "title": "/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+        "count": 167,
+        "uniques": 94
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+        "title": "/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+        "count": 146,
+        "uniques": 78
+      },
+      {
+        "path": "/microsoft/FastTrack/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/skills/workplace-intelligence-monitor.md",
+        "title": "/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/skills/workplace-intelligence-monitor.md",
+        "count": 102,
+        "uniques": 60
+      },
+      {
+        "path": "/microsoft/FastTrack",
+        "title": "Overview",
+        "count": 100,
+        "uniques": 70
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents",
+        "title": "/tree/master/copilot-agent-samples/copilot-studio-agents",
+        "count": 85,
+        "uniques": 57
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples",
+        "title": "/tree/master/copilot-analytics-samples",
+        "count": 64,
+        "uniques": 39
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/scripts/Update-VivaEngageLicensingToggle",
+        "title": "/tree/master/scripts/Update-VivaEngageLicensingToggle",
+        "count": 56,
+        "uniques": 30
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples",
+        "title": "/tree/master/copilot-agent-samples",
+        "count": 55,
+        "uniques": 38
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-usage-users-and-apps",
+        "title": "/tree/master/copilot-analytics-samples/copilot-usage-users-and-apps",
+        "count": 47,
+        "uniques": 27
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+        "title": "/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+        "count": 45,
+        "uniques": 27
+      }
+    ]
   }
 ]
