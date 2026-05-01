@@ -1,4 +1,22 @@
 ﻿connectionReferences:
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_a365copilotchatmcp.da070d1a1d8d4fd9997e4f0bf07723f0
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_a365copilotchatmcp
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_a365memcp.4e6d522a4aa74c5f948d8fa14169b277
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_a365memcp
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_a365outlookcalendarmcp.f4336d295e0d408b9ba7cd0250aa7fd7
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_a365outlookcalendarmcp
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_a365outlookmailmcp.f7190c3c8a8c411186750a06ac015536
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_a365outlookmailmcp
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_a365teamsmcp.f27ca977c98044b68740cbf004cc7004
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_a365teamsmcp
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_a365wordmcp.780daccb8c2348d5b2581658b11a559a
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_a365wordmcp
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_office365.shared-office365-62963f75-2bd1-4792-b902-260a2a22f3c9
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_office365
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_teams.06d9dd85c77a4d3ebb43ef677f5e5101
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_teams
+  - connectionReferenceLogicalName: auto_agent_BmTJh.shared_workiqsharepoint.b14984ba327a470cbf63ef55fee71964
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_workiqsharepoint
   - connectionReferenceLogicalName: cr0b1_sharedmicrosoftcopilotstudio_d1a4f
     connectorId: /providers/Microsoft.PowerApps/apis/shared_microsoftcopilotstudio
   - connectionReferenceLogicalName: new_sharedoffice365_9be30

@@ -1,4 +1,4 @@
-{
+﻿{
   "properties": {
     "connectionReferences": {
       "shared_sharepointonline": {
@@ -126,20 +126,18 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "PostItem",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "POST",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Memory_Log\u0027)/items",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "@string(setProperty(setProperty(json(\u0027{}\u0027), \u0027EventType\u0027, \u0027Heartbeat\u0027), \u0027Summary\u0027, concat(\u0027Heartbeat attempt started at \u0027, utcNow())))"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Memory_Log",
+                  "item": {
+                    "Title": "Heartbeat",
+                    "Summary": "@{concat('Heartbeat attempt started at ', utcNow())}"
+                  }
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Get_items:_Check_if_KillSwitch_or_IsRunning": {
@@ -155,20 +153,15 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Config\u0027)/items?$filter=(SettingName eq \u0027KillSwitch\u0027 or SettingName eq \u0027IsRunning\u0027) and SettingValue eq \u0027true\u0027",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Config",
+                  "$filter": "(SettingName eq 'KillSwitch' or SettingName eq 'IsRunning') and SettingValue eq 'true'"
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Condition:_Check_if_KillSwitch_or_IsRunning": {
@@ -182,20 +175,18 @@
                   "inputs": {
                     "host": {
                       "connectionName": "shared_sharepointonline",
-                      "operationId": "HttpRequest",
+                      "operationId": "PostItem",
                       "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                     },
                     "parameters": {
-                      "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                      "parameters/method": "POST",
-                      "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Memory_Log\u0027)/items",
-                      "parameters/headers": {
-                        "Accept": "application/json;odata=nometadata",
-                        "Content-Type": "application/json;odata=nometadata"
-                      },
-                      "parameters/body": "@string(setProperty(setProperty(json(\u0027{}\u0027), \u0027EventType\u0027, \u0027HeartbeatSkipped\u0027), \u0027Summary\u0027, \u0027\u0022Skipped due to active lock or kill switch\u0022\u0027))"
+                      "dataset": "@outputs('Compose:_Config_SiteURL')",
+                      "table": "PowerClaw_Memory_Log",
+                      "item": {
+                        "Title": "HeartbeatSkipped",
+                        "Summary": "\"Skipped due to active lock or kill switch\""
+                      }
                     },
-                    "authentication": "@parameters(\u0027$authentication\u0027)"
+                    "authentication": "@parameters('$authentication')"
                   }
                 },
                 "Terminate": {
@@ -222,7 +213,7 @@
                 "and": [
                   {
                     "greater": [
-                      "@length(outputs(\u0027Get_items:_Check_if_KillSwitch_or_IsRunning\u0027)?[\u0027body/value\u0027])",
+                      "@length(outputs('Get_items:_Check_if_KillSwitch_or_IsRunning')?['body/value'])",
                       0
                     ]
                   }
@@ -246,20 +237,15 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Config\u0027)/items?$filter=SettingName eq \u0027IsRunning\u0027",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Config",
+                  "$filter": "SettingName eq 'IsRunning'"
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Update_item_-_Set_Lock_": {
@@ -275,22 +261,19 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "PatchItem",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "POST",
-                  "parameters/uri": "@concat(\u0027_api/web/lists/getByTitle(\u0027\u0027PowerClaw_Config\u0027\u0027)/items(\u0027, first(outputs(\u0027Get_items_-_Acquire_Lock_ID\u0027)?[\u0027body/value\u0027])?[\u0027ID\u0027], \u0027)\u0027)",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata",
-                    "IF-MATCH": "*",
-                    "X-HTTP-Method": "MERGE"
-                  },
-                  "parameters/body": "@string(setProperty(json(\u0027{}\u0027), \u0027SettingValue\u0027, \u0027true\u0027))"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Config",
+                  "id": "@{first(outputs('Get_items_-_Acquire_Lock_ID')?['body/value'])?['ID']}",
+                  "item": {
+                    "SettingValue": "true",
+                    "Title": "IsRunning"
+                  }
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Get_items_-_MaxActionsPerHour": {
@@ -306,20 +289,15 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Config\u0027)/items?$filter=SettingName eq \u0027MaxActionsPerHour\u0027",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Config",
+                  "$filter": "SettingName eq 'MaxActionsPerHour'"
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Compose_Integer_-_MaxActionsPerHour": {
@@ -332,7 +310,7 @@
                 "operationMetadataId": "3b4ad43b-9fd8-4f29-8cc6-526a5dda5a1a"
               },
               "type": "Compose",
-              "inputs": "@int(first(outputs(\u0027Get_items_-_MaxActionsPerHour\u0027)?[\u0027body/value\u0027])?[\u0027SettingValue\u0027])"
+              "inputs": "@int(first(outputs('Get_items_-_MaxActionsPerHour')?['body/value'])?['SettingValue'])"
             },
             "Get_items:_Rate_Limit_Query": {
               "runAfter": {
@@ -347,20 +325,15 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Memory_Log\u0027)/items?$filter=Timestamp ge \u0027@{addHours(utcNow(), -1)}\u0027 and (EventType eq \u0027ActionExecuted\u0027 or EventType eq \u0027ToolCalled\u0027 or EventType eq \u0027TaskCompleted\u0027)",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Memory_Log",
+                  "$filter": "Created ge '@{addHours(utcNow(), -1)}' and (Title eq 'ActionExecuted' or Title eq 'ToolCalled' or Title eq 'TaskCompleted')"
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Condition:_Rate_Limit_Condition": {
@@ -382,12 +355,12 @@
                       "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
                     },
                     "parameters": {
-                      "emailMessage/To": "@outputs(\u0027Compose:_Config_AdminEmail\u0027)",
+                      "emailMessage/To": "@outputs('Compose:_Config_AdminEmail')",
                       "emailMessage/Subject": "PowerClaw Rate Limit Breach",
-                      "emailMessage/Body": "\u003Cp class=\u0022editor-paragraph\u0022\u003EPowerClaw hit a rate limit \uD83D\uDE05\u003C/p\u003E",
+                      "emailMessage/Body": "<p class=\"editor-paragraph\">PowerClaw hit a rate limit 😅</p>",
                       "emailMessage/Importance": "Normal"
                     },
-                    "authentication": "@parameters(\u0027$authentication\u0027)"
+                    "authentication": "@parameters('$authentication')"
                   }
                 },
                 "Terminate_:_Due_to_rate_limit": {
@@ -417,22 +390,19 @@
                   "inputs": {
                     "host": {
                       "connectionName": "shared_sharepointonline",
-                      "operationId": "HttpRequest",
+                      "operationId": "PatchItem",
                       "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                     },
                     "parameters": {
-                      "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                      "parameters/method": "POST",
-                      "parameters/uri": "@concat(\u0027_api/web/lists/getByTitle(\u0027\u0027PowerClaw_Config\u0027\u0027)/items(\u0027, first(outputs(\u0027Get_items:_KillSwitch\u0027)?[\u0027body/value\u0027])?[\u0027ID\u0027], \u0027)\u0027)",
-                      "parameters/headers": {
-                        "Accept": "application/json;odata=nometadata",
-                        "Content-Type": "application/json;odata=nometadata",
-                        "IF-MATCH": "*",
-                        "X-HTTP-Method": "MERGE"
-                      },
-                      "parameters/body": "@string(setProperty(json(\u0027{}\u0027), \u0027SettingValue\u0027, \u0027true\u0027))"
+                      "dataset": "@outputs('Compose:_Config_SiteURL')",
+                      "table": "PowerClaw_Config",
+                      "id": "@{first(outputs('Get_items:_KillSwitch')?['body/value'])?['ID']}",
+                      "item": {
+                        "SettingValue": "true",
+                        "Title": "KillSwitch"
+                      }
                     },
-                    "authentication": "@parameters(\u0027$authentication\u0027)"
+                    "authentication": "@parameters('$authentication')"
                   }
                 },
                 "Get_items:_KillSwitch": {
@@ -444,20 +414,15 @@
                   "inputs": {
                     "host": {
                       "connectionName": "shared_sharepointonline",
-                      "operationId": "HttpRequest",
+                      "operationId": "GetItems",
                       "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                     },
                     "parameters": {
-                      "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                      "parameters/method": "GET",
-                      "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Config\u0027)/items?$filter=SettingName eq \u0027KillSwitch\u0027",
-                      "parameters/headers": {
-                        "Accept": "application/json;odata=nometadata",
-                        "Content-Type": "application/json;odata=nometadata"
-                      },
-                      "parameters/body": "{}"
+                      "dataset": "@outputs('Compose:_Config_SiteURL')",
+                      "table": "PowerClaw_Config",
+                      "$filter": "SettingName eq 'KillSwitch'"
                     },
-                    "authentication": "@parameters(\u0027$authentication\u0027)"
+                    "authentication": "@parameters('$authentication')"
                   }
                 }
               },
@@ -470,8 +435,8 @@
                 "and": [
                   {
                     "greater": [
-                      "@length(outputs(\u0027Get_items:_Rate_Limit_Query\u0027)?[\u0027body/value\u0027])",
-                      "@outputs(\u0027Compose_Integer_-_MaxActionsPerHour\u0027)"
+                      "@length(outputs('Get_items:_Rate_Limit_Query')?['body/value'])",
+                      "@outputs('Compose_Integer_-_MaxActionsPerHour')"
                     ]
                   }
                 ]
@@ -508,11 +473,11 @@
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "id": "%252fShared%2bDocuments%252fsoul.md",
                   "inferContentType": true
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Get_file_content:_User.md": {
@@ -533,11 +498,11 @@
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "id": "%252fShared%2bDocuments%252fuser.md",
                   "inferContentType": true
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Get_file_content:_Agents.md": {
@@ -558,11 +523,11 @@
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "id": "%252fShared%2bDocuments%252fagents.md",
                   "inferContentType": true
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Get_file_content:_Tools.md": {
@@ -583,11 +548,11 @@
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "id": "%252fShared%2bDocuments%252ftools.md",
                   "inferContentType": true
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Compose_PromptPrefix": {
@@ -600,7 +565,7 @@
                 "operationMetadataId": "e91d38a2-b5ce-47e4-afbf-578815d93766"
               },
               "type": "Compose",
-              "inputs": "@{body(\u0027Get_file_content:_Soul.md\u0027)}\n@{body(\u0027Get_file_content:_User.md\u0027)}\n@{body(\u0027Get_file_content:_Agents.md\u0027)}\n@{body(\u0027Get_file_content:_Tools.md\u0027)}"
+              "inputs": "@{body('Get_file_content:_Soul.md')}\n@{body('Get_file_content:_User.md')}\n@{body('Get_file_content:_Agents.md')}\n@{body('Get_file_content:_Tools.md')}"
             },
             "Do_until:_Retry_Agent_Loop": {
               "actions": {
@@ -631,7 +596,7 @@
                   "inputs": {
                     "parameters": {
                       "Copilot": "auto_agent_BmTJh",
-                      "body/message": "[HEARTBEAT EVENT TRIGGERED]\nTIMESTAMP: @{utcNow()}\n\nRECENT MEMORY (LAST 10 ACTIONS):\n@{body(\u0027Select:_Summary\u0027)}\n\nOPEN TASKS (from PowerClaw Tasks list):\n@{body(\u0027Select:_Task_Summary\u0027)}\n\nLONG-TERM MEMORY (Active Semantic Facts):\n@{body(\u0027Select:_Memory_Facts\u0027)}\n\nMEMORY JOURNAL (Recent Narrative):\n@{if(greater(length(string(body(\u0027Get_file_content:_memory-journal.md\u0027))),200000),substring(string(body(\u0027Get_file_content:_memory-journal.md\u0027)),sub(length(string(body(\u0027Get_file_content:_memory-journal.md\u0027))),200000),200000),string(body(\u0027Get_file_content:_memory-journal.md\u0027)))}\n\nLATEST CONTEXT PAYLOAD:\n@{outputs(\u0027Compose_PromptPrefix\u0027)}"
+                      "body/message": "[HEARTBEAT EVENT TRIGGERED]\nTIMESTAMP: @{utcNow()}\n\nRECENT MEMORY (LAST 10 ACTIONS):\n@{body('Select:_Summary')}\n\nOPEN TASKS (from PowerClaw_Tasks list):\n@{body('Select:_Task_Summary')}\n\nLONG-TERM MEMORY (Active Semantic Facts):\n@{body('Select:_Memory_Facts')}\n\nMEMORY JOURNAL (Recent Narrative):\n@{if(greater(length(string(body('Get_file_content:_memory-journal.md'))),200000),substring(string(body('Get_file_content:_memory-journal.md')),sub(length(string(body('Get_file_content:_memory-journal.md'))),200000),200000),string(body('Get_file_content:_memory-journal.md')))}\n\nLATEST CONTEXT PAYLOAD:\n@{outputs('Compose_PromptPrefix')}"
                     },
                     "host": {
                       "connectionName": "shared_microsoftcopilotstudio",
@@ -648,7 +613,7 @@
                         "operationMetadataId": "590449d8-63e9-46cd-bf28-74a85aef4959"
                       },
                       "type": "Compose",
-                      "inputs": "@replace(substring(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], indexOf(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027{\u0027), add(sub(lastIndexOf(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027}\u0027), indexOf(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027{\u0027)), 1)), decodeUriComponent(\u0027%C2%A0\u0027), \u0027 \u0027)"
+                      "inputs": "@replace(substring(outputs('Execute_Agent_and_wait')?['body/lastResponse'], indexOf(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '{'), add(sub(lastIndexOf(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '}'), indexOf(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '{')), 1)), decodeUriComponent('%C2%A0'), ' ')"
                     },
                     "Parse_JSON_-_Execute_Agent": {
                       "runAfter": {
@@ -661,20 +626,20 @@
                       },
                       "type": "ParseJson",
                       "inputs": {
-                        "content": "@outputs(\u0027Compose:_Sanitize_markdown\u0027)",
+                        "content": "@outputs('Compose:_Sanitize_markdown')",
                         "schema": {
                           "type": "object",
                           "properties": {
                             "thoughts": {
                               "type": "string",
-                              "description": "The agent\u0027s reasoning during the heartbeat."
+                              "description": "The agent's reasoning during the heartbeat."
                             },
                             "mcpActionsTaken": {
                               "type": "array",
                               "items": {
                                 "type": "string"
                               },
-                              "description": "List of MCP Graph queries executed (e.g., \u0027Checked Calendar\u0027, \u0027Sent Teams Message\u0027)."
+                              "description": "List of MCP Graph queries executed (e.g., 'Checked Calendar', 'Sent Teams Message')."
                             },
                             "memoryUpdateSummary": {
                               "type": "string",
@@ -772,26 +737,25 @@
                       "inputs": {
                         "host": {
                           "connectionName": "shared_sharepointonline",
-                          "operationId": "HttpRequest",
+                          "operationId": "PostItem",
                           "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                         },
                         "parameters": {
-                          "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                          "parameters/method": "POST",
-                          "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Memory_Log\u0027)/items",
-                          "parameters/headers": {
-                            "Accept": "application/json;odata=nometadata",
-                            "Content-Type": "application/json;odata=nometadata"
-                          },
-                          "parameters/body": "@string(setProperty(setProperty(setProperty(json(\u0027{}\u0027), \u0027EventType\u0027, \u0027MemoryUpdate\u0027), \u0027Summary\u0027, body(\u0027Parse_JSON_-_Execute_Agent\u0027)[\u0027memoryUpdateSummary\u0027]), \u0027FullContextJSON\u0027, outputs(\u0027Compose:_Sanitize_markdown\u0027)))"
+                          "dataset": "@outputs('Compose:_Config_SiteURL')",
+                          "table": "PowerClaw_Memory_Log",
+                          "item": {
+                            "Title": "MemoryUpdate",
+                            "Summary": "@{body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary']}",
+                            "FullContextJSON": "@{outputs('Compose:_Sanitize_markdown')}"
+                          }
                         },
-                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                        "authentication": "@parameters('$authentication')"
                       }
                     },
                     "Condition:_Has_Task_Actions": {
                       "actions": {
                         "Apply_to_each:_Process_Task_Actions": {
-                          "foreach": "@body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027taskActions\u0027]",
+                          "foreach": "@body('Parse_JSON_-_Execute_Agent')?['taskActions']",
                           "actions": {
                             "Update_item:_Task_Status": {
                               "runAfter": {},
@@ -802,22 +766,20 @@
                               "inputs": {
                                 "host": {
                                   "connectionName": "shared_sharepointonline",
-                                  "operationId": "HttpRequest",
+                                  "operationId": "PatchItem",
                                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                                 },
                                 "parameters": {
-                                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                                  "parameters/method": "POST",
-                                  "parameters/uri": "@concat(\u0027_api/web/lists/getByTitle(\u0027\u0027PowerClaw Tasks\u0027\u0027)/items(\u0027, items(\u0027Apply_to_each:_Process_Task_Actions\u0027)?[\u0027taskId\u0027], \u0027)\u0027)",
-                                  "parameters/headers": {
-                                    "Accept": "application/json;odata=nometadata",
-                                    "Content-Type": "application/json;odata=nometadata",
-                                    "IF-MATCH": "*",
-                                    "X-HTTP-Method": "MERGE"
-                                  },
-                                  "parameters/body": "@string(setProperty(setProperty(setProperty(json(\u0027{}\u0027), \u0027TaskStatus\u0027, items(\u0027Apply_to_each:_Process_Task_Actions\u0027)?[\u0027newStatus\u0027]), \u0027Notes\u0027, items(\u0027Apply_to_each:_Process_Task_Actions\u0027)?[\u0027notes\u0027]), \u0027LastActionDate\u0027, utcNow()))"
+                                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                                  "table": "PowerClaw_Tasks",
+                                  "id": "@{items('Apply_to_each:_Process_Task_Actions')?['taskId']}",
+                                  "item": {
+                                    "TaskStatus": "@{items('Apply_to_each:_Process_Task_Actions')?['newStatus']}",
+                                    "Notes": "@{items('Apply_to_each:_Process_Task_Actions')?['notes']}",
+                                    "LastActionDate": "@{utcNow()}"
+                                  }
                                 },
-                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                                "authentication": "@parameters('$authentication')"
                               }
                             }
                           },
@@ -837,7 +799,7 @@
                         "and": [
                           {
                             "greater": [
-                              "@length(body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027taskActions\u0027])",
+                              "@length(body('Parse_JSON_-_Execute_Agent')?['taskActions'])",
                               0
                             ]
                           }
@@ -851,7 +813,7 @@
                     "Condition:_Has_Proposed_Memories": {
                       "actions": {
                         "Apply_to_each:_Save_Memories": {
-                          "foreach": "@body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027proposedMemories\u0027]",
+                          "foreach": "@body('Parse_JSON_-_Execute_Agent')?['proposedMemories']",
                           "actions": {
                             "Get_items:_Existing_Memory": {
                               "runAfter": {},
@@ -859,20 +821,17 @@
                               "inputs": {
                                 "host": {
                                   "connectionName": "shared_sharepointonline",
-                                  "operationId": "HttpRequest",
+                                  "operationId": "GetItems",
                                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                                 },
                                 "parameters": {
-                                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                                  "parameters/method": "GET",
-                                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw Memory\u0027)/items?$filter=ScopeKey eq \u0027@{items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027scopeKey\u0027]}\u0027 and (Status eq \u0027Active\u0027 or Status eq \u0027Tentative\u0027)\u0026$orderby=Modified desc\u0026$top=5",
-                                  "parameters/headers": {
-                                    "Accept": "application/json;odata=nometadata",
-                                    "Content-Type": "application/json;odata=nometadata"
-                                  },
-                                  "parameters/body": "{}"
+                                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                                  "table": "PowerClaw_Memory",
+                                  "$filter": "ScopeKey eq '@{items('Apply_to_each:_Save_Memories')?['scopeKey']}' and (Status eq 'Active' or Status eq 'Tentative')",
+                                  "$orderby": "Modified desc",
+                                  "$top": 5
                                 },
-                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                                "authentication": "@parameters('$authentication')"
                               },
                               "metadata": {
                                 "operationMetadataId": "1b6ee0f7-196e-41b8-af67-44df3900df6b"
@@ -889,7 +848,7 @@
                                 "and": [
                                   {
                                     "greater": [
-                                      "@length(outputs(\u0027Get_items:_Existing_Memory\u0027)?[\u0027body/value\u0027])",
+                                      "@length(outputs('Get_items:_Existing_Memory')?['body/value'])",
                                       0
                                     ]
                                   }
@@ -902,22 +861,22 @@
                                   "inputs": {
                                     "host": {
                                       "connectionName": "shared_sharepointonline",
-                                      "operationId": "HttpRequest",
+                                      "operationId": "PatchItem",
                                       "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                                     },
                                     "parameters": {
-                                      "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                                      "parameters/method": "POST",
-                                      "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw Memory\u0027)/items(@{first(outputs(\u0027Get_items:_Existing_Memory\u0027)?[\u0027body/value\u0027])?[\u0027Id\u0027]})",
-                                      "parameters/headers": {
-                                        "Accept": "application/json;odata=nometadata",
-                                        "Content-Type": "application/json;odata=nometadata",
-                                        "IF-MATCH": "*",
-                                        "X-HTTP-Method": "MERGE"
-                                      },
-                                      "parameters/body": "@string(setProperty(setProperty(setProperty(setProperty(json(\u0027{}\u0027), \u0027LastConfirmedAt\u0027, utcNow()), \u0027Confidence\u0027, min(95, add(int(coalesce(first(outputs(\u0027Get_items:_Existing_Memory\u0027)?[\u0027body/value\u0027])?[\u0027Confidence\u0027], items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027confidence\u0027])), 10))), \u0027CanonicalFact\u0027, items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027canonicalFact\u0027]), \u0027Status\u0027, if(greaterOrEquals(min(95, add(int(coalesce(first(outputs(\u0027Get_items:_Existing_Memory\u0027)?[\u0027body/value\u0027])?[\u0027Confidence\u0027], items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027confidence\u0027])), 10)), 80), \u0027Active\u0027, \u0027Tentative\u0027)))"
+                                      "dataset": "@outputs('Compose:_Config_SiteURL')",
+                                      "table": "PowerClaw_Memory",
+                                      "id": "@{first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Id']}",
+                                      "item": {
+                                        "LastConfirmedAt": "@{utcNow()}",
+                                        "Confidence": "@{min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10))}",
+                                        "CanonicalFact": "@{items('Apply_to_each:_Save_Memories')?['canonicalFact']}",
+                                        "Status": "@{if(greaterOrEquals(min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10)), 80), 'Active', 'Tentative')}",
+                                        "Title": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}"
+                                      }
                                     },
-                                    "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    "authentication": "@parameters('$authentication')"
                                   },
                                   "metadata": {
                                     "operationMetadataId": "82cbf2c9-ca95-4d6a-a63d-1c4c4311adcb"
@@ -932,20 +891,25 @@
                                     "inputs": {
                                       "host": {
                                         "connectionName": "shared_sharepointonline",
-                                        "operationId": "HttpRequest",
+                                        "operationId": "PostItem",
                                         "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                                       },
                                       "parameters": {
-                                        "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                                        "parameters/method": "POST",
-                                        "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw Memory\u0027)/items",
-                                        "parameters/headers": {
-                                          "Accept": "application/json;odata=nometadata",
-                                          "Content-Type": "application/json;odata=nometadata"
-                                        },
-                                        "parameters/body": "@string(setProperty(setProperty(setProperty(setProperty(setProperty(setProperty(setProperty(setProperty(setProperty(json(\u0027{}\u0027), \u0027Title\u0027, items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027scopeKey\u0027]), \u0027MemoryType\u0027, items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027memoryType\u0027]), \u0027ScopeKey\u0027, items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027scopeKey\u0027]), \u0027CanonicalFact\u0027, items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027canonicalFact\u0027]), \u0027Confidence\u0027, items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027confidence\u0027]), \u0027Importance\u0027, items(\u0027Apply_to_each:_Save_Memories\u0027)?[\u0027importance\u0027]), \u0027Status\u0027, \u0027Tentative\u0027), \u0027FirstLearnedAt\u0027, utcNow()), \u0027LastConfirmedAt\u0027, utcNow()))"
+                                        "dataset": "@outputs('Compose:_Config_SiteURL')",
+                                        "table": "PowerClaw_Memory",
+                                        "item": {
+                                          "Title": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}",
+                                          "MemoryType": "@{items('Apply_to_each:_Save_Memories')?['memoryType']}",
+                                          "ScopeKey": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}",
+                                          "CanonicalFact": "@{items('Apply_to_each:_Save_Memories')?['canonicalFact']}",
+                                          "Confidence": "@{items('Apply_to_each:_Save_Memories')?['confidence']}",
+                                          "Importance": "@{items('Apply_to_each:_Save_Memories')?['importance']}",
+                                          "Status": "Tentative",
+                                          "FirstLearnedAt": "@{utcNow()}",
+                                          "LastConfirmedAt": "@{utcNow()}"
+                                        }
                                       },
-                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                      "authentication": "@parameters('$authentication')"
                                     },
                                     "metadata": {
                                       "operationMetadataId": "f203ed5b-7225-4784-a282-07fc1fa33c9b"
@@ -974,7 +938,7 @@
                         "and": [
                           {
                             "greater": [
-                              "@length(body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027proposedMemories\u0027])",
+                              "@length(body('Parse_JSON_-_Execute_Agent')?['proposedMemories'])",
                               0
                             ]
                           }
@@ -988,7 +952,7 @@
                     "Condition:_Has_Proposed_Tasks": {
                       "actions": {
                         "Apply_to_each:_Create_Tasks": {
-                          "foreach": "@body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027proposedTasks\u0027]",
+                          "foreach": "@body('Parse_JSON_-_Execute_Agent')?['proposedTasks']",
                           "actions": {
                             "Create_item:_New_Task": {
                               "runAfter": {},
@@ -996,20 +960,21 @@
                               "inputs": {
                                 "host": {
                                   "connectionName": "shared_sharepointonline",
-                                  "operationId": "HttpRequest",
+                                  "operationId": "PostItem",
                                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                                 },
                                 "parameters": {
-                                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                                  "parameters/method": "POST",
-                                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw Tasks\u0027)/items",
-                                  "parameters/headers": {
-                                    "Accept": "application/json;odata=nometadata",
-                                    "Content-Type": "application/json;odata=nometadata"
-                                  },
-                                  "parameters/body": "@string(setProperty(setProperty(setProperty(setProperty(setProperty(json(\u0027{}\u0027), \u0027Title\u0027, items(\u0027Apply_to_each:_Create_Tasks\u0027)?[\u0027title\u0027]), \u0027TaskDescription\u0027, items(\u0027Apply_to_each:_Create_Tasks\u0027)?[\u0027description\u0027]), \u0027Priority\u0027, items(\u0027Apply_to_each:_Create_Tasks\u0027)?[\u0027priority\u0027]), \u0027Source\u0027, \u0027Heartbeat\u0027), \u0027TaskStatus\u0027, \u0027To Do\u0027))"
+                                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                                  "table": "PowerClaw_Tasks",
+                                  "item": {
+                                    "Title": "@{items('Apply_to_each:_Create_Tasks')?['title']}",
+                                    "TaskDescription": "@{items('Apply_to_each:_Create_Tasks')?['description']}",
+                                    "Priority": "@{items('Apply_to_each:_Create_Tasks')?['priority']}",
+                                    "Source": "Heartbeat",
+                                    "TaskStatus": "To Do"
+                                  }
                                 },
-                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                                "authentication": "@parameters('$authentication')"
                               },
                               "metadata": {
                                 "operationMetadataId": "40b57936-fd4f-4572-9fc6-1285057f1208"
@@ -1032,7 +997,7 @@
                         "and": [
                           {
                             "greater": [
-                              "@length(coalesce(body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027proposedTasks\u0027], json(\u0027[]\u0027)))",
+                              "@length(coalesce(body('Parse_JSON_-_Execute_Agent')?['proposedTasks'], json('[]')))",
                               0
                             ]
                           }
@@ -1048,7 +1013,7 @@
                         "Compose:_Journal_Entry": {
                           "runAfter": {},
                           "type": "Compose",
-                          "inputs": "@{body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027journalEntry\u0027]}",
+                          "inputs": "@{body('Parse_JSON_-_Execute_Agent')?['journalEntry']}",
                           "metadata": {
                             "operationMetadataId": "11b1c20b-0397-40a2-a6b2-10161badbf9e"
                           }
@@ -1067,11 +1032,11 @@
                               "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                             },
                             "parameters": {
-                              "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
+                              "dataset": "@outputs('Compose:_Config_SiteURL')",
                               "id": "%252fShared%2bDocuments%252fmemory-journal.md",
                               "inferContentType": true
                             },
-                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                            "authentication": "@parameters('$authentication')"
                           },
                           "metadata": {
                             "operationMetadataId": "ffefa284-f3ed-4922-a644-ff84dd563354"
@@ -1091,12 +1056,12 @@
                               "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                             },
                             "parameters": {
-                              "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
+                              "dataset": "@outputs('Compose:_Config_SiteURL')",
                               "folderPath": "/Shared Documents",
                               "name": "memory-journal.md",
-                              "body": "@{if(contains(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), concat(\u0027## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027))), replace(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), concat(\u0027## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027)), concat(\u0027## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027), \u0027\n\u0027, outputs(\u0027Compose:_Journal_Entry\u0027))), replace(string(body(\u0027Get_file_content:_Journal_for_Append\u0027)), \u0027# PowerClaw Memory Journal\u0027, concat(\u0027# PowerClaw Memory Journal\n\n## \u0027, formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027), \u0027\n\u0027, outputs(\u0027Compose:_Journal_Entry\u0027))))}"
+                              "body": "@{if(contains(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'))), replace(string(body('Get_file_content:_Journal_for_Append')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd')), concat('## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))), replace(string(body('Get_file_content:_Journal_for_Append')), '# PowerClaw Memory Journal', concat('# PowerClaw Memory Journal\n\n## ', formatDateTime(utcNow(), 'yyyy-MM-dd'), '\n', outputs('Compose:_Journal_Entry'))))}"
                             },
-                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                            "authentication": "@parameters('$authentication')"
                           },
                           "metadata": {
                             "operationMetadataId": "5685e791-6bd8-46a4-9e63-67505f3252f7"
@@ -1113,7 +1078,7 @@
                           {
                             "not": {
                               "equals": [
-                                "@coalesce(body(\u0027Parse_JSON_-_Execute_Agent\u0027)?[\u0027journalEntry\u0027], \u0027\u0027)",
+                                "@coalesce(body('Parse_JSON_-_Execute_Agent')?['journalEntry'], '')",
                                 ""
                               ]
                             }
@@ -1145,25 +1110,24 @@
                         "inputs": {
                           "host": {
                             "connectionName": "shared_sharepointonline",
-                            "operationId": "HttpRequest",
+                            "operationId": "PostItem",
                             "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                           },
                           "parameters": {
-                            "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                            "parameters/method": "POST",
-                            "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Memory_Log\u0027)/items",
-                            "parameters/headers": {
-                              "Accept": "application/json;odata=nometadata",
-                              "Content-Type": "application/json;odata=nometadata"
-                            },
-                            "parameters/body": "@string(setProperty(setProperty(setProperty(json(\u0027{}\u0027), \u0027EventType\u0027, \u0027Error\u0027), \u0027Summary\u0027, \u0027Agent call failed or returned output that could not be parsed as JSON. See FullContextJSON for raw output.\u0027), \u0027FullContextJSON\u0027, coalesce(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027(empty response)\u0027)))"
+                            "dataset": "@outputs('Compose:_Config_SiteURL')",
+                            "table": "PowerClaw_Memory_Log",
+                            "item": {
+                              "Title": "Error",
+                              "Summary": "Agent call failed or returned output that could not be parsed as JSON. See FullContextJSON for raw output.",
+                              "FullContextJSON": "@{coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '(empty response)')}"
+                            }
                           },
-                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                          "authentication": "@parameters('$authentication')"
                         }
                       }
                     }
                   },
-                  "expression": "@and(equals(empty(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027]), false), contains(coalesce(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027\u0027), \u0027{\u0027), contains(coalesce(outputs(\u0027Execute_Agent_and_wait\u0027)?[\u0027body/lastResponse\u0027], \u0027\u0027), \u0027}\u0027))",
+                  "expression": "@and(equals(empty(outputs('Execute_Agent_and_wait')?['body/lastResponse']), false), contains(coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], ''), '{'), contains(coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], ''), '}'))",
                   "metadata": {
                     "operationMetadataId": "3d04deae-6cb0-4165-8b07-48a9f9225eed"
                   },
@@ -1184,7 +1148,7 @@
                   "Succeeded"
                 ]
               },
-              "expression": "@or(equals(variables(\u0027AgentSuccess\u0027),true),greaterOrEquals(variables(\u0027RetryCount\u0027),3))",
+              "expression": "@or(equals(variables('AgentSuccess'),true),greaterOrEquals(variables('RetryCount'),3))",
               "limit": {
                 "count": 3,
                 "timeout": "PT30M"
@@ -1207,20 +1171,16 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Memory_Log\u0027)/items?$orderby=Created desc\u0026$top=25",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Memory_Log",
+                  "$orderby": "Created desc",
+                  "$top": 25
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Select:_Summary": {
@@ -1234,8 +1194,8 @@
               },
               "type": "Select",
               "inputs": {
-                "from": "@outputs(\u0027Get_items:_Check_memory_log\u0027)?[\u0027body/value\u0027]",
-                "select": "@item()?[\u0027Summary\u0027]"
+                "from": "@outputs('Get_items:_Check_memory_log')?['body/value']",
+                "select": "@item()?['Summary']"
               }
             },
             "Get_items:_PowerClaw_Memory": {
@@ -1251,20 +1211,17 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw Memory\u0027)/items?$filter=Status ne \u0027Expired\u0027 and Status ne \u0027Superseded\u0027\u0026$orderby=Importance desc, LastConfirmedAt desc\u0026$top=15",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Memory",
+                  "$filter": "Status ne 'Expired' and Status ne 'Superseded'",
+                  "$orderby": "Importance desc, LastConfirmedAt desc",
+                  "$top": 15
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Get_file_content:_memory-journal.md": {
@@ -1285,11 +1242,11 @@
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "id": "%252fShared%2bDocuments%252fmemory-journal.md",
                   "inferContentType": true
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Select:_Memory_Facts": {
@@ -1303,11 +1260,11 @@
               },
               "type": "Select",
               "inputs": {
-                "from": "@outputs(\u0027Get_items:_PowerClaw_Memory\u0027)?[\u0027body/value\u0027]",
+                "from": "@outputs('Get_items:_PowerClaw_Memory')?['body/value']",
                 "select": {
-                  "fact": "[\u0022@{item()?[\u0027MemoryType\u0027]}\u0022] @{item()?[\u0027ScopeKey\u0027]}: @{item()?[\u0027CanonicalFact\u0027]}",
-                  "confidence": "@{item()?[\u0027Confidence\u0027]}",
-                  "importance": "@{item()?[\u0027Importance\u0027]}"
+                  "fact": "[\"@{item()?['MemoryType']}\"] @{item()?['ScopeKey']}: @{item()?['CanonicalFact']}",
+                  "confidence": "@{item()?['Confidence']}",
+                  "importance": "@{item()?['Importance']}"
                 }
               }
             },
@@ -1324,20 +1281,17 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw Tasks\u0027)/items?$filter=TaskStatus ne \u0027Done\u0027\u0026$orderby=Priority asc, Created asc\u0026$top=10",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Tasks",
+                  "$filter": "TaskStatus ne 'Done'",
+                  "$orderby": "Priority asc, Created asc",
+                  "$top": 10
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Select:_Task_Summary": {
@@ -1351,12 +1305,12 @@
               },
               "type": "Select",
               "inputs": {
-                "from": "@outputs(\u0027Get_items:_PowerClaw_Tasks\u0027)?[\u0027body/value\u0027]",
+                "from": "@outputs('Get_items:_PowerClaw_Tasks')?['body/value']",
                 "select": {
-                  "id": "@{item()?[\u0027ID\u0027]}",
-                  "summary": "Task #@{item()?[\u0027ID\u0027]}: @{item()?[\u0027Title\u0027]} | Status: @{item()?[\u0027TaskStatus/Value\u0027]} | Priority: @{item()?[\u0027Priority/Value\u0027]}",
-                  "due": "@{item()?[\u0027DueDate\u0027]}",
-                  "description": "@{item()?[\u0027TaskDescription\u0027]}"
+                  "id": "@{item()?['ID']}",
+                  "summary": "Task #@{item()?['ID']}: @{item()?['Title']} | Status: @{item()?['TaskStatus/Value']} | Priority: @{item()?['Priority/Value']}",
+                  "due": "@{item()?['DueDate']}",
+                  "description": "@{item()?['TaskDescription']}"
                 }
               }
             }
@@ -1382,20 +1336,15 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "GetItems",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "GET",
-                  "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Config\u0027)/items?$filter=SettingName eq \u0027IsRunning\u0027",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata"
-                  },
-                  "parameters/body": "{}"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Config",
+                  "$filter": "SettingName eq 'IsRunning'"
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Update_item": {
@@ -1411,22 +1360,19 @@
               "inputs": {
                 "host": {
                   "connectionName": "shared_sharepointonline",
-                  "operationId": "HttpRequest",
+                  "operationId": "PatchItem",
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                 },
                 "parameters": {
-                  "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                  "parameters/method": "POST",
-                  "parameters/uri": "@concat(\u0027_api/web/lists/getByTitle(\u0027\u0027PowerClaw_Config\u0027\u0027)/items(\u0027, first(outputs(\u0027Get_items_-_Release_Lock\u0027)?[\u0027body/value\u0027])?[\u0027ID\u0027], \u0027)\u0027)",
-                  "parameters/headers": {
-                    "Accept": "application/json;odata=nometadata",
-                    "Content-Type": "application/json;odata=nometadata",
-                    "IF-MATCH": "*",
-                    "X-HTTP-Method": "MERGE"
-                  },
-                  "parameters/body": "@string(setProperty(json(\u0027{}\u0027), \u0027SettingValue\u0027, \u0027false\u0027))"
+                  "dataset": "@outputs('Compose:_Config_SiteURL')",
+                  "table": "PowerClaw_Config",
+                  "id": "@{first(outputs('Get_items_-_Release_Lock')?['body/value'])?['ID']}",
+                  "item": {
+                    "SettingValue": "false",
+                    "Title": "IsRunning"
+                  }
                 },
-                "authentication": "@parameters(\u0027$authentication\u0027)"
+                "authentication": "@parameters('$authentication')"
               }
             },
             "Condition_-_Error_Logging": {
@@ -1440,20 +1386,19 @@
                   "inputs": {
                     "host": {
                       "connectionName": "shared_sharepointonline",
-                      "operationId": "HttpRequest",
+                      "operationId": "PostItem",
                       "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
                     },
                     "parameters": {
-                      "dataset": "@outputs(\u0027Compose:_Config_SiteURL\u0027)",
-                      "parameters/method": "POST",
-                      "parameters/uri": "_api/web/lists/getByTitle(\u0027PowerClaw_Memory_Log\u0027)/items",
-                      "parameters/headers": {
-                        "Accept": "application/json;odata=nometadata",
-                        "Content-Type": "application/json;odata=nometadata"
-                      },
-                      "parameters/body": "@string(setProperty(setProperty(setProperty(json(\u0027{}\u0027), \u0027EventType\u0027, \u0027Error\u0027), \u0027Summary\u0027, \u0027\u0022Heartbeat execution failed or timed out.\u0022\u0027), \u0027FullContextJSON\u0027, string(result(\u0027Scope:_Execution\u0027))))"
+                      "dataset": "@outputs('Compose:_Config_SiteURL')",
+                      "table": "PowerClaw_Memory_Log",
+                      "item": {
+                        "Title": "Error",
+                        "Summary": "\"Heartbeat execution failed or timed out.\"",
+                        "FullContextJSON": "@{string(result('Scope:_Execution'))}"
+                      }
                     },
-                    "authentication": "@parameters(\u0027$authentication\u0027)"
+                    "authentication": "@parameters('$authentication')"
                   }
                 }
               },
@@ -1467,7 +1412,7 @@
                   {
                     "not": {
                       "equals": [
-                        "@actions(\u0027Scope:_Execution\u0027)?[\u0027status\u0027]",
+                        "@actions('Scope:_Execution')?['status']",
                         "Succeeded"
                       ]
                     }

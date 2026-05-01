@@ -64,7 +64,7 @@ Use this skill when you need context fast, especially:
 - **WorkIQ Calendar MCP** is available
 - **WorkIQ User MCP** is available
 - **WorkIQ Copilot MCP** is available for broader org or topic context when useful
-- **Microsoft SharePoint Lists MCP** is connected to the PowerClaw memory list and task board
+- **WorkIQ SharePoint MCP** is connected to the PowerClaw_Memory list and task board
 - A **Prompt** tool is configured in Copilot Studio
 - PowerClaw’s SharePoint brain includes the standard constitution files and a usable `user.md`
 
@@ -86,7 +86,7 @@ Use this skill when you need context fast, especially:
    - **WorkIQ Calendar MCP**
    - **WorkIQ User MCP**
    - **WorkIQ Copilot MCP**
-   - **Microsoft SharePoint Lists MCP**
+   - **WorkIQ SharePoint MCP**
 10. In the agent’s instructions or orchestration guidance, add language such as:
     - “When the user asks to brief them on a person, account, stakeholder, or project, use the **Stakeholder Brief** prompt.”
 11. Publish the agent and test with “Brief me on Sarah before our 1:1.”
@@ -131,8 +131,8 @@ You may use:
 - WorkIQ Calendar MCP
 - WorkIQ User MCP
 - WorkIQ Copilot MCP
-- SharePoint Lists / PowerClaw Tasks list
-- PowerClaw memory list
+- SharePoint Lists / PowerClaw_Tasks list
+- PowerClaw_Memory list
 
 Research workflow:
 1. Resolve the entity type.

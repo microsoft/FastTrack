@@ -99,7 +99,10 @@ PowerClaw is inspired by [**OpenClaw**](https://github.com/openclaw/openclaw), t
 PowerClaw is designed to be up and running in about 30 minutes. The setup is three steps:
 
 1. **Import** the Copilot Studio solution into your environment
-2. **Provision** your SharePoint workspace by running the included Bootstrap Flow
+2. **Provision** your SharePoint workspace using one of three paths:
+   - **Bootstrap Flow** *(recommended)* — run after importing the solution
+   - **PowerShell Script** *(backup)* — for DLP-restricted environments; requires app registration + admin consent
+   - **Manual Setup** *(universal fallback)* — browser-only, zero dependencies
 3. **Personalize** by editing `user.md` with your name, role, and preferences
 
 That's it. The heartbeat starts automatically.
@@ -241,7 +244,7 @@ PowerClaw uses **Claude Sonnet 4.6** via Copilot Studio's model selection. You c
 **How to change it (per-agent, recommended):**
 Copilot Studio → open the PowerClaw agent → **Settings** → **Security** → **Conversation transcript retention** → set to **14 days** (or whatever your compliance policy allows).
 
-This only affects how long Copilot Studio keeps the transcript records — it does **not** affect PowerClaw's own long-term memory (stored in the SharePoint **PowerClaw Memory** list) or the **PowerClaw_Memory_Log** list, which have their own 30-day lifecycle managed by the Housekeeping flow.
+This only affects how long Copilot Studio keeps the transcript records — it does **not** affect PowerClaw's own long-term memory (stored in the SharePoint **PowerClaw_Memory** list) or the **PowerClaw_Memory_Log** list, which have their own 30-day lifecycle managed by the Housekeeping flow.
 
 > 💡 If you also want tenant-wide control, an admin can set a tenant-level retention floor in the [Power Platform admin center](https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-data-retention).
 
@@ -262,7 +265,7 @@ If your credit pack is exhausted, the agent stops responding to both heartbeat a
 
 | Version | Date | Changes |
 |---|---|---|
-| **1.1.1** | April 2026 | Fix: email visual regression — re-added Outlook-safe HTML email formatting rules to agent instructions and `tools.md` seed; enforces full-width div layout (no 680px table caps) and dark-mode-friendly palette (`#1a1a1a`/`#252525`); bans GitHub-dark colors that break Outlook dark mode |
+| **1.2.0** | April 2026 | DLP compliance: replaced all SharePoint HttpRequest actions with standard connector actions (GetItems/PostItem/PatchItem/DeleteItem) in HeartbeatFlow and Housekeeping; standardized list names to underscores (PowerClaw_Memory, PowerClaw_Tasks); trimmed config from 14 to 4 active settings; added manual browser-only setup guide; Bootstrap flow trimmed to 4 config items |
 | **1.1.0** | April 2026 | Simplified agent instructions (14K→4K chars) to fit 8K portal limit; moved detailed task/email/memory rules to constitution .md files; HeartbeatFlow: 200K journal cap to prevent AsyncResponsePayloadTooLarge, memory upsert for proposedMemories, proposedTasks for agent-initiated task creation, conditional journalEntry, string() guards; generic ConversationStart greeting (agent identity now fully driven by soul.md); variables recreated in cloud-canonical flat format |
 | **1.0.2** | April 2026 | Fix: solution portability — added 4 global variable component declarations (AgentsText / SoulText / ToolsText / UserText) to the packaged solution so fresh customer imports no longer fail to publish with `IdentifierNotRecognized` on `Global.SoulText` / `Global.UserText` / `Global.AgentsText` / `Global.ToolsText`; corrected GlobalVariableComponent YAML shape for current schema |
 | **1.0.1** | March 2026 | Fix: Reliable context loading in M365 Copilot & Teams (JIT OnActivity init replaces OnConversationStart), improved soul.md personality template, removed canned Greeting topic |

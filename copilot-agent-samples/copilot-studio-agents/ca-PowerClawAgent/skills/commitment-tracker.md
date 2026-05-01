@@ -8,7 +8,7 @@
 |---|---|
 | **Best for** | Managers, execs, PMs, anyone who makes promises in meetings |
 | **Complexity** | Medium |
-| **Requires** | WorkIQ Calendar + Mail MCPs, Microsoft SharePoint Lists MCP, one prompt tool; optional Outlook Send Email and Teams Post Message actions |
+| **Requires** | WorkIQ Calendar + Mail MCPs, WorkIQ SharePoint MCP, one prompt tool; optional Outlook Send Email and Teams Post Message actions |
 | **Outputs** | Task board entries, memory entries, reminder emails, commitment reviews |
 | **Works in** | Both |
 
@@ -20,8 +20,8 @@ It runs a four-part loop:
 
 1. **Extract** — Search meetings, email, and recent interactions for promises, deadlines, action items, and follow-ups the user appears to own
 2. **Track** — Create or update:
-   - a **PowerClaw Tasks** item for visible management on the SharePoint board
-   - a **PowerClaw Memory** entry with **MemoryType = Commitment**, a durable **ScopeKey**, and **ExpiresAt** set to the commitment deadline when known
+   - a **PowerClaw_Tasks** item for visible management on the SharePoint board
+   - a **PowerClaw_Memory** entry with **MemoryType = Commitment**, a durable **ScopeKey**, and **ExpiresAt** set to the commitment deadline when known
 3. **Chase** — On heartbeat, PowerClaw notices commitments that are due soon or overdue, then nudges the user and updates task notes
 4. **Review** — Give the user a synthesized “open commitments” view across memory and tasks
 
@@ -68,9 +68,9 @@ The result is not just recall. It is autonomous follow-through.
 - PowerClaw is already deployed and the baseline heartbeat is healthy
 - **WorkIQ Calendar MCP** is enabled
 - **WorkIQ Mail MCP** is enabled
-- **Microsoft SharePoint Lists MCP** is enabled for:
-  - **PowerClaw Tasks**
-  - **PowerClaw Memory**
+- **WorkIQ SharePoint MCP** is enabled for:
+  - **PowerClaw_Tasks**
+  - **PowerClaw_Memory**
 - A **Prompt** tool is configured
 - Optional but valuable:
   - **WorkIQ Teams MCP** for recent conversation context
@@ -82,8 +82,8 @@ The result is not just recall. It is autonomous follow-through.
 ### Step 1 — Confirm the PowerClaw foundation
 
 1. Open **PowerClaw** in SharePoint and confirm the standard lists exist:
-   - **PowerClaw Tasks**
-   - **PowerClaw Memory**
+   - **PowerClaw_Tasks**
+   - **PowerClaw_Memory**
 2. Confirm the task board uses the standard columns:
    - **Title**
    - **TaskStatus**
@@ -122,7 +122,7 @@ In the same agent, confirm these are enabled:
 
 - **WorkIQ Calendar MCP**
 - **WorkIQ Mail MCP**
-- **Microsoft SharePoint Lists MCP**
+- **WorkIQ SharePoint MCP**
 - Optional: **WorkIQ Teams MCP**
 - Optional: **Office 365 Outlook - Send email (V2)**
 - Optional: **Microsoft Teams - Post message**
@@ -145,8 +145,8 @@ In the agent instructions or the relevant orchestrated topic, add guidance such 
    - “Check if anything is overdue”
 4. Confirm:
    - commitments are summarized clearly
-   - task items are created or updated in **PowerClaw Tasks**
-   - memory items are created or updated in **PowerClaw Memory**
+   - task items are created or updated in **PowerClaw_Tasks**
+   - memory items are created or updated in **PowerClaw_Memory**
    - reminders are drafted appropriately when deadlines are near
 
 ## Prompt Tool
@@ -171,9 +171,9 @@ Available operating context:
 - WorkIQ Calendar MCP for meetings, attendees, organizers, timing, and context
 - WorkIQ Mail MCP for message threads, requests, promises, deadlines, and follow-ups
 - Optional WorkIQ Teams MCP for recent conversation context
-- Microsoft SharePoint Lists MCP for:
-  - PowerClaw Tasks list
-  - PowerClaw Memory list
+- WorkIQ SharePoint MCP for:
+  - PowerClaw_Tasks list
+  - PowerClaw_Memory list
 
 PowerClaw memory schema:
 - MemoryType values may include: Preference, Person, Project, Pattern, Commitment, Insight
@@ -232,17 +232,17 @@ EXTRACT mode instructions:
    - status
    - source (meeting / email / chat)
    - source detail (meeting title, email thread, or chat context)
-4. Cross-check the PowerClaw Memory list for an existing MemoryType = Commitment entry
-5. Cross-check the PowerClaw Tasks list for an existing open task representing the same commitment
+4. Cross-check the PowerClaw_Memory list for an existing MemoryType = Commitment entry
+5. Cross-check the PowerClaw_Tasks list for an existing open task representing the same commitment
 6. For any commitment not already tracked, recommend creating or updating:
-   - a PowerClaw Memory entry with:
+   - a PowerClaw_Memory entry with:
      - MemoryType = Commitment
      - ScopeKey = commitment:[normalized-short-description]
      - CanonicalFact = normalized commitment statement
      - Confidence = High / Medium / Low based on evidence strength
      - Importance = High / Medium / Low based on impact and visibility
      - ExpiresAt = deadline if known
-   - a PowerClaw Tasks entry with:
+   - a PowerClaw_Tasks entry with:
      - Title = short action-oriented commitment title
      - TaskStatus = To Do
      - TaskDescription = fuller commitment detail plus source context
@@ -253,9 +253,9 @@ EXTRACT mode instructions:
 7. Suggest task creation for any newly discovered untracked commitments
 
 REVIEW mode instructions:
-1. Query PowerClaw Memory for active MemoryType = Commitment items
+1. Query PowerClaw_Memory for active MemoryType = Commitment items
 2. Ignore expired or completed items if the task board clearly shows they are Done
-3. Cross-reference PowerClaw Tasks to determine current state:
+3. Cross-reference PowerClaw_Tasks to determine current state:
    - open and on track
    - due soon
    - overdue
@@ -277,7 +277,7 @@ CHASE mode instructions:
    - flag for Human Review if the wording is sensitive
 4. If the commitment involves another person, draft a short, professional follow-up email for the user to review
 5. For reminder email subject lines, prefer:
-   - 🦾 PowerClaw: Commitment Check — [item]
+   - 🦞 PowerClaw: Commitment Check — [item]
 6. Keep reminder tone gentle, clear, and non-accusatory
 
 Output format:
@@ -318,7 +318,7 @@ This skill fits PowerClaw's existing operating model naturally.
 
 - PowerClaw already scans memory and tasks during its normal heartbeat cycle
 - Commitments saved with **MemoryType = Commitment** and **ExpiresAt** naturally become reviewable during that scan
-- Matching task cards in **PowerClaw Tasks** give the agent a visible execution surface for reminders, status notes, and human-review routing
+- Matching task cards in **PowerClaw_Tasks** give the agent a visible execution surface for reminders, status notes, and human-review routing
 - If a commitment is near deadline or overdue, PowerClaw can include it in the heartbeat reasoning and generate reminder actions or follow-up drafts
 - No extra architectural changes are required; this builds on the memory, task board, and heartbeat infrastructure that PowerClaw already has
 
@@ -349,7 +349,7 @@ In practice, this means a user can ask once, “Track my commitments,” and Pow
 - **Tracking:** In memory only
 - **Recommended next action:** Create visible task card
 
-**PowerClaw:** I can add the untracked commitments to PowerClaw Tasks and store them in memory for heartbeat follow-up.
+**PowerClaw:** I can add the untracked commitments to PowerClaw_Tasks and store them in memory for heartbeat follow-up.
 
 ### 2) Review — “Show me all open commitments”
 
@@ -380,7 +380,7 @@ In practice, this means a user can ask once, “Track my commitments,” and Pow
 
 **Reminder draft**
 
-**Subject:** 🦾 PowerClaw: Commitment Check — Share launch-readiness notes with product leads
+**Subject:** 🦞 PowerClaw: Commitment Check — Share launch-readiness notes with product leads
 
 Hi,
 

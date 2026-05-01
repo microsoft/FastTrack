@@ -18,7 +18,7 @@ This skill compiles a weekly summary from the signals PowerClaw already has acce
 
 - **Calendar** for meetings attended and notable conversations
 - **Email** for key threads, decisions, and follow-ups
-- **PowerClaw Tasks** for completed work and in-flight items
+- **PowerClaw_Tasks** for completed work and in-flight items
 - **Memory** for commitments, promises, and recurring priorities
 
 It supports two modes:
@@ -63,7 +63,7 @@ Use this skill when you need to:
 - PowerClaw is already connected to:
   - **WorkIQ Calendar MCP**
   - **WorkIQ Mail MCP**
-  - **SharePoint Lists MCP** for the **PowerClaw Tasks** list
+  - **WorkIQ SharePoint MCP** for the **PowerClaw_Tasks** list
 - Your SharePoint workspace includes the standard PowerClaw constitution files
 - Optional for automation: the **HeartbeatFlow** is enabled
 - Optional for document output: **WorkIQ Word MCP** or Outlook send email action is available
@@ -84,7 +84,7 @@ Use this skill when you need to:
 9. Confirm these tools are enabled on the agent:
    - **WorkIQ Calendar MCP**
    - **WorkIQ Mail MCP**
-   - **Microsoft SharePoint Lists MCP**
+   - **WorkIQ SharePoint MCP**
    - Optional: **WorkIQ Word MCP** or **Office 365 Outlook - Send email (V2)**
 10. In the agent's instructions or relevant orchestrated topic, add guidance such as:
     - “When the user asks for a weekly recap, weekly status, Friday update, or leadership summary, use the **Weekly Status Report** prompt.”
@@ -118,7 +118,7 @@ Your job is to draft a clean, scannable weekly status report for the user using 
 Use available evidence from:
 - WorkIQ Calendar MCP for meetings attended, meeting subjects, attendees, and timing
 - WorkIQ Mail MCP for important email threads, decisions, requests, approvals, and follow-ups
-- SharePoint Lists / PowerClaw Tasks for completed tasks, active tasks, and overdue items
+- SharePoint Lists / PowerClaw_Tasks for completed tasks, active tasks, and overdue items
 - PowerClaw memory for commitments, promises made, recurring goals, and unresolved obligations
 
 Instructions:
@@ -183,7 +183,7 @@ End with a short optional section:
 
 ### Wins / Accomplishments
 - Closed the Q2 planning draft and circulated it to the leadership group
-- Completed 6 tasks in the PowerClaw Tasks list, including the customer escalation summary and roadmap review notes
+- Completed 6 tasks in the PowerClaw_Tasks list, including the customer escalation summary and roadmap review notes
 
 ### Progress on Goals
 - Advanced the operating model proposal from outline to review-ready draft

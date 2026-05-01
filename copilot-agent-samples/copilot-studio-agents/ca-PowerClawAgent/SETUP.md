@@ -30,7 +30,7 @@
 | **Copilot Studio** | Credit pack or pay-as-you-go — [see pricing](https://aka.ms/copilotstudio/licensingguide) |
 | **Power Automate** | Premium plan — required because HeartbeatFlow uses the Copilot Studio connector |
 | **Permissions** | Ability to create a SharePoint site |
-| **PnP PowerShell** | *Optional* — only needed if using the script-based setup path |
+| **PnP PowerShell** | *Optional* — only needed for the backup script path, which also requires an app registration + admin consent |
 
 </details>
 
@@ -98,9 +98,13 @@ After importing the solution and setting up connections, configure the flows to 
 
 ## Step 5: Provision the Workspace
 
-Choose one method to create the SharePoint lists and constitution files.
+Choose **one** provisioning path to create the SharePoint lists and constitution files. All three paths target the same workspace shape:
 
-### Option A: Bootstrap Flow *(Recommended)*
+1. **Bootstrap Flow** *(recommended)* — run after importing the solution
+2. **PowerShell Script** *(backup)* — for DLP-restricted environments; requires app registration + admin consent
+3. **Manual Setup** *(universal fallback)* — browser-only, zero dependencies
+
+### Option A: Bootstrap Flow *(Recommended — run after solution import)*
 
 The solution includes a helper flow that provisions everything — no scripts required.
 
@@ -115,9 +119,9 @@ The solution includes a helper flow that provisions everything — no scripts re
 > 💡 **Tip:** The Bootstrap flow is separate from the Compose-based flow configuration in Step 4. It uses its own run inputs — **SiteUrl**, **AdminEmail**, and **AgentName** — which you enter when running the flow. **AgentName** defaults to "PowerClaw" if left blank.
 
 <details>
-<summary><strong>Option B: PowerShell (Advanced)</strong></summary>
+<summary><strong>Option B: PowerShell Script (Backup — DLP-restricted environments)</strong></summary>
 
-For admins who prefer scripting or need to customize the setup.
+Use this when the Bootstrap flow is blocked but you can obtain app registration + admin consent for delegated SharePoint access.
 
 **1. Register a PnP PowerShell app** (one-time per tenant):
 
@@ -129,7 +133,7 @@ Register-PnPEntraIDAppForInteractiveLogin `
   -SharePointDelegatePermissions AllSites.Manage
 ```
 
-This requests **only** the permission needed. Save the **Client ID** it outputs.
+This requests **only** the permission needed. The consent screen will show **"read and write items and lists in all site collections"** (`AllSites.Manage`) — that is expected and acceptable for this setup. Save the **Client ID** it outputs.
 
 **2. Run the provisioning script:**
 
@@ -144,18 +148,30 @@ This requests **only** the permission needed. Save the **Client ID** it outputs.
 </details>
 
 <details>
+<summary><strong>Option C: Manual Setup (Universal fallback)</strong></summary>
+
+Use this when you want a browser-only path with zero script dependencies.
+
+- Follow [`docs/MANUAL-SETUP.md`](docs/MANUAL-SETUP.md)
+- Estimated time: **~15 minutes**
+- Works anywhere you can create SharePoint lists and upload files
+
+</details>
+
+<details>
 <summary><strong>What gets created</strong></summary>
 
 Regardless of method, the following resources are provisioned:
 
 - ✅ **PowerClaw_Memory_Log** list — audit trail for all agent activity
-- ✅ **PowerClaw_Config** list — configuration flags (KillSwitch, rate limits, quiet hours)
-- ✅ **PowerClaw Memory** list — long-term knowledge store (preferences, people, projects)
-- ✅ **PowerClaw Tasks** list — task workflow: `To Do → Human Review → Done`
+- ✅ **PowerClaw_Config** list — heartbeat safeguards and admin contact settings
+  - Seeded items: `KillSwitch = false`, `IsRunning = false`, `MaxActionsPerHour = 20`, `AdminEmail = <your email>`
+- ✅ **PowerClaw_Memory** list — long-term knowledge store (preferences, people, projects)
+- ✅ **PowerClaw_Tasks** list — task workflow: `To Do → Human Review → Done`
 - ✅ **Constitution files** uploaded to Shared Documents:
   - `soul.md` — Agent personality and core values
   - `user.md` — Your role, team, and preferences
-  - `agents.md` — Operating rules (calendar, email triage, task management, digest schedule)
+  - `agents.md` — Operating rules (calendar, email triage, task management, notifications)
   - `tools.md` — Available capabilities reference
   - `memory-journal.md` — Rolling narrative journal
 
@@ -187,11 +203,11 @@ Open the agent in [**Copilot Studio**](https://copilotstudio.microsoft.com) and 
 | WorkIQ User MCP | MCP |
 | WorkIQ Word MCP | MCP |
 | WorkIQ Copilot MCP | MCP |
-| Microsoft SharePoint Lists MCP | MCP |
+| WorkIQ SharePoint MCP | MCP |
 | Office 365 Outlook - Send email (V2) | Connector |
 | Microsoft Teams - Post message | Connector |
 
-> 💡 No extra task connectors needed — PowerClaw manages tasks directly via the SharePoint Lists MCP.
+> 💡 No extra task connectors needed — PowerClaw manages tasks directly via the WorkIQ SharePoint MCP.
 
 ---
 
@@ -216,11 +232,11 @@ Run through these checks to confirm everything is connected:
 
 | Test | What to do | Expected result |
 |---|---|---|
-| **Config check** | Open the PowerClaw_Config list | `KillSwitch = false`, `IsRunning = false` |
+| **Config check** | Open the PowerClaw_Config list | `KillSwitch = false`, `IsRunning = false`, `MaxActionsPerHour = 20`, `AdminEmail = <your email>` |
 | **Interactive chat** | Say *"Hi, what can you do?"* in Teams | Natural language response (not JSON) |
 | **Briefing** | Say *"brief me"* in Teams | Calendar + tasks + email summary |
-| **Task execution** | Add an item with `TaskStatus = To Do` to the PowerClaw Tasks list, then trigger the Heartbeat Flow | "Starting" email → task moves to "Human Review" |
-| **Heartbeat** | Trigger the Heartbeat Flow manually | New entries in Memory_Log, PowerClaw Memory, and memory-journal.md |
+| **Task execution** | Add an item with `TaskStatus = To Do` to the PowerClaw_Tasks list, then trigger the Heartbeat Flow | "Starting" email → task moves to "Human Review" |
+| **Heartbeat** | Trigger the Heartbeat Flow manually | New entries in Memory_Log, PowerClaw_Memory, and memory-journal.md |
 
 After verification, the heartbeat runs automatically every 30 minutes.
 
@@ -236,20 +252,17 @@ After verification, the heartbeat runs automatically every 30 minutes.
 | Setting | Default | Purpose |
 |---|---|---|
 | **KillSwitch** | `false` | Emergency stop for all autonomous activity |
-| **MaxActionsPerHour** | `10` | Rate limit safety valve |
-| **HeartbeatIntervalMinutes** | `30` | Frequency of the flow trigger |
-| **DigestTimeUTC** | `08:00` | When to send the daily digest |
-| **QuietHoursStart** | `22:00` | Start of quiet hours (UTC) |
-| **QuietHoursEnd** | `07:00` | End of quiet hours (UTC) |
-| **MemoryMaxActiveItems** | `100` | Cap on active long-term memories loaded |
+| **IsRunning** | `false` | Runtime coordination flag used by the heartbeat |
+| **MaxActionsPerHour** | `20` | Rate limit safety valve |
+| **AdminEmail** | `you@example.com` | Admin contact for alerts and setup ownership |
 
 ### Common Customizations
 
 - **Heartbeat frequency** — Edit the Power Automate recurrence trigger
 - **Operating rules** — Edit `agents.md` to add/change behaviors (no code needed)
 - **Kill switch** — Set `KillSwitch = true` in PowerClaw_Config to pause all autonomous activity
-- **Agent name** — Change `AgentName` in PowerClaw_Config and update `soul.md`
-- **Long-term memory** — Review the PowerClaw Memory list to see what the agent has learned; edit or delete entries to correct its knowledge
+- **Agent name** — Update `soul.md` (or rerun Bootstrap / setup with `AgentName`)
+- **Long-term memory** — Review the PowerClaw_Memory list to see what the agent has learned; edit or delete entries to correct its knowledge
 
 ### Calendar-Driven Routines 📅
 
@@ -281,9 +294,9 @@ PowerClaw can execute recurring tasks based on your calendar. Add a calendar eve
 </details>
 
 <details>
-<summary><strong>📋 PowerClaw Tasks — How the Board Works</strong></summary>
+<summary><strong>📋 PowerClaw_Tasks — How the Board Works</strong></summary>
 
-PowerClaw uses a SharePoint list called **PowerClaw Tasks** as its task board. The setup process creates this automatically.
+PowerClaw uses a SharePoint list called **PowerClaw_Tasks** as its task board. The setup process creates this automatically.
 
 **Columns:** Title · TaskStatus · TaskDescription · Priority · Source · DueDate · Notes · LastActionDate · CompletedDate
 
@@ -304,7 +317,7 @@ PowerClaw uses a SharePoint list called **PowerClaw Tasks** as its task board. T
 
 ### Create a Kanban Board View
 
-1. Open the **PowerClaw Tasks** list → click the view dropdown → **Create new view**
+1. Open the **PowerClaw_Tasks** list → click the view dropdown → **Create new view**
 2. Choose **Board** as the view type, name it **"Board"**
 3. Set **Group by** → **TaskStatus**
 4. *(Optional)* Show **Priority** and **DueDate** on cards via card settings
@@ -355,8 +368,8 @@ from SharePoint and injects them directly into the prompt.
 ### Knowledge Sources
 - SharePoint workspace site (operational brain)
 - Constitution files: `soul.md`, `user.md`, `agents.md`, `tools.md`
-- Memory Log list, PowerClaw Memory list, `memory-journal.md`
-- Open tasks from the PowerClaw Tasks list
+- Memory Log list, PowerClaw_Memory list, `memory-journal.md`
+- Open tasks from the PowerClaw_Tasks list
 - Calendar, email, and user context loaded by the HeartbeatFlow
 
 </details>
@@ -390,10 +403,10 @@ Your SharePoint data (config settings, memories, tasks, constitution files) is f
 | **Flow fails / No response** | Check **Connections** in Power Automate — they may need re-authentication. |
 | **Lock stuck** | If `IsRunning` is `true` for 35+ minutes, stale lock recovery auto-fixes on next heartbeat. Or manually set to `false`. |
 | **Agent returns JSON in chat** | The message must NOT start with `[HEARTBEAT EVENT TRIGGERED]` for interactive mode. |
-| **Duplicate task emails** | Check PowerClaw Memory for entries with scopeKey starting with `task:`. Delete stale entries. |
+| **Duplicate task emails** | Check PowerClaw_Memory for entries with scopeKey starting with `task:`. Delete stale entries. |
 | **Rate limit triggered** | Check `MaxActionsPerHour` in PowerClaw_Config. Reset `KillSwitch` to `false` after reviewing. |
 | **Permissions errors** | Ensure the flow account has Edit access to the SharePoint site and all connections are authorized. |
-| **Memory not saving** | Verify the PowerClaw Memory list exists. Check the list GUID in HeartbeatFlow. Ensure `memory-journal.md` exists in Shared Documents. |
+| **Memory not saving** | Verify the PowerClaw_Memory list exists. Check the list GUID in HeartbeatFlow. Ensure `memory-journal.md` exists in Shared Documents. |
 
 </details>
 
@@ -409,7 +422,7 @@ Your SharePoint data (config settings, memories, tasks, constitution files) is f
 PowerClaw uses three tiers of memory:
 
 1. **PowerClaw_Memory_Log (Short-Term)** — Audit trail of recent actions (last 25 entries)
-2. **PowerClaw Memory (Semantic)** — Specific facts about preferences, people, and projects
+2. **PowerClaw_Memory (Semantic)** — Specific facts about preferences, people, and projects
 3. **Memory Journal (Episodic)** — Rolling narrative of observations and insights
 
 ### Execution Priority (Each Heartbeat)
@@ -430,18 +443,18 @@ graph TD
     RateLimit -->|Over limit| Alert[📧 Alert Admin & Kill]
     RateLimit -->|OK| Context[📄 Load Constitution<br/>soul.md / user.md / agents.md / tools.md]
     Context --> Memory[📝 Load Recent Memory]
-    Context --> LTM[🧠 Load Long-Term Memory<br/>PowerClaw Memory list + journal]
+    Context --> LTM[🧠 Load Long-Term Memory<br/>PowerClaw_Memory list + journal]
     Memory --> Agent[🤖 PowerClaw Agent<br/>Claude Sonnet 4.6]
     LTM --> Agent
 
     Agent -->|Read| Calendar[📅 Calendar MCP]
     Agent -->|Read| Mail[📧 Mail MCP]
-    Agent -->|Read/Write| Tasks[📋 PowerClaw Tasks List]
+    Agent -->|Read/Write| Tasks[📋 PowerClaw_Tasks List]
     Agent -->|Send| Teams[💬 Teams Connector]
     Agent -->|Search| Copilot[🔍 Copilot MCP]
 
     Agent -->|Log| MemLog[📝 PowerClaw_Memory_Log]
-    Agent -->|Learn| LTMStore[🧠 PowerClaw Memory]
+    Agent -->|Learn| LTMStore[🧠 PowerClaw_Memory]
     Agent -->|Journal| Journal[📓 memory-journal.md]
 
     User[👤 User in Teams] -.->|Interactive Chat| Agent
@@ -456,9 +469,8 @@ graph TD
 | File | Purpose |
 |---|---|
 | `PowerClaw_Solution.zip` | Unmanaged solution (Agent + Flows including Bootstrap) |
-| `scripts/build-bootstrap-flow.py` | Bootstrap flow definition generator |
-| `scripts/deploy-to-prod.ps1` | Deployment script (export → inject URLs → import → optional zip rebuild) |
-| `scripts/Setup-PowerClaw.ps1` | SharePoint workspace provisioning script (advanced, PowerShell alternative) |
+| `scripts/Setup-PowerClaw.ps1` | SharePoint workspace provisioning script (backup path; requires app registration + admin consent) |
+| `docs/MANUAL-SETUP.md` | Universal browser-only manual setup guide |
 | `SETUP.md` | This guide |
 | `Images/` | Screenshots and diagrams |
 

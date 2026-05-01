@@ -29,7 +29,7 @@ This is where PowerClaw becomes more than “meeting summarization.” It connec
 ## Why This Beats Native M365 Copilot Recaps
 - **It remembers history** — prior commitments, unresolved issues, and relationship context can carry forward across recurring meetings.
 - **It works proactively** — PowerClaw’s heartbeat can brief the user automatically before a meeting starts, without being asked.
-- **It creates follow-through** — action items can be pushed into the PowerClaw Tasks SharePoint list instead of staying trapped in chat.
+- **It creates follow-through** — action items can be pushed into the PowerClaw_Tasks SharePoint list instead of staying trapped in chat.
 - **It tracks commitments over time** — recap output becomes future memory, so PowerClaw can ask what was fulfilled or still open.
 - **It improves recurring meeting quality** — recurring meetings can include “what changed since last time” rather than starting from zero.
 
@@ -63,7 +63,7 @@ This is where PowerClaw becomes more than “meeting summarization.” It connec
 - **WorkIQ Calendar MCP** is enabled
 - **WorkIQ Mail MCP** is enabled
 - **WorkIQ User MCP** is enabled
-- **SharePoint Lists MCP** is enabled for the **PowerClaw Tasks** list
+- **WorkIQ SharePoint MCP** is enabled for the **PowerClaw_Tasks** list
 - PowerClaw memory is available, including **scopeKeys** such as:
   - `person:NAME`
   - `meeting:SERIES`
@@ -96,7 +96,7 @@ Make sure the agent has access to:
 - **WorkIQ Calendar MCP**
 - **WorkIQ Mail MCP**
 - **WorkIQ User MCP**
-- **Microsoft SharePoint Lists MCP**
+- **WorkIQ SharePoint MCP**
 - Optional: **Outlook Send Email**
 - Optional: **Teams Post Message**
 
@@ -104,7 +104,7 @@ Make sure the agent has access to:
 In your agent instructions or orchestration guidance, add behavior such as:
 
 - “When the user asks for meeting prep, meeting recap, follow-up actions, or open commitments from meetings, use the **Meeting Copilot Loop** prompt.”
-- “If action items are extracted, create or update entries in the PowerClaw Tasks SharePoint list when appropriate.”
+- “If action items are extracted, create or update entries in the PowerClaw_Tasks SharePoint list when appropriate.”
 - “When prior commitments exist in memory, include them as context.”
 - “For recurring meetings, compare against the prior meeting context when available.”
 
@@ -149,7 +149,7 @@ Available evidence sources:
 - WorkIQ Mail MCP for recent threads and related context
 - WorkIQ User MCP for attendee role, org, and relationship context when available
 - PowerClaw memory for prior commitments, recurring-meeting context, unresolved issues, and relationship history
-- SharePoint Lists / PowerClaw Tasks for existing follow-through items and task status
+- SharePoint Lists / PowerClaw_Tasks for existing follow-through items and task status
 
 General instructions for all modes:
 1. Identify the best matching meeting or time period from the request and state assumptions if ambiguous.
@@ -326,7 +326,7 @@ If your PowerClaw instructions already include proactive meeting prep logic, no 
 ### 3) User asks for commitment review
 **User:** What commitments are open from last week's meetings?
 
-**PowerClaw:** I checked recent meeting memory plus open PowerClaw Tasks and found these unresolved commitments.
+**PowerClaw:** I checked recent meeting memory plus open PowerClaw_Tasks and found these unresolved commitments.
 
 **Mode:** COMMITMENTS  
 **Resolved scope:** Last week’s meetings
