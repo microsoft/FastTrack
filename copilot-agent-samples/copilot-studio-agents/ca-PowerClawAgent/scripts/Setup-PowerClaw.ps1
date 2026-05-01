@@ -93,13 +93,8 @@ try {
         $list = New-PnPList -Title $listName -Template GenericList
         
         # Add columns
-        Add-PnPField -List $listName -DisplayName "EventType" -InternalName "EventType" -Type Text -AddToDefaultView
         Add-PnPField -List $listName -DisplayName "Summary" -InternalName "Summary" -Type Text -AddToDefaultView
         Add-PnPField -List $listName -DisplayName "FullContextJSON" -InternalName "FullContextJSON" -Type Note
-        Add-PnPField -List $listName -DisplayName "Timestamp" -InternalName "Timestamp" -Type DateTime -AddToDefaultView
-        
-        # Set Timestamp default to Now (handled by flow usually, but good practice)
-        # Note: Setting default value for DateTime via PnP is complex, skipping for simplicity as Flow handles it.
 
         Write-Success "'$listName' list created."
     } else {

@@ -134,8 +134,6 @@
                   "table": "PowerClaw_Memory_Log",
                   "item": {
                     "Title": "Heartbeat",
-                    "EventType": "Heartbeat",
-                    "Timestamp": "@{utcNow()}",
                     "Summary": "@{concat('Heartbeat attempt started at ', utcNow())}"
                   }
                 },
@@ -185,8 +183,6 @@
                       "table": "PowerClaw_Memory_Log",
                       "item": {
                         "Title": "HeartbeatSkipped",
-                        "EventType": "HeartbeatSkipped",
-                        "Timestamp": "@{utcNow()}",
                         "Summary": "\"Skipped due to active lock or kill switch\""
                       }
                     },
@@ -335,7 +331,7 @@
                 "parameters": {
                   "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "table": "PowerClaw_Memory_Log",
-                  "$filter": "Timestamp ge '@{addHours(utcNow(), -1)}' and (EventType eq 'ActionExecuted' or EventType eq 'ToolCalled' or EventType eq 'TaskCompleted')"
+                  "$filter": "Created ge '@{addHours(utcNow(), -1)}' and (Title eq 'ActionExecuted' or Title eq 'ToolCalled' or Title eq 'TaskCompleted')"
                 },
                 "authentication": "@parameters('$authentication')"
               }
@@ -749,8 +745,6 @@
                           "table": "PowerClaw_Memory_Log",
                           "item": {
                             "Title": "MemoryUpdate",
-                            "EventType": "MemoryUpdate",
-                            "Timestamp": "@{utcNow()}",
                             "Summary": "@{body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary']}",
                             "FullContextJSON": "@{outputs('Compose:_Sanitize_markdown')}"
                           }
@@ -1124,8 +1118,6 @@
                             "table": "PowerClaw_Memory_Log",
                             "item": {
                               "Title": "Error",
-                              "EventType": "Error",
-                              "Timestamp": "@{utcNow()}",
                               "Summary": "Agent call failed or returned output that could not be parsed as JSON. See FullContextJSON for raw output.",
                               "FullContextJSON": "@{coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '(empty response)')}"
                             }
@@ -1402,8 +1394,6 @@
                       "table": "PowerClaw_Memory_Log",
                       "item": {
                         "Title": "Error",
-                        "EventType": "Error",
-                        "Timestamp": "@{utcNow()}",
                         "Summary": "\"Heartbeat execution failed or timed out.\"",
                         "FullContextJSON": "@{string(result('Scope:_Execution'))}"
                       }
