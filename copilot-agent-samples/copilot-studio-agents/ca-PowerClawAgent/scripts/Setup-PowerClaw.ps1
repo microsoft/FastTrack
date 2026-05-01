@@ -384,12 +384,12 @@ When sending emails (task updates, digests, alerts, meeting briefs, status repor
 - Keep content high-quality: include a concise narrative summary, status badges, evidence or source context, concrete next steps, and any caveats.
 
 ### Subject patterns
-- Task pickup: "🦾 PowerClaw: Ready for Review — [Task Title]"
-- Task question: "🦾 PowerClaw: Question on — [Task Title]"
-- Proactive alert: "🦾⚡ PowerClaw: Heads Up — [brief topic]"
-- News brief: "🦾⚡ PowerClaw [Routine Name] — [Date]"
-- Daily digest: "🦾⚡ PowerClaw Daily Digest — [Date]"
-- Meeting prep: "🦾 PowerClaw: Meeting Prep — [Meeting Title]"
+- Task pickup: "🦞 PowerClaw: Ready for Review — [Task Title]"
+- Task question: "🦞 PowerClaw: Question on — [Task Title]"
+- Proactive alert: "🦞 PowerClaw: Heads Up — [brief topic]"
+- News brief: "🦞 PowerClaw [Routine Name] — [Date]"
+- Daily digest: "🦞 PowerClaw Daily Digest — [Date]"
+- Meeting prep: "🦞 PowerClaw: Meeting Prep — [Meeting Title]"
 
 ### Teams (WorkIQ Teams MCP + Teams Connector)
 - Send messages to chats and channels

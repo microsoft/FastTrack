@@ -277,7 +277,7 @@ CHASE mode instructions:
    - flag for Human Review if the wording is sensitive
 4. If the commitment involves another person, draft a short, professional follow-up email for the user to review
 5. For reminder email subject lines, prefer:
-   - 🦾 PowerClaw: Commitment Check — [item]
+   - 🦞 PowerClaw: Commitment Check — [item]
 6. Keep reminder tone gentle, clear, and non-accusatory
 
 Output format:
@@ -380,7 +380,7 @@ In practice, this means a user can ask once, “Track my commitments,” and Pow
 
 **Reminder draft**
 
-**Subject:** 🦾 PowerClaw: Commitment Check — Share launch-readiness notes with product leads
+**Subject:** 🦞 PowerClaw: Commitment Check — Share launch-readiness notes with product leads
 
 Hi,
 
