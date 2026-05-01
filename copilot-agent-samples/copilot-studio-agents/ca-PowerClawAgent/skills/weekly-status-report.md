@@ -63,7 +63,7 @@ Use this skill when you need to:
 - PowerClaw is already connected to:
   - **WorkIQ Calendar MCP**
   - **WorkIQ Mail MCP**
-  - **SharePoint Lists MCP** for the **PowerClaw_Tasks** list
+  - **WorkIQ SharePoint MCP** for the **PowerClaw_Tasks** list
 - Your SharePoint workspace includes the standard PowerClaw constitution files
 - Optional for automation: the **HeartbeatFlow** is enabled
 - Optional for document output: **WorkIQ Word MCP** or Outlook send email action is available
@@ -84,7 +84,7 @@ Use this skill when you need to:
 9. Confirm these tools are enabled on the agent:
    - **WorkIQ Calendar MCP**
    - **WorkIQ Mail MCP**
-   - **Microsoft SharePoint Lists MCP**
+   - **WorkIQ SharePoint MCP**
    - Optional: **WorkIQ Word MCP** or **Office 365 Outlook - Send email (V2)**
 10. In the agent's instructions or relevant orchestrated topic, add guidance such as:
     - “When the user asks for a weekly recap, weekly status, Friday update, or leadership summary, use the **Weekly Status Report** prompt.”

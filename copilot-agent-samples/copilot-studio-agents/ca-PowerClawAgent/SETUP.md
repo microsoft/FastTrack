@@ -203,11 +203,11 @@ Open the agent in [**Copilot Studio**](https://copilotstudio.microsoft.com) and 
 | WorkIQ User MCP | MCP |
 | WorkIQ Word MCP | MCP |
 | WorkIQ Copilot MCP | MCP |
-| Microsoft SharePoint Lists MCP | MCP |
+| WorkIQ SharePoint MCP | MCP |
 | Office 365 Outlook - Send email (V2) | Connector |
 | Microsoft Teams - Post message | Connector |
 
-> 💡 No extra task connectors needed — PowerClaw manages tasks directly via the SharePoint Lists MCP.
+> 💡 No extra task connectors needed — PowerClaw manages tasks directly via the WorkIQ SharePoint MCP.
 
 ---
 

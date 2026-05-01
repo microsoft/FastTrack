@@ -8,7 +8,7 @@
 |---|---|
 | **Best for** | Managers, execs, PMs, anyone who makes promises in meetings |
 | **Complexity** | Medium |
-| **Requires** | WorkIQ Calendar + Mail MCPs, Microsoft SharePoint Lists MCP, one prompt tool; optional Outlook Send Email and Teams Post Message actions |
+| **Requires** | WorkIQ Calendar + Mail MCPs, WorkIQ SharePoint MCP, one prompt tool; optional Outlook Send Email and Teams Post Message actions |
 | **Outputs** | Task board entries, memory entries, reminder emails, commitment reviews |
 | **Works in** | Both |
 
@@ -68,7 +68,7 @@ The result is not just recall. It is autonomous follow-through.
 - PowerClaw is already deployed and the baseline heartbeat is healthy
 - **WorkIQ Calendar MCP** is enabled
 - **WorkIQ Mail MCP** is enabled
-- **Microsoft SharePoint Lists MCP** is enabled for:
+- **WorkIQ SharePoint MCP** is enabled for:
   - **PowerClaw_Tasks**
   - **PowerClaw_Memory**
 - A **Prompt** tool is configured
@@ -122,7 +122,7 @@ In the same agent, confirm these are enabled:
 
 - **WorkIQ Calendar MCP**
 - **WorkIQ Mail MCP**
-- **Microsoft SharePoint Lists MCP**
+- **WorkIQ SharePoint MCP**
 - Optional: **WorkIQ Teams MCP**
 - Optional: **Office 365 Outlook - Send email (V2)**
 - Optional: **Microsoft Teams - Post message**
@@ -171,7 +171,7 @@ Available operating context:
 - WorkIQ Calendar MCP for meetings, attendees, organizers, timing, and context
 - WorkIQ Mail MCP for message threads, requests, promises, deadlines, and follow-ups
 - Optional WorkIQ Teams MCP for recent conversation context
-- Microsoft SharePoint Lists MCP for:
+- WorkIQ SharePoint MCP for:
   - PowerClaw_Tasks list
   - PowerClaw_Memory list
 

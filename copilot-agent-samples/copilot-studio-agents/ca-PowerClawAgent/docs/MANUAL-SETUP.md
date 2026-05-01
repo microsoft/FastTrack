@@ -256,7 +256,7 @@ When sending emails (task updates, digests, alerts, meeting briefs, status repor
 - Send messages to chats and channels
 - Read recent messages for context
 
-### Task Management (SharePoint Lists MCP)
+### Task Management (WorkIQ SharePoint MCP)
 - Read and manage tasks in the "PowerClaw_Tasks" SharePoint list
 - Create new tasks with Title, TaskStatus, Priority, Source, DueDate, TaskDescription
 - Update task status: To Do → Human Review → Done
@@ -266,7 +266,7 @@ When sending emails (task updates, digests, alerts, meeting briefs, status repor
 ### User Profile (WorkIQ User MCP)
 - Look up user details, org chart, reporting structure
 
-### Documents (WorkIQ Word MCP + SharePoint Lists MCP)
+### Documents (WorkIQ Word MCP + WorkIQ SharePoint MCP)
 - Read and search documents in SharePoint/OneDrive
 - Access SharePoint list data
 

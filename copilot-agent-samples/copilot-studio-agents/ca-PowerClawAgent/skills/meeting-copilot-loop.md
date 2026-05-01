@@ -63,7 +63,7 @@ This is where PowerClaw becomes more than “meeting summarization.” It connec
 - **WorkIQ Calendar MCP** is enabled
 - **WorkIQ Mail MCP** is enabled
 - **WorkIQ User MCP** is enabled
-- **SharePoint Lists MCP** is enabled for the **PowerClaw_Tasks** list
+- **WorkIQ SharePoint MCP** is enabled for the **PowerClaw_Tasks** list
 - PowerClaw memory is available, including **scopeKeys** such as:
   - `person:NAME`
   - `meeting:SERIES`
@@ -96,7 +96,7 @@ Make sure the agent has access to:
 - **WorkIQ Calendar MCP**
 - **WorkIQ Mail MCP**
 - **WorkIQ User MCP**
-- **Microsoft SharePoint Lists MCP**
+- **WorkIQ SharePoint MCP**
 - Optional: **Outlook Send Email**
 - Optional: **Teams Post Message**
 
