@@ -201,15 +201,10 @@ try {
         Write-Info "Creating '$tasksListName' list..."
         $tasksList = New-PnPList -Title $tasksListName -Template GenericList
 
-        $taskStatusXml = '<Field Type="Choice" DisplayName="TaskStatus" Name="TaskStatus" Required="FALSE"><Default>To Do</Default><CHOICES><CHOICE>To Do</CHOICE><CHOICE>Human Review</CHOICE><CHOICE>Done</CHOICE></CHOICES></Field>'
-        Add-PnPFieldFromXml -List $tasksListName -FieldXml $taskStatusXml | Out-Null
-        $taskStatusField = Get-PnPField -List $tasksListName -Identity "TaskStatus"
-        $defaultView = Get-PnPView -List $tasksListName -Identity "All Items"
-        $viewFields = @($defaultView.ViewFields) + "TaskStatus"
-        Set-PnPView -List $tasksListName -Identity "All Items" -Fields $viewFields | Out-Null
+        Add-PnPField -List $tasksListName -DisplayName "TaskStatus" -InternalName "TaskStatus" -Type Text -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "TaskDescription" -InternalName "TaskDescription" -Type Note
-        Add-PnPField -List $tasksListName -DisplayName "Priority" -InternalName "Priority" -Type Choice -Choices "Low","Medium","High","Critical" -AddToDefaultView
-        Add-PnPField -List $tasksListName -DisplayName "Source" -InternalName "Source" -Type Choice -Choices "Calendar","Manual","Heartbeat" -AddToDefaultView
+        Add-PnPField -List $tasksListName -DisplayName "Priority" -InternalName "Priority" -Type Text -AddToDefaultView
+        Add-PnPField -List $tasksListName -DisplayName "Source" -InternalName "Source" -Type Text -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "DueDate" -InternalName "DueDate" -Type DateTime -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "Notes" -InternalName "Notes" -Type Note
         Add-PnPField -List $tasksListName -DisplayName "LastActionDate" -InternalName "LastActionDate" -Type DateTime

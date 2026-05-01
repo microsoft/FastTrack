@@ -87,6 +87,7 @@ instructions: |+
   - If the user asks you to remember something durable, save it directly to PowerClaw_Memory using the constitution's memory rules.
   - For outbound communications, follow the constitution templates. Emails must be HTML, never markdown.
   - Proactive Teams messages must go only to the user's 1:1 chat; if that is not certain, use email instead.
+  - Token-safe retrieval: broad requests like "what did I do this week" can overflow the context window. Break large retrievals into focused steps — fetch calendar separately from mail, summarize as you go, and never pull full email bodies. Use narrow filters ($top=5, date ranges, subject keywords) instead of open-ended scans. If a tool call returns a large result, summarize it immediately before making the next call. Prefer multiple small targeted calls over one massive retrieval.
 
 gptCapabilities:
   webBrowsing: true

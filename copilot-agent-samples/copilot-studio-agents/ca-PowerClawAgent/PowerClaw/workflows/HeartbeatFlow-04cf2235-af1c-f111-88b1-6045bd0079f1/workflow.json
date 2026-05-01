@@ -745,7 +745,7 @@
                           "table": "PowerClaw_Memory_Log",
                           "item": {
                             "Title": "MemoryUpdate",
-                            "Summary": "@{body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary']}",
+                            "Summary": "@{substring(string(body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary']), 0, min(length(string(body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary'])), 255))}",
                             "FullContextJSON": "@{outputs('Compose:_Sanitize_markdown')}"
                           }
                         },
