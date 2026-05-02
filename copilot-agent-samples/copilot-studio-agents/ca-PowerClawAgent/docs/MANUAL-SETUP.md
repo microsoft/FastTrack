@@ -70,10 +70,10 @@
 
 | Column Name | Type |
 |---|---|
-| TaskStatus | Single line of text (values: `To Do`, `Human Review`, `Done`) |
+| TaskStatus | Choice (`To Do`, `Human Review`, `Done`) |
 | TaskDescription | Multiple lines of text |
-| Priority | Single line of text (values: `Low`, `Medium`, `High`, `Critical`) |
-| Source | Single line of text (values: `Calendar`, `Manual`, `Heartbeat`) |
+| Priority | Choice (`Low`, `Medium`, `High`, `Critical`) |
+| Source | Choice (`Calendar`, `Manual`, `Heartbeat`) |
 | DueDate | Date and time |
 | Notes | Multiple lines of text |
 | LastActionDate | Date and time |

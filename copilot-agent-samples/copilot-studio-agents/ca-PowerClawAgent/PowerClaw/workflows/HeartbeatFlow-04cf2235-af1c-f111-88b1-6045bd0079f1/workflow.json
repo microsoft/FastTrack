@@ -774,7 +774,7 @@
                                   "table": "PowerClaw_Tasks",
                                   "id": "@{items('Apply_to_each:_Process_Task_Actions')?['taskId']}",
                                   "item": {
-                                    "TaskStatus": "@{items('Apply_to_each:_Process_Task_Actions')?['newStatus']}",
+                                    "TaskStatus": { "Value": "@{items('Apply_to_each:_Process_Task_Actions')?['newStatus']}" },
                                     "Notes": "@{items('Apply_to_each:_Process_Task_Actions')?['notes']}",
                                     "LastActionDate": "@{utcNow()}"
                                   }
@@ -969,9 +969,9 @@
                                   "item": {
                                     "Title": "@{items('Apply_to_each:_Create_Tasks')?['title']}",
                                     "TaskDescription": "@{items('Apply_to_each:_Create_Tasks')?['description']}",
-                                    "Priority": "@{items('Apply_to_each:_Create_Tasks')?['priority']}",
-                                    "Source": "Heartbeat",
-                                    "TaskStatus": "To Do"
+                                    "Priority": { "Value": "@{items('Apply_to_each:_Create_Tasks')?['priority']}" },
+                                    "Source": { "Value": "Heartbeat" },
+                                    "TaskStatus": { "Value": "To Do" }
                                   }
                                 },
                                 "authentication": "@parameters('$authentication')"
