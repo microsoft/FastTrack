@@ -901,5 +901,126 @@
         "uniques": 27
       }
     ]
+  },
+  {
+    "date": "2026-05-03",
+    "views_count": 0,
+    "views_uniques": 0,
+    "clones_count": 0,
+    "clones_uniques": 0,
+    "top_referrers": [
+      {
+        "referrer": "Bing",
+        "count": 276,
+        "uniques": 57
+      },
+      {
+        "referrer": "statics.teams.cdn.office.net",
+        "count": 194,
+        "uniques": 75
+      },
+      {
+        "referrer": "github.com",
+        "count": 127,
+        "uniques": 43
+      },
+      {
+        "referrer": "learn.microsoft.com",
+        "count": 75,
+        "uniques": 32
+      },
+      {
+        "referrer": "engage.cloud.microsoft",
+        "count": 52,
+        "uniques": 8
+      },
+      {
+        "referrer": "Google",
+        "count": 26,
+        "uniques": 17
+      },
+      {
+        "referrer": "teams.public.onecdn.static.microsoft",
+        "count": 15,
+        "uniques": 7
+      },
+      {
+        "referrer": "linkedin.com",
+        "count": 13,
+        "uniques": 7
+      },
+      {
+        "referrer": "DuckDuckGo",
+        "count": 13,
+        "uniques": 4
+      },
+      {
+        "referrer": "com.linkedin.android",
+        "count": 9,
+        "uniques": 6
+      }
+    ],
+    "top_paths": [
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+        "title": "/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+        "count": 143,
+        "uniques": 77
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+        "title": "/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+        "count": 140,
+        "uniques": 76
+      },
+      {
+        "path": "/microsoft/FastTrack",
+        "title": "Overview",
+        "count": 110,
+        "uniques": 71
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents",
+        "title": "/tree/master/copilot-agent-samples/copilot-studio-agents",
+        "count": 86,
+        "uniques": 56
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples",
+        "title": "/tree/master/copilot-analytics-samples",
+        "count": 70,
+        "uniques": 45
+      },
+      {
+        "path": "/microsoft/FastTrack/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/skills/workplace-intelligence-monitor.md",
+        "title": "/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/skills/workplace-intelligence-monitor.md",
+        "count": 64,
+        "uniques": 38
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples",
+        "title": "/tree/master/copilot-agent-samples",
+        "count": 63,
+        "uniques": 40
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/scripts/Update-VivaEngageLicensingToggle",
+        "title": "/tree/master/scripts/Update-VivaEngageLicensingToggle",
+        "count": 52,
+        "uniques": 32
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-usage-users-and-apps",
+        "title": "/tree/master/copilot-analytics-samples/copilot-usage-users-and-apps",
+        "count": 47,
+        "uniques": 27
+      },
+      {
+        "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+        "title": "/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+        "count": 46,
+        "uniques": 27
+      }
+    ]
   }
 ]
