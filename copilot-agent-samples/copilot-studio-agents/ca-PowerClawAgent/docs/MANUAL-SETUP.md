@@ -78,7 +78,6 @@
 | DueDate | Date and time |
 | Notes | Multiple lines of text |
 | LastActionDate | Date and time |
-| CompletedDate | Date and time |
 
 4. **Make Title optional:**
    - **List settings** → click the **Title** column → change **Require that this column contains information** to **No** → **Save**

@@ -209,7 +209,6 @@ try {
         Add-PnPField -List $tasksListName -DisplayName "DueDate" -InternalName "DueDate" -Type DateTime -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "Notes" -InternalName "Notes" -Type Note
         Add-PnPField -List $tasksListName -DisplayName "LastActionDate" -InternalName "LastActionDate" -Type DateTime
-        Add-PnPField -List $tasksListName -DisplayName "CompletedDate" -InternalName "CompletedDate" -Type DateTime
 
         # Make Title not required — PatchItem (task status updates) only changes status/notes,
         # and the SharePoint connector rejects PatchItem without Title when it's required

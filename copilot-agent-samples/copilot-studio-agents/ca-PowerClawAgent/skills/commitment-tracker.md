@@ -93,7 +93,6 @@ The result is not just recall. It is autonomous follow-through.
    - **DueDate**
    - **Notes**
    - **LastActionDate**
-   - **CompletedDate**
 3. Confirm heartbeat is enabled in **Power Automate** and already running successfully every 30 minutes.
 
 ### Step 2 — Add the prompt tool in Copilot Studio
@@ -191,7 +190,6 @@ PowerClaw task schema:
 - DueDate
 - Notes
 - LastActionDate
-- CompletedDate
 
 First, determine the operating mode from the user's request:
 1. EXTRACT
