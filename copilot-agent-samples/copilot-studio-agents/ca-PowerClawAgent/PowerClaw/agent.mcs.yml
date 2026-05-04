@@ -65,7 +65,7 @@ instructions: |+
         "title": "new follow-up task title",
         "description": "what should happen next",
         "priority": "Low|Med|High|Critical",
-        "source": "agent-initiated",
+        "source": "Heartbeat",
         "dueDate": "ISO date or empty string"
       }}
     ],
