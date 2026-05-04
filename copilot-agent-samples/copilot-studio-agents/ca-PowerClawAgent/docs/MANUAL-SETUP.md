@@ -73,7 +73,7 @@
 |---|---|
 | TaskStatus | Choice (`To Do`, `Human Review`, `Done`) |
 | TaskDescription | Multiple lines of text |
-| Priority | Choice (`Low`, `Medium`, `High`, `Critical`) |
+| Priority | Choice (`Low`, `Med`, `High`, `Critical`) |
 | Source | Choice (`Calendar`, `Manual`, `Heartbeat`) |
 | DueDate | Date and time |
 | Notes | Multiple lines of text |

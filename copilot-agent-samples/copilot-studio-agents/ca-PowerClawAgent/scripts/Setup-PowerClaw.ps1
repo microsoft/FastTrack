@@ -204,7 +204,7 @@ try {
 
         Add-PnPField -List $tasksListName -DisplayName "TaskStatus" -InternalName "TaskStatus" -Type Choice -Choices "To Do","Human Review","Done" -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "TaskDescription" -InternalName "TaskDescription" -Type Note
-        Add-PnPField -List $tasksListName -DisplayName "Priority" -InternalName "Priority" -Type Choice -Choices "Low","Medium","High","Critical" -AddToDefaultView
+        Add-PnPField -List $tasksListName -DisplayName "Priority" -InternalName "Priority" -Type Choice -Choices "Low","Med","High","Critical" -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "Source" -InternalName "Source" -Type Choice -Choices "Calendar","Manual","Heartbeat" -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "DueDate" -InternalName "DueDate" -Type DateTime -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "Notes" -InternalName "Notes" -Type Note
