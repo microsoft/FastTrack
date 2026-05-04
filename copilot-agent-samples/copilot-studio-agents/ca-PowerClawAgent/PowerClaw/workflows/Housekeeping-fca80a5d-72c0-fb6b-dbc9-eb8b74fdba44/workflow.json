@@ -196,7 +196,7 @@
                       "table": "PowerClaw_Memory",
                       "id": "@items('Apply_to_each:_Check_Expiry')?['ID']",
                       "item": {
-                        "Status": "Expired",
+                        "Status": { "Value": "Expired" },
                         "Title": "@items('Apply_to_each:_Check_Expiry')?['Title']"
                       }
                     },

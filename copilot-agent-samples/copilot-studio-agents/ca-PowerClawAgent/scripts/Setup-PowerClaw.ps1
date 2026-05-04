@@ -175,7 +175,7 @@ try {
         
         # Confidence & Status
         Add-PnPField -List $memoryListName -DisplayName "Confidence" -InternalName "Confidence" -Type Number -AddToDefaultView
-        Add-PnPField -List $memoryListName -DisplayName "Status" -InternalName "Status" -Type Choice -Choices "Active","Tentative","Superseded","Expired","Archived" -AddToDefaultView
+        Add-PnPField -List $memoryListName -DisplayName "Status" -InternalName "Status" -Type Choice -Choices "Active","Tentative","Superseded","Expired" -AddToDefaultView
         Add-PnPField -List $memoryListName -DisplayName "Importance" -InternalName "Importance" -Type Choice -Choices "Low","Med","High","Critical" -AddToDefaultView
         
         # Lifecycle dates

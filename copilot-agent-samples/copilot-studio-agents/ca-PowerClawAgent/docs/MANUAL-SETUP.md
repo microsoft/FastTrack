@@ -58,7 +58,7 @@
 | ScopeKey | Single line of text |
 | CanonicalFact | Multiple lines of text |
 | Confidence | Number |
-| Status | Choice (`Active`, `Tentative`, `Superseded`, `Expired`, `Archived`) |
+| Status | Choice (`Active`, `Tentative`, `Superseded`, `Expired`) |
 | Importance | Choice (`Low`, `Med`, `High`, `Critical`) |
 | FirstLearnedAt | Date and time |
 | LastConfirmedAt | Date and time |

@@ -875,7 +875,7 @@
                                         "LastConfirmedAt": "@{utcNow()}",
                                         "Confidence": "@{min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10))}",
                                         "CanonicalFact": "@{items('Apply_to_each:_Save_Memories')?['canonicalFact']}",
-                                        "Status": "@{if(greaterOrEquals(min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10)), 80), 'Active', 'Tentative')}",
+                                        "Status": { "Value": "@{if(greaterOrEquals(min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10)), 80), 'Active', 'Tentative')}" },
                                         "Title": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}"
                                       }
                                     },
@@ -902,12 +902,12 @@
                                         "table": "PowerClaw_Memory",
                                         "item": {
                                           "Title": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}",
-                                          "MemoryType": "@{items('Apply_to_each:_Save_Memories')?['memoryType']}",
+                                          "MemoryType": { "Value": "@{items('Apply_to_each:_Save_Memories')?['memoryType']}" },
                                           "ScopeKey": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}",
                                           "CanonicalFact": "@{items('Apply_to_each:_Save_Memories')?['canonicalFact']}",
                                           "Confidence": "@{items('Apply_to_each:_Save_Memories')?['confidence']}",
-                                          "Importance": "@{items('Apply_to_each:_Save_Memories')?['importance']}",
-                                          "Status": "Tentative",
+                                          "Importance": { "Value": "@{items('Apply_to_each:_Save_Memories')?['importance']}" },
+                                          "Status": { "Value": "Tentative" },
                                           "FirstLearnedAt": "@{utcNow()}",
                                           "LastConfirmedAt": "@{utcNow()}"
                                         }
