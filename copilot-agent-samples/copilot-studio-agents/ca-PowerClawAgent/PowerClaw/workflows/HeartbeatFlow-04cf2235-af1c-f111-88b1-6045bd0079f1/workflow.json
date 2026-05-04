@@ -333,7 +333,7 @@
                 "parameters": {
                   "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "table": "PowerClaw_Memory_Log",
-                  "$filter": "Created ge '@{addHours(utcNow(), -1)}' and (EventType eq 'ActionExecuted' or EventType eq 'ToolCalled' or EventType eq 'TaskCompleted')"
+                  "$filter": "Created ge '@{addHours(utcNow(), -1)}'"
                 },
                 "authentication": "@parameters('$authentication')"
               }

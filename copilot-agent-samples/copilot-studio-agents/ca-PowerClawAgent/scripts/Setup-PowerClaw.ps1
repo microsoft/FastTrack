@@ -93,7 +93,7 @@ try {
         $list = New-PnPList -Title $listName -Template GenericList
         
         # Add columns
-        Add-PnPField -List $listName -DisplayName "EventType" -InternalName "EventType" -Type Choice -Choices "Heartbeat","HeartbeatSkipped","MemoryUpdate","Error","DailyDigest","WeeklyRecap","TaskAction" -AddToDefaultView
+        Add-PnPField -List $listName -DisplayName "EventType" -InternalName "EventType" -Type Choice -Choices "Heartbeat","HeartbeatSkipped","MemoryUpdate","Error" -AddToDefaultView
         Add-PnPField -List $listName -DisplayName "Summary" -InternalName "Summary" -Type Text -AddToDefaultView
         Add-PnPField -List $listName -DisplayName "FullContextJSON" -InternalName "FullContextJSON" -Type Note
 
