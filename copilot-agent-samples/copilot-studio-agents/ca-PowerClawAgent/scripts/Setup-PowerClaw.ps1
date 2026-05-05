@@ -93,6 +93,7 @@ try {
         $list = New-PnPList -Title $listName -Template GenericList
         
         # Add columns
+        Add-PnPField -List $listName -DisplayName "EventType" -InternalName "EventType" -Type Choice -Choices "Heartbeat","HeartbeatSkipped","MemoryUpdate","Error" -AddToDefaultView
         Add-PnPField -List $listName -DisplayName "Summary" -InternalName "Summary" -Type Text -AddToDefaultView
         Add-PnPField -List $listName -DisplayName "FullContextJSON" -InternalName "FullContextJSON" -Type Note
 
@@ -174,7 +175,7 @@ try {
         
         # Confidence & Status
         Add-PnPField -List $memoryListName -DisplayName "Confidence" -InternalName "Confidence" -Type Number -AddToDefaultView
-        Add-PnPField -List $memoryListName -DisplayName "Status" -InternalName "Status" -Type Choice -Choices "Active","Tentative","Superseded","Expired","Archived" -AddToDefaultView
+        Add-PnPField -List $memoryListName -DisplayName "Status" -InternalName "Status" -Type Choice -Choices "Active","Tentative","Superseded","Expired" -AddToDefaultView
         Add-PnPField -List $memoryListName -DisplayName "Importance" -InternalName "Importance" -Type Choice -Choices "Low","Med","High","Critical" -AddToDefaultView
         
         # Lifecycle dates
@@ -201,14 +202,13 @@ try {
         Write-Info "Creating '$tasksListName' list..."
         $tasksList = New-PnPList -Title $tasksListName -Template GenericList
 
-        Add-PnPField -List $tasksListName -DisplayName "TaskStatus" -InternalName "TaskStatus" -Type Text -AddToDefaultView
+        Add-PnPField -List $tasksListName -DisplayName "TaskStatus" -InternalName "TaskStatus" -Type Choice -Choices "To Do","Human Review","Done" -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "TaskDescription" -InternalName "TaskDescription" -Type Note
-        Add-PnPField -List $tasksListName -DisplayName "Priority" -InternalName "Priority" -Type Text -AddToDefaultView
-        Add-PnPField -List $tasksListName -DisplayName "Source" -InternalName "Source" -Type Text -AddToDefaultView
+        Add-PnPField -List $tasksListName -DisplayName "Priority" -InternalName "Priority" -Type Choice -Choices "Low","Med","High","Critical" -AddToDefaultView
+        Add-PnPField -List $tasksListName -DisplayName "Source" -InternalName "Source" -Type Choice -Choices "Calendar","Manual","Heartbeat" -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "DueDate" -InternalName "DueDate" -Type DateTime -AddToDefaultView
         Add-PnPField -List $tasksListName -DisplayName "Notes" -InternalName "Notes" -Type Note
         Add-PnPField -List $tasksListName -DisplayName "LastActionDate" -InternalName "LastActionDate" -Type DateTime
-        Add-PnPField -List $tasksListName -DisplayName "CompletedDate" -InternalName "CompletedDate" -Type DateTime
 
         # Make Title not required — PatchItem (task status updates) only changes status/notes,
         # and the SharePoint connector rejects PatchItem without Title when it's required
@@ -327,7 +327,7 @@ Format: ``- HH:MM UTC: <1-2 short sentences>``
 Rules: bullet only; no headings, essays, or reflective paragraphs. The flow inserts entries under a dated heading (## YYYY-MM-DD) automatically. Capture insight/meaning, not receipts. If you notice a recurring pattern or weekly theme, propose it as a Pattern or Insight memory instead of writing it in the journal.
 ### Semantic Memories
 Use ``proposedMemories`` only for durable knowledge useful in future heartbeats/conversations. Must pass: **Will this matter in 2 weeks?** Most heartbeats propose 0; max 3.
-Allowed types: **Preference**, **Person**, **Project**, **Pattern**, **Insight**.
+Allowed types: **Preference**, **Person**, **Project**, **Pattern**, **Commitment**, **Insight**.
 Never propose memories for receipts, dedup markers, routine confirmations, one-off sends/events, audit logs, or task follow-ups; use Memory Log or Tasks. Never include "fully deduplicated" or "do not re-alert".
 ### Deduplication
 Memory Log handles dedup automatically. Before acting, check loaded memory facts and Memory Log. Do not create semantic memories as dedup receipts.

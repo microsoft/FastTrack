@@ -298,7 +298,7 @@ PowerClaw can execute recurring tasks based on your calendar. Add a calendar eve
 
 PowerClaw uses a SharePoint list called **PowerClaw_Tasks** as its task board. The setup process creates this automatically.
 
-**Columns:** Title · TaskStatus · TaskDescription · Priority · Source · DueDate · Notes · LastActionDate · CompletedDate
+**Columns:** Title · TaskStatus · TaskDescription · Priority · Source · DueDate · Notes · LastActionDate
 
 **Workflow:**
 

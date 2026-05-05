@@ -22,6 +22,7 @@
 
 | Column Name | Type |
 |---|---|
+| EventType | Choice (`Heartbeat`, `HeartbeatSkipped`, `MemoryUpdate`, `Error`) |
 | Summary | Single line of text |
 | FullContextJSON | Multiple lines of text |
 
@@ -57,7 +58,7 @@
 | ScopeKey | Single line of text |
 | CanonicalFact | Multiple lines of text |
 | Confidence | Number |
-| Status | Choice (`Active`, `Tentative`, `Superseded`, `Expired`, `Archived`) |
+| Status | Choice (`Active`, `Tentative`, `Superseded`, `Expired`) |
 | Importance | Choice (`Low`, `Med`, `High`, `Critical`) |
 | FirstLearnedAt | Date and time |
 | LastConfirmedAt | Date and time |
@@ -70,14 +71,13 @@
 
 | Column Name | Type |
 |---|---|
-| TaskStatus | Single line of text (values: `To Do`, `Human Review`, `Done`) |
+| TaskStatus | Choice (`To Do`, `Human Review`, `Done`) |
 | TaskDescription | Multiple lines of text |
-| Priority | Single line of text (values: `Low`, `Medium`, `High`, `Critical`) |
-| Source | Single line of text (values: `Calendar`, `Manual`, `Heartbeat`) |
+| Priority | Choice (`Low`, `Med`, `High`, `Critical`) |
+| Source | Choice (`Calendar`, `Manual`, `Heartbeat`) |
 | DueDate | Date and time |
 | Notes | Multiple lines of text |
 | LastActionDate | Date and time |
-| CompletedDate | Date and time |
 
 4. **Make Title optional:**
    - **List settings** → click the **Title** column → change **Require that this column contains information** to **No** → **Save**
@@ -190,7 +190,7 @@ Format: `- HH:MM UTC: <1-2 short sentences>`
 Rules: bullet only; no headings, essays, or reflective paragraphs. The flow inserts entries under a dated heading (## YYYY-MM-DD) automatically. Capture insight/meaning, not receipts. If you notice a recurring pattern or weekly theme, propose it as a Pattern or Insight memory instead of writing it in the journal.
 ### Semantic Memories
 Use `proposedMemories` only for durable knowledge useful in future heartbeats/conversations. Must pass: **Will this matter in 2 weeks?** Most heartbeats propose 0; max 3.
-Allowed types: **Preference**, **Person**, **Project**, **Pattern**, **Insight**.
+Allowed types: **Preference**, **Person**, **Project**, **Pattern**, **Commitment**, **Insight**.
 Never propose memories for receipts, dedup markers, routine confirmations, one-off sends/events, audit logs, or task follow-ups; use Memory Log or Tasks. Never include "fully deduplicated" or "do not re-alert".
 ### Deduplication
 Memory Log handles dedup automatically. Before acting, check loaded memory facts and Memory Log. Do not create semantic memories as dedup receipts.

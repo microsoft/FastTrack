@@ -1,0 +1,495 @@
+{
+  "collected_at": "2026-05-04",
+  "views": {
+    "count": 1904,
+    "uniques": 481,
+    "views": [
+      {
+        "timestamp": "2026-04-20T00:00:00Z",
+        "count": 192,
+        "uniques": 81
+      },
+      {
+        "timestamp": "2026-04-21T00:00:00Z",
+        "count": 264,
+        "uniques": 77
+      },
+      {
+        "timestamp": "2026-04-22T00:00:00Z",
+        "count": 242,
+        "uniques": 73
+      },
+      {
+        "timestamp": "2026-04-23T00:00:00Z",
+        "count": 138,
+        "uniques": 56
+      },
+      {
+        "timestamp": "2026-04-24T00:00:00Z",
+        "count": 193,
+        "uniques": 58
+      },
+      {
+        "timestamp": "2026-04-25T00:00:00Z",
+        "count": 26,
+        "uniques": 11
+      },
+      {
+        "timestamp": "2026-04-26T00:00:00Z",
+        "count": 15,
+        "uniques": 9
+      },
+      {
+        "timestamp": "2026-04-27T00:00:00Z",
+        "count": 87,
+        "uniques": 47
+      },
+      {
+        "timestamp": "2026-04-28T00:00:00Z",
+        "count": 154,
+        "uniques": 68
+      },
+      {
+        "timestamp": "2026-04-29T00:00:00Z",
+        "count": 211,
+        "uniques": 55
+      },
+      {
+        "timestamp": "2026-04-30T00:00:00Z",
+        "count": 152,
+        "uniques": 53
+      },
+      {
+        "timestamp": "2026-05-01T00:00:00Z",
+        "count": 164,
+        "uniques": 40
+      },
+      {
+        "timestamp": "2026-05-02T00:00:00Z",
+        "count": 23,
+        "uniques": 16
+      },
+      {
+        "timestamp": "2026-05-03T00:00:00Z",
+        "count": 43,
+        "uniques": 14
+      }
+    ]
+  },
+  "clones": {
+    "count": 645,
+    "uniques": 222,
+    "clones": [
+      {
+        "timestamp": "2026-04-20T00:00:00Z",
+        "count": 23,
+        "uniques": 15
+      },
+      {
+        "timestamp": "2026-04-21T00:00:00Z",
+        "count": 86,
+        "uniques": 36
+      },
+      {
+        "timestamp": "2026-04-22T00:00:00Z",
+        "count": 46,
+        "uniques": 23
+      },
+      {
+        "timestamp": "2026-04-23T00:00:00Z",
+        "count": 54,
+        "uniques": 22
+      },
+      {
+        "timestamp": "2026-04-24T00:00:00Z",
+        "count": 39,
+        "uniques": 20
+      },
+      {
+        "timestamp": "2026-04-25T00:00:00Z",
+        "count": 37,
+        "uniques": 25
+      },
+      {
+        "timestamp": "2026-04-26T00:00:00Z",
+        "count": 23,
+        "uniques": 12
+      },
+      {
+        "timestamp": "2026-04-27T00:00:00Z",
+        "count": 57,
+        "uniques": 22
+      },
+      {
+        "timestamp": "2026-04-28T00:00:00Z",
+        "count": 29,
+        "uniques": 16
+      },
+      {
+        "timestamp": "2026-04-29T00:00:00Z",
+        "count": 29,
+        "uniques": 15
+      },
+      {
+        "timestamp": "2026-04-30T00:00:00Z",
+        "count": 34,
+        "uniques": 16
+      },
+      {
+        "timestamp": "2026-05-01T00:00:00Z",
+        "count": 108,
+        "uniques": 22
+      },
+      {
+        "timestamp": "2026-05-02T00:00:00Z",
+        "count": 57,
+        "uniques": 22
+      },
+      {
+        "timestamp": "2026-05-03T00:00:00Z",
+        "count": 23,
+        "uniques": 13
+      }
+    ]
+  },
+  "referrers": [
+    {
+      "referrer": "Bing",
+      "count": 277,
+      "uniques": 57
+    },
+    {
+      "referrer": "statics.teams.cdn.office.net",
+      "count": 191,
+      "uniques": 73
+    },
+    {
+      "referrer": "github.com",
+      "count": 136,
+      "uniques": 45
+    },
+    {
+      "referrer": "learn.microsoft.com",
+      "count": 75,
+      "uniques": 32
+    },
+    {
+      "referrer": "engage.cloud.microsoft",
+      "count": 52,
+      "uniques": 8
+    },
+    {
+      "referrer": "Google",
+      "count": 27,
+      "uniques": 18
+    },
+    {
+      "referrer": "teams.public.onecdn.static.microsoft",
+      "count": 15,
+      "uniques": 7
+    },
+    {
+      "referrer": "linkedin.com",
+      "count": 13,
+      "uniques": 7
+    },
+    {
+      "referrer": "DuckDuckGo",
+      "count": 13,
+      "uniques": 4
+    },
+    {
+      "referrer": "teams.df.onecdn.static.microsoft",
+      "count": 9,
+      "uniques": 3
+    }
+  ],
+  "paths": [
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+      "title": "/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+      "count": 143,
+      "uniques": 77
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+      "title": "/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+      "count": 140,
+      "uniques": 78
+    },
+    {
+      "path": "/microsoft/FastTrack",
+      "title": "Overview",
+      "count": 111,
+      "uniques": 73
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents",
+      "title": "/tree/master/copilot-agent-samples/copilot-studio-agents",
+      "count": 88,
+      "uniques": 58
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples",
+      "title": "/tree/master/copilot-analytics-samples",
+      "count": 72,
+      "uniques": 46
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples",
+      "title": "/tree/master/copilot-agent-samples",
+      "count": 64,
+      "uniques": 41
+    },
+    {
+      "path": "/microsoft/FastTrack/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/skills/workplace-intelligence-monitor.md",
+      "title": "/blob/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/skills/workplace-intelligence-monitor.md",
+      "count": 57,
+      "uniques": 36
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/scripts/Update-VivaEngageLicensingToggle",
+      "title": "/tree/master/scripts/Update-VivaEngageLicensingToggle",
+      "count": 53,
+      "uniques": 33
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-usage-users-and-apps",
+      "title": "/tree/master/copilot-analytics-samples/copilot-usage-users-and-apps",
+      "count": 47,
+      "uniques": 27
+    },
+    {
+      "path": "/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+      "title": "/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+      "count": 45,
+      "uniques": 26
+    }
+  ],
+  "stars": 210,
+  "forks": 124,
+  "star_timeline": [
+    "2018-03-05T17:58:58Z",
+    "2018-04-04T15:53:39Z",
+    "2018-06-27T16:48:11Z",
+    "2018-07-24T20:01:01Z",
+    "2018-07-25T05:57:33Z",
+    "2018-07-31T04:15:49Z",
+    "2018-07-31T18:03:48Z",
+    "2018-08-01T10:22:09Z",
+    "2018-08-07T08:37:51Z",
+    "2018-08-17T19:49:47Z",
+    "2018-09-04T19:46:20Z",
+    "2018-10-04T14:30:06Z",
+    "2018-10-10T23:07:41Z",
+    "2018-10-29T19:26:23Z",
+    "2018-10-31T18:23:59Z",
+    "2018-11-30T09:17:38Z",
+    "2019-01-15T19:36:39Z",
+    "2019-01-16T11:21:15Z",
+    "2019-01-22T09:32:53Z",
+    "2019-01-24T08:53:20Z",
+    "2019-01-25T06:23:38Z",
+    "2019-02-01T20:52:10Z",
+    "2019-02-04T15:59:03Z",
+    "2019-02-05T17:00:23Z",
+    "2019-03-08T00:37:59Z",
+    "2019-03-30T14:22:47Z",
+    "2019-05-08T11:32:25Z",
+    "2019-05-10T18:35:57Z",
+    "2019-07-22T15:25:51Z",
+    "2019-08-05T15:01:02Z",
+    "2019-08-19T20:18:36Z",
+    "2019-08-21T13:21:45Z",
+    "2019-09-08T04:26:12Z",
+    "2019-09-18T14:54:07Z",
+    "2019-11-19T03:12:32Z",
+    "2019-12-09T12:22:43Z",
+    "2019-12-11T12:58:56Z",
+    "2019-12-22T14:37:50Z",
+    "2019-12-28T17:16:13Z",
+    "2020-01-09T16:29:43Z",
+    "2020-01-10T08:40:28Z",
+    "2020-01-15T22:51:03Z",
+    "2020-01-17T16:55:18Z",
+    "2020-01-22T14:40:52Z",
+    "2020-02-25T02:54:44Z",
+    "2020-03-03T10:54:03Z",
+    "2020-03-06T09:14:22Z",
+    "2020-03-17T23:38:29Z",
+    "2020-03-26T15:12:52Z",
+    "2020-04-11T10:10:33Z",
+    "2020-04-29T11:56:14Z",
+    "2020-05-09T09:36:02Z",
+    "2020-05-29T17:16:59Z",
+    "2020-07-20T16:45:09Z",
+    "2020-08-04T18:24:54Z",
+    "2020-08-10T18:32:13Z",
+    "2020-08-12T11:47:19Z",
+    "2020-08-12T13:19:42Z",
+    "2020-08-24T09:22:57Z",
+    "2020-08-31T00:30:11Z",
+    "2020-09-15T22:36:51Z",
+    "2020-10-15T10:27:16Z",
+    "2020-11-11T13:50:07Z",
+    "2020-12-07T10:40:40Z",
+    "2020-12-10T01:50:23Z",
+    "2021-01-11T10:52:43Z",
+    "2021-01-13T13:14:59Z",
+    "2021-01-18T09:24:29Z",
+    "2021-02-02T21:42:37Z",
+    "2021-02-12T17:52:34Z",
+    "2021-02-22T16:52:41Z",
+    "2021-03-03T00:05:25Z",
+    "2021-03-08T15:57:35Z",
+    "2021-03-17T17:00:12Z",
+    "2021-03-25T09:25:17Z",
+    "2021-04-14T08:51:06Z",
+    "2021-04-15T07:26:55Z",
+    "2021-04-20T16:13:52Z",
+    "2021-04-26T14:07:56Z",
+    "2021-04-30T18:08:14Z",
+    "2021-05-28T10:46:11Z",
+    "2021-06-01T20:52:00Z",
+    "2021-06-14T07:26:29Z",
+    "2021-06-15T19:24:23Z",
+    "2021-06-24T15:40:55Z",
+    "2021-07-29T14:49:44Z",
+    "2021-08-04T18:10:17Z",
+    "2021-08-13T15:05:39Z",
+    "2021-08-16T23:19:02Z",
+    "2021-09-07T14:37:42Z",
+    "2021-09-16T09:56:17Z",
+    "2021-09-21T16:26:30Z",
+    "2021-10-01T10:11:50Z",
+    "2021-10-19T17:52:14Z",
+    "2021-10-24T01:23:36Z",
+    "2021-11-08T21:13:53Z",
+    "2021-11-15T20:56:12Z",
+    "2021-12-20T22:55:19Z",
+    "2022-01-13T17:34:27Z",
+    "2022-02-11T12:43:21Z",
+    "2022-03-19T16:22:15Z",
+    "2022-03-25T01:55:40Z",
+    "2022-04-17T23:57:53Z",
+    "2022-04-29T15:09:50Z",
+    "2022-05-16T07:35:16Z",
+    "2022-05-20T15:20:18Z",
+    "2022-05-22T13:23:34Z",
+    "2022-07-02T18:52:24Z",
+    "2022-07-31T01:09:26Z",
+    "2022-08-31T18:12:17Z",
+    "2022-09-27T04:38:05Z",
+    "2022-09-28T16:57:39Z",
+    "2022-09-30T13:38:09Z",
+    "2022-10-06T20:44:17Z",
+    "2022-10-10T22:41:12Z",
+    "2022-10-12T16:54:21Z",
+    "2022-11-27T14:50:12Z",
+    "2022-12-02T18:02:55Z",
+    "2022-12-20T19:38:18Z",
+    "2022-12-27T04:02:13Z",
+    "2023-01-13T00:26:03Z",
+    "2023-01-13T22:33:46Z",
+    "2023-01-14T08:05:33Z",
+    "2023-01-18T22:07:33Z",
+    "2023-02-10T13:56:11Z",
+    "2023-02-14T21:13:55Z",
+    "2023-02-16T16:55:43Z",
+    "2023-02-19T10:16:18Z",
+    "2023-03-13T18:14:30Z",
+    "2023-04-07T21:43:41Z",
+    "2023-04-15T04:07:31Z",
+    "2023-05-01T16:58:37Z",
+    "2023-05-12T21:55:47Z",
+    "2023-05-13T14:31:35Z",
+    "2023-05-21T18:30:09Z",
+    "2023-06-17T14:32:44Z",
+    "2023-06-18T13:12:07Z",
+    "2023-07-06T16:00:32Z",
+    "2023-08-29T14:03:48Z",
+    "2023-11-02T02:15:25Z",
+    "2023-11-08T16:58:07Z",
+    "2023-11-14T10:19:47Z",
+    "2023-11-15T15:53:18Z",
+    "2023-12-19T11:18:55Z",
+    "2024-04-17T18:30:49Z",
+    "2024-05-07T03:09:57Z",
+    "2024-05-13T17:43:38Z",
+    "2024-05-15T00:54:50Z",
+    "2024-05-20T17:21:55Z",
+    "2024-05-31T11:05:14Z",
+    "2024-06-20T22:51:20Z",
+    "2024-07-12T17:45:26Z",
+    "2024-08-13T16:00:16Z",
+    "2024-08-21T05:50:26Z",
+    "2024-08-21T18:01:04Z",
+    "2024-09-11T04:51:24Z",
+    "2024-10-20T19:07:10Z",
+    "2024-12-22T08:46:15Z",
+    "2025-02-25T19:07:03Z",
+    "2025-03-20T21:45:01Z",
+    "2025-04-04T01:57:54Z",
+    "2025-04-04T12:35:23Z",
+    "2025-04-30T04:58:47Z",
+    "2025-05-02T18:33:21Z",
+    "2025-05-31T19:40:53Z",
+    "2025-07-17T11:02:46Z",
+    "2025-08-22T21:01:22Z",
+    "2025-08-23T06:19:26Z",
+    "2025-09-06T06:49:28Z",
+    "2025-09-22T22:10:42Z",
+    "2025-09-23T23:02:04Z",
+    "2025-09-24T18:54:24Z",
+    "2025-10-10T01:46:48Z",
+    "2025-10-29T09:15:20Z",
+    "2025-11-10T14:34:27Z",
+    "2025-11-13T20:39:03Z",
+    "2025-11-15T18:48:14Z",
+    "2025-11-25T19:29:26Z",
+    "2025-12-03T14:04:37Z",
+    "2025-12-22T12:25:21Z",
+    "2026-01-09T13:23:03Z",
+    "2026-01-14T21:23:05Z",
+    "2026-01-16T23:16:48Z",
+    "2026-01-26T13:02:52Z",
+    "2026-01-27T17:33:33Z",
+    "2026-01-31T07:34:06Z",
+    "2026-02-03T23:41:12Z",
+    "2026-02-10T20:46:20Z",
+    "2026-03-06T02:39:04Z",
+    "2026-03-06T21:46:08Z",
+    "2026-03-09T03:15:15Z",
+    "2026-03-09T14:40:11Z",
+    "2026-03-11T05:57:59Z",
+    "2026-03-21T08:43:29Z",
+    "2026-03-26T16:11:36Z",
+    "2026-03-31T16:12:39Z",
+    "2026-04-03T00:29:32Z",
+    "2026-04-03T12:15:11Z",
+    "2026-04-03T15:19:07Z",
+    "2026-04-05T19:40:55Z",
+    "2026-04-07T15:53:29Z",
+    "2026-04-09T16:16:25Z",
+    "2026-04-12T17:09:43Z",
+    "2026-04-18T10:06:20Z",
+    "2026-04-19T03:07:55Z",
+    "2026-04-21T04:15:23Z",
+    "2026-04-23T03:20:28Z",
+    "2026-04-26T06:34:30Z",
+    "2026-04-28T15:43:30Z",
+    "2026-05-03T05:49:05Z"
+  ],
+  "stargazer_locations": [
+    "Costa Rica",
+    "Seattle",
+    "Sydney, Australia",
+    "Hilbert Space",
+    "Texas",
+    "Seattle WA",
+    "Chicago",
+    "Toronto, Ontario, Canada",
+    "MTL",
+    "Fortaleza"
+  ]
+}

@@ -134,6 +134,7 @@
                   "table": "PowerClaw_Memory_Log",
                   "item": {
                     "Title": "Heartbeat",
+                    "EventType": { "Value": "Heartbeat" },
                     "Summary": "@{concat('Heartbeat attempt started at ', utcNow())}"
                   }
                 },
@@ -183,6 +184,7 @@
                       "table": "PowerClaw_Memory_Log",
                       "item": {
                         "Title": "HeartbeatSkipped",
+                        "EventType": { "Value": "HeartbeatSkipped" },
                         "Summary": "\"Skipped due to active lock or kill switch\""
                       }
                     },
@@ -331,7 +333,7 @@
                 "parameters": {
                   "dataset": "@outputs('Compose:_Config_SiteURL')",
                   "table": "PowerClaw_Memory_Log",
-                  "$filter": "Created ge '@{addHours(utcNow(), -1)}' and (Title eq 'ActionExecuted' or Title eq 'ToolCalled' or Title eq 'TaskCompleted')"
+                  "$filter": "Created ge '@{addHours(utcNow(), -1)}'"
                 },
                 "authentication": "@parameters('$authentication')"
               }
@@ -745,6 +747,7 @@
                           "table": "PowerClaw_Memory_Log",
                           "item": {
                             "Title": "MemoryUpdate",
+                            "EventType": { "Value": "MemoryUpdate" },
                             "Summary": "@{substring(string(body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary']), 0, min(length(string(body('Parse_JSON_-_Execute_Agent')['memoryUpdateSummary'])), 255))}",
                             "FullContextJSON": "@{outputs('Compose:_Sanitize_markdown')}"
                           }
@@ -774,7 +777,7 @@
                                   "table": "PowerClaw_Tasks",
                                   "id": "@{items('Apply_to_each:_Process_Task_Actions')?['taskId']}",
                                   "item": {
-                                    "TaskStatus": "@{items('Apply_to_each:_Process_Task_Actions')?['newStatus']}",
+                                    "TaskStatus": { "Value": "@{items('Apply_to_each:_Process_Task_Actions')?['newStatus']}" },
                                     "Notes": "@{items('Apply_to_each:_Process_Task_Actions')?['notes']}",
                                     "LastActionDate": "@{utcNow()}"
                                   }
@@ -872,7 +875,7 @@
                                         "LastConfirmedAt": "@{utcNow()}",
                                         "Confidence": "@{min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10))}",
                                         "CanonicalFact": "@{items('Apply_to_each:_Save_Memories')?['canonicalFact']}",
-                                        "Status": "@{if(greaterOrEquals(min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10)), 80), 'Active', 'Tentative')}",
+                                        "Status": { "Value": "@{if(greaterOrEquals(min(95, add(int(coalesce(first(outputs('Get_items:_Existing_Memory')?['body/value'])?['Confidence'], items('Apply_to_each:_Save_Memories')?['confidence'])), 10)), 80), 'Active', 'Tentative')}" },
                                         "Title": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}"
                                       }
                                     },
@@ -899,12 +902,12 @@
                                         "table": "PowerClaw_Memory",
                                         "item": {
                                           "Title": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}",
-                                          "MemoryType": "@{items('Apply_to_each:_Save_Memories')?['memoryType']}",
+                                          "MemoryType": { "Value": "@{items('Apply_to_each:_Save_Memories')?['memoryType']}" },
                                           "ScopeKey": "@{items('Apply_to_each:_Save_Memories')?['scopeKey']}",
                                           "CanonicalFact": "@{items('Apply_to_each:_Save_Memories')?['canonicalFact']}",
                                           "Confidence": "@{items('Apply_to_each:_Save_Memories')?['confidence']}",
-                                          "Importance": "@{items('Apply_to_each:_Save_Memories')?['importance']}",
-                                          "Status": "Tentative",
+                                          "Importance": { "Value": "@{items('Apply_to_each:_Save_Memories')?['importance']}" },
+                                          "Status": { "Value": "Tentative" },
                                           "FirstLearnedAt": "@{utcNow()}",
                                           "LastConfirmedAt": "@{utcNow()}"
                                         }
@@ -969,9 +972,9 @@
                                   "item": {
                                     "Title": "@{items('Apply_to_each:_Create_Tasks')?['title']}",
                                     "TaskDescription": "@{items('Apply_to_each:_Create_Tasks')?['description']}",
-                                    "Priority": "@{items('Apply_to_each:_Create_Tasks')?['priority']}",
-                                    "Source": "Heartbeat",
-                                    "TaskStatus": "To Do"
+                                    "Priority": { "Value": "@{items('Apply_to_each:_Create_Tasks')?['priority']}" },
+                                    "Source": { "Value": "Heartbeat" },
+                                    "TaskStatus": { "Value": "To Do" }
                                   }
                                 },
                                 "authentication": "@parameters('$authentication')"
@@ -1118,6 +1121,7 @@
                             "table": "PowerClaw_Memory_Log",
                             "item": {
                               "Title": "Error",
+                              "EventType": { "Value": "Error" },
                               "Summary": "Agent call failed or returned output that could not be parsed as JSON. See FullContextJSON for raw output.",
                               "FullContextJSON": "@{coalesce(outputs('Execute_Agent_and_wait')?['body/lastResponse'], '(empty response)')}"
                             }
@@ -1394,6 +1398,7 @@
                       "table": "PowerClaw_Memory_Log",
                       "item": {
                         "Title": "Error",
+                        "EventType": { "Value": "Error" },
                         "Summary": "\"Heartbeat execution failed or timed out.\"",
                         "FullContextJSON": "@{string(result('Scope:_Execution'))}"
                       }
