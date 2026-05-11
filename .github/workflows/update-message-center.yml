@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update-message-center:
@@ -29,11 +30,39 @@ jobs:
         run: |
           git diff --quiet copilot-agent-strategy/copilot-agents-guide/index.html && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Commit and push updates
+      - name: Commit and open PR
         if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add copilot-agent-strategy/copilot-agents-guide/index.html
-          git commit -m "chore: weekly message center posts refresh $(date +%Y-%m-%d)"
-          git push
+
+          DATE=$(date -u +%Y-%m-%d)
+          BRANCH="message-center/$DATE"
+
+          git checkout -b "$BRANCH"
+          git commit -m "chore: weekly message center posts refresh $DATE"
+          git push --set-upstream origin "$BRANCH"
+
+          # Create PR if one doesn't already exist
+          existing_pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$existing_pr" ]; then
+            echo "PR #$existing_pr already exists for $BRANCH"
+          else
+            gh pr create \
+              --title "chore: weekly message center posts refresh $DATE" \
+              --body "Automated weekly message center data update." \
+              --head "$BRANCH" \
+              --base master
+            echo "✅ PR created"
+          fi
+
+          # Enable auto-merge
+          pr_number=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -n "$pr_number" ]; then
+            gh pr merge "$pr_number" --auto --squash \
+              && echo "✅ Auto-merge enabled for PR #$pr_number" \
+              || echo "::warning::Could not enable auto-merge — check repo settings"
+          fi

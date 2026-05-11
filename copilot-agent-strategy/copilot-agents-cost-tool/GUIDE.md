@@ -1,6 +1,6 @@
 # M365 Copilot Agents Cost Calculator — Walk-Through Guide
 
-> Open `index.html` in any modern browser (Edge, Chrome, Firefox). No account, server, or login required.
+> Open `AgentCosTest.html` in any modern browser (Edge, Chrome, Firefox). No account, server, or login required.
 
 ---
 
@@ -31,7 +31,7 @@ Think of it like a flight-price estimator: the final fare depends on fuel surcha
 
 ## 5-Minute Quick Start (for anyone)
 
-1. Open `index.html` in a browser.
+1. Open `AgentCosTest.html` in a browser.
 2. At the top, pick a **Quick start template** from the drop-down (for example, *Enterprise FAQ agent*).
 3. Scroll to the bottom — you will see an **Example Prompt & Cost Trace** and a **Production Cost Estimate** panel filled in automatically.
 4. Adjust any number that doesn't match your real situation. The estimate refreshes instantly.
@@ -81,6 +81,8 @@ The **⟳ Start Over** button resets everything to defaults.
 | Enterprise FAQ agent | Internal FAQ scenarios using SharePoint + enterprise connectors |
 | HR policy agent | Pure internal knowledge (SharePoint, uploaded files) |
 | IT helpdesk with tools + flows | Complex agents with tool calls and automated flows |
+| Employee Self-Service — HR agent starter | ServiceNow HRSD + Workday HR scenarios; shared orchestrator flow; mixed M365 Copilot user share |
+| Employee Self-Service — IT agent starter | ServiceNow ITSM + Microsoft Self-Help; reasoning model for diagnostic classification |
 | General purpose assistant (GPT-4o) | Foundry agents answering questions from uploaded files |
 | Code assistant (GPT-4.1) | Foundry agents doing code review / generation |
 
@@ -174,18 +176,27 @@ This is where you describe what actually happens during a conversation — not w
 | **Distinct test scenarios** | The number of unique conversation scripts or test cases |
 | **Iterations per scenario** | How many times you run each script (for consistency testing) |
 | **Monthly prepaid credits** | Your tenant's monthly credit allowance (0 = not using prepaid) |
-| **Pricing model** | Pay-as-you-go ($0.01/credit) or Prepaid pack ($0.008/credit) |
+| **Pricing model** | Pay-as-you-go, Copilot Credit pack, Copilot Credit P3, or Microsoft Agent P3 (see below) |
 | **% users with M365 Copilot license** | If some users have M365 Copilot licenses, their interactions cost **zero credits** |
 
 **Total test conversations** = Scenarios × Iterations.
 
-**Prepaid vs. Pay-as-you-go**:
-- Pay-as-you-go: $0.01 per credit, billed through Azure.
-- Prepaid pack: $200 for 25 000 credits ($0.008/credit — 20% cheaper).
+**Pricing model options** (all bill in Copilot Credits — only the dollar conversion changes):
+
+| Option | Effective $/credit | Best for |
+|---|---|---|
+| **Pay-as-you-go (PAYG) meter** | $0.0100 | Postpaid via Azure, no commitment |
+| **Copilot Credit pack** (subscription) | $0.0080 | Predictable monthly use; $200/25,000 credits |
+| **Copilot Credit Pre-Purchase Plan (P3)** | $0.0095 → $0.0080 | 1-year commit, 9 tiers (5–20% off) |
+| **Microsoft Agent Pre-Purchase Plan (P3)** *(NEW May 2026)* | $0.0095 / $0.0090 / $0.0085 | 1-year commit covering **both** Copilot Studio AND Microsoft Foundry usage; 3 tiers (5/10/15% off) |
+
+Source: [Microsoft Copilot Studio Licensing Guide — May 2026 (PDF)](https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/bizapps/Microsoft-Copilot-Studio-Licensing-Guide-May-2026-PUB.pdf).
 
 **M365 Copilot license impact**: If 50% of your users have M365 Copilot licenses, half of all interactions are free. The "% users with M365 Copilot license" field accounts for this in the estimate.
 
-**Capacity overage**: If prepaid credits are configured, the tool shows a capacity bar. At **125% of prepaid**, custom agents are disabled by the platform. The bar turns yellow at 80% and red at 100%.
+**Capacity overage**: If prepaid credits are configured, the tool shows a capacity bar. At **125% of prepaid**, custom agents are disabled by the platform.
+
+> **Voice agents** *(introduced in the May 2026 Licensing Guide)* are billed by **total call length to the nearest second** plus the configured voice orchestration. Voice agents are **not modeled** in this tool — estimate them separately.
 
 ---
 
@@ -232,7 +243,7 @@ That is a *Tool / Connector call* turn. In Step 3, set "Tool / Connector calls" 
 Use the "% users with M365 Copilot license" field in Step 4. Users with those licenses consume zero credits for all features.
 
 ### "We haven't decided on a pricing model yet"
-Try both. Change the "Pricing model" in Step 4 between Pay-as-you-go and Prepaid pack. The credit count stays the same; only the dollar total changes.
+Try all four. Change the "Pricing model" in Step 4 between Pay-as-you-go, Copilot Credit pack, Copilot Credit P3 (9 tiers), and Microsoft Agent P3 (3 tiers, NEW May 2026 — covers Copilot Studio + Foundry). The credit count stays the same; only the dollar total changes.
 
 ### "The agent reads from multiple SharePoint sites"
 Check **SharePoint / OneDrive** in Step 1 and set the number of sites for reference. The credit cost per lookup is still 12 credits (with graph) regardless of how many sites — the per-query cost comes from Step 3's knowledge lookup turns, not Step 1's source count.

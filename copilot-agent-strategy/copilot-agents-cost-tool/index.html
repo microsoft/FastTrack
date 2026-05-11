@@ -523,6 +523,8 @@
               <option value="faq">Enterprise FAQ agent</option>
               <option value="hr">HR policy agent (internal knowledge)</option>
               <option value="it">IT helpdesk with tools + flows</option>
+              <option value="ess_hr">Employee Self-Service — HR agent starter (ServiceNow HRSD + Workday)</option>
+              <option value="ess_it">Employee Self-Service — IT agent starter (ServiceNow ITSM + Self-Help)</option>
             </optgroup>
             <optgroup label="Azure Foundry agents">
               <option value="foundry_general">General purpose assistant (GPT-4o)</option>
@@ -581,12 +583,14 @@
               <span class="tooltip">
                 Choose the language model your Foundry agent uses. This sets the token price.<br><br>
                 <strong>Global Standard pay-as-you-go (USD / 1M tokens):</strong><br>
+                &bull; GPT-5.4-nano: $0.20 in / $1.25 out<br>
                 &bull; GPT-4.1-nano: $0.10 in / $0.40 out<br>
                 &bull; GPT-4o mini: $0.15 in / $0.60 out<br>
                 &bull; GPT-5-nano: $0.05 in / $0.40 out<br>
                 &bull; GPT-5-mini: $0.25 in / $2.00 out<br>
                 &bull; GPT-5.1-codex-mini: $0.25 in / $2.00 out<br>
                 &bull; GPT-4.1-mini: $0.40 in / $1.60 out<br>
+                &bull; GPT-5.4-mini: $0.75 in / $4.50 out<br>
                 &bull; GPT-4.1: $2.00 in / $8.00 out<br>
                 &bull; GPT-4o: $2.50 in / $10.00 out<br>
                 &bull; o4-mini: $1.10 in / $4.40 out<br>
@@ -594,7 +598,10 @@
                 &bull; GPT-5: $1.25 in / $10.00 out<br>
                 &bull; GPT-5.1: $1.25 in / $10.00 out<br>
                 &bull; GPT-5.2: $1.75 in / $14.00 out<br>
-                &bull; GPT-5.3: $1.75 in / $14.00 out<br><br>
+                &bull; GPT-5.3: $1.75 in / $14.00 out<br>
+                &bull; GPT-5.4 (&lt;272k ctx): $2.50 in / $15.00 out<br>
+                &bull; GPT-5.4 Pro (&lt;272k ctx): $30.00 in / $180.00 out<br><br>
+                Long-context (&gt;272k) and Data Zone variants are priced higher — see full Azure OpenAI pricing.<br><br>
                 <a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer">Full Azure OpenAI pricing &rarr;</a>
               </span>
             </button>
@@ -612,6 +619,10 @@
             <option value="gpt5_1">GPT-5.1 &mdash; $1.25 / $10.00 per 1M tokens</option>
             <option value="gpt5_2">GPT-5.2 &mdash; $1.75 / $14.00 per 1M tokens</option>
             <option value="gpt5_3">GPT-5.3 &mdash; $1.75 / $14.00 per 1M tokens</option>
+            <option value="gpt5_4_nano">GPT-5.4-nano &mdash; $0.20 / $1.25 per 1M tokens</option>
+            <option value="gpt5_4_mini">GPT-5.4-mini &mdash; $0.75 / $4.50 per 1M tokens</option>
+            <option value="gpt5_4">GPT-5.4 (&lt;272k ctx) &mdash; $2.50 / $15.00 per 1M tokens</option>
+            <option value="gpt5_4_pro">GPT-5.4 Pro (&lt;272k ctx) &mdash; $30.00 / $180.00 per 1M tokens</option>
             <option value="o4_mini">o4-mini &mdash; $1.10 / $4.40 per 1M tokens</option>
             <option value="o3">o3 &mdash; $2.00 / $8.00 per 1M tokens</option>
           </select>
@@ -1203,15 +1214,34 @@
             <button class="info-btn" aria-label="Info about pricing model">i
               <span class="tooltip">
                 <strong>Pay-as-you-go (PAYG)</strong>: $0.01 per credit. Billed via Azure subscription.<br>
-                <strong>Prepaid pack</strong>: $200 for 25,000 credits = $0.008/credit (20% cheaper).<br>
+                <strong>Copilot Credit pack</strong> (monthly subscription): $200 for 25,000 credits = $0.008/credit (20% cheaper).<br>
+                <strong>Copilot Credit Pre-Purchase Plan (P3)</strong>: 1-year up-front commitment in CCCUs (1 CCCU = $1 = 100 credits). 9 tiers from 5% (3,000 CCCUs) to 20% (3,000,000 CCCUs).<br>
+                <strong>Microsoft Agent Pre-Purchase Plan (P3)</strong>: NEW May 2026 — unified 1-year commit in ACUs (1 ACU = $1 = 100 credits). Covers BOTH Copilot Studio AND Microsoft Foundry usage. 3 tiers: 5% / 10% / 15%.<br>
                 This affects only the dollar estimate — credit counts are the same either way.<br><br>
-                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management" target="_blank" rel="noopener noreferrer">Billing rates &rarr;</a>
+                <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management" target="_blank" rel="noopener noreferrer">Billing rates &rarr;</a><br>
+                <a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/bizapps/Microsoft-Copilot-Studio-Licensing-Guide-May-2026-PUB.pdf" target="_blank" rel="noopener noreferrer">Copilot Studio Licensing Guide (May 2026) &rarr;</a>
               </span>
             </button>
           </label>
           <select id="scale_pricingModel" onchange="recalculate()">
             <option value="payg" selected>Pay-as-you-go ($0.01 / credit)</option>
-            <option value="prepaid">Prepaid pack ($0.008 / credit)</option>
+            <option value="prepaid">Copilot Credit pack — $200/25,000 credits ($0.008 / credit, 20% off)</option>
+            <optgroup label="Copilot Credit Pre-Purchase Plan (P3) — 1-year commit">
+              <option value="ccp3_t1">CC P3 Tier 1 — 3,000 CCCUs ($2,850, 5% off, $0.0095/cr)</option>
+              <option value="ccp3_t2">CC P3 Tier 2 — 15,000 CCCUs ($14,100, 6% off, $0.0094/cr)</option>
+              <option value="ccp3_t3">CC P3 Tier 3 — 30,000 CCCUs ($27,900, 7% off, $0.0093/cr)</option>
+              <option value="ccp3_t4">CC P3 Tier 4 — 150,000 CCCUs ($138,000, 8% off, $0.0092/cr)</option>
+              <option value="ccp3_t5">CC P3 Tier 5 — 300,000 CCCUs ($270,000, 10% off, $0.0090/cr)</option>
+              <option value="ccp3_t6">CC P3 Tier 6 — 750,000 CCCUs ($660,000, 12% off, $0.0088/cr)</option>
+              <option value="ccp3_t7">CC P3 Tier 7 — 1,500,000 CCCUs ($1,290,000, 14% off, $0.0086/cr)</option>
+              <option value="ccp3_t8">CC P3 Tier 8 — 2,250,000 CCCUs ($1,867,500, 17% off, $0.0083/cr)</option>
+              <option value="ccp3_t9">CC P3 Tier 9 — 3,000,000 CCCUs ($2,400,000, 20% off, $0.0080/cr)</option>
+            </optgroup>
+            <optgroup label="Microsoft Agent Pre-Purchase Plan (P3) — NEW May 2026 (covers MCS + Foundry)">
+              <option value="ap3_t1">Agent P3 Tier 1 — 20,000 ACUs ($19,000, 5% off, $0.0095/cr)</option>
+              <option value="ap3_t2">Agent P3 Tier 2 — 100,000 ACUs ($90,000, 10% off, $0.0090/cr)</option>
+              <option value="ap3_t3">Agent P3 Tier 3 — 500,000 ACUs ($425,000, 15% off, $0.0085/cr)</option>
+            </optgroup>
           </select>
         </div>
         <div class="field" id="scale_m365_row">
@@ -1275,23 +1305,44 @@
       <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer">
         Foundry Agent Service
       </a>
-      &nbsp;|&nbsp; Last verified: April 2026
+      &nbsp;|&nbsp;
+      <a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/bizapps/Microsoft-Copilot-Studio-Licensing-Guide-May-2026-PUB.pdf" target="_blank" rel="noopener noreferrer">
+        Copilot Studio Licensing Guide (May 2026)
+      </a>
+      &nbsp;|&nbsp; Last verified: May 2026
     </p>
-    <span class="version-badge" id="versionBadge">v1.4.0</span>
+    <span class="version-badge" id="versionBadge">v1.6.1</span>
   </div>
 </div>
 
 <script>
 /* ═══════════════════════════════════════
-   Billing rates (verified against Microsoft Learn 04/2026)
+   Copilot Credits billing rates (verified against Microsoft Learn 05/2026 —
+   page last updated 03/20/2026 — and the Copilot Studio Licensing Guide,
+   May 2026 edition. All Copilot Credits feature rates unchanged since v1.4.0.
+   v1.6.0 added Copilot Credit P3 + Microsoft Agent P3 plans + voice-agent
+   callout. v1.6.1 polish: linkified footer reference to the Licensing Guide,
+   expanded ESS template names to "Employee Self-Service".)
    https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management
    ═══════════════════════════════════════ */
 const CREDIT_TO_USD_PAYG = 0.01;
-const CREDIT_TO_USD_PREPAID = 0.008; // $200 / 25,000 credits
+const CREDIT_TO_USD_PREPAID = 0.008; // Copilot Credit pack: $200 / 25,000 credits
 const REASONING_SURCHARGE = 10; // premium AI tools: 100 credits / 10 responses
 const CONTENT_PROCESSING_RATE = 8; // 8 credits per page
 const PROMPT_RATES = { basic: 1/10, standard: 15/10, premium: 100/10 };
-const APP_VERSION = 'v1.4.0';
+/* Pre-purchase plan effective $/credit. Both CCCU and ACU = $1 list = 100 credits.
+   Effective $/credit = (Tier price / Tier units) / 100. */
+const PRICING_MODEL_RATES = {
+  payg:    CREDIT_TO_USD_PAYG,
+  prepaid: CREDIT_TO_USD_PREPAID,
+  // Copilot Credit Pre-Purchase Plan (P3) — 9 tiers, Feb 2026
+  ccp3_t1: 0.00950, ccp3_t2: 0.00940, ccp3_t3: 0.00930, ccp3_t4: 0.00920,
+  ccp3_t5: 0.00900, ccp3_t6: 0.00880, ccp3_t7: 0.00860, ccp3_t8: 0.00830,
+  ccp3_t9: 0.00800,
+  // Microsoft Agent Pre-Purchase Plan (P3) — NEW May 2026 — covers MCS + Foundry
+  ap3_t1:  0.00950, ap3_t2:  0.00900, ap3_t3:  0.00850,
+};
+const APP_VERSION = 'v1.6.1';
 const TEMPLATES = {
   faq: {
     label: 'Enterprise FAQ agent',
@@ -1433,26 +1484,146 @@ const TEMPLATES = {
         'Submit the privileged access request workflow.'
       ]
     }
+  },
+  ess_hr: {
+    label: 'Employee Self-Service — HR agent starter (ServiceNow HRSD + Workday)',
+    agentType: 'custom',
+    /* Knowledge: SharePoint HR policies + ServiceNow Knowledge KB (M365 Copilot Connector)
+       Connector data: Workday HCM/Absence/Payroll via SOAP RaaS connector */
+    ks: { sharepoint: 3, connectors: 2 },
+    sharepointGraph: true,
+    classicTopics: 2,   /* Conversation Start + [Example] Sensitive Topics (handoff) */
+    tools: 4,           /* HRSD: Create Case, Get Case Details, Get Case Updates, Get User Cases */
+    prompts: 1,
+    promptTier: 'standard',
+    flows: 1,           /* HRSD Common Orchestrator (shared flow pattern) */
+    flowActions: 18,    /* HRSD orchestrator chains: create + list + get + cache steps */
+    contentPages: 0,
+    reasoning: false,
+    knowledgeTurns: 2,  /* HR policy + benefits lookup via SharePoint / SNOW KB */
+    toolTurns: 3,       /* Workday employee data + HRSD case read/create */
+    promptTurns: 1,     /* AI summary of case status or policy answer */
+    classicTurns: 1,    /* Greeting / welcome topic */
+    flowTurns: 2,       /* HRSD Create Case + Get Cases List via shared orchestrator */
+    scenarios: 10,
+    iterations: 4,
+    prepaid: 25000,
+    pricingModel: 'prepaid',
+    m365pct: 70,        /* HR tool — broad employee audience, high M365 licence share */
+    examples: {
+      knowledge: {
+        sharepoint: [
+          'What is our parental leave policy for permanent employees?',
+          'When does the benefits open enrollment window close this year?',
+          'Where can I find the performance review guidelines for managers?'
+        ],
+        connectors: [
+          'Search the ServiceNow HR knowledge base for our relocation allowance policy.',
+          'Find HR knowledge articles about visa sponsorship support.'
+        ]
+      },
+      tool: [
+        'Create an HR case for a payslip discrepancy in my March pay.',
+        'Show me the details of my most recent HR case.',
+        'List all my open HR cases and their current status.',
+        'What updates have been added to my open parental leave HR case?'
+      ],
+      prompt: [
+        'Summarise the resolution notes from my last HR case in plain language.'
+      ],
+      classic: [
+        'I need help with an HR request.',
+        'What HR tasks can this agent help me with?',
+        'Thank you, that resolved my query.'
+      ],
+      flow: [
+        'Submit a new HR case for a benefits enrolment correction.',
+        'Retrieve the full list of my HR cases from ServiceNow.'
+      ]
+    }
+  },
+  ess_it: {
+    label: 'Employee Self-Service — IT agent starter (ServiceNow ITSM + Self-Help)',
+    agentType: 'custom',
+    /* Knowledge: SharePoint IT docs + ServiceNow Knowledge KB (M365 Copilot Connector)
+       + Microsoft Self-Help connector for guided M365 troubleshooting
+       Connector data: ServiceNow ITSM incidents via Power Platform connector */
+    ks: { sharepoint: 2, connectors: 3 },
+    sharepointGraph: true,
+    classicTopics: 2,   /* Conversation Start + Agent Handoff (Now Assist / Live Agent) */
+    tools: 5,           /* ITSM: Create Ticket, Get User Tickets, Get Ticket Details, Update Ticket, Get Ticket Updates */
+    prompts: 1,
+    promptTier: 'standard',
+    flows: 1,           /* ITSM Common Orchestrator (template config + shared flow pattern) */
+    flowActions: 22,    /* ITSM flows: create + list + details + update + attachment steps */
+    contentPages: 0,
+    reasoning: true,    /* Diagnostic classification before routing/ticket creation */
+    knowledgeTurns: 2,  /* IT runbook + ServiceNow KB article + Self-Help M365 steps */
+    toolTurns: 3,       /* Ticket create/read/update operations */
+    promptTurns: 1,     /* AI-generated ticket description from user problem description */
+    classicTurns: 1,    /* Greeting / welcome topic */
+    flowTurns: 1,       /* ITSM orchestrator: create or update ticket */
+    scenarios: 12,
+    iterations: 5,
+    prepaid: 25000,
+    pricingModel: 'prepaid',
+    m365pct: 50,        /* IT tool — all employees, roughly half M365 licensed */
+    examples: {
+      knowledge: {
+        sharepoint: [
+          'What is the approved process for requesting admin access to a new application?',
+          'Show me the standard steps for setting up a new device from IT.'
+        ],
+        connectors: [
+          'Search the ServiceNow knowledge base for VPN connection troubleshooting steps.',
+          'Find the IT knowledge article for resetting MFA on my account.',
+          'Show me the Microsoft Self-Help guidance for Outlook not syncing on mobile.'
+        ]
+      },
+      tool: [
+        'Create an IT support ticket — my Outlook keeps crashing on startup.',
+        'Show me all my open IT tickets and their current status.',
+        'Get the full details of incident INC0012345.',
+        'Add a comment to my ticket: the issue is still happening after restarting.',
+        'What is the latest update on my most recent IT ticket?'
+      ],
+      prompt: [
+        'Based on the problem I described, draft a clear and concise IT ticket summary for the helpdesk.'
+      ],
+      classic: [
+        'I need IT help.',
+        'Show me the IT tasks this agent can handle.',
+        'Thanks, the issue is resolved.'
+      ],
+      flow: [
+        'Create a new ServiceNow incident and route it to the network support queue.'
+      ]
+    }
   }
 };
 
-/* ─── Foundry Agent billing rates (Azure OpenAI Global Standard PAYG, April 2026) ───
-   Source: https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/ */
+/* ─── Foundry Agent billing rates (Azure OpenAI Global Standard PAYG, May 2026) ───
+   Source: https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/
+   GPT-5.4 series prices are for the <272k context tier; >272k context costs more. */
 const FOUNDRY_MODELS = {
-  'gpt4o_mini':      { label: 'GPT-4o mini',           inputPer1M:  0.15, outputPer1M:  0.60 },
-  'gpt4o':           { label: 'GPT-4o (2024-11-20)',   inputPer1M:  2.50, outputPer1M: 10.00 },
-  'gpt41_nano':      { label: 'GPT-4.1-nano',          inputPer1M:  0.10, outputPer1M:  0.40 },
-  'gpt41_mini':      { label: 'GPT-4.1-mini',          inputPer1M:  0.40, outputPer1M:  1.60 },
-  'gpt41':           { label: 'GPT-4.1',               inputPer1M:  2.00, outputPer1M:  8.00 },
-  'gpt5_nano':       { label: 'GPT-5-nano',            inputPer1M:  0.05, outputPer1M:  0.40 },
-  'gpt5_mini':       { label: 'GPT-5-mini',            inputPer1M:  0.25, outputPer1M:  2.00 },
-  'gpt5':            { label: 'GPT-5 (2025-08-07)',    inputPer1M:  1.25, outputPer1M: 10.00 },
-  'gpt5_1_codex_mini': { label: 'GPT-5.1-codex-mini', inputPer1M:  0.25, outputPer1M:  2.00 },
-  'gpt5_1':          { label: 'GPT-5.1',               inputPer1M:  1.25, outputPer1M: 10.00 },
-  'gpt5_2':          { label: 'GPT-5.2',               inputPer1M:  1.75, outputPer1M: 14.00 },
-  'gpt5_3':          { label: 'GPT-5.3',               inputPer1M:  1.75, outputPer1M: 14.00 },
-  'o4_mini':         { label: 'o4-mini',               inputPer1M:  1.10, outputPer1M:  4.40 },
-  'o3':              { label: 'o3',                    inputPer1M:  2.00, outputPer1M:  8.00 },
+  'gpt4o_mini':      { label: 'GPT-4o mini',                   inputPer1M:  0.15, outputPer1M:   0.60 },
+  'gpt4o':           { label: 'GPT-4o (2024-11-20)',           inputPer1M:  2.50, outputPer1M:  10.00 },
+  'gpt41_nano':      { label: 'GPT-4.1-nano',                  inputPer1M:  0.10, outputPer1M:   0.40 },
+  'gpt41_mini':      { label: 'GPT-4.1-mini',                  inputPer1M:  0.40, outputPer1M:   1.60 },
+  'gpt41':           { label: 'GPT-4.1',                       inputPer1M:  2.00, outputPer1M:   8.00 },
+  'gpt5_nano':       { label: 'GPT-5-nano',                    inputPer1M:  0.05, outputPer1M:   0.40 },
+  'gpt5_mini':       { label: 'GPT-5-mini',                    inputPer1M:  0.25, outputPer1M:   2.00 },
+  'gpt5':            { label: 'GPT-5 (2025-08-07)',            inputPer1M:  1.25, outputPer1M:  10.00 },
+  'gpt5_1_codex_mini': { label: 'GPT-5.1-codex-mini',          inputPer1M:  0.25, outputPer1M:   2.00 },
+  'gpt5_1':          { label: 'GPT-5.1',                       inputPer1M:  1.25, outputPer1M:  10.00 },
+  'gpt5_2':          { label: 'GPT-5.2',                       inputPer1M:  1.75, outputPer1M:  14.00 },
+  'gpt5_3':          { label: 'GPT-5.3',                       inputPer1M:  1.75, outputPer1M:  14.00 },
+  'gpt5_4_nano':     { label: 'GPT-5.4-nano',                  inputPer1M:  0.20, outputPer1M:   1.25 },
+  'gpt5_4_mini':     { label: 'GPT-5.4-mini',                  inputPer1M:  0.75, outputPer1M:   4.50 },
+  'gpt5_4':          { label: 'GPT-5.4 (<272k ctx)',           inputPer1M:  2.50, outputPer1M:  15.00 },
+  'gpt5_4_pro':      { label: 'GPT-5.4 Pro (<272k ctx)',       inputPer1M: 30.00, outputPer1M: 180.00 },
+  'o4_mini':         { label: 'o4-mini',                       inputPer1M:  1.10, outputPer1M:   4.40 },
+  'o3':              { label: 'o3',                            inputPer1M:  2.00, outputPer1M:   8.00 },
 };
 
 const FOUNDRY_TEMPLATES = {
@@ -1657,7 +1828,8 @@ function toggleKS(checkbox, inputId) {
   recalculate();
 }
 function getCreditToUSD() {
-  return el('scale_pricingModel').value === 'prepaid' ? CREDIT_TO_USD_PREPAID : CREDIT_TO_USD_PAYG;
+  const m = el('scale_pricingModel').value;
+  return PRICING_MODEL_RATES[m] != null ? PRICING_MODEL_RATES[m] : CREDIT_TO_USD_PAYG;
 }
 function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
 
@@ -1729,9 +1901,13 @@ function onAgentTypeChange() {
   } else if (at === 'foundry') {
     noteEl.style.display = 'block';
     noteEl.innerHTML = '&#9432; <strong>Microsoft Foundry Agent Service</strong> &mdash; billed by tokens (input + output) to your Azure subscription. No Copilot Studio credits apply. '
-      + 'Models: GPT-4o, GPT-4.1, GPT-5, GPT-5-nano, GPT-5.1, GPT-5.2, GPT-5.3, o3, o4-mini, and more. '
+      + 'Models: GPT-4o, GPT-4.1, GPT-5, GPT-5-nano, GPT-5.1, GPT-5.2, GPT-5.3, GPT-5.4, GPT-5.4 Pro, o3, o4-mini, and more. '
       + '<a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Foundry Agent Service overview</a> | '
       + '<a href="https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Azure OpenAI pricing</a>';
+  } else if (at === 'custom') {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '&#9432; <strong>Voice agents</strong> (NEW in May 2026 Copilot Studio Licensing Guide) are billed by <strong>total call length to the nearest second</strong> plus the configured voice orchestration &mdash; not modeled in this tool. For text-only Copilot Studio agents, continue below. '
+      + '<a href="https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/bizapps/Microsoft-Copilot-Studio-Licensing-Guide-May-2026-PUB.pdf" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light);">Licensing Guide (May 2026)</a>';
   } else {
     noteEl.style.display = 'none';
   }
