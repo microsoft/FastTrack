@@ -55,18 +55,6 @@ Open `AgentCosTest.html` in any modern browser — no server, no dependencies, n
 ## What makes this tool different from Microsoft's official estimator
 
 Microsoft provides the [Copilot Studio agent usage estimator](https://microsoft.github.io/copilot-studio-estimator/) for Copilot Credits forecasting.
-Here is what this tool covers that theirs does not:
-
-| Capability | This tool | Microsoft's estimator |
-|---|---|---|
-| Azure Foundry / token-based agents | **Yes** | No |
-| Per-turn cost trace with credit breakdown | **Yes** | No |
-| Dollar cost display (not just credits) | **Yes** | Credits only |
-| SharePoint / Agent Builder agent types | **Yes** | No |
-| Quick-start templates (pre-filled configs) | **Yes** | Category filter only |
-| Reasoning model surcharge modelled | **Yes** | Not explicit |
-| CSV export + Print snapshot | **Yes** | Download results |
-| Pay-as-you-go vs Credit pack vs CC P3 vs Agent P3 comparison | **Yes** *(all 4 plans incl. May 2026 Agent P3)* | No |
 
 ---
 
