@@ -52,12 +52,6 @@ Open `AgentCosTest.html` in any modern browser — no server, no dependencies, n
 
 ---
 
-## What makes this tool different from Microsoft's official estimator
-
-Microsoft provides the [Copilot Studio agent usage estimator](https://microsoft.github.io/copilot-studio-estimator/) for Copilot Credits forecasting.
-
----
-
 ## Billing rates reference
 
 ### Copilot Studio / M365 Copilot agents
