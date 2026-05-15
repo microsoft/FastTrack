@@ -1,9 +1,10 @@
 mcs.metadata:
   componentName: UserText
 kind: GlobalVariableComponent
-schemaName: auto_agent_BmTJh.globalvariable.UserText
+schemaName: auto_agent_BmTJh.GlobalVariableComponent.UserText
 description: User context and preferences loaded from SharePoint user.md at conversation start
-name: UserText
-scope: Conversation
-defaultValue: DEFAULT
-aIVisibility: UseInAIContext
+variable:
+  name: UserText
+  scope: Conversation
+  defaultValue: DEFAULT
+  aIVisibility: UseInAIContext

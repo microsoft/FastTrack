@@ -1,9 +1,10 @@
 mcs.metadata:
   componentName: AgentsText
 kind: GlobalVariableComponent
-schemaName: auto_agent_BmTJh.globalvariable.AgentsText
+schemaName: auto_agent_BmTJh.GlobalVariableComponent.AgentsText
 description: Agent capabilities and sub-agent definitions loaded from SharePoint agents.md at conversation start
-name: AgentsText
-scope: Conversation
-defaultValue: DEFAULT
-aIVisibility: UseInAIContext
+variable:
+  name: AgentsText
+  scope: Conversation
+  defaultValue: DEFAULT
+  aIVisibility: UseInAIContext
