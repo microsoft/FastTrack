@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   collect-traffic:
+    if: github.repository == 'microsoft/FastTrack'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -174,43 +175,6 @@ jobs:
             }' > "$DATA_DIR/$DATE.json"
 
           echo "✅ Saved $DATA_DIR/$DATE.json"
-
-          # Also maintain a rolling summary file with unique daily totals
-          SUMMARY_FILE="$DATA_DIR/summary.json"
-
-          # Extract today's totals from the 14-day data
-          today_views=$(printf '%s' "$views" | jq "[.views[]? | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
-          today_clones=$(printf '%s' "$clones" | jq "[.clones[]? | select(.timestamp | startswith(\"$DATE\"))] | .[0] // {count: 0, uniques: 0}")
-
-          new_entry=$(jq -n \
-            --arg date "$DATE" \
-            --argjson views "$today_views" \
-            --argjson clones "$today_clones" \
-            --argjson referrers "$referrers" \
-            --argjson paths "$paths" \
-            '{
-              date: $date,
-              views_count: ($views.count // 0),
-              views_uniques: ($views.uniques // 0),
-              clones_count: ($clones.count // 0),
-              clones_uniques: ($clones.uniques // 0),
-              top_referrers: [($referrers // [])[] | {referrer, count, uniques}],
-              top_paths: [($paths // [])[] | {path, title, count, uniques}]
-            }')
-
-          if [ -f "$SUMMARY_FILE" ]; then
-            # Append if date doesn't already exist, otherwise update
-            jq --argjson entry "$new_entry" '
-              if any(.[]; .date == $entry.date)
-              then map(if .date == $entry.date then $entry else . end)
-              else . + [$entry]
-              end
-            ' "$SUMMARY_FILE" > "${SUMMARY_FILE}.tmp" && mv "${SUMMARY_FILE}.tmp" "$SUMMARY_FILE"
-          else
-            echo "[$new_entry]" | jq '.' > "$SUMMARY_FILE"
-          fi
-
-          echo "✅ Updated $SUMMARY_FILE"
 
       - name: Commit and open PR
         env:
