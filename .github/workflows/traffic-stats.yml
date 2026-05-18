@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   collect-traffic:
+    if: github.repository == 'microsoft/FastTrack'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
