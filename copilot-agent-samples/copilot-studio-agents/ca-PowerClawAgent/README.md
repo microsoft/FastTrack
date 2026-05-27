@@ -5,7 +5,7 @@
 <p align="center"><strong>Your 24/7 AI Chief of Staff — Built Entirely on Microsoft 365</strong></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.2.10-blue?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-1.2.11-blue?style=flat-square" alt="Version" />
   <img src="https://img.shields.io/badge/Released-March_2026-lightgrey?style=flat-square" alt="Released" />
   <img src="https://img.shields.io/badge/Setup-~30_minutes-0078D4?style=flat-square" alt="Time to Value" />
   <img src="https://img.shields.io/badge/Stack-M365_·_Copilot_Studio_·_Power_Automate-742774?style=flat-square" alt="Stack" />
@@ -265,6 +265,7 @@ If your credit pack is exhausted, the agent stops responding to both heartbeat a
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.2.11** | May 2026 | Fix: import reliability — disabled automatic publish during solution import so Copilot Studio validates the agent only after bot variables and connection references finish registering; setup guide now instructs admins to publish manually after completing connection and flow configuration |
 | **1.2.10** | May 2026 | Fix: solution portability for cross-environment imports — corrected `schemaName` format in all 4 global variable component YAML files (`AgentsText`, `SoulText`, `ToolsText`, `UserText`) from legacy `globalvariable` to canonical `GlobalVariableComponent` format while preserving the validator-accepted flat global variable fields; patched matching `data` entries in `PowerClaw_Solution.zip`; bumped the packaged solution to `1.2.10.0` to make upgrades unambiguous |
 | **1.2.0** | April 2026 | DLP compliance: replaced all SharePoint HttpRequest actions with standard connector actions (GetItems/PostItem/PatchItem/DeleteItem) in HeartbeatFlow and Housekeeping; standardized list names to underscores (PowerClaw_Memory, PowerClaw_Tasks); trimmed config from 14 to 4 active settings; added manual browser-only setup guide; Bootstrap flow trimmed to 4 config items |
 | **1.1.0** | April 2026 | Simplified agent instructions (14K→4K chars) to fit 8K portal limit; moved detailed task/email/memory rules to constitution .md files; HeartbeatFlow: 200K journal cap to prevent AsyncResponsePayloadTooLarge, memory upsert for proposedMemories, proposedTasks for agent-initiated task creation, conditional journalEntry, string() guards; generic ConversationStart greeting (agent identity now fully driven by soul.md); variables recreated in cloud-canonical flat format |
@@ -272,7 +273,7 @@ If your credit pack is exhausted, the agent stops responding to both heartbeat a
 | **1.0.1** | March 2026 | Fix: Reliable context loading in M365 Copilot & Teams (JIT OnActivity init replaces OnConversationStart), improved soul.md personality template, removed canned Greeting topic |
 | **1.0.0** | March 2026 | Initial release — Heartbeat + Bootstrap + Housekeeping flows, HttpRequest-based SharePoint ops for cross-environment portability, configurable agent identity, Compose-based flow configuration, loop safety guards |
 
-> 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow, GetContext, and Housekeeping with your site URL. **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place.
+> 💡 **Updating:** Download the latest `PowerClaw_Solution.zip` and re-import into your environment. Your SharePoint data (lists, settings, memories, tasks) is preserved. After import, re-edit the `Compose:_Config_SiteURL` action in HeartbeatFlow, GetContext, and Housekeeping with your site URL, then publish the agent manually in Copilot Studio. **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place.
 >
 > ⚠️ **Upgrading to 1.1.0 — update your constitution files:** v1.1.0 moved detailed task management, email formatting, memory management, and Teams safety rules from agent instructions into constitution `.md` files. After importing, add the following content to your SharePoint files: **agents.md** (task workflow, time/quiet-hour rules, Teams safety, memory governance, dedup rules); **tools.md** (HTML email dark theme template, subject patterns, document generation rules, task list field details). See the bootstrap script's templates for reference content. Without these updates, the agent will still work but may lack detailed behavioral guidance for tasks and email formatting.
 >

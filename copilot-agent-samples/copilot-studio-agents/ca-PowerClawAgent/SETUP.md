@@ -61,6 +61,8 @@ PowerClaw needs a dedicated SharePoint site as its workspace.
 6. **Environment Variables** — if environment variables appear during import, it's fine to enter your actual SharePoint site URL and admin email from Step 1, but the flows themselves are configured in **Step 4: Configure Flows** using Compose actions
 
 > ℹ️ **Expected warning:** You may see *"Solution imported successfully with warnings: The original workflow definition has been deactivated and replaced."* This is normal — all flows are imported in an **OFF** state so you can complete setup before activating them.
+>
+> ℹ️ **Publish after setup:** PowerClaw does not auto-publish during import. This avoids import-time Copilot Studio validation errors while connection references and bot variables are still being registered. Publish the agent after completing the connection and flow configuration steps below.
 
 ---
 
@@ -384,7 +386,8 @@ To update PowerClaw to a newer version:
 2. Re-import into your existing environment (same steps as [Step 2](#step-2-import-the-solution))
 3. **Re-authorize connections** if prompted
 4. **Re-edit `Compose:_Config_SiteURL`** in HeartbeatFlow, GetContext, and Housekeeping with your site URL
-5. **Turn on** HeartbeatFlow and HousekeepingFlow (they are deactivated on import)
+5. **Publish** the PowerClaw agent in Copilot Studio
+6. **Turn on** HeartbeatFlow and HousekeepingFlow (they are deactivated on import)
 
 > ⚠️ **Do not re-run the Bootstrap flow** — your SharePoint lists and constitution files are already in place. Re-running Bootstrap may create duplicate lists or overwrite your customized constitution files.
 
@@ -407,6 +410,7 @@ Your SharePoint data (config settings, memories, tasks, constitution files) is f
 | **Rate limit triggered** | Check `MaxActionsPerHour` in PowerClaw_Config. Reset `KillSwitch` to `false` after reviewing. |
 | **Permissions errors** | Ensure the flow account has Edit access to the SharePoint site and all connections are authorized. |
 | **Memory not saving** | Verify the PowerClaw_Memory list exists. Check the list GUID in HeartbeatFlow. Ensure `memory-journal.md` exists in Shared Documents. |
+| **Import diagnostic says `ToolsText` / `Node is unknown to the system`** | Confirm you are using PowerClaw `1.2.11` or later. Delete any failed partial PowerClaw import before retrying, then import again and publish only after connections and flow configuration are complete. |
 
 </details>
 
