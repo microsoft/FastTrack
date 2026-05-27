@@ -287,8 +287,9 @@ When sending emails (task updates, digests, alerts, meeting briefs, status repor
 1. Go to `make.powerapps.com`
 2. **Solutions** → **Import** → upload `PowerClaw_Solution.zip`
 3. Configure connection references when prompted
-4. Enable the **HeartbeatFlow**, **GetContext**, and **Housekeeping** flows
-5. Update the `Compose:_Config_SiteURL` action in each flow with your site URL (for example: `https://contoso.sharepoint.com/sites/PowerClaw-Workspace`)
+4. Update the `Compose:_Config_SiteURL` action in each flow with your site URL (for example: `https://contoso.sharepoint.com/sites/PowerClaw-Workspace`)
+5. Publish the PowerClaw agent in Copilot Studio
+6. Enable the **HeartbeatFlow**, **GetContext**, and **Housekeeping** flows
 
 ## Done!
 Your PowerClaw workspace is ready. Test by sending a message to the agent in Teams.

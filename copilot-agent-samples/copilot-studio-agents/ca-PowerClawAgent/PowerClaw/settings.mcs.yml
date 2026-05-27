@@ -13,7 +13,7 @@ configuration:
     GenerativeActionsEnabled: true
 
   isAgentConnectable: true
-  publishOnImport: true
+  publishOnImport: false
   gPTSettings:
     defaultSchemaName: auto_agent_BmTJh.gpt.default
 
