@@ -135,7 +135,7 @@ default browser. Pass `-NoLaunch` to suppress this.
 
 | Author | Original Publish Date |
 | :----- | :-------------------- |
-| Dean Cron, Microsoft | February 2026 |
+| Dean Cron, Microsoft | June 2026 |
 
 ## Issues
 
