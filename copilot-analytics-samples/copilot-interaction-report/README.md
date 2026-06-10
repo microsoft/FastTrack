@@ -101,7 +101,8 @@ $pw = Read-Host -AsSecureString "PFX password"
 You can also supply credentials via the `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`,
 and `AZURE_CLIENT_SECRET` environment variables instead of parameters.
 
-When it finishes, open `copilot-report.html` in a browser.
+When it finishes, the report (`copilot-report.html`) opens automatically in your
+default browser. Pass `-NoLaunch` to suppress this.
 
 ### Useful parameters
 
@@ -113,6 +114,7 @@ When it finishes, open `copilot-report.html` in a browser.
 | `-DataDir` | Folder for the per-user JSON export. | `.\data\interactions` |
 | `-OutputPath` | Path of the HTML report to write. | `.\copilot-report.html` |
 | `-SkipExport` | Skip the Graph export and rebuild the report from existing JSON. | off |
+| `-NoLaunch` | Don't open the report in the browser when finished. | off (opens) |
 
 ### Rebuild the report without re-querying Graph
 

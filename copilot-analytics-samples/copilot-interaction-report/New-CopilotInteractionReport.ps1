@@ -62,6 +62,10 @@
     Skip the Graph export and rebuild the HTML report from JSON already in
     -DataDir.
 
+.PARAMETER NoLaunch
+    Do not open the generated HTML report in the default browser when finished.
+    By default the report opens automatically.
+
 .EXAMPLE
     # Client-secret auth, last 30 days
     .\New-CopilotInteractionReport.ps1 -TenantId <tid> -ClientId <cid> `
@@ -97,7 +101,8 @@ param(
     [int]$MaxUsers = 0,
     [string]$DataDir = (Join-Path '.' 'data\interactions'),
     [string]$OutputPath = (Join-Path '.' 'copilot-report.html'),
-    [switch]$SkipExport
+    [switch]$SkipExport,
+    [switch]$NoLaunch
 )
 
 # --- PowerShell 7+ bootstrap -------------------------------------------------
@@ -176,3 +181,23 @@ Write-Host ""
 Write-Host "Report written: $($res.Out)" -ForegroundColor Green
 Write-Host ("  {0} users  |  {1} active  |  {2} interactions  |  {3} sessions" -f `
     $res.Users, $res.Active, $res.Interactions, $res.Sessions)
+
+if (-not $NoLaunch) {
+    $reportPath = (Resolve-Path -LiteralPath $res.Out).Path
+    try {
+        if ($IsWindows) {
+            Start-Process $reportPath
+        }
+        elseif ($IsMacOS) {
+            & open $reportPath
+        }
+        else {
+            & xdg-open $reportPath
+        }
+        Write-Host "Opening report in your default browser..." -ForegroundColor Cyan
+    }
+    catch {
+        Write-Warning "Could not open the report automatically: $($_.Exception.Message)"
+        Write-Host "Open it manually: $reportPath"
+    }
+}
