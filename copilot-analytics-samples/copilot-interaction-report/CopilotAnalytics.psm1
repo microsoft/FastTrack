@@ -192,6 +192,16 @@ function Invoke-GraphGet {
     }
 }
 
+function Get-Prop {
+    # StrictMode-safe property read: returns $Default when the property is absent
+    # (e.g. the last Graph page has no '@odata.nextLink').
+    param([object]$Object, [Parameter(Mandatory)][string]$Name, [object]$Default = $null)
+    if ($null -ne $Object -and $Object.PSObject.Properties[$Name]) {
+        return $Object.PSObject.Properties[$Name].Value
+    }
+    return $Default
+}
+
 # ---------------------------------------------------------------------------
 # Export
 # ---------------------------------------------------------------------------
@@ -229,11 +239,11 @@ function Export-CopilotInteractions {
     $users = [System.Collections.Generic.List[object]]::new()
     while ($url) {
         $page = Invoke-GraphGet -Context $Context -Uri $url
-        foreach ($u in $page.value) {
+        foreach ($u in (Get-Prop $page 'value' @())) {
             if ($u.accountEnabled -eq $false) { continue }
             $users.Add($u)
         }
-        $url = $page.'@odata.nextLink'
+        $url = Get-Prop $page '@odata.nextLink'
     }
     if ($users.Count -eq 0) {
         throw "No enabled users have SKU $SkuId assigned. Verify the SKU id with /v1.0/subscribedSkus."
@@ -257,7 +267,7 @@ function Export-CopilotInteractions {
         if (Test-Path $fpath) {
             $existing = $null
             try { $existing = Get-Content $fpath -Raw | ConvertFrom-Json } catch { }
-            $cnt = if ($existing) { $existing.count } else { 0 }
+            $cnt = if ($existing) { [int](Get-Prop $existing 'count' 0) } else { 0 }
             $summary.Add([pscustomobject]@{ upn = $upn; id = $u.id; count = $cnt; status = 'cached' })
             Write-Host ("[{0}/{1}] {2} (cached)" -f $idx, $users.Count, $upn)
             continue
@@ -270,7 +280,7 @@ function Export-CopilotInteractions {
         try {
             while ($next) {
                 $page = Invoke-GraphGet -Context $Context -Uri $next
-                foreach ($item in $page.value) {
+                foreach ($item in (Get-Prop $page 'value' @())) {
                     $when = $null
                     if ($item.createdDateTime) {
                         try {
@@ -281,7 +291,7 @@ function Export-CopilotInteractions {
                     if ($cutoff -and $when -and $when -lt $cutoff) { continue }
                     $collected.Add($item)
                 }
-                $next = $page.'@odata.nextLink'
+                $next = Get-Prop $page '@odata.nextLink'
             }
         }
         catch {
