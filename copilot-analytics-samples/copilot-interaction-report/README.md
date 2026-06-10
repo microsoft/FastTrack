@@ -1,6 +1,6 @@
 # Copilot Interaction Report (PowerShell) 📊
 
-![Dashboard Sample](./images/dashboard.png)
+![Dashboard Sample](./images/dashboard.gif)
 
 ## Summary
 
@@ -26,7 +26,7 @@ recorded for each licensed user. The report shows:
 7. A sortable **All Users** leaderboard
 8. **Audited events** — the most recent prompts with snippets
 
-> The dataset shown in the screenshot above is fictional sample data.
+> The dataset shown in the recording above is fictional sample data.
 
 ## How it works
 
