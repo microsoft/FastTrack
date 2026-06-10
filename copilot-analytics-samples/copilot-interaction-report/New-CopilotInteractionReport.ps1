@@ -1,4 +1,6 @@
-#requires -Version 7.0
+# NOTE: a "#requires -Version 7.0" statement is intentionally omitted here so the
+# script can relaunch itself under PowerShell 7 automatically (see the bootstrap
+# block after param()). The module enforces the 7.0 requirement on import.
 <#
 .SYNOPSIS
     Gather Microsoft 365 Copilot interaction history for a tenant and build a
@@ -97,6 +99,39 @@ param(
     [string]$OutputPath = (Join-Path '.' 'copilot-report.html'),
     [switch]$SkipExport
 )
+
+# --- PowerShell 7+ bootstrap -------------------------------------------------
+# This script depends on PowerShell 7 features. If launched under an older
+# edition (e.g. Windows PowerShell 5.1), try to relaunch under pwsh; if pwsh
+# isn't installed, fail with a clear, actionable message.
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    $pwsh = Get-Command pwsh -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $pwsh) {
+        throw "This script requires PowerShell 7+. Could not find 'pwsh' to relaunch under. " +
+              "Install PowerShell 7 from https://aka.ms/PowerShell and re-run, " +
+              "or start the script from a 'pwsh' session."
+    }
+    if ($PSBoundParameters.ContainsKey('CertificatePassword')) {
+        throw "Detected Windows PowerShell $($PSVersionTable.PSVersion). -CertificatePassword " +
+              "cannot be safely forwarded to a relaunched process. Please run this script " +
+              "directly from a PowerShell 7 (pwsh) session instead."
+    }
+    Write-Host "Relaunching under PowerShell 7 ($($pwsh.Source))..." -ForegroundColor Yellow
+    $forward = @()
+    foreach ($entry in $PSBoundParameters.GetEnumerator()) {
+        $val = $entry.Value
+        if ($val -is [System.Management.Automation.SwitchParameter]) {
+            if ($val.IsPresent) { $forward += "-$($entry.Key)" }
+        }
+        else {
+            $forward += "-$($entry.Key)"
+            $forward += [string]$val
+        }
+    }
+    & $pwsh.Source -NoProfile -File $PSCommandPath @forward
+    exit $LASTEXITCODE
+}
+# -----------------------------------------------------------------------------
 
 $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot 'CopilotAnalytics.psm1') -Force
