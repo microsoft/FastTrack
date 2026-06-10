@@ -1,3 +1,4 @@
+#requires -Version 7.0
 <#
 .SYNOPSIS
     Gather Microsoft 365 Copilot interaction history for a tenant and build a

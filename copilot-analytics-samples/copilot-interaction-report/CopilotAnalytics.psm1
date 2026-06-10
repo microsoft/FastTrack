@@ -1,3 +1,4 @@
+#requires -Version 7.0
 <#
 .SYNOPSIS
     Microsoft 365 Copilot interaction-history analytics: app-only Graph export
