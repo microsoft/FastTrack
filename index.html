@@ -1190,11 +1190,16 @@
 
     // ─── Repo Analytics Dashboard ────────────────────────────────
     (async () => {
-      const DATA_BASE = 'https://raw.githubusercontent.com/soyalejolopez/FastTrack/master/traffic-data';
+      const DATA_BASE = 'https://raw.githubusercontent.com/microsoft/FastTrack/master/traffic-data';
+      const LOOKBACK_DAYS = 30;
+
+      const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+      ));
 
       async function fetchLatest() {
         const today = new Date();
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < LOOKBACK_DAYS; i++) {
           const d = new Date(today);
           d.setDate(d.getDate() - i);
           const dateStr = d.toISOString().slice(0, 10);
@@ -1207,7 +1212,20 @@
       }
 
       const data = await fetchLatest();
-      if (!data) return;
+      if (!data) {
+        const msg = `Traffic data has not been published in the last ${LOOKBACK_DAYS} days.`;
+        const updatedEl = document.getElementById('analytics-updated');
+        if (updatedEl) updatedEl.textContent = '⚠️ Traffic data unavailable';
+        ['referrer-list', 'popular-pages'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = `<p class="text-sm text-white/50">${msg}</p>`;
+        });
+        ['chart-views', 'chart-clones', 'chart-stars'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el?.parentElement) el.parentElement.innerHTML = `<p class="text-sm text-white/40 text-center mt-16">${msg}</p>`;
+        });
+        return;
+      }
 
       const isLight = document.documentElement.classList.contains('light');
       const gridColor = isLight ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.12)';
@@ -1266,7 +1284,7 @@
         }
       });
 
-      const fmtDate = (ts) => new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const fmtDate = (ts) => new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
       // Views chart
       new Chart(document.getElementById('chart-views'), {
@@ -1359,7 +1377,7 @@
               <div class="relative flex items-center gap-3">
                 <span class="shrink-0 text-base">${icon}</span>
                 <div class="min-w-0 flex-1">
-                  <p class="text-sm font-medium text-white/85 break-all">${ref.referrer}</p>
+                  <p class="text-sm font-medium text-white/85 break-all">${escapeHtml(ref.referrer)}</p>
                   <p class="text-xs text-white/35">${cat}</p>
                 </div>
                 <div class="shrink-0 text-right">
@@ -1405,14 +1423,14 @@
           const barW = Math.max(6, (p.count / maxP) * 100);
           const friendly = friendlyName(p.path);
           const icon = pathIcon(p.path);
-          const href = `https://github.com${p.path}`;
+          const href = `https://github.com${encodeURI(p.path)}`;
           pagesContainer.innerHTML += `
-            <a href="${href}" target="_blank" rel="noreferrer" class="group relative block overflow-hidden rounded-2xl bg-white/[0.02] px-4 py-3 transition hover:bg-white/[0.05]" title="${p.path.replace('/microsoft/FastTrack', '')}">
+            <a href="${escapeHtml(href)}" target="_blank" rel="noreferrer" class="group relative block overflow-hidden rounded-2xl bg-white/[0.02] px-4 py-3 transition hover:bg-white/[0.05]" title="${escapeHtml(p.path.replace('/microsoft/FastTrack', ''))}">
               <div class="absolute inset-y-0 left-0 rounded-2xl bg-cyan-400/[0.04]" style="width:${barW}%"></div>
               <div class="relative flex items-center gap-3">
                 <span class="shrink-0 text-base">${icon}</span>
                 <div class="min-w-0 flex-1">
-                  <p class="text-sm font-medium text-white/85 break-words leading-snug group-hover:text-cyan-300 transition">${friendly}</p>
+                  <p class="text-sm font-medium text-white/85 break-words leading-snug group-hover:text-cyan-300 transition">${escapeHtml(friendly)}</p>
                 </div>
                 <div class="shrink-0 text-right">
                   <span class="text-sm font-semibold text-cyan-300">${p.count.toLocaleString()}</span>
