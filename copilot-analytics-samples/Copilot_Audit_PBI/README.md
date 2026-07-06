@@ -95,6 +95,17 @@ Purview `CopilotInteraction` exports are close to one row per prompt in most ten
 - **PowerShell 5.1+** — for the Entra user export
 - **Power BI Desktop** — to open the `.pbix`
 
+## 🏛️ Sovereign Clouds (GCC / GCC High / DoD)
+
+The audit export and Entra user export are **cloud-agnostic** — they read whatever SKUs your tenant actually has directly from Microsoft Graph, so the CSVs load into the dashboard in any cloud.
+
+> [!NOTE]
+> The dashboard's **license friendly-name mapping currently assumes Commercial SKU values.** Government clouds use different license identifiers — the SKU GUID (`skuId`) differs between Commercial and GCC/GCC High/DoD, and some part numbers/friendly names carry a gov-specific variant. As a result, the **license type** shown in the report may display the raw SKU part number (or blank) instead of a friendly name for gov tenants.
+
+**What this affects:** only the *display name* of the license in the report. All other data — usage, apps, agents, users — is unaffected.
+
+**How to adjust for your cloud:** in Power BI Desktop, edit the license lookup in the query/model to match your tenant's SKU part numbers (run `Get-MgSubscribedSku | Select SkuId, SkuPartNumber` to list them). If you'd like your GCC/GCC High/DoD SKU values folded into the template so it works out of the box, please share them via the [issues list](../../../../issues).
+
 ## 📚 Additional Resources
 
 - [Microsoft 365 Copilot documentation](https://learn.microsoft.com/en-us/microsoft-365-copilot/)
@@ -112,6 +123,9 @@ Please report issues to the [issues list](../../../../issues). This is an open-s
 | Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | April 21st, 2026 |
 
 ## 📝 Changelog
+
+### July 6, 2026
+- **Sovereign cloud guidance.** Documented that the exports are cloud-agnostic but the dashboard's license friendly-name mapping assumes Commercial SKUs, with steps for GCC / GCC High / DoD tenants to adjust the license lookup. Native gov SKU mappings to follow.
 
 ### July 2, 2026
 - **Unified PowerShell export with the main dashboard.** The **Export Purview Audit Logs** option now emits a raw `AuditData` CSV that mirrors the Purview portal export, so it loads directly into `Copilot_Audit_PBI.pbix`. Retired the stale PowerShell app/agent classification (now a single source of truth in the Power BI query) and deprecated the separate `AlternateMethod` model.
