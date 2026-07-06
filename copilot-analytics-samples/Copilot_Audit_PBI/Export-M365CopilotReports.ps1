@@ -2,14 +2,14 @@
 # This script can be used for the Copilot Purview Audit Dashboard, as well as, be used to generate an export of Entra users that can then be used to build an Organizational Data file for Copilot Analytics. 
 # Features:
 # - Export Entra Users Details including Manager Information (Can be used for Org Data Preparation)
-# - Export Copilot Audit Logs (with filtering for Copilot interactions)
+# - Export Copilot Audit Logs (raw AuditData, drop-in for Copilot_Audit_PBI.pbix)
 # - Export Purview Audit Logs (with Custom Operations filtering)
 # - Export Microsoft 365 Copilot Usage Reports
 # - Extensible for future export functions
 # - Interactive startup menu
 
 # Author: Alejandro Lopez | alejandro.lopez@microsoft.com
-# Version: v20250924 
+# Version: v20260702
 
 # Global configuration
 $script:Config = @{
@@ -606,150 +606,6 @@ function Export-CopilotAuditLogs {
         $final | Out-File $logFile -Append
     }
     
-    # Helper function to determine Copilot application and location
-    function Get-CopilotAppAndLocation {
-        param ([PSCustomObject]$AuditData)
-        
-        $CopilotApp = 'Copilot for M365'
-        $CopilotLocation = $null
-        
-        # Refine app type based on specific AppHost values first
-        switch ($AuditData.CopilotEventData.AppHost) {
-            "bizchat"       { $CopilotApp = "Copilot for M365 Chat"; break }
-            "Outlook"       { $CopilotApp = "Outlook"; break }
-            "Copilot Studio"{ $CopilotApp = "Copilot Studio Agent"; break }
-            "Word"          { $CopilotApp = "Word"; break }
-            "Excel"         { $CopilotApp = "Excel"; break }
-            "PowerPoint"    { $CopilotApp = "PowerPoint"; break }
-            "Teams"         { $CopilotApp = "Teams"; break }
-            "Bing"          { $CopilotApp = "Bing"; break }
-        }
-
-        # Use context type as a fallback or for additional detail
-        if ($AuditData.copiloteventdata.contexts.type) {
-             switch ($AuditData.copiloteventdata.contexts.type) {
-                "TeamsMeeting" { $CopilotLocation = "Teams meeting" }
-                "StreamVideo"  { $CopilotApp = "Stream"; $CopilotLocation = "Stream video player" }
-             }
-        }
-       
-        if ($AuditData.AppIdentity -like "*Copilot.Studio*") {
-            $CopilotApp = "Copilot Studio Agent"
-        }
-        
-        # Determine location from context ID
-        if ($AuditData.copiloteventdata.contexts.id -like "*/sites/*") {
-            $CopilotLocation = "SharePoint Online"
-        } elseif ($AuditData.copiloteventdata.contexts.id -like "*https://teams.microsoft.com/*") {
-            $CopilotLocation = if ($AuditData.copiloteventdata.contexts.id -like "*ctx=channel*") { "Teams Channel" } else { "Teams Chat" }
-        } elseif ($AuditData.copiloteventdata.contexts.id -like "*/personal/*") {
-            $CopilotLocation = "OneDrive for Business"
-        }
-        
-        # Extract agent name from AppIdentity (legacy approach)
-        $AgentNameLegacy = ""
-        if ($CopilotApp -eq "Copilot Studio Agent" -and $AuditData.AppIdentity -match '.*[_-](.+?)$') {
-            $AgentNameLegacy = $Matches[1]
-        }
-        
-        return @{ App = $CopilotApp; Location = $CopilotLocation; AgentNameLegacy = $AgentNameLegacy }
-    }
-    
-    # Helper function to convert JSON AuditData to a flattened object
-    function Convert-AuditDataToObject {
-        param ([string]$AuditDataJson, [string]$UserID, [datetime]$CreationTime)
-        
-        try {
-            # Helper scriptblock to sanitize strings for CSV export
-            $Sanitizer = {
-                param($InputString)
-                if ($null -eq $InputString) { return $null }
-                # Replace one or more newline/carriage return characters with a single space
-                $cleaned = $InputString -replace "[\r\n]+", " "
-                # Truncate if the string is excessively long
-                if ($cleaned.Length -gt 500) {
-                    return $cleaned.Substring(0, 497) + "..."
-                }
-                return $cleaned
-            }
-
-            $auditDataObj = $AuditDataJson | ConvertFrom-Json
-            $copilotData = $auditDataObj.CopilotEventData
-            $appInfo = Get-CopilotAppAndLocation -AuditData $auditDataObj
-            
-            $Context = $auditDataObj.copiloteventdata.contexts.id ?? $auditDataObj.copiloteventdata.threadid
-            
-            # Defensively access potentially null properties
-            $accessedResources = $copilotData.AccessedResources ?? @()
-            $messages = $copilotData.Messages ?? @()
-            $contexts = $copilotData.Contexts ?? @()
-            $plugins = $copilotData.AISystemPlugin ?? @()
-            $models = $copilotData.ModelTransparencyDetails ?? @()
-
-            # Extract declarative agent details from the audit data
-            $AgentId = $auditDataObj.AgentId ?? ""
-            $AgentName = $auditDataObj.AgentName ?? ""
-            $AgentVersion = $auditDataObj.AgentVersion ?? ""
-            
-            # Determine agent category based on AgentId format
-            $AgentCategory = ""
-            if ($AgentId) {
-                if ($AgentId -like "CopilotStudio.Declarative.*") {
-                    $AgentCategory = "Declarative Agent"
-                } elseif ($AgentId -like "CopilotStudio.CustomEngine.*") {
-                    $AgentCategory = "Custom Engine Agent"
-                } elseif ($AgentId -like "P_*") {
-                    $AgentCategory = "Declarative Agent (Purview)"
-                } else {
-                    $AgentCategory = "Other Agent"
-                }
-            }
-            
-            # Fallback to legacy agent name extraction if new fields are empty
-            if ([string]::IsNullOrWhiteSpace($AgentName) -and -not [string]::IsNullOrWhiteSpace($appInfo.AgentNameLegacy)) {
-                $AgentName = $appInfo.AgentNameLegacy
-            }
-
-            # Create a custom object with flattened properties
-            return [PSCustomObject][Ordered]@{
-                TimeStamp                 = (Get-Date $CreationTime -format "yyyy-MM-dd HH:mm:ss")
-                RecordID                  = $auditDataObj.Id
-                User                      = $UserID
-                ClientRegion              = $auditDataObj.ClientRegion
-                App                       = $appInfo.App
-                AgentName                 = $AgentName
-                AgentId                   = $AgentId
-                AgentVersion              = $AgentVersion
-                AgentCategory             = $AgentCategory
-                Location                  = $appInfo.Location
-                AppHost                   = $copilotData.AppHost
-                AppIdentity               = $auditDataObj.AppIdentity
-                AppContext                = $Context
-                ThreadId                  = $copilotData.ThreadId
-                AISystemPlugins           = ($plugins | ForEach-Object { "$($_.Id):$($_.Name)" }) -join '; '
-                ModelDetails              = ($models.ModelName) -join '; '
-                ContextTypes              = ($contexts.Type) -join '; '
-                HasPrompt                 = @($messages.isPrompt).Contains($true)
-                HasResponse               = @($messages.isPrompt).Contains($false)
-                MessageCount              = $messages.Count
-                AccessedResourceCount     = $accessedResources.Count
-                AccessedResourceNames     = (($accessedResources.Name | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
-                AccessedResourceLocations = (($accessedResources.id | Sort-Object -Unique) -join ", ")
-                AccessedResourceUrls      = (($accessedResources.SiteUrl | Sort-Object -Unique) -join ", ")
-                AccessedResourceTypes     = (($accessedResources.Type | Sort-Object -Unique) -join ", ")
-                AccessedResourceActions   = (($accessedResources.action | Sort-Object -Unique | ForEach-Object { & $Sanitizer $_ }) -join ", ")
-                Workload                  = $auditDataObj.Workload
-                OrganizationId            = $auditDataObj.OrganizationId
-                CopilotLogVersion         = $auditDataObj.CopilotLogVersion
-                IsCopilotStudio           = $appInfo.App -eq "Copilot Studio Agent"
-                IsCustomAgent             = ($appInfo.App -eq "Copilot Studio Agent") -and ($AgentName -ne "")
-                IsSPOAgent                = $copilotData.AppHost -eq "SharePoint"
-                IsDeclarativeAgent        = ($AgentCategory -like "*Declarative*")
-                AuditDataJson             = & $Sanitizer $AuditDataJson
-            }
-        } catch { Write-ErrorDetails -ErrorRecord $_; return $null }
-    }
-    
     # This variable will hold the connection status for the finally block
     $isConnected = $false
     # This variable will hold the final results to be returned
@@ -873,45 +729,68 @@ function Export-CopilotAuditLogs {
             Write-Host "Removed $dupCount duplicate raw records before processing." -ForegroundColor Yellow 
         }
         
-        Write-Host "Processing $($uniqueRawResults.Count) unique records..." -ForegroundColor Cyan
-        $progressParams.Activity = "Processing Records"
-        $processedResults = [System.Collections.Generic.List[Object]]::new()
+        Write-Host "Building Purview-portal-compatible export for $($uniqueRawResults.Count) unique records..." -ForegroundColor Cyan
+        $progressParams.Activity = "Building Export"
+        $processedResults = [System.Collections.Generic.List[Object]]::new($uniqueRawResults.Count)
         $counter = 0
 
         foreach ($entry in $uniqueRawResults) {
             $counter++
-            $progressParams.Status = "Record $counter of $($uniqueRawResults.Count)"
-            Write-Progress @progressParams -PercentComplete (50 + (($counter / $uniqueRawResults.Count) * 50))
-            $processedResult = Convert-AuditDataToObject -AuditDataJson $entry.AuditData -UserID $entry.UserIds -CreationTime $entry.CreationDate
-            if ($processedResult) { $processedResults.Add($processedResult) }
+            if (($counter % 500) -eq 0 -or $counter -eq $uniqueRawResults.Count) {
+                $progressParams.Status = "Record $counter of $($uniqueRawResults.Count)"
+                Write-Progress @progressParams -PercentComplete (50 + (($counter / $uniqueRawResults.Count) * 50))
+            }
+
+            # Recover the canonical RecordId (AuditData.Id) but keep the ORIGINAL raw JSON string
+            # untouched so Power BI can expand it losslessly. All Copilot app / agent / location
+            # classification now lives in the Power BI (M) query - the single source of truth - so
+            # this export stays raw and mirrors the Microsoft Purview portal "Download all results"
+            # schema (8 columns), making it a drop-in for the main Copilot_Audit_PBI.pbix.
+            $recordId = $entry.Identity
+            try { $recordId = ($entry.AuditData | ConvertFrom-Json).Id } catch { }
+
+            $creationDate = $entry.CreationDate
+            if ($creationDate -is [datetime]) {
+                $creationDate = $creationDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffffff") + "Z"
+            }
+
+            $recordTypeNum = 251  # CopilotInteraction
+            try { $recordTypeNum = [int]$entry.RecordType } catch { }
+
+            $processedResults.Add([PSCustomObject][ordered]@{
+                RecordId                  = $recordId
+                CreationDate              = $creationDate
+                RecordType                = $recordTypeNum
+                Operation                 = $entry.Operations
+                UserId                    = $entry.UserIds
+                AuditData                 = $entry.AuditData
+                AssociatedAdminUnits      = ""
+                AssociatedAdminUnitsNames = ""
+            })
         }
 
         Write-Progress @progressParams -Completed
-        
+
         if ($processedResults.Count -gt 0) {
             Write-Host "`nExporting $($processedResults.Count) unique records to $outputFile..." -ForegroundColor Cyan
-            $processedResults | Export-Csv -Path $outputFile -NoTypeInformation
-            Write-Host "✅ Export completed successfully!" -ForegroundColor Green
+            # UTF-8 to match the Power BI query (Encoding=65001). Export-Csv RFC-4180 quoting wraps
+            # the comma-bearing AuditData JSON, and because audit AuditData is single-line JSON the
+            # quoted commas survive Power Query's QuoteStyle.None parsing (which only affects
+            # newlines inside quotes, not commas).
+            $processedResults | Export-Csv -Path $outputFile -NoTypeInformation -Encoding UTF8
+            Write-Host "Export completed successfully!" -ForegroundColor Green
             Write-LogFile "END: Exported $($processedResults.Count) records to $outputFile."
-            
+
             # Display summary statistics
-            Write-Host "`n📊 Summary Statistics:" -ForegroundColor Cyan
-            Write-Host "   Total interactions: $($processedResults.Count)" -ForegroundColor Green
-            
-            $agentStats = $processedResults | Where-Object { $_.IsDeclarativeAgent } | Measure-Object
-            if ($agentStats.Count -gt 0) {
-                Write-Host "`n📊 Declarative Agent Summary:" -ForegroundColor Cyan
-                Write-Host "   Total declarative agent interactions: $($agentStats.Count)" -ForegroundColor Green
-                $uniqueAgents = $processedResults | Where-Object { $_.IsDeclarativeAgent -and $_.AgentName } | Select-Object -ExpandProperty AgentName -Unique
-                Write-Host "   Unique agents found: $($uniqueAgents.Count)" -ForegroundColor Green
-                if ($uniqueAgents.Count -gt 0 -and $uniqueAgents.Count -le 10) {
-                    Write-Host "   Agent names: $($uniqueAgents -join ', ')" -ForegroundColor Gray
-                }
-            }
-        } else { 
-            Write-Host "No processed records available to export." -ForegroundColor Yellow 
+            Write-Host "`nSummary Statistics:" -ForegroundColor Cyan
+            Write-Host "   Total Copilot interactions: $($processedResults.Count)" -ForegroundColor Green
+            Write-Host "`nNext step: open Copilot_Audit_PBI.pbix, choose Transform Data, and point the" -ForegroundColor Cyan
+            Write-Host "PathToCopilotAuditActivitiesCSV parameter at:" -ForegroundColor Cyan
+            Write-Host "   $outputFile" -ForegroundColor Gray
+        } else {
+            Write-Host "No processed records available to export." -ForegroundColor Yellow
         }
-        
+
         # Assign the clean data to the variable that will be returned
         $functionResults = $processedResults
     }
@@ -1110,7 +989,7 @@ function Show-MainMenu {
     Write-Host "Please select an option:" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "1. Export Entra Users Details" -ForegroundColor White
-    Write-Host "2. Export Purview Audit Logs (Copilot Interactions Only)" -ForegroundColor White
+    Write-Host "2. Export Purview Audit Logs (Copilot Interactions -> Copilot_Audit_PBI.pbix)" -ForegroundColor White
     Write-Host "3. Export Microsoft 365 Copilot Usage Reports (Beta endpoints)" -ForegroundColor White
     Write-Host "4. Exit" -ForegroundColor White
     Write-Host ""
@@ -1138,6 +1017,9 @@ function Show-MainMenu {
             # Purview Audit Logs Export - Copilot Interactions Only
             Clear-Host
             Write-Host "Purview Audit Logs Export (Copilot Interactions Only):" -ForegroundColor Cyan
+            Write-Host "Produces a raw AuditData CSV that matches the Purview portal export and loads" -ForegroundColor Gray
+            Write-Host "directly into the main Copilot_Audit_PBI.pbix (PathToCopilotAuditActivitiesCSV)." -ForegroundColor Gray
+            Write-Host ""
             $outputPath = Read-Host "Enter output folder path (leave blank for default)"
 
             $defaultDays = 7

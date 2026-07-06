@@ -47,12 +47,15 @@ A Power BI dashboard for analyzing Microsoft 365 Copilot usage and adoption acro
 3. **Close & Apply**.
 
 <details>
-<summary><b>Alternative: use <code>Search-UnifiedAuditLog</code> instead of the Purview UI</b></summary>
+<summary><b>Alternative: export the audit logs via PowerShell instead of the Purview UI</b></summary>
 
-For smaller tenants or automated pipelines you can export audit logs via PowerShell. Run `Export-M365CopilotReports.ps1` and choose **Export Purview Audit Logs**; the matching `.pbix` lives in [AlternateMethod](./AlternateMethod/).
+For smaller tenants or automated pipelines you can skip the portal and export the same data with PowerShell. Run `Export-M365CopilotReports.ps1`, choose **Export Purview Audit Logs**, and it produces a **raw `AuditData` CSV that matches the Purview portal export** — so it loads straight into the **same** `.pbix` above (just point `PathToCopilotAuditActivitiesCSV` at the generated file). All app/agent classification is handled by the Power BI query, so there is now a single source of truth.
 
 > [!WARNING]
-> `Search-UnifiedAuditLog` can time out or return incomplete data on high-volume tenants. The Purview UI export is the recommended path.
+> `Search-UnifiedAuditLog` can time out or return incomplete data on high-volume tenants. The Purview UI export is still the recommended path.
+
+> [!NOTE]
+> The legacy `AlternateMethod/` `.pbix` (which consumed a pre-flattened CSV) is **deprecated**. The PowerShell export now feeds the main dashboard directly, so the alternate model is no longer required.
 
 </details>
 
@@ -109,6 +112,9 @@ Please report issues to the [issues list](../../../../issues). This is an open-s
 | Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | April 21st, 2026 |
 
 ## 📝 Changelog
+
+### July 2, 2026
+- **Unified PowerShell export with the main dashboard.** The **Export Purview Audit Logs** option now emits a raw `AuditData` CSV that mirrors the Purview portal export, so it loads directly into `Copilot_Audit_PBI.pbix`. Retired the stale PowerShell app/agent classification (now a single source of truth in the Power BI query) and deprecated the separate `AlternateMethod` model.
 
 ### April 21, 2026
 - **Agent name & ID for autonomous agents.** Autonomous (Copilot Studio) agents now show their name and ID parsed from AppIdentity, with a 3-tier fallback (AgentName → AppIdentity → ConnectorUsage).
