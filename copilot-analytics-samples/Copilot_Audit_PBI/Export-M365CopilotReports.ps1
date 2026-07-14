@@ -9,7 +9,7 @@
 # - Interactive startup menu
 
 # Author: Alejandro Lopez | alejandro.lopez@microsoft.com
-# Version: v20260702
+# Version: v20260714
 
 # Global configuration
 $script:Config = @{
@@ -18,6 +18,51 @@ $script:Config = @{
     SessionActive = $false
     MGGraphSession = $null
     ExchangeSession = $null
+    # Sovereign cloud support (GCC / GCC High / DoD). Defaults to Commercial/GCC-moderate,
+    # which use the same global Graph and Exchange endpoints.
+    CloudEnvironmentName = "Commercial / GCC"
+    GraphEnvironment = "Global"
+    GraphBaseUri = "https://graph.microsoft.com"
+    ExchangeEnvironmentName = "O365Default"
+}
+
+# Supported Microsoft 365 cloud environments for Connect-MgGraph (-Environment) and
+# Connect-ExchangeOnline (-ExchangeEnvironmentName). Commercial and GCC (moderate) share
+# the global endpoints; only GCC High and DoD require sovereign-cloud values.
+$script:CloudEnvironments = [ordered]@{
+    "1" = @{ Name = "Commercial / GCC"; Graph = "Global";    GraphBaseUri = "https://graph.microsoft.com";    Exchange = "O365Default" }
+    "2" = @{ Name = "GCC High";         Graph = "USGov";     GraphBaseUri = "https://graph.microsoft.us";     Exchange = "O365USGovGCCHigh" }
+    "3" = @{ Name = "DoD";              Graph = "USGovDoD";  GraphBaseUri = "https://dod-graph.microsoft.us"; Exchange = "O365USGovDoD" }
+}
+
+# Function to select the target Microsoft 365 cloud environment
+function Select-CloudEnvironment {
+    [CmdletBinding()]
+    param()
+
+    Write-Host ""
+    Write-Host "Select your Microsoft 365 cloud environment:" -ForegroundColor Yellow
+    Write-Host "  1. Commercial / GCC (default)" -ForegroundColor White
+    Write-Host "  2. GCC High" -ForegroundColor White
+    Write-Host "  3. DoD" -ForegroundColor White
+    $envChoice = Read-Host "Enter your selection (1-3, leave blank for Commercial / GCC)"
+
+    if ([string]::IsNullOrWhiteSpace($envChoice)) { $envChoice = "1" }
+
+    $selected = $script:CloudEnvironments[$envChoice]
+    if ($null -eq $selected) {
+        Write-Host "Invalid selection. Defaulting to Commercial / GCC." -ForegroundColor Yellow
+        $selected = $script:CloudEnvironments["1"]
+    }
+
+    $script:Config.CloudEnvironmentName    = $selected.Name
+    $script:Config.GraphEnvironment        = $selected.Graph
+    $script:Config.GraphBaseUri            = $selected.GraphBaseUri
+    $script:Config.ExchangeEnvironmentName = $selected.Exchange
+
+    Write-Host "Cloud environment set to: $($selected.Name)" -ForegroundColor Green
+    Write-Host "  Microsoft Graph endpoint : $($selected.GraphBaseUri)" -ForegroundColor Gray
+    Write-Host "  Exchange environment     : $($selected.Exchange)" -ForegroundColor Gray
 }
 
 # Function to create consistent output path
@@ -89,7 +134,8 @@ function Connect-ToMicrosoftGraph {
     try {
         Write-Host "Connecting to Microsoft Graph..." -ForegroundColor Cyan
         # Added Organization.Read.All scope which is required for license information
-        Connect-MgGraph -Scopes "User.Read.All", "AuditLog.Read.All", "Reports.Read.All", "Organization.Read.All" -ErrorAction Stop
+        # -Environment targets the correct cloud (Global / USGov / USGovDoD) for sovereign tenants
+        Connect-MgGraph -Environment $script:Config.GraphEnvironment -Scopes "User.Read.All", "AuditLog.Read.All", "Reports.Read.All", "Organization.Read.All" -ErrorAction Stop
         Write-Host "Successfully connected to Microsoft Graph." -ForegroundColor Green
         $script:Config.MGGraphSession = $true
         return $true
@@ -116,7 +162,7 @@ function Connect-ToExchangeOnline {
     
     try {
         Write-Host "Connecting to Exchange Online..." -ForegroundColor Cyan
-        Connect-ExchangeOnline -ShowBanner:$false -ErrorAction Stop | Out-Null
+        Connect-ExchangeOnline -ExchangeEnvironmentName $script:Config.ExchangeEnvironmentName -ShowBanner:$false -ErrorAction Stop | Out-Null
         Write-Host "Successfully connected to Exchange Online." -ForegroundColor Green
         $script:Config.ExchangeSession = $true
         return $true
@@ -204,7 +250,7 @@ function Export-EntraUsersDetails {
         
         try {
             # Direct API call to get subscribed SKUs - this avoids the issue with Get-MgSubscribedSku
-            $licenseSkus = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/subscribedSkus" -ErrorAction Stop
+            $licenseSkus = Invoke-MgGraphRequest -Method GET -Uri "$($script:Config.GraphBaseUri)/v1.0/subscribedSkus" -ErrorAction Stop
             
             # Create a hashtable for quick SKU lookup
             $skuLookup = @{}
@@ -252,7 +298,7 @@ function Export-EntraUsersDetails {
             
             # Get manager details using the beta endpoint that returns direct manager
             try {
-                $managerEndpoint = "https://graph.microsoft.com/v1.0/users/$($user.Id)/manager"
+                $managerEndpoint = "$($script:Config.GraphBaseUri)/v1.0/users/$($user.Id)/manager"
                 $manager = Invoke-MgGraphRequest -Method GET -Uri $managerEndpoint -ErrorAction SilentlyContinue
                 
                 if ($manager -and $manager.id) {
@@ -613,7 +659,7 @@ function Export-CopilotAuditLogs {
 
     try {
         Write-Host "Connecting to Exchange Online..." -ForegroundColor Yellow
-        Connect-ExchangeOnline -ShowBanner:$false -ErrorAction Stop | Out-Null
+        Connect-ExchangeOnline -ExchangeEnvironmentName $script:Config.ExchangeEnvironmentName -ShowBanner:$false -ErrorAction Stop | Out-Null
         $isConnected = $true
         Write-Host "Successfully connected to Exchange Online." -ForegroundColor Green
         Write-LogFile "Successfully connected to Exchange Online."
@@ -867,7 +913,7 @@ function Export-CopilotUsageReports {
         Write-Host "Retrieving Copilot usage details for period: $Period..." -ForegroundColor Yellow
         Write-Host "This may take some time depending on the amount of data..." -ForegroundColor Yellow
         
-        $uri = "https://graph.microsoft.com/beta/reports/getMicrosoft365CopilotUsageUserDetail(period='$Period')"
+        $uri = "$($script:Config.GraphBaseUri)/beta/reports/getMicrosoft365CopilotUsageUserDetail(period='$Period')"
         Write-Host "API URI: $uri" -ForegroundColor Gray
         
         # Initialize progress bar parameters
@@ -1206,6 +1252,9 @@ function Start-CopilotReportingTool {
     if (-not (Test-RequiredModules)) {
         return
     }
+    
+    # Prompt once for the target cloud environment (Commercial / GCC / GCC High / DoD)
+    Select-CloudEnvironment
     
     # Display the main menu
     Show-MainMenu
