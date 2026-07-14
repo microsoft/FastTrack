@@ -99,6 +99,8 @@ Purview `CopilotInteraction` exports are close to one row per prompt in most ten
 
 The audit export and Entra user export are **cloud-agnostic** — they read whatever SKUs your tenant actually has directly from Microsoft Graph, so the CSVs load into the dashboard in any cloud.
 
+**Connecting from a gov tenant.** When you run `Export-M365CopilotReports.ps1`, it prompts for your cloud environment (**Commercial / GCC**, **GCC High**, or **DoD**) before connecting. That selection points `Connect-MgGraph` (`-Environment`), `Connect-ExchangeOnline` (`-ExchangeEnvironmentName`), and the direct Graph REST calls at the right sovereign endpoints (`graph.microsoft.us` for GCC High, `dod-graph.microsoft.us` for DoD). Commercial and GCC (moderate) share the global endpoints, so pick option 1 for either. Press Enter to accept the Commercial / GCC default.
+
 > [!NOTE]
 > The dashboard's **license friendly-name mapping currently assumes Commercial SKU values.** Government clouds use different license identifiers — the SKU GUID (`skuId`) differs between Commercial and GCC/GCC High/DoD, and some part numbers/friendly names carry a gov-specific variant. As a result, the **license type** shown in the report may display the raw SKU part number (or blank) instead of a friendly name for gov tenants.
 
@@ -123,6 +125,9 @@ Please report issues to the [issues list](../../../../issues). This is an open-s
 | Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | April 21st, 2026 |
 
 ## 📝 Changelog
+
+### July 14, 2026
+- **Sovereign cloud connection support.** `Export-M365CopilotReports.ps1` now prompts for the target cloud (Commercial / GCC, GCC High, or DoD) at startup and routes `Connect-MgGraph`, `Connect-ExchangeOnline`, and the direct Graph REST calls to the matching sovereign endpoints. Fixes connection errors for GCC High / DoD tenants where the script previously defaulted to Commercial endpoints. ([#468](../../../../issues/468))
 
 ### July 6, 2026
 - **Sovereign cloud guidance.** Documented that the exports are cloud-agnostic but the dashboard's license friendly-name mapping assumes Commercial SKUs, with steps for GCC / GCC High / DoD tenants to adjust the license lookup. Native gov SKU mappings to follow.
