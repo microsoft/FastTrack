@@ -36,7 +36,9 @@
        -BulkByDepartment to bundle every agent in a department into one
        solution/export/import instead (fewer imports, but one shared failure affects
        the whole department). The source agent is left untouched - this is a copy, not
-       a move.
+       a move. The dedicated source-environment solution is left in place afterward
+       unless -CleanupSourceSolution is passed, in which case it's deleted once its
+       export/import has succeeded.
     6. Dataverse solution import doesn't preserve the bot's owner or record-level
        sharing, so after each successful import this script reassigns ownership
        (matched by email) and re-grants the same shares (users by email, teams by
@@ -81,7 +83,17 @@ param(
 
     # See Inventory-PowerPlatformAgents.ps1 -UseInteractiveBrowser for why device code
     # is the default and this switch exists as an opt-in alternative.
-    [switch]$UseInteractiveBrowser
+    [switch]$UseInteractiveBrowser,
+
+    # By default the dedicated PPMigration_* solution this script creates in the SOURCE
+    # environment is left behind after a successful migration (along with the exported
+    # .zip in $OutputDir) - kept around in case you need to inspect or re-export it. Pass
+    # this switch to delete that solution from the source environment once its export +
+    # import into the target environment has succeeded. Only ever applies on success -
+    # a failed/partial migration always leaves its solution in place so you can
+    # investigate. Best-effort: a failed delete is logged as a warning, not a script
+    # failure - the migration itself already succeeded by that point.
+    [switch]$CleanupSourceSolution
 )
 
 $ErrorActionPreference = 'Stop'
@@ -553,7 +565,14 @@ foreach ($batch in $batches) {
                 version                  = '1.0.0.0'
                 'publisherid@odata.bind' = "/publishers($publisherId)"
             } | ConvertTo-Json
-            Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutions" -Headers $dvHeaders -Method Post -Body $solutionBody | Out-Null
+            # 'Prefer: return=representation' asks Dataverse to hand back the created
+            # entity's body (including its solutionid) instead of the default 204 No
+            # Content - needed so -CleanupSourceSolution can delete this exact solution
+            # by ID later, without a separate lookup-by-uniquename round-trip.
+            $createHeaders = $dvHeaders.Clone()
+            $createHeaders['Prefer'] = 'return=representation'
+            $solutionCreateResp = Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutions" -Headers $createHeaders -Method Post -Body $solutionBody
+            $solutionId = $solutionCreateResp.solutionid
 
             foreach ($agentItem in $batchItems) {
                 Write-Host "  Adding agent '$($agentItem.agentName)' as a solution component (with subcomponents)..."
@@ -614,6 +633,20 @@ foreach ($batch in $batches) {
                     Write-Warning "  $($outcome.ownerReassignmentStatus) - owner reassignment and share replication were skipped for this agent."
                 }
                 $perAgentOutcome[$agentItem.agentId] = $outcome
+            }
+
+            if ($CleanupSourceSolution) {
+                Write-Host "  Cleaning up dedicated solution '$solutionUniqueName' from the source environment..."
+                try {
+                    Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutions($solutionId)" -Headers $dvHeaders -Method Delete | Out-Null
+                    Write-Host "  Deleted source solution '$solutionUniqueName'." -ForegroundColor Green
+                }
+                catch {
+                    # Best-effort, like owner reassignment/share replication above - the
+                    # migration itself already succeeded by this point, so a failed delete
+                    # is logged rather than treated as a migration failure.
+                    Write-Warning "  Could not delete source solution '$solutionUniqueName' (solutionid: $solutionId): $($_.Exception.Message) - remove it manually if desired."
+                }
             }
         }
         catch {
