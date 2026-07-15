@@ -34,8 +34,9 @@ Produces `department-environment-mapping.json`. See `department-environment-mapp
 
 ```json
 [
-  { "department": "Example Department Name", "environmentName": "Contoso-Environment-A", "code": "EXA" },
-  { "department": "Another Department", "environmentName": "Contoso-Environment-B", "code": "AD" }
+  { "department": "Executive", "environmentName": "Contoso-Executive", "code": "EXE" },
+  { "department": "Human Resources", "environmentName": "Contoso-HR", "code": "HR" },
+  { "department": "Finance", "environmentName": "Contoso-Finance", "code": "FIN" }
 ]
 ```
 
