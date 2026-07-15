@@ -22,7 +22,8 @@
        CSV - the JSON preserves precise datetimes/booleans that the CSV's
        locale-formatted values don't).
     2. Loads a department -> target-environment mapping file (see
-       department-environment-mapping.example.json for the shape).
+       department-environment-mapping.example.json for the shape) and validates up front,
+       via 'pac env list', that every mapped target environment already exists.
     3. For each agent, resolves its owning department (the owner's, falling back to the
        creator's if orphaned), looks up the mapped target environment, and builds a
        migration plan - skipping agents with no resolvable department, no mapping
@@ -168,6 +169,23 @@ $sourceEnvUrl  = $envWho.OrgUrl.TrimEnd('/')
 $sourceEnvName = $envWho.FriendlyName
 Write-Host "`nSource environment: $sourceEnvName ($sourceEnvUrl)`n" -ForegroundColor Cyan
 
+# --- Validate every target environment referenced in the mapping actually exists, BEFORE
+#     doing anything else (building a plan, acquiring Dataverse access, etc.) - a typo'd or
+#     not-yet-created target environment should be caught immediately, not discovered after
+#     evaluating every agent. ---
+Write-Host "Validating that every target environment in the mapping exists (via 'pac env list')..." -ForegroundColor Cyan
+$envList = (pac env list --json 2>&1 | Out-String) | ConvertFrom-Json
+$validMappingEntries = @($mappingRaw | Where-Object { $_.department -and $_.environmentName })
+$mappedEnvNames = @($validMappingEntries.environmentName | Select-Object -Unique)
+$existingEnvNames = @($envList | ForEach-Object { $_.FriendlyName })
+$missingEnvs = @($mappedEnvNames | Where-Object { $existingEnvNames -notcontains $_ })
+if ($missingEnvs.Count -gt 0) {
+    $affected = ($validMappingEntries | Where-Object { $missingEnvs -contains $_.environmentName } |
+        ForEach-Object { "$($_.department) -> $($_.environmentName)" }) -join '; '
+    throw "Target environment(s) referenced by the mapping were not found via 'pac env list': $($missingEnvs -join ', ') (affected mapping(s): $affected). Create these environments first, then re-run."
+}
+Write-Host "All $($mappedEnvNames.Count) distinct target environment(s) in the mapping exist.`n" -ForegroundColor Green
+
 $mismatched = @($agents | Where-Object { $_.environmentName -ne $sourceEnvName })
 if ($mismatched.Count -gt 0) {
     Write-Warning "Skipping $($mismatched.Count) agent(s) belonging to a different environment than the currently authenticated one ('$sourceEnvName') - sign in to / select the correct source environment first."
@@ -311,12 +329,12 @@ if ($toMigrate.Count -eq 0) {
     return
 }
 
-# --- Resolve target environment URLs via pac env list ---
-Write-Host "Resolving target environment URL(s) for $($toMigrate.Count) planned migration(s) via 'pac env list'..." -ForegroundColor Cyan
-$envList = (pac env list --json 2>&1 | Out-String) | ConvertFrom-Json
+# --- Resolve target environment URLs (existence was already validated up front) ---
+Write-Host "Resolving target environment URL(s) for $($toMigrate.Count) planned migration(s)..." -ForegroundColor Cyan
 foreach ($item in $toMigrate) {
     $targetRecord = $envList | Where-Object { $_.FriendlyName -eq $item.targetEnvironmentName } | Select-Object -First 1
     if (-not $targetRecord) {
+        # Shouldn't happen given the upfront validation above - handled defensively anyway.
         $item.status = "Skipped - target environment '$($item.targetEnvironmentName)' not found via pac env list"
     }
     else {
@@ -350,9 +368,8 @@ Write-Host "Resolved publisher: $publisherId" -ForegroundColor Green
 # type reference doesn't list a value for Bot either. Resolve it dynamically here by
 # looking at an existing bot's own solutioncomponent row in the SOURCE org, rather than
 # hardcoding a number that could be wrong if this script is ever pointed at a different
-# source environment (confirmed live: the same logical component type can resolve to a
-# different numeric code in different environments/tenants - e.g. 10163 in one org vs.
-# 10212 in another after import).
+# source environment - the same logical component type can resolve to a different numeric
+# code in different environments/tenants (e.g. 10163 in one org vs. 10212 in another).
 Write-Host "Resolving the Bot solution-component type for this source environment..." -ForegroundColor Cyan
 $sampleBotId = $toMigrate[0].agentId
 $typeResp = Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutioncomponents?`$filter=objectid eq $sampleBotId&`$select=componenttype&`$top=1" -Headers $dvHeaders -Method Get
