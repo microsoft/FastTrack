@@ -5,88 +5,35 @@
     the raw JSON output of Inventory-PowerPlatformAgents.ps1 as its input.
 
 .DESCRIPTION
-    1. Loads the inventory JSON (agents-inventory-<env>.json by default, or
-       agents-full-inventory-<env>.json if the inventory was run with
-       -IncludeAgentBuilder) produced by Inventory-PowerPlatformAgents.ps1 -
-       NOT the CSV, since the CSV's datetime fields are locale-formatted for
-       human readability and the JSON preserves precise, unambiguous values
-       plus real booleans.
-    2. Loads a department -> target-environment mapping file you maintain
-       (see department-environment-mapping.example.json for the shape - each
-       entry is { department, environmentName, code }; this script only uses
-       department/environmentName and ignores code).
-    3. For each agent, determines its "owning" department (the owner's
-       department, falling back to the creator's department if the agent is
-       orphaned), looks up the mapped target environment, and builds a
-       migration plan. Agents with no resolvable department, no mapping
-       entry, or whose mapped target is the same as the source are skipped
-       (with a reason) rather than migrated.
-    4. Prints the full plan and writes it to migration-plan.csv BEFORE doing
-       anything else, so you can review it (this happens even under -WhatIf).
-    5. For each planned migration, since there is no direct "move agent" API:
-         a. Creates a new, dedicated UNMANAGED solution in the source
-            environment (named PPMigration_<agent>_<shortHash> by default, or
-            PPMigration_<department>_<shortHash> when -BulkByDepartment is
-            used), reusing the source environment's own Default-solution
-            publisher.
-         b. Adds the agent (Dataverse "bot" component) to that solution,
-            including its subcomponents/dependencies. The bot component type
-            code is resolved dynamically at runtime (by inspecting an
-            existing bot's own solutioncomponent row) rather than hardcoded,
-            since Dataverse assigns custom-table object type codes per-org -
-            confirmed live that the same logical component type is 10163 in
-            one org and 10212 in another.
-         c. Exports the solution as unmanaged (pac solution export).
-         d. Imports it into the resolved target environment (pac solution
-            import), publishing changes.
-       By default, each agent gets its OWN dedicated solution (one
-       create/export/import per agent), so a failure for one agent never
-       affects any other. Pass -BulkByDepartment to bundle every agent
-       mapped to the same department into a SINGLE solution/export/import
-       instead - fewer solutions and imports overall, but if that shared
-       import fails, EVERY agent in the department fails together (no
-       per-agent isolation). Owner reassignment and share replication (step
-       6) still happen individually per agent in both modes.
-       The ORIGINAL agent in the source environment is left untouched (this
-       is a copy, not a destructive move) - re-run is safe to retry, but
-       re-running for the SAME agent (or, under -BulkByDepartment, the SAME
-       set of agents in a department) will fail at solution-create time
-       because the generated solution unique name already exists (the name
-       is deterministically derived from the agent ID(s) involved); that
-       surfaces as a clear error rather than silently duplicating.
-    6. Since Dataverse solution import does NOT preserve the bot's record
-       GUID, owner, or record-level sharing, this script restores all three
-       in the target environment immediately after each successful import:
-         a. Diffs the target environment's bots table before/after import to
-            identify the newly-created bot record (disambiguating by agent
-            name if the import pulled in more than one new bot).
-         b. Reassigns ownership to the source agent's owner (falling back to
-            the creator if orphaned), matched by email to a user in the
-            target environment. If no matching user exists there, ownership
-            reassignment is skipped with a clear reason (the bot keeps
-            whichever account performed the import as its owner).
-         c. Reads every principal (user or team) the source agent was
-            explicitly shared with (via RetrieveSharedPrincipalsAndAccess)
-            and re-grants the SAME access rights on the new bot in the
-            target environment (via GrantAccess): users are matched by
-            email, teams are matched by exact name. Copilot Studio's own
-            internal per-agent access team (named "<botGuidNoDashes>_1") is
-            never replicated - it is an implementation detail Dataverse/
-            Copilot Studio manages automatically per bot record, not a
-            user-created share, and the new bot gets its own equivalent.
-            Any user/team that can't be matched in the target environment is
-            skipped with a logged reason rather than failing the migration.
-    7. Supports the standard -WhatIf switch (via SupportsShouldProcess): pass
-       -WhatIf to see exactly what would be created/exported/imported without
-       making any real change. Without -WhatIf, each migration still prompts
-       via ShouldProcess/high ConfirmImpact unless -Confirm:$false is passed.
-    8. Writes migration-results.csv (per-agent success/failure, owner
-       reassignment status, and share-replication counts/details) and prints
-       a reminder that connection references and environment variables in
-       the newly-imported solution still need manual reconfiguration in the
-       target environment - this script does not attempt to detect or fix
-       those automatically (ownership and sharing ARE handled automatically,
-       per above).
+    1. Loads the inventory JSON produced by Inventory-PowerPlatformAgents.ps1 (NOT the
+       CSV - the JSON preserves precise datetimes/booleans that the CSV's
+       locale-formatted values don't).
+    2. Loads a department -> target-environment mapping file (see
+       department-environment-mapping.example.json for the shape).
+    3. For each agent, resolves its owning department (the owner's, falling back to the
+       creator's if orphaned), looks up the mapped target environment, and builds a
+       migration plan - skipping agents with no resolvable department, no mapping
+       entry, a same-as-source target, or first-party/Microsoft-managed status.
+    4. Prints the plan and writes migration-plan.csv before doing anything else, even
+       under -WhatIf, so you can review it first.
+    5. For each planned agent, since there's no direct "move" API: creates a dedicated
+       unmanaged solution in the source environment, adds the agent (with its
+       subcomponents), exports it, and imports it into the target environment. By
+       default each agent gets its own solution so failures stay isolated; pass
+       -BulkByDepartment to bundle every agent in a department into one
+       solution/export/import instead (fewer imports, but one shared failure affects
+       the whole department). The source agent is left untouched - this is a copy, not
+       a move.
+    6. Dataverse solution import doesn't preserve the bot's owner or record-level
+       sharing, so after each successful import this script reassigns ownership
+       (matched by email) and re-grants the same shares (users by email, teams by
+       name) in the target environment, skipping anything it can't match with a logged
+       reason.
+    7. Supports -WhatIf for a full dry run; without it, each migration still prompts via
+       ShouldProcess unless -Confirm:$false is passed.
+    8. Writes migration-results.csv and reminds you that connection references and
+       environment variables in the imported solution still need manual
+       reconfiguration - that part isn't automated (ownership/sharing are).
 
 .NOTES
     Requires pac CLI and the MSAL.PS module (same prerequisites as

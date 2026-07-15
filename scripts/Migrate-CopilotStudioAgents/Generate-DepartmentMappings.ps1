@@ -7,23 +7,16 @@
     ready for use by Migrate-CopilotStudioAgents.ps1.
 
 .DESCRIPTION
-    1. Signs in via MSAL.PS (device code flow by default) and pages through Microsoft
-       Graph's /users endpoint, collecting every distinct, non-blank 'department'
-       value found on any user in the tenant.
-    2. Runs 'pac env list --json' and keeps only environments where
-       EnvironmentIdentifier.IsDefault is $false - i.e. every environment EXCEPT the
-       tenant's built-in default environment.
-    3. Randomly assigns each discovered department to one of those non-default
-       environments (via Get-Random). If there are more departments than
-       environments, environments are reused across multiple departments.
-    4. Derives a short code for any department not already present in the existing
-       department-environment-mapping.json (multi-word -> initials, e.g. "Human
+    1. Signs in via MSAL.PS and pages through Microsoft Graph's /users endpoint,
+       collecting every distinct, non-blank 'department' value in the tenant.
+    2. Runs 'pac env list --json' and keeps only non-default environments.
+    3. Randomly assigns each department to a non-default environment (environments are
+       reused if there are more departments than environments).
+    4. Derives a short code for any new department (multi-word -> initials, e.g. "Human
        Resources" -> "HR"; single-word -> first 3 letters, e.g. "Legal" -> "LEG"),
-       preserving codes for departments that are already mapped so manual overrides
-       survive.
-    5. Writes department-environment-mapping.json with one { department,
-       environmentName, code } entry per department, after backing up any existing
-       file to department-environment-mapping.json.bak-<timestamp>.
+       preserving existing codes so manual overrides survive re-runs.
+    5. Writes department-environment-mapping.json, backing up any existing file to
+       department-environment-mapping.json.bak-<timestamp> first.
 
 .NOTES
     Environment-sharing note: if there are more departments than non-default

@@ -6,67 +6,25 @@
     environment is reported on by default - see -AllEnvironments).
 
 .DESCRIPTION
-    1. Ensures pac CLI is available on PATH.
-    2. Creates (or reuses) an auth profile named "PPAgentInventory". Per Microsoft
-       docs, running `pac auth create` WITHOUT --environment connects you to your
-       tenant's default environment automatically.
-    3. Runs `pac env who --json` to confirm which environment is active and to
-       get its Dataverse instance URL and friendly display name.
-    4. Calls the Power Platform inventory API directly (using MSAL.PS for a
-       token) - this is the SAME Azure-Resource-Graph-backed data source that
-       powers the "Agents" list under Manage > Copilot Studio > Agents in the
-       Power Platform admin center (PPAC). It returns every
-       microsoft.copilotstudio/agents resource in the tenant - both classic
-       Copilot Studio agents AND Microsoft 365 Copilot Agent Builder agents,
-       published or still in draft - and includes a documented
-       `properties.createdIn` field whose value is literally "Copilot Studio"
-       or "Microsoft 365 Copilot Agent Builder" (observed live in this tenant
-       as "Copilot Studio Lite" instead - see -IncludeAgentBuilder below).
-       Results are joined to environment display names.
-    5. By default, agents whose `createdIn` is NOT "Copilot Studio" (i.e.
-       Microsoft 365 Copilot Agent Builder / "Copilot Studio Lite" agents) are
-       excluded from every output file. Pass -IncludeAgentBuilder to include
-       them alongside classic Copilot Studio agents instead.
-    6. By default, only the current environment's agents (matched on the
-       friendly name reported by `pac env who`) are exported. Pass
-       -AllEnvironments to instead export ONLY a tenant-wide CSV/JSON/breakdown
-       covering every environment - the current-environment-only files,
-       breakdown, and first-party summary are skipped entirely in that case
-       (since -AllEnvironments means "the tenant-wide picture", not "tenant-wide
-       plus a redundant single-environment copy"). Output file names reflect
-       what's actually in them: the "full" prefix (agents-full-inventory-...)
-       only appears when -IncludeAgentBuilder was passed (i.e. Agent Builder
-       agents are actually included); otherwise files are named
-       agents-inventory-.... Likewise, the "-all-environments" suffix only
-       appears when -AllEnvironments was passed; otherwise the current
-       environment's slug is used instead.
-    7. For classic Copilot Studio agents in the current environment, also
-       queries Dataverse solution components to flag first-party
-       Microsoft-managed agents (e.g. "Finance in Microsoft 365 Copilot",
-       which belongs to the managed solution 'msdyn_FinancialReconciliationAgent')
-       via the `isFirstPartyManaged`/`firstPartySolutionName` columns, plus a
-       `canMigrate` column that's simply the inverse of `isFirstPartyManaged`
-       (blank if not checked). These are Microsoft-authored prebuilt agents
-       with no customizable content, so Migrate-CopilotStudioAgents.ps1
-       pre-flight-skips them automatically - this surfaces that same status
-       here for visibility before a migration is even attempted. Note
-       `canMigrate` reflects ONLY this first-party check - it does not account
-       for other reasons the migration script might still skip an agent (e.g.
-       no owner/creator department mapping). Only agents in the current
-       environment are checked (blank means "not checked", not "confirmed not
-       first-party").
-
-    NOTE ON DESIGN: an earlier version of this script also ran `pac copilot
-    list`, which reads the classic Dataverse "bot" table for the current
-    environment only. That table does NOT include Microsoft 365 Copilot Agent
-    Builder agents at all - it's a different, older data source - so it was
-    dropped in favor of relying solely on the Power Platform inventory API
-    (JSON, documented at https://learn.microsoft.com/power-platform/admin/inventory-api
-    and https://learn.microsoft.com/microsoft-copilot-studio/admin-agent-inventory),
-    which is unambiguous, reliable, tenant-wide, and matches what PPAC itself
-    shows. `pac` is still used for authentication (`pac auth create`) and to
-    determine the current environment's friendly name (`pac env who`), since
-    that name is what the inventory API results are filtered against.
+    1. Creates (or reuses) an auth profile named "PPAgentInventory", connecting to the
+       tenant's default environment, then runs `pac env who --json` to identify it.
+    2. Queries the Power Platform inventory API directly (the same data source behind
+       the "Agents" list in the Power Platform admin center) for every agent in the
+       tenant - classic Copilot Studio agents and Microsoft 365 Copilot Agent Builder
+       agents alike - joined to environment display names.
+    3. Excludes Agent Builder agents (`createdIn` "Copilot Studio Lite" in this tenant)
+       by default; pass -IncludeAgentBuilder to include them.
+    4. Reports on the current environment only by default; pass -AllEnvironments to
+       instead export ONLY a tenant-wide CSV/JSON/breakdown (current-environment output
+       is skipped in that case). Output file names reflect what's included: the "full"
+       prefix only appears with -IncludeAgentBuilder, and the "-all-environments"
+       suffix only appears with -AllEnvironments.
+    5. For classic Copilot Studio agents in the current environment, flags first-party
+       Microsoft-managed agents (e.g. "Finance in Microsoft 365 Copilot") via Dataverse
+       solution components, adding `isFirstPartyManaged`/`firstPartySolutionName`/
+       `canMigrate` columns - Migrate-CopilotStudioAgents.ps1 auto-skips these. A blank
+       value means "not checked" (agent outside the current environment), not
+       "confirmed not first-party".
 
 .NOTES
     Requires pac CLI (install: winget install --id Microsoft.PowerAppsCLI -e ,

@@ -8,15 +8,11 @@
 
 .DESCRIPTION
     Dot-source this file, then call Assert-ScriptRequirements with -RequirePac and/or
-    -RequireMsalPs (both are switches - pass whichever the calling script actually needs).
-    For each requirement:
-      1. Checks whether it's already present.
-      2. If missing, explains what's missing and how it would be installed, then asks
-         (Y/n) whether to install it now.
-      3. If the user agrees, runs the install command live and re-checks; if they decline,
-         or the install still doesn't produce a working install, throws with manual
-         install instructions so the calling script stops cleanly here instead of failing
-         later with a more confusing error deep into its own logic.
+    -RequireMsalPs. For each requirement: checks if it's already present; if not,
+    explains what's missing and asks (Y/n) to install it now; on agreement, installs and
+    re-checks; on decline or a failed install, throws with manual install instructions so
+    the calling script stops cleanly here instead of failing later with a more confusing
+    error deep in its own logic.
 #>
 
 function Assert-ScriptRequirements {
