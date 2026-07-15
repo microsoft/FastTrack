@@ -1,0 +1,12 @@
+[
+  { "department": "Executive", "environmentName": "Contoso-Executive", "code": "EXE" },
+  { "department": "Human Resources", "environmentName": "Contoso-HR", "code": "HR" },
+  { "department": "Information Technology", "environmentName": "Contoso-IT", "code": "IT" },
+  { "department": "Legal", "environmentName": "Contoso-Legal", "code": "LEG" },
+  { "department": "Operations", "environmentName": "Contoso-Operations", "code": "OPE" },
+  { "department": "Finance", "environmentName": "Contoso-Finance", "code": "FIN" },
+  { "department": "Marketing", "environmentName": "Contoso-Marketing", "code": "MAR" },
+  { "department": "Sales", "environmentName": "Contoso-Sales", "code": "SAL" },
+  { "department": "Customer Support", "environmentName": "Contoso-CustomerSupport", "code": "CS" },
+  { "department": "Product Development", "environmentName": "Contoso-ProductDev", "code": "PD" }
+]
