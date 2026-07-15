@@ -61,6 +61,8 @@ $ErrorActionPreference = 'Stop'
 #     offering to install anything missing rather than failing deep into the script. ---
 . (Join-Path $PSScriptRoot 'Confirm-ScriptRequirements.ps1')
 Assert-ScriptRequirements -RequirePac -RequireMsalPs
+# Shared MSAL sign-in fallback used by every script in this toolkit that authenticates.
+. (Join-Path $PSScriptRoot 'Common-AgentHelpers.ps1')
 
 # --- Derives a department code from a department name (same rule as
 #     Inventory-PowerPlatformAgents.ps1, kept in sync so both scripts agree). --------------
@@ -90,19 +92,7 @@ Enable-MsalTokenCacheOnDisk -PublicClientApplication $clientApp | Out-Null
 $graphScope = 'https://graph.microsoft.com/User.Read.All'
 
 Write-Host "Signing in for Microsoft Graph access (User.Read.All)..." -ForegroundColor Cyan
-try {
-    $graphToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes $graphScope -Silent -ErrorAction Stop).AccessToken
-    Write-Host "Reused cached sign-in (no prompt needed)." -ForegroundColor Green
-}
-catch {
-    if ($UseInteractiveBrowser) {
-        $graphToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes $graphScope -Interactive).AccessToken
-    }
-    else {
-        Write-Host "No valid cached token found - using device code flow (no browser popup to hang)." -ForegroundColor Yellow
-        $graphToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes $graphScope -DeviceCode).AccessToken
-    }
-}
+$graphToken = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope $graphScope -UseInteractiveBrowser:$UseInteractiveBrowser -Label 'Microsoft Graph'
 $graphHeaders = @{ Authorization = "Bearer $graphToken" }
 
 Write-Host "`nPaging through Microsoft Graph users to collect distinct 'department' values..." -ForegroundColor Cyan

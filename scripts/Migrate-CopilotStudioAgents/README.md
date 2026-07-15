@@ -4,12 +4,13 @@ A small toolkit for inventorying and migrating classic Copilot Studio agents acr
 
 This is useful for tenants that started out with all their Copilot Studio agents in a single (often the default) environment, and now want to redistribute them into department-specific environments for better governance, licensing isolation, or environment strategy - without losing agent ownership or record-level sharing in the process.
 
-The toolkit is made up of four scripts, meant to be run in order:
+The toolkit is made up of five scripts, meant to be run in order:
 
 1. **`Generate-DepartmentMappings.ps1`** (optional, one-time/occasional) - discovers every department in your tenant (from Entra ID user profiles) and every non-default Power Platform environment, then generates `department-environment-mapping.json`, randomly assigning each department to a target environment plus a short naming-convention code. You can also hand-author this file yourself instead (see `department-environment-mapping.example.json`) - the only fields `Migrate-CopilotStudioAgents.ps1` actually reads are `department` and `environmentName`.
 2. **`Inventory-PowerPlatformAgents.ps1`** - inventories every Copilot Studio / Microsoft 365 Copilot Agent Builder agent in the tenant via the Power Platform inventory API (the same data source behind the "Agents" list in the Power Platform admin center), resolves each agent's creator/owner to a display name/email/department via Microsoft Graph, flags first-party Microsoft-managed agents (e.g. "Finance in Microsoft 365 Copilot") that can't be migrated, and exports CSV/JSON reports.
 3. **`Migrate-CopilotStudioAgents.ps1`** - consumes the raw JSON from step 2 plus the department mapping from step 1, builds a per-agent migration plan (skipping agents with no resolvable department, no mapping, a same-as-source target, or first-party/Microsoft-managed status), then for each planned agent creates a dedicated unmanaged Dataverse solution, exports it, and imports it into the target environment - restoring the agent's owner and record-level sharing afterward (Dataverse solution import does not preserve either). Supports `-WhatIf` for a full dry run.
-4. **`Confirm-ScriptRequirements.ps1`** - a shared helper (dot-sourced by the three scripts above, not run directly) that checks for the `pac` CLI and the `MSAL.PS` PowerShell module before any real work starts, and offers to install whichever is missing for you.
+4. **`Confirm-ScriptRequirements.ps1`** - a shared helper (dot-sourced by the other scripts, not run directly) that checks for the `pac` CLI and the `MSAL.PS` PowerShell module before any real work starts, and offers to install whichever is missing for you.
+5. **`Common-AgentHelpers.ps1`** - another shared helper (dot-sourced, not run directly): a common MSAL sign-in fallback, and a batched Dataverse lookup that flags first-party Microsoft-managed agents efficiently (a handful of calls total, not one per agent).
 
 The original agent in the source environment is left untouched by step 3 - migration is a copy, not a destructive move.
 

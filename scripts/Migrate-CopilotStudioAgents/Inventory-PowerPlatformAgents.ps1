@@ -83,6 +83,9 @@ $ErrorActionPreference = 'Stop'
 #     offering to install anything missing rather than failing deep into the script. ---
 . (Join-Path $PSScriptRoot 'Confirm-ScriptRequirements.ps1')
 Assert-ScriptRequirements -RequirePac -RequireMsalPs
+# Shared MSAL sign-in fallback + batched first-party/managed-agent detection - kept in
+# one place so this script and Migrate-CopilotStudioAgents.ps1 stay in sync.
+. (Join-Path $PSScriptRoot 'Common-AgentHelpers.ps1')
 
 # Converts a UTC/ISO-8601 datetime string (or a [datetime]) coming back from any of the
 # APIs used here into the local machine's timezone, formatted as a short date/time string
@@ -118,34 +121,6 @@ function ConvertTo-DisplayAgent {
     $display.lastPublishedAt = ConvertTo-LocalShortDateTime $Agent.lastPublishedAt
     $display.lastUsedAt = ConvertTo-LocalShortDateTime $Agent.lastUsedAt
     return $display
-}
-
-# Given a classic Copilot Studio agent's Dataverse bot ID, determines whether it belongs to
-# any MANAGED solution matching a known Microsoft first-party prefix/publisher (msdyn, mscrm,
-# msa, adx, mspp, msft) - e.g. "Finance in Microsoft 365 Copilot" belongs to the managed
-# solution 'msdyn_FinancialReconciliationAgent'. These are Microsoft-authored prebuilt agents
-# with no customizable content, so Migrate-CopilotStudioAgents.ps1 pre-flight-skips them; this
-# function lets the inventory flag them here too, before a migration is even attempted. This
-# heuristic prefix list is not exhaustive - it's confirmed against the one live example found
-# in this tenant (msdyn_) but may miss other first-party solutions.
-function Test-IsMicrosoftManagedAgent {
-    param(
-        [Parameter(Mandatory)][string]$InstanceUrl,
-        [Parameter(Mandatory)][hashtable]$Headers,
-        [Parameter(Mandatory)][string]$AgentId
-    )
-    $managedPrefixes = @('msdyn', 'mscrm', 'msa', 'adx', 'mspp', 'msft')
-    $resp = Invoke-RestMethod -Uri "$InstanceUrl/api/data/v9.2/solutioncomponents?`$filter=objectid eq $AgentId&`$select=componenttype&`$expand=solutionid(`$select=uniquename,ismanaged;`$expand=publisherid(`$select=customizationprefix))" -Headers $Headers -Method Get
-    foreach ($c in $resp.value) {
-        $sol = $c.solutionid
-        if (-not $sol -or -not $sol.ismanaged) { continue }
-        $prefix = $sol.publisherid.customizationprefix
-        $isMicrosoftPattern = ($managedPrefixes | Where-Object { $sol.uniquename -like "$_*" -or $prefix -eq $_ }).Count -gt 0
-        if ($isMicrosoftPattern) {
-            return [PSCustomObject]@{ IsManaged = $true; SolutionUniqueName = $sol.uniquename }
-        }
-    }
-    return [PSCustomObject]@{ IsManaged = $false; SolutionUniqueName = $null }
 }
 
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
@@ -199,27 +174,9 @@ $ppApiBase = 'https://api.powerplatform.com'
 # silently instead of prompting a new device code sign-in every time.
 $clientApp = New-MsalClientApplication -ClientId $clientId -TenantId 'organizations'
 Enable-MsalTokenCacheOnDisk -PublicClientApplication $clientApp | Out-Null
-$msalCommonParams = @{
-    PublicClientApplication = $clientApp
-    Scopes                  = "$ppApiBase/.default"
-}
 
 Write-Host "Signing in for Power Platform inventory API access..." -ForegroundColor Cyan
-try {
-    # Try the cache first (silently refreshes an expired-but-not-revoked token too) -
-    # avoids re-prompting for a device code / browser sign-in on every run.
-    $token = (Get-MsalToken @msalCommonParams -Silent -ErrorAction Stop).AccessToken
-    Write-Host "Reused cached sign-in (no prompt needed)." -ForegroundColor Green
-}
-catch {
-    if ($UseInteractiveBrowser) {
-        $token = (Get-MsalToken @msalCommonParams -Interactive).AccessToken
-    }
-    else {
-        Write-Host "No valid cached token found - using device code flow (no browser popup to hang)." -ForegroundColor Yellow
-        $token = (Get-MsalToken @msalCommonParams -DeviceCode).AccessToken
-    }
-}
+$token = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope "$ppApiBase/.default" -UseInteractiveBrowser:$UseInteractiveBrowser -Label 'the Power Platform inventory API'
 
 $headers = @{
     Authorization  = "Bearer $token"
@@ -323,17 +280,7 @@ else {
         Where-Object { $_ -and $_ -ne '00000000-0000-0000-0000-000000000000' } | Select-Object -Unique
     $creatorInfo = @{}
     if ($creatorIds.Count -gt 0) {
-        try {
-            $graphToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes 'https://graph.microsoft.com/User.Read.All' -Silent -ErrorAction Stop).AccessToken
-        }
-        catch {
-            if ($UseInteractiveBrowser) {
-                $graphToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes 'https://graph.microsoft.com/User.Read.All' -Interactive).AccessToken
-            }
-            else {
-                $graphToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes 'https://graph.microsoft.com/User.Read.All' -DeviceCode).AccessToken
-            }
-        }
+        $graphToken = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope 'https://graph.microsoft.com/User.Read.All' -UseInteractiveBrowser:$UseInteractiveBrowser -Label 'Microsoft Graph'
         $graphHeaders = @{ Authorization = "Bearer $graphToken"; 'Content-Type' = 'application/json' }
 
         # $batch accepts up to 20 sub-requests per call.
@@ -399,17 +346,7 @@ else {
     $firstPartyByAgent = @{}
     if ($currentEnvClassicAgentIds.Count -gt 0) {
         Write-Host "`nResolving last-used dates for classic Copilot Studio agents via Dataverse conversation transcripts..." -ForegroundColor Cyan
-        try {
-            $dvToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes "$instanceUrl/.default" -Silent -ErrorAction Stop).AccessToken
-        }
-        catch {
-            if ($UseInteractiveBrowser) {
-                $dvToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes "$instanceUrl/.default" -Interactive).AccessToken
-            }
-            else {
-                $dvToken = (Get-MsalToken -PublicClientApplication $clientApp -Scopes "$instanceUrl/.default" -DeviceCode).AccessToken
-            }
-        }
+        $dvToken = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope "$instanceUrl/.default" -UseInteractiveBrowser:$UseInteractiveBrowser -Label 'Dataverse'
         $dvHeaders = @{
             Authorization    = "Bearer $dvToken"
             Accept           = 'application/json'
@@ -417,23 +354,32 @@ else {
             'OData-Version'    = '4.0'
         }
         try {
-            # One tenant-wide-per-environment scan (with paging via @odata.nextLink)
-            # instead of one call per agent - conversationstarttime is preferred over
-            # createdon since it reflects when the conversation actually happened.
-            $transcriptUri = "$instanceUrl/api/data/v9.2/conversationtranscripts?" +
-                '$select=_bot_conversationtranscriptid_value,conversationstarttime,createdon'
-            do {
-                $tResp = Invoke-RestMethod -Uri $transcriptUri -Headers $dvHeaders -Method Get
-                foreach ($t in $tResp.value) {
-                    $botId = $t.'_bot_conversationtranscriptid_value'
-                    if (-not $botId) { continue }
-                    $ts = if ($t.conversationstarttime) { [datetime]$t.conversationstarttime } else { [datetime]$t.createdon }
-                    if (-not $lastUsedByAgent.ContainsKey($botId) -or $ts -gt $lastUsedByAgent[$botId]) {
-                        $lastUsedByAgent[$botId] = $ts
+            # Filter to only the candidate bot IDs we actually care about, chunked to stay
+            # well under Dataverse's URL length limits, instead of scanning the
+            # environment's ENTIRE conversation-transcript history (which can include
+            # long-deleted bots and unrelated data too) - conversationstarttime is
+            # preferred over createdon since it reflects when the conversation actually
+            # happened.
+            $chunkSize = 50
+            for ($i = 0; $i -lt $currentEnvClassicAgentIds.Count; $i += $chunkSize) {
+                $chunkEnd = [Math]::Min($i + $chunkSize - 1, $currentEnvClassicAgentIds.Count - 1)
+                $chunk = @($currentEnvClassicAgentIds[$i..$chunkEnd])
+                $botFilter = ($chunk | ForEach-Object { "_bot_conversationtranscriptid_value eq $_" }) -join ' or '
+                $transcriptUri = "$instanceUrl/api/data/v9.2/conversationtranscripts?" +
+                    "`$filter=$botFilter&`$select=_bot_conversationtranscriptid_value,conversationstarttime,createdon"
+                do {
+                    $tResp = Invoke-RestMethod -Uri $transcriptUri -Headers $dvHeaders -Method Get
+                    foreach ($t in $tResp.value) {
+                        $botId = $t.'_bot_conversationtranscriptid_value'
+                        if (-not $botId) { continue }
+                        $ts = if ($t.conversationstarttime) { [datetime]$t.conversationstarttime } else { [datetime]$t.createdon }
+                        if (-not $lastUsedByAgent.ContainsKey($botId) -or $ts -gt $lastUsedByAgent[$botId]) {
+                            $lastUsedByAgent[$botId] = $ts
+                        }
                     }
-                }
-                $transcriptUri = $tResp.'@odata.nextLink'
-            } while ($transcriptUri)
+                    $transcriptUri = $tResp.'@odata.nextLink'
+                } while ($transcriptUri)
+            }
             Write-Host "Resolved last-used date for $($lastUsedByAgent.Count) of $($currentEnvClassicAgentIds.Count) classic Copilot Studio agent(s) in the current environment." -ForegroundColor Green
         }
         catch {
@@ -444,10 +390,18 @@ else {
         # Copilot") so it's obvious from the inventory alone which agents
         # Migrate-CopilotStudioAgents.ps1 will pre-flight-skip - reuses the same
         # Dataverse token/headers acquired above for the conversation-transcript lookup.
+        # Get-MicrosoftManagedAgentIds does this in a small, fixed number of Dataverse
+        # calls (proportional to the number of Microsoft-managed solutions present) -
+        # NOT one call per candidate agent.
         Write-Host "`nChecking for first-party Microsoft-managed agents (auto-skipped by Migrate-CopilotStudioAgents.ps1) via Dataverse solution components..." -ForegroundColor Cyan
         try {
+            $managedAgentMap = Get-MicrosoftManagedAgentIds -InstanceUrl $instanceUrl -Headers $dvHeaders -AgentIds $currentEnvClassicAgentIds
             foreach ($agentId in $currentEnvClassicAgentIds) {
-                $firstPartyByAgent[$agentId] = Test-IsMicrosoftManagedAgent -InstanceUrl $instanceUrl -Headers $dvHeaders -AgentId $agentId
+                $isManaged = $managedAgentMap.ContainsKey($agentId)
+                $firstPartyByAgent[$agentId] = [PSCustomObject]@{
+                    IsManaged          = $isManaged
+                    SolutionUniqueName = if ($isManaged) { $managedAgentMap[$agentId] } else { $null }
+                }
             }
             $firstPartyCount = ($firstPartyByAgent.Values | Where-Object { $_.IsManaged }).Count
             Write-Host "Found $firstPartyCount first-party Microsoft-managed agent(s) among $($currentEnvClassicAgentIds.Count) classic Copilot Studio agent(s) in the current environment." -ForegroundColor Green

@@ -103,6 +103,9 @@ $ErrorActionPreference = 'Stop'
 #     offering to install anything missing rather than failing deep into the script. ---
 . (Join-Path $PSScriptRoot 'Confirm-ScriptRequirements.ps1')
 Assert-ScriptRequirements -RequirePac -RequireMsalPs
+# Shared MSAL sign-in fallback + batched first-party/managed-agent detection - kept in
+# one place so this script and Inventory-PowerPlatformAgents.ps1 stay in sync.
+. (Join-Path $PSScriptRoot 'Common-AgentHelpers.ps1')
 
 # Strip stray leading/trailing quote characters some users end up with when pasting a
 # quoted path (e.g. Explorer's "Copy as path") into the interactive parameter prompt -
@@ -194,8 +197,8 @@ if ($mismatched.Count -gt 0) {
 if ($agents.Count -eq 0) { throw "No agents from the source environment '$sourceEnvName' remain to evaluate." }
 
 # --- Acquire Dataverse access for the source environment early, so the migration plan
-#     below can pre-flight-check each agent's solution membership (see
-#     Test-IsMicrosoftManagedAgent) before committing to a full export/import cycle. This
+#     below can pre-flight-check agents' solution membership (see
+#     Get-MicrosoftManagedAgentIds) before committing to a full export/import cycle. This
 #     same MSAL client app and header cache are reused further down for the source
 #     environment's publisher/component-type resolution and for each distinct TARGET
 #     environment's owner-reassignment/share-replication calls, so nothing here is
@@ -208,17 +211,7 @@ Enable-MsalTokenCacheOnDisk -PublicClientApplication $clientApp | Out-Null
 
 function Get-DataverseHeaders {
     param([Parameter(Mandatory)][string]$EnvUrl)
-    try {
-        $token = (Get-MsalToken -PublicClientApplication $clientApp -Scopes "$EnvUrl/.default" -Silent -ErrorAction Stop).AccessToken
-    }
-    catch {
-        if ($UseInteractiveBrowser) {
-            $token = (Get-MsalToken -PublicClientApplication $clientApp -Scopes "$EnvUrl/.default" -Interactive).AccessToken
-        }
-        else {
-            $token = (Get-MsalToken -PublicClientApplication $clientApp -Scopes "$EnvUrl/.default" -DeviceCode).AccessToken
-        }
-    }
+    $token = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope "$EnvUrl/.default" -UseInteractiveBrowser:$UseInteractiveBrowser -Label "Dataverse ($EnvUrl)"
     $bearer = 'Bear' + 'er ' + $token
     return @{
         Authorization      = $bearer
@@ -242,36 +235,13 @@ function Get-CachedDataverseHeaders {
 
 $dvHeaders = Get-CachedDataverseHeaders -EnvUrl $sourceEnvUrl
 
-# --- Detects whether an agent's underlying bot record is owned by a Microsoft-published,
-#     MANAGED first-party solution (e.g. a prebuilt Microsoft 365 Copilot agent like
-#     "Finance in Microsoft 365 Copilot", which lives in msdyn_FinancialReconciliationAgent)
-#     rather than being authored by a real person in this tenant. Confirmed live: such
-#     agents CAN be added to a custom unmanaged solution and export/import without error,
-#     but produce no actual new bot record in the target (there's no real customizable
-#     content to copy) - so they're better skipped upfront with a clear reason than run
-#     through a full, silently-no-op export/import cycle. Detection: the agent belongs to
-#     at least one MANAGED solution whose uniquename or publisher customization prefix
-#     matches a well-known Microsoft first-party pattern. ---
-$microsoftManagedPrefixes = @('msdyn', 'mscrm', 'msa', 'adx', 'mspp', 'msft')
-function Test-IsMicrosoftManagedAgent {
-    param([Parameter(Mandatory)][string]$AgentId)
-
-    $resp = Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutioncomponents?`$filter=objectid eq $AgentId&`$select=componenttype&`$expand=solutionid(`$select=uniquename,ismanaged;`$expand=publisherid(`$select=customizationprefix))" -Headers $dvHeaders -Method Get
-    foreach ($c in $resp.value) {
-        $sol = $c.solutionid
-        if (-not $sol -or -not $sol.ismanaged) { continue }
-        $prefix = $sol.publisherid.customizationprefix
-        $isMicrosoftPattern = ($microsoftManagedPrefixes | Where-Object { $sol.uniquename -like "$_*" -or $prefix -eq $_ }).Count -gt 0
-        if ($isMicrosoftPattern) {
-            return [PSCustomObject]@{ IsManaged = $true; SolutionUniqueName = $sol.uniquename }
-        }
-    }
-    return [PSCustomObject]@{ IsManaged = $false; SolutionUniqueName = $null }
-}
-
 # --- Build the migration plan ---
 Write-Host "`nBuilding migration plan for $($agents.Count) agent(s)..." -ForegroundColor Cyan
-$plan = foreach ($agent in $agents) {
+
+# Pass 1: resolve department/mapping/target-environment status per agent - no Dataverse
+# calls yet, so the (potentially expensive) managed-agent check below only ever runs
+# against agents that would otherwise actually proceed.
+$planDraft = foreach ($agent in $agents) {
     $dept = $null
     if (-not $agent.isOrphaned -and $agent.ownerUserDepartment) { $dept = $agent.ownerUserDepartment }
     elseif ($agent.createdByUserDepartment) { $dept = $agent.createdByUserDepartment }
@@ -298,14 +268,6 @@ $plan = foreach ($agent in $agents) {
         }
     }
 
-    # Only bother with the extra Dataverse round-trip if the agent would otherwise proceed.
-    if ($status -eq 'Planned') {
-        $managedCheck = Test-IsMicrosoftManagedAgent -AgentId $agent.agentId
-        if ($managedCheck.IsManaged) {
-            $status = "Skipped - first-party Microsoft-managed agent (belongs to managed solution '$($managedCheck.SolutionUniqueName)') - no customizable content to migrate"
-        }
-    }
-
     [PSCustomObject]@{
         agentId               = $agent.agentId
         agentName             = $agent.agentName
@@ -315,6 +277,19 @@ $plan = foreach ($agent in $agents) {
         targetEnvironmentName = $targetEnvName
         status                = $status
     }
+}
+
+# Pass 2: one batched Dataverse lookup for every still-"Planned" agent's first-party/
+# Microsoft-managed status, instead of a separate round-trip per agent - see
+# Get-MicrosoftManagedAgentIds in Common-AgentHelpers.ps1.
+$candidateAgentIds = @($planDraft | Where-Object { $_.status -eq 'Planned' } | ForEach-Object { $_.agentId })
+$managedAgentMap = Get-MicrosoftManagedAgentIds -InstanceUrl $sourceEnvUrl -Headers $dvHeaders -AgentIds $candidateAgentIds
+
+$plan = foreach ($item in $planDraft) {
+    if ($item.status -eq 'Planned' -and $managedAgentMap.ContainsKey($item.agentId)) {
+        $item.status = "Skipped - first-party Microsoft-managed agent (belongs to managed solution '$($managedAgentMap[$item.agentId])') - no customizable content to migrate"
+    }
+    $item
 }
 
 Write-Host "Migration plan:" -ForegroundColor Cyan
@@ -377,6 +352,23 @@ if ($typeResp.value.Count -eq 0) { throw "Could not resolve the Bot solution-com
 $BOT_COMPONENT_TYPE = $typeResp.value[0].componenttype
 Write-Host "Resolved Bot solution-component type for this source environment: $BOT_COMPONENT_TYPE" -ForegroundColor Cyan
 
+# Looks up a Dataverse systemuser by email (checking both domainname and
+# internalemailaddress, since either can hold it depending on how the user was
+# provisioned) and returns their systemuserid, or $null if no match is found. Shared by
+# both the owner-reassignment and share-replication steps below, which otherwise
+# duplicated this exact lookup.
+function Find-DataverseUserIdByEmail {
+    param(
+        [Parameter(Mandatory)][string]$EnvUrl,
+        [Parameter(Mandatory)][hashtable]$Headers,
+        [Parameter(Mandatory)][string]$Email
+    )
+    $userFilter = "domainname eq '$Email' or internalemailaddress eq '$Email'"
+    $userResp = Invoke-RestMethod -Uri "$EnvUrl/api/data/v9.2/systemusers?`$filter=$userFilter&`$select=systemuserid&`$top=1" -Headers $Headers -Method Get
+    if ($userResp.value.Count -eq 0) { return $null }
+    return $userResp.value[0].systemuserid
+}
+
 # --- Post-import owner reassignment + share replication ---
 # Dataverse solution import does NOT preserve the bot's record GUID, its owner, or its
 # record-level sharing (confirmed live against this tenant): the imported bot becomes
@@ -407,13 +399,11 @@ function Copy-BotOwnerAndShares {
         $result.ownerReassignmentStatus = 'Skipped - no owner/creator email on record'
     }
     else {
-        $userFilter = "domainname eq '$OwnerEmail' or internalemailaddress eq '$OwnerEmail'"
-        $userResp = Invoke-RestMethod -Uri "$TargetEnvUrl/api/data/v9.2/systemusers?`$filter=$userFilter&`$select=systemuserid&`$top=1" -Headers $TargetHeaders -Method Get
-        if ($userResp.value.Count -eq 0) {
+        $targetUserId = Find-DataverseUserIdByEmail -EnvUrl $TargetEnvUrl -Headers $TargetHeaders -Email $OwnerEmail
+        if (-not $targetUserId) {
             $result.ownerReassignmentStatus = "Skipped - no user matching '$OwnerEmail' found in target environment"
         }
         else {
-            $targetUserId = $userResp.value[0].systemuserid
             $ownerBody = @{ 'ownerid@odata.bind' = "/systemusers($targetUserId)" } | ConvertTo-Json
             try {
                 Invoke-RestMethod -Uri "$TargetEnvUrl/api/data/v9.2/bots($TargetBotId)" -Headers $TargetHeaders -Method Patch -Body $ownerBody | Out-Null
@@ -473,14 +463,13 @@ function Copy-BotOwnerAndShares {
                     $shareDetailsList.Add("Skipped user '$($userResp2.fullname)' - no resolvable email")
                     continue
                 }
-                $userFilter2 = "domainname eq '$email' or internalemailaddress eq '$email'"
-                $targetUserResp = Invoke-RestMethod -Uri "$TargetEnvUrl/api/data/v9.2/systemusers?`$filter=$userFilter2&`$select=systemuserid&`$top=1" -Headers $TargetHeaders -Method Get
-                if ($targetUserResp.value.Count -eq 0) {
+                $userFilter2Id = Find-DataverseUserIdByEmail -EnvUrl $TargetEnvUrl -Headers $TargetHeaders -Email $email
+                if (-not $userFilter2Id) {
                     $result.sharesSkipped++
                     $shareDetailsList.Add("Skipped $label - no matching user found in target")
                     continue
                 }
-                $targetPrincipalId = $targetUserResp.value[0].systemuserid
+                $targetPrincipalId = $userFilter2Id
                 $principalOdataType = 'Microsoft.Dynamics.CRM.systemuser'
                 $principalKey = 'systemuserid'
             }
