@@ -1,0 +1,5 @@
+[
+  { "department": "Example Department Name", "environmentName": "Contoso-Environment-A", "code": "EXA" },
+  { "department": "Another Department", "environmentName": "Contoso-Environment-B", "code": "AD" },
+  { "department": "Yet Another Department", "environmentName": "Contoso-Environment-C", "code": "YAD" }
+]
