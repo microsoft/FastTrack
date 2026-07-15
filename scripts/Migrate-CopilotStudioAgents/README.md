@@ -71,6 +71,28 @@ Other useful switches:
 
 Results (including per-agent success/failure, owner reassignment status, and share-replication details) are written to `migration-results.csv`. Connection references and environment variables in the newly-imported solution still need manual reconfiguration in the target environment - this is called out at the end of the script's output and is not handled automatically.
 
+## Limitations
+
+`Migrate-CopilotStudioAgents.ps1` only considers classic Copilot Studio agents belonging to the SOURCE environment you're currently authenticated to - agents from a different environment, or non-"Copilot Studio" (Agent Builder) entries in the inventory JSON, are filtered out before a plan is even built.
+
+### Agents that won't be migrated
+
+An agent is skipped - with a reason recorded in `migration-plan.csv`/`migration-results.csv` - rather than migrated if:
+
+- Its owner and creator have no `department` value in Microsoft Entra ID (nothing to map from).
+- Its resolved department has no entry in the department -> environment mapping file.
+- Its mapped target environment is the same as the source environment (nothing to do).
+- It's a first-party, Microsoft-managed agent (e.g. "Finance in Microsoft 365 Copilot") - these ship inside a Microsoft-managed solution with no customizable content to copy.
+- It belongs to a different source environment than the one currently authenticated, or it's an Agent Builder agent rather than a classic Copilot Studio agent.
+
+### Manual follow-up required after migration
+
+- **Connection references and environment variables** in the imported solution still point at the source environment's connections and are NOT repointed automatically - reconfigure these by hand in the target environment (Power Apps/Power Automate connections, custom connectors, etc.) before treating the migrated agent as production-ready.
+- **Owner reassignment and share replication are best-effort**: they only succeed if a matching user (by email) or team (by exact name) already exists in the target environment. If no match is found, the imported agent keeps whichever account ran the import as its owner and that specific share is skipped - both outcomes are logged per-agent in `migration-results.csv` rather than failing the migration.
+- **Re-running for the same agent (or, under `-BulkByDepartment`, the same set of agents in a department) will fail** at the solution-create step, since the generated solution name is deterministic - this surfaces as a clear error instead of silently duplicating the agent, but it also means a partially-failed migration can't simply be re-run as-is; investigate the failure first.
+- **Validate the migrated agent end-to-end** before deleting or deactivating the original - published channels, topics that call out to connectors, and any other environment-specific configuration should be tested in the target environment.
+- With `-BulkByDepartment`, a single failed import affects every agent in that department together (no per-agent isolation) - the default of one solution per agent isolates failures instead.
+
 ## Applies To
 
 - Microsoft Copilot Studio
