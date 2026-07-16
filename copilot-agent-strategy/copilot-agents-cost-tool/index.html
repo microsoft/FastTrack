@@ -2106,12 +2106,14 @@ function buildExamples(cfg, calc) {
         lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Agent searches knowledge sources (graph grounding active) <span class="credits">+10 cr (tenant graph grounding)</span></div>';
         cr += 10;
       }
-      if (ks.credits === 0) {
+      /* ks.credits for graph-grounded sources (12) already includes the 10 graph credits counted above — subtract to avoid double-counting */
+      const genCredits = (graphOn && ks.hasGraphToggle) ? (ks.credits - 10) : ks.credits;
+      if (genCredits === 0) {
         lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates answer from ' + ks.label + ' <span class="credits">+0 cr (free)</span></div>';
       } else {
-        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates answer from ' + ks.label + ' <span class="credits">+' + ks.credits + ' cr (generative answer)</span></div>';
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates answer from ' + ks.label + ' <span class="credits">+' + genCredits + ' cr (generative answer)</span></div>';
       }
-      cr += ks.credits;
+      cr += genCredits;
       if (cfg.reasoning) {
         lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Reasoning model active <span class="credits">+' + REASONING_SURCHARGE + ' cr (premium AI surcharge)</span></div>';
         cr += REASONING_SURCHARGE;
