@@ -12,6 +12,10 @@ permissions:
 
 jobs:
   update-message-center:
+    # Only run on the canonical upstream repo, not on forks.
+    # Mirrors the guard used by traffic-stats.yml so forks skip cleanly
+    # instead of failing when repo-specific secrets are unavailable.
+    if: github.repository == 'microsoft/FastTrack'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -33,7 +37,10 @@ jobs:
       - name: Commit and open PR
         if: steps.changes.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          # Use the built-in GITHUB_TOKEN. The job already grants
+          # contents:write + pull-requests:write, which is sufficient to push
+          # the branch and open the PR without a separate long-lived PAT.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
