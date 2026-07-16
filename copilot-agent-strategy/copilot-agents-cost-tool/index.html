@@ -1692,8 +1692,10 @@ const KS_PROFILES = {
 
 function getKSCredits(key) {
   const p = KS_PROFILES[key];
-  /* Public website grounding is free for ALL agent types — not graph-grounded, no credit charge */
-  if (key === 'website') return 0;
+  /* Public website grounding is free for Agent Builder agents, 2 credits otherwise */
+  if (key === 'website') {
+    return getAgentType() === 'builder' ? 0 : p.credits;
+  }
   if (p.hasGraphToggle) {
     /* SharePoint and connectors: depends on tenant graph grounding toggle */
     const graphOn = el('ks_sharepoint_graph').checked;
@@ -1914,7 +1916,11 @@ function onAgentTypeChange() {
 
   /* Update cost labels for public website row */
   const wsCost = el('ks_row_website')?.querySelector('.ks-cost');
-  if (wsCost) wsCost.textContent = '0 cr (free — not graph-grounded)';
+  if (wsCost) {
+    wsCost.textContent = (at === 'builder')
+      ? '0 cr (free — not graph-grounded)'
+      : '2 cr/query (generative answer)';
+  }
 
   /* Zero out hidden Copilot Studio fields so they don't affect calculation */
   if (at !== 'custom') {
@@ -2100,8 +2106,12 @@ function buildExamples(cfg, calc) {
         lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Agent searches knowledge sources (graph grounding active) <span class="credits">+10 cr (tenant graph grounding)</span></div>';
         cr += 10;
       }
-      lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates answer from ' + ks.label + ' <span class="credits">+2 cr (generative answer)</span></div>';
-      cr += 2;
+      if (ks.credits === 0) {
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates answer from ' + ks.label + ' <span class="credits">+0 cr (free)</span></div>';
+      } else {
+        lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Generates answer from ' + ks.label + ' <span class="credits">+' + ks.credits + ' cr (generative answer)</span></div>';
+      }
+      cr += ks.credits;
       if (cfg.reasoning) {
         lines += '<div class="trace-step"><span class="arrow">&rarr;</span> Reasoning model active <span class="credits">+' + REASONING_SURCHARGE + ' cr (premium AI surcharge)</span></div>';
         cr += REASONING_SURCHARGE;

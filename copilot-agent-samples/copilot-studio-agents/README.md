@@ -4,7 +4,7 @@ Welcome to the Copilot Studio Agents directory! This section contains a collecti
 
 Each agent is in its own folder with a detailed README explaining its function, prerequisites, and setup instructions.
 
-Our sample **custom engine agents** are prefixed with `ca-` .  
+Our sample **Copilot Studio agents** are prefixed with `ca-` .  
 
 ---
 
@@ -12,6 +12,7 @@ Our sample **custom engine agents** are prefixed with `ca-` .
 
 | Agent Name | Description | Use Cases |
 |------------|-------------|-----------|
+| [**🦾 PowerClaw**](./ca-PowerClawAgent) | A 24/7 autonomous AI Chief of Staff with a self-triggering heartbeat, persistent SharePoint-backed memory, safety and deduplication controls, and an extensible Skills Library. The most complete sample in this collection. | • Executive assistant automation<br>• Autonomous monitoring & follow-ups<br>• Persistent agent memory<br>• Skills-based extensibility |
 | [**📧 AutoReply Agent**](./ca-AutoReplyAgent) | An autonomous agent that monitors incoming emails, researches questions using trusted knowledge sources, and generates professional draft responses. The agent analyzes email content, provides detailed answers with source citations, and formats responses in an engaging, professional manner with suggested follow-up questions. | • Email automation<br>• Customer service support<br>• Research assistance<br>• Professional correspondence<br>• Knowledge base integration |
 | [**🧾 Product Quote Agent**](./ca-ProductQuoteAgent) | An autonomous agent that generates professional sales quotes by looking up product information in an Excel file. Users can request the quote in conversation with the agent or by sending a monitored inbox. It uses Power Automate to automatically populate a Word template with the quote details and can email it directly to a customer based on their request. | • Sales quote generation<br>• Automated document creation<br>• Excel data integration<br>• Power Platform automation<br>• Customer inquiry response |
 

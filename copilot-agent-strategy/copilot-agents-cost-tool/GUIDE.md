@@ -1,6 +1,6 @@
 # M365 Copilot Agents Cost Calculator — Walk-Through Guide
 
-> Open `AgentCosTest.html` in any modern browser (Edge, Chrome, Firefox). No account, server, or login required.
+> Open `index.html` in any modern browser (Edge, Chrome, Firefox). No account, server, or login required.
 
 ---
 
@@ -31,7 +31,7 @@ Think of it like a flight-price estimator: the final fare depends on fuel surcha
 
 ## 5-Minute Quick Start (for anyone)
 
-1. Open `AgentCosTest.html` in a browser.
+1. Open `index.html` in a browser.
 2. At the top, pick a **Quick start template** from the drop-down (for example, *Enterprise FAQ agent*).
 3. Scroll to the bottom — you will see an **Example Prompt & Cost Trace** and a **Production Cost Estimate** panel filled in automatically.
 4. Adjust any number that doesn't match your real situation. The estimate refreshes instantly.
