@@ -6,7 +6,7 @@
     "name": "Alejandro Lopez",
     "email": "alejandro.lopez@microsoft.com"
   },
-  "homepage": "https://github.com/microsoft/FastTrack/tree/main/copilot-agent-samples/github-copilot-agents/Council",
+  "homepage": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council",
   "repository": "https://github.com/microsoft/FastTrack",
   "license": "MIT",
   "keywords": [
