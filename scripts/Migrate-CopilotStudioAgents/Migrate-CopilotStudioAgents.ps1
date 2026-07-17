@@ -22,12 +22,14 @@
        CSV - the JSON preserves precise datetimes/booleans that the CSV's
        locale-formatted values don't).
     2. Loads a department -> target-environment mapping file (see
-       department-environment-mapping.example.json for the shape) and validates up front,
-       via 'pac env list', that every mapped target environment already exists.
+       department-environment-mapping.example.json for the shape) and resolves each
+       target by stable environment ID. Legacy name-only entries are accepted only when
+       the display name uniquely identifies one environment.
     3. For each agent, resolves its owning department (the owner's, falling back to the
        creator's if orphaned), looks up the mapped target environment, and builds a
-       migration plan - skipping agents with no resolvable department, no mapping
-       entry, a same-as-source target, or first-party/Microsoft-managed status.
+       migration plan - skipping agents with unresolved directory lookups, no
+       resolvable department, no mapping entry, a same-as-source target, or
+       first-party/Microsoft-managed status.
     4. Prints the plan and writes migration-plan.csv before doing anything else, even
        under -WhatIf, so you can review it first.
     5. For each planned agent, since there's no direct "move" API: creates a dedicated
@@ -42,9 +44,9 @@
        export/import has succeeded.
     6. Dataverse solution import doesn't preserve the bot's owner or record-level
        sharing, so after each successful import this script reassigns ownership
-       (matched by email) and re-grants the same shares (users by email, teams by
-       name) in the target environment, skipping anything it can't match with a logged
-       reason.
+       (matched uniquely by email) and re-grants the same shares (users by email,
+       Entra-backed teams by group ID, other teams by name/business unit) in the target
+       environment, skipping missing or ambiguous matches with a logged reason.
     7. Supports -WhatIf for a full dry run; without it, each migration still prompts via
        ShouldProcess unless -Confirm:$false is passed.
     8. Writes migration-results.csv and reminds you that connection references and
@@ -59,8 +61,8 @@
 
     You must be authenticated to (and this script must be run against) the
     SOURCE environment the inventory JSON was captured from - agents whose
-    environmentName in the JSON doesn't match the currently active
-    environment are skipped with a warning.
+    environmentId in the JSON doesn't match the currently active environment
+    are skipped with a warning.
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
@@ -90,10 +92,10 @@ param(
     # environment is left behind after a successful migration (along with the exported
     # .zip in $OutputDir) - kept around in case you need to inspect or re-export it. Pass
     # this switch to delete that solution from the source environment once its export +
-    # import into the target environment has succeeded. Only ever applies on success -
-    # a failed/partial migration always leaves its solution in place so you can
-    # investigate. Best-effort: a failed delete is logged as a warning, not a script
-    # failure - the migration itself already succeeded by that point.
+    # import into the target environment has succeeded. A failed import always leaves
+    # its source solution in place so you can investigate; post-import remediation
+    # warnings do not prevent cleanup because the import itself already completed.
+    # Best-effort: a failed delete is logged as a warning, not a script failure.
     [switch]$CleanupSourceSolution
 )
 
@@ -144,13 +146,15 @@ if ($nonClassic.Count -gt 0) {
 Write-Host "Loading department -> environment mapping from: $MappingPath..." -ForegroundColor Cyan
 $mappingRaw = Get-Content -Path $MappingPath -Raw | ConvertFrom-Json
 $mappingRaw = @($mappingRaw)
-$deptMap = @{}
-foreach ($m in $mappingRaw) {
-    if (-not $m.department -or -not $m.environmentName) { continue }
-    $deptMap[$m.department.Trim().ToLowerInvariant()] = $m.environmentName
+$validMappingEntries = @(
+    $mappingRaw | Where-Object {
+        $_.department -and ($_.environmentId -or $_.environmentName)
+    }
+)
+if ($validMappingEntries.Count -eq 0) {
+    throw "No usable entries found in the mapping file '$MappingPath' - expected an array of { department, environmentId, environmentName } objects."
 }
-if ($deptMap.Count -eq 0) { throw "No usable entries found in the mapping file '$MappingPath' - expected an array of { department, environmentName } objects." }
-Write-Host "Loaded $($deptMap.Count) department -> environment mapping(s)." -ForegroundColor Green
+Write-Host "Loaded $($validMappingEntries.Count) department -> environment mapping entr$(if ($validMappingEntries.Count -eq 1) { 'y' } else { 'ies' })." -ForegroundColor Green
 
 # --- Ensure we're authenticated, and confirm the current (source) environment ---
 $authList = pac auth list 2>&1 | Out-String
@@ -170,31 +174,81 @@ catch { throw "Could not parse 'pac env who --json' output:`n$envWhoJsonRaw" }
 
 $sourceEnvUrl  = $envWho.OrgUrl.TrimEnd('/')
 $sourceEnvName = $envWho.FriendlyName
-Write-Host "`nSource environment: $sourceEnvName ($sourceEnvUrl)`n" -ForegroundColor Cyan
+$sourceEnvId   = ConvertTo-NormalizedEnvironmentId ([string]$envWho.EnvironmentId)
+Write-Host "`nSource environment: $sourceEnvName [$sourceEnvId] ($sourceEnvUrl)`n" -ForegroundColor Cyan
 
-# --- Validate every target environment referenced in the mapping actually exists, BEFORE
-#     doing anything else (building a plan, acquiring Dataverse access, etc.) - a typo'd or
-#     not-yet-created target environment should be caught immediately, not discovered after
-#     evaluating every agent. ---
-Write-Host "Validating that every target environment in the mapping exists (via 'pac env list')..." -ForegroundColor Cyan
+# --- Resolve every target environment by stable ID before building the plan. Legacy
+#     name-only mappings are supported only when the name is unique across the tenant. ---
+Write-Host "Resolving every target environment in the mapping (via 'pac env list')..." -ForegroundColor Cyan
 $envList = (pac env list --json 2>&1 | Out-String) | ConvertFrom-Json
-$validMappingEntries = @($mappingRaw | Where-Object { $_.department -and $_.environmentName })
-$mappedEnvNames = @($validMappingEntries.environmentName | Select-Object -Unique)
-$existingEnvNames = @($envList | ForEach-Object { $_.FriendlyName })
-$missingEnvs = @($mappedEnvNames | Where-Object { $existingEnvNames -notcontains $_ })
-if ($missingEnvs.Count -gt 0) {
-    $affected = ($validMappingEntries | Where-Object { $missingEnvs -contains $_.environmentName } |
-        ForEach-Object { "$($_.department) -> $($_.environmentName)" }) -join '; '
-    throw "Target environment(s) referenced by the mapping were not found via 'pac env list': $($missingEnvs -join ', ') (affected mapping(s): $affected). Create these environments first, then re-run."
-}
-Write-Host "All $($mappedEnvNames.Count) distinct target environment(s) in the mapping exist.`n" -ForegroundColor Green
+$deptMap = @{}
+foreach ($mappingEntry in $validMappingEntries) {
+    $department = $mappingEntry.department.Trim()
+    $departmentKey = $department.ToLowerInvariant()
+    if ($deptMap.ContainsKey($departmentKey)) {
+        throw "The mapping file contains more than one entry for department '$department'. Keep exactly one target environment per department."
+    }
 
-$mismatched = @($agents | Where-Object { $_.environmentName -ne $sourceEnvName })
-if ($mismatched.Count -gt 0) {
-    Write-Warning "Skipping $($mismatched.Count) agent(s) belonging to a different environment than the currently authenticated one ('$sourceEnvName') - sign in to / select the correct source environment first."
-    $agents = @($agents | Where-Object { $_.environmentName -eq $sourceEnvName })
+    $requestedEnvironmentId = ConvertTo-NormalizedEnvironmentId ([string]$mappingEntry.environmentId)
+    $targetMatches = if ($requestedEnvironmentId) {
+        @(
+            $envList | Where-Object {
+                (ConvertTo-NormalizedEnvironmentId ([string]$_.EnvironmentIdentifier.Id)) -eq $requestedEnvironmentId
+            }
+        )
+    }
+    else {
+        @($envList | Where-Object { $_.FriendlyName -eq $mappingEntry.environmentName })
+    }
+
+    if ($targetMatches.Count -eq 0) {
+        $identifier = if ($mappingEntry.environmentId) {
+            "ID '$($mappingEntry.environmentId)'"
+        }
+        else {
+            "name '$($mappingEntry.environmentName)'"
+        }
+        throw "Target environment $identifier for department '$department' was not found via 'pac env list'. Create it or correct the mapping, then re-run."
+    }
+    if ($targetMatches.Count -gt 1) {
+        throw "Target environment name '$($mappingEntry.environmentName)' for department '$department' is ambiguous ($($targetMatches.Count) environments have that display name). Add environmentId to this mapping entry."
+    }
+
+    $targetRecord = $targetMatches[0]
+    if ($mappingEntry.environmentId -and $mappingEntry.environmentName -and $mappingEntry.environmentName -ne $targetRecord.FriendlyName) {
+        Write-Warning "Department '$department' maps to environment ID '$($mappingEntry.environmentId)', whose current display name is '$($targetRecord.FriendlyName)' rather than '$($mappingEntry.environmentName)'. The stable ID is authoritative."
+    }
+    $deptMap[$departmentKey] = [PSCustomObject]@{
+        Name = $targetRecord.FriendlyName
+        Id   = ConvertTo-NormalizedEnvironmentId ([string]$targetRecord.EnvironmentIdentifier.Id)
+        Url  = $targetRecord.EnvironmentUrl.TrimEnd('/')
+    }
 }
-if ($agents.Count -eq 0) { throw "No agents from the source environment '$sourceEnvName' remain to evaluate." }
+Write-Host "Resolved $($deptMap.Count) department mapping(s) to $(@($deptMap.Values.Id | Select-Object -Unique).Count) distinct target environment ID(s).`n" -ForegroundColor Green
+
+$missingSourceIds = @($agents | Where-Object { [string]::IsNullOrWhiteSpace([string]$_.environmentId) })
+if ($missingSourceIds.Count -gt 0) {
+    throw "$($missingSourceIds.Count) inventory agent(s) have no environmentId. Re-run Inventory-PowerPlatformAgents.ps1 with the updated script; display names are not safe routing identifiers."
+}
+foreach ($agent in $agents) {
+    $agent.environmentId = ConvertTo-NormalizedEnvironmentId ([string]$agent.environmentId)
+}
+$missingLookupStatuses = @(
+    $agents | Where-Object {
+        $_.PSObject.Properties.Name -notcontains 'ownerDirectoryLookupStatus' -or
+        $_.PSObject.Properties.Name -notcontains 'createdByDirectoryLookupStatus'
+    }
+)
+if ($missingLookupStatuses.Count -gt 0) {
+    throw "$($missingLookupStatuses.Count) inventory agent(s) have no directory lookup status fields. Re-run Inventory-PowerPlatformAgents.ps1 so transient Microsoft Graph failures cannot silently affect department routing."
+}
+
+$mismatched = @($agents | Where-Object { $_.environmentId -ne $sourceEnvId })
+if ($mismatched.Count -gt 0) {
+    Write-Warning "Skipping $($mismatched.Count) agent(s) belonging to an environment other than the currently authenticated source '$sourceEnvName' [$sourceEnvId]."
+    $agents = @($agents | Where-Object { $_.environmentId -eq $sourceEnvId })
+}
+if ($agents.Count -eq 0) { throw "No agents from source environment '$sourceEnvName' [$sourceEnvId] remain to evaluate." }
 
 # --- Acquire Dataverse access for the source environment early, so the migration plan
 #     below can pre-flight-check agents' solution membership (see
@@ -209,31 +263,222 @@ $clientId = '1950a258-227b-4e31-a9cf-717495945fc2'
 $clientApp = New-MsalClientApplication -ClientId $clientId -TenantId 'organizations'
 Enable-MsalTokenCacheOnDisk -PublicClientApplication $clientApp | Out-Null
 
-function Get-DataverseHeaders {
-    param([Parameter(Mandatory)][string]$EnvUrl)
-    $token = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope "$EnvUrl/.default" -UseInteractiveBrowser:$UseInteractiveBrowser -Label "Dataverse ($EnvUrl)"
+function Get-DataverseAuthContext {
+    param(
+        [Parameter(Mandatory)][string]$EnvUrl,
+        [switch]$ForceRefresh
+    )
+    $tokenResult = Get-MsalTokenResultWithFallback -ClientApp $clientApp -Scope "$EnvUrl/.default" `
+        -UseInteractiveBrowser:$UseInteractiveBrowser -ForceRefresh:$ForceRefresh -Label "Dataverse ($EnvUrl)"
+    $token = $tokenResult.AccessToken
     $bearer = 'Bear' + 'er ' + $token
-    return @{
+    $headers = @{
         Authorization      = $bearer
         Accept             = 'application/json'
         'OData-MaxVersion' = '4.0'
         'OData-Version'    = '4.0'
         'Content-Type'     = 'application/json; charset=utf-8'
     }
+    return [PSCustomObject]@{
+        Headers   = $headers
+        ExpiresOn = $tokenResult.ExpiresOn
+    }
 }
 
 $dvHeadersCache = @{}
 function Get-CachedDataverseHeaders {
-    param([Parameter(Mandatory)][string]$EnvUrl)
+    param(
+        [Parameter(Mandatory)][string]$EnvUrl,
+        [switch]$ForceRefresh
+    )
     $key = $EnvUrl.TrimEnd('/')
-    if (-not $dvHeadersCache.ContainsKey($key)) {
-        Write-Host "  Authenticating to Dataverse environment: $key..." -ForegroundColor Cyan
-        $dvHeadersCache[$key] = Get-DataverseHeaders -EnvUrl $key
+    $needsRefresh = $ForceRefresh -or -not $dvHeadersCache.ContainsKey($key)
+    if (-not $needsRefresh) {
+        $expiresOn = $dvHeadersCache[$key].ExpiresOn
+        $needsRefresh = -not $expiresOn -or $expiresOn -le [DateTimeOffset]::UtcNow.AddMinutes(5)
     }
-    return $dvHeadersCache[$key]
+    if ($needsRefresh) {
+        Write-Host "  Authenticating to Dataverse environment: $key..." -ForegroundColor Cyan
+        $dvHeadersCache[$key] = Get-DataverseAuthContext -EnvUrl $key -ForceRefresh:$ForceRefresh
+    }
+    return $dvHeadersCache[$key].Headers
 }
 
-$dvHeaders = Get-CachedDataverseHeaders -EnvUrl $sourceEnvUrl
+function Invoke-DataverseRequest {
+    param(
+        [Parameter(Mandatory)][string]$EnvUrl,
+        [Parameter(Mandatory)][string]$Uri,
+        [ValidateSet('Get', 'Post', 'Patch', 'Delete')][string]$Method = 'Get',
+        $Body,
+        [hashtable]$AdditionalHeaders
+    )
+
+    for ($attempt = 0; $attempt -lt 2; $attempt++) {
+        $headers = (Get-CachedDataverseHeaders -EnvUrl $EnvUrl -ForceRefresh:($attempt -gt 0)).Clone()
+        if ($AdditionalHeaders) {
+            foreach ($name in $AdditionalHeaders.Keys) { $headers[$name] = $AdditionalHeaders[$name] }
+        }
+        $request = @{
+            Uri         = $Uri
+            Headers     = $headers
+            Method      = $Method
+            ErrorAction = 'Stop'
+        }
+        if ($PSBoundParameters.ContainsKey('Body')) { $request.Body = $Body }
+
+        try {
+            return Invoke-RestMethod @request
+        }
+        catch {
+            $statusCode = if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+                [int]$_.Exception.Response.StatusCode
+            }
+            else {
+                $null
+            }
+            if ($statusCode -eq 401 -and $attempt -eq 0) { continue }
+            throw
+        }
+    }
+}
+
+function Get-DataverseCollection {
+    param(
+        [Parameter(Mandatory)][string]$EnvUrl,
+        [Parameter(Mandatory)][string]$Uri
+    )
+
+    $items = [System.Collections.Generic.List[object]]::new()
+    $nextUri = $Uri
+    do {
+        $response = Invoke-DataverseRequest -EnvUrl $EnvUrl -Uri $nextUri
+        if ($response.value) { $items.AddRange(@($response.value)) }
+        $nextUri = $response.'@odata.nextLink'
+    } while ($nextUri)
+    return $items
+}
+
+function Get-DataverseSolutionByUniqueName {
+    param(
+        [Parameter(Mandatory)][string]$EnvUrl,
+        [Parameter(Mandatory)][string]$UniqueName
+    )
+
+    $filter = "uniquename eq $(ConvertTo-ODataStringLiteral $UniqueName)"
+    $uri = "$EnvUrl/api/data/v9.2/solutions?`$filter=$([System.Uri]::EscapeDataString($filter))&`$select=solutionid,uniquename,friendlyname&`$top=2"
+    $solutions = @(Get-DataverseCollection -EnvUrl $EnvUrl -Uri $uri)
+    if ($solutions.Count -gt 1) {
+        throw "Dataverse returned multiple solutions with unique name '$UniqueName' in '$EnvUrl'."
+    }
+    if ($solutions.Count -eq 0) { return $null }
+    return $solutions[0]
+}
+
+# Resolves the bot records belonging to the imported target solution. This avoids
+# downloading and diffing the target's entire bots table before and after every import.
+function Get-BotsInSolution {
+    param(
+        [Parameter(Mandatory)][string]$EnvUrl,
+        [Parameter(Mandatory)][string]$SolutionUniqueName
+    )
+
+    $solution = Get-DataverseSolutionByUniqueName -EnvUrl $EnvUrl -UniqueName $SolutionUniqueName
+    if (-not $solution) {
+        throw "Imported solution '$SolutionUniqueName' could not be found in target environment '$EnvUrl'."
+    }
+
+    $componentUri = "$EnvUrl/api/data/v9.2/solutioncomponents?`$filter=_solutionid_value eq $($solution.solutionid)&`$select=objectid"
+    $objectIds = @(
+        Get-DataverseCollection -EnvUrl $EnvUrl -Uri $componentUri |
+            ForEach-Object { [string]$_.objectid } |
+            Where-Object { $_ } |
+            Select-Object -Unique
+    )
+
+    $bots = [System.Collections.Generic.List[object]]::new()
+    for ($i = 0; $i -lt $objectIds.Count; $i += 25) {
+        $chunkEnd = [Math]::Min($i + 24, $objectIds.Count - 1)
+        $validIds = @(
+            $objectIds[$i..$chunkEnd] | Where-Object {
+                $parsedId = [guid]::Empty
+                [guid]::TryParse($_, [ref]$parsedId)
+            }
+        )
+        if ($validIds.Count -eq 0) { continue }
+        $filter = '(' + (($validIds | ForEach-Object { "botid eq $_" }) -join ' or ') + ')'
+        $botUri = "$EnvUrl/api/data/v9.2/bots?`$filter=$([System.Uri]::EscapeDataString($filter))&`$select=botid,name"
+        $bots.AddRange(@(Get-DataverseCollection -EnvUrl $EnvUrl -Uri $botUri))
+    }
+    return $bots
+}
+
+function Find-DataverseTeamMatch {
+    param(
+        [Parameter(Mandatory)][string]$SourceEnvUrl,
+        [Parameter(Mandatory)][string]$TargetEnvUrl,
+        [Parameter(Mandatory)][string]$SourceTeamId,
+        [string]$ExcludedSourceTeamName
+    )
+
+    $sourceTeamUri = "$SourceEnvUrl/api/data/v9.2/teams($SourceTeamId)?`$select=name,azureactivedirectoryobjectid,_businessunitid_value"
+    $sourceTeam = Invoke-DataverseRequest -EnvUrl $SourceEnvUrl -Uri $sourceTeamUri
+    $sourceTeamName = [string]$sourceTeam.name
+    if ($ExcludedSourceTeamName -and $sourceTeamName -eq $ExcludedSourceTeamName) {
+        return [PSCustomObject]@{ SourceName = $sourceTeamName; TargetId = $null; Reason = 'ExcludedAutomaticTeam' }
+    }
+    $entraGroupId = [string]$sourceTeam.azureactivedirectoryobjectid
+
+    if (-not [string]::IsNullOrWhiteSpace($entraGroupId)) {
+        $filter = "azureactivedirectoryobjectid eq $entraGroupId"
+        $targetTeamUri = "$TargetEnvUrl/api/data/v9.2/teams?`$filter=$([System.Uri]::EscapeDataString($filter))&`$select=teamid,name&`$top=2"
+        $matches = @(Get-DataverseCollection -EnvUrl $TargetEnvUrl -Uri $targetTeamUri)
+        if ($matches.Count -eq 1) {
+            return [PSCustomObject]@{ SourceName = $sourceTeamName; TargetId = $matches[0].teamid; Reason = '' }
+        }
+        $reason = if ($matches.Count -eq 0) {
+            "no team backed by Entra group '$entraGroupId' was found in target"
+        }
+        else {
+            "multiple target teams are backed by Entra group '$entraGroupId'"
+        }
+        return [PSCustomObject]@{ SourceName = $sourceTeamName; TargetId = $null; Reason = $reason }
+    }
+
+    $sourceBusinessUnitName = $null
+    if ($sourceTeam.'_businessunitid_value') {
+        $sourceBusinessUnit = Invoke-DataverseRequest -EnvUrl $SourceEnvUrl `
+            -Uri "$SourceEnvUrl/api/data/v9.2/businessunits($($sourceTeam.'_businessunitid_value'))?`$select=name"
+        $sourceBusinessUnitName = [string]$sourceBusinessUnit.name
+    }
+
+    $nameFilter = "name eq $(ConvertTo-ODataStringLiteral $sourceTeamName)"
+    $targetTeamUri = "$TargetEnvUrl/api/data/v9.2/teams?`$filter=$([System.Uri]::EscapeDataString($nameFilter))&`$select=teamid,name,_businessunitid_value&`$expand=businessunitid(`$select=name)"
+    $nameMatches = @(Get-DataverseCollection -EnvUrl $TargetEnvUrl -Uri $targetTeamUri)
+    $matches = if ($sourceBusinessUnitName) {
+        @($nameMatches | Where-Object { $_.businessunitid.name -eq $sourceBusinessUnitName })
+    }
+    else {
+        $nameMatches
+    }
+
+    if ($matches.Count -eq 1) {
+        return [PSCustomObject]@{ SourceName = $sourceTeamName; TargetId = $matches[0].teamid; Reason = '' }
+    }
+    $reason = if ($matches.Count -eq 0) {
+        if ($sourceBusinessUnitName) {
+            "no team named '$sourceTeamName' in business unit '$sourceBusinessUnitName' was found in target"
+        }
+        else {
+            "no team named '$sourceTeamName' was found in target"
+        }
+    }
+    else {
+        "team name '$sourceTeamName' is ambiguous in target; $($matches.Count) matching teams were found"
+    }
+    return [PSCustomObject]@{ SourceName = $sourceTeamName; TargetId = $null; Reason = $reason }
+}
+
+[void](Get-CachedDataverseHeaders -EnvUrl $sourceEnvUrl)
 
 # --- Build the migration plan ---
 Write-Host "`nBuilding migration plan for $($agents.Count) agent(s)..." -ForegroundColor Cyan
@@ -243,8 +488,32 @@ Write-Host "`nBuilding migration plan for $($agents.Count) agent(s)..." -Foregro
 # against agents that would otherwise actually proceed.
 $planDraft = foreach ($agent in $agents) {
     $dept = $null
-    if (-not $agent.isOrphaned -and $agent.ownerUserDepartment) { $dept = $agent.ownerUserDepartment }
-    elseif ($agent.createdByUserDepartment) { $dept = $agent.createdByUserDepartment }
+    $ownerLookupStatus = if ($agent.PSObject.Properties.Name -contains 'ownerDirectoryLookupStatus') {
+        [string]$agent.ownerDirectoryLookupStatus
+    }
+    else {
+        'LegacyInventory'
+    }
+    $creatorLookupStatus = if ($agent.PSObject.Properties.Name -contains 'createdByDirectoryLookupStatus') {
+        [string]$agent.createdByDirectoryLookupStatus
+    }
+    else {
+        'LegacyInventory'
+    }
+
+    $status = 'Planned'
+    if (-not $agent.isOrphaned -and $ownerLookupStatus -in @('Failed', 'NotRequested')) {
+        $status = "Skipped - owner directory lookup status is '$ownerLookupStatus'; rerun inventory before routing this agent"
+    }
+    elseif (-not $agent.isOrphaned -and $agent.ownerUserDepartment) {
+        $dept = $agent.ownerUserDepartment
+    }
+    elseif ($creatorLookupStatus -eq 'Failed') {
+        $status = "Skipped - creator directory lookup failed and is needed as the department fallback; rerun inventory"
+    }
+    elseif ($agent.createdByUserDepartment) {
+        $dept = $agent.createdByUserDepartment
+    }
 
     # Same owner-first/creator-fallback rule as department, so the post-import owner
     # reassignment step (below) targets the same person the plan's department came from.
@@ -252,9 +521,13 @@ $planDraft = foreach ($agent in $agents) {
     if (-not $agent.isOrphaned -and $agent.ownerEmail) { $ownerEmail = $agent.ownerEmail }
     elseif ($agent.createdByEmail) { $ownerEmail = $agent.createdByEmail }
 
-    $status = 'Planned'
     $targetEnvName = $null
-    if (-not $dept) {
+    $targetEnvId = $null
+    $targetEnvUrl = $null
+    if ($status -ne 'Planned') {
+        # Preserve the explicit directory-lookup failure above.
+    }
+    elseif (-not $dept) {
         $status = 'Skipped - no owner/creator department found'
     }
     else {
@@ -263,8 +536,11 @@ $planDraft = foreach ($agent in $agents) {
             $status = "Skipped - no environment mapping for department '$dept'"
         }
         else {
-            $targetEnvName = $deptMap[$key]
-            if ($targetEnvName -eq $sourceEnvName) { $status = 'Skipped - target environment same as source' }
+            $targetEnvironment = $deptMap[$key]
+            $targetEnvName = $targetEnvironment.Name
+            $targetEnvId = $targetEnvironment.Id
+            $targetEnvUrl = $targetEnvironment.Url
+            if ($targetEnvId -eq $sourceEnvId) { $status = 'Skipped - target environment same as source' }
         }
     }
 
@@ -275,6 +551,8 @@ $planDraft = foreach ($agent in $agents) {
         ownerEmailUsed        = $ownerEmail
         sourceEnvironment     = $sourceEnvName
         targetEnvironmentName = $targetEnvName
+        targetEnvironmentId   = $targetEnvId
+        TargetEnvironmentUrl  = $targetEnvUrl
         status                = $status
     }
 }
@@ -283,7 +561,8 @@ $planDraft = foreach ($agent in $agents) {
 # Microsoft-managed status, instead of a separate round-trip per agent - see
 # Get-MicrosoftManagedAgentIds in Common-AgentHelpers.ps1.
 $candidateAgentIds = @($planDraft | Where-Object { $_.status -eq 'Planned' } | ForEach-Object { $_.agentId })
-$managedAgentMap = Get-MicrosoftManagedAgentIds -InstanceUrl $sourceEnvUrl -Headers $dvHeaders -AgentIds $candidateAgentIds
+$managedAgentMap = Get-MicrosoftManagedAgentIds -InstanceUrl $sourceEnvUrl -AgentIds $candidateAgentIds `
+    -RequestInvoker { param($uri) Invoke-DataverseRequest -EnvUrl $sourceEnvUrl -Uri $uri }
 
 $plan = foreach ($item in $planDraft) {
     if ($item.status -eq 'Planned' -and $managedAgentMap.ContainsKey($item.agentId)) {
@@ -304,36 +583,14 @@ if ($toMigrate.Count -eq 0) {
     return
 }
 
-# --- Resolve target environment URLs (existence was already validated up front) ---
-Write-Host "Resolving target environment URL(s) for $($toMigrate.Count) planned migration(s)..." -ForegroundColor Cyan
-foreach ($item in $toMigrate) {
-    $targetRecord = $envList | Where-Object { $_.FriendlyName -eq $item.targetEnvironmentName } | Select-Object -First 1
-    if (-not $targetRecord) {
-        # Shouldn't happen given the upfront validation above - handled defensively anyway.
-        $item.status = "Skipped - target environment '$($item.targetEnvironmentName)' not found via pac env list"
-    }
-    else {
-        $item | Add-Member -NotePropertyName TargetEnvironmentUrl -NotePropertyValue $targetRecord.EnvironmentUrl -Force
-    }
-}
-$unresolved = @($toMigrate | Where-Object { $_.status -ne 'Planned' })
-if ($unresolved.Count -gt 0) {
-    Write-Warning "$($unresolved.Count) planned migration(s) could not be resolved to a real environment and will be skipped:"
-    $unresolved | Format-Table agentName, targetEnvironmentName, status -AutoSize | Out-String | Write-Host
-}
-$toMigrate = @($toMigrate | Where-Object { $_.status -eq 'Planned' })
-if ($toMigrate.Count -eq 0) {
-    Write-Host "No agents left to migrate after environment resolution." -ForegroundColor Yellow
-    return
-}
 Write-Host "$($toMigrate.Count) agent(s) resolved and ready to migrate." -ForegroundColor Green
 
 # Reuse the source environment's own Default-solution publisher for every new dedicated
-# solution, rather than creating a new publisher - keeps this non-invasive. ($dvHeaders was
-# already acquired above, before the plan was built, so it can power the pre-flight
-# Test-IsMicrosoftManagedAgent check on each candidate agent.)
+# solution, rather than creating a new publisher - keeps this non-invasive. Dataverse
+# authentication was already acquired above and is reused through the refresh-aware
+# request wrapper.
 Write-Host "Resolving the source environment's Default-solution publisher..." -ForegroundColor Cyan
-$pubResp = Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutions?`$filter=uniquename eq 'Default'&`$select=uniquename&`$expand=publisherid(`$select=publisherid)" -Headers $dvHeaders -Method Get
+$pubResp = Invoke-DataverseRequest -EnvUrl $sourceEnvUrl -Uri "$sourceEnvUrl/api/data/v9.2/solutions?`$filter=uniquename eq 'Default'&`$select=uniquename&`$expand=publisherid(`$select=publisherid)"
 $publisherId = $pubResp.value[0].publisherid.publisherid
 if (-not $publisherId) { throw "Could not resolve the source environment's Default solution publisher." }
 Write-Host "Resolved publisher: $publisherId" -ForegroundColor Green
@@ -347,7 +604,7 @@ Write-Host "Resolved publisher: $publisherId" -ForegroundColor Green
 # code in different environments/tenants (e.g. 10163 in one org vs. 10212 in another).
 Write-Host "Resolving the Bot solution-component type for this source environment..." -ForegroundColor Cyan
 $sampleBotId = $toMigrate[0].agentId
-$typeResp = Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutioncomponents?`$filter=objectid eq $sampleBotId&`$select=componenttype&`$top=1" -Headers $dvHeaders -Method Get
+$typeResp = Invoke-DataverseRequest -EnvUrl $sourceEnvUrl -Uri "$sourceEnvUrl/api/data/v9.2/solutioncomponents?`$filter=objectid eq $sampleBotId&`$select=componenttype&`$top=1"
 if ($typeResp.value.Count -eq 0) { throw "Could not resolve the Bot solution-component type from '$sampleBotId' - is it a member of any solution in the source environment?" }
 $BOT_COMPONENT_TYPE = $typeResp.value[0].componenttype
 Write-Host "Resolved Bot solution-component type for this source environment: $BOT_COMPONENT_TYPE" -ForegroundColor Cyan
@@ -360,13 +617,21 @@ Write-Host "Resolved Bot solution-component type for this source environment: $B
 function Find-DataverseUserIdByEmail {
     param(
         [Parameter(Mandatory)][string]$EnvUrl,
-        [Parameter(Mandatory)][hashtable]$Headers,
         [Parameter(Mandatory)][string]$Email
     )
-    $userFilter = "domainname eq '$Email' or internalemailaddress eq '$Email'"
-    $userResp = Invoke-RestMethod -Uri "$EnvUrl/api/data/v9.2/systemusers?`$filter=$userFilter&`$select=systemuserid&`$top=1" -Headers $Headers -Method Get
-    if ($userResp.value.Count -eq 0) { return $null }
-    return $userResp.value[0].systemuserid
+    $emailLiteral = ConvertTo-ODataStringLiteral $Email
+    $userFilter = "domainname eq $emailLiteral or internalemailaddress eq $emailLiteral"
+    $userUri = "$EnvUrl/api/data/v9.2/systemusers?`$filter=$([System.Uri]::EscapeDataString($userFilter))&`$select=systemuserid&`$top=2"
+    $userIds = @(
+        Get-DataverseCollection -EnvUrl $EnvUrl -Uri $userUri |
+            ForEach-Object { $_.systemuserid } |
+            Select-Object -Unique
+    )
+    if ($userIds.Count -eq 0) { return $null }
+    if ($userIds.Count -gt 1) {
+        throw "Multiple Dataverse users matched email '$Email' in '$EnvUrl'; ownership/share replication was skipped rather than selecting one arbitrarily."
+    }
+    return $userIds[0]
 }
 
 # --- Post-import owner reassignment + share replication ---
@@ -377,9 +642,7 @@ function Find-DataverseUserIdByEmail {
 function Copy-BotOwnerAndShares {
     param(
         [Parameter(Mandatory)][string]$SourceEnvUrl,
-        [Parameter(Mandatory)][hashtable]$SourceHeaders,
         [Parameter(Mandatory)][string]$TargetEnvUrl,
-        [Parameter(Mandatory)][hashtable]$TargetHeaders,
         [Parameter(Mandatory)][string]$SourceBotId,
         [Parameter(Mandatory)][string]$TargetBotId,
         [string]$OwnerEmail
@@ -387,6 +650,7 @@ function Copy-BotOwnerAndShares {
 
     $result = [PSCustomObject]@{
         ownerReassignmentStatus = 'Not attempted'
+        shareReplicationStatus  = 'Completed'
         sharesGranted           = 0
         sharesSkipped           = 0
         shareDetails            = ''
@@ -399,22 +663,22 @@ function Copy-BotOwnerAndShares {
         $result.ownerReassignmentStatus = 'Skipped - no owner/creator email on record'
     }
     else {
-        $targetUserId = Find-DataverseUserIdByEmail -EnvUrl $TargetEnvUrl -Headers $TargetHeaders -Email $OwnerEmail
-        if (-not $targetUserId) {
-            $result.ownerReassignmentStatus = "Skipped - no user matching '$OwnerEmail' found in target environment"
-        }
-        else {
-            $ownerBody = @{ 'ownerid@odata.bind' = "/systemusers($targetUserId)" } | ConvertTo-Json
-            try {
-                Invoke-RestMethod -Uri "$TargetEnvUrl/api/data/v9.2/bots($TargetBotId)" -Headers $TargetHeaders -Method Patch -Body $ownerBody | Out-Null
+        try {
+            $targetUserId = Find-DataverseUserIdByEmail -EnvUrl $TargetEnvUrl -Email $OwnerEmail
+            if (-not $targetUserId) {
+                $result.ownerReassignmentStatus = "Skipped - no user matching '$OwnerEmail' found in target environment"
+            }
+            else {
+                $ownerBody = @{ 'ownerid@odata.bind' = "/systemusers($targetUserId)" } | ConvertTo-Json
+                Invoke-DataverseRequest -EnvUrl $TargetEnvUrl -Uri "$TargetEnvUrl/api/data/v9.2/bots($TargetBotId)" -Method Patch -Body $ownerBody | Out-Null
                 $result.ownerReassignmentStatus = "Reassigned to '$OwnerEmail'"
             }
-            catch {
-                # Non-fatal: e.g. the matched target user has no security role/privilege on
-                # bots in that environment yet. The core copy already succeeded - don't let
-                # this best-effort step fail the whole migration, just report it clearly.
-                $result.ownerReassignmentStatus = "Failed - matched user '$OwnerEmail' in target but could not reassign owner: $($_.Exception.Message)"
-            }
+        }
+        catch {
+            # Non-fatal: e.g. the matched target user has no security role/privilege on
+            # bots in that environment yet. The core copy already succeeded - don't let
+            # this best-effort step fail the whole migration, just report it clearly.
+            $result.ownerReassignmentStatus = "Failed - could not reassign owner to '$OwnerEmail': $($_.Exception.Message)"
         }
     }
 
@@ -427,7 +691,7 @@ function Copy-BotOwnerAndShares {
     $targetRefJson = "{`"@odata.id`":`"bots($SourceBotId)`"}"
     $encodedTargetRef = [System.Uri]::EscapeDataString($targetRefJson)
     try {
-        $sharesResp = Invoke-RestMethod -Uri "$SourceEnvUrl/api/data/v9.2/RetrieveSharedPrincipalsAndAccess(Target=@tp)?@tp=$encodedTargetRef" -Headers $SourceHeaders -Method Get
+        $sharesResp = Invoke-DataverseRequest -EnvUrl $SourceEnvUrl -Uri "$SourceEnvUrl/api/data/v9.2/RetrieveSharedPrincipalsAndAccess(Target=@tp)?@tp=$encodedTargetRef"
 
         foreach ($pa in @($sharesResp.PrincipalAccesses)) {
             $principalType = $pa.Principal.'@odata.type' -replace '^#Microsoft\.Dynamics\.CRM\.', ''
@@ -438,59 +702,63 @@ function Copy-BotOwnerAndShares {
             $principalKey = $null
             $label = $null
 
-            if ($principalType -eq 'team') {
-                $teamResp = Invoke-RestMethod -Uri "$SourceEnvUrl/api/data/v9.2/teams($principalId)?`$select=name" -Headers $SourceHeaders -Method Get
-                $teamName = $teamResp.name
-                if ($teamName -eq $autoTeamName) { continue }
-
-                $label = "team '$teamName'"
-                $targetTeamResp = Invoke-RestMethod -Uri "$TargetEnvUrl/api/data/v9.2/teams?`$filter=name eq '$teamName'&`$select=teamid&`$top=1" -Headers $TargetHeaders -Method Get
-                if ($targetTeamResp.value.Count -eq 0) {
-                    $result.sharesSkipped++
-                    $shareDetailsList.Add("Skipped $label - no matching team found in target")
-                    continue
-                }
-                $targetPrincipalId = $targetTeamResp.value[0].teamid
-                $principalOdataType = 'Microsoft.Dynamics.CRM.team'
-                $principalKey = 'teamid'
-            }
-            else {
-                $userResp2 = Invoke-RestMethod -Uri "$SourceEnvUrl/api/data/v9.2/systemusers($principalId)?`$select=domainname,internalemailaddress,fullname" -Headers $SourceHeaders -Method Get
-                $email = if ($userResp2.internalemailaddress) { $userResp2.internalemailaddress } else { $userResp2.domainname }
-                $label = "user '$email'"
-                if ([string]::IsNullOrWhiteSpace($email)) {
-                    $result.sharesSkipped++
-                    $shareDetailsList.Add("Skipped user '$($userResp2.fullname)' - no resolvable email")
-                    continue
-                }
-                $userFilter2Id = Find-DataverseUserIdByEmail -EnvUrl $TargetEnvUrl -Headers $TargetHeaders -Email $email
-                if (-not $userFilter2Id) {
-                    $result.sharesSkipped++
-                    $shareDetailsList.Add("Skipped $label - no matching user found in target")
-                    continue
-                }
-                $targetPrincipalId = $userFilter2Id
-                $principalOdataType = 'Microsoft.Dynamics.CRM.systemuser'
-                $principalKey = 'systemuserid'
-            }
-
-            $principalObj = @{ '@odata.type' = $principalOdataType }
-            $principalObj[$principalKey] = $targetPrincipalId
-            $grantBody = @{
-                Target          = @{ '@odata.type' = 'Microsoft.Dynamics.CRM.bot'; botid = $TargetBotId }
-                PrincipalAccess = @{
-                    Principal  = $principalObj
-                    AccessMask = $accessMask
-                }
-            } | ConvertTo-Json -Depth 5
             try {
-                Invoke-RestMethod -Uri "$TargetEnvUrl/api/data/v9.2/GrantAccess" -Headers $TargetHeaders -Method Post -Body $grantBody | Out-Null
+                if ($principalType -eq 'team') {
+                    $teamMatch = Find-DataverseTeamMatch -SourceEnvUrl $SourceEnvUrl -TargetEnvUrl $TargetEnvUrl `
+                        -SourceTeamId $principalId -ExcludedSourceTeamName $autoTeamName
+                    if ($teamMatch.Reason -eq 'ExcludedAutomaticTeam') { continue }
+
+                    $label = "team '$($teamMatch.SourceName)'"
+                    if (-not $teamMatch.TargetId) {
+                        $result.sharesSkipped++
+                        $shareDetailsList.Add("Skipped $label - $($teamMatch.Reason)")
+                        continue
+                    }
+                    $targetPrincipalId = $teamMatch.TargetId
+                    $principalOdataType = 'Microsoft.Dynamics.CRM.team'
+                    $principalKey = 'teamid'
+                }
+                elseif ($principalType -eq 'systemuser') {
+                    $userResp2 = Invoke-DataverseRequest -EnvUrl $SourceEnvUrl -Uri "$SourceEnvUrl/api/data/v9.2/systemusers($principalId)?`$select=domainname,internalemailaddress,fullname"
+                    $email = if ($userResp2.internalemailaddress) { $userResp2.internalemailaddress } else { $userResp2.domainname }
+                    $label = "user '$email'"
+                    if ([string]::IsNullOrWhiteSpace($email)) {
+                        $result.sharesSkipped++
+                        $shareDetailsList.Add("Skipped user '$($userResp2.fullname)' - no resolvable email")
+                        continue
+                    }
+                    $targetPrincipalId = Find-DataverseUserIdByEmail -EnvUrl $TargetEnvUrl -Email $email
+                    if (-not $targetPrincipalId) {
+                        $result.sharesSkipped++
+                        $shareDetailsList.Add("Skipped $label - no matching user found in target")
+                        continue
+                    }
+                    $principalOdataType = 'Microsoft.Dynamics.CRM.systemuser'
+                    $principalKey = 'systemuserid'
+                }
+                else {
+                    $result.sharesSkipped++
+                    $shareDetailsList.Add("Skipped unsupported shared principal type '$principalType' ($principalId)")
+                    continue
+                }
+
+                $principalObj = @{ '@odata.type' = $principalOdataType }
+                $principalObj[$principalKey] = $targetPrincipalId
+                $grantBody = @{
+                    Target          = @{ '@odata.type' = 'Microsoft.Dynamics.CRM.bot'; botid = $TargetBotId }
+                    PrincipalAccess = @{
+                        Principal  = $principalObj
+                        AccessMask = $accessMask
+                    }
+                } | ConvertTo-Json -Depth 5
+                Invoke-DataverseRequest -EnvUrl $TargetEnvUrl -Uri "$TargetEnvUrl/api/data/v9.2/GrantAccess" -Method Post -Body $grantBody | Out-Null
                 $result.sharesGranted++
                 $shareDetailsList.Add("Granted $label ($accessMask)")
             }
             catch {
                 $result.sharesSkipped++
-                $shareDetailsList.Add("Failed to grant $label`: $($_.Exception.Message)")
+                $principalLabel = if ($label) { $label } else { "$principalType '$principalId'" }
+                $shareDetailsList.Add("Failed to replicate share for $principalLabel`: $($_.Exception.Message)")
             }
         }
     }
@@ -498,6 +766,7 @@ function Copy-BotOwnerAndShares {
         # Non-fatal: e.g. the source agent has no shares at all, or the target environment
         # rejected a lookup call. The core copy already succeeded - report this clearly
         # rather than failing the whole migration over a best-effort remediation step.
+        $result.shareReplicationStatus = 'Failed'
         $shareDetailsList.Add("Share replication could not be completed: $($_.Exception.Message)")
     }
 
@@ -559,10 +828,21 @@ foreach ($batch in $batches) {
     $batchStatus = 'Not attempted'
     $batchError = ''
     $perAgentOutcome = @{}
+    $solutionId = $null
 
     if ($PSCmdlet.ShouldProcess($target, 'Create dedicated solution, export, and import into target environment')) {
+        Write-Host "`nMigrating $target..." -ForegroundColor Cyan
+
+        # Core migration phase. Only failures before solution import completes classify
+        # the migration itself as Failed.
         try {
-            Write-Host "`nMigrating $target..." -ForegroundColor Cyan
+            Write-Host "  Checking source and target for an existing migration solution..."
+            if (Get-DataverseSolutionByUniqueName -EnvUrl $targetEnvironmentUrl -UniqueName $solutionUniqueName) {
+                throw "Target environment '$targetEnvironmentName' already contains solution '$solutionUniqueName'. This batch appears to have been imported previously; refusing to overwrite it. Review the existing target solution before retrying."
+            }
+            if (Get-DataverseSolutionByUniqueName -EnvUrl $sourceEnvUrl -UniqueName $solutionUniqueName) {
+                throw "Source environment '$sourceEnvName' already contains solution '$solutionUniqueName' from an earlier attempt. Review or remove that solution before retrying."
+            }
 
             Write-Host "  Creating dedicated solution '$solutionUniqueName'..."
             $solutionBody = @{
@@ -575,9 +855,9 @@ foreach ($batch in $batches) {
             # entity's body (including its solutionid) instead of the default 204 No
             # Content - needed so -CleanupSourceSolution can delete this exact solution
             # by ID later, without a separate lookup-by-uniquename round-trip.
-            $createHeaders = $dvHeaders.Clone()
-            $createHeaders['Prefer'] = 'return=representation'
-            $solutionCreateResp = Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutions" -Headers $createHeaders -Method Post -Body $solutionBody
+            $solutionCreateResp = Invoke-DataverseRequest -EnvUrl $sourceEnvUrl `
+                -Uri "$sourceEnvUrl/api/data/v9.2/solutions" -Method Post -Body $solutionBody `
+                -AdditionalHeaders @{ Prefer = 'return=representation' }
             $solutionId = $solutionCreateResp.solutionid
 
             foreach ($agentItem in $batchItems) {
@@ -589,71 +869,19 @@ foreach ($batch in $batches) {
                     AddRequiredComponents     = $true
                     DoNotIncludeSubcomponents = $false
                 } | ConvertTo-Json
-                Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/AddSolutionComponent" -Headers $dvHeaders -Method Post -Body $addBody | Out-Null
+                Invoke-DataverseRequest -EnvUrl $sourceEnvUrl -Uri "$sourceEnvUrl/api/data/v9.2/AddSolutionComponent" -Method Post -Body $addBody | Out-Null
             }
 
             Write-Host "  Exporting unmanaged solution to $zipPath..."
             $exportOutput = pac solution export --environment $sourceEnvUrl --name $solutionUniqueName --path $zipPath --overwrite 2>&1 | Out-String
             if ($LASTEXITCODE -ne 0) { throw "pac solution export failed:`n$exportOutput" }
 
-            $targetHeaders = Get-CachedDataverseHeaders -EnvUrl $targetEnvironmentUrl
-            Write-Host "  Snapshotting target bots before import..."
-            $beforeBotIds = @((Invoke-RestMethod -Uri "$targetEnvironmentUrl/api/data/v9.2/bots?`$select=botid" -Headers $targetHeaders -Method Get).value | ForEach-Object { $_.botid })
-
             Write-Host "  Importing into '$targetEnvironmentName'..."
             $importOutput = pac solution import --environment $targetEnvironmentUrl --path $zipPath --publish-changes 2>&1 | Out-String
             if ($LASTEXITCODE -ne 0) { throw "pac solution import failed:`n$importOutput" }
 
             $batchStatus = 'Success'
-            Write-Host "  Done." -ForegroundColor Green
-
-            # --- Identify each batch member's new bot record by diffing the target's bots
-            #     table before/after import (solution import does NOT preserve the bot's
-            #     record GUID), matching each candidate back to its agent by name. ---
-            Write-Host "  Identifying new bot record(s) in the target environment..."
-            $afterBots = @((Invoke-RestMethod -Uri "$targetEnvironmentUrl/api/data/v9.2/bots?`$select=botid,name" -Headers $targetHeaders -Method Get).value)
-            $newBots = @($afterBots | Where-Object { $beforeBotIds -notcontains $_.botid })
-
-            foreach ($agentItem in $batchItems) {
-                $candidates = @($newBots | Where-Object { $_.name -eq $agentItem.agentName })
-                $outcome = @{ importedAgentId = ''; ownerReassignmentStatus = ''; sharesGranted = 0; sharesSkipped = 0; shareDetails = '' }
-
-                if ($candidates.Count -eq 1) {
-                    $importedAgentId = $candidates[0].botid
-                    $outcome.importedAgentId = $importedAgentId
-                    Write-Host "  New bot for '$($agentItem.agentName)' identified: $importedAgentId"
-
-                    Write-Host "  Reassigning owner and replicating shares for '$($agentItem.agentName)'..."
-                    $ownerShareResult = Copy-BotOwnerAndShares -SourceEnvUrl $sourceEnvUrl -SourceHeaders $dvHeaders `
-                        -TargetEnvUrl $targetEnvironmentUrl -TargetHeaders $targetHeaders `
-                        -SourceBotId $agentItem.agentId -TargetBotId $importedAgentId -OwnerEmail $agentItem.ownerEmailUsed
-                    $outcome.ownerReassignmentStatus = $ownerShareResult.ownerReassignmentStatus
-                    $outcome.sharesGranted = $ownerShareResult.sharesGranted
-                    $outcome.sharesSkipped = $ownerShareResult.sharesSkipped
-                    $outcome.shareDetails = $ownerShareResult.shareDetails
-                    Write-Host "  Owner: $($outcome.ownerReassignmentStatus)"
-                    Write-Host "  Shares: $($outcome.sharesGranted) granted, $($outcome.sharesSkipped) skipped"
-                }
-                else {
-                    $outcome.ownerReassignmentStatus = "Skipped - could not uniquely identify the new bot for '$($agentItem.agentName)' in the target (found $($candidates.Count) candidate(s))"
-                    Write-Warning "  $($outcome.ownerReassignmentStatus) - owner reassignment and share replication were skipped for this agent."
-                }
-                $perAgentOutcome[$agentItem.agentId] = $outcome
-            }
-
-            if ($CleanupSourceSolution) {
-                Write-Host "  Cleaning up dedicated solution '$solutionUniqueName' from the source environment..."
-                try {
-                    Invoke-RestMethod -Uri "$sourceEnvUrl/api/data/v9.2/solutions($solutionId)" -Headers $dvHeaders -Method Delete | Out-Null
-                    Write-Host "  Deleted source solution '$solutionUniqueName'." -ForegroundColor Green
-                }
-                catch {
-                    # Best-effort, like owner reassignment/share replication above - the
-                    # migration itself already succeeded by this point, so a failed delete
-                    # is logged rather than treated as a migration failure.
-                    Write-Warning "  Could not delete source solution '$solutionUniqueName' (solutionid: $solutionId): $($_.Exception.Message) - remove it manually if desired."
-                }
-            }
+            Write-Host "  Import completed." -ForegroundColor Green
         }
         catch {
             $batchStatus = 'Failed'
@@ -663,6 +891,113 @@ foreach ($batch in $batches) {
             # body PowerShell captures for non-success HTTP responses) when available.
             $batchError = if ($_.ErrorDetails -and $_.ErrorDetails.Message) { $_.ErrorDetails.Message } else { $_.Exception.Message }
             Write-Warning "  Migration failed for $target`: $batchError"
+        }
+
+        # Post-import remediation phase. Failures here do not turn a completed import
+        # into a Failed migration or prevent other agents in a bulk batch from being
+        # remediated.
+        if ($batchStatus -eq 'Success') {
+            $importedBots = @()
+            try {
+                Write-Host "  Resolving imported bot record(s) from target solution '$solutionUniqueName'..."
+                $importedBots = @(Get-BotsInSolution -EnvUrl $targetEnvironmentUrl -SolutionUniqueName $solutionUniqueName)
+                if ($importedBots.Count -eq 0) {
+                    throw "The imported solution contains no bot records."
+                }
+            }
+            catch {
+                $resolutionError = "Imported successfully, but target bot records could not be resolved: $($_.Exception.Message)"
+                Write-Warning "  $resolutionError"
+                foreach ($agentItem in $batchItems) {
+                    $perAgentOutcome[$agentItem.agentId] = @{
+                        importedAgentId = ''
+                        ownerReassignmentStatus = 'Skipped - imported bot record could not be resolved'
+                        shareReplicationStatus = 'Skipped'
+                        sharesGranted = 0
+                        sharesSkipped = 0
+                        shareDetails = ''
+                        status = 'ImportedWithWarnings'
+                        error = $resolutionError
+                    }
+                }
+            }
+
+            if ($importedBots.Count -gt 0) {
+                foreach ($agentItem in $batchItems) {
+                    $outcome = @{
+                        importedAgentId = ''
+                        ownerReassignmentStatus = ''
+                        shareReplicationStatus = 'Not attempted'
+                        sharesGranted = 0
+                        sharesSkipped = 0
+                        shareDetails = ''
+                        status = 'Success'
+                        error = ''
+                    }
+                    $candidates = @($importedBots | Where-Object { $_.name -eq $agentItem.agentName })
+
+                    if ($candidates.Count -ne 1) {
+                        $outcome.status = 'ImportedWithWarnings'
+                        $outcome.ownerReassignmentStatus = "Skipped - could not uniquely identify the imported bot for '$($agentItem.agentName)' in target solution '$solutionUniqueName' (found $($candidates.Count) candidate(s))"
+                        $outcome.error = $outcome.ownerReassignmentStatus
+                        Write-Warning "  $($outcome.ownerReassignmentStatus)"
+                        $perAgentOutcome[$agentItem.agentId] = $outcome
+                        continue
+                    }
+
+                    $importedAgentId = $candidates[0].botid
+                    $outcome.importedAgentId = $importedAgentId
+                    Write-Host "  Imported bot for '$($agentItem.agentName)' identified: $importedAgentId"
+                    Write-Host "  Reassigning owner and replicating shares for '$($agentItem.agentName)'..."
+
+                    try {
+                        $ownerShareResult = Copy-BotOwnerAndShares -SourceEnvUrl $sourceEnvUrl `
+                            -TargetEnvUrl $targetEnvironmentUrl -SourceBotId $agentItem.agentId `
+                            -TargetBotId $importedAgentId -OwnerEmail $agentItem.ownerEmailUsed
+                        $outcome.ownerReassignmentStatus = $ownerShareResult.ownerReassignmentStatus
+                        $outcome.shareReplicationStatus = $ownerShareResult.shareReplicationStatus
+                        $outcome.sharesGranted = $ownerShareResult.sharesGranted
+                        $outcome.sharesSkipped = $ownerShareResult.sharesSkipped
+                        $outcome.shareDetails = $ownerShareResult.shareDetails
+
+                        $remediationWarnings = [System.Collections.Generic.List[string]]::new()
+                        if ($outcome.ownerReassignmentStatus -notlike 'Reassigned*') {
+                            $remediationWarnings.Add($outcome.ownerReassignmentStatus)
+                        }
+                        if ($outcome.sharesSkipped -gt 0) {
+                            $remediationWarnings.Add("$($outcome.sharesSkipped) share(s) could not be replicated")
+                        }
+                        if ($outcome.shareReplicationStatus -eq 'Failed') {
+                            $remediationWarnings.Add('Share replication could not be completed')
+                        }
+                        if ($remediationWarnings.Count -gt 0) {
+                            $outcome.status = 'ImportedWithWarnings'
+                            $outcome.error = $remediationWarnings -join '; '
+                        }
+                        Write-Host "  Owner: $($outcome.ownerReassignmentStatus)"
+                        Write-Host "  Shares: $($outcome.sharesGranted) granted, $($outcome.sharesSkipped) skipped"
+                    }
+                    catch {
+                        $outcome.status = 'ImportedWithWarnings'
+                        $outcome.error = "Owner/share remediation failed: $($_.Exception.Message)"
+                        $outcome.ownerReassignmentStatus = 'Failed - see error column'
+                        $outcome.shareReplicationStatus = 'Failed'
+                        Write-Warning "  $($outcome.error)"
+                    }
+                    $perAgentOutcome[$agentItem.agentId] = $outcome
+                }
+            }
+
+            if ($CleanupSourceSolution -and $solutionId) {
+                Write-Host "  Cleaning up dedicated solution '$solutionUniqueName' from the source environment..."
+                try {
+                    Invoke-DataverseRequest -EnvUrl $sourceEnvUrl -Uri "$sourceEnvUrl/api/data/v9.2/solutions($solutionId)" -Method Delete | Out-Null
+                    Write-Host "  Deleted source solution '$solutionUniqueName'." -ForegroundColor Green
+                }
+                catch {
+                    Write-Warning "  Could not delete source solution '$solutionUniqueName' (solutionid: $solutionId): $($_.Exception.Message) - remove it manually if desired."
+                }
+            }
         }
     }
     else {
@@ -680,11 +1015,12 @@ foreach ($batch in $batches) {
             solutionUniqueName      = $solutionUniqueName
             importedAgentId         = if ($outcome) { $outcome.importedAgentId } else { '' }
             ownerReassignmentStatus = if ($outcome) { $outcome.ownerReassignmentStatus } else { '' }
+            shareReplicationStatus  = if ($outcome) { $outcome.shareReplicationStatus } else { '' }
             sharesGranted           = if ($outcome) { $outcome.sharesGranted } else { 0 }
             sharesSkipped           = if ($outcome) { $outcome.sharesSkipped } else { 0 }
             shareDetails            = if ($outcome) { $outcome.shareDetails } else { '' }
-            status                  = $batchStatus
-            error                   = $batchError
+            status                  = if ($outcome -and $outcome.status) { $outcome.status } else { $batchStatus }
+            error                   = if ($outcome -and $outcome.error) { $outcome.error } else { $batchError }
         })
     }
 }
@@ -693,7 +1029,7 @@ $resultsCsvPath = Join-Path $OutputDir 'migration-results.csv'
 $results | Export-Csv -Path $resultsCsvPath -NoTypeInformation -Encoding UTF8 -WhatIf:$false
 Write-Host "`nMigration results exported to: $resultsCsvPath" -ForegroundColor Green
 
-if (@($results | Where-Object { $_.status -eq 'Success' }).Count -gt 0) {
-    Write-Host "`nOwnership and record-level sharing were automatically reassigned/replicated in the target environment where a matching user or team could be found there - see the ownerReassignmentStatus/sharesGranted/sharesSkipped/shareDetails columns in migration-results.csv for the outcome of each agent." -ForegroundColor Cyan
+if (@($results | Where-Object { $_.status -in @('Success', 'ImportedWithWarnings') }).Count -gt 0) {
+    Write-Host "`nOwnership and record-level sharing were automatically reassigned/replicated in the target environment where a matching user or team could be found there - see the ownerReassignmentStatus/shareReplicationStatus/sharesGranted/sharesSkipped/shareDetails columns in migration-results.csv for the outcome of each agent." -ForegroundColor Cyan
     Write-Host "`nMANUAL FOLLOW-UP STILL REQUIRED: for each successfully migrated agent, review and reconfigure its connection references and environment variables in the TARGET environment - they still point at the source environment's connections and are not automatically repointed by this script." -ForegroundColor Yellow
 }

@@ -1,12 +1,12 @@
 [
-  { "department": "Executive", "environmentName": "Contoso-Executive", "code": "EXE" },
-  { "department": "Human Resources", "environmentName": "Contoso-HR", "code": "HR" },
-  { "department": "Information Technology", "environmentName": "Contoso-IT", "code": "IT" },
-  { "department": "Legal", "environmentName": "Contoso-Legal", "code": "LEG" },
-  { "department": "Operations", "environmentName": "Contoso-Operations", "code": "OPE" },
-  { "department": "Finance", "environmentName": "Contoso-Finance", "code": "FIN" },
-  { "department": "Marketing", "environmentName": "Contoso-Marketing", "code": "MAR" },
-  { "department": "Sales", "environmentName": "Contoso-Sales", "code": "SAL" },
-  { "department": "Customer Support", "environmentName": "Contoso-CustomerSupport", "code": "CS" },
-  { "department": "Product Development", "environmentName": "Contoso-ProductDev", "code": "PD" }
+  { "department": "Executive", "environmentName": "Contoso-Executive", "environmentId": "00000000-0000-0000-0000-000000000001", "environmentUrl": "https://contoso-executive.crm.dynamics.com", "code": "EXE" },
+  { "department": "Human Resources", "environmentName": "Contoso-HR", "environmentId": "00000000-0000-0000-0000-000000000002", "environmentUrl": "https://contoso-hr.crm.dynamics.com", "code": "HR" },
+  { "department": "Information Technology", "environmentName": "Contoso-IT", "environmentId": "00000000-0000-0000-0000-000000000003", "environmentUrl": "https://contoso-it.crm.dynamics.com", "code": "IT" },
+  { "department": "Legal", "environmentName": "Contoso-Legal", "environmentId": "00000000-0000-0000-0000-000000000004", "environmentUrl": "https://contoso-legal.crm.dynamics.com", "code": "LEG" },
+  { "department": "Operations", "environmentName": "Contoso-Operations", "environmentId": "00000000-0000-0000-0000-000000000005", "environmentUrl": "https://contoso-operations.crm.dynamics.com", "code": "OPE" },
+  { "department": "Finance", "environmentName": "Contoso-Finance", "environmentId": "00000000-0000-0000-0000-000000000006", "environmentUrl": "https://contoso-finance.crm.dynamics.com", "code": "FIN" },
+  { "department": "Marketing", "environmentName": "Contoso-Marketing", "environmentId": "00000000-0000-0000-0000-000000000007", "environmentUrl": "https://contoso-marketing.crm.dynamics.com", "code": "MAR" },
+  { "department": "Sales", "environmentName": "Contoso-Sales", "environmentId": "00000000-0000-0000-0000-000000000008", "environmentUrl": "https://contoso-sales.crm.dynamics.com", "code": "SAL" },
+  { "department": "Customer Support", "environmentName": "Contoso-CustomerSupport", "environmentId": "00000000-0000-0000-0000-000000000009", "environmentUrl": "https://contoso-support.crm.dynamics.com", "code": "CS" },
+  { "department": "Product Development", "environmentName": "Contoso-ProductDev", "environmentId": "00000000-0000-0000-0000-000000000010", "environmentUrl": "https://contoso-productdev.crm.dynamics.com", "code": "PD" }
 ]
