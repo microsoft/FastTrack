@@ -22,7 +22,14 @@ We have a collection of [scripts](scripts) to help with deploying Microsoft 365.
 |[Copilot Agent Samples](./copilot-agent-samples/)|Collection of Copilot Agent samples including Declarative Agents and Custom Agents.|
 |[Copilot Agent Strategy](./copilot-agent-strategy/)|Strategic planning tools including an interactive agents guide, brainstorming template, and cost calculator.|
 |[Copilot Analytics Samples](./copilot-analytics-samples/)|Collection of Copilot Analytics samples including PowerBI templates.|
+| [Copilot Prompt Samples](./copilot-prompt-samples/) | Ready-to-use prompt samples for Microsoft 365 Copilot (Chat, Researcher, and more). |
+| [Samples](./samples/) | Teams and Viva Engage code samples, including Teams Phone/Rooms/Audio Conferencing snippets and a Viva Engage community-creation app. |
+| [Tools](./tools/) | Utilities for Microsoft 365 administration, including SimpleGraph, a lightweight Microsoft Graph REST wrapper for PowerShell. |
 
+
+## Live Catalog
+
+Browse the interactive catalog and Copilot agent analytics on the [FastTrack landing page](https://microsoft.github.io/FastTrack/).
 
 ## Ideas Welcome!
 
