@@ -6,8 +6,8 @@ This is useful for tenants that started out with all their Copilot Studio agents
 
 The toolkit is made up of five scripts, meant to be run in order:
 
-1. **`Generate-DepartmentMappings.ps1`** (optional, one-time/occasional) - discovers every department in your tenant (from Entra ID user profiles) and every non-default Power Platform environment, then generates `department-environment-mapping.json`, randomly assigning each department to a target environment plus a short naming-convention code. You can also hand-author this file yourself instead (see `department-environment-mapping.example.json`) - the only fields `Migrate-CopilotStudioAgents.ps1` actually reads are `department` and `environmentName`.
-2. **`Inventory-PowerPlatformAgents.ps1`** - inventories every Copilot Studio / Microsoft 365 Copilot Agent Builder agent in the tenant via the Power Platform inventory API (the same data source behind the "Agents" list in the Power Platform admin center), resolves each agent's creator/owner to a display name/email/department via Microsoft Graph, flags first-party Microsoft-managed agents (e.g. "Finance in Microsoft 365 Copilot") that can't be migrated, and exports CSV/JSON reports.
+1. **`Generate-DepartmentMappings.ps1`** (optional, one-time/occasional) - discovers every department in your tenant (from Entra ID user profiles) and every non-default Power Platform environment, then generates `department-environment-mapping.json`, randomly assigning each department to a target environment plus a short naming-convention code. The generated mapping stores the environment's stable ID, current display name, and URL; you can also hand-author it yourself (see `department-environment-mapping.example.json`).
+2. **`Inventory-PowerPlatformAgents.ps1`** - inventories every Copilot Studio / Microsoft 365 Copilot Agent Builder agent in the tenant via the Power Platform inventory API (the same data source behind the "Agents" list in the Power Platform admin center), resolves each agent's creator/owner to a display name/email/department via Microsoft Graph (retrying throttled batch subrequests and recording lookup outcomes), flags first-party Microsoft-managed agents (e.g. "Finance in Microsoft 365 Copilot") that can't be migrated, and exports CSV/JSON reports.
 3. **`Migrate-CopilotStudioAgents.ps1`** - consumes the raw JSON from step 2 plus the department mapping from step 1, builds a per-agent migration plan (skipping agents with no resolvable department, no mapping, a same-as-source target, or first-party/Microsoft-managed status), then for each planned agent creates a dedicated unmanaged Dataverse solution, exports it, and imports it into the target environment - restoring the agent's owner and record-level sharing afterward (Dataverse solution import does not preserve either). Supports `-WhatIf` for a full dry run.
 4. **`Confirm-ScriptRequirements.ps1`** - a shared helper (dot-sourced by the other scripts, not run directly) that checks for the `pac` CLI and the `MSAL.PS` PowerShell module before any real work starts, and offers to install whichever is missing for you.
 5. **`Common-AgentHelpers.ps1`** - another shared helper (dot-sourced, not run directly): a common MSAL sign-in fallback, and a batched Dataverse lookup that flags first-party Microsoft-managed agents efficiently (a handful of calls total, not one per agent).
@@ -22,7 +22,7 @@ The original agent in the source environment is left untouched by step 3 - migra
 - One of these Microsoft Entra roles, to read the Power Platform inventory: Global Administrator, Power Platform Administrator, Dynamics 365 Administrator, Global Reader, or AI Administrator/AI Reader. If you can see the "Agents" list in the Power Platform admin center yourself, you already have enough access.
 - Delegated Microsoft Graph access (`User.Read.All`) to resolve agent creator/owner department, display name, and email.
 - Access to Dataverse in both the source and target environments (for the migration step), including permission to create/export/import unmanaged solutions.
-- **Every target environment referenced in your department -> environment mapping must already exist** before you run the migration script - it validates this itself up front (via `pac env list`) and fails fast with a clear error if any are missing, rather than creating them for you. Create/provision each target environment (and assign it the appropriate Dataverse database/licensing) ahead of time.
+- **Every target environment referenced in your department -> environment mapping must already exist** before you run the migration script - it resolves each entry against `pac env list` by stable `environmentId` and fails fast if any are missing. Legacy name-only entries are accepted only when the display name uniquely identifies one environment. Create/provision each target environment (and assign it the appropriate Dataverse database/licensing) ahead of time.
 - **Every user whose agent will be migrated to a given target environment must already have access to that environment** (added under the environment's Settings > Users + permissions, with at least a security role that can own/use a Copilot Studio agent) before migration - owner reassignment (see step 3) looks up the user by email in the target environment and will skip reassignment if they aren't found there.
 
 All three main scripts sign in interactively via MSAL's device code flow by default (open a URL, enter a code) - pass `-UseInteractiveBrowser` to any of them to use an embedded browser prompt instead.
@@ -37,13 +37,13 @@ Produces `department-environment-mapping.json`. See `department-environment-mapp
 
 ```json
 [
-  { "department": "Executive", "environmentName": "Contoso-Executive", "code": "EXE" },
-  { "department": "Human Resources", "environmentName": "Contoso-HR", "code": "HR" },
-  { "department": "Finance", "environmentName": "Contoso-Finance", "code": "FIN" }
+  { "department": "Executive", "environmentName": "Contoso-Executive", "environmentId": "00000000-0000-0000-0000-000000000001", "environmentUrl": "https://contoso-executive.crm.dynamics.com", "code": "EXE" },
+  { "department": "Human Resources", "environmentName": "Contoso-HR", "environmentId": "00000000-0000-0000-0000-000000000002", "environmentUrl": "https://contoso-hr.crm.dynamics.com", "code": "HR" },
+  { "department": "Finance", "environmentName": "Contoso-Finance", "environmentId": "00000000-0000-0000-0000-000000000003", "environmentUrl": "https://contoso-finance.crm.dynamics.com", "code": "FIN" }
 ]
 ```
 
-Only `department` and `environmentName` are used by the migration script; `code` is a naming-convention field for your own use.
+`department` and `environmentId` drive migration routing. `environmentName` and `environmentUrl` make the file readable and are refreshed from `pac env list` when the file is generated; `code` is a naming-convention field for your own use. A legacy entry without `environmentId` works only when its `environmentName` is unique.
 
 ### 2. Inventory your tenant's Copilot Studio agents
 
@@ -73,7 +73,7 @@ Other useful switches:
 - `-CleanupSourceSolution` - delete the dedicated solution this script creates from the source environment once its export/import has succeeded (by default it's left behind - see [Limitations](#limitations)).
 - `-OutputDir <path>` - where to write the plan/results reports and exported solution zips.
 
-Results (including per-agent success/failure, owner reassignment status, and share-replication details) are written to `migration-results.csv`. Connection references and environment variables in the newly-imported solution still need manual reconfiguration in the target environment - this is called out at the end of the script's output and is not handled automatically.
+Results (including per-agent success/failure, owner reassignment status, `shareReplicationStatus`, and share details) are written to `migration-results.csv`. `ImportedWithWarnings` means the solution import succeeded but one or more post-import steps (bot identification, ownership, or sharing) need attention; it is not safe to treat that row as a failed import and blindly retry it. Connection references and environment variables in the newly-imported solution still need manual reconfiguration in the target environment - this is called out at the end of the script's output and is not handled automatically.
 
 ## Limitations
 
@@ -84,6 +84,7 @@ Results (including per-agent success/failure, owner reassignment status, and sha
 An agent is skipped - with a reason recorded in `migration-plan.csv`/`migration-results.csv` - rather than migrated if:
 
 - Its owner and creator have no `department` value in Microsoft Entra ID (nothing to map from).
+- A required Microsoft Graph owner/creator lookup failed after retries. The script fails closed rather than routing the agent using potentially incorrect fallback data; rerun inventory before migrating.
 - Its resolved department has no entry in the department -> environment mapping file.
 - Its mapped target environment is the same as the source environment (nothing to do).
 - It's a first-party, Microsoft-managed agent (e.g. "Finance in Microsoft 365 Copilot") - these ship inside a Microsoft-managed solution with no customizable content to copy.
@@ -92,9 +93,9 @@ An agent is skipped - with a reason recorded in `migration-plan.csv`/`migration-
 ### Manual follow-up required after migration
 
 - **Connection references and environment variables** in the imported solution still point at the source environment's connections and are NOT repointed automatically - reconfigure these by hand in the target environment (Power Apps/Power Automate connections, custom connectors, etc.) before treating the migrated agent as production-ready.
-- **Owner reassignment and share replication are best-effort**: they only succeed if a matching user (by email) or team (by exact name) already exists in the target environment. If no match is found, the imported agent keeps whichever account ran the import as its owner and that specific share is skipped - both outcomes are logged per-agent in `migration-results.csv` rather than failing the migration.
+- **Owner reassignment and share replication are best-effort**: users are matched by email and must resolve uniquely. Entra-backed teams are matched by Entra group object ID; other teams are matched by exact team and business-unit name and must resolve uniquely. Missing or ambiguous principals are skipped rather than granting access to an arbitrary record. These outcomes are logged as `ImportedWithWarnings` in `migration-results.csv` rather than reclassifying a completed import as failed.
 - **The dedicated `PPMigration_*` solution this script creates is left behind** in the source environment after a successful migration by default (along with the exported `.zip` in `-OutputDir`) - pass `-CleanupSourceSolution` to have it deleted from the source environment automatically once export/import succeeds (best-effort; a failed delete is logged, not treated as a migration failure). The same solution also remains wrapped around the agent in the *target* environment after import - that's expected (Power Platform solutions aren't unwrapped automatically) - remove it there yourself if you'd rather the agent be unpackaged.
-- **Re-running for the same agent (or, under `-BulkByDepartment`, the same set of agents in a department) will fail** at the solution-create step, since the generated solution name is deterministic - this surfaces as a clear error instead of silently duplicating the agent, but it also means a partially-failed migration can't simply be re-run as-is; investigate the failure first.
+- **Re-running for the same agent (or, under `-BulkByDepartment`, the same set of agents in a department) is blocked** because the generated solution name is deterministic. Before creating or importing anything, the script checks both source and target for that solution. This target-side guard remains effective even when `-CleanupSourceSolution` deleted the source copy after a previous success. Investigate the existing solution/result before retrying.
 - **Validate the migrated agent end-to-end** before deleting or deactivating the original - published channels, topics that call out to connectors, and any other environment-specific configuration should be tested in the target environment.
 - With `-BulkByDepartment`, a single failed import affects every agent in that department together (no per-agent isolation) - the default of one solution per agent isolates failures instead.
 

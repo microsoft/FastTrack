@@ -19,39 +19,82 @@
     of or inability to use the sample scripts or documentation, even if Microsoft
     has been advised of the possibility of such damages.
 
-    Dot-source this file, then call Get-MsalAccessTokenWithFallback and/or
-    Get-MicrosoftManagedAgentIds.
+    Dot-source this file, then call Get-MsalAccessTokenWithFallback,
+    Get-MsalTokenResultWithFallback, ConvertTo-NormalizedEnvironmentId,
+    ConvertTo-ODataStringLiteral, and/or Get-MicrosoftManagedAgentIds.
 #>
 
-# Acquires an MSAL access token for one scope, trying a silent (cached) token first and
-# only prompting the user if that fails - device code by default (no browser popup to
-# hang), or an embedded interactive browser if -UseInteractiveBrowser is passed. Used by
-# every script that signs in (Power Platform inventory API, Microsoft Graph, Dataverse),
-# replacing what used to be an identical try/catch block copy-pasted at each call site.
+# Acquires the full MSAL token result so callers that cache authorization headers can
+# retain ExpiresOn and refresh before the token becomes invalid.
+function Get-MsalTokenResultWithFallback {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]$ClientApp,
+        [Parameter(Mandatory)][string]$Scope,
+        [switch]$UseInteractiveBrowser,
+        [switch]$ForceRefresh,
+        # Short label used only in the console messages below, e.g. "Dataverse" or
+        # "Microsoft Graph" - purely cosmetic, doesn't affect the token request itself.
+        [string]$Label = 'access'
+    )
+    try {
+        $silentParams = @{
+            PublicClientApplication = $ClientApp
+            Scopes                  = $Scope
+            Silent                  = $true
+            ErrorAction             = 'Stop'
+        }
+        if ($ForceRefresh) { $silentParams.ForceRefresh = $true }
+        $tokenResult = Get-MsalToken @silentParams
+        if ($ForceRefresh) {
+            Write-Host "Refreshed sign-in for $Label (no prompt needed)." -ForegroundColor Green
+        }
+        else {
+            Write-Host "Reused cached sign-in for $Label (no prompt needed)." -ForegroundColor Green
+        }
+    }
+    catch {
+        if ($UseInteractiveBrowser) {
+            $tokenResult = Get-MsalToken -PublicClientApplication $ClientApp -Scopes $Scope -Interactive
+        }
+        else {
+            Write-Host "No valid cached token found for $Label - using device code flow (no browser popup to hang)." -ForegroundColor Yellow
+            $tokenResult = Get-MsalToken -PublicClientApplication $ClientApp -Scopes $Scope -DeviceCode
+        }
+    }
+    return $tokenResult
+}
+
+# Convenience wrapper for callers that only need the bearer-token string.
 function Get-MsalAccessTokenWithFallback {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]$ClientApp,
         [Parameter(Mandatory)][string]$Scope,
         [switch]$UseInteractiveBrowser,
-        # Short label used only in the console messages below, e.g. "Dataverse" or
-        # "Microsoft Graph" - purely cosmetic, doesn't affect the token request itself.
+        [switch]$ForceRefresh,
         [string]$Label = 'access'
     )
-    try {
-        $token = (Get-MsalToken -PublicClientApplication $ClientApp -Scopes $Scope -Silent -ErrorAction Stop).AccessToken
-        Write-Host "Reused cached sign-in for $Label (no prompt needed)." -ForegroundColor Green
-    }
-    catch {
-        if ($UseInteractiveBrowser) {
-            $token = (Get-MsalToken -PublicClientApplication $ClientApp -Scopes $Scope -Interactive).AccessToken
-        }
-        else {
-            Write-Host "No valid cached token found for $Label - using device code flow (no browser popup to hang)." -ForegroundColor Yellow
-            $token = (Get-MsalToken -PublicClientApplication $ClientApp -Scopes $Scope -DeviceCode).AccessToken
-        }
-    }
-    return $token
+    $tokenResult = Get-MsalTokenResultWithFallback -ClientApp $ClientApp -Scope $Scope `
+        -UseInteractiveBrowser:$UseInteractiveBrowser -ForceRefresh:$ForceRefresh -Label $Label
+    return $tokenResult.AccessToken
+}
+
+# Produces a valid OData string literal. The completed $filter expression should still
+# be URI-encoded before it is added to a request URL.
+function ConvertTo-ODataStringLiteral {
+    param([AllowEmptyString()][string]$Value)
+
+    return "'" + $Value.Replace("'", "''") + "'"
+}
+
+# pac env who and the Power Platform inventory API can represent the default
+# environment as "Default-<guid>", while pac env list returns only "<guid>".
+function ConvertTo-NormalizedEnvironmentId {
+    param([AllowEmptyString()][string]$EnvironmentId)
+
+    if ([string]::IsNullOrWhiteSpace($EnvironmentId)) { return '' }
+    return $EnvironmentId.Trim() -replace '^(?i:Default-)', ''
 }
 
 # Given a set of candidate Dataverse bot (agent) IDs, returns a hashtable of
@@ -73,12 +116,16 @@ function Get-MsalAccessTokenWithFallback {
 function Get-MicrosoftManagedAgentIds {
     param(
         [Parameter(Mandatory)][string]$InstanceUrl,
-        [Parameter(Mandatory)][hashtable]$Headers,
+        [hashtable]$Headers,
+        [scriptblock]$RequestInvoker,
         [Parameter(Mandatory)][AllowEmptyCollection()][string[]]$AgentIds
     )
     $managedPrefixes = @('msdyn', 'mscrm', 'msa', 'adx', 'mspp', 'msft')
     $result = @{}
     if (-not $AgentIds -or $AgentIds.Count -eq 0) { return $result }
+    if (-not $RequestInvoker -and -not $Headers) {
+        throw 'Get-MicrosoftManagedAgentIds requires either -Headers or -RequestInvoker.'
+    }
 
     # Chunk size kept modest since each OR'd clause here also carries a nested $expand -
     # a large combined filter+expand URL is more likely to hit Dataverse's URL length
@@ -90,7 +137,12 @@ function Get-MicrosoftManagedAgentIds {
         $objectFilter = ($chunk | ForEach-Object { "objectid eq $_" }) -join ' or '
         $compUri = "$InstanceUrl/api/data/v9.2/solutioncomponents?`$filter=($objectFilter)&`$select=objectid&`$expand=solutionid(`$select=uniquename,ismanaged;`$expand=publisherid(`$select=customizationprefix))"
         do {
-            $compResp = Invoke-RestMethod -Uri $compUri -Headers $Headers -Method Get
+            $compResp = if ($RequestInvoker) {
+                & $RequestInvoker $compUri
+            }
+            else {
+                Invoke-RestMethod -Uri $compUri -Headers $Headers -Method Get
+            }
             foreach ($c in $compResp.value) {
                 $objectId = [string]$c.objectid
                 if ($result.ContainsKey($objectId)) { continue }

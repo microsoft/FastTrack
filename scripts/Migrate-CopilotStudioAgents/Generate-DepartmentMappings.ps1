@@ -3,8 +3,8 @@
     Discovers every department in the tenant (from Entra ID user profiles) and every
     non-default Power Platform environment, then (re)generates
     department-environment-mapping.json - a single file mapping each department to a
-    randomly-assigned non-default environment plus a short naming-convention code -
-    ready for use by Migrate-CopilotStudioAgents.ps1.
+    randomly-assigned non-default environment ID/name/URL plus a short
+    naming-convention code - ready for use by Migrate-CopilotStudioAgents.ps1.
 
 .DESCRIPTION
     The sample scripts are not supported under any Microsoft standard support
@@ -129,9 +129,15 @@ $envList = $null
 try { $envList = $envListRaw | ConvertFrom-Json }
 catch { throw "Could not parse 'pac env list --json' output:`n$envListRaw" }
 
-$nonDefaultEnvs = @($envList | Where-Object { -not $_.EnvironmentIdentifier.IsDefault } | ForEach-Object { $_.FriendlyName } | Sort-Object)
+$nonDefaultEnvs = @(
+    $envList |
+        Where-Object { -not $_.EnvironmentIdentifier.IsDefault } |
+        Sort-Object FriendlyName
+)
 Write-Host "Found $($nonDefaultEnvs.Count) non-default environment(s):" -ForegroundColor Green
-$nonDefaultEnvs | ForEach-Object { Write-Host "  - $_" }
+$nonDefaultEnvs | ForEach-Object {
+    Write-Host "  - $($_.FriendlyName) [$($_.EnvironmentIdentifier.Id)]"
+}
 if ($nonDefaultEnvs.Count -eq 0) { throw "No non-default environments found - nothing to map departments to." }
 
 if ($departments.Count -gt $nonDefaultEnvs.Count) {
@@ -156,12 +162,20 @@ foreach ($department in $departments) {
 
 # --- Randomly assign each department to a non-default environment ------------------------
 $assignments = foreach ($department in $departments) {
-    $environmentName = Get-Random -InputObject $nonDefaultEnvs
-    [PSCustomObject]@{ department = $department; environmentName = $environmentName; code = $departmentToCode[$department] }
+    $environment = Get-Random -InputObject $nonDefaultEnvs
+    [PSCustomObject]@{
+        department     = $department
+        environmentName = $environment.FriendlyName
+        environmentId  = $environment.EnvironmentIdentifier.Id
+        environmentUrl = $environment.EnvironmentUrl
+        code            = $departmentToCode[$department]
+    }
 }
 
 Write-Host "`nRandom department -> environment assignment:" -ForegroundColor Cyan
-$assignments | ForEach-Object { Write-Host ("  {0,-25} -> {1,-10} (code: {2}_)" -f $_.department, $_.environmentName, $_.code) }
+$assignments | ForEach-Object {
+    Write-Host ("  {0,-25} -> {1} [{2}] (code: {3}_)" -f $_.department, $_.environmentName, $_.environmentId, $_.code)
+}
 
 if (Test-Path $MappingPath) {
     $backupPath = "$MappingPath.bak-$(Get-Date -Format 'yyyyMMdd-HHmmss')"

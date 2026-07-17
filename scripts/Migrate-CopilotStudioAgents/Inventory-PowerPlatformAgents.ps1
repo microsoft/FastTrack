@@ -123,6 +123,102 @@ function ConvertTo-DisplayAgent {
     return $display
 }
 
+# Resolves Entra user IDs through Microsoft Graph's batch endpoint. Failed 429/5xx
+# subrequests are retried individually; permanent failures remain explicit so the
+# migration script can avoid routing an agent using fallback data after a transient
+# owner lookup failure.
+function Resolve-GraphUsersById {
+    param(
+        [Parameter(Mandatory)][hashtable]$Headers,
+        [Parameter(Mandatory)][AllowEmptyCollection()][string[]]$UserIds,
+        [int]$MaxAttempts = 4
+    )
+
+    $users = @{}
+    $statuses = @{}
+    if (-not $UserIds -or $UserIds.Count -eq 0) {
+        return [PSCustomObject]@{ Users = $users; Statuses = $statuses }
+    }
+
+    for ($i = 0; $i -lt $UserIds.Count; $i += 20) {
+        $chunkEnd = [Math]::Min($i + 19, $UserIds.Count - 1)
+        $pendingIds = @($UserIds[$i..$chunkEnd])
+
+        for ($attempt = 1; $attempt -le $MaxAttempts -and $pendingIds.Count -gt 0; $attempt++) {
+            $requestIds = @($pendingIds)
+            $requests = for ($j = 0; $j -lt $requestIds.Count; $j++) {
+                @{ id = "$j"; method = 'GET'; url = "/users/$($requestIds[$j])?`$select=displayName,mail,userPrincipalName,department" }
+            }
+            $batchBody = @{ requests = @($requests) } | ConvertTo-Json -Depth 5
+
+            try {
+                $batchResp = Invoke-RestMethod -Uri 'https://graph.microsoft.com/v1.0/$batch' -Headers $Headers -Method Post -Body $batchBody
+            }
+            catch {
+                if ($attempt -lt $MaxAttempts) {
+                    Start-Sleep -Seconds ([Math]::Min([Math]::Pow(2, $attempt), 30))
+                    continue
+                }
+                foreach ($id in $requestIds) { $statuses[$id] = 'Failed' }
+                Write-Warning "Microsoft Graph batch lookup failed after $MaxAttempts attempt(s): $($_.Exception.Message)"
+                break
+            }
+
+            $responsesById = @{}
+            foreach ($response in @($batchResp.responses)) {
+                $responsesById[[string]$response.id] = $response
+            }
+
+            $retryIds = [System.Collections.Generic.List[string]]::new()
+            $retryAfterSeconds = 0
+            for ($j = 0; $j -lt $requestIds.Count; $j++) {
+                $userId = $requestIds[$j]
+                $response = $responsesById["$j"]
+                if (-not $response) {
+                    if ($attempt -lt $MaxAttempts) { $retryIds.Add($userId) }
+                    else { $statuses[$userId] = 'Failed' }
+                    continue
+                }
+
+                $statusCode = [int]$response.status
+                if ($statusCode -eq 200) {
+                    $users[$userId] = [PSCustomObject]@{
+                        DisplayName = $response.body.displayName
+                        Email       = if ($response.body.mail) { $response.body.mail } else { $response.body.userPrincipalName }
+                        Department  = $response.body.department
+                    }
+                    $statuses[$userId] = 'Resolved'
+                    continue
+                }
+                if ($statusCode -eq 404) {
+                    $statuses[$userId] = 'NotFound'
+                    continue
+                }
+
+                if (($statusCode -eq 429 -or $statusCode -ge 500) -and $attempt -lt $MaxAttempts) {
+                    $retryIds.Add($userId)
+                    $retryAfter = 0
+                    if ($response.headers -and [int]::TryParse([string]$response.headers.'Retry-After', [ref]$retryAfter)) {
+                        $retryAfterSeconds = [Math]::Max($retryAfterSeconds, $retryAfter)
+                    }
+                    continue
+                }
+
+                $statuses[$userId] = 'Failed'
+                Write-Warning "Microsoft Graph could not resolve user ID '$userId' (HTTP $statusCode)."
+            }
+
+            $pendingIds = @($retryIds)
+            if ($pendingIds.Count -gt 0) {
+                $delay = if ($retryAfterSeconds -gt 0) { $retryAfterSeconds } else { [Math]::Min([Math]::Pow(2, $attempt), 30) }
+                Start-Sleep -Seconds $delay
+            }
+        }
+    }
+
+    return [PSCustomObject]@{ Users = $users; Statuses = $statuses }
+}
+
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
 
 # --- Ensure we're authenticated to the default environment ---
@@ -175,6 +271,52 @@ $ppApiBase = 'https://api.powerplatform.com'
 $clientApp = New-MsalClientApplication -ClientId $clientId -TenantId 'organizations'
 Enable-MsalTokenCacheOnDisk -PublicClientApplication $clientApp | Out-Null
 
+$script:inventoryDataverseAuthContext = $null
+function Get-InventoryDataverseHeaders {
+    param([switch]$ForceRefresh)
+
+    $needsRefresh = $ForceRefresh -or -not $script:inventoryDataverseAuthContext
+    if (-not $needsRefresh) {
+        $needsRefresh = -not $script:inventoryDataverseAuthContext.ExpiresOn -or
+            $script:inventoryDataverseAuthContext.ExpiresOn -le [DateTimeOffset]::UtcNow.AddMinutes(5)
+    }
+    if ($needsRefresh) {
+        $tokenResult = Get-MsalTokenResultWithFallback -ClientApp $clientApp -Scope "$instanceUrl/.default" `
+            -UseInteractiveBrowser:$UseInteractiveBrowser -ForceRefresh:$ForceRefresh -Label 'Dataverse'
+        $script:inventoryDataverseAuthContext = [PSCustomObject]@{
+            Headers = @{
+                Authorization      = 'Bear' + 'er ' + $tokenResult.AccessToken
+                Accept             = 'application/json'
+                'OData-MaxVersion' = '4.0'
+                'OData-Version'    = '4.0'
+            }
+            ExpiresOn = $tokenResult.ExpiresOn
+        }
+    }
+    return $script:inventoryDataverseAuthContext.Headers
+}
+
+function Invoke-InventoryDataverseRequest {
+    param([Parameter(Mandatory)][string]$Uri)
+
+    for ($attempt = 0; $attempt -lt 2; $attempt++) {
+        $headers = Get-InventoryDataverseHeaders -ForceRefresh:($attempt -gt 0)
+        try {
+            return Invoke-RestMethod -Uri $Uri -Headers $headers -Method Get -ErrorAction Stop
+        }
+        catch {
+            $statusCode = if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+                [int]$_.Exception.Response.StatusCode
+            }
+            else {
+                $null
+            }
+            if ($statusCode -eq 401 -and $attempt -eq 0) { continue }
+            throw
+        }
+    }
+}
+
 Write-Host "Signing in for Power Platform inventory API access..." -ForegroundColor Cyan
 $token = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope "$ppApiBase/.default" -UseInteractiveBrowser:$UseInteractiveBrowser -Label 'the Power Platform inventory API'
 
@@ -184,8 +326,9 @@ $headers = @{
 }
 
 # Query every microsoft.copilotstudio/agents resource in the tenant, left-joined to
-# environment display names, so we can filter down to the current environment by its
-# friendly name (the one thing we know for certain matches what's shown in PPAC/pac).
+# environment display names. The agent resource's environmentId remains the
+# authoritative key when filtering to the current environment because display names
+# are not unique.
 #
 # IMPORTANT: every clause hashtable below MUST be [ordered] with '$type' listed FIRST.
 # Regular @{} hashtables have no guaranteed key order, so ConvertTo-Json can (and did,
@@ -265,6 +408,11 @@ do {
     $skipToken = $resp.skipToken
 } while ($skipToken)
 
+$currentEnvironmentId = ConvertTo-NormalizedEnvironmentId $envWho.EnvironmentId
+foreach ($agent in $allAgents) {
+    $agent.environmentId = ConvertTo-NormalizedEnvironmentId ([string]$agent.environmentId)
+}
+
 if ($allAgents.Count -eq 0) {
     Write-Warning "No agents returned from the Power Platform inventory API. Confirm your account has one of: Global Administrator, Power Platform Administrator, Dynamics 365 Administrator, Global Reader, AI Administrator/AI Reader."
 }
@@ -276,47 +424,31 @@ else {
     # per-call (up to 1000 IDs) but only returns a fixed property set that does NOT
     # include department, so it can't be used here.
     Write-Host "`nResolving 'createdByGUID'/'ownerId' user IDs to display name/email/department via Microsoft Graph..." -ForegroundColor Cyan
-    $creatorIds = $allAgents | ForEach-Object { $_.createdByGUID; $_.ownerId } |
-        Where-Object { $_ -and $_ -ne '00000000-0000-0000-0000-000000000000' } | Select-Object -Unique
+    $creatorIds = @(
+        $allAgents | ForEach-Object { $_.createdByGUID; $_.ownerId } |
+            Where-Object { $_ -and $_ -ne '00000000-0000-0000-0000-000000000000' } |
+            Select-Object -Unique
+    )
     $creatorInfo = @{}
+    $directoryLookupStatus = @{}
     if ($creatorIds.Count -gt 0) {
         $graphToken = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope 'https://graph.microsoft.com/User.Read.All' -UseInteractiveBrowser:$UseInteractiveBrowser -Label 'Microsoft Graph'
         $graphHeaders = @{ Authorization = "Bearer $graphToken"; 'Content-Type' = 'application/json' }
 
-        # $batch accepts up to 20 sub-requests per call.
-        for ($i = 0; $i -lt $creatorIds.Count; $i += 20) {
-            $batchIds = @($creatorIds[$i..([Math]::Min($i + 19, $creatorIds.Count - 1))])
-            $requests = for ($j = 0; $j -lt $batchIds.Count; $j++) {
-                @{ id = "$j"; method = 'GET'; url = "/users/$($batchIds[$j])?`$select=displayName,mail,userPrincipalName,department" }
-            }
-            $batchBody = @{ requests = @($requests) } | ConvertTo-Json -Depth 5
-            try {
-                $batchResp = Invoke-RestMethod -Uri 'https://graph.microsoft.com/v1.0/$batch' -Headers $graphHeaders -Method Post -Body $batchBody
-                foreach ($r in $batchResp.responses) {
-                    if ($r.status -eq 200) {
-                        $creatorId = $batchIds[[int]$r.id]
-                        $creatorInfo[$creatorId] = [PSCustomObject]@{
-                            DisplayName = $r.body.displayName
-                            # Guest/external users often have no 'mail' - fall back to UPN.
-                            Email       = if ($r.body.mail) { $r.body.mail } else { $r.body.userPrincipalName }
-                            Department  = $r.body.department
-                        }
-                    }
-                }
-            }
-            catch {
-                Write-Warning "Could not resolve a batch of createdByGUID/ownerId user IDs via Microsoft Graph (need at least User.Read.All / delegated directory read access): $($_.Exception.Message)"
-            }
-        }
+        $directoryResult = Resolve-GraphUsersById -Headers $graphHeaders -UserIds $creatorIds
+        $creatorInfo = $directoryResult.Users
+        $directoryLookupStatus = $directoryResult.Statuses
     }
 
     foreach ($agent in $allAgents) {
         $isSystemCreated = $agent.createdByGUID -eq '00000000-0000-0000-0000-000000000000'
         $info = if ($agent.createdByGUID -and $creatorInfo.ContainsKey($agent.createdByGUID)) { $creatorInfo[$agent.createdByGUID] } else { $null }
         $ownerInfo = if ($agent.ownerId -and $creatorInfo.ContainsKey($agent.ownerId)) { $creatorInfo[$agent.ownerId] } else { $null }
-        # No ownerId at all means the agent has no owner assigned - flag it as orphaned
-        # rather than just leaving the owner columns blank, so it's easy to filter on.
-        $isOrphaned = [string]::IsNullOrWhiteSpace($agent.ownerId)
+        # No ownerId (or the all-zero system placeholder) means no real owner is
+        # assigned - flag it as orphaned rather than treating a non-user GUID as an
+        # unresolved directory lookup.
+        $isOrphaned = [string]::IsNullOrWhiteSpace($agent.ownerId) -or
+            $agent.ownerId -eq '00000000-0000-0000-0000-000000000000'
         # One Add-Member call with -NotePropertyMembers (vs. separate calls) does a
         # single reflection/property-attach pass per object instead of several.
         $agent | Add-Member -NotePropertyMembers @{
@@ -325,9 +457,27 @@ else {
             createdByName           = if ($isSystemCreated) { 'SYSTEM' } elseif ($info) { $info.DisplayName } else { '' }
             createdByEmail          = if ($info) { $info.Email } else { '' }
             createdByUserDepartment = if ($info) { $info.Department } else { '' }
+            createdByDirectoryLookupStatus = if ($isSystemCreated) {
+                'System'
+            }
+            elseif ($agent.createdByGUID -and $directoryLookupStatus.ContainsKey($agent.createdByGUID)) {
+                $directoryLookupStatus[$agent.createdByGUID]
+            }
+            else {
+                'NotRequested'
+            }
             ownerName               = if ($isOrphaned) { 'ORPHANED - no owner assigned' } elseif ($ownerInfo) { $ownerInfo.DisplayName } else { '' }
             ownerEmail              = if ($ownerInfo) { $ownerInfo.Email } else { '' }
             ownerUserDepartment     = if ($ownerInfo) { $ownerInfo.Department } else { '' }
+            ownerDirectoryLookupStatus = if ($isOrphaned) {
+                'NotRequested'
+            }
+            elseif ($directoryLookupStatus.ContainsKey($agent.ownerId)) {
+                $directoryLookupStatus[$agent.ownerId]
+            }
+            else {
+                'NotRequested'
+            }
             isOrphaned              = $isOrphaned
         } -Force
     }
@@ -339,52 +489,55 @@ else {
     # canvas does NOT log to this table). This requires a Dataverse Web API token
     # scoped to the current environment's own instance URL, so it can't cover agents
     # in other environments even when -AllEnvironments is used - those are left blank.
-    $currentEnvClassicAgentIds = $allAgents |
-        Where-Object { $_.environmentId -eq $envWho.EnvironmentId -and $_.createdIn -eq 'Copilot Studio' } |
-        ForEach-Object { $_.agentId }
+    $currentEnvClassicAgentIds = @(
+        $allAgents |
+            Where-Object { $_.environmentId -eq $currentEnvironmentId -and $_.createdIn -eq 'Copilot Studio' } |
+            ForEach-Object { $_.agentId }
+    )
     $lastUsedByAgent = @{}
     $firstPartyByAgent = @{}
     if ($currentEnvClassicAgentIds.Count -gt 0) {
         Write-Host "`nResolving last-used dates for classic Copilot Studio agents via Dataverse conversation transcripts..." -ForegroundColor Cyan
-        $dvToken = Get-MsalAccessTokenWithFallback -ClientApp $clientApp -Scope "$instanceUrl/.default" -UseInteractiveBrowser:$UseInteractiveBrowser -Label 'Dataverse'
-        $dvHeaders = @{
-            Authorization    = "Bearer $dvToken"
-            Accept           = 'application/json'
-            'OData-MaxVersion' = '4.0'
-            'OData-Version'    = '4.0'
-        }
-        try {
-            # Filter to only the candidate bot IDs we actually care about, chunked to stay
-            # well under Dataverse's URL length limits, instead of scanning the
-            # environment's ENTIRE conversation-transcript history (which can include
-            # long-deleted bots and unrelated data too) - conversationstarttime is
-            # preferred over createdon since it reflects when the conversation actually
-            # happened.
-            $chunkSize = 50
-            for ($i = 0; $i -lt $currentEnvClassicAgentIds.Count; $i += $chunkSize) {
-                $chunkEnd = [Math]::Min($i + $chunkSize - 1, $currentEnvClassicAgentIds.Count - 1)
-                $chunk = @($currentEnvClassicAgentIds[$i..$chunkEnd])
-                $botFilter = ($chunk | ForEach-Object { "_bot_conversationtranscriptid_value eq $_" }) -join ' or '
-                $transcriptUri = "$instanceUrl/api/data/v9.2/conversationtranscripts?" +
-                    "`$filter=$botFilter&`$select=_bot_conversationtranscriptid_value,conversationstarttime,createdon"
-                do {
-                    $tResp = Invoke-RestMethod -Uri $transcriptUri -Headers $dvHeaders -Method Get
-                    foreach ($t in $tResp.value) {
-                        $botId = $t.'_bot_conversationtranscriptid_value'
-                        if (-not $botId) { continue }
-                        $ts = if ($t.conversationstarttime) { [datetime]$t.conversationstarttime } else { [datetime]$t.createdon }
-                        if (-not $lastUsedByAgent.ContainsKey($botId) -or $ts -gt $lastUsedByAgent[$botId]) {
-                            $lastUsedByAgent[$botId] = $ts
-                        }
-                    }
-                    $transcriptUri = $tResp.'@odata.nextLink'
-                } while ($transcriptUri)
+        [void](Get-InventoryDataverseHeaders)
+        # Two bounded top-1 queries per agent avoid downloading transcript history and
+        # avoid Dataverse's 50,000-input-row aggregate limit. The second query preserves
+        # the original per-row fallback to createdon when conversationstarttime is null.
+        $lastUsedFailures = 0
+        foreach ($agentId in $currentEnvClassicAgentIds) {
+            $parsedId = [guid]::Empty
+            if (-not [guid]::TryParse($agentId, [ref]$parsedId)) {
+                Write-Warning "Skipping last-used lookup for invalid agent ID '$agentId'."
+                $lastUsedFailures++
+                continue
             }
-            Write-Host "Resolved last-used date for $($lastUsedByAgent.Count) of $($currentEnvClassicAgentIds.Count) classic Copilot Studio agent(s) in the current environment." -ForegroundColor Green
+
+            try {
+                $startedFilter = "_bot_conversationtranscriptid_value eq $parsedId and conversationstarttime ne null"
+                $startedUri = "$instanceUrl/api/data/v9.2/conversationtranscripts?`$filter=$([System.Uri]::EscapeDataString($startedFilter))&`$select=conversationstarttime&`$orderby=conversationstarttime desc&`$top=1"
+                $startedResp = Invoke-InventoryDataverseRequest -Uri $startedUri
+
+                $fallbackFilter = "_bot_conversationtranscriptid_value eq $parsedId and conversationstarttime eq null"
+                $fallbackUri = "$instanceUrl/api/data/v9.2/conversationtranscripts?`$filter=$([System.Uri]::EscapeDataString($fallbackFilter))&`$select=createdon&`$orderby=createdon desc&`$top=1"
+                $fallbackResp = Invoke-InventoryDataverseRequest -Uri $fallbackUri
+
+                $timestamps = @()
+                if ($startedResp.value.Count -gt 0 -and $startedResp.value[0].conversationstarttime) {
+                    $timestamps += [datetime]$startedResp.value[0].conversationstarttime
+                }
+                if ($fallbackResp.value.Count -gt 0 -and $fallbackResp.value[0].createdon) {
+                    $timestamps += [datetime]$fallbackResp.value[0].createdon
+                }
+                if ($timestamps.Count -gt 0) {
+                    $lastUsedByAgent[$agentId] = $timestamps | Sort-Object -Descending | Select-Object -First 1
+                }
+            }
+            catch {
+                $lastUsedFailures++
+                Write-Warning "Could not resolve last-used date for agent '$agentId': $($_.Exception.Message)"
+            }
         }
-        catch {
-            Write-Warning "Could not resolve last-used dates via Dataverse conversation transcripts: $($_.Exception.Message)"
-        }
+        Write-Host "Resolved last-used date for $($lastUsedByAgent.Count) of $($currentEnvClassicAgentIds.Count) classic Copilot Studio agent(s) in the current environment." -ForegroundColor Green
+        if ($lastUsedFailures -gt 0) { Write-Warning "Last-used lookup failed for $lastUsedFailures agent(s); their lastUsedAt value is blank." }
 
         # Flag first-party Microsoft-managed agents (e.g. "Finance in Microsoft 365
         # Copilot") so it's obvious from the inventory alone which agents
@@ -395,7 +548,8 @@ else {
         # NOT one call per candidate agent.
         Write-Host "`nChecking for first-party Microsoft-managed agents (auto-skipped by Migrate-CopilotStudioAgents.ps1) via Dataverse solution components..." -ForegroundColor Cyan
         try {
-            $managedAgentMap = Get-MicrosoftManagedAgentIds -InstanceUrl $instanceUrl -Headers $dvHeaders -AgentIds $currentEnvClassicAgentIds
+            $managedAgentMap = Get-MicrosoftManagedAgentIds -InstanceUrl $instanceUrl -AgentIds $currentEnvClassicAgentIds `
+                -RequestInvoker { param($uri) Invoke-InventoryDataverseRequest -Uri $uri }
             foreach ($agentId in $currentEnvClassicAgentIds) {
                 $isManaged = $managedAgentMap.ContainsKey($agentId)
                 $firstPartyByAgent[$agentId] = [PSCustomObject]@{
@@ -437,9 +591,9 @@ else {
     # createdByGUID, owner fields grouped right after ownerId) before export.
     $columnOrder = @(
         'agentId', 'agentName', 'createdIn', 'isFirstPartyManaged', 'firstPartySolutionName', 'canMigrate',
-        'createdAt', 'createdByGUID',
+        'createdAt', 'createdByGUID', 'createdByDirectoryLookupStatus',
         'createdByName', 'createdByEmail', 'createdByUserDepartment',
-        'ownerId', 'ownerName', 'ownerEmail', 'ownerUserDepartment', 'isOrphaned',
+        'ownerId', 'ownerDirectoryLookupStatus', 'ownerName', 'ownerEmail', 'ownerUserDepartment', 'isOrphaned',
         'lastPublishedAt', 'lastUsedAt', 'environmentId', 'environmentName'
     )
     $allAgents = [System.Collections.Generic.List[object]]::new([object[]]($allAgents | Select-Object -Property $columnOrder))
@@ -458,7 +612,7 @@ else {
                 Write-Host "Excluded $($excluded.Count) Microsoft 365 Copilot Agent Builder agent(s) tenant-wide (pass -IncludeAgentBuilder to include them)." -ForegroundColor Yellow
             }
             else {
-                $excludedCurrentEnv = ($excluded | Where-Object { $_.environmentName -eq $envWho.FriendlyName }).Count
+                $excludedCurrentEnv = ($excluded | Where-Object { $_.environmentId -eq $currentEnvironmentId }).Count
                 Write-Host "Excluded $excludedCurrentEnv Microsoft 365 Copilot Agent Builder agent(s) in '$($envWho.FriendlyName)' (pass -IncludeAgentBuilder to include them)." -ForegroundColor Yellow
             }
         }
@@ -516,15 +670,15 @@ if ($allAgents.Count -gt 0) {
         }
     }
 
-    # Narrow to the current environment, matched by the friendly name pac reported.
+    # Narrow to the current environment by its stable environment ID. Display names are
+    # not unique and must never be used as routing identifiers.
     # This whole section - files, breakdown, and first-party summary - is skipped
     # entirely when -AllEnvironments was passed: that switch means "I want the
     # tenant-wide picture", not "tenant-wide PLUS a redundant single-environment copy".
     if (-not $AllEnvironments) {
-        $currentEnvAgents = $allAgents | Where-Object { $_.environmentName -eq $envWho.FriendlyName }
+        $currentEnvAgents = @($allAgents | Where-Object { $_.environmentId -eq $currentEnvironmentId })
         if ($currentEnvAgents.Count -eq 0) {
-            Write-Warning "Could not match any agents to environment name '$($envWho.FriendlyName)'. Showing the tenant-wide list instead - check the 'environmentName'/'environmentId' columns to filter manually (or pass -AllEnvironments to export the full tenant-wide CSV instead)."
-            $currentEnvAgents = $allAgents
+            throw "Could not match any inventory agents to current environment ID '$currentEnvironmentId' ('$($envWho.FriendlyName)'). No current-environment file was written; use -AllEnvironments only if you intentionally want tenant-wide output."
         }
 
         $envSlug = ($envWho.FriendlyName -replace '[^A-Za-z0-9]+', '-').Trim('-')
