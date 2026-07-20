@@ -693,7 +693,7 @@ function Export-CopilotAuditLogs {
             
             $sessionID = [Guid]::NewGuid().ToString() + "_CopilotAudit"
             $intervalResults = [System.Collections.Generic.List[Object]]::new()
-            $hasMoreRecords, $isFirstRequest = $true, $true
+            $hasMoreRecords = $true
             $pageCount, $retryCount, $maxRetries = 0, 0, 3
             
             # ✅ FIX: Track if we've hit the 50,000 limit
@@ -709,16 +709,11 @@ function Export-CopilotAuditLogs {
                         EndDate = $currentEnd
                         ErrorAction = "Stop"
                         SessionCommand = "ReturnLargeSet"
+                        RecordType = "CopilotInteraction"
+                        ResultSize = $batchSize
                     }
-                    
-                    # Only add RecordType and ResultSize on the FIRST request
-                    if ($isFirstRequest) {
-                        $searchParams.RecordType = "CopilotInteraction"
-                        $searchParams.ResultSize = $batchSize
-                    }
-                    
+
                     $batchResults = @(Search-UnifiedAuditLog @searchParams)
-                    $isFirstRequest = $false
                     
                     if ($null -ne $batchResults -and $batchResults.Count -gt 0) {
                         $intervalResults.AddRange($batchResults)
