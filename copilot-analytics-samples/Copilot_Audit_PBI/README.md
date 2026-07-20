@@ -113,28 +113,23 @@ The audit export and Entra user export are **cloud-agnostic** — they read what
 > [!NOTE]
 > The dashboard treats any object **without** a Copilot license as a **Chat user**. That over-counts when your Entra export includes objects whose Exchange `RecipientTypeDetails` isn't `UserMailbox` — shared, room, and equipment mailboxes, plus guests and disabled accounts. `RecipientTypeDetails` is an Exchange property and isn't returned by the Graph `/users` export, so gate the classification on the columns you already have (`UserType` and `AccountEnabled`).
 
-**Compatibility-preserving fix (no schema change).** In Power BI Desktop, classify a user as a Chat user only when they're a genuine, enabled member account with no Copilot license:
+**Compatibility-preserving fix (no schema change).** In Power BI Desktop, update the `IsCopilotChat` calculated column so a user counts as a Chat user only when they hold **no** Copilot premium license (Commercial **or** GCC) **and** are a genuine, enabled member account:
 
 ```dax
-UserClassification =
-VAR Licenses = COALESCE ( 'Entra Users'[AssignedLicenses], "" )
-VAR HasCopilot =
-    CONTAINSSTRING ( Licenses, "Microsoft_365_Copilot" )
-        || CONTAINSSTRING ( Licenses, "COPILOT_FOR_MICROSOFT_365_GCC" )
-VAR IsChatCandidate =
-    'Entra Users'[UserType] = "Member"
-        && 'Entra Users'[AccountEnabled] = TRUE ()
-        && NOT HasCopilot
-RETURN
-    SWITCH (
-        TRUE (),
-        HasCopilot, "Copilot user",
-        IsChatCandidate, "Chat user",
-        BLANK ()
-    )
+IsCopilotChat =
+IF(
+    SEARCH("Microsoft_365_Copilot", [AssignedLicenses], 1, 0) = 0
+        && SEARCH("COPILOT_FOR_MICROSOFT_365_GCC", [AssignedLicenses], 1, 0) = 0
+        && [UserType] = "Member"
+        && [AccountEnabled] = TRUE(),
+    "Yes",
+    "No"
+)
 ```
 
-This excludes guests and disabled accounts. It still can't distinguish an **enabled** shared/resource mailbox from a person by license state alone. If you need that precision, enrich the Entra export with `RecipientTypeDetails` from `Get-EXOMailbox` / `Get-Recipient` and filter on `RecipientTypeDetails = "UserMailbox"` — note that adds an Exchange dependency and a 24th CSV column, so the Entra Users query's fixed `Columns=23` schema must be updated to match.
+This corrects two problems in the original `SEARCH("Microsoft_365_Copilot", ...)`-only check: GCC premium users (licensed with `COPILOT_FOR_MICROSOFT_365_GCC`) are no longer mislabeled as Chat users, and guests / disabled accounts are excluded. EDU is already covered because `Microsoft_365_Copilot_EDU` contains `Microsoft_365_Copilot` as a substring, and `SEARCH` is case-insensitive.
+
+This still can't distinguish an **enabled** shared/resource mailbox from a person by license state alone. If you need that precision, enrich the Entra export with `RecipientTypeDetails` from `Get-EXOMailbox` / `Get-Recipient` and filter on `RecipientTypeDetails = "UserMailbox"`. Note that this adds an Exchange dependency and a 24th CSV column, so the Entra Users query's fixed `Columns=23` schema must be updated to match.
 
 ## 📚 Additional Resources
 
@@ -155,8 +150,9 @@ Please report issues to the [issues list](../../../../issues). This is an open-s
 ## 📝 Changelog
 
 ### July 20, 2026
+- **Updated `Copilot_Audit_PBI.pbix`.** The dashboard now detects the GCC Copilot SKU (`COPILOT_FOR_MICROSOFT_365_GCC`) alongside Commercial, and the `IsCopilotChat` classification is gated on `UserType = "Member"` and `AccountEnabled = true` so GCC premium users, guests, and disabled accounts are no longer mislabeled as Chat users.
 - **Fixed audit log pagination capping at 100 records.** The `Search-UnifiedAuditLog` paging loop only set `RecordType` and `ResultSize` on the first request. In a `ReturnLargeSet` session every call must repeat identical parameters, so pages 2+ fell back to the default `ResultSize` of 100 and large intervals were silently truncated. All parameters are now set on every page, so full result sets are retrieved.
-- **Chat-user classification caveat.** Documented that the dashboard treats any license-less object as a "Chat user," which mislabels shared/resource mailboxes and other non-`UserMailbox` recipient types. Added guidance to gate the classification on `UserType = "Member"` and `AccountEnabled = true` (see the note below the SKU table).
+- **Chat-user classification guidance.** Documented the corrected `IsCopilotChat` DAX (Commercial + GCC license detection, gated on member/enabled) so shared/resource mailboxes and other non-`UserMailbox` recipient types aren't over-counted.
 
 ### July 14, 2026
 - **Sovereign cloud connection support.** `Export-M365CopilotReports.ps1` now prompts for the target cloud (Commercial / GCC, GCC High, or DoD) at startup and routes `Connect-MgGraph`, `Connect-ExchangeOnline`, and the direct Graph REST calls to the matching sovereign endpoints. Fixes connection errors for GCC High / DoD tenants where the script previously defaulted to Commercial endpoints. ([#468](../../../../issues/468))
