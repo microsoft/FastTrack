@@ -23,6 +23,7 @@ on:
       - "tools/catalog-build/**"
       - "docs/CATALOG-METADATA.md"
       - ".github/workflows/build-catalog.yml"
+  workflow_dispatch: # Allow maintainers to rebuild/verify the catalog on demand.
 
 permissions:
   contents: write
@@ -46,7 +47,7 @@ jobs:
         working-directory: tools/catalog-build
 
   publish:
-    if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
