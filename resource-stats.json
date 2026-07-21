@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-07-21T18:20:40.181Z",
+  "sources": {
+    "views": "clarity",
+    "upvotes": "github-discussions"
+  },
+  "resources": {
+    "agents-cost-calculator": {
+      "views": 90,
+      "viewsUniques": 60
+    },
+    "ai-council": {
+      "views": 78,
+      "viewsUniques": 61
+    },
+    "autoreply-agent": {
+      "views": 69,
+      "viewsUniques": 46
+    },
+    "copilot-agents-guide": {
+      "views": 32,
+      "viewsUniques": 6
+    },
+    "powerclaw-agent": {
+      "views": 1632,
+      "viewsUniques": 961
+    },
+    "purview-audit-copilot-report": {
+      "views": 656,
+      "viewsUniques": 382
+    },
+    "viva-insights-copilot-dashboard": {
+      "views": 119,
+      "viewsUniques": 70
+    }
+  }
+}
