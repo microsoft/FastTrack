@@ -1,3 +1,36 @@
+---
+title: Preflight-OneDrive
+type: script
+category: PowerShell
+summary: >-
+  Scan a local or network folder for potential OneDrive for Business sync issues and optionally
+  generate an HTML report.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2019-08-02"
+updated: "2019-08-02"
+tags:
+  - onedrive
+  - migration
+format: ps1
+whatItIs: >-
+  A PowerShell preflight scanner that checks a local folder or UNC path for potential OneDrive for
+  Business synchronization issues.
+whyUseIt:
+  - Find problematic paths before deploying the OneDrive sync client.
+  - Review results in the console or an optional HTML report.
+howToUse: |-
+  Install the external dependencies, then run:
+
+  ```powershell
+  .\Preflight-OneDrive.ps1 -Path "\\dc.contoso.com\smb" -GenerateHTMLReport
+  ```
+prerequisites:
+  - EnhancedHTML2 module
+  - Test-OneDrivePath function
+  - Read access to the folder being scanned
+---
+
 # Microsoft FastTrack Open Source - Preflight-OneDrive
 
 Script to generate a report (within console or HTML report) from a directory (local folder or UNC path) of potential sync issues before deploying the OneDrive for Business sync client.

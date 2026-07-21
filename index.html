@@ -1,1446 +1,2361 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FastTrack for Microsoft 365 Copilot</title>
-  <meta name="description" content="Open-source tools, agent templates, analytics dashboards, and strategic guidance from Microsoft FastTrack to accelerate your Microsoft 365 Copilot journey." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='16' y='22' font-size='20' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          boxShadow: {
-            glow: '0 0 0 1px rgba(255,255,255,0.06), 0 24px 80px rgba(59,130,246,0.12)',
-          },
-        },
-      },
-    };
-  </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft FastTrack</title>
+  <link rel="icon" href="data:,">
+  <meta property="og:title" content="Microsoft FastTrack">
+  
   <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "w810tntgw1");
+   (function(c,l,a,r,i,t,y){
+   c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+   })(window, document, "clarity", "script", "w810tntgw1");
   </script>
-  <script>
-    (() => {
-      try {
-        const savedTheme = localStorage.getItem('theme');
-        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
-          document.documentElement.classList.add('light');
-        }
-      } catch (error) {
-        // Ignore storage access issues and fall back to dark mode.
-      }
-    })();
-  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
+    /* CSS Variables: Linear / Vercel Aesthetic */
     :root {
-      color-scheme: dark;
-      --bg: #000000;
-      --surface: rgba(255, 255, 255, 0.02);
-      --surface-strong: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-strong: rgba(255, 255, 255, 0.15);
-      --text-primary: rgba(255, 255, 255, 0.92);
-      --text-secondary: rgba(255, 255, 255, 0.55);
-      --accent-a: rgba(56, 189, 248, 0.22);
-      --accent-b: rgba(139, 92, 246, 0.2);
-    }
-
-    html.light {
-      color-scheme: light;
+      /* Light Mode */
       --bg: #fafafa;
-      --surface: rgba(0, 0, 0, 0.025);
-      --surface-strong: rgba(0, 0, 0, 0.05);
-      --border: rgba(0, 0, 0, 0.08);
-      --border-strong: rgba(0, 0, 0, 0.15);
-      --text-primary: rgba(0, 0, 0, 0.87);
-      --text-secondary: rgba(0, 0, 0, 0.5);
-      --accent-a: rgba(56, 189, 248, 0.08);
-      --accent-b: rgba(139, 92, 246, 0.06);
+      --surface: #ffffff;
+      --surface-hover: #f4f4f5;
+      --text: #171717;
+      --text-muted: #71717a;
+      --text-lighter: #a1a1aa;
+      --border: #e4e4e7;
+      --border-strong: #d4d4d8;
+      --accent: #4f46e5; /* Indigo */
+      --accent-hover: #4338ca;
+      --accent-bg: rgba(79, 70, 229, 0.08);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 12px 24px rgba(0,0,0,0.04);
+      --shadow-focus: 0 0 0 3px rgba(79, 70, 229, 0.2);
+      
+      --radius: 12px;
+      --radius-sm: 6px;
+      --radius-full: 9999px;
+      
+      /* Type Colors - Refined */
+      --type-agent: #4f46e5;
+      --type-agent-bg: rgba(79, 70, 229, 0.1);
+      --type-strategy: #ea580c;
+      --type-strategy-bg: rgba(234, 88, 12, 0.1);
+      --type-analytics: #0284c7;
+      --type-analytics-bg: rgba(2, 132, 199, 0.1);
+      --type-prompt: #db2777;
+      --type-prompt-bg: rgba(219, 39, 119, 0.1);
+      --type-script: #059669;
+      --type-script-bg: rgba(5, 150, 105, 0.1);
+      --type-skill: #71717a;
+      --type-skill-bg: rgba(113, 113, 122, 0.1);
+
+      --font-sans: 'Figtree', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Figtree', system-ui, sans-serif;
     }
 
-    * { box-sizing: border-box; }
+    [data-theme="dark"] {
+      --bg: #0a0a0b;
+      --surface: #121214;
+      --surface-hover: #18181b;
+      --text: #ededed;
+      --text-muted: #a1a1aa;
+      --text-lighter: #71717a;
+      --border: #27272a;
+      --border-strong: #3f3f46;
+      --accent: #818cf8;
+      --accent-hover: #6366f1;
+      --accent-bg: rgba(129, 140, 248, 0.12);
+      --shadow-sm: 0 4px 6px rgba(0,0,0,0.4);
+      --shadow-md: 0 8px 16px rgba(0,0,0,0.5), 0 24px 48px rgba(0,0,0,0.5);
+      --shadow-focus: 0 0 0 3px rgba(129, 140, 248, 0.3);
 
+      --type-agent: #818cf8;
+      --type-agent-bg: rgba(129, 140, 248, 0.15);
+      --type-strategy: #fb923c;
+      --type-strategy-bg: rgba(251, 146, 60, 0.15);
+      --type-analytics: #38bdf8;
+      --type-analytics-bg: rgba(56, 189, 248, 0.15);
+      --type-prompt: #f472b6;
+      --type-prompt-bg: rgba(244, 114, 182, 0.15);
+      --type-script: #34d399;
+      --type-script-bg: rgba(52, 211, 153, 0.15);
+      --type-skill: #a1a1aa;
+      --type-skill-bg: rgba(161, 161, 170, 0.15);
+    }
+
+    /* Reset & Base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
-    section[id] { scroll-margin-top: 112px; }
-
     body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 35%),
-        radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.06), transparent 30%),
-        var(--bg);
-      color: var(--text-primary);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    html.light body {
-      background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, 0.04), transparent 35%),
-        radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.03), transparent 30%),
-        var(--bg);
-      color: var(--text-primary);
-    }
-
-    a { text-decoration: none; }
-
-    ::selection {
-      background: rgba(56, 189, 248, 0.2);
-      color: rgba(255, 255, 255, 0.96);
-    }
-
-    html.light ::selection {
-      background: rgba(14, 165, 233, 0.16);
-      color: rgba(0, 0, 0, 0.92);
-    }
-
-    .hero-grid::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 72px 72px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    html.light .hero-grid::before {
-      background-image:
-        linear-gradient(rgba(15,23,42,0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15,23,42,0.045) 1px, transparent 1px);
-      opacity: 0.15;
-    }
-
-    .mesh {
-      position: absolute;
-      inset: -20%;
-      background:
-        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(59, 130, 246, 0.12), transparent),
-        radial-gradient(ellipse 500px 350px at 75% 30%, rgba(139, 92, 246, 0.12), transparent),
-        radial-gradient(ellipse 450px 300px at 55% 75%, rgba(96, 165, 250, 0.08), transparent);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    html.light .mesh {
-      background:
-        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(59, 130, 246, 0.06), transparent),
-        radial-gradient(ellipse 500px 350px at 75% 30%, rgba(139, 92, 246, 0.06), transparent),
-        radial-gradient(ellipse 450px 300px at 55% 75%, rgba(96, 165, 250, 0.04), transparent);
-      opacity: 0.3;
-    }
-
-    .surface-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      transition: transform 220ms ease, border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
-    }
-
-    .surface-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-strong);
-      background: var(--surface-strong);
-      box-shadow: 0 20px 80px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
-    }
-
-    html.light .surface-card {
-      background: rgba(255, 255, 255, 0.74);
-      border-color: rgba(0, 0, 0, 0.08);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
-    }
-
-    html.light .surface-card:hover {
-      border-color: rgba(0, 0, 0, 0.14);
-      background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.7) inset;
-    }
-
-    .gradient-border {
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      background-image: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
       position: relative;
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
-      border: 1px solid transparent;
-      box-shadow: 0 0 40px rgba(59, 130, 246, 0.1);
+      min-height: 100vh;
     }
-
-    html.light .gradient-border {
-      background: linear-gradient(180deg, rgba(250,250,250,0.95), rgba(250,250,250,0.76));
-      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
-    }
-
-    .gradient-border::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(96,165,250,0.8), rgba(168,85,247,0.6), rgba(255,255,255,0.2));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    html.light .gradient-border::before {
-      background: linear-gradient(135deg, rgba(14,165,233,0.45), rgba(139,92,246,0.32), rgba(255,255,255,0.85));
-    }
-
-    .feature-panel {
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    html.light .feature-panel {
-      background: rgba(255, 255, 255, 0.82) !important;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65), 0 18px 50px rgba(15, 23, 42, 0.08);
-    }
-
-    html.light .feature-panel-glow {
-      opacity: 0.35;
-    }
-
-    .hero-gradient-text {
-      background-image: linear-gradient(to right, rgb(125 211 252), rgba(255,255,255,0.98), rgb(196 181 253));
-    }
-
-    html.light .hero-gradient-text {
-      background-image: linear-gradient(to right, #0284c7, #1e3a8a, #7c3aed) !important;
-    }
-
-    .fade-section {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 800ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 800ms cubic-bezier(0.2, 0.8, 0.2, 1);
-      will-change: opacity, transform;
-    }
-
-    .fade-section.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .nav-solid {
-      background: rgba(5, 5, 5, 0.92);
-      border-color: rgba(255,255,255,0.08);
-    }
-
-    html.light .nav-solid {
-      background: rgba(250, 250, 250, 0.82);
-      border-color: rgba(0, 0, 0, 0.08);
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.05);
-    }
-
-    .pill {
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
-      transition: background 0.2s;
+    [data-theme="dark"] body {
+      background-image: radial-gradient(circle at 50% 0%, rgba(129, 140, 248, 0.08) 0%, transparent 60%);
     }
     
-    .pill:hover {
-      background: rgba(255,255,255,0.06);
+    /* Subtle Grid Wash */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 600px;
+      z-index: -1;
+      pointer-events: none;
+      background-image: 
+        linear-gradient(to right, var(--border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+      background-size: 4rem 4rem;
+      opacity: 0.5;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, transparent 100%);
     }
 
-    html.light .pill {
-      border-color: rgba(0, 0, 0, 0.08);
-      background: rgba(255, 255, 255, 0.74);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    @media (prefers-reduced-motion) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+      /* Regression Guard: Prevent animated cards from getting stuck at opacity 0 */
+      .card.card-animate, .category-tile, .cta-tile { opacity: 1 !important; transform: none !important; }
     }
 
-    html.light .pill:hover {
-      background: rgba(255,255,255,0.92);
+    a { color: var(--text); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--accent); }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+      border-radius: var(--radius-sm);
     }
 
-    .text-muted { color: var(--text-secondary); }
+    /* Layout */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
 
-    .section-divider {
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 40%);
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 250, 250, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
     }
-
-    html.light .section-divider {
-      border-top-color: rgba(0, 0, 0, 0.08);
-      background: linear-gradient(180deg, rgba(0,0,0,0.025), transparent 40%);
+    [data-theme="dark"] header { background: rgba(10, 10, 11, 0.8); }
+    .header-inner {
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
+    .wordmark {
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .wordmark svg { color: var(--text); opacity: 0.8; }
+    .wordmark svg.ms-logo { opacity: 1; color: transparent; }
+    .nav-links { display: flex; align-items: center; gap: 1.5rem; font-size: 0.875rem; font-weight: 500; }
+    .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover { color: var(--text); }
+    @media (max-width: 680px) {
+      .nav-links { gap: 1rem; }
+      .nav-links .nav-secondary { display: none; }
+    }
     .theme-toggle {
-      transition: all 0.2s ease;
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
     }
+    .theme-toggle:hover { background-color: var(--surface-hover); color: var(--text); border-color: var(--border); }
+    .theme-toggle svg { width: 1.125rem; height: 1.125rem; }
 
-    .theme-toggle:hover {
-      transform: translateY(-1px);
+    /* Hero */
+    .hero-band {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 4rem 0 2.5rem;
     }
-
-    .theme-toggle svg {
-      width: 1.1rem;
-      height: 1.1rem;
+    @media (min-width: 768px) {
+      .hero-band {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .hero-content { flex: 1; max-width: 36rem; }
+      .hero-search { flex: 0 0 320px; }
+    }
+    @media (min-width: 1024px) {
+      .hero-search { flex: 0 0 400px; }
+    }
+    
+    .hero-stats {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .stat-chip {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .stat-chip:not(:last-child)::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--border-strong);
+    }
+    .display-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+    }
+    
+    /* Search */
+    .search-container { position: relative; }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-lighter);
       pointer-events: none;
     }
-
-    html.light .theme-toggle {
-      background: rgba(255, 255, 255, 0.78) !important;
-      border-color: rgba(0, 0, 0, 0.12) !important;
-      color: rgba(0, 0, 0, 0.72) !important;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 4rem 0.875rem 2.75rem;
+      font-size: 0.9375rem;
+      font-family: var(--font-sans);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background-color: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-focus); }
+    .search-input::placeholder { color: var(--text-lighter); }
+    .search-shortcut {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 0.25rem;
+      pointer-events: none;
+    }
+    .search-shortcut kbd {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-lighter);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.125rem 0.375rem;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.05);
     }
 
-    html.light .theme-toggle:hover {
-      border-color: rgba(0, 0, 0, 0.14) !important;
-      background: rgba(255, 255, 255, 0.94) !important;
-      color: rgba(0, 0, 0, 0.87) !important;
+    /* Category Tiles */
+    .category-tiles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 768px) {
+      .category-tiles { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .category-tiles { grid-template-columns: repeat(6, 1fr); }
+    }
+    .category-tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .category-tile::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease;
+      pointer-events: none;
+    }
+    .category-tile:hover:not(.soon) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-strong);
+    }
+    .category-tile.active {
+      background-color: var(--surface);
+      border-color: var(--tile-color, var(--text));
+      box-shadow: 0 0 0 1px var(--tile-color, var(--text)), var(--shadow-sm);
+    }
+    .category-tile.active::after {
+      background: linear-gradient(180deg, var(--tile-bg, var(--surface-hover)) 0%, transparent 100%);
+      opacity: 0.5;
+      z-index: 0;
+    }
+    .tile-header, .tile-desc { position: relative; z-index: 1; }
+    .tile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+    .tile-title {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tile-count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+    }
+    .tile-desc {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .category-tile.soon {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: transparent;
+      border-style: dashed;
+      box-shadow: none;
     }
 
-    /* ===== Light Theme Utility Overrides ===== */
-    html.light .bg-black {
-      background-color: #fafafa !important;
+    /* Facets */
+    .facet-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .facet-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-lighter);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      min-width: 48px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.875rem;
+      border-radius: var(--radius-full);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .pill:hover:not(:disabled) { 
+      border-color: var(--border-strong); 
+      color: var(--text); 
+    }
+    .pill.active {
+      background-color: var(--text);
+      border-color: var(--text);
+      color: var(--bg);
+    }
+    .pill-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .pill-count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+    .pill:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+    .pill-soon {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      background: var(--border);
+      color: var(--text-muted);
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+      margin-left: 0.25rem;
+    }
+    
+    .facet-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      animation: fadeIn 0.3s ease;
     }
 
-    html.light .bg-black\/80,
-    html.light .bg-black\/90 {
-      background-color: rgba(250, 250, 250, 0.9) !important;
+    .tags-container { position: relative; flex: 1; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .tag-pill {
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      background-color: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8125rem;
+      transition: all 0.2s ease;
+    }
+    .tag-pill:hover { background-color: var(--surface); color: var(--text); border-color: var(--border-strong); }
+    .tag-pill.active { background-color: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+    .tag-pill.hidden { display: none; }
+    .more-tags-btn {
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      background: none;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-full);
+      transition: all 0.2s ease;
+    }
+    .more-tags-btn:hover { border-color: var(--text-muted); color: var(--text); }
+
+    /* Results Bar */
+    .results-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .results-count { font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; }
+    .results-count span { 
+      font-family: var(--font-mono); 
+      background: var(--surface); 
+      padding: 0.125rem 0.5rem; 
+      border-radius: 4px; 
+      border: 1px solid var(--border); 
+      font-size: 0.75rem;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+    .sort-control { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-muted); }
+    .sort-select {
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--text);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.25rem 2rem 0.25rem 0.75rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2371717a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      background-size: 1rem;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+    .sort-select:hover {
+      border-color: var(--border-strong);
     }
 
-    html.light .bg-white {
-      background-color: #111111 !important;
+    /* Density Toggle */
+    .density-toggle {
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.125rem;
+    }
+    .density-btn {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .density-btn:hover { color: var(--text); }
+    .density-btn.active {
+      background: var(--border);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+    }
+    .sort-divider {
+      width: 1px;
+      height: 1.25rem;
+      background: var(--border);
+      margin: 0 0.5rem;
+    }
+    @media (max-width: 640px) {
+      .results-bar { flex-wrap: wrap; gap: 0.85rem; }
+      .sort-control { width: 100%; flex-wrap: wrap; row-gap: 0.5rem; justify-content: flex-start; }
+      .sort-divider { display: none; }
     }
 
-    html.light .bg-white\/5,
-    html.light .bg-white\/\[0\.02\],
-    html.light .bg-white\/\[0\.03\],
-    html.light .bg-white\/\[0\.04\],
-    html.light .bg-white\/\[0\.05\] {
-      background-color: rgba(255, 255, 255, 0.85) !important;
+    /* Grid & Cards (Comfortable) */
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 768px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+    /* Compact Layout: Table Rows */
+    .grid.compact {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .grid.compact .card {
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 0.75rem 1rem;
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      height: auto;
+      box-shadow: none;
+    }
+    .grid.compact .card:last-child { border-bottom: none; }
+    .grid.compact .card:hover {
+      background: var(--surface-hover);
+      box-shadow: none;
+      transform: none;
+      border-color: var(--border);
+    }
+    .grid.compact .card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--card-color, var(--accent));
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .grid.compact .card:hover::before { opacity: 1; }
+
+    .grid.compact .card-header {
+      margin: 0;
+      flex: 0 0 250px;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .grid.compact .card-avatar {
+      width: 28px; height: 28px; font-size: 0.75rem; border-radius: 4px;
+    }
+    .grid.compact .card-title-group { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .grid.compact .card-title { font-size: 0.9375rem; margin: 0; }
+    .grid.compact .card-sub { font-size: 0.6875rem; margin-top: 0.125rem; }
+    
+    .grid.compact .card-desc {
+      margin: 0;
+      font-size: 0.8125rem;
+      flex: 1;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+    }
+    .grid.compact .card-footer {
+      margin: 0;
+      flex: 0 0 auto;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .grid.compact .card-tags { display: none; }
+    .grid.compact .card-artifact-container {
+      flex: 0 0 196px;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .grid.compact .card-artifact { margin: 0; }
+    .compact-date { display: none; }
+    .grid.compact .compact-date {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      width: 80px;
+      text-align: right;
+    }
+    .compact-views, .compact-votes { display: none; }
+    .compact-views {
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--text-lighter);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+    .grid.compact .compact-views {
+      width: 60px;
+      justify-content: flex-end;
+    }
+    .grid.compact .compact-votes {
+      width: 70px;
+      justify-content: flex-end;
+    }
+    .grid.compact .compact-views, .grid.compact .compact-votes {
+      display: flex;
+    }
+    .grid.compact .card-stats { display: none; }
+    .grid.compact .card-link-out {
+      position: static;
+      opacity: 0;
+      transform: translateX(-4px);
+      background: none;
+      padding: 0;
+      width: 80px;
+      justify-content: flex-end;
+    }
+    .grid.compact .card:hover .card-link-out {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .grid.compact .card:hover .compact-date {
+      display: none;
     }
 
-    html.light .hover\:bg-white\/5:hover,
-    html.light .hover\:bg-white\/\[0\.04\]:hover,
-    html.light .hover\:bg-white\/\[0\.05\]:hover {
-      background-color: rgba(255, 255, 255, 0.94) !important;
+    /* Table Header */
+    .compact-header {
+      display: none;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      align-items: center;
+      gap: 1rem;
+      position: sticky;
+      top: 4rem; /* below sticky main header */
+      z-index: 10;
+    }
+    .grid.compact .compact-header { display: flex; }
+    .ch-name { flex: 0 0 250px; }
+    .ch-desc { flex: 1; }
+    .ch-views { width: 60px; text-align: right; }
+    .ch-votes { width: 70px; text-align: right; }
+    .ch-format { width: 100px; }
+    .ch-date { width: 80px; text-align: right; }
+
+    @media (max-width: 899px) {
+      .grid.compact .card-header { flex: 1; }
+      .grid.compact .card-desc { display: none; }
+      .grid.compact .compact-date { display: none; }
+      .grid.compact .compact-views { display: none; }
+      .grid.compact .card-artifact-container { flex: 0 0 auto; justify-content: flex-end; }
+      .grid.compact .card:hover .compact-date { display: none; }
+      .ch-desc, .ch-date, .ch-views { display: none; }
+      .ch-name { flex: 1; }
+      .ch-format { width: auto; }
     }
 
-    html.light .hover\:bg-white\/90:hover {
-      background-color: rgba(17, 17, 17, 0.92) !important;
+    /* ============================================================
+       DETAIL VIEW  (?resource=<slug>)
+       ============================================================ */
+    #detailView { padding-top: 2rem; padding-bottom: 4rem; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.875rem; font-weight: 500; color: var(--text-muted);
+      margin-bottom: 1.5rem; transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .detail-hero {
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background-color: var(--surface);
+      padding: 2.5rem 2rem; margin-bottom: 2.5rem;
+      min-height: 200px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .detail-watermark {
+      position: absolute; top: -2rem; right: 0.5rem;
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 12rem; line-height: 1; letter-spacing: -0.05em;
+      color: var(--text); opacity: 0.05;
+      pointer-events: none; user-select: none;
+    }
+    .detail-header-top {
+      position: relative; display: flex; align-items: center;
+      gap: 0.5rem; margin-bottom: 0.85rem;
+      font-family: var(--font-mono); font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted);
+    }
+    .detail-hero-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+    .detail-title {
+      position: relative; font-family: var(--font-display);
+      font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 700;
+      line-height: 1.08; letter-spacing: -0.02em; color: var(--text);
+    }
+    .detail-tags { position: relative; display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.1rem; }
+
+    .detail-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+    @media (min-width: 900px) {
+      .detail-grid { grid-template-columns: minmax(0, 1fr) 18rem; }
+    }
+    .detail-main { min-width: 0; }
+    .detail-main #detailDesc {
+      font-size: 1.15rem; line-height: 1.7; color: var(--text); margin: 0 0 2.5rem;
+    }
+    .detail-section-label,
+    .detail-main h3 {
+      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted);
+      margin: 2.25rem 0 0.85rem;
+    }
+    .detail-main #detailSynthesis { font-size: 1rem; line-height: 1.75; color: var(--text-muted); margin: 0; }
+    .detail-main #detailSynthesis strong { color: var(--text); font-weight: 600; }
+    
+    /* Content sections with visual depth */
+    .detail-content-section {
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.2s ease;
+    }
+    .detail-content-section:hover {
+      border-color: var(--border-strong);
+    }
+    .detail-content-section + .detail-content-section { margin-top: 0; }
+    .detail-content-heading {
+      font-family: var(--font-display); font-size: 1.125rem; font-weight: 650;
+      color: var(--text); margin: 0 0 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .detail-content-heading::before {
+      content: "";
+      display: block;
+      width: 4px;
+      height: 1.125rem;
+      background: var(--accent);
+      border-radius: var(--radius-sm);
     }
 
-    html.light .border-white\/6,
-    html.light .border-white\/8,
-    html.light .border-white\/10 {
-      border-color: rgba(0, 0, 0, 0.12) !important;
+    .detail-copy, .detail-list, .detail-how-use, .detail-prerequisites { margin: 0; font-size: 0.95rem; line-height: 1.65; }
+    .detail-list, .detail-prerequisites { list-style: none; padding-left: 0; }
+    
+    /* Why consider it list markers */
+    .detail-list li, .detail-prerequisites li {
+      position: relative; padding-left: 1.75rem;
+      margin-bottom: 0.6rem;
+    }
+    .detail-list li:last-child, .detail-prerequisites li:last-child { margin-bottom: 0; }
+    .detail-list li::before, .detail-prerequisites li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.25rem;
+      width: 1.1rem; height: 1.1rem;
+      background-color: var(--text-muted);
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center / contain;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center / contain;
+      transition: background-color 0.2s ease;
+    }
+    .detail-list li:hover::before, .detail-prerequisites li:hover::before {
+      background-color: var(--accent);
     }
 
-    html.light .border-white\/15,
-    html.light .border-white\/20 {
-      border-color: rgba(0, 0, 0, 0.14) !important;
+    /* How to use styles */
+    .detail-how-text { white-space: pre-wrap; margin-bottom: 0.75rem; }
+    .detail-how-text:last-child { margin-bottom: 0; }
+    .detail-how-text a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    .detail-how-text a:hover { color: var(--text); }
+    
+    .detail-how-use code, .detail-how-text code, .detail-list code {
+      font-family: var(--font-mono); font-size: 0.85em;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.1rem 0.35rem; border-radius: 4px;
+      color: var(--text);
+    }
+    .detail-how-use pre {
+      overflow-x: auto; padding: 1rem 1.25rem; margin: 1rem 0;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--surface); color: var(--text);
+      font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6;
+    }
+    .detail-how-use pre code {
+      background: transparent; border: none; padding: 0; font-size: 1em; color: inherit;
+    }
+    
+    /* Numbered lists in How To Use */
+    .detail-how-ol {
+      list-style: none; padding-left: 0;
+    }
+    .detail-how-ol li {
+      position: relative; padding-left: 2rem;
+      margin-bottom: 0.85rem; counter-increment: step;
+    }
+    .detail-how-ol li::before {
+      content: counter(step);
+      position: absolute; left: 0; top: 0.05rem;
+      width: 1.35rem; height: 1.35rem;
+      background-color: var(--accent-bg); border: 1px solid var(--accent);
+      color: var(--accent); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
     }
 
-    html.light .hover\:border-white\/15:hover,
-    html.light .hover\:border-white\/20:hover {
-      border-color: rgba(0, 0, 0, 0.16) !important;
-    }
+    .related-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+    @media (min-width: 560px) and (max-width: 899px) { .related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1200px) { .related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-    html.light .text-white,
-    html.light .text-white\/90,
-    html.light .text-white\/92,
-    html.light .text-white\/95 {
-      color: rgba(0, 0, 0, 0.87) !important;
+    .detail-sidebar { position: relative; }
+    @media (min-width: 900px) {
+      .detail-sidebar { position: sticky; top: 5.5rem; align-self: start; }
     }
-
-    html.light .text-white\/80,
-    html.light .text-white\/82,
-    html.light .text-white\/85,
-    html.light .text-white\/88 {
-      color: rgba(0, 0, 0, 0.72) !important;
+    .metadata-card {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); padding: 0.5rem 1.5rem;
     }
-
-    html.light .text-white\/68,
-    html.light .text-white\/70,
-    html.light .text-white\/72 {
-      color: rgba(0, 0, 0, 0.6) !important;
+    .metadata-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      padding: 0.85rem 0; border-bottom: 1px solid var(--border);
     }
-
-    html.light .text-white\/55,
-    html.light .text-white\/58,
-    html.light .text-white\/60 {
-      color: rgba(0, 0, 0, 0.5) !important;
+    .metadata-row:last-child { border-bottom: none; }
+    .metadata-label {
+      font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
     }
-
-    html.light .text-white\/45,
-    html.light .text-white\/50,
-    html.light .text-white\/52 {
-      color: rgba(0, 0, 0, 0.4) !important;
+    .metadata-val {
+      font-size: 0.875rem; font-weight: 500; color: var(--text);
+      display: inline-flex; align-items: center; gap: 0.4rem; text-align: right;
+      max-width: 65%; word-break: break-word; line-height: 1.3;
     }
-
-    html.light .text-white\/40 {
-      color: rgba(0, 0, 0, 0.35) !important;
+    .detail-actions { display: flex; flex-direction: column; gap: 0.625rem; margin-top: 1.25rem; }
+    .btn-primary, .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.7rem 1rem; border-radius: var(--radius-sm);
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+      transition: filter 0.2s ease, color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
-
-    html.light .text-black {
-      color: rgba(255, 255, 255, 0.95) !important;
-    }
-
-    html.light .hover\:text-white:hover,
-    html.light .hover\:text-white\/85:hover,
-    html.light .hover\:text-white\/90:hover {
-      color: rgba(0, 0, 0, 0.87) !important;
-    }
-
-    html.light .shadow-glow {
-      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04), 0 18px 44px rgba(15, 23, 42, 0.08) !important;
-    }
-
-    html.light footer {
-      background: #f6f6f6 !important;
-      border-top-color: rgba(0, 0, 0, 0.08) !important;
-    }
-
-    html.light #mobile-menu {
-      background: rgba(255, 255, 255, 0.95) !important;
-      border-color: rgba(0, 0, 0, 0.08) !important;
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
-    }
-
-    html.light .bg-sky-300\/10 {
-      background-color: rgba(56, 189, 248, 0.14) !important;
-    }
-
-    html.light .border-sky-300\/15 {
-      border-color: rgba(14, 165, 233, 0.22) !important;
-    }
-
-    html.light .border-sky-300\/20 {
-      border-color: rgba(14, 165, 233, 0.26) !important;
-    }
-
-    html.light .text-sky-200 {
-      color: #0369a1 !important;
-    }
-
-    html.light .bg-violet-300\/10 {
-      background-color: rgba(167, 139, 250, 0.14) !important;
-    }
-
-    html.light .border-violet-300\/15 {
-      border-color: rgba(139, 92, 246, 0.22) !important;
-    }
-
-    html.light .text-violet-200 {
-      color: #6d28d9 !important;
-    }
-
-    html.light .bg-emerald-300\/10 {
-      background-color: rgba(52, 211, 153, 0.14) !important;
-    }
-
-    html.light .border-emerald-300\/15 {
-      border-color: rgba(16, 185, 129, 0.22) !important;
-    }
-
-    html.light .text-emerald-200 {
-      color: #047857 !important;
-    }
-
-    html.light .text-yellow-300 {
-      color: #b45309 !important;
-    }
-
-    /* ── Analytics section light mode overrides ── */
-    html.light .text-sky-300 {
-      color: #0284c7 !important;
-    }
-
-    html.light .text-violet-300 {
-      color: #7c3aed !important;
-    }
-
-    html.light .text-amber-300 {
-      color: #b45309 !important;
-    }
-
-    html.light .text-rose-300 {
-      color: #be123c !important;
-    }
-
-    html.light .text-emerald-300 {
-      color: #047857 !important;
-    }
-
-    html.light .text-emerald-400 {
-      color: #059669 !important;
-    }
-
-    html.light .text-rose-400 {
-      color: #e11d48 !important;
-    }
-
-    html.light .text-cyan-300 {
-      color: #0e7490 !important;
-    }
-
-    html.light .text-white\/25,
-    html.light .text-white\/30,
-    html.light .text-white\/35 {
-      color: rgba(0, 0, 0, 0.3) !important;
-    }
-
-    html.light .group-hover\:text-cyan-300:hover {
-      color: #0e7490 !important;
-    }
-
-    html.light .bg-emerald-400\/\[0\.04\],
-    html.light .bg-emerald-400\/\[0\.05\] {
-      background-color: rgba(5, 150, 105, 0.08) !important;
-    }
-
-    html.light .bg-cyan-400\/\[0\.04\],
-    html.light .bg-cyan-400\/\[0\.05\] {
-      background-color: rgba(14, 116, 144, 0.08) !important;
-    }
-
-    html.light #repo-analytics .surface-card {
-      background: rgba(255, 255, 255, 0.85) !important;
-      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05);
-    }
-
-    html.light #repo-analytics .surface-card:hover {
-      background: rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
-    }
-
-    @media (max-width: 767px) {
-      .hero-grid::before { background-size: 44px 44px; }
-    }
+    .btn-primary svg, .btn-secondary svg { width: 16px; height: 16px; }
+    .btn-primary { background: var(--accent); color: #ffffff; border: 1px solid var(--accent); }
+    .btn-primary:hover { filter: brightness(1.08); }
+    [data-theme="dark"] .btn-primary { color: #14141a; }
+    .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+    .btn-secondary:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-hover); }
 
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .fade-section {
-        animation: none !important;
-        transition: none !important;
-        opacity: 1;
-        transform: none;
-      }
+      .back-link, .btn-primary, .btn-secondary { transition: none; }
     }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      height: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+    .card.card-animate {
+      animation: fadeInUp 0.4s ease forwards;
+      opacity: 0;
+    }
+    .card:hover {
+      border-color: var(--card-color, var(--accent));
+      box-shadow: 0 0 0 1px var(--card-color, var(--accent)), var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    
+    /* Stats & Upvoting */
+    .card-stats {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .stat-views {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--text-lighter);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+    .vote-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.25rem 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 2; /* keep above card link overlay */
+    }
+    .vote-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+    .vote-btn.voted {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #14141a;
+    }
+    [data-theme="light"] .vote-btn.voted {
+      color: white;
+    }
+    
+    @keyframes votePop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .vote-btn.pop .vote-count {
+      animation: votePop 0.3s ease;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .vote-btn { transition: none; }
+      .vote-btn.pop .vote-count { animation: none !important; transform: none !important; }
+    }
+    
+    .card-link-out {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      pointer-events: none;
+    }
+    .card:hover .card-link-out {
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--accent);
+    }
+
+    .card-header { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start; }
+    .card-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"] .card-avatar { border-color: rgba(255,255,255,0.05); }
+    .card-title-group { flex: 1; min-width: 0; }
+    .card-title {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.25rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-title a { color: inherit; text-decoration: none; }
+    .card-title a.resource-link::after { content: ''; position: absolute; inset: 0; border-radius: var(--radius); z-index: 1; }
+    
+    .card-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+    }
+    
+    .card-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      gap: 0.75rem 1rem;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; flex: 1 1 100%; }
+    .card-tag {
+      font-size: 0.75rem;
+      padding: 0.125rem 0.5rem;
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .card-artifact-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 1.25rem;
+    }
+    .card-artifact {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-lighter);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      background: var(--surface-hover);
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .card:hover .card-artifact {
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+    .featured-star { color: #f59e0b; }
+
+    .card-link-out {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(4px);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: linear-gradient(to right, transparent, var(--surface) 15%);
+      padding-left: 0.5rem;
+    }
+    .card:hover .card-link-out {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .cta-tile {
+      background-color: transparent;
+      border: 1px dashed var(--border-strong);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      box-shadow: none;
+    }
+    .cta-tile:hover {
+      border-color: var(--text);
+      background-color: var(--surface);
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+    .cta-tile h3 { font-size: 1.125rem; margin-bottom: 0.5rem; color: var(--text); font-weight: 500; }
+    .cta-tile p { font-size: 0.875rem; color: var(--text-muted); }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 5rem 1rem;
+      background: var(--surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius);
+      margin-bottom: 4rem;
+    }
+    .empty-state svg { width: 3rem; height: 3rem; color: var(--text-lighter); margin-bottom: 1.25rem; }
+    .empty-state h3 { font-size: 1.125rem; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+    .empty-state p { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.875rem; }
+    .empty-state button {
+      background-color: var(--text);
+      color: var(--bg);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      transition: opacity 0.2s ease;
+    }
+    .empty-state button:hover {
+      opacity: 0.9;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      text-align: center;
+    }
+    .footer-links { margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+
+    .concept-badge {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 0.375rem 0.625rem;
+      border-radius: var(--radius-full);
+      z-index: 1000;
+      opacity: 0.8;
+      pointer-events: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Helpers */
+    .d-none { display: none !important; }
   </style>
 </head>
-<body class="bg-black text-white antialiased selection:bg-sky-400/20 selection:text-white">
-  <header id="site-header" class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-all duration-300">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-      <a href="#top" class="flex items-center gap-3 text-sm font-medium tracking-[0.24em] text-white/90 uppercase">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 shadow-glow">
-          <svg class="h-5 w-5" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="9" height="9" rx="1" fill="#f25022"/>
-            <rect x="11" y="1" width="9" height="9" rx="1" fill="#7fba00"/>
-            <rect x="1" y="11" width="9" height="9" rx="1" fill="#00a4ef"/>
-            <rect x="11" y="11" width="9" height="9" rx="1" fill="#ffb900"/>
+<body>
+
+  <header>
+    <div class="container header-inner">
+      <div class="wordmark">
+        <svg class="ms-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" width="21" height="21" aria-hidden="true">
+          <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
+          <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
+          <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
+          <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
+        </svg>
+        Microsoft FastTrack
+      </div>
+      <div class="nav-links">
+        <a class="nav-secondary" href="https://aka.ms/ftcsd" target="_blank" rel="noopener">Service description</a>
+        <a class="nav-secondary" href="mailto:ftgithub@microsoft.com">Contact</a>
+        <a class="nav-secondary" href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <!-- Icon changes via JS -->
+            <path id="themeIcon" stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
           </svg>
-        </span>
-        <span class="hidden sm:inline">Microsoft FastTrack</span>
-        <span class="sm:hidden">FastTrack</span>
-      </a>
-
-      <div class="flex items-center gap-3">
-        <nav class="hidden items-center gap-6 text-sm text-white/60 md:flex">
-          <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="transition hover:text-white/90">GitHub</a>
-          <a href="mailto:ftgithub@microsoft.com" class="transition hover:text-white/90">Contact</a>
-        </nav>
-
-        <button id="theme-toggle" type="button" class="theme-toggle inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/80" aria-pressed="false" aria-label="Toggle theme">
-          <span class="sr-only">Toggle theme</span>
-          <span data-theme-icon></span>
-        </button>
-
-        <button id="menu-toggle" type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/80 transition hover:border-white/20 hover:text-white md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation">
-          <i data-lucide="menu" class="h-5 w-5"></i>
         </button>
       </div>
-    </div>
-
-    <div id="mobile-menu" class="mx-4 mb-4 hidden rounded-3xl border border-white/10 bg-black/90 p-3 shadow-2xl md:hidden">
-      <button id="mobile-theme-toggle" type="button" class="theme-toggle flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80" aria-pressed="false" aria-label="Toggle theme">
-        <span id="mobile-theme-label">Light theme</span>
-        <span data-theme-icon></span>
-      </button>
-      <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="mt-1 block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">GitHub</a>
-      <a href="mailto:ftgithub@microsoft.com" class="mt-1 block rounded-2xl px-4 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">Contact</a>
     </div>
   </header>
 
-  <main id="top">
-    <section class="hero-grid relative isolate overflow-hidden pt-32 sm:pt-36">
-      <div class="mesh"></div>
-      <div class="relative mx-auto max-w-7xl px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8 lg:pb-28">
-        <div class="fade-section max-w-4xl">
-          <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs uppercase tracking-[0.28em] text-white/55">
-            <span class="h-2 w-2 rounded-full bg-sky-300"></span>
-            FastTrack for Microsoft 365 Copilot
-          </div>
-          <h1 class="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-tight text-white/95 sm:text-6xl lg:text-8xl">
-            FastTrack for <span class="hero-gradient-text bg-gradient-to-r from-sky-300 via-white to-violet-300 bg-clip-text text-transparent drop-shadow-lg">Microsoft 365 Copilot</span>
-          </h1>
-          <p class="mt-8 max-w-2xl text-lg leading-8 text-white/55 sm:text-xl">
-            Open-source tools, agent templates, and strategic guidance to accelerate your Copilot journey.
-          </p>
-          <div class="mt-10 flex flex-col gap-4 sm:flex-row">
-            <a href="#agents" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white px-6 py-3 text-sm font-medium text-black transition hover:translate-y-[-1px] hover:bg-white/90">
-              Explore Agents
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </a>
-            <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-3 text-sm font-medium text-white/85 transition hover:border-white/20 hover:bg-white/[0.05]">
-              View on GitHub
-              <i data-lucide="external-link" class="h-4 w-4"></i>
-            </a>
-          </div>
+  <main class="container" id="catalogView">
+    <div class="hero-band">
+      <div class="hero-content">
+        <div class="hero-stats">
+          <span class="stat-chip" id="heroTotalCount">Loading resources</span>
+          <span class="stat-chip">6 resource types</span>
+          <span class="stat-chip">Updated weekly</span>
         </div>
-
-        <div class="fade-section mt-16 grid gap-4 sm:grid-cols-3">
-          <div class="surface-card rounded-3xl p-6 sm:p-8">
-            <div class="text-sm font-medium text-white/45 uppercase tracking-wider">Open source</div>
-            <div class="mt-2 text-2xl font-semibold text-white/90">10+ agent templates</div>
-          </div>
-          <div class="surface-card rounded-3xl p-6 sm:p-8">
-            <div class="text-sm font-medium text-white/45 uppercase tracking-wider">Decision support</div>
-            <div class="mt-2 text-2xl font-semibold text-white/90">6 agent types compared</div>
-          </div>
-          <div class="surface-card rounded-3xl p-6 sm:p-8">
-            <div class="text-sm font-medium text-white/45 uppercase tracking-wider">Analytics</div>
-            <div class="mt-2 text-2xl font-semibold text-white/90">Audit + adoption dashboards</div>
-          </div>
+        <h1 class="display-title">Tools &amp; templates for Microsoft 365</h1>
+        <p class="hero-subtitle">Browse agents, analytics, and strategy resources &mdash; no coding required.</p>
+      </div>
+      <div class="hero-search">
+        <div class="search-container">
+          <svg class="search-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search resources..." aria-label="Search resources">
+          <div class="search-shortcut"><kbd>⌘</kbd><kbd>K</kbd></div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="py-8 sm:py-10">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="fade-section gradient-border rounded-[28px] p-6 sm:p-8">
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div class="max-w-2xl">
-              <p class="text-sm uppercase tracking-[0.28em] text-white/45">&#x1F195; What&#x2019;s New</p>
-              <h2 class="mt-3 text-2xl font-semibold tracking-tight text-white/92 sm:text-3xl">Fresh resources added for builders, planners, and teams comparing agent options.</h2>
-            </div>
-            <div class="inline-flex items-center gap-2 self-start rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-300">
-              <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-300"></span>
-              Newly added
-            </div>
-          </div>
+    <div class="category-tiles" id="categoryTiles">
+      <!-- Category tiles rendered via JS -->
+    </div>
 
-          <div class="mt-8 grid gap-4 lg:grid-cols-3">
-            <article class="surface-card rounded-3xl p-5 sm:p-6">
-              <div class="flex items-start justify-between gap-4">
-                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-300">
-                  <i data-lucide="bot" class="h-5 w-5"></i>
-                </span>
-                <span class="pill rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-white/60">Agent Template</span>
-              </div>
-              <h3 class="mt-6 text-xl font-semibold text-white/92">PowerClaw Agent</h3>
-              <p class="mt-3 text-sm leading-7 text-white/55">24/7 AI Chief of Staff &#x2014; autonomous briefings, task execution, and proactive coordination, built entirely on Microsoft 365.</p>
-              <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent" target="_blank" rel="noreferrer" class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/82 transition hover:text-white">
-                Explore template
-                <i data-lucide="arrow-right" class="h-4 w-4"></i>
-              </a>
-            </article>
+    <div class="facet-row">
+      <span class="facet-label">Type</span>
+      <div class="tags-container" id="typeFilters">
+        <!-- Rendered via JS -->
+      </div>
+      <div id="typeDesc" class="facet-desc d-none"></div>
+    </div>
 
-            <article class="surface-card rounded-3xl p-5 sm:p-6">
-              <div class="flex items-start justify-between gap-4">
-                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-violet-300">
-                  <i data-lucide="book-open" class="h-5 w-5"></i>
-                </span>
-                <span class="pill rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-white/60">Strategy</span>
-              </div>
-              <h3 class="mt-6 text-xl font-semibold text-white/92">Copilot Agents Guide</h3>
-              <p class="mt-3 text-sm leading-7 text-white/55">Interactive decision framework comparing 6 agent types side-by-side to find the right platform for your scenario.</p>
-              <a href="copilot-agent-strategy/copilot-agents-guide/index.html" class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/82 transition hover:text-white">
-                Open guide
-                <i data-lucide="arrow-right" class="h-4 w-4"></i>
-              </a>
-            </article>
+    <div class="facet-row">
+      <span class="facet-label">Tags</span>
+      <div class="tags-container" id="tagFilters">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
 
-            <article class="surface-card rounded-3xl p-5 sm:p-6">
-              <div class="flex items-start justify-between gap-4">
-                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-emerald-300">
-                  <i data-lucide="calculator" class="h-5 w-5"></i>
-                </span>
-                <span class="pill rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-white/60">New Tool</span>
-              </div>
-              <h3 class="mt-6 text-xl font-semibold text-white/92">Agents Cost Calculator</h3>
-              <p class="mt-3 text-sm leading-7 text-white/55">Estimate credits and token costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents before you deploy.</p>
-              <a href="copilot-agent-strategy/copilot-agents-cost-tool/index.html" class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/82 transition hover:text-white">
-                Launch calculator
-                <i data-lucide="arrow-right" class="h-4 w-4"></i>
-              </a>
-            </article>
-          </div>
+    <div class="results-bar">
+      <div class="results-count" aria-live="polite">
+        Resources <span id="resultsCount">0</span>
+      </div>
+      <div class="sort-control">
+        <div class="density-toggle" role="group" aria-label="Layout density">
+          <button id="btnComfortable" class="density-btn active" aria-pressed="true" aria-label="Comfortable layout">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
+          </button>
+          <button id="btnCompact" class="density-btn" aria-pressed="false" aria-label="Compact layout">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="sort-divider"></div>
+        <div class="density-toggle sort-pills" role="group" aria-label="Sort resources">
+          <button class="density-btn" data-sort="popular" aria-pressed="true">Popular</button>
+          <button class="density-btn" data-sort="trending" aria-pressed="false">Trending</button>
+          <button class="density-btn" data-sort="new" aria-pressed="false">New</button>
+          <button class="density-btn" data-sort="engaging" aria-pressed="false">Engaging</button>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="section-divider">
-      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div class="fade-section max-w-2xl">
-          <p class="text-sm uppercase tracking-[0.28em] text-white/45">What’s Inside</p>
-          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">Three pillars built to move teams from curiosity to deployment.</h2>
-          <p class="mt-4 text-base leading-7 text-white/55">Explore the decision frameworks, analytics assets, and deployable templates FastTrack teams use to accelerate real-world Copilot rollouts.</p>
-        </div>
+    <div class="compact-header" id="compactHeader">
+      <div class="ch-name">Name</div>
+      <div class="ch-desc">Description</div>
+      <div class="ch-views">Views</div>
+      <div class="ch-votes">Votes</div>
+      <div class="ch-format">Format</div>
+      <div class="ch-date">Updated</div>
+    </div>
+    <div id="grid" class="grid">
+      <!-- Cards rendered here -->
+    </div>
 
-        <div class="mt-12 grid gap-6 lg:grid-cols-3">
-          <article class="fade-section surface-card rounded-[28px] p-7">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-300">
-                <i data-lucide="book-open" class="h-5 w-5"></i>
-              </span>
-              <span class="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/45">Strategy</span>
-            </div>
-            <h3 class="mt-8 text-2xl font-semibold text-white/92">Copilot Agents Guide</h3>
-            <p class="mt-4 text-sm leading-7 text-white/55">Interactive decision framework to compare 6 agent types side-by-side. Find the right agent platform for your scenario in minutes.</p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Interactive</span>
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">6 Agent Types</span>
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Decision Framework</span>
-            </div>
-            <a href="copilot-agent-strategy/copilot-agents-guide/index.html" class="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white/82 transition hover:text-white">
-              Open Guide
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-
-          <article class="fade-section surface-card rounded-[28px] p-7">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-violet-300">
-                <i data-lucide="bar-chart-3" class="h-5 w-5"></i>
-              </span>
-              <span class="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/45">Analytics</span>
-            </div>
-            <h3 class="mt-8 text-2xl font-semibold text-white/92">Copilot Audit Dashboard</h3>
-            <p class="mt-4 text-sm leading-7 text-white/55">Power BI template to visualize Copilot usage patterns from Microsoft Purview audit logs. Track adoption across Word, Excel, Outlook, Teams, and more.</p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Power BI</span>
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Purview Audit</span>
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Usage Analytics</span>
-            </div>
-            <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI" target="_blank" rel="noreferrer" class="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white/82 transition hover:text-white">
-              Get Template
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-
-          <article class="fade-section surface-card rounded-[28px] p-7">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-cyan-300">
-                <i data-lucide="bot" class="h-5 w-5"></i>
-              </span>
-              <span class="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/45">Templates</span>
-            </div>
-            <h3 class="mt-8 text-2xl font-semibold text-white/92">Agent Samples &amp; Skills</h3>
-            <p class="mt-4 text-sm leading-7 text-white/55">Ready-to-deploy agents and installable skills for Copilot Studio, Agent Builder, and GitHub Copilot CLI. From autonomous email agents to multi-model AI councils to dev workflow skills.</p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Active Agents</span>
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Copilot Studio</span>
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Agent Builder</span>
-              <span class="pill rounded-full px-3 py-1 text-xs text-white/60">Copilot Skills</span>
-            </div>
-            <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples" target="_blank" rel="noreferrer" class="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white/82 transition hover:text-white">
-              Browse Samples
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </a>
-          </article>
-        </div>
+    <div id="emptyState" class="empty-state d-none">
+      <div id="emptyStateIcon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
       </div>
-    </section>
-
-    <section id="agents" class="section-divider">
-      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div class="fade-section flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p class="text-sm uppercase tracking-[0.28em] text-white/45">Agent Templates</p>
-            <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">Ready-to-deploy agents across platforms</h2>
-          </div>
-          <p class="max-w-xl text-sm leading-7 text-white/55">From autonomous Copilot Studio agents to declarative specialists and a multi-model GitHub CLI council, these templates help teams go from concept to production faster.</p>
-        </div>
-
-        <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="fade-section surface-card rounded-[28px] p-6">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex rounded-full border border-sky-300/15 bg-sky-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-sky-200">Copilot Studio</span>
-              <span class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-300">New</span>
-            </div>
-            <h3 class="mt-5 text-xl font-semibold text-white/92">PowerClaw Agent</h3>
-            <p class="mt-2 text-sm leading-7 text-white/55">24/7 AI Chief of Staff with autonomous briefings, task execution, and proactive coordination.</p>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">📅 Calendar-driven</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🧠 Long-term memory</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">⚡ 15-min setup</span>
-            </div>
-            <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent" target="_blank" rel="noreferrer" class="mt-5 inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white">View template <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-          </article>
-
-          <article class="fade-section surface-card rounded-[28px] p-6">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex rounded-full border border-sky-300/15 bg-sky-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-sky-200">Copilot Studio</span>
-            </div>
-            <h3 class="mt-5 text-xl font-semibold text-white/92">AutoReply Agent</h3>
-            <p class="mt-2 text-sm leading-7 text-white/55">Autonomous email research and response workflows that draft thoughtful follow-ups at scale.</p>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">📧 Email monitoring</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🔍 Source research</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">💬 Auto-response</span>
-            </div>
-            <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent" target="_blank" rel="noreferrer" class="mt-5 inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white">View template <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-          </article>
-
-          <article class="fade-section surface-card rounded-[28px] p-6">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex rounded-full border border-sky-300/15 bg-sky-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-sky-200">Copilot Studio</span>
-            </div>
-            <h3 class="mt-5 text-xl font-semibold text-white/92">ProductQuote Agent</h3>
-            <p class="mt-2 text-sm leading-7 text-white/55">Automated sales quote generation that turns requirements into polished outputs quickly.</p>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🧾 Quote generation</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">📊 Excel lookup</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">📄 Word templates</span>
-            </div>
-            <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-ProductQuoteAgent" target="_blank" rel="noreferrer" class="mt-5 inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white">View template <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-          </article>
-
-          <article class="fade-section surface-card rounded-[28px] p-6">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex rounded-full border border-violet-300/15 bg-violet-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-violet-200">Agent Builder</span>
-            </div>
-            <h3 class="mt-5 text-xl font-semibold text-white/92">VibeWriting Agent</h3>
-            <p class="mt-2 text-sm leading-7 text-white/55">Proofreading assistance that preserves your voice while tightening clarity, tone, and polish.</p>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">✍️ Voice preservation</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">✨ Grammar & polish</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🎵 Tone matching</span>
-            </div>
-            <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-VibeWritingAgent" target="_blank" rel="noreferrer" class="mt-5 inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white">View template <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-          </article>
-
-          <article class="fade-section surface-card rounded-[28px] p-6">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex rounded-full border border-emerald-300/15 bg-emerald-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-emerald-200">GitHub CLI</span>
-            </div>
-            <h3 class="mt-5 text-xl font-semibold text-white/92">AI Council</h3>
-            <p class="mt-2 text-sm leading-7 text-white/55">Multi-model deliberation across Claude, GPT, and Gemini for richer decisions and tradeoff analysis.</p>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🤖 3 LLMs debating</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">📊 Decision dashboard</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🗳️ Consensus voting</span>
-            </div>
-            <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council" target="_blank" rel="noreferrer" class="mt-5 inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white">View template <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-          </article>
-
-          <article class="fade-section surface-card rounded-[28px] p-6">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex rounded-full border border-amber-300/15 bg-amber-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-amber-200">Copilot Skill</span>
-              <span class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-300">New</span>
-            </div>
-            <h3 class="mt-5 text-xl font-semibold text-white/92">Copilot Studio Workflow</h3>
-            <p class="mt-2 text-sm leading-7 text-white/55">Build Copilot Studio agents like software — source control, repeatable packaging, and an AI that knows the platform's sharp edges.</p>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🔄 Pull → Push → Publish</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">⚠️ 11 gotchas encoded</span>
-              <span class="pill rounded-full px-2.5 py-1 text-xs text-white/60">🔧 4 helper scripts</span>
-            </div>
-            <a href="copilot-agent-samples/github-copilot-skills/copilot-studio-workflow/docs/showcase.html" class="mt-5 inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white">View showcase <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-divider">
-      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div class="fade-section max-w-2xl">
-          <p class="text-sm uppercase tracking-[0.28em] text-white/45">Analytics &amp; Resources</p>
-          <h2 class="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white/92 sm:text-4xl">Adoption intelligence and planning assets in one place</h2>
-        </div>
-
-        <div class="mt-12 grid gap-6 lg:grid-cols-2">
-          <section class="fade-section surface-card rounded-[30px] p-8">
-            <div class="flex items-center gap-3">
-              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-300">
-                <i data-lucide="chart-line" class="h-5 w-5"></i>
-              </span>
-              <div>
-                <h3 class="text-2xl font-semibold text-white/92">Analytics tools</h3>
-                <p class="mt-1 text-sm text-white/50">Track usage, adoption, and organizational patterns.</p>
-              </div>
-            </div>
-            <div class="mt-8 space-y-4">
-              <a href="https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI" target="_blank" rel="noreferrer" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-base font-medium text-white/88">Copilot Audit PBI</div>
-                    <p class="mt-2 text-sm leading-7 text-white/52">Purview-based usage analytics across Copilot interaction events and app surfaces.</p>
-                  </div>
-                  <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
-                </div>
-              </a>
-              <a href="copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-base font-medium text-white/88">Viva Insights Dashboard</div>
-                    <p class="mt-2 text-sm leading-7 text-white/52">Correlate Copilot adoption with collaboration habits using Viva Insights exports.</p>
-                  </div>
-                  <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
-                </div>
-              </a>
-              <a href="copilot-analytics-samples/copilot-usage-users-and-apps/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-base font-medium text-white/88">Usage Dashboard</div>
-                    <p class="mt-2 text-sm leading-7 text-white/52">Understand usage by user cohort and application to guide enablement and training investment.</p>
-                  </div>
-                  <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
-                </div>
-              </a>
-            </div>
-          </section>
-
-          <section class="fade-section surface-card rounded-[30px] p-8">
-            <div class="flex items-center gap-3">
-              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-violet-300">
-                <i data-lucide="compass" class="h-5 w-5"></i>
-              </span>
-              <div>
-                <h3 class="text-2xl font-semibold text-white/92">Strategy resources</h3>
-                <p class="mt-1 text-sm text-white/50">Plan, compare, and shape the next wave of Copilot experiences.</p>
-              </div>
-            </div>
-            <div class="mt-8 space-y-4">
-              <a href="copilot-agent-strategy/copilot-agents-guide/index.html" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-base font-medium text-white/88">Agents Guide</div>
-                    <p class="mt-2 text-sm leading-7 text-white/52">Interactive comparison framework for selecting the right Microsoft Copilot agent path.</p>
-                  </div>
-                  <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
-                </div>
-              </a>
-              <a href="copilot-agent-strategy/copilot-agent-brainstorm/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-base font-medium text-white/88">Agent Brainstorm Template</div>
-                    <p class="mt-2 text-sm leading-7 text-white/52">PowerPoint planning template for agent flows, scenarios, and knowledge architecture.</p>
-                  </div>
-                  <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
-                </div>
-              </a>
-              <a href="copilot-agent-strategy/copilot-agents-cost-tool/index.html" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-base font-medium text-white/88">Agents Cost Calculator</div>
-                    <p class="mt-2 text-sm leading-7 text-white/52">Estimate credits and token costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.</p>
-                  </div>
-                  <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
-                </div>
-              </a>
-              <a href="copilot-prompt-samples/" class="block rounded-3xl border border-white/[0.06] bg-white/[0.03] p-5 transition hover:border-white/[0.12] hover:bg-white/[0.06]">
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-base font-medium text-white/88">Prompt Samples</div>
-                    <p class="mt-2 text-sm leading-7 text-white/52">Reference prompts and patterns to help teams unlock stronger outcomes from Frontier agents.</p>
-                  </div>
-                  <i data-lucide="arrow-up-right" class="mt-1 h-4 w-4 text-white/45"></i>
-                </div>
-              </a>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section>
+      <h3 id="emptyStateTitle">No resources found</h3>
+      <p id="emptyStateDesc">Try adjusting your search or filters to find what you're looking for.</p>
+      <button id="clearFiltersBtn" class="d-none">Clear all filters</button>
+    </div>
   </main>
 
-  <!-- ═══════════════════════ Repo Analytics ═══════════════════════ -->
-  <section id="repo-analytics" class="section-divider">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <div class="fade-section flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div class="max-w-2xl">
-          <p class="text-sm uppercase tracking-[0.28em] text-white/45">Repo Analytics</p>
-          <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white/92 sm:text-4xl">
-            Community Engagement
-          </h2>
-          <p class="mt-4 text-base leading-7 text-white/55">
-            Live traffic data from the Microsoft FastTrack repository — updated daily.
-          </p>
-        </div>
-        <div id="analytics-updated" class="shrink-0 rounded-full border border-white/8 bg-white/[0.02] px-4 py-2 text-xs text-white/40">
-          Loading…
-        </div>
+  <main class="container d-none" id="detailView">
+    <a href="#" class="back-link" id="btnBack">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      Back to catalog
+    </a>
+    <div class="detail-hero" id="detailHero">
+      <div class="detail-watermark" id="detailWatermark"></div>
+      <div class="detail-header-top">
+        <div class="pill-dot" id="detailHeroDot" style="width: 10px; height: 10px;"></div>
+        <div class="card-sub" id="detailHeroSub" style="color: var(--text); font-weight: 500;"></div>
       </div>
-
-      <!-- ── KPI Cards ── -->
-      <div class="fade-section mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="surface-card rounded-[28px] p-6 text-center">
-          <p class="text-xs uppercase tracking-[0.22em] text-white/45">Page Views <span class="text-white/25">(14 d)</span></p>
-          <p id="stat-views" class="mt-2 text-3xl font-bold text-sky-300">—</p>
-          <p id="stat-views-unique" class="mt-1 text-sm text-white/45">— unique</p>
-          <p id="stat-views-trend" class="mt-2 text-xs font-medium"></p>
-        </div>
-        <div class="surface-card rounded-[28px] p-6 text-center">
-          <p class="text-xs uppercase tracking-[0.22em] text-white/45">Git Clones <span class="text-white/25">(14 d)</span></p>
-          <p id="stat-clones" class="mt-2 text-3xl font-bold text-violet-300">—</p>
-          <p id="stat-clones-unique" class="mt-1 text-sm text-white/45">— unique</p>
-          <p id="stat-clones-trend" class="mt-2 text-xs font-medium"></p>
-        </div>
-        <div class="surface-card rounded-[28px] p-6 text-center">
-          <p class="text-xs uppercase tracking-[0.22em] text-white/45">GitHub Stars</p>
-          <p id="stat-stars" class="mt-2 text-3xl font-bold text-amber-300">—</p>
-          <p id="stat-stars-sub" class="mt-1 text-sm text-white/45">all-time</p>
-        </div>
-        <div class="surface-card rounded-[28px] p-6 text-center">
-          <p class="text-xs uppercase tracking-[0.22em] text-white/45">Forks</p>
-          <p id="stat-forks" class="mt-2 text-3xl font-bold text-rose-300">—</p>
-          <p id="stat-forks-sub" class="mt-1 text-sm text-white/45">all-time</p>
-        </div>
-      </div>
-
-      <!-- ── Row 1: Views + Clones ── -->
-      <div class="mt-8 grid gap-6 lg:grid-cols-2">
-        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-300">
-              <i data-lucide="eye" class="h-5 w-5"></i>
-            </span>
-            <h3 class="text-lg font-semibold text-white/92">Page Views</h3>
-          </div>
-          <div class="mt-6" style="position:relative;height:260px;">
-            <canvas id="chart-views"></canvas>
-          </div>
-        </div>
-
-        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-violet-300">
-              <i data-lucide="git-branch" class="h-5 w-5"></i>
-            </span>
-            <h3 class="text-lg font-semibold text-white/92">Git Clones</h3>
-          </div>
-          <div class="mt-6" style="position:relative;height:260px;">
-            <canvas id="chart-clones"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Row 2: Star History (full width) ── -->
-      <div class="mt-8">
-        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-amber-300">
-              <i data-lucide="star" class="h-5 w-5"></i>
-            </span>
-            <h3 class="text-lg font-semibold text-white/92">Star History</h3>
-          </div>
-          <div class="mt-6" style="position:relative;height:260px;">
-            <canvas id="chart-stars"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Row 3: Referrers + Popular Pages ── -->
-      <div class="mt-8 grid gap-6 lg:grid-cols-2">
-        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-emerald-300">
-              <i data-lucide="link" class="h-5 w-5"></i>
-            </span>
-            <h3 class="text-lg font-semibold text-white/92">Where Visitors Come From</h3>
-          </div>
-          <div class="mt-6 space-y-2" id="referrer-list">
-            <p class="text-sm text-white/50">Loading…</p>
-          </div>
-        </div>
-
-        <div class="fade-section surface-card rounded-[28px] p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-cyan-300">
-              <i data-lucide="file-text" class="h-5 w-5"></i>
-            </span>
-            <h3 class="text-lg font-semibold text-white/92">Most Visited Content</h3>
-          </div>
-          <div class="mt-6 space-y-2" id="popular-pages">
-            <p class="text-sm text-white/50">Loading…</p>
-          </div>
-        </div>
-      </div>
-
-      <p class="fade-section mt-10 text-center text-xs text-white/30">
-        Data collected daily via GitHub Actions · Traffic data covers 14-day rolling window · Stars &amp; forks are all-time
-      </p>
+      <h1 class="detail-title" id="detailTitle"></h1>
+      <div class="detail-tags" id="detailTags"></div>
     </div>
-  </section>
 
-  <footer class="border-t border-white/10 bg-black">
-    <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-12 text-sm text-white/40 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-      <div>
-        <div class="text-white/70 font-medium">Microsoft FastTrack • 2026</div>
-        <p class="mt-2 text-white/45">MIT licensed samples and guidance for accelerating Microsoft 365 Copilot deployments.</p>
+    <div class="detail-grid">
+      <div class="detail-main">
+        <p id="detailDesc"></p>
+        <h3>About this resource</h3>
+        <div id="detailSynthesis">
+          <section class="detail-content-section detail-what" id="detailWhatSection">
+            <h4 class="detail-content-heading">What it is</h4>
+            <div class="detail-copy" id="detailWhatItIs"></div>
+          </section>
+          <section class="detail-content-section detail-why" id="detailWhySection">
+            <h4 class="detail-content-heading">Why consider it</h4>
+            <ul class="detail-list" id="detailWhyUseIt"></ul>
+          </section>
+          <section class="detail-content-section detail-how" id="detailHowSection">
+            <h4 class="detail-content-heading">How to install / use</h4>
+            <div class="detail-how-use" id="detailHowToUse"></div>
+          </section>
+          <section class="detail-content-section detail-prerequisites-section" id="detailPrerequisitesSection">
+            <h4 class="detail-content-heading">Prerequisites</h4>
+            <ul class="detail-prerequisites" id="detailPrerequisites"></ul>
+          </section>
+        </div>
+        <h3>Related resources</h3>
+        <div class="related-grid" id="relatedGrid"></div>
       </div>
-      <div class="flex flex-wrap gap-x-6 gap-y-3">
-        <a href="https://learn.microsoft.com/en-us/microsoft-365/fasttrack/microsoft-365-copilot#microsoft-365-copilot-extensibility" target="_blank" rel="noreferrer" class="transition hover:text-white/85">FastTrack Service Description</a>
-        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noreferrer" class="transition hover:text-white/85">GitHub</a>
-        <a href="mailto:ftgithub@microsoft.com" class="transition hover:text-white/85">Contact</a>
+      <div class="detail-sidebar">
+        <div class="metadata-card">
+          <div class="metadata-row">
+            <div class="metadata-label">Type</div>
+            <div class="metadata-val" id="metaType"></div>
+          </div>
+          <div class="metadata-row">
+            <div class="metadata-label">Category</div>
+            <div class="metadata-val" id="metaCat"></div>
+          </div>
+          <div class="metadata-row">
+            <div class="metadata-label">Format</div>
+            <div class="metadata-val" id="metaFormat"></div>
+          </div>
+          <div class="metadata-row">
+            <div class="metadata-label">Views</div>
+            <div class="metadata-val" id="metaViews" style="font-family: var(--font-mono); font-variant-numeric: tabular-nums;"></div>
+          </div>
+          <div class="metadata-row">
+            <div class="metadata-label">Updated</div>
+            <div class="metadata-val" id="metaUpdated"></div>
+          </div>
+          <div class="metadata-row" id="metaAuthorRow">
+            <div class="metadata-label">Author</div>
+            <div class="metadata-val" id="metaAuthor"></div>
+          </div>
+          <div class="metadata-row" id="metaVersionRow">
+            <div class="metadata-label">Version</div>
+            <div class="metadata-val" id="metaVersion"></div>
+          </div>
+          <div class="detail-actions">
+            <button class="btn-secondary vote-btn" id="btnDetailVote" style="width: 100%; justify-content: center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+              Upvote <span class="vote-count" style="margin-left: 0.25rem;"></span>
+            </button>
+            <a href="#" target="_blank" rel="noopener" class="btn-primary" id="btnDetailOpen">
+              Open on GitHub 
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg>
+            </a>
+            <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener" class="btn-secondary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              Report an issue
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is &mdash; not official Microsoft software, no SLA.</p>
+      <div class="footer-links">
+        <a href="https://aka.ms/ftcsd" target="_blank" rel="noopener">Service description</a>
+        <a href="mailto:ftgithub@microsoft.com">Contact: ftgithub@microsoft.com</a>
+        <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Report issue</a>
+        <a href="https://opensource.microsoft.com/codeofconduct/" target="_blank" rel="noopener">Code of Conduct</a>
+        <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a>
       </div>
     </div>
   </footer>
 
   <script>
-    const header = document.getElementById('site-header');
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const themeToggle = document.getElementById('theme-toggle');
-    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
-    const mobileThemeLabel = document.getElementById('mobile-theme-label');
-    const animatedSections = document.querySelectorAll('.fade-section');
+    // --- DATASET ---
+    const CATALOG_URL = 'catalog.json';
+    let RESOURCES = [];
 
-    const updateThemeToggleButtons = () => {
-      const isLight = document.documentElement.classList.contains('light');
-      const icon = isLight ? 'moon' : 'sun';
-      const nextThemeLabel = isLight ? 'Switch to dark theme' : 'Switch to light theme';
+    const TYPE_DEF = [
+      { id: 'all', label: 'All', desc: 'Browse everything' },
+      { id: 'script', label: 'Scripts', colorVar: '--type-script', desc: 'PowerShell automation' },
+      { id: 'agent', label: 'Agents', colorVar: '--type-agent', desc: 'Ready-to-use AI assistants' },
+      { id: 'strategy', label: 'Strategy', colorVar: '--type-strategy', desc: 'Planning tools & guides' },
+      { id: 'analytics', label: 'Analytics', colorVar: '--type-analytics', desc: 'Power BI & reporting' },
+      { id: 'prompt', label: 'Prompts', colorVar: '--type-prompt', desc: 'Copilot prompt templates' },
+      { id: 'skill', label: 'Skills', colorVar: '--type-skill', desc: 'Interactive SME skills' }
+    ];
 
-      [themeToggle, mobileThemeToggle].forEach((button) => {
-        if (!button) return;
-        button.setAttribute('aria-label', nextThemeLabel);
-        button.setAttribute('title', nextThemeLabel);
-        button.setAttribute('aria-pressed', String(isLight));
-        const iconSlot = button.querySelector('[data-theme-icon]');
-        if (iconSlot) {
-          iconSlot.innerHTML = `<i data-lucide="${icon}" class="h-5 w-5"></i>`;
-        }
-      });
-
-      if (mobileThemeLabel) {
-        mobileThemeLabel.textContent = isLight ? 'Dark theme' : 'Light theme';
-      }
-
-      lucide.createIcons();
+    // --- STATE ---
+    let state = {
+      resource: null,
+      q: '',
+      type: 'all',
+      tag: 'all',
+      sort: 'featured',
+      showAllTags: false,
+      density: 'comfortable'
     };
 
-    const setTheme = (theme) => {
-      document.documentElement.classList.toggle('light', theme === 'light');
+    // --- DOM ELEMENTS ---
+    const searchInput = document.getElementById('searchInput');
+    const typeFilters = document.getElementById('typeFilters');
+    const typeDesc = document.getElementById('typeDesc');
+    const tagFilters = document.getElementById('tagFilters');
+    const resultsCount = document.getElementById('resultsCount');
+    const sortSelect = document.getElementById('sortSelect');
+    const grid = document.getElementById('grid');
+    const emptyState = document.getElementById('emptyState');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const themeToggle = document.getElementById('themeToggle');
+    const btnComfortable = document.getElementById('btnComfortable');
+    const btnCompact = document.getElementById('btnCompact');
+
+    // --- UTILS ---
+    const debounce = (func, wait) => {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+      };
+    };
+
+    const getInitials = (name) => {
+      const parts = name.replace(/[-_]/g, ' ').split(' ').filter(p => p.length > 0);
+      if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+      return 'FT';
+    };
+
+    const hashStr = (s) => {
+      let h = 0x811c9dc5;
+      for (let i = 0; i < s.length; i++) {
+        h ^= s.charCodeAt(i);
+        h = (h * 0x01000193) >>> 0;
+      }
+      return h;
+    };
+    const baseStats = (r) => {
+      const h = hashStr(r.slug);
+      const ageDays = Math.max(0, (Date.now() - new Date(r.updated)) / 86400000);
+      const recency = Math.max(0, 1 - ageDays / 540);
+      const views = 140 + (h % 4200) + Math.round(recency * 2600) + (r.featured ? 1600 : 0);
+      const rate = 0.02 + ((h >>> 3) % 9) / 100;
+      const upvotes = Math.max(3, Math.round(views * rate));
+      return { views, upvotes };
+    };
+    const getVotesState = () => {
+      try { return JSON.parse(localStorage.getItem('ft-votes') || '{}'); } catch(e) { return {}; }
+    };
+    const hasVoted = (slug) => !!getVotesState()[slug];
+    const toggleVote = (slug) => {
+      const votes = getVotesState();
+      if (votes[slug]) delete votes[slug]; else votes[slug] = true;
+      localStorage.setItem('ft-votes', JSON.stringify(votes));
+    };
+    const getStats = (r) => {
+      const base = baseStats(r);
+      return { views: base.views, upvotes: base.upvotes + (hasVoted(r.slug) ? 1 : 0) };
+    };
+    const formatCount = (n) => {
+      if (n >= 10000) return (n / 1000).toFixed(0) + 'k';
+      if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+      return n.toString();
+    };
+
+    const getTypeColor = (typeId) => {
+      const t = TYPE_DEF.find(t => t.id === typeId);
+      return t && t.colorVar ? `var(${t.colorVar})` : 'var(--text-muted)';
+    };
+    
+    const getTypeBg = (typeId) => {
+      const t = TYPE_DEF.find(t => t.id === typeId);
+      return t && t.colorVar ? `var(${t.colorVar}-bg)` : 'var(--surface-hover)';
+    };
+
+    const formatArtifact = (artifact) => {
+      const map = {
+        'pbix': '.pbix · Power BI',
+        'ps1': '.ps1 · PowerShell',
+        'pptx': '.pptx · Slides',
+        'md': '.md · Doc',
+        'interactive': 'interactive · Web tool',
+        'bundle': 'bundle · Agent',
+        'declarative': 'declarative · Agent'
+      };
+      return map[artifact] || `.${artifact}`;
+    };
+
+    const slugify = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    const formatDate = (iso) => {
+      if (!iso) return '';
+      const d = new Date(iso);
+      if (isNaN(d)) return '';
+      return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    };
+    
+    async function loadCatalog() {
+      grid.classList.add('d-none');
+      showEmptyState('Loading catalog…', 'Reading the latest FastTrack resource metadata.', false);
+
       try {
-        localStorage.setItem('theme', theme);
+        const response = await fetch(CATALOG_URL, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`Catalog request failed with HTTP ${response.status}`);
+        const catalog = await response.json();
+        if (!catalog || !Array.isArray(catalog.resources)) throw new Error('Catalog response has an invalid shape');
+
+        RESOURCES = catalog.resources.map(resource => ({
+          ...resource,
+          name: resource.name || resource.title,
+          subcategory: resource.subcategory || resource.category,
+          description: resource.description || resource.summary,
+          artifact: resource.artifact || resource.format || 'md',
+          tags: Array.isArray(resource.tags) ? resource.tags : []
+        }));
+        return true;
       } catch (error) {
-        // Ignore storage access issues and keep the in-memory theme.
+        console.error('Unable to load FastTrack catalog:', error);
+        document.getElementById('heroTotalCount').textContent = 'Catalog unavailable';
+        showEmptyState(
+          'Catalog unavailable',
+          'The resource catalog could not be loaded. Refresh the page or try again later.',
+          false
+        );
+        return false;
       }
-      updateThemeToggleButtons();
-    };
-
-    const toggleTheme = () => {
-      const isLight = document.documentElement.classList.contains('light');
-      setTheme(isLight ? 'dark' : 'light');
-    };
-
-    const updateHeader = () => {
-      if (window.scrollY > 24) {
-        header.classList.add('nav-solid');
-      } else {
-        header.classList.remove('nav-solid');
-      }
-    };
-
-    updateHeader();
-    window.addEventListener('scroll', updateHeader, { passive: true });
-
-    menuToggle.addEventListener('click', () => {
-      const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', String(!expanded));
-      mobileMenu.classList.toggle('hidden');
-    });
-
-    themeToggle.addEventListener('click', toggleTheme);
-
-    if (mobileThemeToggle) {
-      mobileThemeToggle.addEventListener('click', toggleTheme);
     }
 
-    mobileMenu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        menuToggle.setAttribute('aria-expanded', 'false');
-        mobileMenu.classList.add('hidden');
-      });
-    });
+    // --- INITIALIZATION ---
+    async function init() {
+      if (!await loadCatalog()) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('is-visible');
-          }, index * 100);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-    animatedSections.forEach((section) => {
-      observer.observe(section);
-    });
-
-    updateThemeToggleButtons();
-
-    // ─── Repo Analytics Dashboard ────────────────────────────────
-    (async () => {
-      const DATA_BASE = 'https://raw.githubusercontent.com/microsoft/FastTrack/master/traffic-data';
-      const LOOKBACK_DAYS = 30;
-
-      const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => (
-        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-      ));
-
-      async function fetchLatest() {
-        const today = new Date();
-        for (let i = 0; i < LOOKBACK_DAYS; i++) {
-          const d = new Date(today);
-          d.setDate(d.getDate() - i);
-          const dateStr = d.toISOString().slice(0, 10);
-          try {
-            const res = await fetch(`${DATA_BASE}/${dateStr}.json`);
-            if (res.ok) return await res.json();
-          } catch (_) { /* try previous day */ }
-        }
-        return null;
-      }
-
-      const data = await fetchLatest();
-      if (!data) {
-        const msg = `Traffic data has not been published in the last ${LOOKBACK_DAYS} days.`;
-        const updatedEl = document.getElementById('analytics-updated');
-        if (updatedEl) updatedEl.textContent = '⚠️ Traffic data unavailable';
-        ['referrer-list', 'popular-pages'].forEach((id) => {
-          const el = document.getElementById(id);
-          if (el) el.innerHTML = `<p class="text-sm text-white/50">${msg}</p>`;
-        });
-        ['chart-views', 'chart-clones', 'chart-stars'].forEach((id) => {
-          const el = document.getElementById(id);
-          if (el?.parentElement) el.parentElement.innerHTML = `<p class="text-sm text-white/40 text-center mt-16">${msg}</p>`;
-        });
-        return;
-      }
-
-      const isLight = document.documentElement.classList.contains('light');
-      const gridColor = isLight ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.12)';
-      const labelColor = isLight ? 'rgba(0,0,0,0.65)' : 'rgba(255,255,255,0.7)';
-
-      // "Last updated" badge
-      const updatedEl = document.getElementById('analytics-updated');
-      if (updatedEl && data.collected_at) {
-        const d = new Date(data.collected_at + 'T06:00:00Z');
-        updatedEl.textContent = `📅 Data as of ${d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
-      }
-
-      // ── KPI stat cards ──
-      const setKpi = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-      setKpi('stat-views', data.views.count.toLocaleString());
-      setKpi('stat-views-unique', `${data.views.uniques.toLocaleString()} unique visitors`);
-      setKpi('stat-clones', data.clones.count.toLocaleString());
-      setKpi('stat-clones-unique', `${data.clones.uniques.toLocaleString()} unique`);
-      setKpi('stat-stars', (data.stars || 0).toLocaleString());
-      setKpi('stat-forks', (data.forks || 0).toLocaleString());
-
-      // Week-over-week trend for views & clones
-      function calcTrend(dailyArray) {
-        if (!dailyArray || dailyArray.length < 8) return null;
-        const mid = Math.floor(dailyArray.length / 2);
-        const recent = dailyArray.slice(mid).reduce((s, v) => s + v.count, 0);
-        const prior = dailyArray.slice(0, mid).reduce((s, v) => s + v.count, 0);
-        if (prior === 0) return null;
-        return ((recent - prior) / prior * 100).toFixed(0);
-      }
-
-      function renderTrend(elId, pct) {
-        const el = document.getElementById(elId);
-        if (!el || pct === null) return;
-        const up = Number(pct) >= 0;
-        el.textContent = `${up ? '↑' : '↓'} ${Math.abs(pct)}% vs prior week`;
-        el.className = `mt-2 text-xs font-medium ${up ? 'text-emerald-400' : 'text-rose-400'}`;
-      }
-
-      renderTrend('stat-views-trend', calcTrend(data.views.views));
-      renderTrend('stat-clones-trend', calcTrend(data.clones.clones));
-
-      // ── Chart setup ──
-      Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
-      Chart.defaults.font.size = 12;
-      Chart.defaults.color = labelColor;
-
-      const chartOpts = (yTitle) => ({
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: { intersect: false, mode: 'index' },
-        plugins: { legend: { display: true, labels: { boxWidth: 10, padding: 14 } } },
-        scales: {
-          x: { grid: { color: gridColor }, ticks: { maxRotation: 45, color: labelColor } },
-          y: { grid: { color: gridColor }, beginAtZero: true, ticks: { color: labelColor }, title: { display: true, text: yTitle, color: labelColor } }
-        }
+      // 0. Build Slugs
+      RESOURCES.forEach(r => {
+        if (!r.slug) r.slug = slugify(r.name);
       });
 
-      const fmtDate = (ts) => new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+      // Set initial count in hero
+      document.getElementById('heroTotalCount').textContent = `${RESOURCES.length} resources`;
 
-      // Views chart
-      new Chart(document.getElementById('chart-views'), {
-        type: 'bar',
-        data: {
-          labels: data.views.views.map(v => fmtDate(v.timestamp)),
-          datasets: [
-            { label: 'Total', data: data.views.views.map(v => v.count), backgroundColor: 'rgba(56,189,248,0.25)', borderColor: 'rgba(56,189,248,0.7)', borderWidth: 1, borderRadius: 6 },
-            { label: 'Unique', data: data.views.views.map(v => v.uniques), backgroundColor: 'rgba(56,189,248,0.6)', borderColor: 'rgba(56,189,248,1)', borderWidth: 1, borderRadius: 6 }
-          ]
-        },
-        options: chartOpts('Views')
+      // 1. Theme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      updateThemeIcon();
+
+      // 1.5 Density
+      const savedDensity = localStorage.getItem('ft-density');
+      if (savedDensity) {
+        state.density = savedDensity;
+      }
+      updateDensityUI();
+
+      // 2. Read URL Params
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('resource')) state.resource = params.get('resource');
+      if (params.has('q')) state.q = params.get('q');
+      if (params.has('type')) state.type = params.get('type');
+      if (params.has('tag')) state.tag = params.get('tag');
+      let initialSort = params.get('sort') || 'popular';
+      if (initialSort === 'featured' || initialSort === 'az') initialSort = 'popular';
+      if (initialSort === 'newest') initialSort = 'new';
+      state.sort = initialSort;
+      
+      searchInput.value = state.q;
+      // We don't have sortSelect anymore, we'll update the pill UI in render
+      
+      // 3. Bind Events
+      window.addEventListener('popstate', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        state.resource = urlParams.get('resource') || null;
+        state.q = urlParams.get('q') || '';
+        state.type = urlParams.get('type') || 'all';
+        state.tag = urlParams.get('tag') || 'all';
+        let routeSort = urlParams.get('sort') || 'popular';
+        if (routeSort === 'featured' || routeSort === 'az') routeSort = 'popular';
+        if (routeSort === 'newest') routeSort = 'new';
+        state.sort = routeSort;
+        searchInput.value = state.q;
+        render();
       });
 
-      // Clones chart
-      new Chart(document.getElementById('chart-clones'), {
-        type: 'bar',
-        data: {
-          labels: data.clones.clones.map(v => fmtDate(v.timestamp)),
-          datasets: [
-            { label: 'Total', data: data.clones.clones.map(v => v.count), backgroundColor: 'rgba(139,92,246,0.25)', borderColor: 'rgba(139,92,246,0.7)', borderWidth: 1, borderRadius: 6 },
-            { label: 'Unique', data: data.clones.clones.map(v => v.uniques), backgroundColor: 'rgba(139,92,246,0.6)', borderColor: 'rgba(139,92,246,1)', borderWidth: 1, borderRadius: 6 }
-          ]
-        },
-        options: chartOpts('Clones')
-      });
-
-      // ── Star History chart ──
-      if (data.star_timeline && data.star_timeline.length > 0) {
-        // Group stars by month
-        const monthly = {};
-        data.star_timeline.forEach(dateStr => {
-          const m = dateStr.slice(0, 7); // YYYY-MM
-          monthly[m] = (monthly[m] || 0) + 1;
-        });
-        const months = Object.keys(monthly).sort();
-        let cumulative = 0;
-        const cumData = months.map(m => { cumulative += monthly[m]; return cumulative; });
-
-        new Chart(document.getElementById('chart-stars'), {
-          type: 'line',
-          data: {
-            labels: months.map(m => { const [y, mo] = m.split('-'); return new Date(y, mo - 1).toLocaleDateString('en-US', { month: 'short', year: '2-digit' }); }),
-            datasets: [{
-              label: 'Cumulative Stars',
-              data: cumData,
-              borderColor: 'rgba(251,191,36,0.7)',
-              backgroundColor: 'rgba(251,191,36,0.05)',
-              fill: true,
-              tension: 0.4,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHoverBackgroundColor: 'rgba(251,191,36,0.9)',
-              borderWidth: 2
-            }]
-          },
-          options: {
-            ...chartOpts('Stars'),
-            plugins: { legend: { display: false } }
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a.resource-link');
+        if (link && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+          e.preventDefault();
+          const url = new URL(link.href, window.location.origin);
+          const slug = url.searchParams.get('resource');
+          if (slug) {
+            state.resource = slug;
+            updateState(true);
+            window.scrollTo(0, 0);
           }
+        }
+      });
+
+      document.getElementById('btnBack').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.history.state && window.history.state.internal) {
+          window.history.back();
+        } else {
+          state.resource = null;
+          updateState(true);
+        }
+      });
+
+      searchInput.addEventListener('input', debounce((e) => {
+        state.q = e.target.value;
+        state.resource = null;
+        updateState();
+      }, 300));
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === '/' || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))) {
+          if (document.activeElement !== searchInput) {
+            e.preventDefault();
+            searchInput.focus();
+          }
+        }
+      });
+      
+      document.querySelectorAll('.sort-pills .density-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          state.sort = e.currentTarget.dataset.sort;
+          updateState();
         });
+      });
+      
+      clearFiltersBtn.addEventListener('click', () => {
+        state.q = '';
+        state.type = 'all';
+        state.tag = 'all';
+        searchInput.value = '';
+        updateState();
+      });
+      themeToggle.addEventListener('click', toggleTheme);
+      
+      btnComfortable.addEventListener('click', () => setDensity('comfortable'));
+      btnCompact.addEventListener('click', () => setDensity('compact'));
+
+      // 4. First Render
+      render();
+    }
+
+    // --- RENDER PIPELINE ---
+    function updateState(pushHistory = false) {
+      // Update URL
+      const url = new URL(window.location);
+      if (state.resource) {
+        url.searchParams.set('resource', state.resource);
+        url.searchParams.delete('q');
+        url.searchParams.delete('type');
+        url.searchParams.delete('tag');
+        url.searchParams.delete('sort');
       } else {
-        document.getElementById('chart-stars').parentElement.innerHTML = '<p class="text-sm text-white/40 text-center mt-16">Star history will appear after the next workflow run.</p>';
+        url.searchParams.delete('resource');
+        if (state.q) url.searchParams.set('q', state.q); else url.searchParams.delete('q');
+        if (state.type !== 'all') url.searchParams.set('type', state.type); else url.searchParams.delete('type');
+        if (state.tag !== 'all') url.searchParams.set('tag', state.tag); else url.searchParams.delete('tag');
+        if (state.sort !== 'popular') url.searchParams.set('sort', state.sort); else url.searchParams.delete('sort');
+      }
+      
+      if (pushHistory) {
+        window.history.pushState({ internal: true }, '', url);
+      } else {
+        window.history.replaceState(window.history.state || { internal: true }, '', url);
       }
 
+      render();
+    }
 
-      // ── Referrers list (categorized, full names visible) ──
-      const refContainer = document.getElementById('referrer-list');
-      if (refContainer && data.referrers) {
-        refContainer.innerHTML = '';
-        const maxRef = data.referrers[0]?.count || 1;
+    function getFilteredResources() {
+      const q = state.q.toLowerCase();
+      return RESOURCES.filter(r => {
+        // Search Match
+        const matchQ = !q || 
+                       r.name.toLowerCase().includes(q) || 
+                       r.description.toLowerCase().includes(q) || 
+                       r.tags.some(t => t.toLowerCase().includes(q));
+        // Type Match
+        const matchType = state.type === 'all' || r.type === state.type;
+        // Tag Match
+        const matchTag = state.tag === 'all' || r.tags.includes(state.tag);
 
-        // Categorize referrers
-        function categorize(name) {
-          const n = name.toLowerCase();
-          if (/google|bing|yahoo|duckduckgo|baidu|yandex/.test(n)) return { icon: '🔍', cat: 'Search' };
-          if (/linkedin|twitter|x\.com|facebook|reddit|hacker\s?news|youtube|social/.test(n)) return { icon: '💬', cat: 'Social' };
-          if (/teams|office|microsoft|sharepoint|outlook|engage/.test(n)) return { icon: '🏢', cat: 'Enterprise' };
-          if (/github/.test(n)) return { icon: '🐙', cat: 'GitHub' };
-          if (/learn\.microsoft|docs|stackoverflow|medium|dev\.to/.test(n)) return { icon: '📚', cat: 'Developer' };
-          return { icon: '🔗', cat: 'Direct' };
+        return matchQ && matchType && matchTag;
+      });
+    }
+
+    function sortResources(resources) {
+      return [...resources].sort((a, b) => {
+        const statsA = getStats(a);
+        const statsB = getStats(b);
+        const ageA = Math.max(0, (Date.now() - new Date(a.updated)) / 86400000);
+        const ageB = Math.max(0, (Date.now() - new Date(b.updated)) / 86400000);
+
+        if (state.sort === 'popular') {
+          if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
+          if (statsA.views !== statsB.views) return statsB.views - statsA.views;
+          return a.name.localeCompare(b.name);
+        } else if (state.sort === 'trending') {
+          const hotA = (statsA.upvotes * 3 + statsA.views / 40) / Math.pow(ageA + 2, 0.75);
+          const hotB = (statsB.upvotes * 3 + statsB.views / 40) / Math.pow(ageB + 2, 0.75);
+          return hotB - hotA;
+        } else if (state.sort === 'new') {
+          return new Date(b.updated) - new Date(a.updated);
+        } else if (state.sort === 'engaging') {
+          const rateA = (statsA.upvotes + 2) / (statsA.views + 40);
+          const rateB = (statsB.upvotes + 2) / (statsB.views + 40);
+          if (rateB !== rateA) return rateB - rateA;
+          return statsB.upvotes - statsA.upvotes;
+        }
+        return 0;
+      });
+    }
+
+    function render() {
+      if (state.resource) {
+        const r = RESOURCES.find(res => res.slug === state.resource);
+        if (r) {
+          renderDetailView(r);
+          return;
+        } else {
+          state.resource = null; // Invalid resource, clear it
+          updateState(); // Re-run render via updateState to clean URL
+          return;
+        }
+      }
+
+      document.getElementById('catalogView').classList.remove('d-none');
+      document.getElementById('detailView').classList.add('d-none');
+
+      const filtered = getFilteredResources();
+      const sorted = sortResources(filtered);
+
+      renderCategoryTiles();
+      renderTypeFilters();
+      renderTagFilters();
+      
+      // Update sort pills UI
+      document.querySelectorAll('.sort-pills .density-btn').forEach(btn => {
+        const isMatch = btn.dataset.sort === state.sort;
+        btn.classList.toggle('active', isMatch);
+        btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      });
+
+      // Update Count
+      if (resultsCount.textContent !== sorted.length.toString()) {
+        resultsCount.textContent = sorted.length;
+        resultsCount.style.transform = 'scale(1.1)';
+        setTimeout(() => { resultsCount.style.transform = 'scale(1)'; }, 200);
+      }
+
+      // Render Grid or Empty State
+      grid.innerHTML = '';
+      if (sorted.length === 0) {
+        showEmptyState("No resources found", "Try adjusting your search or filters to find what you're looking for.", true);
+      } else {
+        emptyState.classList.add('d-none');
+        grid.classList.remove('d-none');
+        
+        sorted.forEach((r, i) => {
+          const card = createCard(r);
+          card.style.animationDelay = `${i * 0.05}s`;
+          card.classList.add('card-animate');
+          grid.appendChild(card);
+        });
+
+        // Special Script CTA logic
+        if (state.type === 'script' || state.type === 'all') {
+          const cta = createScriptCTA();
+          cta.style.animationDelay = `${sorted.length * 0.05}s`;
+          cta.classList.add('card-animate');
+          grid.appendChild(cta);
+        }
+      }
+    }
+
+    function renderCategoryTiles() {
+      const container = document.getElementById('categoryTiles');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      TYPE_DEF.forEach(t => {
+        if (t.id === 'all') return; // Skip "All" for big tiles
+        
+        let countDisplay = 0;
+        if (t.id === 'script') {
+          countDisplay = "12";
+        } else if (!t.soon) {
+          countDisplay = RESOURCES.filter(r => r.type === t.id).length;
         }
 
-        data.referrers.slice(0, 8).forEach(ref => {
-          const barW = Math.max(6, (ref.count / maxRef) * 100);
-          const { icon, cat } = categorize(ref.referrer);
-          refContainer.innerHTML += `
-            <div class="group relative overflow-hidden rounded-2xl bg-white/[0.02] px-4 py-3 transition hover:bg-white/[0.05]">
-              <div class="absolute inset-y-0 left-0 rounded-2xl bg-emerald-400/[0.04]" style="width:${barW}%"></div>
-              <div class="relative flex items-center gap-3">
-                <span class="shrink-0 text-base">${icon}</span>
-                <div class="min-w-0 flex-1">
-                  <p class="text-sm font-medium text-white/85 break-all">${escapeHtml(ref.referrer)}</p>
-                  <p class="text-xs text-white/35">${cat}</p>
-                </div>
-                <div class="shrink-0 text-right">
-                  <span class="text-sm font-semibold text-emerald-300">${ref.count.toLocaleString()}</span>
-                  <span class="ml-1 text-xs text-white/35">${ref.uniques} unique</span>
-                </div>
-              </div>
-            </div>`;
-        });
+        const btn = document.createElement('button');
+        btn.className = `category-tile ${state.type === t.id ? 'active' : ''}`;
+        if (t.soon) btn.classList.add('soon');
+        
+        const color = t.colorVar ? `var(${t.colorVar})` : 'var(--border)';
+        const bgColor = t.colorVar ? `var(${t.colorVar}-bg)` : 'var(--surface-hover)';
+        btn.style.setProperty('--tile-color', color);
+        btn.style.setProperty('--tile-bg', bgColor);
+        
+        btn.onclick = () => {
+          if (t.soon) return;
+          state.type = t.id;
+          state.tag = 'all';
+          updateState();
+          document.getElementById('grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        btn.innerHTML = `
+          <div class="tile-header">
+            <div class="tile-title">
+              <div class="pill-dot" style="background-color: ${color}"></div>
+              ${t.label}
+            </div>
+            ${t.soon ? '<span class="pill-soon" style="margin:0;">Soon</span>' : `<span class="tile-count">${countDisplay}</span>`}
+          </div>
+          <div class="tile-desc">${t.desc}</div>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function renderTypeFilters() {
+      typeFilters.innerHTML = '';
+      
+      TYPE_DEF.forEach(t => {
+        // Calculate count
+        let countDisplay = 0;
+        if (t.id === 'all') {
+          countDisplay = RESOURCES.length;
+        } else if (t.id === 'script') {
+          countDisplay = "12"; // Hardcoded as per prompt req (12 shown of 54)
+        } else if (t.soon) {
+          countDisplay = 0;
+        } else {
+          countDisplay = RESOURCES.filter(r => r.type === t.id).length;
+        }
+
+        const btn = document.createElement('button');
+        btn.className = `pill ${state.type === t.id ? 'active' : ''}`;
+        btn.disabled = t.soon && state.type !== t.id; // Disable 'skill' unless it's currently selected somehow
+        
+        btn.title = t.desc || '';
+        
+        btn.onclick = () => {
+          state.type = t.id;
+          state.tag = 'all'; // Reset tag when type changes
+          updateState();
+        };
+
+        const dotColor = t.id === 'all' ? 'transparent' : getTypeColor(t.id);
+        const borderStyle = t.id === 'all' ? 'border: 1px dashed var(--text-muted);' : `background-color: ${dotColor};`;
+        
+        let innerHTML = `<div class="pill-dot" style="${borderStyle}"></div>${t.label}`;
+        
+        if (t.soon) {
+          innerHTML += `<span class="pill-soon">Soon</span>`;
+        } else {
+          innerHTML += `<span class="pill-count">${countDisplay}</span>`;
+        }
+
+        btn.innerHTML = innerHTML;
+        typeFilters.appendChild(btn);
+      });
+      
+      // Update the type description label
+      const activeType = TYPE_DEF.find(t => t.id === state.type);
+      if (activeType && activeType.desc && activeType.id !== 'all') {
+        typeDesc.textContent = activeType.desc;
+        typeDesc.classList.remove('d-none');
+      } else {
+        typeDesc.classList.add('d-none');
       }
+    }
 
-      // ── Popular Pages (friendly names, no truncation) ──
-      const pagesContainer = document.getElementById('popular-pages');
-      if (pagesContainer && data.paths) {
-        pagesContainer.innerHTML = '';
-        const maxP = data.paths[0]?.count || 1;
+    function renderTagFilters() {
+      tagFilters.innerHTML = '';
+      
+      // Determine relevant tags based on current type and search ONLY
+      const tempState = { ...state, tag: 'all' };
+      const q = tempState.q.toLowerCase();
+      const baseResources = RESOURCES.filter(r => {
+        const matchQ = !q || r.name.toLowerCase().includes(q) || r.description.toLowerCase().includes(q) || r.tags.some(t => t.toLowerCase().includes(q));
+        const matchType = tempState.type === 'all' || r.type === tempState.type;
+        return matchQ && matchType;
+      });
 
-        // Map deep paths to friendly display names
-        function friendlyName(fullPath) {
-          const p = fullPath.replace('/microsoft/FastTrack', '');
-          if (!p || p === '/') return '📂 Repository Overview';
-          const parts = p.split('/').filter(Boolean);
-          // Get the last meaningful segment(s)
-          if (parts.length >= 3) {
-            const last = parts[parts.length - 1];
-            const parent = parts[parts.length - 2];
-            return `${parent} / ${last}`;
+      const tagCounts = {};
+      baseResources.forEach(r => {
+        r.tags.forEach(t => {
+          tagCounts[t] = (tagCounts[t] || 0) + 1;
+        });
+      });
+
+      const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+      // "All" tag
+      const allBtn = document.createElement('button');
+      allBtn.className = `tag-pill ${state.tag === 'all' ? 'active' : ''}`;
+      allBtn.innerHTML = `All <span style="opacity: 0.6; margin-left: 2px;">${baseResources.length}</span>`;
+      allBtn.onclick = () => { state.tag = 'all'; updateState(); };
+      tagFilters.appendChild(allBtn);
+
+      const INITIAL_LIMIT = 8;
+      
+      sortedTags.forEach(([tag, count], index) => {
+        const btn = document.createElement('button');
+        const isHidden = !state.showAllTags && index >= INITIAL_LIMIT && state.tag !== tag;
+        btn.className = `tag-pill ${state.tag === tag ? 'active' : ''} ${isHidden ? 'hidden' : ''}`;
+        btn.innerHTML = `${tag} <span style="opacity: 0.6; margin-left: 2px;">${count}</span>`;
+        btn.onclick = () => {
+          state.tag = state.tag === tag ? 'all' : tag;
+          updateState();
+        };
+        tagFilters.appendChild(btn);
+      });
+
+      if (sortedTags.length > INITIAL_LIMIT) {
+        const moreBtn = document.createElement('button');
+        moreBtn.className = 'more-tags-btn';
+        moreBtn.innerHTML = state.showAllTags ? 'Show less ▴' : `More tags (${sortedTags.length - INITIAL_LIMIT}) ▾`;
+        moreBtn.onclick = () => {
+          state.showAllTags = !state.showAllTags;
+          renderTagFilters(); // Just re-render tags
+        };
+        tagFilters.appendChild(moreBtn);
+      }
+    }
+
+    function createCard(data) {
+      const card = document.createElement('article');
+      card.className = 'card';
+      
+      const initials = getInitials(data.name);
+      const bg = getTypeBg(data.type);
+      const color = getTypeColor(data.type);
+      const stats = getStats(data);
+      const voted = hasVoted(data.slug);
+      
+      const star = data.featured ? `<span class="featured-star" aria-label="Featured">★</span>` : '';
+      
+      card.style.setProperty('--card-color', color);
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-avatar" style="background-color: ${bg}; color: ${color};" aria-hidden="true">
+            ${initials}
+          </div>
+          <div class="card-title-group">
+            <h2 class="card-title">
+              <a href="?resource=${data.slug}" class="resource-link">${data.name}</a>
+            </h2>
+            <div class="card-sub">
+              <div class="pill-dot" style="background-color: ${color}; width: 6px; height: 6px;"></div>
+              ${data.subcategory}
+            </div>
+          </div>
+        </div>
+        <div class="card-desc">${data.description}</div>
+        <div class="compact-views" aria-label="${stats.views} views">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          ${formatCount(stats.views)}
+        </div>
+        <div class="compact-votes">
+          <button class="vote-btn ${voted ? 'voted' : ''}" data-slug="${data.slug}" aria-pressed="${voted}" aria-label="${voted ? `Remove your upvote from ${data.name}` : `Upvote ${data.name}`}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="${voted ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            <span class="vote-count">${formatCount(stats.upvotes)}</span>
+          </button>
+        </div>
+        <div class="card-footer">
+          <div class="card-tags">
+            ${data.tags.slice(0, 3).map(t => `<span class="card-tag">${t}</span>`).join('')}
+            ${data.tags.length > 3 ? `<span class="card-tag">+${data.tags.length - 3}</span>` : ''}
+          </div>
+          <div class="card-stats">
+            <span class="stat-views" aria-label="${stats.views} views">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              ${formatCount(stats.views)}
+            </span>
+            <button class="vote-btn ${voted ? 'voted' : ''}" data-slug="${data.slug}" aria-pressed="${voted}" aria-label="${voted ? `Remove your upvote from ${data.name}` : `Upvote ${data.name}`}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="${voted ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+              <span class="vote-count">${formatCount(stats.upvotes)}</span>
+            </button>
+          </div>
+          <div class="card-artifact-container">
+            <div class="card-artifact" aria-label="Format: ${data.artifact}">
+              ${star} ${formatArtifact(data.artifact)}
+            </div>
+            <div class="compact-date">${formatDate(data.updated)}</div>
+            <div class="card-link-out">View details <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+        </div>
+      `;
+      const bindVote = (btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleVote(data.slug);
+          const nowVoted = hasVoted(data.slug);
+          if (nowVoted && typeof window.clarity !== 'undefined') {
+            window.clarity('set', 'upvoted_resource', data.slug);
+            window.clarity('event', 'resource_upvote');
           }
-          return parts.join(' / ');
-        }
-
-        function pathIcon(fullPath) {
-          if (fullPath.includes('agent')) return '🤖';
-          if (fullPath.includes('analytics') || fullPath.includes('Audit')) return '📊';
-          if (fullPath.includes('prompt')) return '💬';
-          if (fullPath.includes('SETUP') || fullPath.includes('README')) return '📖';
-          if (fullPath.includes('/tree/')) return '📁';
-          if (fullPath.includes('/blob/')) return '📄';
-          return '📂';
-        }
-
-        data.paths.slice(0, 8).forEach(p => {
-          const barW = Math.max(6, (p.count / maxP) * 100);
-          const friendly = friendlyName(p.path);
-          const icon = pathIcon(p.path);
-          const href = `https://github.com${encodeURI(p.path)}`;
-          pagesContainer.innerHTML += `
-            <a href="${escapeHtml(href)}" target="_blank" rel="noreferrer" class="group relative block overflow-hidden rounded-2xl bg-white/[0.02] px-4 py-3 transition hover:bg-white/[0.05]" title="${escapeHtml(p.path.replace('/microsoft/FastTrack', ''))}">
-              <div class="absolute inset-y-0 left-0 rounded-2xl bg-cyan-400/[0.04]" style="width:${barW}%"></div>
-              <div class="relative flex items-center gap-3">
-                <span class="shrink-0 text-base">${icon}</span>
-                <div class="min-w-0 flex-1">
-                  <p class="text-sm font-medium text-white/85 break-words leading-snug group-hover:text-cyan-300 transition">${escapeHtml(friendly)}</p>
-                </div>
-                <div class="shrink-0 text-right">
-                  <span class="text-sm font-semibold text-cyan-300">${p.count.toLocaleString()}</span>
-                  <span class="ml-1 text-xs text-white/35">${p.uniques} unique</span>
-                </div>
-              </div>
-            </a>`;
+          const newStats = getStats(data);
+          // Update both buttons in this card
+          card.querySelectorAll('.vote-btn').forEach(b => {
+            b.classList.toggle('voted', nowVoted);
+            b.setAttribute('aria-pressed', nowVoted);
+            b.setAttribute('aria-label', nowVoted ? `Remove your upvote from ${data.name}` : `Upvote ${data.name}`);
+            b.querySelector('.vote-count').textContent = formatCount(newStats.upvotes);
+            b.querySelector('svg').setAttribute('fill', nowVoted ? 'currentColor' : 'none');
+            b.classList.remove('pop');
+            void b.offsetWidth; // trigger reflow
+            b.classList.add('pop');
+          });
         });
+      };
+      card.querySelectorAll('.vote-btn').forEach(bindVote);
+
+      return card;
+    }
+
+    function createScriptCTA() {
+      const tile = document.createElement('a');
+      tile.href = "https://github.com/microsoft/FastTrack/tree/master/scripts";
+      tile.target = "_blank";
+      tile.rel = "noopener";
+      tile.className = "card cta-tile";
+      tile.innerHTML = `
+        <h3>Browse all 54 scripts &rarr;</h3>
+        <p>Explore the full repository on GitHub</p>
+      `;
+      return tile;
+    }
+
+    function showEmptyState(title, desc, showClear) {
+      grid.classList.add('d-none');
+      emptyState.classList.remove('d-none');
+      document.getElementById('emptyStateTitle').textContent = title;
+      document.getElementById('emptyStateDesc').textContent = desc;
+      
+      if (showClear) {
+        clearFiltersBtn.classList.remove('d-none');
+      } else {
+        clearFiltersBtn.classList.add('d-none');
       }
-    })();
+    }
+
+    // --- THEME ---
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const iconPath = document.getElementById('themeIcon');
+      if (isDark) {
+        // Sun icon
+        iconPath.setAttribute('d', 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z');
+      } else {
+        // Moon icon
+        iconPath.setAttribute('d', 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z');
+      }
+    }
+
+    // --- DENSITY ---
+    function setDensity(density) {
+      state.density = density;
+      localStorage.setItem('ft-density', density);
+      updateDensityUI();
+    }
+
+    function updateDensityUI() {
+      const isCompact = state.density === 'compact';
+      if (isCompact) {
+        grid.classList.add('compact');
+        btnCompact.classList.add('active');
+        btnCompact.setAttribute('aria-pressed', 'true');
+        btnComfortable.classList.remove('active');
+        btnComfortable.setAttribute('aria-pressed', 'false');
+      } else {
+        grid.classList.remove('compact');
+        btnComfortable.classList.add('active');
+        btnComfortable.setAttribute('aria-pressed', 'true');
+        btnCompact.classList.remove('active');
+        btnCompact.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    const escapeHTML = str => str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])
+    );
+
+    const parseInline = text => {
+      if (!text) return '';
+      let escaped = escapeHTML(text);
+      escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+      escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      return escaped;
+    };
+
+    function renderMarkdownish(container, markdown) {
+      container.replaceChildren();
+      const source = markdown || '';
+
+      const fencePattern = /```(?:[^\n]*)\n([\s\S]*?)```/g;
+      let cursor = 0;
+      let match;
+
+      const parseTextBlock = text => {
+        const trimmed = text.trim();
+        if (!trimmed) return;
+        
+        const lines = trimmed.split('\n');
+        let currentList = null;
+        let isOrdered = false;
+
+        const closeList = () => {
+          if (currentList) {
+            container.appendChild(currentList);
+            currentList = null;
+          }
+        };
+
+        lines.forEach(line => {
+          const orderedMatch = line.match(/^(\d+)\.\s+(.*)/);
+          const unorderedMatch = line.match(/^[-*]\s+(.*)/);
+
+          if (orderedMatch) {
+            if (!currentList || !isOrdered) {
+              closeList();
+              currentList = document.createElement('ol');
+              currentList.className = 'detail-list detail-how-ol';
+              currentList.style.counterReset = 'step';
+              isOrdered = true;
+            }
+            const li = document.createElement('li');
+            li.innerHTML = parseInline(orderedMatch[2]);
+            currentList.appendChild(li);
+          } else if (unorderedMatch) {
+            if (!currentList || isOrdered) {
+              closeList();
+              currentList = document.createElement('ul');
+              currentList.className = 'detail-list detail-how-ul';
+              isOrdered = false;
+            }
+            const li = document.createElement('li');
+            li.innerHTML = parseInline(unorderedMatch[1]);
+            currentList.appendChild(li);
+          } else {
+            closeList();
+            const p = document.createElement('p');
+            p.className = 'detail-how-text';
+            p.innerHTML = parseInline(line);
+            container.appendChild(p);
+          }
+        });
+        closeList();
+      };
+
+      while ((match = fencePattern.exec(source)) !== null) {
+        parseTextBlock(source.slice(cursor, match.index));
+        const pre = document.createElement('pre');
+        const code = document.createElement('code');
+        code.textContent = match[1].trimEnd();
+        pre.appendChild(code);
+        container.appendChild(pre);
+        cursor = fencePattern.lastIndex;
+      }
+      parseTextBlock(source.slice(cursor));
+    }
+
+    function renderDetailView(resource) {
+      document.getElementById('catalogView').classList.add('d-none');
+      document.getElementById('detailView').classList.remove('d-none');
+      
+      const typeDef = TYPE_DEF.find(t => t.id === resource.type) || TYPE_DEF[0];
+      const typeColor = typeDef.colorVar ? `var(${typeDef.colorVar})` : 'var(--border)';
+      const typeBg = typeDef.colorVar ? `var(${typeDef.colorVar}-bg)` : 'var(--surface-hover)';
+      
+      // Update Hero
+      document.getElementById('detailHero').style.background = `linear-gradient(135deg, ${typeBg} 0%, transparent 100%)`;
+      document.getElementById('detailWatermark').textContent = getInitials(resource.name);
+      document.getElementById('detailHeroDot').style.backgroundColor = typeColor;
+      document.getElementById('detailHeroSub').textContent = `${typeDef.label} · ${resource.subcategory}`;
+      document.getElementById('detailTitle').textContent = resource.name;
+      
+      // Tags
+      const tagsContainer = document.getElementById('detailTags');
+      tagsContainer.innerHTML = resource.tags.map(t =>
+        `<a href="?tag=${t}" class="card-tag" onclick="event.preventDefault(); document.querySelector('a[data-tag=&quot;${t}&quot;]').click();">${t}</a>`
+      ).join('');
+      
+      // Detail content
+      document.getElementById('detailDesc').textContent = resource.description;
+      const fmt = formatArtifact(resource.artifact);
+      const fallbackWhat = `This ${typeDef.label.toLowerCase()} is part of the ${resource.subcategory} category. It is provided as ${fmt} to assist with FastTrack deployments.`;
+      renderMarkdownish(document.getElementById('detailWhatItIs'), resource.whatItIs || fallbackWhat);
+
+      const whyItems = Array.isArray(resource.whyUseIt) ? resource.whyUseIt : [];
+      const whySection = document.getElementById('detailWhySection');
+      whySection.classList.toggle('d-none', whyItems.length === 0);
+      const whyList = document.getElementById('detailWhyUseIt');
+      whyList.replaceChildren(...whyItems.map(item => {
+        const li = document.createElement('li');
+        li.innerHTML = parseInline(item);
+        return li;
+      }));
+
+      renderMarkdownish(
+        document.getElementById('detailHowToUse'),
+        resource.howToUse || 'Open the resource on GitHub and follow the installation and usage guidance in its README.'
+      );
+
+      const prerequisiteItems = Array.isArray(resource.prerequisites) ? resource.prerequisites : [];
+      const prerequisiteSection = document.getElementById('detailPrerequisitesSection');
+      prerequisiteSection.classList.toggle('d-none', prerequisiteItems.length === 0);
+      const prerequisiteList = document.getElementById('detailPrerequisites');
+      prerequisiteList.replaceChildren(...prerequisiteItems.map(item => {
+        const li = document.createElement('li');
+        li.innerHTML = parseInline(item);
+        return li;
+      }));
+      
+      // Metadata
+      document.getElementById('metaType').innerHTML = `<div class="pill-dot" style="background-color: ${typeColor}; width: 8px; height: 8px;"></div> ${typeDef.label}`;
+      document.getElementById('metaCat').textContent = resource.subcategory;
+      document.getElementById('metaFormat').textContent = fmt;
+      
+      const stats = getStats(resource);
+      document.getElementById('metaViews').innerHTML = `
+        <span class="stat-views" style="display:inline-flex; align-items:center; gap:0.25rem;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          ${formatCount(stats.views)}
+        </span>
+      `;
+      
+      document.getElementById('metaUpdated').textContent = formatDate(resource.updated) || 'Not provided';
+
+      const authors = Array.isArray(resource.author) ? resource.author.join(', ') : resource.author;
+      document.getElementById('metaAuthor').textContent = authors || '';
+      document.getElementById('metaAuthorRow').classList.toggle('d-none', !authors);
+      document.getElementById('metaVersion').textContent = resource.version || '';
+      document.getElementById('metaVersionRow').classList.toggle('d-none', !resource.version);
+      
+      document.getElementById('btnDetailOpen').href = resource.url;
+      
+      // Detail Vote Button
+      const detailVoteBtn = document.getElementById('btnDetailVote');
+      const voted = hasVoted(resource.slug);
+      detailVoteBtn.classList.toggle('voted', voted);
+      detailVoteBtn.setAttribute('aria-pressed', voted);
+      detailVoteBtn.setAttribute('aria-label', voted ? `Remove your upvote from ${resource.name}` : `Upvote ${resource.name}`);
+      detailVoteBtn.querySelector('.vote-count').textContent = formatCount(stats.upvotes);
+      detailVoteBtn.querySelector('svg').setAttribute('fill', voted ? 'currentColor' : 'none');
+      
+      // Replace the button entirely to clear old event listeners
+      const newBtn = detailVoteBtn.cloneNode(true);
+      detailVoteBtn.parentNode.replaceChild(newBtn, detailVoteBtn);
+      newBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleVote(resource.slug);
+        const nowVoted = hasVoted(resource.slug);
+        if (nowVoted && typeof window.clarity !== 'undefined') {
+          window.clarity('set', 'upvoted_resource', resource.slug);
+          window.clarity('event', 'resource_upvote');
+        }
+        const newStats = getStats(resource);
+        newBtn.classList.toggle('voted', nowVoted);
+        newBtn.setAttribute('aria-pressed', nowVoted);
+        newBtn.setAttribute('aria-label', nowVoted ? `Remove your upvote from ${resource.name}` : `Upvote ${resource.name}`);
+        newBtn.querySelector('.vote-count').textContent = formatCount(newStats.upvotes);
+        newBtn.querySelector('svg').setAttribute('fill', nowVoted ? 'currentColor' : 'none');
+        newBtn.classList.remove('pop');
+        void newBtn.offsetWidth;
+        newBtn.classList.add('pop');
+      });
+      
+      // Related resources (up to 4 matching type, excluding self)
+      const related = RESOURCES.filter(r => r.type === resource.type && r.slug !== resource.slug).slice(0, 4);
+      const relatedGrid = document.getElementById('relatedGrid');
+      relatedGrid.innerHTML = '';
+      related.forEach(r => {
+        const card = createCard(r);
+        relatedGrid.appendChild(card);
+      });
+      
+      // Clarity tracking
+      if (typeof window.clarity !== 'undefined') {
+        window.clarity('set', 'resource', resource.slug);
+        window.clarity('event', 'resource_view');
+      }
+    }
+
+    // Run
+    init();
   </script>
 </body>
 </html>

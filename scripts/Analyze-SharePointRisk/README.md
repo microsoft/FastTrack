@@ -1,3 +1,40 @@
+---
+title: Analyze-SharePointRisk
+type: script
+category: PowerShell
+summary: >-
+  Score SharePoint permissions-report data for oversharing risk and generate interactive analysis
+  and remediation guidance.
+author: John Cummings
+version: 1.0.0
+published: "2025-10-16"
+updated: "2025-10-23"
+tags:
+  - sharepoint
+  - security
+format: ps1
+whatItIs: >-
+  A PowerShell analyzer for SharePoint Advanced Management Site Permissions Report CSVs that creates
+  prioritized risk and remediation HTML reports.
+whyUseIt:
+  - >-
+    Apply configurable risk scoring to broad access, anonymous links, sensitivity labels, and
+    permission complexity.
+  - Search, filter, sort, and export findings from an interactive report.
+  - Use a separate seven-step guidance page to plan remediation.
+howToUse: |-
+  Generate and download a **Site permissions report** from SharePoint Advanced Management, then run:
+
+  ```powershell
+  .\Analyze-SharePointRisk.ps1 -CsvPath ".\your-permissions-report.csv"
+  ```
+
+  Adjust the interactive scoring if needed and review the generated analysis and guidance pages.
+prerequisites:
+  - PowerShell 5.1 or later
+  - SharePoint Advanced Management Site Permissions Report CSV
+---
+
 # 🔐 SharePoint Permissions Risk Analysis Tool
 
 <div align="center">

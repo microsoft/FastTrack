@@ -1,3 +1,35 @@
+---
+title: Get-TeamsUserActivityReport
+type: script
+category: PowerShell
+summary: >-
+  Export detailed Microsoft Teams user activity for all users or a targeted CSV list through
+  Microsoft Graph.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2025-09-30"
+updated: "2025-09-30"
+tags:
+  - teams
+  - reporting
+format: ps1
+whatItIs: >-
+  A PowerShell report that calls Microsoft Graph directly with application permissions and exports
+  detailed Teams activity for all or selected users.
+whyUseIt:
+  - Report meetings, calls, chats, durations, and other Teams activity metrics.
+  - Target a pilot group with a UPN CSV or report across the tenant.
+  - Run as an authorized background process without the Microsoft.Graph PowerShell module.
+howToUse: >-
+  Create an Entra app registration with `Reports.Read.All` application permission and a client
+  secret. Run `./Get-TeamsUserActivityReport.ps1 -Period "D7"` for all users, or add `-UserCsvPath`
+  with a CSV containing `UserPrincipalName`.
+prerequisites:
+  - PowerShell 5.1 or later
+  - Entra app registration
+  - Reports.Read.All application permission with admin consent
+---
+
 # 📊 Microsoft Teams User Activity Report
 
 This PowerShell script retrieves detailed Teams user activity data from Microsoft 365 using the Microsoft Graph API. It can generate reports for **all users** in the tenant or a **targeted list of users** from a CSV file. The report includes metrics such as meetings organized, meeting duration, chat activity, calls, and more—providing the same data as the `Get-MgReportTeamUserActivityUserDetail` cmdlet, but with more flexibility. 

@@ -1,3 +1,34 @@
+---
+title: Export-M365CopilotReports
+type: script
+category: PowerShell
+summary: >-
+  Export Entra users, Purview Copilot audit events, all audit interactions, or Microsoft 365 Copilot
+  usage reports.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2025-03-11"
+updated: "2025-03-25"
+tags:
+  - copilot
+  - reporting
+format: ps1
+whatItIs: >-
+  An interactive PowerShell exporter for Entra user details, Purview audit data, and Microsoft 365
+  Copilot usage datasets used by analytics reports.
+whyUseIt:
+  - Prepare organizational data for Viva Insights or Power BI.
+  - Export Copilot-specific or broader Purview audit events from one menu.
+  - Collect Microsoft 365 Copilot usage reporting data without separate scripts.
+howToUse: >-
+  Install the Microsoft Graph prerequisites documented by the script, open PowerShell in this
+  folder, and run `./Export-M365CopilotReports.ps1`. Choose the desired export from the interactive
+  menu and complete authentication.
+prerequisites:
+  - Microsoft Graph access
+  - Permissions required by the selected report
+---
+
 # Microsoft FastTrack Open Source - Export-M365CopilotReports
 
 Enhanced Export logs that can be used for Copilot Analytics Reporting, including Entra Users, Purview Audit Logs, etc. 

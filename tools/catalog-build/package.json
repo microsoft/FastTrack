@@ -1,0 +1,14 @@
+{
+  "name": "@microsoft-fasttrack/catalog-build",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node index.js",
+    "check": "node index.js --check"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0"
+  }
+}

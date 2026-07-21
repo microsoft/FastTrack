@@ -1,3 +1,45 @@
+---
+title: Export-CopilotInteractions
+type: script
+category: PowerShell
+summary: >-
+  Export user-level Copilot prompts and responses from Microsoft Graph into analysis-ready CSV
+  datasets.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2026-05-21"
+updated: "2026-05-21"
+tags:
+  - copilot
+  - graph
+format: ps1
+whatItIs: >-
+  A PowerShell exporter for Microsoft 365 Copilot enterprise interaction history that writes
+  normalized interactions, users, errors, and pre-aggregated usage CSVs.
+whyUseIt:
+  - Feed Power BI, Excel, or another analytics tool with user-level interaction data.
+  - Use interactive, client-secret, or certificate authentication.
+  - Handle throttling, per-user failures, SKU tiers, and app/feature normalization during export.
+howToUse: >-
+  Install `Microsoft.Graph.Authentication`, grant the documented Graph permissions, and test
+  interactively:
+
+
+  ```powershell
+
+  .\Export-CopilotInteractions.ps1 -TenantId "contoso.onmicrosoft.com" -Interactive -MaxUsers 10
+
+  ```
+
+
+  Review `Errors.csv`, then remove the user cap for the full export.
+prerequisites:
+  - PowerShell 5.1 or later
+  - Microsoft.Graph.Authentication module
+  - User.Read.All, Reports.Read.All, and AiEnterpriseInteraction.Read.All
+  - Entra app registration for app-only authentication
+---
+
 # Microsoft FastTrack Open Source - Export-CopilotInteractions
 
 Exports Microsoft 365 Copilot user-level interaction history (prompts and AI responses) for licensed Copilot Basic and Copilot Premium users in a tenant. Produces a set of CSV files designed to feed Power BI, Excel, or any downstream analytics tool.

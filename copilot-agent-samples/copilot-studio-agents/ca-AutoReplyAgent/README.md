@@ -1,3 +1,37 @@
+---
+title: AutoReply Agent
+type: agent
+category: Copilot Studio
+summary: Research incoming email questions against trusted sources and draft thoughtful replies for review.
+author:
+  - Alejandro Lopez
+  - Shervin Shaffie
+version: 1.0.0
+published: "2025-06-17"
+updated: "2025-08-06"
+tags:
+  - email
+  - research
+  - automation
+format: bundle
+whatItIs: >-
+  An autonomous Copilot Studio pattern that triggers on new mail, researches the questions against
+  configured knowledge, and emails a draft response to the owner.
+whyUseIt:
+  - Reduce time spent researching repetitive questions in individual or shared mailboxes.
+  - Keep answers grounded in explicitly configured knowledge sources.
+  - Review a prepared response before replying to the original sender.
+howToUse: |-
+  1. Create the Copilot Studio agent with the instructions in this README.
+  2. Add the `Send an email (V2)` tool and `When a new email arrives (V3)` trigger.
+  3. Configure trusted knowledge sources and an inbox rule that prevents test-message loops.
+  4. Test with a non-production mailbox before broader use.
+prerequisites:
+  - Microsoft Copilot Studio
+  - Power Automate
+  - Exchange Online mailbox
+---
+
 # AutoReply Agent
 
 ## 📌 Overview

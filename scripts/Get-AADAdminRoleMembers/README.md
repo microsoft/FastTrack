@@ -1,3 +1,37 @@
+---
+title: Get-AADAdminRoleMembers
+type: script
+category: PowerShell
+summary: >-
+  List members of all Entra administrator roles, inspect one role, or report the roles assigned to a
+  user.
+author: Brian Baldock
+version: 1.0.0
+published: "2020-01-14"
+updated: "2021-01-15"
+tags:
+  - entra
+  - security
+  - governance
+format: ps1
+whatItIs: >-
+  A PowerShell script for reporting Azure AD administrator-role membership across all roles, one
+  named role, or one user.
+whyUseIt:
+  - Audit privileged role membership across the directory.
+  - Answer which administrator roles a particular user belongs to.
+  - Inspect the members of a specific administrator role.
+howToUse: |-
+  Install the Azure AD PowerShell module, then run one mode, for example:
+
+  ```powershell
+  .\Get-AADAdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -All
+  ```
+prerequisites:
+  - Azure AD PowerShell module
+  - Directory account permitted to read administrator roles
+---
+
 # Microsoft FastTrack Open Source - AAD PowerShell - Get a list of admin roles and their members
 
 ## Dependencies

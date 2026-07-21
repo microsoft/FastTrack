@@ -1,3 +1,37 @@
+---
+title: Get-LicenseUsage
+type: script
+category: PowerShell
+summary: >-
+  Choose a preferred or backup Microsoft 365 subscription for assignment based on current license
+  availability.
+author: Brian Baldock
+version: 1.0.0
+published: "2022-01-19"
+updated: "2022-01-19"
+tags:
+  - licensing
+  - reporting
+format: ps1
+whatItIs: >-
+  A PowerShell sample for selecting between preferred and backup Microsoft 365 subscriptions based
+  on their current assigned and available license counts.
+whyUseIt:
+  - Automate a license-assignment decision when equivalent entitlements span multiple subscriptions.
+  - Use the result with group-based or direct license-assignment logic.
+howToUse: |-
+  Install the Azure AD PowerShell module, then run:
+
+  ```powershell
+  .\Get-LicenseUsage.ps1 -Admin admin@contoso.com -PreferredLicense SPE_E5 -BackupLicense EMSPREMIUM
+  ```
+
+  Review and adapt the documented `Get-LicensingUsage` decision logic for the tenant.
+prerequisites:
+  - Azure AD PowerShell module
+  - Account permitted to read tenant licensing
+---
+
 # Microsoft FastTrack Open Source - AAD PowerShell - Licensing usage versus available
 
 ## Dependencies

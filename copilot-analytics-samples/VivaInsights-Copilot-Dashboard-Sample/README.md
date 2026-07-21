@@ -1,3 +1,35 @@
+---
+title: Viva Insights Copilot Dashboard
+type: analytics
+category: Power BI
+summary: >-
+  Visualize a Viva Insights Advanced Insights person-query export in Power BI, including dynamic
+  personas and usage profiles.
+author: Alejandro Lopez
+version: 2.0.0
+published: "2024-05-03"
+updated: "2025-03-17"
+tags:
+  - power-bi
+  - viva-insights
+  - adoption
+format: pbix
+whatItIs: >-
+  A pair of Power BI templates that visualize Viva Insights Advanced Insights person-query exports,
+  including a dynamic-personas view with user-profile usage.
+whyUseIt:
+  - Explore Copilot adoption alongside collaboration and organizational attributes.
+  - Start from a reusable Power BI model instead of designing a dashboard from scratch.
+howToUse: >-
+  Download the PBIX file that matches the desired dashboard, review the included Word instructions,
+  export the required Viva Insights Advanced Insights person query, and update the report data
+  source before refreshing.
+prerequisites:
+  - Microsoft Viva Advanced Insights
+  - Power BI Desktop
+  - Viva Insights person-query export
+---
+
 # Build your Own Copilot Dashboard - Sample
 
 ## Summary

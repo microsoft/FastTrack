@@ -1,3 +1,42 @@
+---
+title: Migrate-CopilotStudioAgents
+type: script
+category: PowerShell
+summary: >-
+  Inventory and copy classic Copilot Studio agents into department-mapped Power Platform
+  environments with ownership recovery.
+author: Dean Cron
+version: 1.0.0
+published: "2026-07-15"
+updated: "2026-07-15"
+tags:
+  - copilot-studio
+  - migration
+format: ps1
+whatItIs: >-
+  A PowerShell toolkit that inventories agents, maps owner departments to existing environments, and
+  copies classic Copilot Studio agents through Dataverse solutions.
+whyUseIt:
+  - Plan environment redistribution from a tenant-wide inventory before making changes.
+  - Preserve agent ownership and record-level sharing on a best-effort basis.
+  - Run a full dry-run migration plan with `-WhatIf` before importing solutions.
+howToUse: >-
+  1. Optionally generate and review `department-environment-mapping.json`.
+
+  2. Run `Inventory-PowerPlatformAgents.ps1` to produce the raw inventory JSON.
+
+  3. Run `Migrate-CopilotStudioAgents.ps1` with the inventory and mapping paths plus `-WhatIf`.
+
+  4. Review `migration-plan.csv`, rerun without `-WhatIf`, then reconfigure connections and validate
+  each migrated agent.
+prerequisites:
+  - Power Platform CLI and MSAL.PS
+  - Power Platform or reader admin role
+  - Microsoft Graph User.Read.All delegated access
+  - Dataverse access in source and target environments
+  - Pre-created target environments and target-user access
+---
+
 # Microsoft FastTrack Open Source - Migrate-CopilotStudioAgents
 
 A small toolkit for inventorying and migrating classic Copilot Studio agents across Power Platform environments, using the agent owner/creator's Microsoft Entra ID `department` attribute to decide where each agent should land.

@@ -1,3 +1,44 @@
+---
+title: Copilot Interaction Report
+type: analytics
+category: PowerShell + Graph
+summary: >-
+  Export Copilot interaction history from Microsoft Graph and build a self-contained HTML usage
+  dashboard without Power BI.
+author: Dean Cron
+version: 1.0.0
+published: "2026-06-10"
+updated: "2026-06-10"
+tags:
+  - graph
+  - powershell
+  - dashboard
+format: ps1
+featured: true
+whatItIs: >-
+  A PowerShell module and entry script that export per-user Microsoft 365 Copilot interaction
+  history from Graph and render a self-contained HTML dashboard.
+whyUseIt:
+  - Create an adoption and friction report without Power BI or a database.
+  - Review users, sessions, surfaces, features, error rates, trends, and recent audited events.
+  - Authenticate app-only with a client secret or certificate and rebuild reports from cached JSON.
+howToUse: >-
+  1. Register an Entra application and grant the documented application permissions with admin
+  consent.
+
+  2. From PowerShell 7, run `New-CopilotInteractionReport.ps1` with tenant, client, and secret or
+  certificate parameters.
+
+  3. Open the generated `copilot-report.html`; use `-SkipExport` to rebuild from existing JSON.
+prerequisites:
+  - PowerShell 7 or later
+  - Entra app registration
+  - >-
+    AiEnterpriseInteraction.Read.All, User.Read.All, and Organization.Read.All application
+    permissions
+  - Microsoft 365 Copilot licensed users
+---
+
 # Copilot Interaction Report (PowerShell) 📊
 
 ![Dashboard Sample](./images/dashboard.gif)
