@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Microsoft FastTrack</title>
-  <link rel="icon" href="data:,">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23ffffff' d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E">
   <meta property="og:title" content="Microsoft FastTrack">
   
   <script type="text/javascript">
@@ -900,8 +900,98 @@
     .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
     .btn-secondary:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-hover); }
 
+    /* Resource Viewer Modal */
+    .viewer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 2vh 2vw;
+    }
+    .viewer-overlay.open {
+      display: flex;
+    }
+    .viewer-window {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      width: min(1200px, 96vw);
+      height: 90vh;
+      max-height: 96vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .viewer-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex: 0 0 auto;
+    }
+    .viewer-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      flex: 1 1 auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .viewer-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 0 0 auto;
+    }
+    .viewer-openlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.35rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .viewer-openlink:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    .viewer-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+    .viewer-close:hover {
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+    .viewer-iframe {
+      flex: 1 1 auto;
+      width: 100%;
+      border: none;
+      background: #ffffff;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .back-link, .btn-primary, .btn-secondary { transition: none; }
+      .back-link, .btn-primary, .btn-secondary, .viewer-openlink, .viewer-close { transition: none; }
     }
 
     @keyframes fadeInUp {
@@ -1398,7 +1488,11 @@
             <div class="metadata-val" id="metaVersion"></div>
           </div>
           <div class="detail-actions">
-            <a href="#" target="_blank" rel="noopener" class="btn-primary" id="btnDetailOpen">
+            <button class="btn-primary" id="btnDetailView" type="button" style="display: none; width: 100%; justify-content: center;">
+              View
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+            <a href="#" target="_blank" rel="noopener" class="btn-secondary" id="btnDetailOpen">
               Open on GitHub 
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg>
             </a>
@@ -1424,6 +1518,22 @@
       </div>
     </div>
   </footer>
+
+  <div class="viewer-overlay" id="viewerOverlay" role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
+    <div class="viewer-window">
+      <div class="viewer-header">
+        <div class="viewer-title" id="viewerTitle"></div>
+        <div class="viewer-actions">
+          <a class="viewer-openlink" id="viewerOpenTab" href="#" target="_blank" rel="noopener">
+            Open in new tab
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg>
+          </a>
+          <button class="viewer-close" id="viewerClose" type="button" aria-label="Close viewer">&times;</button>
+        </div>
+      </div>
+      <iframe class="viewer-iframe" id="viewerFrame" title="Resource preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+    </div>
+  </div>
 
   <script>
     // --- DATASET ---
@@ -2316,6 +2426,18 @@
       document.getElementById('metaVersionRow').classList.toggle('d-none', !resource.version);
       
       document.getElementById('btnDetailOpen').href = resource.url;
+
+      const embedUrl = resource.artifact === 'interactive' && resource.source
+        ? resource.source.replace(/README\.md$/i, 'index.html')
+        : null;
+      const viewBtn = document.getElementById('btnDetailView');
+      if (embedUrl) {
+        viewBtn.style.display = '';
+        viewBtn.onclick = () => openViewer(resource.name, embedUrl);
+      } else {
+        viewBtn.style.display = 'none';
+        viewBtn.onclick = null;
+      }
       
       // Mount giscus discussion
       mountGiscus(resource.slug, document.documentElement.getAttribute('data-theme'));
@@ -2332,9 +2454,33 @@
       // Clarity tracking
       if (typeof window.clarity !== 'undefined') {
         window.clarity('set', 'page', location.pathname + location.hash);
+        window.clarity('set', 'resource', resource.slug);
         window.clarity('event', 'resource_view');
       }
     }
+
+    function openViewer(name, url) {
+      const overlay = document.getElementById('viewerOverlay');
+      const frame = document.getElementById('viewerFrame');
+      document.getElementById('viewerTitle').textContent = name;
+      document.getElementById('viewerOpenTab').href = url;
+      frame.src = url;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (typeof window.clarity !== 'undefined') { window.clarity('event', 'resource_preview'); }
+    }
+
+    function closeViewer() {
+      const overlay = document.getElementById('viewerOverlay');
+      const frame = document.getElementById('viewerFrame');
+      overlay.classList.remove('open');
+      frame.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('viewerClose').addEventListener('click', closeViewer);
+    document.getElementById('viewerOverlay').addEventListener('click', (e) => { if (e.target === document.getElementById('viewerOverlay')) closeViewer(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.getElementById('viewerOverlay').classList.contains('open')) closeViewer(); });
 
     // Run
     init();
