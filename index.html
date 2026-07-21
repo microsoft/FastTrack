@@ -900,8 +900,98 @@
     .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
     .btn-secondary:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-hover); }
 
+    /* Resource Viewer Modal */
+    .viewer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 2vh 2vw;
+    }
+    .viewer-overlay.open {
+      display: flex;
+    }
+    .viewer-window {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      width: min(1200px, 96vw);
+      height: 90vh;
+      max-height: 96vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .viewer-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex: 0 0 auto;
+    }
+    .viewer-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      flex: 1 1 auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .viewer-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 0 0 auto;
+    }
+    .viewer-openlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.35rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .viewer-openlink:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    .viewer-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+    .viewer-close:hover {
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+    .viewer-iframe {
+      flex: 1 1 auto;
+      width: 100%;
+      border: none;
+      background: #ffffff;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .back-link, .btn-primary, .btn-secondary { transition: none; }
+      .back-link, .btn-primary, .btn-secondary, .viewer-openlink, .viewer-close { transition: none; }
     }
 
     @keyframes fadeInUp {
@@ -1397,7 +1487,11 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
               Upvote <span class="vote-count" style="margin-left: 0.25rem;"></span>
             </button>
-            <a href="#" target="_blank" rel="noopener" class="btn-primary" id="btnDetailOpen">
+            <button class="btn-primary" id="btnDetailView" type="button" style="display: none; width: 100%; justify-content: center;">
+              View
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+            <a href="#" target="_blank" rel="noopener" class="btn-secondary" id="btnDetailOpen">
               Open on GitHub 
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg>
             </a>
@@ -1423,6 +1517,22 @@
       </div>
     </div>
   </footer>
+
+  <div class="viewer-overlay" id="viewerOverlay" role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
+    <div class="viewer-window">
+      <div class="viewer-header">
+        <div class="viewer-title" id="viewerTitle"></div>
+        <div class="viewer-actions">
+          <a class="viewer-openlink" id="viewerOpenTab" href="#" target="_blank" rel="noopener">
+            Open in new tab
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg>
+          </a>
+          <button class="viewer-close" id="viewerClose" type="button" aria-label="Close viewer">&times;</button>
+        </div>
+      </div>
+      <iframe class="viewer-iframe" id="viewerFrame" title="Resource preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+    </div>
+  </div>
 
   <script>
     // --- DATASET ---
@@ -2307,6 +2417,18 @@
       
       document.getElementById('btnDetailOpen').href = resource.url;
       
+      const embedUrl = resource.artifact === 'interactive' && resource.source
+        ? resource.source.replace(/README\.md$/i, 'index.html')
+        : null;
+      const viewBtn = document.getElementById('btnDetailView');
+      if (embedUrl) {
+        viewBtn.style.display = '';
+        viewBtn.onclick = () => openViewer(resource.name, embedUrl);
+      } else {
+        viewBtn.style.display = 'none';
+        viewBtn.onclick = null;
+      }
+      
       // Detail Vote Button
       const detailVoteBtn = document.getElementById('btnDetailVote');
       const voted = hasVoted(resource.slug);
@@ -2353,6 +2475,29 @@
         window.clarity('event', 'resource_view');
       }
     }
+
+    function openViewer(name, url) {
+      const overlay = document.getElementById('viewerOverlay');
+      const frame = document.getElementById('viewerFrame');
+      document.getElementById('viewerTitle').textContent = name;
+      document.getElementById('viewerOpenTab').href = url;
+      frame.src = url;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (typeof window.clarity !== 'undefined') { window.clarity('event', 'resource_preview'); }
+    }
+
+    function closeViewer() {
+      const overlay = document.getElementById('viewerOverlay');
+      const frame = document.getElementById('viewerFrame');
+      overlay.classList.remove('open');
+      frame.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('viewerClose').addEventListener('click', closeViewer);
+    document.getElementById('viewerOverlay').addEventListener('click', (e) => { if (e.target === document.getElementById('viewerOverlay')) closeViewer(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.getElementById('viewerOverlay').classList.contains('open')) closeViewer(); });
 
     // Run
     init();
