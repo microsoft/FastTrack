@@ -10,6 +10,7 @@ permissions:
   contents: write
   discussions: read
   pull-requests: write
+  issues: write
 
 concurrency:
   group: traffic-data-collection
@@ -236,4 +237,55 @@ jobs:
             gh pr merge "$pr_number" --auto --squash \
               && echo "✅ Auto-merge enabled for PR #$pr_number" \
               || echo "::warning::Could not enable auto-merge — check repo settings"
+          fi
+
+      - name: Alert on failure
+        if: failure()
+        env:
+          # Use the built-in token here: TRAFFIC_TOKEN may itself be the failure
+          # (e.g. expired), so the alert must not depend on it.
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TITLE="⚠️ Traffic data collection is failing"
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          BODY=$(cat <<EOF
+          The scheduled **Collect Traffic Data** workflow failed on $(date -u +%Y-%m-%d).
+
+          Traffic data has **stopped being captured**. Because GitHub only retains a rolling
+          14-day traffic window, every day this stays broken is data lost permanently.
+
+          **Most likely cause:** the \`TRAFFIC_TOKEN\` secret has **expired or lost access**.
+          The traffic API requires a PAT with push / \`administration:read\` on this repo — the
+          built-in \`GITHUB_TOKEN\` cannot read traffic.
+
+          **Fix:**
+          1. Create a new PAT (classic \`repo\` scope, or fine-grained: Administration read + Contents R/W + Pull requests R/W).
+          2. \`gh secret set TRAFFIC_TOKEN --repo ${GITHUB_REPOSITORY} --body "<NEW_PAT>"\`
+          3. Re-run: \`gh workflow run traffic-stats.yml --repo ${GITHUB_REPOSITORY}\`
+
+          Failed run: ${RUN_URL}
+
+          _This issue is opened automatically by the traffic workflow's failure alert. It will
+          be reused (not duplicated) while the label \`traffic-collection-failure\` stays open._
+          EOF
+          )
+
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" \
+            --label "traffic-collection-failure" --state open \
+            --json number --jq '.[0].number // empty')
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" \
+              --body "Still failing as of $(date -u +%Y-%m-%d). Latest failed run: ${RUN_URL}"
+            echo "🔁 Updated existing alert issue #$existing"
+          else
+            gh label create "traffic-collection-failure" \
+              --repo "$GITHUB_REPOSITORY" --color "b60205" \
+              --description "Automated alert: traffic data collection workflow is failing" \
+              2>/dev/null || true
+            gh issue create --repo "$GITHUB_REPOSITORY" \
+              --title "$TITLE" --body "$BODY" \
+              --label "traffic-collection-failure"
+            echo "🚨 Opened new alert issue"
           fi

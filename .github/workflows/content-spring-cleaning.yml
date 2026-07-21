@@ -1,0 +1,127 @@
+name: Content Spring Cleaning
+
+# Surfaces stale content for human review once a month. It does NOT delete or move
+# anything automatically — it opens/updates a single tracking issue listing directories
+# that have not been touched in over 3 years, so a maintainer can decide what to archive.
+
+on:
+  schedule:
+    # 07:00 UTC on the 1st of every month
+    - cron: "0 7 1 * *"
+  workflow_dispatch:
+    inputs:
+      threshold_days:
+        description: "Age in days after which content is flagged as stale"
+        required: false
+        default: "1095"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: content-spring-cleaning
+  cancel-in-progress: false
+
+jobs:
+  scan-stale-content:
+    if: github.repository == 'microsoft/FastTrack'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Scan for stale content and open review issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          THRESHOLD_DAYS: ${{ github.event.inputs.threshold_days || '1095' }}
+        run: |
+          set -euo pipefail
+
+          # Content roots to scan. Each immediate subdirectory is treated as one item.
+          ROOTS="scripts copilot-analytics-samples copilot-agent-strategy copilot-agent-samples/agent-builder-agents copilot-agent-samples/copilot-studio-agents copilot-prompt-samples"
+
+          NOW=$(date -u +%s)
+          THRESHOLD_SECS=$(( THRESHOLD_DAYS * 86400 ))
+          REPORT_FILE=$(mktemp)
+          STALE_COUNT=0
+
+          for root in $ROOTS; do
+            [ -d "$root" ] || continue
+            for dir in "$root"/*/; do
+              [ -d "$dir" ] || continue
+              name=$(basename "$dir")
+              # Skip archives and template/sample scaffolding
+              case "$name" in
+                archive|_*) continue ;;
+              esac
+              last=$(git log -1 --format=%cI -- "$dir" 2>/dev/null || true)
+              [ -n "$last" ] || continue
+              last_secs=$(date -u -d "$last" +%s)
+              age_days=$(( (NOW - last_secs) / 86400 ))
+              if [ "$(( NOW - last_secs ))" -gt "$THRESHOLD_SECS" ]; then
+                years=$(awk "BEGIN { printf \"%.1f\", $age_days/365.25 }")
+                printf '| \`%s\` | %s | %sy |\n' "${dir%/}" "${last%%T*}" "$years" >> "$REPORT_FILE"
+                STALE_COUNT=$((STALE_COUNT + 1))
+              fi
+            done
+          done
+
+          echo "Found $STALE_COUNT stale item(s) older than ${THRESHOLD_DAYS} days."
+
+          LABEL="content-spring-cleaning"
+          gh label create "$LABEL" --color "0e8a16" \
+            --description "Monthly automated stale-content review" 2>/dev/null || true
+
+          existing=$(gh issue list --label "$LABEL" --state open \
+            --json number --jq '.[0].number // empty')
+
+          if [ "$STALE_COUNT" -eq 0 ]; then
+            if [ -n "$existing" ]; then
+              gh issue comment "$existing" \
+                --body "✅ $(date -u +%Y-%m-%d): monthly scan found **no** content older than ${THRESHOLD_DAYS} days. Nice and fresh."
+            fi
+            echo "Nothing stale — done."
+            exit 0
+          fi
+
+          # Sort by age (years) descending for readability
+          SORTED=$(sort -t'|' -k4 -rn "$REPORT_FILE")
+
+          BODY=$(cat <<EOF
+          ## 🧹 Monthly content spring-cleaning report
+
+          Scan date: **$(date -u +%Y-%m-%d)** · Threshold: **${THRESHOLD_DAYS} days (~3y)** · Flagged: **${STALE_COUNT}**
+
+          These directories have not been updated in over 3 years and are candidates for
+          archiving (move to \`<root>/archive/\`, which the catalog build ignores) or refreshing.
+          This is a **review list, not an automatic action** — a maintainer decides.
+
+          | Directory | Last updated | Age |
+          | --- | --- | --- |
+          ${SORTED}
+
+          ### Suggested triage
+          - **Refresh** if still relevant → update the script and add catalog YAML front-matter.
+          - **Archive** if obsolete → \`git mv <dir> <root>/archive/<name>\` (preserves history + links).
+          - Re-run anytime: \`gh workflow run content-spring-cleaning.yml --repo ${GITHUB_REPOSITORY}\`.
+
+          _Opened automatically by the Content Spring Cleaning workflow. Reused monthly while the \`${LABEL}\` label stays open._
+          EOF
+          )
+
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body "$BODY"
+            gh issue comment "$existing" \
+              --body "🔄 Refreshed $(date -u +%Y-%m-%d): ${STALE_COUNT} item(s) currently flagged."
+            echo "Updated issue #$existing"
+          else
+            gh issue create \
+              --title "🧹 Content spring-cleaning: ${STALE_COUNT} stale item(s) to review" \
+              --body "$BODY" --label "$LABEL"
+            echo "Opened new spring-cleaning issue"
+          fi
