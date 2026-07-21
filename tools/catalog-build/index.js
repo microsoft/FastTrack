@@ -232,8 +232,11 @@ if (errors.length > 0) {
   console.log(`Catalog metadata is valid for ${resources.length} resources.`);
 } else {
   resources.sort((a, b) => a.title.localeCompare(b.title));
+  const latestUpdated = resources.reduce((max, resource) => (
+    resource.updated && resource.updated > max ? resource.updated : max
+  ), '');
   const catalog = {
-    generatedAt: new Date().toISOString(),
+    generatedAt: latestUpdated,
     count: resources.length,
     resources
   };
