@@ -1899,6 +1899,8 @@
       // Cleanup detail view state
       const giscusContainer = document.getElementById('giscusContainer');
       if (giscusContainer) giscusContainer.innerHTML = '';
+      giscusClearPending();
+      giscusState.slug = null;
 
       document.getElementById('catalogView').classList.remove('d-none');
       document.getElementById('detailView').classList.add('d-none');
@@ -2325,10 +2327,29 @@
       parseTextBlock(source.slice(cursor));
     }
 
-    function mountGiscus(slug, theme) {
+    // Tracks the giscus embed so we can work around giscus bug #1312:
+    // the FIRST reaction on a resource creates the backing Discussion but giscus
+    // fails to refetch, so the 👍 visually "reverts". We detect that the discussion
+    // does not exist yet (via emit-metadata) and, once the user interacts, re-mount
+    // giscus to pull the freshly-created discussion + reaction so it sticks.
+    const giscusState = { slug: null, hasDiscussion: false, refetched: false, pendingTimer: null };
+
+    function giscusClearPending() {
+      if (giscusState.pendingTimer) { clearTimeout(giscusState.pendingTimer); giscusState.pendingTimer = null; }
+    }
+
+    function mountGiscus(slug, theme, isRefetch) {
       const container = document.getElementById('giscusContainer');
       if (!container) return;
       container.innerHTML = '';
+      giscusClearPending();
+      giscusState.slug = slug;
+      if (isRefetch) {
+        giscusState.refetched = true;
+      } else {
+        giscusState.hasDiscussion = false;
+        giscusState.refetched = false;
+      }
       const script = document.createElement('script');
       script.src = "https://giscus.app/client.js";
       script.setAttribute("data-repo", "microsoft/FastTrack");
@@ -2339,7 +2360,7 @@
       script.setAttribute("data-term", slug);
       script.setAttribute("data-strict", "1");
       script.setAttribute("data-reactions-enabled", "1");
-      script.setAttribute("data-emit-metadata", "0");
+      script.setAttribute("data-emit-metadata", "1");
       script.setAttribute("data-input-position", "bottom");
       script.setAttribute("data-theme", theme === "dark" ? "dark_dimmed" : "light");
       script.setAttribute("data-lang", "en");
@@ -2348,6 +2369,34 @@
       script.async = true;
       container.appendChild(script);
     }
+
+    // Learn whether a backing discussion exists for the open resource. giscus emits
+    // metadata on load and whenever the discussion changes; an empty id means "not
+    // created yet", so a reaction would hit the #1312 create-and-revert path.
+    window.addEventListener('message', (event) => {
+      if (event.origin !== 'https://giscus.app') return;
+      const payload = event.data && event.data.giscus;
+      if (!payload || !('discussion' in payload)) return;
+      const d = payload.discussion;
+      giscusState.hasDiscussion = !!(d && d.id);
+    });
+
+    // When the user clicks into the giscus iframe (e.g. to react) on a resource that
+    // has no discussion yet, schedule a single re-mount so the just-created discussion
+    // and its reaction are refetched instead of reverting.
+    window.addEventListener('blur', () => {
+      setTimeout(() => {
+        const active = document.activeElement;
+        const inGiscus = active && active.tagName === 'IFRAME' && active.classList.contains('giscus-frame');
+        if (!inGiscus) return;
+        if (!giscusState.slug || giscusState.hasDiscussion || giscusState.refetched || giscusState.pendingTimer) return;
+        giscusState.pendingTimer = setTimeout(() => {
+          giscusState.pendingTimer = null;
+          if (!giscusState.slug || giscusState.hasDiscussion || giscusState.refetched) return;
+          mountGiscus(giscusState.slug, document.documentElement.getAttribute('data-theme'), true);
+        }, 2500);
+      }, 0);
+    });
 
     function renderDetailView(resource) {
       document.getElementById('catalogView').classList.add('d-none');
