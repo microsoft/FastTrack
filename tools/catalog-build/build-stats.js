@@ -33,7 +33,16 @@ function numberFrom(value) {
   return Number.isFinite(number) && number >= 0 ? number : undefined;
 }
 
-function collectFallbackViews() {
+function logicalRepoPath(pathname) {
+  // Strip the `/owner/repo/(tree|blob)/<ref>/` prefix so `/tree/` folder views and
+  // `/blob/` file views normalize to the same repo-relative path. Repo-root and
+  // bare `/tree/<ref>` paths (which map to nothing) collapse to an empty string.
+  if (typeof pathname !== 'string') return '';
+  const stripped = pathname.replace(/^\/[^/]+\/[^/]+\/(?:tree|blob)\/[^/]+\//, '');
+  return stripped === pathname ? '' : stripped.replace(/\/+$/, '');
+}
+
+function collectFallbackViews(resourceFolders) {
   if (!existsSync(trafficDirectory)) return new Map();
 
   const snapshots = readdirSync(trafficDirectory)
@@ -65,10 +74,20 @@ function collectFallbackViews() {
           !Number.isFinite(entry.count) ||
           !Number.isFinite(entry.uniques)) continue;
 
-      const total = totals.get(entry.path) ?? { views: 0, viewsUniques: 0 };
+      // Roll a resource's own folder view and any traffic to files/subfolders beneath it
+      // into that resource. resourceFolders is sorted longest-first, so each path is
+      // credited to its most specific resource and never to an ancestor folder.
+      const logical = logicalRepoPath(entry.path);
+      if (!logical) continue;
+      const match = resourceFolders.find(
+        folder => logical === folder.path || logical.startsWith(`${folder.path}/`)
+      );
+      if (!match) continue;
+
+      const total = totals.get(match.slug) ?? { views: 0, viewsUniques: 0 };
       total.views += entry.count;
       total.viewsUniques += entry.uniques;
-      totals.set(entry.path, total);
+      totals.set(match.slug, total);
     }
   }
 
@@ -322,6 +341,17 @@ function mapDiscussions(discussions, knownSlugs, explicitMap) {
 
 const catalog = readJson(catalogPath);
 const knownSlugs = new Set(catalog.resources.map(resource => resource.slug));
+const resourceFolders = catalog.resources
+  .map(resource => {
+    try {
+      return { slug: resource.slug, path: logicalRepoPath(new URL(resource.url).pathname) };
+    } catch {
+      console.warn(`Warning: could not parse URL for ${resource.slug}.`);
+      return { slug: resource.slug, path: '' };
+    }
+  })
+  .filter(folder => folder.path)
+  .sort((left, right) => right.path.length - left.path.length);
 const discussionConfig = readOptionalJson(discussionsPath, {
   repo: 'microsoft/FastTrack',
   note: 'Maps gallery resource slug -> GitHub Discussion number in the Resource Votes category.',
@@ -332,7 +362,7 @@ if (!clarityState.days || typeof clarityState.days !== 'object') clarityState.da
 
 const clarityChanged = await updateClarityState(clarityState, knownSlugs);
 const clarityViews = collectClarityViews(clarityState, knownSlugs);
-const fallbackViews = collectFallbackViews();
+const fallbackViews = collectFallbackViews(resourceFolders);
 const discussions = await collectDiscussions();
 const upvoteTotals = mapDiscussions(discussions, knownSlugs, discussionConfig.map ?? {});
 const resources = {};
@@ -342,12 +372,7 @@ let upvoteCount = 0;
 for (const resource of catalog.resources) {
   const stats = {};
   const clarity = clarityViews.get(resource.slug);
-  let fallback;
-  try {
-    fallback = fallbackViews.get(new URL(resource.url).pathname);
-  } catch {
-    console.warn(`Warning: could not parse URL for ${resource.slug}.`);
-  }
+  const fallback = fallbackViews.get(resource.slug);
 
   // Clarity is authoritative once it has a nonzero cumulative total; legacy GitHub
   // path traffic only prevents existing resources from losing views during migration.
