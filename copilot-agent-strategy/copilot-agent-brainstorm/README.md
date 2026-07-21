@@ -1,3 +1,35 @@
+---
+title: Agent Brainstorming Template
+type: strategy
+category: PowerPoint
+summary: >-
+  Map an agent’s type, user flow, knowledge sources, tools, and target problem before
+  implementation.
+author: Microsoft FastTrack
+version: 1.0.0
+published: "2025-06-18"
+updated: "2025-10-28"
+tags:
+  - template
+  - planning
+  - powerpoint
+format: pptx
+whatItIs: >-
+  A one-slide PowerPoint planning template for visualizing the user-to-agent flow, selected agent
+  type, knowledge sources, tools, and target problem.
+whyUseIt:
+  - Align stakeholders on a simple agent design before building.
+  - Identify the minimum knowledge and tools required for the primary scenario.
+  - Keep implementation focused on a clearly mapped user flow.
+howToUse: |-
+  1. Download `Copilot Agent Brainstorming.pptx` from this folder.
+  2. Select the intended agent type.
+  3. Fill in the user input, agent process, knowledge source, tool, and problem statement.
+  4. Review the slide with stakeholders and keep it as a build reference.
+prerequisites:
+  - Microsoft PowerPoint or a compatible presentation editor
+---
+
 # Copilot Agent Brainstorming
 
 A simple visual template to help you map out your Copilot agent specifications before building.

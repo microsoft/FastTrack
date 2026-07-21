@@ -1,37 +1,66 @@
-_PLEASE COMPLETE THIS README TEMPLATE FOR YOUR CONTRIBUTION. IT SHOULD BE PLACED IN THE ROOT OF YOUR FOLDER AND BE RENAMED "README.md". ONCE COMPLETE PLEASE DELETE ALL OF THESE INSTRUCTIONS_
+---
+# Required catalog metadata. See docs/CATALOG-METADATA.md.
+title: "Your resource title"
+type: script # script | agent | strategy | analytics | prompt | skill
+category: "PowerShell" # Short catalog sub-label, such as Copilot Studio or Power BI
+summary: "Describe the resource and its outcome in 140 characters or fewer."
+author:
+  - "Your Name"
+version: 1.0.0
+published: 2026-01-01
+updated: 2026-01-01
 
-# Microsoft FastTrack Open Source - _YOUR TITLE HERE_
+# Recommended discovery metadata.
+tags:
+  - example
+format: ps1 # ps1 | bundle | declarative | interactive | pptx | pbix | md
+featured: false
+status: active # active | preview | archived
 
-_INTRODUCTION TO THIS TOOL/REPO_
+# Detail-page content. Use YAML block scalars for paragraphs and Markdown.
+whatItIs: >-
+  Explain what this resource is, what it produces, and the problem it addresses.
+whyUseIt:
+  - "State a concrete outcome or when-to-use scenario."
+  - "State another verified benefit."
+howToUse: |-
+  1. Install or download the resource.
+  2. Configure the prerequisites described below.
+  3. Run the resource:
+
+     ```powershell
+     .\Your-Script.ps1
+     ```
+prerequisites:
+  - "List required products, permissions, modules, or licenses."
+# url: "https://github.com/microsoft/FastTrack/tree/master/path/to/resource"
+---
+
+# Microsoft FastTrack Open Source - Your resource title
+
+Introduce the resource, the problem it solves, and its intended audience.
 
 ## Usage
 
-_PROVIDE DETAILED GUIDE TO INSTALL AND USE THIS TOOL/SCRIPT/SAMPLE. INCLUDE ANY OPTIONS, CONFIGURATION, ERROR HANDLING, ETC. YOU CAN LINK TO SUPPORTING BLOG POSTS OR OTHER RESOURCES, BUT THIS SECTION MUST CONTAIN ALL THE DETAILS REQUIRED TO RUN THE TOOL._
+Provide a complete installation and usage guide. Include configuration, options, expected output, and important error handling. You may link to supporting material, but this section must contain enough detail to use the resource.
 
 ## Applies To
 
-_IN THIS SECTION LIST THE ENVIRONMENT(S) WHERE THIS TOOL IS USEFUL_
-
-- SharePoint 2010
-- SharePoint 2013
-- SharePoint Online
+- List the applicable Microsoft products and environments.
 
 ## Author
 
-_UPDATE TABLE BELOW_
+Keep this human-readable table aligned with the front-matter authors.
 
-|Author|Original Publish Date
-|----|--------------------------
-|_YOUR NAME_|_DATE ORIGINALLY PUBLISHED_|
+| Author | Original Publish Date |
+| --- | --- |
+| Your Name | YYYY-MM-DD |
 
 ## Issues
 
-Please report any issues you find to the [issues list](/issues).
+Please report any issues you find to the [issues list](https://github.com/microsoft/FastTrack/issues).
 
-_ENSURE THE ISSUES LINK ABOVE IS CORRECT. ADD EXTRA ISSUE DETAILS, IF APPLICABLE. EXAMPLE: "IF YOU GET ERROR X, ENSURE YOU DID CONFIGURATION Y"
-
-
-_DO NOT DELETE/ALTER THE SECTIONS BELOW_
+<!-- DO NOT DELETE OR ALTER THE SECTIONS BELOW. -->
 
 ## Support Statement
 

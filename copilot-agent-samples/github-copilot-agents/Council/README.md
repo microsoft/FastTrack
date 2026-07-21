@@ -1,3 +1,44 @@
+---
+title: AI Council
+type: agent
+category: GitHub Copilot
+summary: >-
+  Run Claude, GPT, and Gemini in parallel to surface consensus, disagreements, and a synthesized
+  decision recommendation.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2026-03-04"
+updated: "2026-03-18"
+tags:
+  - multi-model
+  - decision
+  - deliberation
+format: bundle
+featured: true
+whatItIs: >-
+  A GitHub Copilot CLI agent that delegates a question to Claude, GPT, and Gemini, synthesizes their
+  positions, and can save a Markdown and HTML decision package.
+whyUseIt:
+  - Expose model disagreements and assumptions before making consequential decisions.
+  - Choose quick, debate, or multi-round deep deliberation based on the stakes.
+  - >-
+    Create a shareable decision record with consensus, tensions, votes, and an interactive
+    dashboard.
+howToUse: |-
+  1. In a terminal, install the marketplace plugin:
+
+     ```text
+     copilot plugin marketplace add microsoft/FastTrack
+     copilot plugin install council@fasttrack-copilot-plugins
+     ```
+  2. Run `copilot`, choose **AI Council** from `/agent`, and ask a question.
+  3. Add `--depth deep`, `--domain <area>`, or `--save` when needed.
+prerequisites:
+  - GitHub Copilot CLI
+  - Active Copilot subscription with access to multiple models
+  - Copilot CLI plugin support
+---
+
 # 🏛️ The AI Council
 
 **A multi-model deliberation agent for GitHub Copilot CLI.**

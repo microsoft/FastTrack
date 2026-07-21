@@ -1,0 +1,1089 @@
+{
+  "generatedAt": "2026-07-20T21:51:00.845Z",
+  "count": 30,
+  "resources": [
+    {
+      "name": "Agent Brainstorming Template",
+      "title": "Agent Brainstorming Template",
+      "slug": "agent-brainstorming-template",
+      "type": "strategy",
+      "subcategory": "PowerPoint",
+      "category": "PowerPoint",
+      "description": "Map an agent’s type, user flow, knowledge sources, tools, and target problem before implementation.",
+      "summary": "Map an agent’s type, user flow, knowledge sources, tools, and target problem before implementation.",
+      "tags": [
+        "template",
+        "planning",
+        "powerpoint"
+      ],
+      "artifact": "pptx",
+      "format": "pptx",
+      "featured": false,
+      "status": "active",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2025-06-18",
+      "updated": "2025-10-28",
+      "whatItIs": "A one-slide PowerPoint planning template for visualizing the user-to-agent flow, selected agent type, knowledge sources, tools, and target problem.",
+      "whyUseIt": [
+        "Align stakeholders on a simple agent design before building.",
+        "Identify the minimum knowledge and tools required for the primary scenario.",
+        "Keep implementation focused on a clearly mapped user flow."
+      ],
+      "howToUse": "1. Download `Copilot Agent Brainstorming.pptx` from this folder.\n2. Select the intended agent type.\n3. Fill in the user input, agent process, knowledge source, tool, and problem statement.\n4. Review the slide with stakeholders and keep it as a build reference.",
+      "prerequisites": [
+        "Microsoft PowerPoint or a compatible presentation editor"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-agent-brainstorm",
+      "source": "copilot-agent-strategy/copilot-agent-brainstorm/README.md"
+    },
+    {
+      "name": "Agents Cost Calculator",
+      "title": "Agents Cost Calculator",
+      "slug": "agents-cost-calculator",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Estimate test and production costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.",
+      "summary": "Estimate test and production costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.",
+      "tags": [
+        "cost",
+        "roi",
+        "calculator"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": true,
+      "status": "active",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2026-04-01",
+      "updated": "2026-07-16",
+      "whatItIs": "A self-contained browser calculator for modeling Copilot Credits or token-based costs across custom, Agent Builder, SharePoint, and Microsoft Foundry agents.",
+      "whyUseIt": [
+        "Trace per-turn costs before testing or production rollout.",
+        "Compare pay-as-you-go, capacity, model, knowledge, tool, and conversation assumptions.",
+        "Export a scenario to CSV or print a shareable planning snapshot."
+      ],
+      "howToUse": "Open `index.html` in a browser, select an agent type, and optionally load a quick-start template. Enter knowledge, component, conversation, test-scale, or token assumptions, then review the cost trace and production estimate. Export CSV or print the results.",
+      "prerequisites": [
+        "Modern web browser",
+        "Current licensing and pricing inputs for planning validation"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-agents-cost-tool",
+      "source": "copilot-agent-strategy/copilot-agents-cost-tool/README.md"
+    },
+    {
+      "name": "AI Council",
+      "title": "AI Council",
+      "slug": "ai-council",
+      "type": "agent",
+      "subcategory": "GitHub Copilot",
+      "category": "GitHub Copilot",
+      "description": "Run Claude, GPT, and Gemini in parallel to surface consensus, disagreements, and a synthesized decision recommendation.",
+      "summary": "Run Claude, GPT, and Gemini in parallel to surface consensus, disagreements, and a synthesized decision recommendation.",
+      "tags": [
+        "multi-model",
+        "decision",
+        "deliberation"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": true,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2026-03-04",
+      "updated": "2026-03-18",
+      "whatItIs": "A GitHub Copilot CLI agent that delegates a question to Claude, GPT, and Gemini, synthesizes their positions, and can save a Markdown and HTML decision package.",
+      "whyUseIt": [
+        "Expose model disagreements and assumptions before making consequential decisions.",
+        "Choose quick, debate, or multi-round deep deliberation based on the stakes.",
+        "Create a shareable decision record with consensus, tensions, votes, and an interactive dashboard."
+      ],
+      "howToUse": "1. In a terminal, install the marketplace plugin:\n\n   ```text\n   copilot plugin marketplace add microsoft/FastTrack\n   copilot plugin install council@fasttrack-copilot-plugins\n   ```\n2. Run `copilot`, choose **AI Council** from `/agent`, and ask a question.\n3. Add `--depth deep`, `--domain <area>`, or `--save` when needed.",
+      "prerequisites": [
+        "GitHub Copilot CLI",
+        "Active Copilot subscription with access to multiple models",
+        "Copilot CLI plugin support"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council",
+      "source": "copilot-agent-samples/github-copilot-agents/Council/README.md"
+    },
+    {
+      "name": "Analyze-SharePointRisk",
+      "title": "Analyze-SharePointRisk",
+      "slug": "analyze-sharepointrisk",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Score SharePoint permissions-report data for oversharing risk and generate interactive analysis and remediation guidance.",
+      "summary": "Score SharePoint permissions-report data for oversharing risk and generate interactive analysis and remediation guidance.",
+      "tags": [
+        "sharepoint",
+        "security"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "John Cummings",
+      "version": "1.0.0",
+      "published": "2025-10-16",
+      "updated": "2025-10-23",
+      "whatItIs": "A PowerShell analyzer for SharePoint Advanced Management Site Permissions Report CSVs that creates prioritized risk and remediation HTML reports.",
+      "whyUseIt": [
+        "Apply configurable risk scoring to broad access, anonymous links, sensitivity labels, and permission complexity.",
+        "Search, filter, sort, and export findings from an interactive report.",
+        "Use a separate seven-step guidance page to plan remediation."
+      ],
+      "howToUse": "Generate and download a **Site permissions report** from SharePoint Advanced Management, then run:\n\n```powershell\n.\\Analyze-SharePointRisk.ps1 -CsvPath \".\\your-permissions-report.csv\"\n```\n\nAdjust the interactive scoring if needed and review the generated analysis and guidance pages.",
+      "prerequisites": [
+        "PowerShell 5.1 or later",
+        "SharePoint Advanced Management Site Permissions Report CSV"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Analyze-SharePointRisk",
+      "source": "scripts/Analyze-SharePointRisk/README.md"
+    },
+    {
+      "name": "AutoReply Agent",
+      "title": "AutoReply Agent",
+      "slug": "autoreply-agent",
+      "type": "agent",
+      "subcategory": "Copilot Studio",
+      "category": "Copilot Studio",
+      "description": "Research incoming email questions against trusted sources and draft thoughtful replies for review.",
+      "summary": "Research incoming email questions against trusted sources and draft thoughtful replies for review.",
+      "tags": [
+        "email",
+        "research",
+        "automation"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": false,
+      "status": "active",
+      "author": [
+        "Alejandro Lopez",
+        "Shervin Shaffie"
+      ],
+      "version": "1.0.0",
+      "published": "2025-06-17",
+      "updated": "2025-08-06",
+      "whatItIs": "An autonomous Copilot Studio pattern that triggers on new mail, researches the questions against configured knowledge, and emails a draft response to the owner.",
+      "whyUseIt": [
+        "Reduce time spent researching repetitive questions in individual or shared mailboxes.",
+        "Keep answers grounded in explicitly configured knowledge sources.",
+        "Review a prepared response before replying to the original sender."
+      ],
+      "howToUse": "1. Create the Copilot Studio agent with the instructions in this README.\n2. Add the `Send an email (V2)` tool and `When a new email arrives (V3)` trigger.\n3. Configure trusted knowledge sources and an inbox rule that prevents test-message loops.\n4. Test with a non-production mailbox before broader use.",
+      "prerequisites": [
+        "Microsoft Copilot Studio",
+        "Power Automate",
+        "Exchange Online mailbox"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent",
+      "source": "copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent/README.md"
+    },
+    {
+      "name": "CompareDocs",
+      "title": "CompareDocs",
+      "slug": "comparedocs",
+      "type": "agent",
+      "subcategory": "Agent Builder",
+      "category": "Agent Builder",
+      "description": "Compare two documents and surface meaningful differences.",
+      "summary": "Compare two documents and surface meaningful differences.",
+      "tags": [
+        "documents",
+        "comparison"
+      ],
+      "artifact": "declarative",
+      "format": "declarative",
+      "featured": false,
+      "status": "archived",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2025-04-11",
+      "updated": "2026-05-19",
+      "whatItIs": "An archived Agent Builder sample retained for historical reference. The active README links to the preserved files under the adjacent archive folder.",
+      "whyUseIt": [
+        "Review an earlier declarative-agent pattern for reference.",
+        "Understand the scope of a retired FastTrack sample before choosing a current alternative."
+      ],
+      "howToUse": "Follow the archive link in this README to inspect the preserved `CompareDocs` sample. It is no longer actively promoted for new deployments.",
+      "prerequisites": [
+        "Treat as historical guidance; validate current platform support before reuse"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-CompareDocs",
+      "source": "copilot-agent-samples/agent-builder-agents/da-CompareDocs/README.md"
+    },
+    {
+      "name": "Copilot Agents Guide",
+      "title": "Copilot Agents Guide",
+      "slug": "copilot-agents-guide",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Compare Microsoft Copilot agent platforms with capability views, decision guidance, support indicators, and scenarios.",
+      "summary": "Compare Microsoft Copilot agent platforms with capability views, decision guidance, support indicators, and scenarios.",
+      "tags": [
+        "guide",
+        "decision",
+        "planning"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": true,
+      "status": "active",
+      "author": "Microsoft FastTrack",
+      "version": "3.0.0",
+      "published": "2025-10-28",
+      "updated": "2026-04-17",
+      "whatItIs": "A self-contained interactive web guide that compares Microsoft Copilot agent types across capabilities, constraints, technical effort, cost, and FastTrack support.",
+      "whyUseIt": [
+        "Shortlist an agent platform based on use case, team skills, budget, timeline, and growth.",
+        "Compare capabilities and limitations side by side before committing to a build path.",
+        "Give business, architecture, and development stakeholders a shared decision framework."
+      ],
+      "howToUse": "Open `index.html` directly in a modern browser. To host locally, run `python -m http.server 8000` from the resource folder and browse to `http://localhost:8000/index.html`. Use the Overview, Capabilities, Comparison, and Guidance tabs.",
+      "prerequisites": [
+        "Modern web browser"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-agents-guide",
+      "source": "copilot-agent-strategy/copilot-agents-guide/README.md"
+    },
+    {
+      "name": "Copilot Interaction Report",
+      "title": "Copilot Interaction Report",
+      "slug": "copilot-interaction-report",
+      "type": "analytics",
+      "subcategory": "PowerShell + Graph",
+      "category": "PowerShell + Graph",
+      "description": "Export Copilot interaction history from Microsoft Graph and build a self-contained HTML usage dashboard without Power BI.",
+      "summary": "Export Copilot interaction history from Microsoft Graph and build a self-contained HTML usage dashboard without Power BI.",
+      "tags": [
+        "graph",
+        "powershell",
+        "dashboard"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": true,
+      "status": "active",
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2026-06-10",
+      "updated": "2026-06-10",
+      "whatItIs": "A PowerShell module and entry script that export per-user Microsoft 365 Copilot interaction history from Graph and render a self-contained HTML dashboard.",
+      "whyUseIt": [
+        "Create an adoption and friction report without Power BI or a database.",
+        "Review users, sessions, surfaces, features, error rates, trends, and recent audited events.",
+        "Authenticate app-only with a client secret or certificate and rebuild reports from cached JSON."
+      ],
+      "howToUse": "1. Register an Entra application and grant the documented application permissions with admin consent.\n2. From PowerShell 7, run `New-CopilotInteractionReport.ps1` with tenant, client, and secret or certificate parameters.\n3. Open the generated `copilot-report.html`; use `-SkipExport` to rebuild from existing JSON.",
+      "prerequisites": [
+        "PowerShell 7 or later",
+        "Entra app registration",
+        "AiEnterpriseInteraction.Read.All, User.Read.All, and Organization.Read.All application permissions",
+        "Microsoft 365 Copilot licensed users"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-interaction-report",
+      "source": "copilot-analytics-samples/copilot-interaction-report/README.md"
+    },
+    {
+      "name": "Copilot Studio Workflow",
+      "title": "Copilot Studio Workflow",
+      "slug": "copilot-studio-workflow",
+      "type": "skill",
+      "subcategory": "GitHub Copilot",
+      "category": "GitHub Copilot",
+      "description": "Use source control, local YAML, preflight checks, and repeatable packaging to build Copilot Studio agents like software.",
+      "summary": "Use source control, local YAML, preflight checks, and repeatable packaging to build Copilot Studio agents like software.",
+      "tags": [
+        "devops",
+        "copilot-studio",
+        "packaging"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": true,
+      "status": "active",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2026-04-10",
+      "updated": "2026-04-13",
+      "whatItIs": "An Agent Skills-compatible workflow with scripts and guidance for pulling, editing, validating, pushing, publishing, and packaging Copilot Studio YAML projects.",
+      "whyUseIt": [
+        "Keep Copilot Studio definitions in Git and review intentional source changes.",
+        "Catch dirty workflow files, missing variables, and solution-membership gaps before deployment.",
+        "Reuse known workarounds for common pull, push, packaging, and environment-portability problems."
+      ],
+      "howToUse": "Install with:\n\n```text\ncopilot plugin install microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow\n```\n\nThen ask Copilot to pull, validate, push, or package a Copilot Studio project. Run the included preflight and status scripts when prompted.",
+      "prerequisites": [
+        "Git",
+        "VS Code with the Copilot Studio extension",
+        "PowerShell",
+        "Copilot Studio-enabled Power Platform environment",
+        "Power Platform CLI recommended"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-skills/copilot-studio-workflow",
+      "source": "copilot-agent-samples/github-copilot-skills/copilot-studio-workflow/README.md"
+    },
+    {
+      "name": "Create-EngageCommunities",
+      "title": "Create-EngageCommunities",
+      "slug": "create-engagecommunities",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Bulk-create up to 50 sample Viva Engage communities from JSON and assign a chosen or random owner.",
+      "summary": "Bulk-create up to 50 sample Viva Engage communities from JSON and assign a chosen or random owner.",
+      "tags": [
+        "viva-engage",
+        "provisioning"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "preview",
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-12-22",
+      "updated": "2025-10-02",
+      "whatItIs": "A non-production PowerShell sample that calls the Microsoft Graph community-creation API to create Viva Engage communities from a JSON input file.",
+      "whyUseIt": [
+        "Demonstrate the community-creation API with repeatable sample data.",
+        "Assign one specified owner or select random owners for generated communities."
+      ],
+      "howToUse": "Configure the app-registration values in the script, prepare a JSON file of community names and descriptions, then run `./Create-EngageCommunities.ps1 -InputFile C:\\Temp\\communities.json -NumberofCommunities 25 -AssignedOwner \"user@domain.com\"`.",
+      "prerequisites": [
+        "Entra app registration",
+        "Community.ReadWrite.All and User.Read.All application permissions",
+        "JSON file containing community names and descriptions"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Create-EngageCommunities",
+      "source": "scripts/Create-EngageCommunities/README.md"
+    },
+    {
+      "name": "DeepResearch",
+      "title": "DeepResearch",
+      "slug": "deepresearch",
+      "type": "agent",
+      "subcategory": "Agent Builder",
+      "category": "Agent Builder",
+      "description": "Preserved archived sample for structured, multi-step research across source material.",
+      "summary": "Preserved archived sample for structured, multi-step research across source material.",
+      "tags": [
+        "research",
+        "analysis"
+      ],
+      "artifact": "declarative",
+      "format": "declarative",
+      "featured": false,
+      "status": "archived",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2025-01-28",
+      "updated": "2026-05-19",
+      "whatItIs": "An archived Agent Builder sample retained for historical reference. The active README links to the preserved files under the adjacent archive folder.",
+      "whyUseIt": [
+        "Review an earlier declarative-agent pattern for reference.",
+        "Understand the scope of a retired FastTrack sample before choosing a current alternative."
+      ],
+      "howToUse": "Follow the archive link in this README to inspect the preserved `DeepResearch` sample. It is no longer actively promoted for new deployments.",
+      "prerequisites": [
+        "Treat as historical guidance; validate current platform support before reuse"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-DeepResearch",
+      "source": "copilot-agent-samples/agent-builder-agents/da-DeepResearch/README.md"
+    },
+    {
+      "name": "Export-CopilotInteractions",
+      "title": "Export-CopilotInteractions",
+      "slug": "export-copilotinteractions",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Export user-level Copilot prompts and responses from Microsoft Graph into analysis-ready CSV datasets.",
+      "summary": "Export user-level Copilot prompts and responses from Microsoft Graph into analysis-ready CSV datasets.",
+      "tags": [
+        "copilot",
+        "graph"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2026-05-21",
+      "updated": "2026-05-21",
+      "whatItIs": "A PowerShell exporter for Microsoft 365 Copilot enterprise interaction history that writes normalized interactions, users, errors, and pre-aggregated usage CSVs.",
+      "whyUseIt": [
+        "Feed Power BI, Excel, or another analytics tool with user-level interaction data.",
+        "Use interactive, client-secret, or certificate authentication.",
+        "Handle throttling, per-user failures, SKU tiers, and app/feature normalization during export."
+      ],
+      "howToUse": "Install `Microsoft.Graph.Authentication`, grant the documented Graph permissions, and test interactively:\n\n```powershell\n.\\Export-CopilotInteractions.ps1 -TenantId \"contoso.onmicrosoft.com\" -Interactive -MaxUsers 10\n```\n\nReview `Errors.csv`, then remove the user cap for the full export.",
+      "prerequisites": [
+        "PowerShell 5.1 or later",
+        "Microsoft.Graph.Authentication module",
+        "User.Read.All, Reports.Read.All, and AiEnterpriseInteraction.Read.All",
+        "Entra app registration for app-only authentication"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-CopilotInteractions",
+      "source": "scripts/Export-CopilotInteractions/README.md"
+    },
+    {
+      "name": "Export-M365CopilotReports",
+      "title": "Export-M365CopilotReports",
+      "slug": "export-m365copilotreports",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Export Entra users, Purview Copilot audit events, all audit interactions, or Microsoft 365 Copilot usage reports.",
+      "summary": "Export Entra users, Purview Copilot audit events, all audit interactions, or Microsoft 365 Copilot usage reports.",
+      "tags": [
+        "copilot",
+        "reporting"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2025-03-11",
+      "updated": "2025-03-25",
+      "whatItIs": "An interactive PowerShell exporter for Entra user details, Purview audit data, and Microsoft 365 Copilot usage datasets used by analytics reports.",
+      "whyUseIt": [
+        "Prepare organizational data for Viva Insights or Power BI.",
+        "Export Copilot-specific or broader Purview audit events from one menu.",
+        "Collect Microsoft 365 Copilot usage reporting data without separate scripts."
+      ],
+      "howToUse": "Install the Microsoft Graph prerequisites documented by the script, open PowerShell in this folder, and run `./Export-M365CopilotReports.ps1`. Choose the desired export from the interactive menu and complete authentication.",
+      "prerequisites": [
+        "Microsoft Graph access",
+        "Permissions required by the selected report"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-M365CopilotReports",
+      "source": "scripts/Export-M365CopilotReports/README.md"
+    },
+    {
+      "name": "Get-AADAdminRoleMembers",
+      "title": "Get-AADAdminRoleMembers",
+      "slug": "get-aadadminrolemembers",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "List members of all Entra administrator roles, inspect one role, or report the roles assigned to a user.",
+      "summary": "List members of all Entra administrator roles, inspect one role, or report the roles assigned to a user.",
+      "tags": [
+        "entra",
+        "security",
+        "governance"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Brian Baldock",
+      "version": "1.0.0",
+      "published": "2020-01-14",
+      "updated": "2021-01-15",
+      "whatItIs": "A PowerShell script for reporting Azure AD administrator-role membership across all roles, one named role, or one user.",
+      "whyUseIt": [
+        "Audit privileged role membership across the directory.",
+        "Answer which administrator roles a particular user belongs to.",
+        "Inspect the members of a specific administrator role."
+      ],
+      "howToUse": "Install the Azure AD PowerShell module, then run one mode, for example:\n\n```powershell\n.\\Get-AADAdminRoleMembers.ps1 -Admin admin@contoso.onmicrosoft.com -All\n```",
+      "prerequisites": [
+        "Azure AD PowerShell module",
+        "Directory account permitted to read administrator roles"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-AADAdminRoleMembers",
+      "source": "scripts/Get-AADAdminRoleMembers/README.md"
+    },
+    {
+      "name": "Get-LicenseUsage",
+      "title": "Get-LicenseUsage",
+      "slug": "get-licenseusage",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Choose a preferred or backup Microsoft 365 subscription for assignment based on current license availability.",
+      "summary": "Choose a preferred or backup Microsoft 365 subscription for assignment based on current license availability.",
+      "tags": [
+        "licensing",
+        "reporting"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Brian Baldock",
+      "version": "1.0.0",
+      "published": "2022-01-19",
+      "updated": "2022-01-19",
+      "whatItIs": "A PowerShell sample for selecting between preferred and backup Microsoft 365 subscriptions based on their current assigned and available license counts.",
+      "whyUseIt": [
+        "Automate a license-assignment decision when equivalent entitlements span multiple subscriptions.",
+        "Use the result with group-based or direct license-assignment logic."
+      ],
+      "howToUse": "Install the Azure AD PowerShell module, then run:\n\n```powershell\n.\\Get-LicenseUsage.ps1 -Admin admin@contoso.com -PreferredLicense SPE_E5 -BackupLicense EMSPREMIUM\n```\n\nReview and adapt the documented `Get-LicensingUsage` decision logic for the tenant.",
+      "prerequisites": [
+        "Azure AD PowerShell module",
+        "Account permitted to read tenant licensing"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-LicenseUsage",
+      "source": "scripts/Get-LicenseUsage/README.md"
+    },
+    {
+      "name": "Get-M365CopilotReadiness",
+      "title": "Get-M365CopilotReadiness",
+      "slug": "get-m365copilotreadiness",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Assess Microsoft 365 Copilot readiness across identity, licensing, collaboration, sharing, and optional compliance checks.",
+      "summary": "Assess Microsoft 365 Copilot readiness across identity, licensing, collaboration, sharing, and optional compliance checks.",
+      "tags": [
+        "copilot",
+        "readiness",
+        "m365"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": true,
+      "status": "active",
+      "author": "John Cummings",
+      "version": "1.0.0",
+      "published": "2025-08-20",
+      "updated": "2025-09-09",
+      "whatItIs": "A PowerShell assessment that collects Microsoft 365 configuration signals and creates JSON and HTML reports for Copilot deployment-readiness review.",
+      "whyUseIt": [
+        "Review Entra, licensing, Exchange, SharePoint, OneDrive, Teams, and Graph signals in one run.",
+        "Read plain-language descriptions and Copilot context for collected settings.",
+        "Optionally add a Microsoft Compliance Configuration Analyzer assessment."
+      ],
+      "howToUse": "Open PowerShell in the resource folder and run:\n\n```powershell\n.\\Get-M365CopilotReadiness.ps1 -OutputPath \"C:\\Temp\\M365Readiness\"\n```\n\nUse `-IncludeMCCA` for the optional compliance assessment. Complete the interactive sign-ins; failed services are logged while the remaining checks continue.",
+      "prerequisites": [
+        "Windows PowerShell 5.1 or PowerShell 7",
+        "Network access to Microsoft 365 endpoints",
+        "Documented read permissions and service admin roles",
+        "MCCA licensing and roles only when using -IncludeMCCA"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-M365CopilotReadiness",
+      "source": "scripts/Get-M365CopilotReadiness/README.md"
+    },
+    {
+      "name": "Get-SiteInventory",
+      "title": "Get-SiteInventory",
+      "slug": "get-siteinventory",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Inventory a SharePoint Online site collection and its document libraries, with optional subweb and workbook processing.",
+      "summary": "Inventory a SharePoint Online site collection and its document libraries, with optional subweb and workbook processing.",
+      "tags": [
+        "sharepoint",
+        "inventory"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Patrick Rodgers",
+      "version": "1.0.0",
+      "published": "2018-06-22",
+      "updated": "2018-10-30",
+      "whatItIs": "A multi-script PowerShell inventory for a SharePoint Online site collection that can process subwebs concurrently and combine outputs into a workbook.",
+      "whyUseIt": [
+        "Collect site and document-library inventory across a site collection.",
+        "Tune concurrency, retain individual CSVs, or rebuild a workbook without re-querying SharePoint."
+      ],
+      "howToUse": "Copy the `Lib` folder and inventory scripts together, install the dependencies, and run:\n\n```powershell\npowershell -mta .\\Get-Inventory.ps1 -url <absolute-site-url> -processSubWebs\n```",
+      "prerequisites": [
+        "PowerShell 5 or later",
+        "SharePointPnPPowerShellOnline module",
+        "Microsoft Excel unless using -NoWorkbook"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/get-siteinventory",
+      "source": "scripts/get-siteinventory/README.md"
+    },
+    {
+      "name": "Get-TeamsUserActivityReport",
+      "title": "Get-TeamsUserActivityReport",
+      "slug": "get-teamsuseractivityreport",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Export detailed Microsoft Teams user activity for all users or a targeted CSV list through Microsoft Graph.",
+      "summary": "Export detailed Microsoft Teams user activity for all users or a targeted CSV list through Microsoft Graph.",
+      "tags": [
+        "teams",
+        "reporting"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2025-09-30",
+      "updated": "2025-09-30",
+      "whatItIs": "A PowerShell report that calls Microsoft Graph directly with application permissions and exports detailed Teams activity for all or selected users.",
+      "whyUseIt": [
+        "Report meetings, calls, chats, durations, and other Teams activity metrics.",
+        "Target a pilot group with a UPN CSV or report across the tenant.",
+        "Run as an authorized background process without the Microsoft.Graph PowerShell module."
+      ],
+      "howToUse": "Create an Entra app registration with `Reports.Read.All` application permission and a client secret. Run `./Get-TeamsUserActivityReport.ps1 -Period \"D7\"` for all users, or add `-UserCsvPath` with a CSV containing `UserPrincipalName`.",
+      "prerequisites": [
+        "PowerShell 5.1 or later",
+        "Entra app registration",
+        "Reports.Read.All application permission with admin consent"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-TeamsUserActivityReport",
+      "source": "scripts/Get-TeamsUserActivityReport/README.md"
+    },
+    {
+      "name": "ManagerSimulator",
+      "title": "ManagerSimulator",
+      "slug": "managersimulator",
+      "type": "agent",
+      "subcategory": "Agent Builder",
+      "category": "Agent Builder",
+      "description": "Preserved archived sample for practicing difficult conversations with a simulated manager.",
+      "summary": "Preserved archived sample for practicing difficult conversations with a simulated manager.",
+      "tags": [
+        "coaching",
+        "roleplay",
+        "training"
+      ],
+      "artifact": "declarative",
+      "format": "declarative",
+      "featured": false,
+      "status": "archived",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2025-01-15",
+      "updated": "2026-05-19",
+      "whatItIs": "An archived Agent Builder sample retained for historical reference. The active README links to the preserved files under the adjacent archive folder.",
+      "whyUseIt": [
+        "Review an earlier declarative-agent pattern for reference.",
+        "Understand the scope of a retired FastTrack sample before choosing a current alternative."
+      ],
+      "howToUse": "Follow the archive link in this README to inspect the preserved `ManagerSimulator` sample. It is no longer actively promoted for new deployments.",
+      "prerequisites": [
+        "Treat as historical guidance; validate current platform support before reuse"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-ManagerSimulator",
+      "source": "copilot-agent-samples/agent-builder-agents/da-ManagerSimulator/README.md"
+    },
+    {
+      "name": "Migrate-CopilotStudioAgents",
+      "title": "Migrate-CopilotStudioAgents",
+      "slug": "migrate-copilotstudioagents",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Inventory and copy classic Copilot Studio agents into department-mapped Power Platform environments with ownership recovery.",
+      "summary": "Inventory and copy classic Copilot Studio agents into department-mapped Power Platform environments with ownership recovery.",
+      "tags": [
+        "copilot-studio",
+        "migration"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2026-07-15",
+      "updated": "2026-07-15",
+      "whatItIs": "A PowerShell toolkit that inventories agents, maps owner departments to existing environments, and copies classic Copilot Studio agents through Dataverse solutions.",
+      "whyUseIt": [
+        "Plan environment redistribution from a tenant-wide inventory before making changes.",
+        "Preserve agent ownership and record-level sharing on a best-effort basis.",
+        "Run a full dry-run migration plan with `-WhatIf` before importing solutions."
+      ],
+      "howToUse": "1. Optionally generate and review `department-environment-mapping.json`.\n2. Run `Inventory-PowerPlatformAgents.ps1` to produce the raw inventory JSON.\n3. Run `Migrate-CopilotStudioAgents.ps1` with the inventory and mapping paths plus `-WhatIf`.\n4. Review `migration-plan.csv`, rerun without `-WhatIf`, then reconfigure connections and validate each migrated agent.",
+      "prerequisites": [
+        "Power Platform CLI and MSAL.PS",
+        "Power Platform or reader admin role",
+        "Microsoft Graph User.Read.All delegated access",
+        "Dataverse access in source and target environments",
+        "Pre-created target environments and target-user access"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Migrate-CopilotStudioAgents",
+      "source": "scripts/Migrate-CopilotStudioAgents/README.md"
+    },
+    {
+      "name": "OmniAgent",
+      "title": "OmniAgent",
+      "slug": "omniagent",
+      "type": "agent",
+      "subcategory": "Agent Builder",
+      "category": "Agent Builder",
+      "description": "Preserved archived sample of a versatile, multi-purpose declarative agent starting point.",
+      "summary": "Preserved archived sample of a versatile, multi-purpose declarative agent starting point.",
+      "tags": [
+        "template",
+        "starter"
+      ],
+      "artifact": "declarative",
+      "format": "declarative",
+      "featured": false,
+      "status": "archived",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2025-02-24",
+      "updated": "2026-05-19",
+      "whatItIs": "An archived Agent Builder sample retained for historical reference. The active README links to the preserved files under the adjacent archive folder.",
+      "whyUseIt": [
+        "Review an earlier declarative-agent pattern for reference.",
+        "Understand the scope of a retired FastTrack sample before choosing a current alternative."
+      ],
+      "howToUse": "Follow the archive link in this README to inspect the preserved `OmniAgent` sample. It is no longer actively promoted for new deployments.",
+      "prerequisites": [
+        "Treat as historical guidance; validate current platform support before reuse"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-OmniAgent",
+      "source": "copilot-agent-samples/agent-builder-agents/da-OmniAgent/README.md"
+    },
+    {
+      "name": "PowerClaw Agent",
+      "title": "PowerClaw Agent",
+      "slug": "powerclaw-agent",
+      "type": "agent",
+      "subcategory": "Copilot Studio",
+      "category": "Copilot Studio",
+      "description": "A 24/7 AI chief of staff with autonomous briefings, task execution, and proactive coordination.",
+      "summary": "A 24/7 AI chief of staff with autonomous briefings, task execution, and proactive coordination.",
+      "tags": [
+        "chief-of-staff",
+        "automation",
+        "calendar",
+        "memory"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": true,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.2.11",
+      "published": "2026-03-17",
+      "updated": "2026-05-27",
+      "whatItIs": "A personal Copilot Studio agent that uses SharePoint as its memory and task workspace, chats in Teams, and runs a scheduled Power Automate heartbeat.",
+      "whyUseIt": [
+        "Receive proactive work briefings and meeting preparation from Microsoft 365 context.",
+        "Delegate scheduled or task-board research and receive saved deliverables.",
+        "Keep the agent, its memory, and its operating data inside the Microsoft 365 tenant."
+      ],
+      "howToUse": "1. Import `PowerClaw_Solution.zip` into the target Power Platform environment.\n2. Provision the SharePoint workspace with the Bootstrap flow, PowerShell setup, or manual setup.\n3. Edit `user.md`, configure the documented connections, publish the agent, and use it in Teams.\n\nSee [`SETUP.md`](SETUP.md) for the complete setup and upgrade procedure.",
+      "prerequisites": [
+        "Microsoft 365 E3 or E5",
+        "Copilot Studio capacity or pay-as-you-go",
+        "Power Automate Premium",
+        "Permission to create a SharePoint site"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
+      "source": "copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/README.md"
+    },
+    {
+      "name": "Preflight-OneDrive",
+      "title": "Preflight-OneDrive",
+      "slug": "preflight-onedrive",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.",
+      "summary": "Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.",
+      "tags": [
+        "onedrive",
+        "migration"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2019-08-02",
+      "updated": "2019-08-02",
+      "whatItIs": "A PowerShell preflight scanner that checks a local folder or UNC path for potential OneDrive for Business synchronization issues.",
+      "whyUseIt": [
+        "Find problematic paths before deploying the OneDrive sync client.",
+        "Review results in the console or an optional HTML report."
+      ],
+      "howToUse": "Install the external dependencies, then run:\n\n```powershell\n.\\Preflight-OneDrive.ps1 -Path \"\\\\dc.contoso.com\\smb\" -GenerateHTMLReport\n```",
+      "prerequisites": [
+        "EnhancedHTML2 module",
+        "Test-OneDrivePath function",
+        "Read access to the folder being scanned"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Preflight-OneDrive",
+      "source": "scripts/Preflight-OneDrive/README.md"
+    },
+    {
+      "name": "ProductQuote Agent",
+      "title": "ProductQuote Agent",
+      "slug": "productquote-agent",
+      "type": "agent",
+      "subcategory": "Copilot Studio",
+      "category": "Copilot Studio",
+      "description": "Generate product quotes from Excel inventory, populate a Word template, and email the finished document.",
+      "summary": "Generate product quotes from Excel inventory, populate a Word template, and email the finished document.",
+      "tags": [
+        "sales",
+        "quotes",
+        "excel",
+        "word"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": false,
+      "status": "active",
+      "author": [
+        "Alejandro Lopez",
+        "Damien Bird"
+      ],
+      "version": "1.0.0",
+      "published": "2025-08-06",
+      "updated": "2026-07-16",
+      "whatItIs": "A Copilot Studio and Power Automate solution that looks up products in Excel, fills a Word quote template, and emails the generated quote.",
+      "whyUseIt": [
+        "Turn natural-language product requests into consistent quote documents.",
+        "Reuse an existing product catalog and branded Word template.",
+        "Automate document generation and delivery while retaining configurable connections."
+      ],
+      "howToUse": "1. Download `Solution/ProductQuoteAgent.zip` and upload the included Word template to SharePoint.\n2. Import the solution in Power Apps and configure its connections and email environment variable.\n3. Point the included flow at the Word template, turn the flow on, and test the agent in Copilot Studio.",
+      "prerequisites": [
+        "Microsoft Copilot Studio",
+        "Power Automate",
+        "Exchange Online",
+        "Excel product catalog",
+        "Word template with plain-text content controls"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-ProductQuoteAgent",
+      "source": "copilot-agent-samples/copilot-studio-agents/ca-ProductQuoteAgent/README.md"
+    },
+    {
+      "name": "Purview Audit Copilot Report",
+      "title": "Purview Audit Copilot Report",
+      "slug": "purview-audit-copilot-report",
+      "type": "analytics",
+      "subcategory": "Power BI",
+      "category": "Power BI",
+      "description": "Analyze Copilot adoption by user, app, agent, department, and trend using Purview audit and Entra export data.",
+      "summary": "Analyze Copilot adoption by user, app, agent, department, and trend using Purview audit and Entra export data.",
+      "tags": [
+        "power-bi",
+        "purview",
+        "audit"
+      ],
+      "artifact": "pbix",
+      "format": "pbix",
+      "featured": false,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2025-03-26",
+      "updated": "2026-07-14",
+      "whatItIs": "A Power BI dashboard that combines Microsoft Purview CopilotInteraction audit exports with Entra user details to show adoption trends by user, app, and agent.",
+      "whyUseIt": [
+        "Separate direct app usage, Microsoft agents, third-party agents, and Copilot Studio activity.",
+        "Explore adoption trends by department, role, license, app, and time.",
+        "Use a portal or PowerShell audit export with one shared Power BI classification model."
+      ],
+      "howToUse": "1. Export `CopilotInteraction` events from Microsoft Purview Audit.\n2. Run `Export-M365CopilotReports.ps1` and export Entra user details.\n3. Open the PBIX, edit `PathToCopilotAuditActivitiesCSV` and `PathToEntraUsersCSV`, then select **Close & Apply**.",
+      "prerequisites": [
+        "Permission to search Microsoft Purview Audit",
+        "PowerShell 5.1 or later",
+        "Power BI Desktop"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
+      "source": "copilot-analytics-samples/Copilot_Audit_PBI/README.md"
+    },
+    {
+      "name": "ReasoningAgent",
+      "title": "ReasoningAgent",
+      "slug": "reasoningagent",
+      "type": "agent",
+      "subcategory": "Agent Builder",
+      "category": "Agent Builder",
+      "description": "Preserved archived sample of a declarative agent configured for step-by-step reasoning.",
+      "summary": "Preserved archived sample of a declarative agent configured for step-by-step reasoning.",
+      "tags": [
+        "reasoning",
+        "analysis"
+      ],
+      "artifact": "declarative",
+      "format": "declarative",
+      "featured": false,
+      "status": "archived",
+      "author": "Microsoft FastTrack",
+      "version": "1.0.0",
+      "published": "2025-01-28",
+      "updated": "2026-05-19",
+      "whatItIs": "An archived Agent Builder sample retained for historical reference. The active README links to the preserved files under the adjacent archive folder.",
+      "whyUseIt": [
+        "Review an earlier declarative-agent pattern for reference.",
+        "Understand the scope of a retired FastTrack sample before choosing a current alternative."
+      ],
+      "howToUse": "Follow the archive link in this README to inspect the preserved `ReasoningAgent` sample. It is no longer actively promoted for new deployments.",
+      "prerequisites": [
+        "Treat as historical guidance; validate current platform support before reuse"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-ReasoningAgent",
+      "source": "copilot-agent-samples/agent-builder-agents/da-ReasoningAgent/README.md"
+    },
+    {
+      "name": "Researcher — Automation Opportunities",
+      "title": "Researcher — Automation Opportunities",
+      "slug": "researcher-automation-opportunities",
+      "type": "prompt",
+      "subcategory": "Researcher",
+      "category": "Researcher",
+      "description": "Analyze Microsoft 365 signals to identify repetitive work and prioritize high-value Copilot agent automation opportunities.",
+      "summary": "Analyze Microsoft 365 signals to identify repetitive work and prioritize high-value Copilot agent automation opportunities.",
+      "tags": [
+        "researcher",
+        "frontier",
+        "automation"
+      ],
+      "artifact": "md",
+      "format": "md",
+      "featured": false,
+      "status": "active",
+      "author": "Alexander Hurtado",
+      "version": "1.0.0",
+      "published": "2025-05-14",
+      "updated": "2025-05-15",
+      "whatItIs": "A Microsoft 365 Researcher prompt that looks across available organizational signals for repetitive, fragmented, or manual workflows suited to intelligent automation.",
+      "whyUseIt": [
+        "Discover automation opportunities grounded in observed work patterns.",
+        "Prioritize scenarios by frequency, departments involved, and estimated time savings.",
+        "Focus agent ideas on gaps that need intelligence, summarization, or cross-source coordination."
+      ],
+      "howToUse": "Copy the prompt from this file into Microsoft 365 Researcher. Replace the bracketed department example with the desired scope, confirm Researcher has access to the intended organizational sources, run it, and review the structured opportunity table.",
+      "prerequisites": [
+        "Access to Microsoft 365 Researcher",
+        "Permission to use the relevant Microsoft 365 organizational data"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/blob/master/copilot-prompt-samples/Researcher-OrganizationInsights.md",
+      "source": "copilot-prompt-samples/Researcher-OrganizationInsights.md"
+    },
+    {
+      "name": "Teams Phone User Migration",
+      "title": "Teams Phone User Migration",
+      "slug": "teams-phone-user-migration",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Run a two-phase CSV-driven Teams Phone migration for voice policies, phone numbers, and emergency locations.",
+      "summary": "Run a two-phase CSV-driven Teams Phone migration for voice policies, phone numbers, and emergency locations.",
+      "tags": [
+        "teams",
+        "telephony",
+        "migration"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Laure Van der Hauwaert",
+      "version": "1.0.0",
+      "published": "2024-10-21",
+      "updated": "2024-10-21",
+      "whatItIs": "A pair of PowerShell samples for a staged Teams Phone migration: assign voice policies before cutover, then assign phone numbers and emergency locations.",
+      "whyUseIt": [
+        "Separate advance policy assignment from migration-day number activation.",
+        "Drive bulk assignments from a documented CSV format.",
+        "Log disabled, unlicensed, or otherwise failed user assignments."
+      ],
+      "howToUse": "Install the latest MicrosoftTeams module and fill the included CSV with user policies, numbers, and emergency locations. Run the Phase 1 script before cutover, then run the Phase 2 Cutover script on migration day.",
+      "prerequisites": [
+        "MicrosoftTeams PowerShell module",
+        "Teams administration permissions",
+        "Completed migration CSV"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Teams%20Phone%20User%20Migration",
+      "source": "scripts/Teams Phone User Migration/README.md"
+    },
+    {
+      "name": "VibeWriting Agent",
+      "title": "VibeWriting Agent",
+      "slug": "vibewriting-agent",
+      "type": "agent",
+      "subcategory": "Agent Builder",
+      "category": "Agent Builder",
+      "description": "Proofread stream-of-consciousness writing while preserving the author’s meaning, tone, and distinctive voice.",
+      "summary": "Proofread stream-of-consciousness writing while preserving the author’s meaning, tone, and distinctive voice.",
+      "tags": [
+        "writing",
+        "editing",
+        "tone"
+      ],
+      "artifact": "declarative",
+      "format": "declarative",
+      "featured": true,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2025-02-25",
+      "updated": "2025-08-06",
+      "whatItIs": "A declarative Agent Builder configuration for proofreading unstructured drafts, correcting mechanics, and improving readability without replacing the author’s voice.",
+      "whyUseIt": [
+        "Clean up notes, reflections, creative drafts, and informal communications.",
+        "Preserve distinctive vocabulary, emotional tone, metaphors, and core meaning.",
+        "Choose a light, medium, or heavy refinement level without generating unrelated content."
+      ],
+      "howToUse": "1. Create a new agent in Microsoft 365 Copilot Agent Builder.\n2. Copy the name, description, and full system instructions from this README.\n3. Configure the optional knowledge and recommended capabilities shown in the setup table.\n4. Add the starter prompt, publish, and provide text to proofread.",
+      "prerequisites": [
+        "Access to Microsoft 365 Copilot Agent Builder"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-VibeWritingAgent",
+      "source": "copilot-agent-samples/agent-builder-agents/da-VibeWritingAgent/README.md"
+    },
+    {
+      "name": "Viva Insights Copilot Dashboard",
+      "title": "Viva Insights Copilot Dashboard",
+      "slug": "viva-insights-copilot-dashboard",
+      "type": "analytics",
+      "subcategory": "Power BI",
+      "category": "Power BI",
+      "description": "Visualize a Viva Insights Advanced Insights person-query export in Power BI, including dynamic personas and usage profiles.",
+      "summary": "Visualize a Viva Insights Advanced Insights person-query export in Power BI, including dynamic personas and usage profiles.",
+      "tags": [
+        "power-bi",
+        "viva-insights",
+        "adoption"
+      ],
+      "artifact": "pbix",
+      "format": "pbix",
+      "featured": false,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "2.0.0",
+      "published": "2024-05-03",
+      "updated": "2025-03-17",
+      "whatItIs": "A pair of Power BI templates that visualize Viva Insights Advanced Insights person-query exports, including a dynamic-personas view with user-profile usage.",
+      "whyUseIt": [
+        "Explore Copilot adoption alongside collaboration and organizational attributes.",
+        "Start from a reusable Power BI model instead of designing a dashboard from scratch."
+      ],
+      "howToUse": "Download the PBIX file that matches the desired dashboard, review the included Word instructions, export the required Viva Insights Advanced Insights person query, and update the report data source before refreshing.",
+      "prerequisites": [
+        "Microsoft Viva Advanced Insights",
+        "Power BI Desktop",
+        "Viva Insights person-query export"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample",
+      "source": "copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/README.md"
+    }
+  ]
+}

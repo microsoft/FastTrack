@@ -1,3 +1,39 @@
+---
+title: Purview Audit Copilot Report
+type: analytics
+category: Power BI
+summary: >-
+  Analyze Copilot adoption by user, app, agent, department, and trend using Purview audit and Entra
+  export data.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2025-03-26"
+updated: "2026-07-14"
+tags:
+  - power-bi
+  - purview
+  - audit
+format: pbix
+whatItIs: >-
+  A Power BI dashboard that combines Microsoft Purview CopilotInteraction audit exports with Entra
+  user details to show adoption trends by user, app, and agent.
+whyUseIt:
+  - Separate direct app usage, Microsoft agents, third-party agents, and Copilot Studio activity.
+  - Explore adoption trends by department, role, license, app, and time.
+  - Use a portal or PowerShell audit export with one shared Power BI classification model.
+howToUse: >-
+  1. Export `CopilotInteraction` events from Microsoft Purview Audit.
+
+  2. Run `Export-M365CopilotReports.ps1` and export Entra user details.
+
+  3. Open the PBIX, edit `PathToCopilotAuditActivitiesCSV` and `PathToEntraUsersCSV`, then select
+  **Close & Apply**.
+prerequisites:
+  - Permission to search Microsoft Purview Audit
+  - PowerShell 5.1 or later
+  - Power BI Desktop
+---
+
 # 🔍 Copilot Audit Dashboard
 
 > [!IMPORTANT]

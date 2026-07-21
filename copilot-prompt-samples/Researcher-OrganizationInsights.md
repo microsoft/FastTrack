@@ -1,3 +1,35 @@
+---
+title: Researcher — Automation Opportunities
+type: prompt
+category: Researcher
+summary: >-
+  Analyze Microsoft 365 signals to identify repetitive work and prioritize high-value Copilot agent
+  automation opportunities.
+author: Alexander Hurtado
+version: 1.0.0
+published: "2025-05-14"
+updated: "2025-05-15"
+tags:
+  - researcher
+  - frontier
+  - automation
+format: md
+whatItIs: >-
+  A Microsoft 365 Researcher prompt that looks across available organizational signals for
+  repetitive, fragmented, or manual workflows suited to intelligent automation.
+whyUseIt:
+  - Discover automation opportunities grounded in observed work patterns.
+  - Prioritize scenarios by frequency, departments involved, and estimated time savings.
+  - Focus agent ideas on gaps that need intelligence, summarization, or cross-source coordination.
+howToUse: >-
+  Copy the prompt from this file into Microsoft 365 Researcher. Replace the bracketed department
+  example with the desired scope, confirm Researcher has access to the intended organizational
+  sources, run it, and review the structured opportunity table.
+prerequisites:
+  - Access to Microsoft 365 Researcher
+  - Permission to use the relevant Microsoft 365 organizational data
+---
+
 # Researcher-AutomationOpportunities
 
 ## 🎯 Use Case

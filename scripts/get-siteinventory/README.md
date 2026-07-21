@@ -1,3 +1,36 @@
+---
+title: Get-SiteInventory
+type: script
+category: PowerShell
+summary: >-
+  Inventory a SharePoint Online site collection and its document libraries, with optional subweb and
+  workbook processing.
+author: Patrick Rodgers
+version: 1.0.0
+published: "2018-06-22"
+updated: "2018-10-30"
+tags:
+  - sharepoint
+  - inventory
+format: ps1
+whatItIs: >-
+  A multi-script PowerShell inventory for a SharePoint Online site collection that can process
+  subwebs concurrently and combine outputs into a workbook.
+whyUseIt:
+  - Collect site and document-library inventory across a site collection.
+  - Tune concurrency, retain individual CSVs, or rebuild a workbook without re-querying SharePoint.
+howToUse: |-
+  Copy the `Lib` folder and inventory scripts together, install the dependencies, and run:
+
+  ```powershell
+  powershell -mta .\Get-Inventory.ps1 -url <absolute-site-url> -processSubWebs
+  ```
+prerequisites:
+  - PowerShell 5 or later
+  - SharePointPnPPowerShellOnline module
+  - Microsoft Excel unless using -NoWorkbook
+---
+
 # Microsoft FastTrack Open Source - Get-SiteInventory
 
 The purpose of this script is to gather a site inventory for a SharePoint Online site collection.

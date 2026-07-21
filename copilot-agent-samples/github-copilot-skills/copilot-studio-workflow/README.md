@@ -1,3 +1,49 @@
+---
+title: Copilot Studio Workflow
+type: skill
+category: GitHub Copilot
+summary: >-
+  Use source control, local YAML, preflight checks, and repeatable packaging to build Copilot Studio
+  agents like software.
+author: Microsoft FastTrack
+version: 1.0.0
+published: "2026-04-10"
+updated: "2026-04-13"
+tags:
+  - devops
+  - copilot-studio
+  - packaging
+format: bundle
+featured: true
+whatItIs: >-
+  An Agent Skills-compatible workflow with scripts and guidance for pulling, editing, validating,
+  pushing, publishing, and packaging Copilot Studio YAML projects.
+whyUseIt:
+  - Keep Copilot Studio definitions in Git and review intentional source changes.
+  - Catch dirty workflow files, missing variables, and solution-membership gaps before deployment.
+  - Reuse known workarounds for common pull, push, packaging, and environment-portability problems.
+howToUse: >-
+  Install with:
+
+
+  ```text
+
+  copilot plugin install
+  microsoft/FastTrack:copilot-agent-samples/github-copilot-skills/copilot-studio-workflow
+
+  ```
+
+
+  Then ask Copilot to pull, validate, push, or package a Copilot Studio project. Run the included
+  preflight and status scripts when prompted.
+prerequisites:
+  - Git
+  - VS Code with the Copilot Studio extension
+  - PowerShell
+  - Copilot Studio-enabled Power Platform environment
+  - Power Platform CLI recommended
+---
+
 # copilot-studio-workflow
 **Build Copilot Studio agents like software: local YAML, source control, repeatable packaging, and an AI assistant that already knows the platform's sharp edges.**
 

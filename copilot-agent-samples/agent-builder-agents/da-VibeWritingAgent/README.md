@@ -1,3 +1,36 @@
+---
+title: VibeWriting Agent
+type: agent
+category: Agent Builder
+summary: >-
+  Proofread stream-of-consciousness writing while preserving the author’s meaning, tone, and
+  distinctive voice.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2025-02-25"
+updated: "2025-08-06"
+tags:
+  - writing
+  - editing
+  - tone
+format: declarative
+featured: true
+whatItIs: >-
+  A declarative Agent Builder configuration for proofreading unstructured drafts, correcting
+  mechanics, and improving readability without replacing the author’s voice.
+whyUseIt:
+  - Clean up notes, reflections, creative drafts, and informal communications.
+  - Preserve distinctive vocabulary, emotional tone, metaphors, and core meaning.
+  - Choose a light, medium, or heavy refinement level without generating unrelated content.
+howToUse: |-
+  1. Create a new agent in Microsoft 365 Copilot Agent Builder.
+  2. Copy the name, description, and full system instructions from this README.
+  3. Configure the optional knowledge and recommended capabilities shown in the setup table.
+  4. Add the starter prompt, publish, and provide text to proofread.
+prerequisites:
+  - Access to Microsoft 365 Copilot Agent Builder
+---
+
 # Vibe Writing Agent
 
 ## Overview

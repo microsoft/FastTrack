@@ -1,3 +1,44 @@
+---
+title: ProductQuote Agent
+type: agent
+category: Copilot Studio
+summary: >-
+  Generate product quotes from Excel inventory, populate a Word template, and email the finished
+  document.
+author:
+  - Alejandro Lopez
+  - Damien Bird
+version: 1.0.0
+published: "2025-08-06"
+updated: "2026-07-16"
+tags:
+  - sales
+  - quotes
+  - excel
+  - word
+format: bundle
+whatItIs: >-
+  A Copilot Studio and Power Automate solution that looks up products in Excel, fills a Word quote
+  template, and emails the generated quote.
+whyUseIt:
+  - Turn natural-language product requests into consistent quote documents.
+  - Reuse an existing product catalog and branded Word template.
+  - Automate document generation and delivery while retaining configurable connections.
+howToUse: >-
+  1. Download `Solution/ProductQuoteAgent.zip` and upload the included Word template to SharePoint.
+
+  2. Import the solution in Power Apps and configure its connections and email environment variable.
+
+  3. Point the included flow at the Word template, turn the flow on, and test the agent in Copilot
+  Studio.
+prerequisites:
+  - Microsoft Copilot Studio
+  - Power Automate
+  - Exchange Online
+  - Excel product catalog
+  - Word template with plain-text content controls
+---
+
 # 🧾 Product Quote Agent 
 
 This autonomous agent helps with generating quotes by using Excel as a knowledgebase for product inventory. It leverages Power Automate to populate a Word template with quote details and emails the final document based on the user's request.

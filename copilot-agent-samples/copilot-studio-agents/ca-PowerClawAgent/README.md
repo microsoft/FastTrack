@@ -1,3 +1,39 @@
+---
+title: PowerClaw Agent
+type: agent
+category: Copilot Studio
+summary: A 24/7 AI chief of staff with autonomous briefings, task execution, and proactive coordination.
+author: Alejandro Lopez
+version: 1.2.11
+published: "2026-03-17"
+updated: "2026-05-27"
+tags:
+  - chief-of-staff
+  - automation
+  - calendar
+  - memory
+format: bundle
+featured: true
+whatItIs: >-
+  A personal Copilot Studio agent that uses SharePoint as its memory and task workspace, chats in
+  Teams, and runs a scheduled Power Automate heartbeat.
+whyUseIt:
+  - Receive proactive work briefings and meeting preparation from Microsoft 365 context.
+  - Delegate scheduled or task-board research and receive saved deliverables.
+  - Keep the agent, its memory, and its operating data inside the Microsoft 365 tenant.
+howToUse: |-
+  1. Import `PowerClaw_Solution.zip` into the target Power Platform environment.
+  2. Provision the SharePoint workspace with the Bootstrap flow, PowerShell setup, or manual setup.
+  3. Edit `user.md`, configure the documented connections, publish the agent, and use it in Teams.
+
+  See [`SETUP.md`](SETUP.md) for the complete setup and upgrade procedure.
+prerequisites:
+  - Microsoft 365 E3 or E5
+  - Copilot Studio capacity or pay-as-you-go
+  - Power Automate Premium
+  - Permission to create a SharePoint site
+---
+
 <p align="center">
   <img src="./Images/powerclaw-rounded.png" width="120" />
 </p>

@@ -1,3 +1,47 @@
+---
+title: Get-M365CopilotReadiness
+type: script
+category: PowerShell
+summary: >-
+  Assess Microsoft 365 Copilot readiness across identity, licensing, collaboration, sharing, and
+  optional compliance checks.
+author: John Cummings
+version: 1.0.0
+published: "2025-08-20"
+updated: "2025-09-09"
+tags:
+  - copilot
+  - readiness
+  - m365
+format: ps1
+featured: true
+whatItIs: >-
+  A PowerShell assessment that collects Microsoft 365 configuration signals and creates JSON and
+  HTML reports for Copilot deployment-readiness review.
+whyUseIt:
+  - Review Entra, licensing, Exchange, SharePoint, OneDrive, Teams, and Graph signals in one run.
+  - Read plain-language descriptions and Copilot context for collected settings.
+  - Optionally add a Microsoft Compliance Configuration Analyzer assessment.
+howToUse: >-
+  Open PowerShell in the resource folder and run:
+
+
+  ```powershell
+
+  .\Get-M365CopilotReadiness.ps1 -OutputPath "C:\Temp\M365Readiness"
+
+  ```
+
+
+  Use `-IncludeMCCA` for the optional compliance assessment. Complete the interactive sign-ins;
+  failed services are logged while the remaining checks continue.
+prerequisites:
+  - Windows PowerShell 5.1 or PowerShell 7
+  - Network access to Microsoft 365 endpoints
+  - Documented read permissions and service admin roles
+  - MCCA licensing and roles only when using -IncludeMCCA
+---
+
 # Microsoft FastTrack Open Source - Get-M365CopilotReadiness
 
 PowerShell script that quickly collects key configuration information from Exchange Online, SharePoint Online, OneDrive, Microsoft Teams, and **Entra ID** to assess Microsoft 365 Copilot deployment readiness. **Optional Microsoft Compliance Configuration Analyzer (MCCA) assessment available.**

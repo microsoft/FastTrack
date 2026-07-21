@@ -1,3 +1,36 @@
+---
+title: Agents Cost Calculator
+type: strategy
+category: Interactive
+summary: >-
+  Estimate test and production costs for Copilot Studio, Agent Builder, SharePoint, and Foundry
+  agents.
+author: Microsoft FastTrack
+version: 1.0.0
+published: "2026-04-01"
+updated: "2026-07-16"
+tags:
+  - cost
+  - roi
+  - calculator
+format: interactive
+featured: true
+whatItIs: >-
+  A self-contained browser calculator for modeling Copilot Credits or token-based costs across
+  custom, Agent Builder, SharePoint, and Microsoft Foundry agents.
+whyUseIt:
+  - Trace per-turn costs before testing or production rollout.
+  - Compare pay-as-you-go, capacity, model, knowledge, tool, and conversation assumptions.
+  - Export a scenario to CSV or print a shareable planning snapshot.
+howToUse: >-
+  Open `index.html` in a browser, select an agent type, and optionally load a quick-start template.
+  Enter knowledge, component, conversation, test-scale, or token assumptions, then review the cost
+  trace and production estimate. Export CSV or print the results.
+prerequisites:
+  - Modern web browser
+  - Current licensing and pricing inputs for planning validation
+---
+
 # M365 Copilot Agents Cost Calculator
 
 A self-contained, browser-based cost estimator for Microsoft 365 Copilot agents.

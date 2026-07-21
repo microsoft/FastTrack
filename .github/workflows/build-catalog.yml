@@ -1,0 +1,65 @@
+name: Build catalog
+
+on:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "copilot-agent-samples/**"
+      - "copilot-agent-strategy/**"
+      - "copilot-analytics-samples/**"
+      - "copilot-prompt-samples/**"
+      - "tools/catalog-build/**"
+      - "docs/CATALOG-METADATA.md"
+      - ".github/workflows/build-catalog.yml"
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Updated dates can fall back to Git history.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tools/catalog-build/package-lock.json
+      - run: npm ci
+        working-directory: tools/catalog-build
+      - run: npm run check
+        working-directory: tools/catalog-build
+
+  publish:
+    if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tools/catalog-build/package-lock.json
+      - run: npm ci
+        working-directory: tools/catalog-build
+      - run: npm run build
+        working-directory: tools/catalog-build
+      - name: Commit generated catalog
+        run: |
+          if git diff --quiet -- catalog.json design-concepts/catalog.json; then
+            echo "Catalog is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog.json design-concepts/catalog.json
+          git commit -m "chore: rebuild catalog"
+          git push

@@ -1,3 +1,33 @@
+---
+title: Create-EngageCommunities
+type: script
+category: PowerShell
+summary: Bulk-create up to 50 sample Viva Engage communities from JSON and assign a chosen or random owner.
+author: Dean Cron
+version: 1.0.0
+published: "2023-12-22"
+updated: "2025-10-02"
+tags:
+  - viva-engage
+  - provisioning
+format: ps1
+status: preview
+whatItIs: >-
+  A non-production PowerShell sample that calls the Microsoft Graph community-creation API to create
+  Viva Engage communities from a JSON input file.
+whyUseIt:
+  - Demonstrate the community-creation API with repeatable sample data.
+  - Assign one specified owner or select random owners for generated communities.
+howToUse: >-
+  Configure the app-registration values in the script, prepare a JSON file of community names and
+  descriptions, then run `./Create-EngageCommunities.ps1 -InputFile C:\Temp\communities.json
+  -NumberofCommunities 25 -AssignedOwner "user@domain.com"`.
+prerequisites:
+  - Entra app registration
+  - Community.ReadWrite.All and User.Read.All application permissions
+  - JSON file containing community names and descriptions
+---
+
 # Microsoft FastTrack Open Source - Create-EngageCommunities
 
 This sample script will demonstrate how to use PowerShell to bulk-create Viva Engage communities using the Create Community Graph API:

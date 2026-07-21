@@ -1,3 +1,35 @@
+---
+title: Copilot Agents Guide
+type: strategy
+category: Interactive
+summary: >-
+  Compare Microsoft Copilot agent platforms with capability views, decision guidance, support
+  indicators, and scenarios.
+author: Microsoft FastTrack
+version: 3.0.0
+published: "2025-10-28"
+updated: "2026-04-17"
+tags:
+  - guide
+  - decision
+  - planning
+format: interactive
+featured: true
+whatItIs: >-
+  A self-contained interactive web guide that compares Microsoft Copilot agent types across
+  capabilities, constraints, technical effort, cost, and FastTrack support.
+whyUseIt:
+  - Shortlist an agent platform based on use case, team skills, budget, timeline, and growth.
+  - Compare capabilities and limitations side by side before committing to a build path.
+  - Give business, architecture, and development stakeholders a shared decision framework.
+howToUse: >-
+  Open `index.html` directly in a modern browser. To host locally, run `python -m http.server 8000`
+  from the resource folder and browse to `http://localhost:8000/index.html`. Use the Overview,
+  Capabilities, Comparison, and Guidance tabs.
+prerequisites:
+  - Modern web browser
+---
+
 # Microsoft Copilot Agents Guide
 
 An interactive decision-making dashboard to help you choose the right Microsoft Copilot agent platform for your business needs.

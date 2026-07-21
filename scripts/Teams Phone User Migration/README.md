@@ -1,3 +1,36 @@
+---
+title: Teams Phone User Migration
+type: script
+category: PowerShell
+summary: >-
+  Run a two-phase CSV-driven Teams Phone migration for voice policies, phone numbers, and emergency
+  locations.
+author: Laure Van der Hauwaert
+version: 1.0.0
+published: "2024-10-21"
+updated: "2024-10-21"
+tags:
+  - teams
+  - telephony
+  - migration
+format: ps1
+whatItIs: >-
+  A pair of PowerShell samples for a staged Teams Phone migration: assign voice policies before
+  cutover, then assign phone numbers and emergency locations.
+whyUseIt:
+  - Separate advance policy assignment from migration-day number activation.
+  - Drive bulk assignments from a documented CSV format.
+  - Log disabled, unlicensed, or otherwise failed user assignments.
+howToUse: >-
+  Install the latest MicrosoftTeams module and fill the included CSV with user policies, numbers,
+  and emergency locations. Run the Phase 1 script before cutover, then run the Phase 2 Cutover
+  script on migration day.
+prerequisites:
+  - MicrosoftTeams PowerShell module
+  - Teams administration permissions
+  - Completed migration CSV
+---
+
 
 # Microsoft FastTrack Open Source - Teams Phone User Migration example scripts
 
