@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "node index.js",
-    "check": "node index.js --check"
+    "check": "node index.js --check",
+    "build:stats": "node build-stats.js",
+    "check:stats": "node build-stats.js --check",
+    "create:vote-discussions": "node create-vote-discussions.js"
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",

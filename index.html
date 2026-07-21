@@ -1359,6 +1359,11 @@
             <ul class="detail-prerequisites" id="detailPrerequisites"></ul>
           </section>
         </div>
+        <div class="detail-giscus-section">
+          <h3>Community &amp; upvotes</h3>
+          <!-- giscus embed is mounted per-resource by mountGiscus() using the resource slug as data-term -->
+          <div id="giscusContainer"></div>
+        </div>
         <h3>Related resources</h3>
         <div class="related-grid" id="relatedGrid"></div>
       </div>
@@ -1376,7 +1381,7 @@
             <div class="metadata-label">Format</div>
             <div class="metadata-val" id="metaFormat"></div>
           </div>
-          <div class="metadata-row">
+          <div class="metadata-row" id="metaViewsRow">
             <div class="metadata-label">Views</div>
             <div class="metadata-val" id="metaViews" style="font-family: var(--font-mono); font-variant-numeric: tabular-nums;"></div>
           </div>
@@ -1393,10 +1398,6 @@
             <div class="metadata-val" id="metaVersion"></div>
           </div>
           <div class="detail-actions">
-            <button class="btn-secondary vote-btn" id="btnDetailVote" style="width: 100%; justify-content: center;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
-              Upvote <span class="vote-count" style="margin-left: 0.25rem;"></span>
-            </button>
             <a href="#" target="_blank" rel="noopener" class="btn-primary" id="btnDetailOpen">
               Open on GitHub 
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg>
@@ -1427,7 +1428,9 @@
   <script>
     // --- DATASET ---
     const CATALOG_URL = 'catalog.json';
+    const STATS_URL = 'resource-stats.json';
     let RESOURCES = [];
+    let STATS = {};
 
     const TYPE_DEF = [
       { id: 'all', label: 'All', desc: 'Browse everything' },
@@ -1480,35 +1483,21 @@
       return 'FT';
     };
 
-    const hashStr = (s) => {
-      let h = 0x811c9dc5;
-      for (let i = 0; i < s.length; i++) {
-        h ^= s.charCodeAt(i);
-        h = (h * 0x01000193) >>> 0;
-      }
-      return h;
-    };
-    const baseStats = (r) => {
-      const h = hashStr(r.slug);
-      const ageDays = Math.max(0, (Date.now() - new Date(r.updated)) / 86400000);
-      const recency = Math.max(0, 1 - ageDays / 540);
-      const views = 140 + (h % 4200) + Math.round(recency * 2600) + (r.featured ? 1600 : 0);
-      const rate = 0.02 + ((h >>> 3) % 9) / 100;
-      const upvotes = Math.max(3, Math.round(views * rate));
-      return { views, upvotes };
-    };
-    const getVotesState = () => {
-      try { return JSON.parse(localStorage.getItem('ft-votes') || '{}'); } catch(e) { return {}; }
-    };
-    const hasVoted = (slug) => !!getVotesState()[slug];
-    const toggleVote = (slug) => {
-      const votes = getVotesState();
-      if (votes[slug]) delete votes[slug]; else votes[slug] = true;
-      localStorage.setItem('ft-votes', JSON.stringify(votes));
-    };
     const getStats = (r) => {
-      const base = baseStats(r);
-      return { views: base.views, upvotes: base.upvotes + (hasVoted(r.slug) ? 1 : 0) };
+      const s = (STATS && STATS[r.slug]) || {};
+      const hasViews = Number.isFinite(s.views);
+      const hasDiscussion = !!(s.discussion && s.discussion.url);
+      const discussionUrl = s.discussion?.url || null;
+      const discussionNumber = s.discussion?.number ?? null;
+      const hasUpvotes = hasDiscussion;
+      return {
+        views: hasViews ? s.views : 0,
+        hasViews,
+        upvotes: Number.isFinite(s.upvotes) ? s.upvotes : 0,
+        hasUpvotes,
+        discussionUrl,
+        discussionNumber
+      };
     };
     const formatCount = (n) => {
       if (n >= 10000) return (n / 1000).toFixed(0) + 'k';
@@ -1557,6 +1546,16 @@
         if (!response.ok) throw new Error(`Catalog request failed with HTTP ${response.status}`);
         const catalog = await response.json();
         if (!catalog || !Array.isArray(catalog.resources)) throw new Error('Catalog response has an invalid shape');
+
+        try {
+          const statsRes = await fetch(STATS_URL, { cache: 'no-cache' });
+          if (statsRes.ok) {
+            const statsData = await statsRes.json();
+            STATS = statsData.resources || {};
+          }
+        } catch (e) {
+          console.warn('Failed to load stats:', e);
+        }
 
         RESOURCES = catalog.resources.map(resource => ({
           ...resource,
@@ -1607,9 +1606,13 @@
       }
       updateDensityUI();
 
-      // 2. Read URL Params
+      // 2. Read URL Params and Hash
       const params = new URLSearchParams(window.location.search);
-      if (params.has('resource')) state.resource = params.get('resource');
+      if (window.location.hash) {
+        state.resource = window.location.hash.substring(1);
+      } else if (params.has('resource')) {
+        state.resource = params.get('resource');
+      }
       if (params.has('q')) state.q = params.get('q');
       if (params.has('type')) state.type = params.get('type');
       if (params.has('tag')) state.tag = params.get('tag');
@@ -1624,7 +1627,7 @@
       // 3. Bind Events
       window.addEventListener('popstate', () => {
         const urlParams = new URLSearchParams(window.location.search);
-        state.resource = urlParams.get('resource') || null;
+        state.resource = window.location.hash ? window.location.hash.substring(1) : (urlParams.get('resource') || null);
         state.q = urlParams.get('q') || '';
         state.type = urlParams.get('type') || 'all';
         state.tag = urlParams.get('tag') || 'all';
@@ -1641,7 +1644,7 @@
         if (link && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
           e.preventDefault();
           const url = new URL(link.href, window.location.origin);
-          const slug = url.searchParams.get('resource');
+          const slug = url.hash ? url.hash.substring(1) : url.searchParams.get('resource');
           if (slug) {
             state.resource = slug;
             updateState(true);
@@ -1703,7 +1706,7 @@
       // Update URL
       const url = new URL(window.location);
       if (state.resource) {
-        url.searchParams.set('resource', state.resource);
+        url.searchParams.delete('resource');
         url.searchParams.delete('q');
         url.searchParams.delete('type');
         url.searchParams.delete('tag');
@@ -1716,10 +1719,11 @@
         if (state.sort !== 'popular') url.searchParams.set('sort', state.sort); else url.searchParams.delete('sort');
       }
       
+      const urlStr = url.pathname + url.search + (state.resource ? '#' + state.resource : '');
       if (pushHistory) {
-        window.history.pushState({ internal: true }, '', url);
+        window.history.pushState({ internal: true }, '', urlStr);
       } else {
-        window.history.replaceState(window.history.state || { internal: true }, '', url);
+        window.history.replaceState(window.history.state || { internal: true }, '', urlStr);
       }
 
       render();
@@ -1781,6 +1785,10 @@
           return;
         }
       }
+
+      // Cleanup detail view state
+      const giscusContainer = document.getElementById('giscusContainer');
+      if (giscusContainer) giscusContainer.innerHTML = '';
 
       document.getElementById('catalogView').classList.remove('d-none');
       document.getElementById('detailView').classList.add('d-none');
@@ -1992,7 +2000,6 @@
       const bg = getTypeBg(data.type);
       const color = getTypeColor(data.type);
       const stats = getStats(data);
-      const voted = hasVoted(data.slug);
       
       const star = data.featured ? `<span class="featured-star" aria-label="Featured">★</span>` : '';
       
@@ -2005,7 +2012,7 @@
           </div>
           <div class="card-title-group">
             <h2 class="card-title">
-              <a href="?resource=${data.slug}" class="resource-link">${data.name}</a>
+              <a href="#${data.slug}" class="resource-link">${data.name}</a>
             </h2>
             <div class="card-sub">
               <div class="pill-dot" style="background-color: ${color}; width: 6px; height: 6px;"></div>
@@ -2014,30 +2021,28 @@
           </div>
         </div>
         <div class="card-desc">${data.description}</div>
-        <div class="compact-views" aria-label="${stats.views} views">
+        ${stats.hasViews ? `<div class="compact-views" aria-label="${stats.views} views">
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           ${formatCount(stats.views)}
-        </div>
-        <div class="compact-votes">
-          <button class="vote-btn ${voted ? 'voted' : ''}" data-slug="${data.slug}" aria-pressed="${voted}" aria-label="${voted ? `Remove your upvote from ${data.name}` : `Upvote ${data.name}`}">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="${voted ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
-            <span class="vote-count">${formatCount(stats.upvotes)}</span>
-          </button>
-        </div>
+        </div>` : ''}
+        ${stats.hasUpvotes ? `<div class="compact-votes" aria-label="${stats.upvotes} upvotes">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+          <span class="vote-count">${formatCount(stats.upvotes)}</span>
+        </div>` : ''}
         <div class="card-footer">
           <div class="card-tags">
             ${data.tags.slice(0, 3).map(t => `<span class="card-tag">${t}</span>`).join('')}
             ${data.tags.length > 3 ? `<span class="card-tag">+${data.tags.length - 3}</span>` : ''}
           </div>
           <div class="card-stats">
-            <span class="stat-views" aria-label="${stats.views} views">
+            ${stats.hasViews ? `<span class="stat-views" aria-label="${stats.views} views">
               <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               ${formatCount(stats.views)}
-            </span>
-            <button class="vote-btn ${voted ? 'voted' : ''}" data-slug="${data.slug}" aria-pressed="${voted}" aria-label="${voted ? `Remove your upvote from ${data.name}` : `Upvote ${data.name}`}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="${voted ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            </span>` : ''}
+            ${stats.hasUpvotes ? `<span class="stat-views" aria-label="${stats.upvotes} upvotes">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
               <span class="vote-count">${formatCount(stats.upvotes)}</span>
-            </button>
+            </span>` : ''}
           </div>
           <div class="card-artifact-container">
             <div class="card-artifact" aria-label="Format: ${data.artifact}">
@@ -2048,31 +2053,6 @@
           </div>
         </div>
       `;
-      const bindVote = (btn) => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          toggleVote(data.slug);
-          const nowVoted = hasVoted(data.slug);
-          if (nowVoted && typeof window.clarity !== 'undefined') {
-            window.clarity('set', 'upvoted_resource', data.slug);
-            window.clarity('event', 'resource_upvote');
-          }
-          const newStats = getStats(data);
-          // Update both buttons in this card
-          card.querySelectorAll('.vote-btn').forEach(b => {
-            b.classList.toggle('voted', nowVoted);
-            b.setAttribute('aria-pressed', nowVoted);
-            b.setAttribute('aria-label', nowVoted ? `Remove your upvote from ${data.name}` : `Upvote ${data.name}`);
-            b.querySelector('.vote-count').textContent = formatCount(newStats.upvotes);
-            b.querySelector('svg').setAttribute('fill', nowVoted ? 'currentColor' : 'none');
-            b.classList.remove('pop');
-            void b.offsetWidth; // trigger reflow
-            b.classList.add('pop');
-          });
-        });
-      };
-      card.querySelectorAll('.vote-btn').forEach(bindVote);
 
       return card;
     }
@@ -2110,6 +2090,9 @@
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       updateThemeIcon();
+      
+      const giscusTheme = next === 'dark' ? 'dark_dimmed' : 'light';
+      document.querySelector('#giscusContainer iframe.giscus-frame')?.contentWindow?.postMessage({ giscus: { setConfig: { theme: giscusTheme } } }, 'https://giscus.app');
     }
 
     function updateThemeIcon() {
@@ -2232,6 +2215,30 @@
       parseTextBlock(source.slice(cursor));
     }
 
+    function mountGiscus(slug, theme) {
+      const container = document.getElementById('giscusContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      const script = document.createElement('script');
+      script.src = "https://giscus.app/client.js";
+      script.setAttribute("data-repo", "microsoft/FastTrack");
+      script.setAttribute("data-repo-id", "MDEwOlJlcG9zaXRvcnkxMjM5MzE5NTk=");
+      script.setAttribute("data-category", "Resource Votes");
+      script.setAttribute("data-category-id", "DIC_kwDOB2MNN84DBq2E");
+      script.setAttribute("data-mapping", "specific");
+      script.setAttribute("data-term", slug);
+      script.setAttribute("data-strict", "1");
+      script.setAttribute("data-reactions-enabled", "1");
+      script.setAttribute("data-emit-metadata", "0");
+      script.setAttribute("data-input-position", "bottom");
+      script.setAttribute("data-theme", theme === "dark" ? "dark_dimmed" : "light");
+      script.setAttribute("data-lang", "en");
+      script.setAttribute("data-loading", "lazy");
+      script.setAttribute("crossorigin", "anonymous");
+      script.async = true;
+      container.appendChild(script);
+    }
+
     function renderDetailView(resource) {
       document.getElementById('catalogView').classList.add('d-none');
       document.getElementById('detailView').classList.remove('d-none');
@@ -2290,12 +2297,15 @@
       document.getElementById('metaFormat').textContent = fmt;
       
       const stats = getStats(resource);
-      document.getElementById('metaViews').innerHTML = `
-        <span class="stat-views" style="display:inline-flex; align-items:center; gap:0.25rem;">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-          ${formatCount(stats.views)}
-        </span>
-      `;
+      document.getElementById('metaViewsRow').classList.toggle('d-none', !stats.hasViews);
+      if (stats.hasViews) {
+        document.getElementById('metaViews').innerHTML = `
+          <span class="stat-views" style="display:inline-flex; align-items:center; gap:0.25rem;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            ${formatCount(stats.views)}
+          </span>
+        `;
+      }
       
       document.getElementById('metaUpdated').textContent = formatDate(resource.updated) || 'Not provided';
 
@@ -2307,36 +2317,8 @@
       
       document.getElementById('btnDetailOpen').href = resource.url;
       
-      // Detail Vote Button
-      const detailVoteBtn = document.getElementById('btnDetailVote');
-      const voted = hasVoted(resource.slug);
-      detailVoteBtn.classList.toggle('voted', voted);
-      detailVoteBtn.setAttribute('aria-pressed', voted);
-      detailVoteBtn.setAttribute('aria-label', voted ? `Remove your upvote from ${resource.name}` : `Upvote ${resource.name}`);
-      detailVoteBtn.querySelector('.vote-count').textContent = formatCount(stats.upvotes);
-      detailVoteBtn.querySelector('svg').setAttribute('fill', voted ? 'currentColor' : 'none');
-      
-      // Replace the button entirely to clear old event listeners
-      const newBtn = detailVoteBtn.cloneNode(true);
-      detailVoteBtn.parentNode.replaceChild(newBtn, detailVoteBtn);
-      newBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleVote(resource.slug);
-        const nowVoted = hasVoted(resource.slug);
-        if (nowVoted && typeof window.clarity !== 'undefined') {
-          window.clarity('set', 'upvoted_resource', resource.slug);
-          window.clarity('event', 'resource_upvote');
-        }
-        const newStats = getStats(resource);
-        newBtn.classList.toggle('voted', nowVoted);
-        newBtn.setAttribute('aria-pressed', nowVoted);
-        newBtn.setAttribute('aria-label', nowVoted ? `Remove your upvote from ${resource.name}` : `Upvote ${resource.name}`);
-        newBtn.querySelector('.vote-count').textContent = formatCount(newStats.upvotes);
-        newBtn.querySelector('svg').setAttribute('fill', nowVoted ? 'currentColor' : 'none');
-        newBtn.classList.remove('pop');
-        void newBtn.offsetWidth;
-        newBtn.classList.add('pop');
-      });
+      // Mount giscus discussion
+      mountGiscus(resource.slug, document.documentElement.getAttribute('data-theme'));
       
       // Related resources (up to 4 matching type, excluding self)
       const related = RESOURCES.filter(r => r.type === resource.type && r.slug !== resource.slug).slice(0, 4);
@@ -2349,7 +2331,7 @@
       
       // Clarity tracking
       if (typeof window.clarity !== 'undefined') {
-        window.clarity('set', 'resource', resource.slug);
+        window.clarity('set', 'page', location.pathname + location.hash);
         window.clarity('event', 'resource_view');
       }
     }

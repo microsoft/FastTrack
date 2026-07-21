@@ -26,6 +26,7 @@ on:
 
 permissions:
   contents: write
+  discussions: read
 
 jobs:
   validate:
@@ -61,14 +62,22 @@ jobs:
         working-directory: tools/catalog-build
       - run: npm run build
         working-directory: tools/catalog-build
+      - run: npm run build:stats
+        working-directory: tools/catalog-build
+        env:
+          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Commit generated catalog
         run: |
-          if git diff --quiet -- catalog.json; then
-            echo "Catalog is already current."
+          git add catalog.json resource-stats.json traffic-data/clarity-views.json resource-discussions.json
+          if [ -f design-concepts/resource-stats.json ]; then
+            git add design-concepts/resource-stats.json
+          fi
+          if git diff --cached --quiet; then
+            echo "Catalog and resource stats are already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add catalog.json
           git commit -m "chore: rebuild catalog [skip ci]"
           git push

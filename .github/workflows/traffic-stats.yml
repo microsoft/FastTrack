@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  discussions: read
   pull-requests: write
 
 concurrency:
@@ -23,6 +24,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tools/catalog-build/package-lock.json
+
+      - name: Install catalog build dependencies
+        run: npm ci
+        working-directory: tools/catalog-build
 
       - name: Collect and persist traffic data
         env:
@@ -176,13 +188,22 @@ jobs:
 
           echo "✅ Saved $DATA_DIR/$DATE.json"
 
+      - name: Build resource stats
+        env:
+          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node tools/catalog-build/build-stats.js
+
       - name: Commit and open PR
         env:
           GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add traffic-data/
+          git add traffic-data/ resource-stats.json resource-discussions.json
+          if [ -f design-concepts/resource-stats.json ]; then
+            git add design-concepts/resource-stats.json
+          fi
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
