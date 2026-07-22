@@ -1133,7 +1133,7 @@
       text-overflow: ellipsis;
     }
     .card-title a { color: inherit; text-decoration: none; }
-    .card-title a.resource-link::after { content: ''; position: absolute; inset: 0; border-radius: var(--radius); z-index: 1; }
+    /* Whole-card navigation is handled in JS (see click handler) so the upvote button and other controls stay reliably clickable. */
     
     .card-sub {
       display: inline-flex;
@@ -1750,7 +1750,9 @@
       });
 
       document.addEventListener('click', (e) => {
-        const link = e.target.closest('a.resource-link');
+        if (e.target.closest('.vote-btn')) return;
+        const card = e.target.closest('.card');
+        const link = (card && card.querySelector('a.resource-link')) || e.target.closest('a.resource-link');
         if (link && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
           e.preventDefault();
           const url = new URL(link.href, window.location.origin);
