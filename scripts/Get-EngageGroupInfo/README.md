@@ -1,29 +1,34 @@
-# Microsoft FastTrack Open Source - Get-YammerGroupInfo
+# Microsoft FastTrack Open Source - Get-EngageGroupInfo
 
-This sample script gets key information about every group in your Yammer network, including group ID, name, member count, last message date, and group admins.
+This sample script gets key information about every Viva Engage community in your tenant using the Microsoft Graph API, including community/group ID, name, member count, and community admins.
 
 ## Usage
 
 ### Prerequisites
 
-- You must register an app and generate a bearer token (aka Developer Token) in your Yammer network for use with this script, you’ll need it for the next step below.
-  Detailed instructions on how to generate this can be found in step 2 here: https://techcommunity.microsoft.com/t5/yammer-developer/generating-an-administrator-token/m-p/97058
+- You must create a new Azure AD (Entra ID) App Registration with the following Microsoft Graph **application** permissions, with admin consent granted:
+  ```
+  Community.Read.All (or Community.ReadWrite.All)
+  GroupMember.Read.All (or Group.Read.All / Group.ReadWrite.All)
+  ```
 
-- The account that creates the developer token in the step above MUST have private content mode enabled:
-  https://learn.microsoft.com/en-us/viva/engage/manage-security-and-compliance/monitor-private-content
+There are a few variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
 
+1. **$ClientId = "clientid"**
 
-There are only 2 variables you may need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
+	  >Replace with the Client ID of the app registration you created in the prerequisites.
 
-1. **$Global:YammerAuthToken = "BearerTokenString"**
+2. **$TenantId = "tenantid"**
+  
+     >Replace with your tenant ID.
 
-	Replace BearerTokenString with the token you created via the instructions in the prerequisites. The line should look something like this:
+3. **$ClientSecret = "clientsecret"**
+  
+     >Replace with the client secret value of the app registration you created in the prerequisites.
 
-    $Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
+4. **$ReportOutput = "C:\Temp\YammerGroupInfo{0}.csv" -f [DateTime]::Now.ToString("yyyy-MM-dd_hh-mm-ss")**
 
-2. **$ReportOutput = "C:\Temp\YammerGroupInfo{0}.csv" -f [DateTime]::Now.ToString("yyyy-MM-dd_hh-mm-ss")**
-
-    If you'd like the script to be generated in a specific location, change the path above to reflect your target.
+    If you'd like the report generated in a specific location, change the path above to reflect your target.
 
 ### Parameters
 
@@ -33,17 +38,24 @@ None
 
 Once you’ve made and saved those changes, you’re ready to go. Run the script like so:
 
-	.\Get-YammerGroupInfo.ps1
+	.\Get-EngageGroupInfo.ps1
+
+### Notes
+
+**Breaking change (July 2026):** This script was migrated from the legacy Yammer REST API to Microsoft Graph. The output CSV's `GroupId` column is now the Microsoft 365 group ID (a GUID) that backs the community, not the legacy numeric Yammer group ID produced by earlier versions of this script. There's also a new `CommunityId` column with the Graph community ID.
+
+The `LastMessageAt` column has been removed. Viva Engage conversation/message activity isn't exposed via Microsoft Graph today - the communities API only covers CRUD and membership, not messaging stats - so there's no Graph equivalent for this field.
 
 ## Applies To
 
-- Yammer / Viva Engage networks in M365, including external networks
+- Viva Engage communities in M365
 
 ## Author
 
 |Author|Original Publish Date
 |----|--------------------------
 |Dean Cron, Microsoft|December 13th, 2023|
+|Dean Cron, Microsoft|July 22nd, 2026|
 
 ## Issues
 

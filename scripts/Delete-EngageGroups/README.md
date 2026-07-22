@@ -1,28 +1,28 @@
-# Microsoft FastTrack Open Source - Delete-YammerUsers
+# Microsoft FastTrack Open Source - Delete-EngageGroups
 
-This sample script will allow a Yammer admin to bulk-delete Yammer users
+This sample script will allow an admin to bulk-delete Viva Engage communities using the Microsoft Graph API.
+
+**Version 3.0 note:** This script was migrated off the deprecated legacy Yammer REST API (`www.yammer.com/api/v1/groups`) to the Microsoft Graph [community API](https://learn.microsoft.com/en-us/graph/api/community-delete?view=graph-rest-beta), since the legacy endpoint is undocumented, unsupported, and at risk of being turned off without notice. **The ID format has changed as part of this migration** — see below.
 
 ## Usage
 
 ### Prerequisites
 
-- You must create a new Yammer app registration in Microsoft Entra ID. This app should be configured to grant the following **delegated** permission:
+- You must create a new app registration in Microsoft Entra ID. This app should be configured to grant the following **application** permission, with admin consent granted:
   ```
-  Yammer
-   -access_as_user
+  Microsoft Graph
+   -Community.ReadWrite.All
   ```
 
 - You'll need to create a CSV file containing one column:
-	- **UserID**. This will contain the IDs of the users you want to delete.
- 
-  The CSV should look similar to this:
+	- **CommunityId**. This will contain the Viva Engage community IDs (Microsoft Graph `community.id` values) of the communities you want to delete.
 
-  ![CSV format](UserIDSample.png?raw=true "Title")
+  > ⚠️ **This is not the same ID as the legacy numeric Yammer group ID used by earlier versions of this script or by the network data export CSVs.** Graph community IDs are opaque base64-style strings, not plain numbers.
 
-  You can get the user ID of the users you want to delete in one of two ways:
+  You can get the community IDs you need in one of two ways:
 
-    1. Run a user export of all users. Settings-> Edit Network Admin Settings -> Export Users -> Export All Users. Grad the IDs of the users you want to delete from here and crearte a new CSV, placing those IDs in a column named UserID.
-    2. If you're doing this pre-native mode migration, you can get the user IDs from the alignment report you're basing your cleanup on.
+    1. `GET https://graph.microsoft.com/beta/employeeExperience/communities` and match communities by `displayName`, taking the `id` field from the response.
+    2. If you still have the legacy numeric group ID, you can find the Microsoft 365 group behind it and cross-reference it to a community via `GET /employeeExperience/communities` (filtering/matching on the associated `groupId`), since Graph doesn't expose a direct legacy-ID lookup.
 
 ### Variables
 
@@ -34,28 +34,19 @@ There are a few variables you need to change in the script itself. These are loc
 
 2. **$TenantId = "TenantIDString"**
   
-     >Replace TenantIDString with the Client ID of the app registration you created in the prerequisites.
+     >Replace TenantIDString with the Tenant ID of the app registration you created in the prerequisites.
 
 3. **$ClientSecret = "ClientSecretString"**
   
      >Replace ClientSecretString with the client secret value of the app registration you created in the prerequisites.
-     
-4. **$RedirectUri = "https://localhost"**
-   	 >Replace this with the redirect Url you set in your app registration (if not set to https://localhost)
 
-5. **$Global:YammerAuthToken = "BearerTokenString"**
-
-	  Replace BearerTokenString with the token you created via the instructions in the prerequisites. The line should look something like this:
-
-    $Global:YammerAuthToken = "21737620380-GFy6awIxfYGULlgZvf43A"
-
-6. **$usersToBeDeletedCSV = 'C:\temp\userstobedeleted.csv'**
+4. **$groupsToBeDeletedCSV = 'C:\temp\groupstobedeleted.csv'**
   
-    Point this to the userstobedeleted.csv file you created as mentioned above.
+    Point this to the groupstobedeleted.csv file you created as mentioned above.
 
-7. **$whatIfMode = $true**
+5. **$whatIfMode = $true**
 
-   The script runs in a WhatIf mode by default since user deletion can’t be undone, so it’ll only loop through the CSV and tell you which users it *would* have deleted, it doesn’t actually take hard action. When you’re ready to have it actually delete users, change the value to $false
+   The script runs in a WhatIf mode by default since the group deletion can’t be undone, so it’ll only loop through the CSV and tell you which groups it *would* have deleted, it doesn’t actually take hard action. When        you’re ready to have it actually delete groups, change the value to $false
   
 ### Parameters
 
@@ -65,18 +56,23 @@ None
 
 Once you’ve completed the pre-reqs, you’re ready to go. Run the script like so:
 
-	.\Delete-YammerUsers.ps1
+	.\Delete-EngageGroups.ps1
+
+### Notes
+
+**This sample now uses the Microsoft Graph community API (`/beta/employeeExperience/communities`), which is officially documented and supported, unlike the earlier version of this script.** The `/beta` Graph endpoint is still subject to change, so monitor the [Graph changelog](https://learn.microsoft.com/en-us/graph/changelog) for updates.
 
 ## Applies To
 
-- Yammer / Viva Engage networks in M365
+- Viva Engage communities in M365
 
 ## Author
 
 |Author|Original Publish Date
 |----|--------------------------
-|Dean Cron, Microsoft|November 28th, 2023|
+|Dean Cron, Microsoft|July 6th, 2023|
 |Dean Cron, Microsoft|November 4th, 2025|
+|Dean Cron, Microsoft|July 22nd, 2026 - Migrated to Microsoft Graph|
 
 ## Issues
 

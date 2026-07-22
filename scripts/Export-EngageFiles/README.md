@@ -1,4 +1,4 @@
-# Microsoft FastTrack Open Source - Export-YammerFiles
+# Microsoft FastTrack Open Source - Export-EngageFiles
 
 This sample script calls the Yammer Files Export API to export files from your Yammer network that were uploaded by users during the date range specified in the command. 
 
@@ -47,7 +47,7 @@ There are a few variables you need to change in the script itself. These are loc
 
 Once you’ve made and saved those changes, you’re ready to go. To run the script, just pass the startdate and enddate for the time period you want exported files from, like so:
 
-	.\Export-YammerFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+	.\Export-EngageFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
 
 Reminder - Those parameters need to be in the YYYY-MM-DD format as shown above. Once complete, the console output will tell you where to find the result, which should be a date-named folder underneath your $rootPath set above.
 
@@ -58,6 +58,8 @@ Console output is minimal. This is more of a ‘fire and go get a cup of coffee�
 Each time you run this, it will create a new folder under the $rootPath you specify that will be named for the export timeframe you specified. In that folder you'll find one or more zip files for the file downloads, along with the detailed script log showing each execution step. The console output from each script run will point you to the specific folder for that run.
 
 If your network is in native mode, no files will be downloaded. You'll get a CSV file with information on each file in the network that includes the URL of each. Actual files are only exported from pre-native mode networks where the files are still in Yammer's file store, not SharePoint.
+
+**July 2026 update:** This script still calls the current, Microsoft-documented Files Export API (`www.yammer.com/api/v1/export/requests`) — there is no separate/newer replacement endpoint as of this review. Microsoft has confirmed (Message Center ID **MC1230453**) that the "Include attachments" admin center option is being retired March 13, 2026; for native-mode networks this API already only returns SharePoint links (files.csv), never the actual attachments, so no functional change is expected for native-mode tenants. The script now prints a reminder of this at runtime.
 
 ## Applies To
 

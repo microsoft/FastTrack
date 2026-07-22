@@ -23,6 +23,15 @@ Author:
 Version:
     1.0 - June 2024 - Initial release
     2.0 - November 2025 - Updated authentication
+    2.1 - July 2026 - Reviewed against current Microsoft documentation (still the current,
+          supported endpoint as of this review). Added a runtime warning for the -IncludeFiles
+          parameter, which Microsoft's docs confirm only applies to legacy (pre-native mode)
+          networks. See MC1230453 for the related March 13, 2026 retirement of the equivalent
+          admin center option.
+    2.2 - July 2026 - Removed the -IncludeExternalNetworks parameter/option. External network
+          export is not supported for native-mode networks (which don't touch external
+          networks during migration), and Microsoft is retiring the equivalent admin center
+          option March 13, 2026 (MC1230453).
 
 Requirements: 
     1. MSAL.PS PowerShell module. Install it from the PowerShell Gallery with the command:
@@ -37,12 +46,9 @@ Requirements:
     OPTIONAL. Sets the end date for the target date range of the export. We recommend including this to set a reasonable range to avoid timeouts.
 .PARAMETER IncludeFiles <all/csv>
     OPTIONAL. Set this to ‘all’ for CSVs (including messages) and all file attachments, or ‘csv’ for CSVs only (including messages), no file attachments.
-.PARAMETER IncludeExternalNetworks <true/false>
-    OPTIONAL. Setting this to ‘true’ would result in CSVs and/or file attachments downloaded for the primary network and all associated external networks.
-    This is unnecessary for native mode migration, as migration doesn’t touch external networks 
 
 .EXAMPLE
-    .\Export-YammerNetworkData.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+    .\Export-EngageNetworkData.ps1 -startdate 2023-01-14 -enddate 2023-01-31
 #>
 
 Param(
@@ -74,11 +80,7 @@ Param(
     
     [Parameter(Mandatory = $false)]
     [ValidateSet('Csv', 'All')]
-    [string]$IncludeFiles,
-    
-    [Parameter(Mandatory = $false)]
-    [ValidateSet('true', 'false')]
-    [string]$IncludeExternalNetworks
+    [string]$IncludeFiles
 )
 
 <############    STUFF YOU NEED TO MODIFY    ############>
@@ -171,10 +173,11 @@ if ($PSBoundParameters.ContainsKey('EndDate')) {
 
 if ($PSBoundParameters.ContainsKey('IncludeFiles')) {
     $Uri += "&include=$IncludeFiles"
-}
-
-if ($PSBoundParameters.ContainsKey('IncludeExternalNetworks')) {
-    $Uri += "&include_ens=$IncludeExternalNetworks"
+    if ($IncludeFiles -eq 'All') {
+        $filesWarning = "-IncludeFiles All was specified, but per Microsoft's documentation this only applies to legacy (pre-native mode) Yammer networks. Native-mode Viva Engage networks will NOT return file attachments regardless of this setting - you'll only get SharePoint links in files.csv. See MC1230453 (retiring the equivalent admin center options March 13, 2026) and https://learn.microsoft.com/en-us/rest/api/yammer/network-data-export"
+        Write-Host $filesWarning -ForegroundColor Yellow
+        Write-Log -Level "WARN" -Message $filesWarning -logFile $activityLog
+    }
 }
 
 #Send the network data export request

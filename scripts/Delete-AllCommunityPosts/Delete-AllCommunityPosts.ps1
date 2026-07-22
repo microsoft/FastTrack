@@ -24,6 +24,16 @@ Author: Dean Cron - dean.cron@microsoft.com
 Version:
     1.0 - June 2024 - Initial release
     2.0 - November 2025 - Updated auth
+    2.1 - July 2026 - Reviewed against current Microsoft Graph documentation. Confirmed there
+          is no Graph equivalent for this script's functionality: the Microsoft Graph
+          employeeExperience/communities API only covers community CRUD and membership
+          management, not reading or deleting conversation/message content. This script must
+          continue to use the legacy Yammer REST API's messages endpoints
+          (GET .../messages/in_group, DELETE .../messages/{id}) for the foreseeable future.
+          No further migration is possible until/unless Microsoft ships a Graph API for
+          community messages. The existing MSAL.PS + Entra app registration + delegated
+          access_as_user auth model already satisfies the July 2025 requirement to call the
+          Yammer API via an Entra app, so no auth changes are needed either.
 Requirements:
 
     1. MSAL.PS PowerShell module. Install it from the PowerShell Gallery with the command:

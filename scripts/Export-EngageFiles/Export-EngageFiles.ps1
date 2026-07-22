@@ -22,6 +22,10 @@ Author:
 
 Version:
     1.1
+    1.2 - July 2026 - Reviewed against current Microsoft documentation (still the current,
+          supported endpoint as of this review). Added a runtime reminder that native-mode
+          networks won't export actual file attachments via this API. See MC1230453 for the
+          related March 13, 2026 retirement of the equivalent admin center options.
 
 Requirements: 
     1. MSAL.PS PowerShell module. Install it from the PowerShell Gallery with the command:
@@ -36,7 +40,7 @@ Requirements:
     Required. Sets the end date for the target date range of the export
 
 .EXAMPLE
-    .\Export-YammerFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+    .\Export-EngageFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
 
 #>
 Param(
@@ -129,6 +133,9 @@ Function Write-Log {
 }
 
 Write-Host "Starting export for date range" $StartDate "to" $EndDate -ForegroundColor Green
+
+$nativeModeWarning = "Reminder: for Viva Engage networks in native mode, this API will NOT export actual file attachments (they live in SharePoint, not Yammer's legacy file store). You'll get a files.csv with SharePoint links instead. See MC1230453 and https://learn.microsoft.com/en-us/rest/api/yammer/yammer-files-export-api"
+Write-Host $nativeModeWarning -ForegroundColor Yellow
 
 #Populating key vars
 $activityLogName = "ScriptLog{0}.txt" -f [DateTime]::Now.ToString("yyyy-MM-dd_hh-mm-ss")

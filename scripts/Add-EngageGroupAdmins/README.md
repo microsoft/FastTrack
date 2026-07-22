@@ -1,50 +1,47 @@
-# Microsoft FastTrack Open Source - Add-YammerGroupAdmins
+# Microsoft FastTrack Open Source - Add-EngageGroupAdmins
 
-This sample script will allow a Yammer admin to bulk-add group owners to groups in their network.
+This sample script will allow an admin to bulk-add admins (owners) to Viva Engage communities using the Microsoft Graph API.
+
+**Version 3.0 note:** This script was migrated off the deprecated legacy Yammer REST API to the Microsoft Graph [group owners API](https://learn.microsoft.com/en-us/graph/api/group-post-owners), since the legacy endpoint is undocumented, unsupported, and at risk of being turned off without notice. A Viva Engage community admin is simply an owner of the community's underlying Microsoft 365 group, so this uses `/groups/{groupId}/owners/$ref` rather than a community-specific endpoint. **The ID format has changed as part of this migration** — see below.
 
 ## Usage
 
 ### Prerequisites
 
-- You must create a new Yammer app registration in Microsoft Entra ID. This app should be configured to grant the following **delegated** permission:
+- You must create a new app registration in Microsoft Entra ID. This app should be configured to grant the following **application** permission, with admin consent granted:
   ```
-  Yammer
-   -access_as_user
+  Microsoft Graph
+   -Group.ReadWrite.All
   ```
 
 - You'll need to create a CSV file containing two columns:
-	- **GroupID**. This will contain the IDs of the groups you want to add a new admin to.
-	- **Email**. This will contain the email address of the user you want to assign as admin of the group represented by the GroupID value next to it.
- 
-The CSV should look similar to this:
+	- **GroupID**. This will contain the Microsoft 365 group ID (a GUID) backing the community you want to add a new admin to.
+	- **Email**. This will contain the email address (UPN) of the user you want to assign as admin of the community represented by the GroupID value next to it.
 
-![CSV format](groupadminssample.jpg?raw=true "Title")
+  > ⚠️ **This is not the same ID as the legacy numeric Yammer group ID used by earlier versions of this script.** Graph requires the underlying Microsoft 365 group's GUID.
 
-You can get the group ID of the groups you need to add the admins to in one of two ways:
+You can get the Microsoft 365 group ID for a community in one of two ways:
 
-1. Grab the group ID from the group's URL and use a BASE64 decoder on the string at the end as described here: https://support.microsoft.com/en-us/office/how-do-i-find-a-community-s-group-feed-id-in-yammer-9372ab6f-bcc2-4283-bb6a-abf42dec970f
-2. Run a network data export going back as far as possible (do not export attachments) and get the group ID from the groups.csv file generated: https://learn.microsoft.com/en-us/rest/api/yammer/network-data-export
+1. `GET https://graph.microsoft.com/beta/employeeExperience/communities/{communityId}` — the response includes a `groupId` field with the Microsoft 365 group ID.
+2. `GET https://graph.microsoft.com/beta/employeeExperience/communities` and match communities by `displayName` to find the corresponding `groupId`.
        
 There are 4 variables you need to change in the script itself. These are located very early in the script just below “<############    STUFF YOU NEED TO MODIFY    ############>”:
 
-1. **$ClientId = "ClientIDString"**
+1. **$groupadminsCsvPath = 'C:\temp\groupadmins.csv'**
+
+    Point this to the groupadmins.csv file you created as mentioned above.
+
+2. **$ClientId = "ClientIDString"**
 
 	  >Replace ClientIDString with the Client ID of the app registration you created in the prerequisites.
 
-2. **$TenantId = "TenantIDString"**
+3. **$TenantId = "TenantIDString"**
   
-     >Replace TenantIDString with the Client ID of the app registration you created in the prerequisites.
+     >Replace TenantIDString with the Tenant ID of the app registration you created in the prerequisites.
 
-3. **$ClientSecret = "ClientSecretString"**
+4. **$ClientSecret = "ClientSecretString"**
   
      >Replace ClientSecretString with the client secret value of the app registration you created in the prerequisites.
-     
-4. **$RedirectUri = "https://localhost"**
-   	 >Replace this with the redirect Url you set in your app registration (if not set to https://localhost)
-
-4. **$groupadminsCsvPath = 'C:\temp\groupadmins.csv'**
-  
-    Point this to the groupadmins.csv file you created as mentioned above.
   
 ### Parameters
 
@@ -54,17 +51,15 @@ None
 
 Once you’ve completed the pre-reqs, you’re ready to go. Run the script like so:
 
-	.\Add-YammerGroupAdmins.ps1
+	.\Add-EngageGroupAdmins.ps1
 
 ### Notes
 
-**If you encounter the following error: 'Get-MsalToken : Error creating window handle.', set your PowerShell window's default terminal application to 'Windows Console Host'. This is due to a [known bug in MSAL](https://github.com/AzureAD/MSAL.PS/issues/58)**
-
-**This sample calls an undocumented endpoint in the Yammer REST APIs, and as such has no official support provided for it, and may stop working without warning.**
+**This sample now uses the Microsoft Graph group-owners API (`/v1.0/groups/{groupId}/owners/$ref`), which is officially documented and supported, unlike the earlier version of this script.**
 
 ## Applies To
 
-- Yammer / Viva Engage networks in M365
+- Viva Engage communities in M365
 
 ## Author
 
@@ -72,6 +67,7 @@ Once you’ve completed the pre-reqs, you’re ready to go. Run the script like 
 |----|--------------------------
 |Dean Cron, Microsoft|June 23th, 2023|
 -> Updated to v2|October 2nd, 2025
+-> Updated to v3, migrated to Microsoft Graph|July 22nd, 2026
 
 ## Issues
 
