@@ -4,6 +4,8 @@ This sample script will allow a Viva Engage admin to delete all messages in an e
 
 DELETION CAN'T BE UNDONE.
 
+**July 2026 note - no Graph migration possible:** This script must continue using the legacy Yammer REST API. Microsoft Graph's `employeeExperience/communities` API only supports community CRUD and membership management - it has no endpoints for reading or deleting conversation/message content. Until Microsoft ships a Graph API for community messages (if ever), there's no alternative to the legacy `messages/in_group` and `messages/{id}` endpoints used here. The script's existing auth model (MSAL.PS + Entra app registration + delegated `access_as_user`) already satisfies the July 2025 requirement that Yammer API calls go through an Entra app registration, so no further changes are required on that front.
+
 ## Usage
 
 ### Prerequisites
