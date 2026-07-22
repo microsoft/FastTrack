@@ -1,0 +1,27 @@
+# CODEOWNERS — automatic review routing for the FastTrack catalog.
+#
+# Order matters: the LAST matching pattern wins. Replace the placeholder team
+# handles below with the real maintainer team(s) before relying on required
+# reviews (Settings ▸ Branches ▸ "Require review from Code Owners").
+#
+# NOTE: CODEOWNERS entries must reference users/teams that have write access to
+# this repository, otherwise GitHub silently ignores them.
+
+# Default owners for everything in the repo.
+*                               @microsoft/fasttrack-maintainers
+
+# --- Security-sensitive / high blast-radius paths -------------------------
+# CI, automation, supply chain, licensing and the generated catalog must be
+# reviewed by maintainers regardless of who else owns the surrounding content.
+/.github/                       @microsoft/fasttrack-maintainers
+/.github/workflows/             @microsoft/fasttrack-maintainers
+/.github/scripts/               @microsoft/fasttrack-maintainers
+/.github/pr-sweeper.config.mjs  @microsoft/fasttrack-maintainers
+/.github/dependabot.yml         @microsoft/fasttrack-maintainers
+/tools/catalog-build/           @microsoft/fasttrack-maintainers
+/catalog.json                   @microsoft/fasttrack-maintainers
+/index.html                     @microsoft/fasttrack-maintainers
+/SECURITY.MD                    @microsoft/fasttrack-maintainers
+/LICENSE                        @microsoft/fasttrack-maintainers
+/LICENSE-CODE                   @microsoft/fasttrack-maintainers
+/CONTRIBUTING.md                @microsoft/fasttrack-maintainers

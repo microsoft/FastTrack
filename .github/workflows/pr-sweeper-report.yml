@@ -1,0 +1,88 @@
+# Intelligent PR Sweeper — Stage 2: REPORT (trusted)
+# ===================================================
+# Security model
+# --------------
+# This workflow is triggered by `workflow_run`, so its definition and the scripts
+# it runs come from the BASE repository's default branch — they are TRUSTED and
+# cannot be altered by a pull request. It never checks out or executes PR code;
+# it only consumes the *data* artifact produced by Stage 1.
+#
+# Because it is trusted, it may safely hold write scope to:
+#   * post / update a single sticky review comment,
+#   * apply labels,
+#   * set a commit status (the merge gate for hard security findings),
+#   * call GitHub Models (models: read) for the advisory dual-model review.
+#
+# Prompt-injection defense: untrusted PR text (diff, title, body) is treated as
+# DATA. The deterministic guardrails — which cannot be prompt-injected — are the
+# authoritative gate. The AI review is clearly labelled advisory and never
+# auto-merges anything.
+
+name: PR Sweeper Report
+
+on:
+  workflow_run:
+    workflows: ["PR Sweeper"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  statuses: write
+  models: read
+  actions: read
+
+jobs:
+  report:
+    name: Evaluate + report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Only act on sweeper runs that originated from a pull request.
+    if: github.event.workflow_run.event == 'pull_request'
+    steps:
+      - name: Checkout base repo (trusted scripts + config)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download PR sweeper artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: pr-sweeper
+          path: sweeper-artifact
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "20"
+
+      - name: Run deterministic guardrails (authoritative)
+        run: node .github/scripts/pr-sweeper/guardrails.mjs
+        env:
+          SWEEPER_ARTIFACT_DIR: sweeper-artifact
+
+      - name: Run dual-model AI review (advisory)
+        # Never let an AI/provider hiccup fail the whole report — guardrails stand.
+        continue-on-error: true
+        run: node .github/scripts/pr-sweeper/ai-review.mjs
+        env:
+          SWEEPER_ARTIFACT_DIR: sweeper-artifact
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: only needed if a reviewer slot uses provider "azure-openai".
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+
+      - name: Compose + post report, apply labels, set status
+        run: node .github/scripts/pr-sweeper/report.mjs
+        env:
+          SWEEPER_ARTIFACT_DIR: sweeper-artifact
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          # TRUSTED identity from the workflow_run event (NOT the artifact). The
+          # artifact's self-reported number/SHA are attacker-controlled; report.mjs
+          # targets the comment/labels/status using these values instead.
+          TRUSTED_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          TRUSTED_PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          TRUSTED_HEAD_REPO: ${{ github.event.workflow_run.head_repository.full_name }}
