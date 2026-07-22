@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T18:20:40.181Z",
+  "generatedAt": "2026-07-22T13:39:52.431Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -23,7 +23,12 @@
     },
     "powerclaw-agent": {
       "views": 1632,
-      "viewsUniques": 961
+      "viewsUniques": 961,
+      "upvotes": 0,
+      "discussion": {
+        "number": 479,
+        "url": "https://github.com/microsoft/FastTrack/discussions/479"
+      }
     },
     "purview-audit-copilot-report": {
       "views": 656,
