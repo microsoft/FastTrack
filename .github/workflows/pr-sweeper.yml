@@ -93,10 +93,12 @@ jobs:
           IS_DRAFT: ${{ github.event.pull_request.draft }}
         run: |
           set -euo pipefail
-          # NOTE: The PR body is deliberately NOT captured. Interpolating
-          # ${{ github.event.pull_request.body }} into a shell step is a
+          # NOTE: The PR body is deliberately NOT captured. Interpolating the
+          # pull_request.body context value into a shell step is a
           # script-injection sink, and nothing downstream needs the body.
-          # Every value below is passed via env and JSON-encoded by jq --arg.
+          # (Do not write that context expression here either: GitHub expands
+          # it before bash runs, even inside a comment.) Every value below is
+          # passed via env and JSON-encoded by jq --arg.
           jq -n \
             --arg number "$PR_NUMBER" \
             --arg title "$PR_TITLE" \
