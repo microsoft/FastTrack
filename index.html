@@ -638,7 +638,7 @@
       text-align: right;
     }
     .compact-views, .compact-votes { display: none; }
-    .compact-views {
+    .compact-views, .compact-votes {
       align-items: center;
       gap: 0.25rem;
       color: var(--text-lighter);
@@ -2140,7 +2140,7 @@
           ${formatCount(stats.views)}
         </div>` : ''}
         ${stats.hasUpvotes ? `<div class="compact-votes" aria-label="${stats.upvotes} upvotes">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
           <span class="vote-count">${formatCount(stats.upvotes)}</span>
         </div>` : ''}
         <div class="card-footer">
@@ -2154,7 +2154,7 @@
               ${formatCount(stats.views)}
             </span>` : ''}
             ${stats.hasUpvotes ? `<span class="stat-views" aria-label="${stats.upvotes} upvotes">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
               <span class="vote-count">${formatCount(stats.upvotes)}</span>
             </span>` : ''}
           </div>
