@@ -1,0 +1,32 @@
+# Dependabot keeps the automation supply chain patched.
+# Docs: https://docs.github.com/code-security/dependabot/dependabot-version-updates
+version: 2
+updates:
+  # GitHub Actions used by every workflow (pinned to SHAs — Dependabot still
+  # tracks the upstream tags behind those SHAs and proposes bumps).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(actions)"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # The catalog build tooling (Node / npm).
+  - package-ecosystem: "npm"
+    directory: "/tools/catalog-build"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "javascript"

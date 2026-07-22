@@ -1,0 +1,136 @@
+# Intelligent PR Sweeper — Stage 1: ANALYZE (untrusted, fork-safe)
+# =================================================================
+# Security model
+# --------------
+# This workflow runs in the context of the *pull request head*, which for fork
+# PRs is UNTRUSTED code. To keep that safe it is deliberately minimal:
+#
+#   * permissions: contents: read ONLY. No write access, no secrets, no model
+#     tokens are ever exposed to untrusted code.
+#   * It NEVER executes code from the PR (no `npm ci`, no running checked-out
+#     scripts). It only runs trusted, inline git plumbing (this YAML comes from
+#     the BASE branch for `pull_request`, so it cannot be tampered with by the
+#     PR) to capture a diff + file metadata as an artifact.
+#   * All policy decisions, AI review, labelling and commenting happen in the
+#     trusted Stage 2 workflow (pr-sweeper-report.yml), which consumes this
+#     artifact as *data*.
+#
+# Result: a malicious PR cannot read secrets, cannot weaken the guardrails, and
+# cannot post as the bot — it can only submit data to be judged.
+
+name: PR Sweeper
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+# Least privilege: read the repo, nothing else.
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-sweeper-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    name: Capture PR diff + metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Capture diff and file metadata
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p sweeper-artifact
+
+          # Make sure both endpoints are present, then compute the merge base so
+          # the diff reflects exactly what the PR introduces (three-dot).
+          git fetch --no-tags --quiet origin "$BASE_SHA" || true
+          MERGE_BASE="$(git merge-base "$BASE_SHA" "$HEAD_SHA" || echo "$BASE_SHA")"
+          echo "Merge base: $MERGE_BASE"
+
+          # 1) The unified diff of added/removed lines (used for secret + PII scans).
+          git diff --no-color "$MERGE_BASE" "$HEAD_SHA" > sweeper-artifact/diff.patch || true
+
+          # 2) numstat gives additions/deletions and marks binary files with '-'.
+          git diff --numstat "$MERGE_BASE" "$HEAD_SHA" > sweeper-artifact/numstat.tsv || true
+
+          # 3) name-status gives the change type (A/M/D/R...).
+          git diff --name-status "$MERGE_BASE" "$HEAD_SHA" > sweeper-artifact/name-status.tsv || true
+
+          # 4) On-disk byte size of each present (added/modified) file, so Stage 2
+          #    can flag oversized blobs without trusting any PR-authored script.
+          : > sweeper-artifact/sizes.tsv
+          git diff --name-only --diff-filter=d "$MERGE_BASE" "$HEAD_SHA" | while IFS= read -r f; do
+            if [ -f "$f" ]; then
+              bytes=$(wc -c < "$f" | tr -d ' ')
+              printf '%s\t%s\n' "$bytes" "$f" >> sweeper-artifact/sizes.tsv
+            fi
+          done
+
+      - name: Write PR metadata
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_AUTHOR_ASSOC: ${{ github.event.pull_request.author_association }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPO: ${{ github.repository }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          IS_FORK: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+        run: |
+          set -euo pipefail
+          # NOTE: The PR body is deliberately NOT captured. Interpolating
+          # ${{ github.event.pull_request.body }} into a shell step is a
+          # script-injection sink, and nothing downstream needs the body.
+          # Every value below is passed via env and JSON-encoded by jq --arg.
+          jq -n \
+            --arg number "$PR_NUMBER" \
+            --arg title "$PR_TITLE" \
+            --arg author "$PR_AUTHOR" \
+            --arg assoc "$PR_AUTHOR_ASSOC" \
+            --arg headRepo "$HEAD_REPO" \
+            --arg baseRepo "$BASE_REPO" \
+            --arg headRef "$HEAD_REF" \
+            --arg baseRef "$BASE_REF" \
+            --arg headSha "$HEAD_SHA" \
+            --arg baseSha "$BASE_SHA" \
+            --arg isFork "$IS_FORK" \
+            --arg isDraft "$IS_DRAFT" \
+            '{
+              number: ($number|tonumber),
+              title: $title,
+              author: $author,
+              authorAssociation: $assoc,
+              headRepo: $headRepo,
+              baseRepo: $baseRepo,
+              headRef: $headRef,
+              baseRef: $baseRef,
+              headSha: $headSha,
+              baseSha: $baseSha,
+              isFork: ($isFork == "true"),
+              isDraft: ($isDraft == "true")
+            }' > sweeper-artifact/pr-meta.json
+          echo "Wrote metadata for PR #$PR_NUMBER (fork=$IS_FORK)"
+
+      - name: Upload sweeper artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pr-sweeper
+          path: sweeper-artifact/
+          retention-days: 3
+          if-no-files-found: warn
