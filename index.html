@@ -1876,10 +1876,9 @@
         } else if (state.sort === 'new') {
           return new Date(b.updated) - new Date(a.updated);
         } else if (state.sort === 'engaging') {
-          const rateA = (statsA.upvotes + 2) / (statsA.views + 40);
-          const rateB = (statsB.upvotes + 2) / (statsB.views + 40);
-          if (rateB !== rateA) return rateB - rateA;
-          return statsB.upvotes - statsA.upvotes;
+          if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
+          if (statsA.views !== statsB.views) return statsB.views - statsA.views;
+          return a.name.localeCompare(b.name);
         }
         return 0;
       });

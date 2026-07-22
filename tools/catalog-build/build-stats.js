@@ -325,12 +325,10 @@ function mapDiscussions(discussions, knownSlugs, explicitMap) {
         discussions.find(item => item.title.includes(slug));
     }
     if (!discussion) continue;
-    const thumbsUp = discussion.reactionGroups?.find(group => group.content === 'THUMBS_UP');
-    const count = thumbsUp?.reactors?.totalCount;
-    if (!Number.isInteger(count) || count < 0) {
-      console.warn(`Warning: discussion #${discussion.number} has no THUMBS_UP count.`);
-      continue;
-    }
+    const count = (discussion.reactionGroups ?? []).reduce((sum, group) => {
+      const total = group?.reactors?.totalCount;
+      return sum + (Number.isInteger(total) && total > 0 ? total : 0);
+    }, 0);
     result.set(slug, {
       upvotes: count,
       discussion: { number: discussion.number, url: discussion.url }
