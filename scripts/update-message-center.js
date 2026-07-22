@@ -65,6 +65,53 @@ function fetchJson(url) {
   });
 }
 
+function sanitiseRawPost(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+
+  const string = (value, maxLength = 10000) =>
+    typeof value === 'string' ? value.slice(0, maxLength) : '';
+  const stringArray = (value, maxItems = 50, maxLength = 200) =>
+    Array.isArray(value)
+      ? value
+          .filter((item) => typeof item === 'string')
+          .slice(0, maxItems)
+          .map((item) => item.slice(0, maxLength))
+      : [];
+  const dateString = (value) => {
+    if (typeof value !== 'string' || !Number.isFinite(Date.parse(value))) return null;
+    return value;
+  };
+
+  const post = {
+    Id: string(raw.Id, 100),
+    Title: string(raw.Title, 500),
+    Category: string(raw.Category, 100),
+    Severity: string(raw.Severity, 50),
+    StartDateTime: dateString(raw.StartDateTime),
+    ActionRequiredByDateTime: dateString(raw.ActionRequiredByDateTime),
+    Services: stringArray(raw.Services),
+    Tags: stringArray(raw.Tags),
+    Details: Array.isArray(raw.Details)
+      ? raw.Details
+          .filter((detail) => detail && typeof detail === 'object')
+          .slice(0, 50)
+          .map((detail) => ({
+            Name: string(detail.Name, 100),
+            Value: string(detail.Value),
+          }))
+      : [],
+    Body: {
+      Content:
+        raw.Body && typeof raw.Body === 'object'
+          ? string(raw.Body.Content, 50000)
+          : '',
+    },
+    IsMajorChange: raw.IsMajorChange === true,
+  };
+
+  return post.Id && post.Title && post.StartDateTime ? post : null;
+}
+
 // ── category mapping ─────────────────────────────────────────────────────────
 // merill/mc uses camelCase categories; we map to display names.
 
@@ -424,31 +471,28 @@ function isCopilotAgentRelevant(raw) {
 // ── serialise a post to inline JS ────────────────────────────────────────────
 
 function serialisePost(p) {
-  const esc = (s) => s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r?\n/g, ' ').replace(/\s{2,}/g, ' ');
-  const arr = (a) => '[' + a.map((v) => `'${esc(v)}'`).join(', ') + ']';
-  const parts = [
-    `id: '${p.id}'`,
-    `title: '${esc(p.title)}'`,
-    `category: '${p.category}'`,
-    `severity: '${p.severity}'`,
-    `datePublished: '${p.datePublished}'`,
-    `actionRequiredBy: ${p.actionRequiredBy ? `'${p.actionRequiredBy}'` : 'null'}`,
-    `status: '${p.status}'`,
-    `services: ${arr(p.services)}`,
-    `summary: '${esc(p.summary)}'`,
-    `tags: ${arr(p.tags)}`,
-    `isHighImpact: ${p.isHighImpact}`,
-    `agentAudience: ${arr(p.agentAudience)}`,
-  ];
-  return `          { ${parts.join(', ')} }`;
+  return (
+    '          ' +
+    JSON.stringify(p)
+      .replace(/</g, '\\u003c')
+      .replace(/>/g, '\\u003e')
+      .replace(/&/g, '\\u0026')
+      .replace(/\u2028/g, '\\u2028')
+      .replace(/\u2029/g, '\\u2029')
+  );
 }
 
 // ── main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
   console.log('⏳ Fetching message center posts from merill/mc...');
-  const rawPosts = await fetchJson(MC_DATA_URL);
-  console.log(`   Fetched ${rawPosts.length} total posts from archive`);
+  const fetchedPosts = await fetchJson(MC_DATA_URL);
+  if (!Array.isArray(fetchedPosts)) {
+    throw new Error('Message Center archive response must be an array');
+  }
+  const rawPosts = fetchedPosts.map(sanitiseRawPost).filter(Boolean);
+  console.log(`   Fetched ${fetchedPosts.length} total posts from archive`);
+  console.log(`   ${rawPosts.length} posts passed schema validation`);
 
   const today = new Date();
   const windowStart = addDays(today, -60);
@@ -548,4 +592,3 @@ main().catch((err) => {
   console.error('❌ Failed to update message center posts:', err.message);
   process.exit(1);
 });
-
