@@ -14,7 +14,7 @@ None
 
 ### Output
 
-The following properties are exported:
+The following properties are exported to `InsightsLicensedUsers.csv`:
 
 |PersonId|ManagerId|Department
 
@@ -22,6 +22,10 @@ The following properties are exported:
 All available user properties from Get-MgUser are shown here:
 
 https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.powershell.cmdlets.resources.msgraph.models.apiv10.imicrosoftgraphuser?view=az-ps-latest
+
+### Performance on large tenants
+
+Manager UPNs are resolved via the Microsoft Graph `$batch` endpoint (20 users per request) instead of one `Get-MgUserManager`/`Get-MgUser` call per user. This avoids the timeouts/throttling that a fully serial, per-user approach runs into on tenants with thousands of licensed users, and includes automatic retry/backoff on HTTP 429 (throttling) responses. A progress bar shows batch-by-batch status while it runs.
 
 ### Execution
 
