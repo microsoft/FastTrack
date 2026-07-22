@@ -10,6 +10,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: update-message-center
+  cancel-in-progress: false
+
 jobs:
   update-message-center:
     # Only run on the canonical upstream repo, not on forks.
@@ -17,12 +21,13 @@ jobs:
     # instead of failing when repo-specific secrets are unavailable.
     if: github.repository == 'microsoft/FastTrack'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: '22'
 
@@ -53,23 +58,15 @@ jobs:
           git commit -m "chore: weekly message center posts refresh $DATE"
           git push --set-upstream origin "$BRANCH"
 
-          # Create PR if one doesn't already exist
+          # Create a normal PR for human review if one doesn't already exist.
           existing_pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
           if [ -n "$existing_pr" ]; then
             echo "PR #$existing_pr already exists for $BRANCH"
           else
             gh pr create \
               --title "chore: weekly message center posts refresh $DATE" \
-              --body "Automated weekly message center data update." \
+              --body "Automated weekly message center data update. This PR contains externally derived content and requires human review." \
               --head "$BRANCH" \
               --base master
             echo "✅ PR created"
-          fi
-
-          # Enable auto-merge
-          pr_number=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
-          if [ -n "$pr_number" ]; then
-            gh pr merge "$pr_number" --auto --squash \
-              && echo "✅ Auto-merge enabled for PR #$pr_number" \
-              || echo "::warning::Could not enable auto-merge — check repo settings"
           fi
