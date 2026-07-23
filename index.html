@@ -2319,7 +2319,13 @@
     // fails to refetch, so the 👍 visually "reverts". We detect that the discussion
     // does not exist yet (via emit-metadata) and, once the user interacts, re-mount
     // giscus to pull the freshly-created discussion + reaction so it sticks.
-    const giscusState = { slug: null, hasDiscussion: false, refetched: false, pendingTimer: null };
+    // existedAtMount: whether a backing discussion already existed the first time
+    // giscus reported metadata for the current slug (null = not yet known). It lets us
+    // tell a pre-existing discussion apart from one the user just created by reacting.
+    // speculativeRefetch: true when the current refetch was triggered by iframe focus
+    // (blur fallback) rather than an observed discussion creation, so we can re-arm if
+    // it turns out no discussion was actually created.
+    const giscusState = { slug: null, hasDiscussion: false, refetched: false, existedAtMount: null, speculativeRefetch: false, pendingTimer: null };
 
     function giscusClearPending() {
       if (giscusState.pendingTimer) { clearTimeout(giscusState.pendingTimer); giscusState.pendingTimer = null; }
@@ -2336,6 +2342,8 @@
       } else {
         giscusState.hasDiscussion = false;
         giscusState.refetched = false;
+        giscusState.existedAtMount = null;
+        giscusState.speculativeRefetch = false;
       }
       const script = document.createElement('script');
       script.src = "https://giscus.app/client.js";
@@ -2365,7 +2373,25 @@
       const payload = event.data && event.data.giscus;
       if (!payload || !('discussion' in payload)) return;
       const d = payload.discussion;
-      giscusState.hasDiscussion = !!(d && d.id);
+      const exists = !!(d && d.id);
+      giscusState.hasDiscussion = exists;
+      // Record whether a discussion already existed the first time giscus reported in.
+      // Kept as a standalone `if` (not part of the chain below) so the re-arm branch can
+      // still run on the same message even when this is the first metadata we receive.
+      if (giscusState.existedAtMount === null) {
+        giscusState.existedAtMount = exists;
+      }
+      if (exists && giscusState.existedAtMount === false && !giscusState.refetched) {
+        // The discussion just came into existence — the user's first reaction created it
+        // (#1312). giscus won't refetch on its own, so remount once to make the 👍 stick.
+        giscusState.speculativeRefetch = false;
+        mountGiscus(giscusState.slug, document.documentElement.getAttribute('data-theme'), true);
+      } else if (!exists && giscusState.refetched && giscusState.speculativeRefetch) {
+        // A blur-triggered (speculative) refetch happened but there is still no discussion,
+        // so it was "wasted" (the iframe focus was a sign-in/comment, not a reaction).
+        // Re-arm recovery so a later genuine first reaction can still be refetched.
+        giscusState.refetched = false;
+      }
     });
 
     // When the user clicks into the giscus iframe (e.g. to react) on a resource that
@@ -2379,9 +2405,14 @@
         if (!giscusState.slug || giscusState.hasDiscussion || giscusState.refetched || giscusState.pendingTimer) return;
         giscusState.pendingTimer = setTimeout(() => {
           giscusState.pendingTimer = null;
-          if (!giscusState.slug || giscusState.hasDiscussion || giscusState.refetched) return;
+          // Do NOT re-check hasDiscussion here: by now the reaction may have (just) created
+          // the discussion, which is exactly the case that needs a refetch. A remount is
+          // harmless (it only refetches current server state) and must fire so the 👍 sticks.
+          // Mark it speculative so we re-arm if it turns out no discussion was created.
+          if (!giscusState.slug || giscusState.refetched) return;
+          giscusState.speculativeRefetch = true;
           mountGiscus(giscusState.slug, document.documentElement.getAttribute('data-theme'), true);
-        }, 2500);
+        }, 3000);
       }, 0);
     });
 
