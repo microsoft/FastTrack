@@ -1,4 +1,35 @@
 {
-  "lastRun": "",
-  "days": {}
+  "lastRun": "2026-07-27",
+  "days": {
+    "2026-07-27": {
+      "autoreply-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "purview-audit-copilot-report": {
+        "views": 2,
+        "uniques": 1
+      }
+    },
+    "2026-07-26": {
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-07-25": {
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      }
+    }
+  }
 }
