@@ -1894,7 +1894,6 @@
       // Cleanup detail view state
       const giscusContainer = document.getElementById('giscusContainer');
       if (giscusContainer) giscusContainer.innerHTML = '';
-      giscusClearPending();
       giscusState.slug = null;
 
       document.getElementById('catalogView').classList.remove('d-none');
@@ -2314,38 +2313,28 @@
       parseTextBlock(source.slice(cursor));
     }
 
-    // Tracks the giscus embed so we can work around giscus bug #1312:
-    // the FIRST reaction on a resource creates the backing Discussion but giscus
-    // fails to refetch, so the 👍 visually "reverts". We detect that the discussion
-    // does not exist yet (via emit-metadata) and, once the user interacts, re-mount
-    // giscus to pull the freshly-created discussion + reaction so it sticks.
-    // existedAtMount: whether a backing discussion already existed the first time
-    // giscus reported metadata for the current slug (null = not yet known). It lets us
-    // tell a pre-existing discussion apart from one the user just created by reacting.
-    // speculativeRefetch: true when the current refetch was triggered by iframe focus
-    // (blur fallback) rather than an observed discussion creation, so we can re-arm if
-    // it turns out no discussion was actually created.
-    const giscusState = { slug: null, hasDiscussion: false, hasReactions: false, refetched: false, existedAtMount: null, speculativeRefetch: false, pendingTimer: null };
+    // giscus like/reaction persistence — DELIBERATELY no remount workaround.
+    //
+    // History: giscus bug #1312 makes the FIRST reaction on a resource (the one that
+    // creates the backing Discussion) appear to visually "revert" in-session. Two earlier
+    // fixes tried to work around this by REMOUNTING the giscus iframe (container.innerHTML='')
+    // when emit-metadata reported the discussion existed. Server-side evidence proved those
+    // remounts were DESTROYING reactions: the remount fired while the addReaction mutation was
+    // still in flight and tore down the iframe before the commit landed, leaving discussions
+    // with zero reactions. giscus persists reactions natively server-side with no help from us
+    // (a resource reacted-to before any workaround shipped kept its 👍 perfectly).
+    //
+    // Any metadata-driven remount races giscus's own optimistic reactionCount update, so there
+    // is no safe signal to remount on. We therefore do nothing: reactions persist natively and
+    // show correctly on reload. Do NOT reintroduce a remount here — it reopens #1312-by-us and
+    // silently drops likes.
+    const giscusState = { slug: null };
 
-    function giscusClearPending() {
-      if (giscusState.pendingTimer) { clearTimeout(giscusState.pendingTimer); giscusState.pendingTimer = null; }
-    }
-
-    function mountGiscus(slug, theme, isRefetch) {
+    function mountGiscus(slug, theme) {
       const container = document.getElementById('giscusContainer');
       if (!container) return;
       container.innerHTML = '';
-      giscusClearPending();
       giscusState.slug = slug;
-      if (isRefetch) {
-        giscusState.refetched = true;
-      } else {
-        giscusState.hasDiscussion = false;
-        giscusState.hasReactions = false;
-        giscusState.refetched = false;
-        giscusState.existedAtMount = null;
-        giscusState.speculativeRefetch = false;
-      }
       const script = document.createElement('script');
       script.src = "https://giscus.app/client.js";
       script.setAttribute("data-repo", "microsoft/FastTrack");
@@ -2356,7 +2345,6 @@
       script.setAttribute("data-term", slug);
       script.setAttribute("data-strict", "1");
       script.setAttribute("data-reactions-enabled", "1");
-      script.setAttribute("data-emit-metadata", "1");
       script.setAttribute("data-input-position", "bottom");
       script.setAttribute("data-theme", theme === "dark" ? "dark_dimmed" : "light");
       script.setAttribute("data-lang", "en");
@@ -2365,62 +2353,6 @@
       script.async = true;
       container.appendChild(script);
     }
-
-    // Learn whether a backing discussion exists for the open resource. giscus emits
-    // metadata on load and whenever the discussion changes; an empty id means "not
-    // created yet", so a reaction would hit the #1312 create-and-revert path.
-    window.addEventListener('message', (event) => {
-      if (event.origin !== 'https://giscus.app') return;
-      const payload = event.data && event.data.giscus;
-      if (!payload || !('discussion' in payload)) return;
-      const d = payload.discussion;
-      const exists = !!(d && d.id);
-      const reactionCount = (d && typeof d.reactionCount === 'number') ? d.reactionCount : 0;
-      giscusState.hasDiscussion = exists;
-      // A discussion with zero reactions is "empty" — either brand new, or a #1312 "ghost"
-      // (created by an earlier first-reaction that reverted). Both need remount recovery;
-      // only a discussion that already has reactions is treated as active and left alone.
-      giscusState.hasReactions = exists && reactionCount > 0;
-      // Record whether a discussion already existed the first time giscus reported in.
-      // Kept as a standalone `if` (not part of the chain below) so the re-arm branch can
-      // still run on the same message even when this is the first metadata we receive.
-      if (giscusState.existedAtMount === null) {
-        giscusState.existedAtMount = exists;
-      }
-      if (exists && giscusState.existedAtMount === false && !giscusState.refetched) {
-        // The discussion just came into existence — the user's first reaction created it
-        // (#1312). giscus won't refetch on its own, so remount once to make the 👍 stick.
-        giscusState.speculativeRefetch = false;
-        mountGiscus(giscusState.slug, document.documentElement.getAttribute('data-theme'), true);
-      } else if (!giscusState.hasReactions && giscusState.refetched && giscusState.speculativeRefetch) {
-        // A blur-triggered (speculative) refetch happened but there are still no reactions,
-        // so it was "wasted" (the iframe focus was a sign-in/comment, not a reaction).
-        // Re-arm recovery so a later genuine first reaction can still be refetched.
-        giscusState.refetched = false;
-      }
-    });
-
-    // When the user clicks into the giscus iframe (e.g. to react) on a resource whose
-    // discussion has no reactions yet, schedule a single re-mount so the reaction is
-    // refetched instead of reverting.
-    window.addEventListener('blur', () => {
-      setTimeout(() => {
-        const active = document.activeElement;
-        const inGiscus = active && active.tagName === 'IFRAME' && active.classList.contains('giscus-frame');
-        if (!inGiscus) return;
-        if (!giscusState.slug || giscusState.hasReactions || giscusState.refetched || giscusState.pendingTimer) return;
-        giscusState.pendingTimer = setTimeout(() => {
-          giscusState.pendingTimer = null;
-          // Do NOT re-check hasDiscussion here: by now the reaction may have (just) created
-          // the discussion, which is exactly the case that needs a refetch. A remount is
-          // harmless (it only refetches current server state) and must fire so the 👍 sticks.
-          // Mark it speculative so we re-arm if it turns out no discussion was created.
-          if (!giscusState.slug || giscusState.refetched) return;
-          giscusState.speculativeRefetch = true;
-          mountGiscus(giscusState.slug, document.documentElement.getAttribute('data-theme'), true);
-        }, 3000);
-      }, 0);
-    });
 
     function renderDetailView(resource) {
       document.getElementById('catalogView').classList.add('d-none');
