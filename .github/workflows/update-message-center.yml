@@ -42,11 +42,13 @@ jobs:
       - name: Commit and open PR
         if: steps.changes.outputs.changed == 'true'
         env:
-          # Use the built-in GITHUB_TOKEN. The job already grants
-          # contents:write + pull-requests:write, which is sufficient to push
-          # the branch and open the PR without a separate long-lived PAT.
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer a PAT when one is configured. Fall back to the built-in token,
+          # which can push the branch but may be blocked from opening the PR by the
+          # org/repo policy "Allow GitHub Actions to create and approve pull requests".
+          GH_TOKEN: ${{ secrets.AUTOMATION_PAT || secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add copilot-agent-strategy/copilot-agents-guide/index.html
@@ -56,17 +58,53 @@ jobs:
 
           git checkout -b "$BRANCH"
           git commit -m "chore: weekly message center posts refresh $DATE"
-          git push --set-upstream origin "$BRANCH"
+          # A re-run on the same day must be able to update its own branch. Seed the
+          # remote-tracking ref first, otherwise --force-with-lease aborts on "stale
+          # info" because actions/checkout only fetched the default branch.
+          if git fetch origin "$BRANCH"; then
+            git update-ref "refs/remotes/origin/$BRANCH" FETCH_HEAD
+          fi
+          git push --force-with-lease --set-upstream origin "$BRANCH"
+
+          COMPARE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/master...${BRANCH}?expand=1"
 
           # Create a normal PR for human review if one doesn't already exist.
           existing_pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
           if [ -n "$existing_pr" ]; then
             echo "PR #$existing_pr already exists for $BRANCH"
-          else
-            gh pr create \
-              --title "chore: weekly message center posts refresh $DATE" \
-              --body "Automated weekly message center data update. This PR contains externally derived content and requires human review." \
-              --head "$BRANCH" \
-              --base master
-            echo "✅ PR created"
+            exit 0
           fi
+
+          if create_output=$(gh pr create \
+            --title "chore: weekly message center posts refresh $DATE" \
+            --body "Automated weekly message center data update. This PR contains externally derived content and requires human review." \
+            --head "$BRANCH" \
+            --base master 2>&1); then
+            echo "✅ PR created: $create_output"
+            exit 0
+          fi
+
+          echo "$create_output"
+
+          # The refreshed content is already safely on the branch. A repo policy that
+          # forbids Actions from opening PRs must not destroy the week's refresh — warn
+          # and hand the maintainer a one-click link instead of failing the job.
+          if printf '%s' "$create_output" | grep -qi "not permitted to create or approve pull requests"; then
+            echo "::warning::Branch $BRANCH was pushed, but this repo blocks GitHub Actions from opening pull requests. Open it manually: $COMPARE_URL"
+            {
+              echo "### ⚠️ Message center refresh needs a manual PR"
+              echo ""
+              echo "The refreshed content was pushed to \`$BRANCH\`, but GitHub Actions is not"
+              echo "permitted to open pull requests in this repository."
+              echo ""
+              echo "**Open the PR:** $COMPARE_URL"
+              echo ""
+              echo "**Permanent fix:** Settings → Actions → General → enable"
+              echo "\"Allow GitHub Actions to create and approve pull requests\", or set an"
+              echo "\`AUTOMATION_PAT\` secret with \`pull-requests: write\`."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "::error::Failed to open the message center PR for $BRANCH."
+          exit 1
