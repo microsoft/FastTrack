@@ -49,21 +49,33 @@ jobs:
           DATA_DIR="traffic-data"
           DATE=$(date -u +"%Y-%m-%d")
 
+          # Fail fast with a precise message instead of three opaque retries.
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::TRAFFIC_TOKEN secret is empty or unset. The traffic API needs a PAT with administration:read on $REPO — the built-in GITHUB_TOKEN cannot read traffic."
+            exit 1
+          fi
+
           gh_api_retry() {
             local max_attempts=3
             local delay=5
             local attempt=1
             local output
+            local err_file
+            err_file=$(mktemp)
             while [ "$attempt" -le "$max_attempts" ]; do
-              if output=$(gh api "$@" 2>/dev/null); then
+              if output=$(gh api "$@" 2>"$err_file"); then
+                rm -f "$err_file"
                 printf '%s' "$output"
                 return 0
               fi
-              echo "::warning::gh api attempt $attempt/$max_attempts failed, retrying in ${delay}s..." >&2
-              sleep "$delay"
+              # Keep gh's stderr: without it every failure looks identical and the
+              # real cause (401 / 403 / 404 / rate limit) is invisible in the log.
+              echo "::warning::gh api attempt $attempt/$max_attempts failed: $(tr '\n' ' ' <"$err_file" | cut -c1-400)" >&2
+              [ "$attempt" -lt "$max_attempts" ] && sleep "$delay"
               delay=$((delay * 2))
               attempt=$((attempt + 1))
             done
+            rm -f "$err_file"
             return 1
           }
 
@@ -72,14 +84,17 @@ jobs:
             local endpoint="$2"
             local response
 
+            # These messages MUST go to stderr: this function runs inside a command
+            # substitution, so anything on stdout is captured into the caller's
+            # variable instead of being printed to the workflow log.
             if ! response=$(gh_api_retry "$endpoint"); then
-              echo "::error::Failed to fetch $label after retries"
-              exit 1
+              echo "::error::Failed to fetch $label from $endpoint after retries. Most likely the TRAFFIC_TOKEN secret has expired or lost administration:read on $REPO." >&2
+              return 1
             fi
 
             if ! printf '%s' "$response" | jq -e . >/dev/null 2>&1; then
-              echo "::error::Invalid JSON returned for $label"
-              exit 1
+              echo "::error::Invalid JSON returned for $label" >&2
+              return 1
             fi
 
             printf '%s' "$response"
@@ -89,11 +104,12 @@ jobs:
 
           echo "📊 Fetching traffic data for $REPO on $DATE..."
 
-          # Fetch all four traffic endpoints
-          views=$(fetch_required_json "views" "repos/$REPO/traffic/views")
-          clones=$(fetch_required_json "clones" "repos/$REPO/traffic/clones")
-          referrers=$(fetch_required_json "referrers" "repos/$REPO/traffic/popular/referrers")
-          paths=$(fetch_required_json "paths" "repos/$REPO/traffic/popular/paths")
+          # Fetch all four traffic endpoints ("|| exit 1" is explicit: set -e already
+          # aborts on a failed assignment, but this makes the intent unmissable).
+          views=$(fetch_required_json "views" "repos/$REPO/traffic/views") || exit 1
+          clones=$(fetch_required_json "clones" "repos/$REPO/traffic/clones") || exit 1
+          referrers=$(fetch_required_json "referrers" "repos/$REPO/traffic/popular/referrers") || exit 1
+          paths=$(fetch_required_json "paths" "repos/$REPO/traffic/popular/paths") || exit 1
 
           # Build a combined JSON snapshot for today
 
