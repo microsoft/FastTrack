@@ -267,13 +267,31 @@ async function resolvePrNumberFromSha(sha) {
   // Bind the PR number to the TRUSTED head SHA from the workflow_run event.
   // Works for fork PRs (where workflow_run.pull_requests is empty) because the
   // head commit is reachable via refs/pull/N/head in the base repo.
-  const res = await gh("GET", `/repos/${REPO}/commits/${encodeURIComponent(sha)}/pulls?per_page=100`);
-  if (!res.ok) return null;
-  const pulls = await res.json();
-  if (!Array.isArray(pulls) || pulls.length === 0) return null;
-  const match =
-    pulls.find((p) => p.state === "open" && p.base?.repo?.full_name === REPO) || pulls[0];
-  return match?.number ?? null;
+  //
+  // Retried: GitHub's commit -> PR association index lags PR creation by tens of
+  // seconds, and this job routinely starts within that window on fork PRs.
+  const delays = [0, 3000, 8000, 15000];
+  for (const wait of delays) {
+    if (wait) await sleep(wait);
+    const res = await gh("GET", `/repos/${REPO}/commits/${encodeURIComponent(sha)}/pulls?per_page=100`);
+    if (!res.ok) {
+      console.warn(`Commit -> PR lookup returned ${res.status}; retrying.`);
+      continue;
+    }
+    const pulls = await res.json();
+    if (!Array.isArray(pulls) || pulls.length === 0) {
+      console.warn("Commit -> PR lookup returned no pull requests yet; retrying.");
+      continue;
+    }
+    const match =
+      pulls.find((p) => p.state === "open" && p.base?.repo?.full_name === REPO) || pulls[0];
+    if (match?.number) return match.number;
+  }
+  return null;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function main() {
@@ -308,8 +326,14 @@ async function main() {
   if (!number && headSha) number = await resolvePrNumberFromSha(headSha);
 
   if (!number) {
-    console.error("Could not resolve a trusted PR number from the workflow_run event; aborting.");
-    process.exit(1);
+    // The security gate is the part that actually matters, and it only needs the
+    // trusted head SHA. Set it, then stop — a missing sticky comment is cosmetic
+    // and must not turn into a red workflow on every fork PR.
+    console.warn(
+      "Could not resolve a trusted PR number from the workflow_run event; posting the commit status only."
+    );
+    await setStatus(headSha, guardrails);
+    return;
   }
 
   const body = buildComment(config, guardrails, ai, meta);
