@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-22T14:48:12.364Z",
+  "generatedAt": "2026-07-27T19:00:31.864Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -11,11 +11,16 @@
     },
     "ai-council": {
       "views": 78,
-      "viewsUniques": 61
+      "viewsUniques": 61,
+      "upvotes": 0,
+      "discussion": {
+        "number": 501,
+        "url": "https://github.com/microsoft/FastTrack/discussions/501"
+      }
     },
     "autoreply-agent": {
-      "views": 69,
-      "viewsUniques": 46
+      "views": 1,
+      "viewsUniques": 1
     },
     "copilot-agents-guide": {
       "views": 32,
@@ -24,15 +29,20 @@
     "powerclaw-agent": {
       "views": 1632,
       "viewsUniques": 961,
-      "upvotes": 0,
+      "upvotes": 1,
       "discussion": {
         "number": 479,
         "url": "https://github.com/microsoft/FastTrack/discussions/479"
       }
     },
     "purview-audit-copilot-report": {
-      "views": 656,
-      "viewsUniques": 382
+      "views": 2,
+      "viewsUniques": 1,
+      "upvotes": 0,
+      "discussion": {
+        "number": 497,
+        "url": "https://github.com/microsoft/FastTrack/discussions/497"
+      }
     },
     "viva-insights-copilot-dashboard": {
       "views": 119,
