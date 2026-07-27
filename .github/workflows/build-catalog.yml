@@ -52,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # Only the publish job may push the rebuilt catalog.
+      pull-requests: write # Needed when branch protection forces a PR instead.
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,7 +72,14 @@ jobs:
           CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Commit generated catalog
+        env:
+          # Prefer a PAT when configured; the built-in token can be blocked from
+          # opening PRs by the "Allow GitHub Actions to create and approve pull
+          # requests" org/repo policy.
+          GH_TOKEN: ${{ secrets.AUTOMATION_PAT || secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
+
           git add catalog.json resource-stats.json traffic-data/clarity-views.json resource-discussions.json
           if [ -f design-concepts/resource-stats.json ]; then
             git add design-concepts/resource-stats.json
@@ -83,4 +91,73 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: rebuild catalog [skip ci]"
-          git push
+
+          # Fast path: push straight to the default branch. Another push landing
+          # first is normal on a busy branch, so rebase once and retry.
+          if git push || { git pull --rebase origin "${GITHUB_REF_NAME}" && git push; }; then
+            echo "✅ Catalog pushed to ${GITHUB_REF_NAME}."
+            exit 0
+          fi
+
+          # Branch protection ("Changes must be made through a pull request") rejects
+          # the direct push. Route the rebuild through a PR instead of losing it.
+          echo "::notice::Direct push rejected — falling back to a pull request."
+
+          BRANCH="catalog-refresh/$(date -u +%Y-%m-%d)-${GITHUB_SHA:0:7}"
+          git checkout -b "$BRANCH"
+          # Seed the remote-tracking ref so --force-with-lease has a basis on re-runs.
+          if git fetch origin "$BRANCH"; then
+            git update-ref "refs/remotes/origin/$BRANCH" FETCH_HEAD
+          fi
+          git push --force-with-lease --set-upstream origin "$BRANCH"
+
+          COMPARE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${GITHUB_REF_NAME}...${BRANCH}?expand=1"
+
+          existing_pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$existing_pr" ]; then
+            if create_output=$(gh pr create \
+              --title "chore: rebuild catalog" \
+              --body "Automated catalog + resource stats rebuild for ${GITHUB_SHA}." \
+              --head "$BRANCH" \
+              --base "${GITHUB_REF_NAME}" 2>&1); then
+              echo "✅ PR created: $create_output"
+              # Read the number straight out of the returned URL. Re-listing here
+              # would race GitHub's PR index and could report a phantom failure.
+              existing_pr=$(printf '%s' "$create_output" | grep -oE 'pull/[0-9]+' | tail -n1 | cut -d/ -f2)
+            else
+              echo "$create_output"
+              if printf '%s' "$create_output" | grep -qi "not permitted to create or approve pull requests"; then
+                echo "::warning::Catalog rebuild is on branch $BRANCH, but this repo blocks GitHub Actions from opening pull requests. Open it manually: $COMPARE_URL"
+                {
+                  echo "### ⚠️ Catalog rebuild needs a manual PR"
+                  echo ""
+                  echo "The rebuilt catalog was pushed to \`$BRANCH\`."
+                  echo ""
+                  echo "**Open the PR:** $COMPARE_URL"
+                } >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+              fi
+              echo "::error::Failed to open the catalog rebuild PR for $BRANCH."
+              exit 1
+            fi
+          fi
+
+          # Reaching here without a PR means the rebuild is stranded on a branch and
+          # will never land — that is a failure, not a silent success.
+          if [ -z "$existing_pr" ]; then
+            echo "::error::Pushed $BRANCH but could not confirm an open pull request. Open it manually: $COMPARE_URL"
+            exit 1
+          fi
+
+          # Auto-merge needs the repo-level "Allow auto-merge" setting. The PR itself
+          # already exists and is reviewable, so this stays a warning — but a loud one.
+          if ! gh pr merge "$existing_pr" --auto --squash; then
+            echo "::warning::Could not enable auto-merge on PR #$existing_pr — merge it manually: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/$existing_pr"
+            {
+              echo "### ⚠️ Catalog rebuild PR #$existing_pr needs a manual merge"
+              echo ""
+              echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/$existing_pr"
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "✅ Auto-merge enabled for PR #$existing_pr"
+          fi
