@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-27T19:00:31.864Z",
+  "generatedAt": "2026-07-30T21:49:39.580Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -10,9 +10,9 @@
       "viewsUniques": 60
     },
     "ai-council": {
-      "views": 78,
-      "viewsUniques": 61,
-      "upvotes": 0,
+      "views": 1,
+      "viewsUniques": 0,
+      "upvotes": 1,
       "discussion": {
         "number": 501,
         "url": "https://github.com/microsoft/FastTrack/discussions/501"
