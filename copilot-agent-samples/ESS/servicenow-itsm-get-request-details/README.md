@@ -68,8 +68,7 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to look
 1. Open your ESS Maker Kit workspace and run `/setup` to connect to the target environment.
 2. Copy the `topics/` files into `workspace/agents/{your-agent-slug}/topics/`.
 3. Copy the `workflow/` folder into `workspace/agents/{your-agent-slug}/workflows/ess-hr-servicenow-itsm-get-request-details-{NEW-GUID}/`.
-4. In **both topic files**, replace `{AGENT_SCHEMA_NAME}` with your agent's schema name (e.g. `msdyn_copilotforemployeeselfservicehr`).
-5. In **the system topic**, replace `{FLOW_GUID}` with the same GUID you used for the workflow folder name.
+4. In **the system topic**, replace `{FLOW_GUID}` with the same GUID you used for the workflow folder name.
 6. In **workflow.json**, replace `{SERVICENOW_CONNREF}` and `{DATAVERSE_CONNREF}` with your environment's connection reference logical names (find these in `workspace/agents/{slug}/connectionreferences.mcs.yml`).
 7. In **workflow/metadata.yml**, replace `{FLOW_GUID}` with your chosen GUID.
 8. Run `python scripts/push.py` to deploy.

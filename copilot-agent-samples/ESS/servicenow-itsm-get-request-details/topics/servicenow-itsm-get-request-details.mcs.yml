@@ -76,7 +76,7 @@ beginDialog:
                 binding:
                   SysId: =Topic.RequestIdentifier
 
-              dialog: {AGENT_SCHEMA_NAME}.topic.ess-hr-servicenow-itsm-system-get-request-details
+              dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-request-details
               output:
                 binding:
                   ServiceNowData: Topic.ServiceNowData
