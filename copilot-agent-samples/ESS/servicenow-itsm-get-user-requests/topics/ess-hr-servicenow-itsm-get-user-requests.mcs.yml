@@ -1,0 +1,102 @@
+kind: AdaptiveDialog
+inputs:
+  - kind: AutomaticTaskInput
+    propertyName: RequestState
+    description: |-
+      RequestState indicates the state of the requests the user wants to fetch. For active, open and pending requests, RequestState value will be 'active'. Only for closed/completed requests, RequestState value will be 'inactive'. If not sure of the state or if the user is requesting all requests, RequestState will be 'all'.
+      Examples:
+      query - "List of my open requests"; RequestState value - "active"
+      query - "My pending requests"; RequestState value - "active"
+      query - "List of my requests"; RequestState - "all"
+      query - "My completed requests"; RequestState value - "inactive"
+      query - "My closed requests"; RequestState value - "inactive"
+    entity: StringPrebuiltEntity
+    shouldPromptUser: false
+
+modelDescription: |-
+  This tool retrieves the list of service catalog requests (REQ numbers) for the user.
+
+  Use this tool when a user asks about their service requests, catalog requests, or REQ items — NOT for incident tickets (INC). Use ServiceNow-ITSM-Get-User-Tickets for incidents.
+
+  Example queries handled by this tool include:
+  * "Show me my service requests"
+  * "What requests do I have open?"
+  * "My pending catalog requests"
+  * "List my completed requests"
+  * "What did I request recently?"
+  * "Show my REQ items"
+
+  Use these instructions to respond:
+  1. Use the 'ServiceNowData' variable to provide the user with relevant information about their requests.
+  2. If no requests are found, inform the user of the same.
+  3. If requests are found, inform the user that the requests are sorted by most recently updated.
+  4. Display them in a numbered list in the format:
+  `**[{RequestNumber}]({ServiceNowPortalBaseURI}?id=ticket&table=sc_request&sys_id={SysId})**: {ShortDescription} ({State})`.
+  5. Let the user know you can provide more details on any specific request.
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent: {}
+  actions:
+    - kind: ConditionGroup
+      id: conditionGroup_checkCache
+      conditions:
+        - id: conditionItem_useCache
+          condition: =!IsBlank(Global.ESS_ServiceNow_AllRequests) && !IsBlank(Global.ESS_ServiceNow_NextAllRequestsRefresh) && Global.ESS_ServiceNow_NextAllRequestsRefresh > Now() && (Topic.RequestState = "all" || IsBlank(Topic.RequestState))
+          displayName: Requests list is cached?
+          actions:
+            - kind: SetVariable
+              id: useCachedRequests
+              variable: Topic.ServiceNowData
+              value: =Global.ESS_ServiceNow_AllRequests
+
+        - id: conditionItem_allRequests
+          condition: =Topic.RequestState = "all" || IsBlank(Topic.RequestState)
+          displayName: List all requests
+          actions:
+            - kind: BeginDialog
+              id: callSystemGetAllRequests
+              input:
+                binding:
+                  IsActive: =Blank()
+                  UserIdentifier: =Global.ESS_UserContext_UPN
+
+              dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-user-requests
+              output:
+                binding:
+                  ServiceNowData: Topic.ServiceNowData
+
+      elseActions:
+        - kind: SetVariable
+          id: setIsActive
+          variable: Topic.IsActive
+          value: =If(Topic.RequestState = "active", true, false)
+
+        - kind: BeginDialog
+          id: callSystemGetFilteredRequests
+          input:
+            binding:
+              IsActive: =Topic.IsActive
+              UserIdentifier: =Global.ESS_UserContext_UPN
+
+          dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-user-requests
+          output:
+            binding:
+              ServiceNowData: Topic.ServiceNowData
+
+inputType:
+  properties:
+    RequestState:
+      displayName: RequestState
+      description: |-
+        RequestState indicates the state of the requests the user wants to fetch. For active, open and pending requests, RequestState value will be 'active'. Only for closed/completed requests, RequestState value will be 'inactive'. If not sure of the state or if the user is requesting all requests, RequestState will be 'all'.
+      type: String
+      examples:
+
+outputType:
+  properties:
+    ServiceNowData:
+      displayName: ServiceNowData
+      description: List of service catalog requests returned from ServiceNow.
+      type: String
+      examples:
