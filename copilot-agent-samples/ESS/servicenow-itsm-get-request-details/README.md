@@ -42,7 +42,7 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to look
 1. In Power Automate, import `workflow/workflow.json` as a new cloud flow.
 2. Update the ServiceNow and Dataverse connection references to point to your environment's connections.
 3. Turn the flow on. Note the flow's ID (visible in the Power Automate URL).
-4. In Copilot Studio, open your ESS agent and create two new topics using the YAML in `topics/` as the content — replacing `{AGENT_SCHEMA_NAME}` with your schema name and `{FLOW_GUID}` with the flow ID from step 3.
+4. In Copilot Studio, open your ESS agent and create two new topics using the YAML in `topics/` as the content — replacing `{FLOW_GUID}` with the flow ID from step 3.
 5. Publish.
 
 ---
