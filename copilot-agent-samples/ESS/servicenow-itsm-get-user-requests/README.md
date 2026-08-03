@@ -18,11 +18,31 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 
 | File | Purpose |
 |------|---------|
-| `topics/ess-hr-servicenow-itsm-get-user-requests.mcs.yml` | User-facing topic — trigger phrases, state extraction, cache check, list rendering |
-| `topics/ess-hr-servicenow-itsm-system-get-user-requests.mcs.yml` | System topic — routes to the standalone flow and populates the 15-min cache |
-| `workflow/get-user-requests.zip` | Importable Power Automate package — used by **Option B** |
+| `topics/ess-it-servicenow-itsm-get-user-requests.mcs.yml` | User-facing topic — trigger phrases, state extraction, cache check, list rendering |
+| `topics/ess-it-servicenow-itsm-system-get-user-requests.mcs.yml` | System topic — routes to the standalone flow and populates the 15-min cache |
 | `workflow/workflow.json` | Raw flow definition — queries `sc_request` filtered by user email + active state; used by **Option A** |
 | `workflow/metadata.yml` | Flow metadata for the ESS Maker Kit push script |
+| `solution/ESSServiceNowITSMGetUserRequests_1_0_0_0.zip` | Unmanaged Power Platform solution containing the flow and its ServiceNow connection reference — **Option B** |
+
+> **⚠️ Topic schema names depend on how you install.** The user-facing topic reaches the system
+> topic by schema name, e.g.
+> `dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-user-requests`
+> (two occurrences). How that schema name gets assigned differs by install path:
+>
+> | Install path | Schema name derived from | Result |
+> |---|---|---|
+> | **Option A** (`push.py`) | the **filename** | `…topic.ess-it-servicenow-itsm-system-get-user-requests` |
+> | **Option B** (Copilot Studio portal) | the **display name**, spaces removed | `…topic.ESSITServiceNowITSMSystemGetUserRequests` |
+>
+> The references in this sample are written for **Option A** and resolve as-is. If you install
+> via the portal, update both `dialog:` lines in
+> `topics/ess-it-servicenow-itsm-get-user-requests.mcs.yml` to the PascalCase form. A mismatch
+> fails at publish with `Dialog with id '…' not found`, followed by a second, misleading
+> `IncorrectTypeAssignment` error (`Assigned: Unspecified, expected: String`) — that one is a
+> symptom of the unresolved reference, not a separate problem, and clears with it.
+>
+> Also note the `msdyn_copilotforemployeeselfserviceit` prefix is the **agent's** schema name.
+> These topics target the ESS **IT** agent; retarget the prefix if your agent differs.
 
 ---
 
@@ -46,7 +66,7 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 
 1. Run `/setup` in your ESS Maker Kit workspace to connect to the environment.
 2. Copy `topics/` → `workspace/agents/{slug}/topics/`.
-3. Copy `workflow/` → `workspace/agents/{slug}/workflows/ess-hr-servicenow-itsm-get-user-requests-{NEW-GUID}/`.
+3. Copy `workflow/` → `workspace/agents/{slug}/workflows/ess-it-servicenow-itsm-get-user-requests-{NEW-GUID}/`.
 4. Replace the placeholders:
    - `{FLOW_GUID}` — in the system topic **and** `workflow/metadata.yml` (use the GUID from step 3).
    - `{SERVICENOW_CONNREF}` / `{DATAVERSE_CONNREF}` — in `workflow.json`, from `workspace/agents/{slug}/connectionreferences.mcs.yml`.
@@ -56,17 +76,21 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 8. `python scripts/push.py --repair "Get User Requests"` to wire topic → flow.
 9. Publish the agent in Copilot Studio.
 
-### Option B — Manual (import the package)
+### Option B — Import the solution
 
-1. In [Power Automate](https://make.powerautomate.com), select **My flows** → **Import** → **Import Package (Legacy)**.
-2. Upload `workflow/get-user-requests.zip`.
-3. Under **Related resources**, select each connection and pick the matching connection in your environment — one **ServiceNow**, one **Microsoft Dataverse**. The display names baked into the package (`SNOW PP2`, `ESS HR`) are from the authoring tenant and are replaced by whatever you select.
-4. **Configure OBO** — see below.
-5. Turn the flow on and copy its ID from the URL.
-6. In Copilot Studio, create the two topics from `topics/`, replacing `{FLOW_GUID}` with that ID.
-7. Publish.
+The solution ships the flow plus its own ServiceNow connection reference
+(`esss_servicenow`), so there is exactly one connection to map at import time.
 
-> The package already declares the ServiceNow connection as `"source": "Invoker"`, so an imported
+1. In [Power Apps](https://make.powerapps.com), select your environment, then **Solutions** → **Import solution**.
+2. **Browse** to `solution/ESSServiceNowITSMGetUserRequests_1_0_0_0.zip` → **Next**.
+3. Under **Connections**, map **ESS Sample ServiceNow Connection** to your ServiceNow connection (or create one inline). The Dataverse binding resolves to the connection reference already present from your ServiceNow extension pack — it is not part of this solution and needs no mapping.
+4. Select **Import** and wait for it to complete.
+5. **Configure OBO** — see below.
+6. In [Power Automate](https://make.powerautomate.com), confirm **ESS IT ServiceNow ITSM Get User Requests** is **On**, and copy the flow ID from its URL.
+7. In Copilot Studio, create the two topics from `topics/`, replacing `{FLOW_GUID}` with that ID. Then update both `dialog:` references in the user-facing topic to the portal's PascalCase schema name — see the schema-name note under [Files](#-files).
+8. Publish.
+
+> The solution declares the ServiceNow connection as `"runtimeSource": "invoker"`, so an imported
 > flow is wired for OBO from the start. You still need the connection-side step below.
 
 ### 🔐 Configure OBO (required)

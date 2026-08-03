@@ -79,14 +79,14 @@ beginDialog:
                   displayName: Is this a RITM (request item)?
                   actions:
                     # Requires the companion "servicenow-itsm-get-request-item" sample to be installed
-                    # (provides the ess-hr-servicenow-itsm-system-get-request-item system topic + flow).
+                    # (provides the ess-it-servicenow-itsm-system-get-request-item system topic + flow).
                     - kind: BeginDialog
                       id: callSystemGetRequestItem
                       input:
                         binding:
                           SysId: =Topic.RequestIdentifier
 
-                      dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-request-item
+                      dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-request-item
                       output:
                         binding:
                           ServiceNowData: Topic.ServiceNowData
@@ -236,7 +236,7 @@ beginDialog:
                     binding:
                       SysId: =Topic.RequestIdentifier
 
-                  dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-request-details
+                  dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-request-details
                   output:
                     binding:
                       ServiceNowData: Topic.ServiceNowData

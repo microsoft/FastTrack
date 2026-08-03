@@ -61,7 +61,7 @@ beginDialog:
                   IsActive: =Blank()
                   UserIdentifier: =Global.ESS_UserContext_UPN
 
-              dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-user-requests
+              dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-user-requests
               output:
                 binding:
                   ServiceNowData: Topic.ServiceNowData
@@ -79,7 +79,7 @@ beginDialog:
               IsActive: =Topic.IsActive
               UserIdentifier: =Global.ESS_UserContext_UPN
 
-          dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-user-requests
+          dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-user-requests
           output:
             binding:
               ServiceNowData: Topic.ServiceNowData

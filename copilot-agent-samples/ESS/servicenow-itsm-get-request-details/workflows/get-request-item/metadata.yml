@@ -4,7 +4,7 @@
 # Both connrefs can be found in workspace/agents/{slug}/connectionreferences.mcs.yml
 jsonFileName: workflow/workflow.json
 workflowId: "{FLOW_GUID}"
-name: ESS HR ServiceNow ITSM Get Request Item
+name: ESS IT ServiceNow ITSM Get Request Item
 type: 1
 description: "Retrieves details for a ServiceNow request item (sc_req_item / RITM) by number."
 subprocess: false
