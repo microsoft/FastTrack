@@ -50,7 +50,9 @@
                   "x-ms-dynamically-added": true
                 }
               },
-              "required": ["text"]
+              "required": [
+                "text"
+              ]
             }
           }
         }
@@ -84,7 +86,9 @@
             }
           },
           "runAfter": {
-            "Initialize_variable_-_ResponseBody": ["Succeeded"]
+            "Initialize_variable_-_ResponseBody": [
+              "Succeeded"
+            ]
           }
         },
         "ServiceNow_Get_Request": {
@@ -105,7 +109,9 @@
             }
           },
           "runAfter": {
-            "Retrieve_Base_ITSM_Config": ["Succeeded"]
+            "Retrieve_ServiceNow_ITSM_Portal_Base_URI": [
+              "Succeeded"
+            ]
           },
           "limit": {
             "timeout": "PT1M"
@@ -142,7 +148,11 @@
                 "sys_updated_on": "@outputs('Store_First_Result')?['sys_updated_on']",
                 "sys_id": "@outputs('Store_First_Result')?['sys_id']"
               },
-              "runAfter": { "Store_First_Result": ["Succeeded"] }
+              "runAfter": {
+                "Store_First_Result": [
+                  "Succeeded"
+                ]
+              }
             },
             "Map_output_fields": {
               "type": "OpenApiConnection",
@@ -151,7 +161,7 @@
                   "actionName": "msdyn_ServiceNowOutputFieldMapperPlugin",
                   "item/ServiceNowTableData": "@outputs('Flatten_Reference_Fields')",
                   "item/OutputFieldMapping": "[{\"FieldName\":\"number\",\"OutputName\":\"RequestNumber\"},{\"FieldName\":\"short_description\",\"OutputName\":\"ShortDescription\"},{\"FieldName\":\"description\",\"OutputName\":\"Description\"},{\"FieldName\":\"request_state\",\"OutputName\":\"State\"},{\"FieldName\":\"requested_for\",\"OutputName\":\"RequestedFor\"},{\"FieldName\":\"assigned_to\",\"OutputName\":\"AssignedTo\"},{\"FieldName\":\"comments\",\"OutputName\":\"Comments\"},{\"FieldName\":\"sys_updated_on\",\"OutputName\":\"LastUpdated\"},{\"FieldName\":\"sys_id\",\"OutputName\":\"SysId\"}]",
-                  "item/ServiceNowITSMBaseConfiguration": "@first(outputs('Retrieve_Base_ITSM_Config')?['body/value'])?['msdyn_value']"
+                  "item/ServiceNowITSMBaseConfiguration": "@setProperty(json(coalesce(first(outputs('Retrieve_Base_ITSM_Config')?['body/value'])?['msdyn_value'], '{}')), 'ServiceNowPortalBaseURI', if(not(empty(coalesce(first(first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['environmentvariabledefinition_environmentvariablevalue'])?['value'], ''))), first(first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['environmentvariabledefinition_environmentvariablevalue'])?['value'], if(not(empty(coalesce(first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['defaultvalue'], ''))), first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['defaultvalue'], json(coalesce(first(outputs('Retrieve_Base_ITSM_Config')?['body/value'])?['msdyn_value'], '{}'))?['ServiceNowPortalBaseURI'])))"
                 },
                 "host": {
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
@@ -160,7 +170,9 @@
                 }
               },
               "runAfter": {
-                "Flatten_Reference_Fields": ["Succeeded"]
+                "Flatten_Reference_Fields": [
+                  "Succeeded"
+                ]
               }
             },
             "Set_success_response": {
@@ -177,7 +189,9 @@
                 }
               },
               "runAfter": {
-                "Map_output_fields": ["Succeeded"]
+                "Map_output_fields": [
+                  "Succeeded"
+                ]
               }
             }
           },
@@ -201,7 +215,10 @@
             }
           },
           "runAfter": {
-            "ServiceNow_Get_Request": ["Succeeded", "Failed"]
+            "ServiceNow_Get_Request": [
+              "Succeeded",
+              "Failed"
+            ]
           }
         },
         "Respond_to_Copilot": {
@@ -263,11 +280,34 @@
             }
           },
           "runAfter": {
-            "Condition_-_ServiceNow_call_succeeded": ["Succeeded"]
+            "Condition_-_ServiceNow_call_succeeded": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Retrieve_ServiceNow_ITSM_Portal_Base_URI": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "environmentvariabledefinitions",
+              "$select": "schemaname,defaultvalue",
+              "$filter": "schemaname eq 'ServiceNowITSMPortalBaseURI'",
+              "$expand": "environmentvariabledefinition_environmentvariablevalue($select=value)",
+              "$top": 1
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          },
+          "runAfter": {
+            "Retrieve_Base_ITSM_Config": [
+              "Succeeded"
+            ]
           }
         }
       }
     }
   }
 }
-

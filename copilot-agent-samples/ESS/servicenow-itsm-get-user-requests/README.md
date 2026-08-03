@@ -51,6 +51,7 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 - Microsoft Employee Self-Service agent (deployed)
 - ServiceNow ITSM extension pack installed in Copilot Studio
 - An active ServiceNow connection in Power Platform configured for on-behalf-of (invoker) auth — see [Configure OBO](#-configure-obo-required)
+- The **`ServiceNowITSMPortalBaseURI`** environment variable populated — see [Set the portal base URI](#-set-the-portal-base-uri-required-for-links)
 - [ESS Maker Kit](https://github.com/microsoft/Employee-Self-Service-Agent-Developer-Kit/tree/main/solutions/ess-maker-skills) (for automated deployment via `push.py`)
 
 ---
@@ -61,6 +62,10 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 > `"runtimeSource": "invoker"`, so the flow calls ServiceNow **as the signed-in employee**,
 > not as the maker. This keeps ServiceNow's own row-level ACLs in force — each user only sees
 > requests they're entitled to. See [Configure OBO](#-configure-obo-required) below.
+
+> **🔗 Also required:** set the `ServiceNowITSMPortalBaseURI` environment variable.
+> It ships empty, and the "Open in ServiceNow" links render without a host until you set it.
+> See [Set the portal base URI](#-set-the-portal-base-uri-required-for-links) below.
 
 ### Option A — [ESS Maker Kit](https://github.com/microsoft/Employee-Self-Service-Agent-Developer-Kit/tree/main/solutions/ess-maker-skills) (recommended)
 
@@ -140,6 +145,49 @@ second one.
 
 > The solution declares the ServiceNow connection as `"runtimeSource": "invoker"`, so an imported
 > flow is wired for OBO from the start. You still need the connection-side step in B2.
+
+### 🔗 Set the portal base URI (required for links)
+
+The flow in this sample resolve the "Open in ServiceNow" link base the same way the
+out-of-the-box ESS orchestrator does:
+
+1. the **`ServiceNowITSMPortalBaseURI`** environment variable's **current value**, then
+2. that variable's **default value**, then
+3. the `ServiceNowPortalBaseURI` property of the `msdyn_ServiceNowITSM` template
+   configuration record.
+
+**This environment variable ships empty**, and so does the template configuration
+property. If you don't set one of them, the adaptive cards still render correctly,
+but every "Open in ServiceNow" link points at `?id=ticket&table=...` with no host
+and won't resolve.
+
+1. Go to [make.powerapps.com](https://make.powerapps.com) → your environment →
+   **Solutions** → **Default Solution** → **Environment variables**.
+2. Open **ServiceNowITSMPortalBaseURI**.
+3. Set the **Current value** to your ServiceNow portal base URL — no trailing
+   slash, no query string:
+
+   ```text
+   https://<instance>.service-now.com/esc
+   ```
+
+   Use `/esc` for **Employee Center** or `/sp` for the classic **Service Portal**,
+   whichever your employees use. To confirm which is default in your instance, go
+   to **Service Portal → Portals** in ServiceNow and check the **URL suffix** of
+   the portal flagged as default.
+4. **Save**.
+
+The topics append `?id=ticket&table=sc_request&sys_id=...` to this value, so a
+finished link looks like:
+
+```text
+https://<instance>.service-now.com/esc?id=ticket&table=sc_request&sys_id=127a3aef8356cf1028e6cc65eeaad3d4
+```
+
+> This variable is shared with the out-of-the-box ServiceNow ITSM topics —
+> setting it fixes their links too.
+
+---
 
 ### 🔐 Configure OBO (required)
 
