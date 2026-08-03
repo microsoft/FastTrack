@@ -234,6 +234,6 @@ rather than the sole isolation boundary. Note that the 15-minute cache is per-us
 
 ## Author
 
-| Author | Original Publish Date |
-| --- | --- |
-| Dean Cron | 2026-07-30 |
+| Author | Original Publish Date | Latest Publish Date |
+| --- | --- | --- |
+| Dean Cron | 2026-07-30 | 2026-08-03 |
