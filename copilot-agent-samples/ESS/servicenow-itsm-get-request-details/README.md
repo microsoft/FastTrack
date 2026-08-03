@@ -4,10 +4,15 @@
 
 Extends the Microsoft Employee Self-Service (ESS) agent with the ability to look up **service catalog requests** (REQ numbers) from ServiceNow. The built-in ESS ITSM orchestrator only handles incidents (INC). This sample adds a standalone flow that queries the `sc_request` table directly.
 
+The user-facing topic also **routes RITM (request item) numbers** to the companion [`servicenow-itsm-get-request-item`](../servicenow-itsm-get-request-item/) sample — install that sample too if you want RITM lookups to work. Without it, RITM input is still recognized but the routed dialog reference won't resolve.
+
 **Example conversation:**
 
 > User: "What's the status of my request REQ0012345?"  
 > Agent: *[Adaptive card showing request number, state, description, assigned to, last updated, and a link to open in ServiceNow]*
+
+> User: "Look up RITM0001234"  
+> Agent: *[Adaptive card showing request item number, state, catalog item, parent request, assigned to, and a link to open in ServiceNow — requires the companion `servicenow-itsm-get-request-item` sample]*
 
 ---
 
@@ -15,9 +20,9 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to look
 
 | File | Purpose |
 |------|---------|
-| `topics/servicenow-itsm-get-request-details.mcs.yml` | User-facing topic — trigger phrases, AI input extraction, adaptive card |
+| `topics/servicenow-itsm-get-request-details.mcs.yml` | User-facing topic — trigger phrases, AI input extraction, REQ/RITM routing, adaptive card |
 | `topics/ess-hr-servicenow-itsm-system-get-request-details.mcs.yml` | System topic — routes to the standalone flow via `InvokeFlowAction` |
-| `workflow/workflow.json` | Standalone Power Automate flow — queries `sc_request` by SysId |
+| `workflow/workflow.json` | Standalone Power Automate flow — queries `sc_request` by REQ number |
 | `workflow/metadata.yml` | Flow metadata for the ESS Maker Kit push script |
 
 ---
@@ -51,4 +56,5 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to look
 
 - **Activation via API fails** — when deploying via the Maker Kit push script, the flow is created but cannot be activated automatically. Power Platform validates the ServiceNow connection schema at activation time, which requires a live user session. Manual turn-on in Power Automate is required (step 9 above).
 - **sc_request fields** — the flow returns `request_state` (not `state`) and `requested_for` (not `caller_id`). The adaptive card handles this, but if you customise the output be aware the field names differ from the incident table.
-- **SysId lookup only** — the flow looks up by SysId. The user-facing topic extracts the REQ number or SysId from the user's message. If only a REQ number is provided (not a SysId), ensure your ServiceNow instance returns records when queried by `number` field — you may need to adapt the flow to use a `GetRecords` filter instead of `GetRecord`.
+- **Reference fields** — `requested_for` and `assigned_to` come back from `GetRecords` as `{display_value, link}` objects when populated (or an empty string when not set). The flow's `Flatten_Reference_Fields` step normalizes these to plain display-value strings before mapping — if you add more reference fields to `sysparm_fields`, apply the same flatten pattern.
+- **RITM lookups require the companion sample** — the user-facing topic recognizes RITM numbers and routes them to `ess-hr-servicenow-itsm-system-get-request-item`, but that system topic and its flow live in the separate `servicenow-itsm-get-request-item` sample. Install both samples together for full REQ + RITM coverage.

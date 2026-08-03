@@ -43,7 +43,7 @@
               "type": "object",
               "properties": {
                 "text": {
-                  "description": "System Identifier (SysId) of the service catalog request to retrieve.",
+                  "description": "REQ number (e.g. REQ0012345) of the service catalog request to retrieve.",
                   "title": "SysId",
                   "type": "string",
                   "x-ms-content-hint": "TEXT",
@@ -92,14 +92,15 @@
           "inputs": {
             "parameters": {
               "tableType": "sc_request",
-              "sysid": "@triggerBody()?['text']",
+              "sysparm_query": "@concat('number=', triggerBody()?['text'])",
+              "sysparm_limit": 1,
               "sysparm_display_value": true,
               "sysparm_exclude_reference_link": false,
               "sysparm_fields": "number,short_description,description,request_state,requested_for,assigned_to,comments,sys_updated_on,sys_id"
             },
             "host": {
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_service-now",
-              "operationId": "GetRecord",
+              "operationId": "GetRecords",
               "connectionName": "shared_service-now"
             }
           },
@@ -115,26 +116,40 @@
           "expression": {
             "and": [
               {
-                "greaterOrEquals": [
-                  "@outputs('ServiceNow_Get_Request')?['statusCode']",
-                  200
-                ]
-              },
-              {
-                "less": [
-                  "@outputs('ServiceNow_Get_Request')?['statusCode']",
-                  300
+                "greater": [
+                  "@length(coalesce(body('ServiceNow_Get_Request')?['result'], json('[]')))",
+                  0
                 ]
               }
             ]
           },
           "actions": {
+            "Store_First_Result": {
+              "type": "Compose",
+              "inputs": "@first(body('ServiceNow_Get_Request')?['result'])",
+              "runAfter": {}
+            },
+            "Flatten_Reference_Fields": {
+              "type": "Compose",
+              "inputs": {
+                "number": "@outputs('Store_First_Result')?['number']",
+                "short_description": "@outputs('Store_First_Result')?['short_description']",
+                "description": "@outputs('Store_First_Result')?['description']",
+                "request_state": "@outputs('Store_First_Result')?['request_state']",
+                "requested_for": "@{if(startsWith(string(outputs('Store_First_Result')?['requested_for']), '{'), json(string(outputs('Store_First_Result')?['requested_for']))?['display_value'], string(outputs('Store_First_Result')?['requested_for']))}",
+                "assigned_to": "@{if(startsWith(string(outputs('Store_First_Result')?['assigned_to']), '{'), json(string(outputs('Store_First_Result')?['assigned_to']))?['display_value'], string(outputs('Store_First_Result')?['assigned_to']))}",
+                "comments": "@outputs('Store_First_Result')?['comments']",
+                "sys_updated_on": "@outputs('Store_First_Result')?['sys_updated_on']",
+                "sys_id": "@outputs('Store_First_Result')?['sys_id']"
+              },
+              "runAfter": { "Store_First_Result": ["Succeeded"] }
+            },
             "Map_output_fields": {
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
                   "actionName": "msdyn_ServiceNowOutputFieldMapperPlugin",
-                  "item/ServiceNowTableData": "@body('ServiceNow_Get_Request')?['result']",
+                  "item/ServiceNowTableData": "@outputs('Flatten_Reference_Fields')",
                   "item/OutputFieldMapping": "[{\"FieldName\":\"number\",\"OutputName\":\"RequestNumber\"},{\"FieldName\":\"short_description\",\"OutputName\":\"ShortDescription\"},{\"FieldName\":\"description\",\"OutputName\":\"Description\"},{\"FieldName\":\"request_state\",\"OutputName\":\"State\"},{\"FieldName\":\"requested_for\",\"OutputName\":\"RequestedFor\"},{\"FieldName\":\"assigned_to\",\"OutputName\":\"AssignedTo\"},{\"FieldName\":\"comments\",\"OutputName\":\"Comments\"},{\"FieldName\":\"sys_updated_on\",\"OutputName\":\"LastUpdated\"},{\"FieldName\":\"sys_id\",\"OutputName\":\"SysId\"}]",
                   "item/ServiceNowITSMBaseConfiguration": "@first(outputs('Retrieve_Base_ITSM_Config')?['body/value'])?['msdyn_value']"
                 },
@@ -144,7 +159,9 @@
                   "connectionName": "shared_commondataserviceforapps"
                 }
               },
-              "runAfter": {}
+              "runAfter": {
+                "Flatten_Reference_Fields": ["Succeeded"]
+              }
             },
             "Set_success_response": {
               "type": "SetVariable",
@@ -153,10 +170,10 @@
                 "value": {
                   "ServiceNowData": "@outputs('Map_output_fields')?['body/ServiceNowMappedOutput']",
                   "ErrorMessage": "",
-                  "StatusCode": "@outputs('ServiceNow_Get_Request')?['statusCode']",
+                  "StatusCode": 200,
                   "IsSuccessful": "@true",
-                  "ServiceNowSessionID": "@if(contains(outputs('ServiceNow_Get_Request')?['headers/Set-Cookie'], 'glide_session_store'), first(split(last(split(outputs('ServiceNow_Get_Request')?['headers/Set-Cookie'], 'glide_session_store=')), ';')), '')",
-                  "ServiceNowTransactionID": "@outputs('ServiceNow_Get_Request')?['headers/X-Transaction-ID']"
+                  "ServiceNowSessionID": "",
+                  "ServiceNowTransactionID": ""
                 }
               },
               "runAfter": {
@@ -172,8 +189,8 @@
                   "name": "ResponseBody",
                   "value": {
                     "ServiceNowData": "",
-                    "ErrorMessage": "@{outputs('ServiceNow_Get_Request')?['body/error/message']}",
-                    "StatusCode": "@outputs('ServiceNow_Get_Request')?['statusCode']",
+                    "ErrorMessage": "No service catalog request found.",
+                    "StatusCode": 404,
                     "IsSuccessful": "@false",
                     "ServiceNowSessionID": "",
                     "ServiceNowTransactionID": ""
@@ -184,7 +201,7 @@
             }
           },
           "runAfter": {
-            "ServiceNow_Get_Request": ["Succeeded", "Failed", "TimedOut", "Skipped"]
+            "ServiceNow_Get_Request": ["Succeeded", "Failed"]
           }
         },
         "Respond_to_Copilot": {

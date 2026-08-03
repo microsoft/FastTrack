@@ -6,7 +6,7 @@ jsonFileName: workflow/workflow.json
 workflowId: "{FLOW_GUID}"
 name: ESS HR ServiceNow ITSM Get Request Details
 type: 1
-description: "Retrieves details for a specific ServiceNow service catalog request (sc_request table) by SysId."
+description: "Retrieves details for a specific ServiceNow service catalog request (sc_request table) by REQ number."
 subprocess: false
 category: 5
 mode: 0

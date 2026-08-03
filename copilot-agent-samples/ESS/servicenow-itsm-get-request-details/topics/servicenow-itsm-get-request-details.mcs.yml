@@ -7,19 +7,21 @@ inputs:
   - kind: AutomaticTaskInput
     propertyName: RequestIdentifier
     description: |-
-      `RequestIdentifier` is a unique value used to identify a service catalog request.
+      `RequestIdentifier` is a unique value used to identify a service catalog request or request item.
 
-      There are only two valid types of RequestIdentifiers:
+      There are three valid types of RequestIdentifiers:
       1. **SysID**
         - A globally unique 32-character identifier.
         - Format: hexadecimal string (digits 0-9 and lowercase letters a-f).
         - Regex: `^[a-f0-9]{32}$`
-      2. **RequestNumber**
-        - A unique identifier between 8-14 characters.
+      2. **RequestNumber (REQ)**
         - Format: Always starts with the prefix `REQ` followed by digits.
         - Regex: `^REQ\d{5,}$`
+      3. **RequestItemNumber (RITM)**
+        - Format: Always starts with the prefix `RITM` followed by digits.
+        - Regex: `^RITM\d{5,}$`
 
-      If neither identifier is available, ask the user to provide their REQ number.
+      If neither identifier is available, ask the user to provide their REQ or RITM number.
 
       **Important:** The extracted `SysID` or `RequestNumber` must be an exact match with the user query. Partial or fuzzy matches are not valid.
     entity: StringPrebuiltEntity
@@ -32,7 +34,7 @@ inputs:
 
       Set `RelevantRequestFound = true` **only if** one of the following conditions is met:
       1. **Exact Identifier Match**
-        - The user provides a `RequestNumber` (8-14 characters, starts with `"REQ"`) or a `SysID` (32-character hexadecimal string: digits `0-9` and lowercase letters `a-f`).
+        - The user provides a `RequestNumber` (starts with `"REQ"`), a `RequestItemNumber` (starts with `"RITM"`), or a `SysID` (32-character hexadecimal string).
 
       2. **High-Relevance Descriptive Match**
         - The user describes a specific request with VERY HIGH SEMANTIC RELEVANCE.
@@ -43,20 +45,19 @@ inputs:
     shouldPromptUser: false
 
 modelDescription: |-
-  Use this tool when a user asks for details about a specific service catalog request. Requests always start with the prefix REQ (e.g. REQ0012345).
+  Use this tool when a user asks for details about a specific service catalog request (REQ) or request item (RITM).
 
-  This tool retrieves details for a specific service catalog request identified by its REQ number or SysId.
+  This tool retrieves details for a REQ (service catalog request) or RITM (request item) identified by its number or SysId.
 
   Do NOT use this tool for incident tickets (which start with INC). Use ServiceNow-ITSM-Get-Ticket-Details for incidents instead.
 
   Example queries handled by this tool:
   * "What's the status of my request REQ0012345?"
   * "Show me details of REQ0067890"
+  * "Look up RITM0001234"
+  * "What's happening with RITM0005678?"
   * "Where is my service request?"
-  * "Can you look up request REQ0011223 for me?"
-  * "Details on my catalog request"
   * "Has my software request been approved?"
-  * "What's happening with my hardware request?"
   * "Check the status of my access request"
 beginDialog:
   kind: OnRecognizedIntent
@@ -70,148 +71,316 @@ beginDialog:
           condition: =Topic.RelevantRequestFound = true
           displayName: Is a relevant request found?
           actions:
-            - kind: BeginDialog
-              id: callSystemGetRequestDetails
-              input:
-                binding:
-                  SysId: =Topic.RequestIdentifier
-
-              dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-request-details
-              output:
-                binding:
-                  ServiceNowData: Topic.ServiceNowData
-
             - kind: ConditionGroup
-              id: conditionGroup_dataFound
+              id: conditionGroup_ritmOrReq
               conditions:
-                - id: conditionItem_hasData
-                  condition: =!IsBlank(Topic.ServiceNowData)
-                  displayName: Was request data returned?
+                - id: conditionItem_isRitm
+                  condition: =StartsWith(Upper(Topic.RequestIdentifier), "RITM")
+                  displayName: Is this a RITM (request item)?
                   actions:
-                    - kind: ParseValue
-                      id: parseRequestDetails
-                      variable: Topic.RequestDetails
-                      valueType:
-                        kind: Record
-                        properties:
-                          AssignedTo:
-                            type: String
-                            examples:
+                    # Requires the companion "servicenow-itsm-get-request-item" sample to be installed
+                    # (provides the ess-hr-servicenow-itsm-system-get-request-item system topic + flow).
+                    - kind: BeginDialog
+                      id: callSystemGetRequestItem
+                      input:
+                        binding:
+                          SysId: =Topic.RequestIdentifier
 
-                          Comments:
-                            type: String
-                            examples:
+                      dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-request-item
+                      output:
+                        binding:
+                          ServiceNowData: Topic.ServiceNowData
 
-                          Description:
-                            type: String
-                            examples:
+                    - kind: ConditionGroup
+                      id: conditionGroup_ritmDataFound
+                      conditions:
+                        - id: conditionItem_ritmHasData
+                          condition: =!IsBlank(Topic.ServiceNowData)
+                          displayName: Was request item data returned?
+                          actions:
+                            - kind: ParseValue
+                              id: parseRitmDetails
+                              variable: Topic.RitmDetails
+                              valueType:
+                                kind: Record
+                                properties:
+                                  AssignedTo:
+                                    type: String
+                                    examples:
+                                  CatalogItem:
+                                    type: String
+                                    examples:
+                                  Description:
+                                    type: String
+                                    examples:
+                                  LastUpdated:
+                                    type: String
+                                    examples:
+                                  ParentRequest:
+                                    type: String
+                                    examples:
+                                  Quantity:
+                                    type: String
+                                    examples:
+                                  RequestItemNumber:
+                                    type: String
+                                    examples:
+                                  ServiceNowPortalBaseURI:
+                                    type: String
+                                    examples:
+                                  ShortDescription:
+                                    type: String
+                                    examples:
+                                  State:
+                                    type: String
+                                    examples:
+                                  SysId:
+                                    type: String
+                                    examples:
 
-                          LastUpdated:
-                            type: String
-                            examples:
+                              value: =Topic.ServiceNowData
 
-                          RequestedFor:
-                            type: String
-                            examples:
+                            - kind: SendActivity
+                              id: sendRitmCard
+                              activity:
+                                text:
+                                  - You can view the request item details below.
+                                attachments:
+                                  - kind: AdaptiveCardTemplate
+                                    cardContent: |-
+                                      ={
+                                        type: "AdaptiveCard",
+                                        '$schema': "http://adaptivecards.io/schemas/adaptive-card.json",
+                                        version: "1.3",
+                                        body: [
+                                          {
+                                            type: "Container",
+                                            items: [
+                                              {
+                                                type: "RichTextBlock",
+                                                inlines: [
+                                                  {type: "TextRun", text: "Request Item " & Topic.RitmDetails.RequestItemNumber & " | ", weight: "Bolder"},
+                                                  {type: "TextRun", text: Topic.RitmDetails.State, weight: "Bolder",
+                                                   color: If(Lower(Topic.RitmDetails.State) = "approved", "good", "default")}
+                                                ]
+                                              },
+                                              {type: "TextBlock", text: Topic.RitmDetails.ShortDescription, wrap: true, weight: "Bolder", size: "Medium"},
+                                              {
+                                                type: "ColumnSet",
+                                                columns: [
+                                                  {type: "Column", width: "50", items: [
+                                                    {type: "TextBlock", text: "Catalog item", isSubtle: true, wrap: true},
+                                                    {type: "TextBlock", text: If(IsBlank(Topic.RitmDetails.CatalogItem), "—", Topic.RitmDetails.CatalogItem), wrap: true, spacing: "None"}
+                                                  ]},
+                                                  {type: "Column", width: "50", items: [
+                                                    {type: "TextBlock", text: "Parent request", isSubtle: true, wrap: true},
+                                                    {type: "TextBlock", text: If(IsBlank(Topic.RitmDetails.ParentRequest), "—", Topic.RitmDetails.ParentRequest), wrap: true, spacing: "None"}
+                                                  ]}
+                                                ]
+                                              },
+                                              {
+                                                type: "ColumnSet",
+                                                columns: [
+                                                  {type: "Column", width: "50", items: [
+                                                    {type: "TextBlock", text: "Assigned to", isSubtle: true, wrap: true},
+                                                    {type: "TextBlock", text: If(IsBlank(Topic.RitmDetails.AssignedTo), "No agent assigned", Topic.RitmDetails.AssignedTo), wrap: true, spacing: "None"}
+                                                  ]},
+                                                  {type: "Column", width: "50", items: [
+                                                    {type: "TextBlock", text: "Quantity", isSubtle: true, wrap: true},
+                                                    {type: "TextBlock", text: If(IsBlank(Topic.RitmDetails.Quantity), "1", Topic.RitmDetails.Quantity), wrap: true, spacing: "None"}
+                                                  ]}
+                                                ]
+                                              },
+                                              {type: "TextBlock", text: "Last updated", isSubtle: true, wrap: true},
+                                              {type: "TextBlock", text: Text(DateValue(Topic.RitmDetails.LastUpdated), "mmmm d, yyyy"), wrap: true, spacing: "None"}
+                                            ]
+                                          },
+                                          {
+                                            type: "Container",
+                                            separator: true,
+                                            spacing: "ExtraLarge",
+                                            items: [{
+                                              type: "ColumnSet",
+                                              columns: [
+                                                {type: "Column", width: "auto", items: [{
+                                                  type: "TextBlock",
+                                                  text: "[Open in ServiceNow](" & Topic.RitmDetails.ServiceNowPortalBaseURI & "?id=ticket&table=sc_req_item&sys_id=" & Topic.RitmDetails.SysId & ")",
+                                                  wrap: true, weight: "Bolder"
+                                                }]},
+                                                {type: "Column", width: "auto",
+                                                 selectAction: {type: "Action.OpenUrl", url: Topic.RitmDetails.ServiceNowPortalBaseURI & "?id=ticket&table=sc_req_item&sys_id=" & Topic.RitmDetails.SysId},
+                                                 items: [{type: "Image", url: Topic.IconBase64}]}
+                                              ]
+                                            }]
+                                          }
+                                        ]
+                                      }
 
-                          RequestNumber:
-                            type: String
-                            examples:
+                            - kind: CancelAllDialogs
+                              id: cancelAfterRitm
 
-                          ServiceNowPortalBaseURI:
-                            type: String
-                            examples:
+                      elseActions:
+                        - kind: SendActivity
+                          id: sendRitmNotFound
+                          activity:
+                            text:
+                              - I couldn't find a request item matching that RITM number. Please check the number and try again.
 
-                          ShortDescription:
-                            type: String
-                            examples:
+                        - kind: CancelAllDialogs
+                          id: cancelAfterRitmNotFound
 
-                          State:
-                            type: String
-                            examples:
+              elseActions:
+                - kind: BeginDialog
+                  id: callSystemGetRequestDetails
+                  input:
+                    binding:
+                      SysId: =Topic.RequestIdentifier
 
-                          SysId:
-                            type: String
-                            examples:
+                  dialog: msdyn_copilotforemployeeselfservicehr.topic.ess-hr-servicenow-itsm-system-get-request-details
+                  output:
+                    binding:
+                      ServiceNowData: Topic.ServiceNowData
 
-                      value: =Topic.ServiceNowData
 
-                    - kind: SetVariable
-                      id: setFirstComment
-                      variable: Topic.FirstComment
-                      value: =First(Split(Topic.RequestDetails.Comments, Char(10) & Char(10))).Value
+                - kind: ConditionGroup
+                  id: conditionGroup_dataFound
+                  conditions:
+                    - id: conditionItem_hasData
+                      condition: =!IsBlank(Topic.ServiceNowData) && !StartsWith(Upper(Topic.RequestIdentifier), "RITM")
+                      displayName: Was request data returned?
+                      actions:
+                        - kind: ParseValue
+                          id: parseRequestDetails
+                          variable: Topic.RequestDetails
+                          valueType:
+                            kind: Record
+                            properties:
+                              AssignedTo:
+                                type: String
+                                examples:
 
-                    - kind: SetTextVariable
-                      id: setRequestTitle
-                      variable: Topic.RequestTitle
-                      value: "Service Request #{Topic.RequestDetails.RequestNumber} | "
+                              Comments:
+                                type: String
+                                examples:
 
-                    - kind: SendActivity
-                      id: sendRequestCard
-                      activity:
-                        text:
-                          - You can view the request details below.
-                        attachments:
-                          - kind: AdaptiveCardTemplate
-                            cardContent: |-
-                              ={
-                                type: "AdaptiveCard",
-                                '$schema': "http://adaptivecards.io/schemas/adaptive-card.json",
-                                version: "1.3",
-                                body: [
-                                  {
-                                    type: "Container",
-                                    items: [
+                              Description:
+                                type: String
+                                examples:
+
+                              LastUpdated:
+                                type: String
+                                examples:
+
+                              RequestedFor:
+                                type: String
+                                examples:
+
+                              RequestNumber:
+                                type: String
+                                examples:
+
+                              ServiceNowPortalBaseURI:
+                                type: String
+                                examples:
+
+                              ShortDescription:
+                                type: String
+                                examples:
+
+                              State:
+                                type: String
+                                examples:
+
+                              SysId:
+                                type: String
+                                examples:
+
+                          value: =Topic.ServiceNowData
+
+                        - kind: SetVariable
+                          id: setFirstComment
+                          variable: Topic.FirstComment
+                          value: =First(Split(Topic.RequestDetails.Comments, Char(10) & Char(10))).Value
+
+                        - kind: SetTextVariable
+                          id: setRequestTitle
+                          variable: Topic.RequestTitle
+                          value: "Service Request #{Topic.RequestDetails.RequestNumber} | "
+
+                        - kind: SendActivity
+                          id: sendRequestCard
+                          activity:
+                            text:
+                              - You can view the request details below.
+                            attachments:
+                              - kind: AdaptiveCardTemplate
+                                cardContent: |-
+                                  ={
+                                    type: "AdaptiveCard",
+                                    '$schema': "http://adaptivecards.io/schemas/adaptive-card.json",
+                                    version: "1.3",
+                                    body: [
                                       {
-                                        type: "RichTextBlock",
-                                        inlines: [
-                                          {type: "TextRun", text: Topic.RequestTitle, weight: "Bolder"},
-                                          {type: "TextRun", text: Topic.RequestDetails.State, color: If(Lower(Topic.RequestDetails.State) = "approved", "good", "default"), weight: "Bolder"}
+                                        type: "Container",
+                                        items: [
+                                          {
+                                            type: "RichTextBlock",
+                                            inlines: [
+                                              {type: "TextRun", text: Topic.RequestTitle, weight: "Bolder"},
+                                              {type: "TextRun", text: Topic.RequestDetails.State, color: If(Lower(Topic.RequestDetails.State) = "approved", "good", "default"), weight: "Bolder"}
+                                            ]
+                                          },
+                                          {type: "TextBlock", text: Topic.RequestDetails.ShortDescription, wrap: true, weight: "Bolder", size: "Medium"},
+                                          {
+                                            type: "ColumnSet",
+                                            columns: [
+                                              {type: "Column", width: "50", items: [{type: "TextBlock", text: "Requested for", isSubtle: true, wrap: true}, {type: "TextBlock", text: If(IsBlank(Topic.RequestDetails.RequestedFor), "—", Topic.RequestDetails.RequestedFor), wrap: true, spacing: "None"}]},
+                                              {type: "Column", width: "50", items: [{type: "TextBlock", text: "Assigned to", isSubtle: true, wrap: true}, {type: "TextBlock", text: If(IsBlank(Topic.RequestDetails.AssignedTo), "No agent assigned", Topic.RequestDetails.AssignedTo), wrap: true, spacing: "None"}]}
+                                            ]
+                                          },
+                                          {type: "ColumnSet", columns: [{type: "Column", width: "100", items: [{type: "TextBlock", text: "Last updated", wrap: true, isSubtle: true}, {type: "TextBlock", text: Text(DateValue(Topic.RequestDetails.LastUpdated), "mmmm d, yyyy"), wrap: true, spacing: "None"}]}]},
+                                          If(IsBlank(Topic.RequestDetails.Description),{},{type: "TextBlock", text: "Description", wrap: true, isSubtle: true}),
+                                          If(IsBlank(Topic.RequestDetails.Description),{},{type: "TextBlock", text: Topic.RequestDetails.Description, wrap: true, spacing: "None"}),
+                                          If(IsBlank(Topic.RequestDetails.Comments),{},{type: "TextBlock", text: "Latest comment", wrap: true, isSubtle: true}),
+                                          If(IsBlank(Topic.RequestDetails.Comments),{},{type: "TextBlock", text: Mid(Topic.FirstComment, Find(Char(10), Topic.FirstComment) + 1, Len(Topic.FirstComment)), wrap: true, spacing: "None"}),
+                                          {type: "TextBlock", text: "SysId", isVisible: false},
+                                          {type: "TextBlock", text: Topic.RequestDetails.SysId, isVisible: false}
                                         ]
                                       },
-                                      {type: "TextBlock", text: Topic.RequestDetails.ShortDescription, wrap: true, weight: "Bolder", size: "Medium"},
                                       {
-                                        type: "ColumnSet",
-                                        columns: [
-                                          {type: "Column", width: "50", items: [{type: "TextBlock", text: "Requested for", isSubtle: true, wrap: true}, {type: "TextBlock", text: If(IsBlank(Topic.RequestDetails.RequestedFor), "—", Topic.RequestDetails.RequestedFor), wrap: true, spacing: "None"}]},
-                                          {type: "Column", width: "50", items: [{type: "TextBlock", text: "Assigned to", isSubtle: true, wrap: true}, {type: "TextBlock", text: If(IsBlank(Topic.RequestDetails.AssignedTo), "No agent assigned", Topic.RequestDetails.AssignedTo), wrap: true, spacing: "None"}]}
-                                        ]
-                                      },
-                                      {type: "ColumnSet", columns: [{type: "Column", width: "100", items: [{type: "TextBlock", text: "Last updated", wrap: true, isSubtle: true}, {type: "TextBlock", text: Text(DateValue(Topic.RequestDetails.LastUpdated), "mmmm d, yyyy"), wrap: true, spacing: "None"}]}]},
-                                      If(IsBlank(Topic.RequestDetails.Description),{},{type: "TextBlock", text: "Description", wrap: true, isSubtle: true}),
-                                      If(IsBlank(Topic.RequestDetails.Description),{},{type: "TextBlock", text: Topic.RequestDetails.Description, wrap: true, spacing: "None"}),
-                                      If(IsBlank(Topic.RequestDetails.Comments),{},{type: "TextBlock", text: "Latest comment", wrap: true, isSubtle: true}),
-                                      If(IsBlank(Topic.RequestDetails.Comments),{},{type: "TextBlock", text: Mid(Topic.FirstComment, Find(Char(10), Topic.FirstComment) + 1, Len(Topic.FirstComment)), wrap: true, spacing: "None"}),
-                                      {type: "TextBlock", text: "SysId", isVisible: false},
-                                      {type: "TextBlock", text: Topic.RequestDetails.SysId, isVisible: false}
-                                    ]
-                                  },
-                                  {
-                                    type: "Container",
-                                    separator: true,
-                                    spacing: "ExtraLarge",
-                                    items: [
-                                      {
-                                        type: "ColumnSet",
-                                        columns: [
-                                          {type: "Column", width: "auto", items: [{type: "TextBlock", text: "[Open in ServiceNow](" & Topic.RequestDetails.ServiceNowPortalBaseURI & "?id=ticket&table=sc_request&sys_id=" & Topic.RequestDetails.SysId & ")", wrap: true, weight: "Bolder"}]},
-                                          {type: "Column", width: "auto", selectAction: {type: "Action.OpenUrl", url: Topic.RequestDetails.ServiceNowPortalBaseURI & "?id=ticket&table=sc_request&sys_id=" & Topic.RequestDetails.SysId}, items: [{type: "Image", url: Topic.IconBase64}]}
+                                        type: "Container",
+                                        separator: true,
+                                        spacing: "ExtraLarge",
+                                        items: [
+                                          {
+                                            type: "ColumnSet",
+                                            columns: [
+                                              {type: "Column", width: "auto", items: [{type: "TextBlock", text: "[Open in ServiceNow](" & Topic.RequestDetails.ServiceNowPortalBaseURI & "?id=ticket&table=sc_request&sys_id=" & Topic.RequestDetails.SysId & ")", wrap: true, weight: "Bolder"}]},
+                                              {type: "Column", width: "auto", selectAction: {type: "Action.OpenUrl", url: Topic.RequestDetails.ServiceNowPortalBaseURI & "?id=ticket&table=sc_request&sys_id=" & Topic.RequestDetails.SysId}, items: [{type: "Image", url: Topic.IconBase64}]}
+                                            ]
+                                          }
                                         ]
                                       }
                                     ]
                                   }
-                                ]
-                              }
 
-                    - kind: CancelAllDialogs
-                      id: cancelAllDialogs
+                        - kind: CancelAllDialogs
+                          id: cancelAllDialogs
 
-              elseActions:
-                - kind: SendActivity
-                  id: sendNotFound
-                  activity:
-                    text:
-                      - I couldn't find a service request matching that number. Please check the REQ number and try again.
+                  elseActions:
+                    - kind: ConditionGroup
+                      id: conditionGroup_reqNotFoundGuard
+                      conditions:
+                        - id: conditionItem_notRitm
+                          condition: =!StartsWith(Upper(Topic.RequestIdentifier), "RITM")
+                          displayName: Not a RITM — show REQ not found
+                          actions:
+                            - kind: SendActivity
+                              id: sendNotFound
+                              activity:
+                                text:
+                                  - I couldn't find a service request matching that number. Please check the REQ number and try again.
+                      elseActions: []
 
       elseActions:
         - kind: SetVariable
@@ -233,7 +402,7 @@ inputType:
 
     RequestIdentifier:
       displayName: RequestIdentifier
-      description: REQ number or SysId of the service catalog request.
+      description: REQ or RITM number, or SysId, of the service catalog request/item.
       type: String
       examples:
 
