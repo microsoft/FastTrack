@@ -18,7 +18,7 @@ modelDescription: |-
 
   Use this tool when a user asks about their service requests, catalog requests, or REQ items — NOT for incident tickets (INC). Use ServiceNow-ITSM-Get-User-Tickets for incidents.
 
-  Example queries handled by this tool include:
+  Example queries:
   * "Show me my service requests"
   * "What requests do I have open?"
   * "My pending catalog requests"
@@ -27,9 +27,9 @@ modelDescription: |-
   * "Show my REQ items"
 
   Use these instructions to respond:
-  1. Use the 'ServiceNowData' variable to provide the user with relevant information about their requests.
-  2. If no requests are found, inform the user of the same.
-  3. If requests are found, inform the user that the requests are sorted by most recently updated.
+  1. Use the 'ServiceNowData' variable to answer the user's question.
+  2. If no requests are found, tell the user.
+  3. If requests are found, note they are sorted by most recently updated.
   4. Display them in a numbered list in the format:
   `**[{RequestNumber}]({ServiceNowPortalBaseURI}?id=ticket&table=sc_request&sys_id={SysId})**: {ShortDescription} ({State})`.
   5. Let the user know you can provide more details on any specific request.

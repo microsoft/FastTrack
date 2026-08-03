@@ -98,17 +98,73 @@ This sample ships **two** flows. Generate a separate GUID for each and repeat th
 The solution ships both flows plus its own ServiceNow connection reference
 (`esss_servicenow`), so there is exactly one connection to map at import time.
 
-1. In [Power Apps](https://make.powerapps.com), select your environment, then **Solutions** → **Import solution**.
-2. **Browse** to `solution/ESSServiceNowITSMGetRequestDetails_1_0_0_0.zip` → **Next**.
-3. Under **Connections**, map **ESS Sample ServiceNow Connection** to your ServiceNow connection (or create one inline). The Dataverse binding resolves to the connection reference already present from your ServiceNow extension pack — it is not part of this solution and needs no mapping.
-4. Select **Import** and wait for it to complete.
-5. **Configure OBO** — see below.
-6. In [Power Automate](https://make.powerautomate.com), confirm **ESS IT ServiceNow ITSM Get Request Details** and **ESS IT ServiceNow ITSM Get Request Item** are **On**, and copy each flow ID from its URL.
-7. In Copilot Studio, create the three topics from `topics/`, replacing `{FLOW_GUID}` in each system topic with its matching flow ID. Then update the two `dialog:` references in the user-facing topic to the portal's PascalCase schema names — see the schema-name note under [Files](#-files).
-8. Publish.
+#### B1 — Import the solution
+
+1. Go to [Power Apps](https://make.powerapps.com) and confirm the environment picker (top right) shows your target environment.
+2. Select **Solutions** in the left nav, then **Import solution** on the command bar.
+3. Select **Browse**, choose `solution/ESSServiceNowITSMGetRequestDetails_1_0_0_0.zip`, then **Next**.
+4. On the **Connections** step, map **ESS Sample ServiceNow Connection** to your ServiceNow connection. If you don't have one, select **+ New connection**, create it, then return and select **Refresh**.
+   - You will **not** be asked to map a Dataverse connection. The flows bind Dataverse through `new_sharedcommondataserviceforapps_41c83`, which is already in your environment courtesy of the ServiceNow extension pack.
+5. Select **Import** and wait for the success banner.
+
+#### B2 — Configure OBO (do this before testing)
+
+Both flows call ServiceNow **as the signed-in employee**, which requires parameter sharing on the
+ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
+[Configure OBO](#-configure-obo-required) below, then return here.
+
+#### B3 — Collect the two flow IDs
+
+1. In [Power Automate](https://make.powerautomate.com), select **Solutions**, then open **ESS ServiceNow ITSM - Get Request Details**.
+2. Confirm both flows show **Status: On**. If either is **Off**, open it and select **Turn on**.
+   - `ESS IT ServiceNow ITSM Get Request Details`
+   - `ESS IT ServiceNow ITSM Get Request Item`
+3. Open each flow and read its ID from the browser address bar — it's the GUID immediately after `/flows/`:
+
+   ```text
+   https://make.powerautomate.com/environments/{env}/solutions/{sol}/flows/5750fc72-738f-412c-b9cb-5094507f2eb2/details
+                                                                           └──────────── flow ID ────────────┘
+   ```
+
+   Record one ID per flow — they are different values. Keep them straight by flow name: swapping them sends REQ lookups to the RITM flow and vice versa, which fails silently with an empty card rather than an error.
+
+#### B4 — Create the three topics
+
+For each file in `topics/`:
+
+1. In [Copilot Studio](https://copilotstudio.microsoft.com/), open your agent and select **Topics** → **+ Add a topic** → **From blank**.
+2. Open the **⋮** menu and select **Open code editor**.
+3. Paste the entire contents of the `.mcs.yml` file, replacing whatever is already there.
+4. Set the topic name **exactly** as below. The name matters: the portal derives the topic's schema name from it, and the user-facing topic locates the system topics by schema name.
+
+   | File | Topic name to use |
+   |------|-------------------|
+   | `ess-it-servicenow-itsm-system-get-request-details.mcs.yml` | `ESS IT ServiceNow ITSM System Get Request Details` |
+   | `ess-it-servicenow-itsm-system-get-request-item.mcs.yml` | `ESS IT ServiceNow ITSM System Get Request Item` |
+   | `servicenow-itsm-get-request-details.mcs.yml` | `ESS ServiceNow ITSM Get Request Details` |
+
+5. In each **system** topic, replace `{FLOW_GUID}` with that topic's matching flow ID from B3:
+   - `…system-get-request-details` → ID of **Get Request Details**
+   - `…system-get-request-item` → ID of **Get Request Item**
+6. In the **user-facing** topic, replace both `dialog:` values with the PascalCase schema names the portal generated:
+
+   ```yaml
+   dialog: msdyn_copilotforemployeeselfserviceit.topic.ESSITServiceNowITSMSystemGetRequestDetails
+   dialog: msdyn_copilotforemployeeselfserviceit.topic.ESSITServiceNowITSMSystemGetRequestItem
+   ```
+
+   The shipped values are kebab-case (correct for Option A only). Leaving them produces
+   `Dialog with id '…' not found` at publish — see the note under [Files](#-files).
+7. **Save** each topic.
+
+#### B5 — Publish
+
+Select **Publish** in Copilot Studio. If publish reports `Dialog with id … not found`, revisit
+step B4.6; if it reports `IncorrectTypeAssignment` alongside it, that's the same fault, not a
+second one.
 
 > The solution declares the ServiceNow connection as `"runtimeSource": "invoker"`, so an imported
-> flow is wired for OBO from the start. You still need the connection-side step below.
+> flow is wired for OBO from the start. You still need the connection-side step in B2.
 
 ### 🔐 Configure OBO (required)
 
