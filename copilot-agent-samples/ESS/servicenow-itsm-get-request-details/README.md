@@ -29,26 +29,53 @@ The user-facing topic also **routes RITM (request item) numbers** to the compani
 
 ## 🚀 Setup
 
+> **⚠️ OBO (on-behalf-of) is required for this flow.** The ServiceNow connection uses
+> `"runtimeSource": "invoker"`, so the flow calls ServiceNow **as the signed-in employee**,
+> not as the maker. This is what keeps ServiceNow's own row-level ACLs in force — each user
+> only sees requests they're entitled to. See [Configure OBO](#-configure-obo-required) below.
+
 ### Option A — ESS Maker Kit (recommended)
 
-1. Open your ESS Maker Kit workspace and run `/setup` to connect to the target environment.
-2. Copy the `topics/` files into `workspace/agents/{your-agent-slug}/topics/`.
-3. Copy the `workflow/` folder into `workspace/agents/{your-agent-slug}/workflows/ess-hr-servicenow-itsm-get-request-details-{NEW-GUID}/`.
-4. In **the system topic**, replace `{FLOW_GUID}` with the same GUID you used for the workflow folder name.
-6. In **workflow.json**, replace `{SERVICENOW_CONNREF}` and `{DATAVERSE_CONNREF}` with your environment's connection reference logical names (find these in `workspace/agents/{slug}/connectionreferences.mcs.yml`).
-7. In **workflow/metadata.yml**, replace `{FLOW_GUID}` with your chosen GUID.
-8. Run `python scripts/push.py` to deploy.
-9. Manually **turn on** the flow in [Power Automate](https://make.powerautomate.com) — activation via API is blocked for flows that use the ServiceNow connector with `runtimeSource: invoker`.
-10. Run `python scripts/push.py --repair "Get Request Details"` to wire the topic→flow link.
-11. Publish the agent in Copilot Studio.
+1. Run `/setup` in your ESS Maker Kit workspace to connect to the environment.
+2. Copy `topics/` → `workspace/agents/{slug}/topics/`.
+3. Copy `workflow/` → `workspace/agents/{slug}/workflows/ess-hr-servicenow-itsm-get-request-details-{NEW-GUID}/`.
+4. Replace the placeholders:
+   - `{FLOW_GUID}` — in the system topic **and** `workflow/metadata.yml` (use the GUID from step 3).
+   - `{SERVICENOW_CONNREF}` / `{DATAVERSE_CONNREF}` — in `workflow.json`, from `workspace/agents/{slug}/connectionreferences.mcs.yml`.
+5. `python scripts/push.py`
+6. **Configure OBO** — see below. Do this *before* turning the flow on.
+7. Turn the flow **on** in [Power Automate](https://make.powerautomate.com) (API activation is blocked for invoker-auth ServiceNow flows).
+8. `python scripts/push.py --repair "Get Request Details"` to wire topic → flow.
+9. Publish the agent in Copilot Studio.
 
 ### Option B — Manual
 
-1. In Power Automate, import `workflow/workflow.json` as a new cloud flow.
-2. Update the ServiceNow and Dataverse connection references to point to your environment's connections.
-3. Turn the flow on. Note the flow's ID (visible in the Power Automate URL).
-4. In Copilot Studio, open your ESS agent and create two new topics using the YAML in `topics/` as the content — replacing `{FLOW_GUID}` with the flow ID from step 3.
-5. Publish.
+1. Import `workflow/workflow.json` into Power Automate as a new cloud flow.
+2. Point the ServiceNow and Dataverse connection references at your environment's connections.
+3. **Configure OBO** — see below.
+4. Turn the flow on and copy its ID from the URL.
+5. In Copilot Studio, create the two topics from `topics/`, replacing `{FLOW_GUID}` with that ID.
+6. Publish.
+
+### 🔐 Configure OBO (required)
+
+The ServiceNow connector must authenticate as the end user, not the maker:
+
+1. In **Copilot Studio**, open your agent → **Settings** → **Generative AI / Connections**.
+2. Select the **ServiceNow** connection and choose **Sign in on behalf of the user**
+   (OAuth 2.0 with the user's identity) rather than a shared maker connection.
+3. In ServiceNow, make sure the OAuth application registry entry allows the Entra ID users
+   who will use the agent, and that those users have read access to `sc_request`.
+4. Each employee is prompted to sign in to ServiceNow **once**, on first use.
+
+Confirm it worked: `workflow.json` should show `"runtimeSource": "invoker"` on the
+ServiceNow connection reference after deployment. If it flips to `"embedded"`, the flow is
+running as the maker and every user will see the maker's data — reconfigure before shipping.
+
+> **Note:** configuring OBO through the Copilot Studio UI rewrites the flow's
+> `connectionReferences` block (the connection key typically becomes `shared_service-now-1`).
+> If you later re-export or re-push the flow, re-check that block so you don't overwrite the
+> live OBO binding with a stale one.
 
 ---
 

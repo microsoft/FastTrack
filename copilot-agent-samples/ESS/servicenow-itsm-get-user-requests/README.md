@@ -64,35 +64,66 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 
 ## 🚀 Setup
 
+> **⚠️ Read the OBO note first.** Unlike the other ServiceNow samples in this collection,
+> this flow ships with `"runtimeSource": "embedded"` — it calls ServiceNow as the **maker**,
+> and relies on a `requested_for.email` filter for isolation. For most tenants you should
+> switch it to OBO. See [Configure OBO](#-configure-obo-strongly-recommended) below.
+
 ### Option A — ESS Maker Kit (recommended)
 
-1. Open your ESS Maker Kit workspace and run `/setup` to connect to the target environment.
-2. Copy the `topics/` files into `workspace/agents/{your-agent-slug}/topics/`.
-3. Copy the `workflow/` folder into `workspace/agents/{your-agent-slug}/workflows/ess-hr-servicenow-itsm-get-user-requests-{NEW-GUID}/`.
-4. In **the system topic**, replace `{FLOW_GUID}` with the same GUID you used for the workflow folder name.
-5. In **workflow.json**, replace `{SERVICENOW_CONNREF}` and `{DATAVERSE_CONNREF}` with your environment's connection reference logical names (find these in `workspace/agents/{slug}/connectionreferences.mcs.yml`).
-6. In **workflow/metadata.yml**, replace `{FLOW_GUID}` with your chosen GUID.
-7. Run `python scripts/push.py` to deploy.
-8. Manually **turn on** the flow in [Power Automate](https://make.powerautomate.com) — activation via API is blocked for flows that use the ServiceNow connector.
-9. Run `python scripts/push.py --repair "Get User Requests"` to wire the topic→flow link.
-10. Publish the agent in Copilot Studio.
+1. Run `/setup` in your ESS Maker Kit workspace to connect to the environment.
+2. Copy `topics/` → `workspace/agents/{slug}/topics/`.
+3. Copy `workflow/` → `workspace/agents/{slug}/workflows/ess-hr-servicenow-itsm-get-user-requests-{NEW-GUID}/`.
+4. Replace the placeholders:
+   - `{FLOW_GUID}` — in the system topic **and** `workflow/metadata.yml` (use the GUID from step 3).
+   - `{SERVICENOW_CONNREF}` / `{DATAVERSE_CONNREF}` — in `workflow.json`, from `workspace/agents/{slug}/connectionreferences.mcs.yml`.
+5. `python scripts/push.py`
+6. **Decide on OBO vs embedded** — see below. Do this *before* turning the flow on.
+7. Turn the flow **on** in [Power Automate](https://make.powerautomate.com) (API activation is blocked for ServiceNow flows).
+8. `python scripts/push.py --repair "Get User Requests"` to wire topic → flow.
+9. Publish the agent in Copilot Studio.
 
 ### Option B — Manual
 
-1. In Power Automate, create a new cloud flow. Add a **Copilot Studio → When Copilot Studio calls a flow** trigger with inputs: `UserIdentifier` (Text) and `IsActive` (Text).
-2. Add a **ServiceNow → List Records** action on the `sc_request` table. Set the filter query to build from the inputs (active/inactive/all based on `IsActive`), select fields `number,short_description,request_state,requested_for,assigned_to,sys_updated_on,sys_id,price`, limit 10.
-3. Add the **Dataverse → Perform an unbound action** step calling `msdyn_ServiceNowOutputFieldMapperPlugin` to rename the fields.
-4. Return the mapped output via a **Respond to Copilot** action.
-5. Note the flow ID and update the system topic's `flowId` field.
-6. In Copilot Studio, open your ESS agent and create two new topics using the YAML in `topics/` — replacing `{FLOW_GUID}` with the flow ID from step 5.
-7. Publish.
+1. Import `workflow/workflow.json` into Power Automate as a new cloud flow.
+2. Point the ServiceNow and Dataverse connection references at your environment's connections.
+3. **Decide on OBO vs embedded** — see below.
+4. Turn the flow on and copy its ID from the URL.
+5. In Copilot Studio, create the two topics from `topics/`, replacing `{FLOW_GUID}` with that ID.
+6. Publish.
+
+### 🔐 Configure OBO (strongly recommended)
+
+**As shipped (`embedded`):** the flow uses the maker's ServiceNow connection. Users are
+isolated only by the `requested_for.email = UserIdentifier` filter in the query — ServiceNow's
+own ACLs are evaluated against the *maker's* account. That means the maker needs broad read
+access to `sc_request`, and a bug or prompt-injection in the filter could expose other users' data.
+
+**Switch to OBO (`invoker`)** so ServiceNow enforces per-user access itself:
+
+1. In **Copilot Studio**, open your agent → **Settings** → **Generative AI / Connections**.
+2. Select the **ServiceNow** connection and choose **Sign in on behalf of the user**.
+3. In ServiceNow, ensure the OAuth application registry entry allows your Entra ID users,
+   and that they have read access to `sc_request`.
+4. Confirm `workflow.json` shows `"runtimeSource": "invoker"` on the ServiceNow connection
+   reference after deployment.
+5. Keep the `requested_for.email` filter — with OBO it becomes defence-in-depth rather than
+   the sole isolation boundary.
+
+Trade-off: OBO prompts each employee to sign in to ServiceNow once, and the 15-minute cache
+becomes per-user. Stay on `embedded` only if every agent user is meant to see the same data.
+
+> **Note:** configuring OBO through the Copilot Studio UI rewrites the flow's
+> `connectionReferences` block (the key typically becomes `shared_service-now-1`). If you
+> re-export or re-push the flow later, re-check that block so you don't overwrite the live
+> OBO binding with a stale one.
 
 ---
 
 ## ⚠️ Known Limitations
 
 - **Activation via API fails** — same as other ServiceNow standalone flows in this collection. Manual turn-on in Power Automate is required.
-- **Embedded connection** — the list flow uses `runtimeSource: embedded` (maker's connection), not the invoker's credentials. The filter `requested_for.email = UserIdentifier` ensures each user only sees their own requests, but ServiceNow row-level ACLs are evaluated against the maker's account. Ensure the maker's ServiceNow account has read access to `sc_request`.
+- **Embedded connection by default** — as shipped the flow runs as the maker, not the invoker. See [Configure OBO](#-configure-obo-strongly-recommended) for the trade-off and how to switch.
 - **Global cache variables** — the topic uses `Global.ESS_ServiceNow_AllRequests` and `Global.ESS_ServiceNow_NextAllRequestsRefresh`. These are agent-scoped global variables — ensure they don't conflict with other topics in your agent.
 - **Reference fields** — `requested_for` and `assigned_to` come back from `GetRecords` as `{display_value, link}` objects when populated (or an empty string when not set). The flow's `Flatten_Request_Records` **Select** step normalizes these to plain display-value strings across every row before mapping — if you add more reference fields to `sysparm_fields`, apply the same flatten pattern.
 - **Result key** — the ServiceNow connector returns rows under `result` (ServiceNow Table API v2), *not* OData's `value`. Feeding `body(...)?['value']` to the output mapper yields `null` and fails with `A null value was found for the property named 'ServiceNowTableData'`. Keep the `?['result']` references intact if you customise this flow.
