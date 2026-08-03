@@ -131,26 +131,37 @@
           "expression": {
             "and": [
               {
-                "greaterOrEquals": [
-                  "@outputs('ServiceNow_Get_Requests')?['statusCode']",
-                  200
-                ]
-              },
-              {
-                "less": [
-                  "@outputs('ServiceNow_Get_Requests')?['statusCode']",
-                  300
+                "greater": [
+                  "@length(coalesce(body('ServiceNow_Get_Requests')?['result'], json('[]')))",
+                  0
                 ]
               }
             ]
           },
           "actions": {
+            "Flatten_Request_Records": {
+              "type": "Select",
+              "inputs": {
+                "from": "@coalesce(body('ServiceNow_Get_Requests')?['result'], json('[]'))",
+                "select": {
+                  "number": "@item()?['number']",
+                  "short_description": "@item()?['short_description']",
+                  "request_state": "@item()?['request_state']",
+                  "requested_for": "@{if(startsWith(string(item()?['requested_for']), '{'), json(string(item()?['requested_for']))?['display_value'], string(item()?['requested_for']))}",
+                  "assigned_to": "@{if(startsWith(string(item()?['assigned_to']), '{'), json(string(item()?['assigned_to']))?['display_value'], string(item()?['assigned_to']))}",
+                  "sys_updated_on": "@item()?['sys_updated_on']",
+                  "sys_id": "@item()?['sys_id']",
+                  "price": "@item()?['price']"
+                }
+              },
+              "runAfter": {}
+            },
             "Map_output_fields": {
               "type": "OpenApiConnection",
               "inputs": {
                 "parameters": {
                   "actionName": "msdyn_ServiceNowOutputFieldMapperPlugin",
-                  "item/ServiceNowTableData": "@body('ServiceNow_Get_Requests')?['value']",
+                  "item/ServiceNowTableData": "@body('Flatten_Request_Records')",
                   "item/OutputFieldMapping": "[{\"FieldName\":\"number\",\"OutputName\":\"RequestNumber\"},{\"FieldName\":\"short_description\",\"OutputName\":\"ShortDescription\"},{\"FieldName\":\"request_state\",\"OutputName\":\"State\"},{\"FieldName\":\"requested_for\",\"OutputName\":\"RequestedFor\"},{\"FieldName\":\"assigned_to\",\"OutputName\":\"AssignedTo\"},{\"FieldName\":\"sys_updated_on\",\"OutputName\":\"LastUpdated\"},{\"FieldName\":\"sys_id\",\"OutputName\":\"SysId\"},{\"FieldName\":\"price\",\"OutputName\":\"Price\"}]",
                   "item/ServiceNowITSMBaseConfiguration": "@first(outputs('Retrieve_Base_ITSM_Config')?['body/value'])?['msdyn_value']"
                 },
@@ -160,7 +171,9 @@
                   "connectionName": "shared_commondataserviceforapps"
                 }
               },
-              "runAfter": {}
+              "runAfter": {
+                "Flatten_Request_Records": ["Succeeded"]
+              }
             },
             "Set_success_response": {
               "type": "SetVariable",
@@ -169,10 +182,10 @@
                 "value": {
                   "ServiceNowData": "@outputs('Map_output_fields')?['body/ServiceNowMappedOutput']",
                   "ErrorMessage": "",
-                  "StatusCode": "@outputs('ServiceNow_Get_Requests')?['statusCode']",
+                  "StatusCode": 200,
                   "IsSuccessful": "@true",
-                  "ServiceNowSessionID": "@if(contains(outputs('ServiceNow_Get_Requests')?['headers/Set-Cookie'], 'glide_session_store'), first(split(last(split(outputs('ServiceNow_Get_Requests')?['headers/Set-Cookie'], 'glide_session_store=')), ';')), '')",
-                  "ServiceNowTransactionID": "@outputs('ServiceNow_Get_Requests')?['headers/X-Transaction-ID']"
+                  "ServiceNowSessionID": "",
+                  "ServiceNowTransactionID": ""
                 }
               },
               "runAfter": {
@@ -188,8 +201,8 @@
                   "name": "ResponseBody",
                   "value": {
                     "ServiceNowData": "",
-                    "ErrorMessage": "@{outputs('ServiceNow_Get_Requests')?['body/error/message']}",
-                    "StatusCode": "@outputs('ServiceNow_Get_Requests')?['statusCode']",
+                    "ErrorMessage": "No requests found.",
+                    "StatusCode": 404,
                     "IsSuccessful": "@false",
                     "ServiceNowSessionID": "",
                     "ServiceNowTransactionID": ""
