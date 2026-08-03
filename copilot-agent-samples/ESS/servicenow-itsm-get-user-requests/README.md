@@ -71,18 +71,28 @@ isolated only by the `requested_for.email = UserIdentifier` filter in the query 
 own ACLs are evaluated against the *maker's* account. That means the maker needs broad read
 access to `sc_request`, and a bug or prompt-injection in the filter could expose other users' data.
 
-**Switch to OBO (`invoker`)** so ServiceNow enforces per-user access itself:
+**Switch to OBO (`invoker`)** so ServiceNow enforces per-user access itself. Enable parameter
+sharing on the ServiceNow connection backing this flow:
 
-1. In **Copilot Studio**, open your agent → **Settings** → **Generative AI / Connections**.
-2. Select the **ServiceNow** connection and choose **Sign in on behalf of the user**.
-3. In ServiceNow, ensure the OAuth application registry entry allows your Entra ID users,
-   and that they have read access to `sc_request`.
-4. Confirm `workflow.json` shows `"runtimeSource": "invoker"` on the ServiceNow connection
-   reference after deployment.
-5. Keep the `requested_for.email` filter — with OBO it becomes defence-in-depth rather than
-   the sole isolation boundary.
+1. In [Copilot Studio](https://copilotstudio.microsoft.com/), select **Agents** and open your agent.
+2. Select **Settings**, then **Connection Settings**.
+3. Find the **ServiceNow** connection row. Under **Manage**, select **See details**.
+4. Open the **Connection parameters** tab.
+5. Turn on **Allow permission to share parameters**.
+6. Select the checkboxes for the parameters you want the user to share.
 
-Trade-off: OBO prompts each employee to sign in to ServiceNow once, and the 15-minute cache
+Each employee is prompted to grant permission the first time the agent uses the connection on
+their behalf. Full reference:
+[Share connection parameters for On-Behalf-Of (OBO) authentication](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-connections#share-connection-parameters-for-on-behalf-of-obo-authentication).
+
+On the ServiceNow side, ensure the OAuth application registry entry allows your Entra ID users
+and that they have read access to `sc_request`.
+
+Afterwards, confirm `workflow.json` shows `"runtimeSource": "invoker"` on the ServiceNow
+connection reference. Keep the `requested_for.email` filter — with OBO it becomes
+defence-in-depth rather than the sole isolation boundary.
+
+Trade-off: OBO prompts each employee to grant permission once, and the 15-minute cache
 becomes per-user. Stay on `embedded` only if every agent user is meant to see the same data.
 
 > **Note:** configuring OBO through the Copilot Studio UI rewrites the flow's

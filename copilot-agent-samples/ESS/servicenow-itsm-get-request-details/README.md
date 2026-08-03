@@ -78,14 +78,23 @@ This sample ships **two** flows. Generate a separate GUID for each and repeat th
 
 ### 🔐 Configure OBO (required)
 
-The ServiceNow connector must authenticate as the end user, not the maker:
+Both flows must call ServiceNow as the signed-in employee. Enable parameter sharing on the
+ServiceNow connection backing **each** flow:
 
-1. In **Copilot Studio**, open your agent → **Settings** → **Generative AI / Connections**.
-2. Select the **ServiceNow** connection and choose **Sign in on behalf of the user**
-   (OAuth 2.0 with the user's identity) rather than a shared maker connection.
-3. In ServiceNow, make sure the OAuth application registry entry allows the Entra ID users
-   who will use the agent, and that those users have read access to `sc_request` and `sc_req_item`.
-4. Each employee is prompted to sign in to ServiceNow **once**, on first use.
+1. In [Copilot Studio](https://copilotstudio.microsoft.com/), select **Agents** and open your agent.
+2. Select **Settings**, then **Connection Settings**.
+3. Find the **ServiceNow** connection row. Under **Manage**, select **See details**.
+4. Open the **Connection parameters** tab.
+5. Turn on **Allow permission to share parameters**.
+6. Select the checkboxes for the parameters you want the user to share.
+7. Repeat for the connection entry of **each** flow (Get Request Details *and* Get Request Item).
+
+Each employee is prompted to grant permission the first time the agent uses the connection on
+their behalf. Full reference:
+[Share connection parameters for On-Behalf-Of (OBO) authentication](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-connections#share-connection-parameters-for-on-behalf-of-obo-authentication).
+
+You also need the ServiceNow side to permit those users — the OAuth application registry entry
+must allow your Entra ID users, and they need read access to `sc_request` and `sc_req_item`.
 
 Confirm it worked: both `workflow.json` files should show `"runtimeSource": "invoker"` on the
 ServiceNow connection reference after deployment. If either flips to `"embedded"`, that flow is
