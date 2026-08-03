@@ -1,0 +1,313 @@
+{
+  "schemaVersion": "1.0.0.0",
+  "properties": {
+    "connectionReferences": {
+      "shared_service-now": {
+        "api": {
+          "name": "shared_service-now"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "{SERVICENOW_CONNREF}"
+        },
+        "runtimeSource": "invoker"
+      },
+      "shared_commondataserviceforapps": {
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "{DATAVERSE_CONNREF}"
+        },
+        "runtimeSource": "embedded"
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "description": "REQ number (e.g. REQ0012345) of the service catalog request to retrieve.",
+                  "title": "SysId",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_variable_-_ResponseBody": {
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ResponseBody",
+                "type": "object"
+              }
+            ]
+          },
+          "runAfter": {}
+        },
+        "Retrieve_Base_ITSM_Config": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "msdyn_employeeselfservicetemplateconfigs",
+              "$select": "msdyn_value",
+              "$filter": "msdyn_uniquename eq 'msdyn_ServiceNowITSM'",
+              "$top": 1
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_-_ResponseBody": [
+              "Succeeded"
+            ]
+          }
+        },
+        "ServiceNow_Get_Request": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "tableType": "sc_request",
+              "sysparm_query": "@concat('number=', triggerBody()?['text'])",
+              "sysparm_limit": 1,
+              "sysparm_display_value": true,
+              "sysparm_exclude_reference_link": false,
+              "sysparm_fields": "number,short_description,description,request_state,requested_for,assigned_to,comments,sys_updated_on,sys_id"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_service-now",
+              "operationId": "GetRecords",
+              "connectionName": "shared_service-now"
+            }
+          },
+          "runAfter": {
+            "Retrieve_ServiceNow_ITSM_Portal_Base_URI": [
+              "Succeeded"
+            ]
+          },
+          "limit": {
+            "timeout": "PT1M"
+          }
+        },
+        "Condition_-_ServiceNow_call_succeeded": {
+          "type": "If",
+          "expression": {
+            "and": [
+              {
+                "greater": [
+                  "@length(coalesce(body('ServiceNow_Get_Request')?['result'], json('[]')))",
+                  0
+                ]
+              }
+            ]
+          },
+          "actions": {
+            "Store_First_Result": {
+              "type": "Compose",
+              "inputs": "@first(body('ServiceNow_Get_Request')?['result'])",
+              "runAfter": {}
+            },
+            "Flatten_Reference_Fields": {
+              "type": "Compose",
+              "inputs": {
+                "number": "@outputs('Store_First_Result')?['number']",
+                "short_description": "@outputs('Store_First_Result')?['short_description']",
+                "description": "@outputs('Store_First_Result')?['description']",
+                "request_state": "@outputs('Store_First_Result')?['request_state']",
+                "requested_for": "@{if(startsWith(string(outputs('Store_First_Result')?['requested_for']), '{'), json(string(outputs('Store_First_Result')?['requested_for']))?['display_value'], string(outputs('Store_First_Result')?['requested_for']))}",
+                "assigned_to": "@{if(startsWith(string(outputs('Store_First_Result')?['assigned_to']), '{'), json(string(outputs('Store_First_Result')?['assigned_to']))?['display_value'], string(outputs('Store_First_Result')?['assigned_to']))}",
+                "comments": "@outputs('Store_First_Result')?['comments']",
+                "sys_updated_on": "@outputs('Store_First_Result')?['sys_updated_on']",
+                "sys_id": "@outputs('Store_First_Result')?['sys_id']"
+              },
+              "runAfter": {
+                "Store_First_Result": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Map_output_fields": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "actionName": "msdyn_ServiceNowOutputFieldMapperPlugin",
+                  "item/ServiceNowTableData": "@outputs('Flatten_Reference_Fields')",
+                  "item/OutputFieldMapping": "[{\"FieldName\":\"number\",\"OutputName\":\"RequestNumber\"},{\"FieldName\":\"short_description\",\"OutputName\":\"ShortDescription\"},{\"FieldName\":\"description\",\"OutputName\":\"Description\"},{\"FieldName\":\"request_state\",\"OutputName\":\"State\"},{\"FieldName\":\"requested_for\",\"OutputName\":\"RequestedFor\"},{\"FieldName\":\"assigned_to\",\"OutputName\":\"AssignedTo\"},{\"FieldName\":\"comments\",\"OutputName\":\"Comments\"},{\"FieldName\":\"sys_updated_on\",\"OutputName\":\"LastUpdated\"},{\"FieldName\":\"sys_id\",\"OutputName\":\"SysId\"}]",
+                  "item/ServiceNowITSMBaseConfiguration": "@setProperty(json(coalesce(first(outputs('Retrieve_Base_ITSM_Config')?['body/value'])?['msdyn_value'], '{}')), 'ServiceNowPortalBaseURI', if(not(empty(coalesce(first(first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['environmentvariabledefinition_environmentvariablevalue'])?['value'], ''))), first(first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['environmentvariabledefinition_environmentvariablevalue'])?['value'], if(not(empty(coalesce(first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['defaultvalue'], ''))), first(outputs('Retrieve_ServiceNow_ITSM_Portal_Base_URI')?['body/value'])?['defaultvalue'], json(coalesce(first(outputs('Retrieve_Base_ITSM_Config')?['body/value'])?['msdyn_value'], '{}'))?['ServiceNowPortalBaseURI'])))"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "PerformUnboundAction",
+                  "connectionName": "shared_commondataserviceforapps"
+                }
+              },
+              "runAfter": {
+                "Flatten_Reference_Fields": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Set_success_response": {
+              "type": "SetVariable",
+              "inputs": {
+                "name": "ResponseBody",
+                "value": {
+                  "ServiceNowData": "@outputs('Map_output_fields')?['body/ServiceNowMappedOutput']",
+                  "ErrorMessage": "",
+                  "StatusCode": 200,
+                  "IsSuccessful": "@true",
+                  "ServiceNowSessionID": "",
+                  "ServiceNowTransactionID": ""
+                }
+              },
+              "runAfter": {
+                "Map_output_fields": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "else": {
+            "actions": {
+              "Set_failure_response": {
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "ResponseBody",
+                  "value": {
+                    "ServiceNowData": "",
+                    "ErrorMessage": "No service catalog request found.",
+                    "StatusCode": 404,
+                    "IsSuccessful": "@false",
+                    "ServiceNowSessionID": "",
+                    "ServiceNowTransactionID": ""
+                  }
+                },
+                "runAfter": {}
+              }
+            }
+          },
+          "runAfter": {
+            "ServiceNow_Get_Request": [
+              "Succeeded",
+              "Failed"
+            ]
+          }
+        },
+        "Respond_to_Copilot": {
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "servicenowdata": {
+                  "title": "ServiceNowData",
+                  "x-ms-dynamically-added": true,
+                  "type": "string",
+                  "description": "Data returned from ServiceNow."
+                },
+                "issuccessful": {
+                  "title": "IsSuccessful",
+                  "x-ms-dynamically-added": true,
+                  "type": "boolean",
+                  "description": "Boolean to indicate whether the flow succeeded or not."
+                },
+                "errormessage": {
+                  "title": "ErrorMessage",
+                  "x-ms-dynamically-added": true,
+                  "type": "string",
+                  "description": "Error message in case of a failure."
+                },
+                "statuscode": {
+                  "title": "StatusCode",
+                  "x-ms-dynamically-added": true,
+                  "type": "number",
+                  "description": "Integer value to indicate the request status code."
+                },
+                "servicenowsessionid": {
+                  "title": "ServiceNowSessionID",
+                  "description": "The glide_session_store cookie.",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "servicenowtransactionid": {
+                  "title": "ServiceNowTransactionID",
+                  "description": "The X-Transaction-ID header.",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "additionalProperties": {}
+            },
+            "statusCode": 200,
+            "body": {
+              "servicenowdata": "@{variables('ResponseBody')?['ServiceNowData']}",
+              "issuccessful": "@variables('ResponseBody')?['IsSuccessful']",
+              "errormessage": "@{variables('ResponseBody')?['ErrorMessage']}",
+              "statuscode": "@variables('ResponseBody')?['StatusCode']",
+              "servicenowsessionid": "@{variables('ResponseBody')?['ServiceNowSessionID']}",
+              "servicenowtransactionid": "@{variables('ResponseBody')?['ServiceNowTransactionID']}"
+            }
+          },
+          "runAfter": {
+            "Condition_-_ServiceNow_call_succeeded": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Retrieve_ServiceNow_ITSM_Portal_Base_URI": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "environmentvariabledefinitions",
+              "$select": "schemaname,defaultvalue",
+              "$filter": "schemaname eq 'ServiceNowITSMPortalBaseURI'",
+              "$expand": "environmentvariabledefinition_environmentvariablevalue($select=value)",
+              "$top": 1
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          },
+          "runAfter": {
+            "Retrieve_Base_ITSM_Config": [
+              "Succeeded"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

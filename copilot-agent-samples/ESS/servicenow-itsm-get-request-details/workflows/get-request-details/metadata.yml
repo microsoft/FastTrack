@@ -1,0 +1,16 @@
+# Replace {FLOW_GUID} with a newly generated GUID (e.g. from: python -c "import uuid; print(uuid.uuid4())")
+# Replace {SERVICENOW_CONNREF} with your agent's ServiceNow connection reference logical name
+# Replace {DATAVERSE_CONNREF} with your agent's Dataverse connection reference logical name
+# Both connrefs can be found in workspace/agents/{slug}/connectionreferences.mcs.yml
+jsonFileName: workflow/workflow.json
+workflowId: "{FLOW_GUID}"
+name: ESS IT ServiceNow ITSM Get Request Details
+type: 1
+description: "Retrieves details for a specific ServiceNow service catalog request (sc_request table) by REQ number."
+subprocess: false
+category: 5
+mode: 0
+scope: 4
+stateCode: 1
+statusCode: 2
+isTransacted: true

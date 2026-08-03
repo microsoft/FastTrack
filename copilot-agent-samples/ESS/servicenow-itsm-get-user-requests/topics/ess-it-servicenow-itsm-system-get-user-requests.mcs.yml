@@ -1,0 +1,66 @@
+kind: AdaptiveDialog
+inputs:
+  - kind: ManualTaskInput
+    propertyName: IsActive
+    value: =true
+
+  - kind: ManualTaskInput
+    propertyName: UserIdentifier
+    value: "=\"\""
+
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: InvokeFlowAction
+      id: callGetUserRequestsFlow
+      input:
+        binding:
+          text: =Topic.UserIdentifier
+          text_1: =If(IsBlank(Topic.IsActive), "", Text(Topic.IsActive))
+
+      output:
+        binding:
+          errormessage: Topic.ErrorMessage
+          issuccessful: Topic.IsSuccessful
+          servicenowdata: Topic.ServiceNowData
+          servicenowsessionid: Topic.ServiceNowSessionID
+          servicenowtransactionid: Topic.ServiceNowTransactionID
+          statuscode: Topic.StatusCode
+
+      flowId: {FLOW_GUID}
+
+    - kind: ConditionGroup
+      id: conditionGroup_cacheResult
+      conditions:
+        - id: conditionItem_cacheAll
+          condition: =!IsBlank(Topic.ServiceNowData) && IsBlank(Topic.IsActive)
+          displayName: Cache all-requests response?
+          actions:
+            - kind: SetVariable
+              id: cacheAllRequests
+              variable: Global.ESS_ServiceNow_AllRequests
+              value: =Topic.ServiceNowData
+
+            - kind: SetVariable
+              id: setCacheExpiry
+              variable: Global.ESS_ServiceNow_NextAllRequestsRefresh
+              value: =DateAdd(Now(), 15, TimeUnit.Minutes)
+
+inputType:
+  properties:
+    IsActive:
+      displayName: IsActive
+      type: Boolean
+
+    UserIdentifier:
+      displayName: UserIdentifier
+      type: String
+
+outputType:
+  properties:
+    ServiceNowData:
+      displayName: ServiceNowData
+      description: List of service catalog requests returned from ServiceNow.
+      type: String
+
