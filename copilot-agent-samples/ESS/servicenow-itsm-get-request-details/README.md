@@ -26,7 +26,13 @@ A **single user-facing topic** handles both. It extracts the identifier from the
 | `workflows/get-request-details/` | Power Automate flow — queries `sc_request` by REQ number |
 | `workflows/get-request-item/` | Power Automate flow — queries `sc_req_item` by RITM number |
 
-Each `workflows/*` folder contains a `workflow.json` and a `metadata.yml`.
+Each `workflows/*` folder ships the flow in two forms:
+
+| File | Use it for |
+|------|-----------|
+| `*.zip` | Importable Power Automate package — **Option B** (manual import) |
+| `workflow.json` | Raw flow definition — **Option A** (ESS Maker Kit `push.py`) |
+| `metadata.yml` | Flow metadata for the ESS Maker Kit push script |
 
 > **Install all of it.** The user-facing topic references *both* system topics, so the pieces are not independently installable — deploy both flows and all three topics together.
 
@@ -67,14 +73,18 @@ This sample ships **two** flows. Generate a separate GUID for each and repeat th
 8. `python scripts/push.py --repair "Get Request Details"` and `--repair "Get Request Item"` to wire topic → flow.
 9. Publish the agent in Copilot Studio.
 
-### Option B — Manual
+### Option B — Manual (import the packages)
 
-1. Import **both** `workflows/*/workflow.json` files into Power Automate as new cloud flows.
-2. Point the ServiceNow and Dataverse connection references at your environment's connections.
-3. **Configure OBO** — see below.
-4. Turn both flows on and copy each flow ID from its URL.
-5. In Copilot Studio, create the three topics from `topics/`, replacing `{FLOW_GUID}` in each system topic with its matching flow ID.
-6. Publish.
+1. In [Power Automate](https://make.powerautomate.com), select **My flows** → **Import** → **Import Package (Legacy)**.
+2. Upload `workflows/get-request-details/get-request-details.zip`. Repeat the import for `workflows/get-request-item/get-request-item.zip`.
+3. For each package, under **Related resources**, select each connection and pick the matching connection in your environment — one **ServiceNow**, one **Microsoft Dataverse**. The display names baked into the package (`SNOW PP2`, `ESS HR`) are from the authoring tenant and are replaced by whatever you select.
+4. **Configure OBO** — see below.
+5. Turn both flows on and copy each flow ID from its URL.
+6. In Copilot Studio, create the three topics from `topics/`, replacing `{FLOW_GUID}` in each system topic with its matching flow ID.
+7. Publish.
+
+> The packages already declare the ServiceNow connection as `"source": "Invoker"`, so an imported
+> flow is wired for OBO from the start. You still need the connection-side step below.
 
 ### 🔐 Configure OBO (required)
 

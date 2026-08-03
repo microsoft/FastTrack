@@ -20,7 +20,8 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 |------|---------|
 | `topics/ess-hr-servicenow-itsm-get-user-requests.mcs.yml` | User-facing topic — trigger phrases, state extraction, cache check, list rendering |
 | `topics/ess-hr-servicenow-itsm-system-get-user-requests.mcs.yml` | System topic — routes to the standalone flow and populates the 15-min cache |
-| `workflow/workflow.json` | Standalone Power Automate flow — queries `sc_request` filtered by user email + active state |
+| `workflow/get-user-requests.zip` | Importable Power Automate package — used by **Option B** |
+| `workflow/workflow.json` | Raw flow definition — queries `sc_request` filtered by user email + active state; used by **Option A** |
 | `workflow/metadata.yml` | Flow metadata for the ESS Maker Kit push script |
 
 ---
@@ -55,14 +56,18 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 8. `python scripts/push.py --repair "Get User Requests"` to wire topic → flow.
 9. Publish the agent in Copilot Studio.
 
-### Option B — Manual
+### Option B — Manual (import the package)
 
-1. Import `workflow/workflow.json` into Power Automate as a new cloud flow.
-2. Point the ServiceNow and Dataverse connection references at your environment's connections.
-3. **Configure OBO** — see below.
-4. Turn the flow on and copy its ID from the URL.
-5. In Copilot Studio, create the two topics from `topics/`, replacing `{FLOW_GUID}` with that ID.
-6. Publish.
+1. In [Power Automate](https://make.powerautomate.com), select **My flows** → **Import** → **Import Package (Legacy)**.
+2. Upload `workflow/get-user-requests.zip`.
+3. Under **Related resources**, select each connection and pick the matching connection in your environment — one **ServiceNow**, one **Microsoft Dataverse**. The display names baked into the package (`SNOW PP2`, `ESS HR`) are from the authoring tenant and are replaced by whatever you select.
+4. **Configure OBO** — see below.
+5. Turn the flow on and copy its ID from the URL.
+6. In Copilot Studio, create the two topics from `topics/`, replacing `{FLOW_GUID}` with that ID.
+7. Publish.
+
+> The package already declares the ServiceNow connection as `"source": "Invoker"`, so an imported
+> flow is wired for OBO from the start. You still need the connection-side step below.
 
 ### 🔐 Configure OBO (required)
 
