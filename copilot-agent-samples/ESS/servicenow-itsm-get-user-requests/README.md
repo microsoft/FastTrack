@@ -31,7 +31,7 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 - Microsoft Employee Self-Service agent (deployed)
 - ServiceNow ITSM extension pack installed in Copilot Studio
 - An active ServiceNow connection in Power Platform configured for on-behalf-of (invoker) auth — see [Configure OBO](#-configure-obo-required)
-- ESS Maker Kit (for automated deployment via `push.py`)
+- [ESS Maker Kit](https://github.com/microsoft/Employee-Self-Service-Agent-Developer-Kit/tree/main/solutions/ess-maker-skills) (for automated deployment via `push.py`)
 
 ---
 
@@ -42,7 +42,7 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 > not as the maker. This keeps ServiceNow's own row-level ACLs in force — each user only sees
 > requests they're entitled to. See [Configure OBO](#-configure-obo-required) below.
 
-### Option A — ESS Maker Kit (recommended)
+### Option A — [ESS Maker Kit](https://github.com/microsoft/Employee-Self-Service-Agent-Developer-Kit/tree/main/solutions/ess-maker-skills) (recommended)
 
 1. Run `/setup` in your ESS Maker Kit workspace to connect to the environment.
 2. Copy `topics/` → `workspace/agents/{slug}/topics/`.

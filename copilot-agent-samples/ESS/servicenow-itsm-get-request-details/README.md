@@ -43,7 +43,7 @@ Each `workflows/*` folder ships the flow in two forms:
 - Microsoft Employee Self-Service agent (deployed)
 - ServiceNow ITSM extension pack installed in Copilot Studio
 - An active ServiceNow connection in Power Platform configured for on-behalf-of (invoker) auth — see [Configure OBO](#-configure-obo-required)
-- ESS Maker Kit (for automated deployment via `push.py`)
+- [ESS Maker Kit](https://github.com/microsoft/Employee-Self-Service-Agent-Developer-Kit/tree/main/solutions/ess-maker-skills) (for automated deployment via `push.py`)
 
 ---
 
@@ -54,7 +54,7 @@ Each `workflows/*` folder ships the flow in two forms:
 > not as the maker. This is what keeps ServiceNow's own row-level ACLs in force — each user
 > only sees requests they're entitled to. See [Configure OBO](#-configure-obo-required) below.
 
-### Option A — ESS Maker Kit (recommended)
+### Option A — [ESS Maker Kit](https://github.com/microsoft/Employee-Self-Service-Agent-Developer-Kit/tree/main/solutions/ess-maker-skills) (recommended)
 
 This sample ships **two** flows. Generate a separate GUID for each and repeat the copy/replace for both.
 
