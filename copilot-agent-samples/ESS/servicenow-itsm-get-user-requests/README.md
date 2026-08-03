@@ -5,7 +5,7 @@ category: Copilot Studio / Employee Self-Service
 summary: Adds a topic to the Microsoft Employee Self-Service (ESS) agent that lets employees list their ServiceNow service catalog requests (REQ numbers) via natural language.
 author:
   - Dean Cron
-version: 1.0.0
+version: 1.0.1
 published: "2026-07-30"
 tags:
   - ESS
@@ -31,7 +31,9 @@ howToUse: |-
 prerequisites:
   - Microsoft Employee Self-Service agent (deployed)
   - ServiceNow ITSM extension pack installed in Copilot Studio
-  - An active ServiceNow connection in Power Platform (maker's embedded connection)
+  - An active ServiceNow connection in Power Platform (ships as the maker's
+    embedded connection; on-behalf-of / invoker auth is strongly recommended —
+    see the Configure OBO section)
   - ESS Maker Kit (for automated deployment via push.py)
 ---
 
