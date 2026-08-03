@@ -6,9 +6,9 @@ summary: >-
   Compare Microsoft Copilot agent platforms with capability views, decision guidance, support
   indicators, and scenarios.
 author: Microsoft FastTrack
-version: 3.0.0
+version: 3.1.0
 published: "2025-10-28"
-updated: "2026-04-17"
+updated: "2026-07-31"
 tags:
   - guide
   - decision
@@ -76,15 +76,15 @@ The **Copilot Agents Guide** is a comprehensive, interactive web-based tool that
 - Key takeaways
 
 ### ⚡ FastTrack Support Indicators
-- Subtle badges showing which agents qualify for Microsoft FastTrack deployment support
+- Subtle badges showing which agents qualify for Microsoft FastTrack remote guidance
 - Link to official FastTrack service description
-- 5 of 6 agent types include FastTrack support
+- 5 of 6 agent types include FastTrack remote guidance
 
 ## 🤖 Agent Types Covered
 
 ### 1. **Researcher & Analyst Agents** 
 Built-in reasoning agents for research and data analysis
-- **Researcher:** Complex multi-step research with multi-model Critique (generation + evaluation) and Model Council (side-by-side model comparison)
+- **Researcher:** Complex multi-step research with a model picker for GPT and Claude. Critique (a second reasoning pass by Claude) and Model Council (parallel GPT and Claude comparison) require the Frontier program
 - **Analyst:** Data analysis with Python execution
 - **Availability:** Immediate (pre-pinned in M365 Copilot)
 - **Cost:** Included with M365 Copilot license (25 queries/month)
@@ -152,7 +152,7 @@ Upload the HTML file to any web server or hosting platform:
 1. **Start with Overview** - Understand each agent type's value proposition
 2. **Check Guidance Tab** - Review the 4-step decision framework
 3. **Compare Costs** - See time-to-market and licensing requirements
-4. **Consider FastTrack** - Note which agents include deployment support
+4. **Consider FastTrack** - Note which agents include remote guidance
 
 ### For IT Architects
 1. **Review Comparison Tab** - Analyze technical capabilities side-by-side
@@ -213,7 +213,7 @@ All agent information verified from official Microsoft sources:
 - FastTrack for Microsoft 365 service descriptions
 - Official Microsoft 365 Blog announcements
 
-**Last Verified:** April 2026
+**Last Verified:** July 2026
 
 ## 🔄 Updates & Maintenance
 
@@ -227,8 +227,9 @@ This guide is updated to reflect:
 
 ## ⚠️ Important Notes
 
-### FastTrack Support
-- 5 of 6 agent types qualify for FastTrack deployment assistance
+### FastTrack Remote Guidance
+- 5 of 6 agent types qualify for FastTrack remote guidance
+- Custom engine agents are covered only when the deployment channel is Teams, Microsoft 365 Copilot, or SharePoint
 - Microsoft 365 Agents Toolkit (pro-code) is self-service only
 - See footer link for detailed FastTrack service description
 
@@ -271,8 +272,8 @@ This guide is provided as-is for informational and planning purposes. Microsoft,
 
 ---
 
-**Version:** 3.0 (April 2026)  
-**Includes:** Researcher Critique & Model Council, Copilot Cowork (Frontier), Agent 365 GA, Wave 3 updates, E7 Frontier Suite  
+**Version:** 3.1 (July 2026)  
+**Includes:** Researcher Critique & Model Council (Frontier), Copilot Cowork GA, Agent 365 GA, Wave 3 updates, E7 Frontier Suite  
 **Format:** Single-file HTML application  
 
 *Built to help you navigate the Microsoft Copilot agent ecosystem with confidence.*
