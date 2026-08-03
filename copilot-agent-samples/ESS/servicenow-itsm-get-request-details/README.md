@@ -1,47 +1,3 @@
----
-title: ESS ServiceNow ITSM – Get Request Details (REQ + RITM)
-type: extension
-category: Copilot Studio / Employee Self-Service
-summary: Adds a topic to the Microsoft Employee Self-Service (ESS) agent that lets employees look up the status and details of a ServiceNow service catalog request (REQ) or request item (RITM) via natural language.
-author:
-  - Dean Cron
-version: 1.1.0
-published: "2026-07-30"
-tags:
-  - ESS
-  - Employee Self-Service
-  - ServiceNow
-  - ITSM
-  - service catalog
-  - sc_request
-  - sc_req_item
-format: extension
-whatItIs: >-
-  A three-topic + two-flow extension for the Microsoft Employee Self-Service
-  (ESS) Copilot Studio agent. A single user-facing topic recognises both service
-  catalog requests (REQ prefix) and request items (RITM prefix), routes each to
-  the matching flow, and returns a rich adaptive card showing the number, state,
-  description, assignment, and a direct link to ServiceNow.
-whyUseIt:
-  - The ESS shared ITSM orchestrator flow only supports incident (INC) lookups.
-    This extension adds sc_request (REQ) and sc_req_item (RITM) support without
-    modifying any shared flows.
-  - One topic covers both record types, so employees don't need to know whether
-    their number is a REQ or a RITM.
-  - Follows the ESS two-topic pattern (user-facing + system routing) for
-    consistency with out-of-the-box ESS topics.
-  - Uses the same msdyn_ServiceNowOutputFieldMapperPlugin for field renaming,
-    keeping the response shape compatible with standard ESS adaptive card patterns.
-howToUse: |-
-  See the Setup section below.
-prerequisites:
-  - Microsoft Employee Self-Service agent (deployed)
-  - ServiceNow ITSM extension pack installed in Copilot Studio
-  - An active ServiceNow connection in Power Platform configured for on-behalf-of
-    (invoker) auth — see the Configure OBO section
-  - ESS Maker Kit (for automated deployment via push.py)
----
-
 # ESS ServiceNow ITSM – Get Request Details (REQ + RITM)
 
 ## 📌 Overview
@@ -73,6 +29,15 @@ A **single user-facing topic** handles both. It extracts the identifier from the
 Each `workflows/*` folder contains a `workflow.json` and a `metadata.yml`.
 
 > **Install all of it.** The user-facing topic references *both* system topics, so the pieces are not independently installable — deploy both flows and all three topics together.
+
+---
+
+## ✅ Prerequisites
+
+- Microsoft Employee Self-Service agent (deployed)
+- ServiceNow ITSM extension pack installed in Copilot Studio
+- An active ServiceNow connection in Power Platform configured for on-behalf-of (invoker) auth — see [Configure OBO](#-configure-obo-required)
+- ESS Maker Kit (for automated deployment via `push.py`)
 
 ---
 
@@ -139,3 +104,11 @@ running as the maker and every user will see the maker's data — reconfigure be
 - **sc_request fields** — the REQ flow returns `request_state` (not `state`) and `requested_for` (not `caller_id`). The adaptive card handles this, but if you customise the output be aware the field names differ from the incident table.
 - **Reference fields** — `requested_for`, `assigned_to`, `cat_item`, and `request` come back from `GetRecords` as `{display_value, link}` objects when populated (or an empty string when not set). Each flow's `Flatten_Reference_Fields` step normalizes these to plain display-value strings before mapping — if you add more reference fields to `sysparm_fields`, apply the same flatten pattern.
 - **Result key** — the ServiceNow connector returns rows under `result` (ServiceNow Table API v2), *not* OData's `value`. Feeding `body(...)?['value']` to the output mapper yields `null` and fails with `A null value was found for the property named 'ServiceNowTableData'`. Keep the `?['result']` references intact if you customise these flows.
+
+---
+
+## Author
+
+| Author | Original Publish Date |
+| --- | --- |
+| Dean Cron | 2026-07-30 |

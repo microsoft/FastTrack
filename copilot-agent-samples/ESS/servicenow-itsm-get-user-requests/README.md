@@ -1,42 +1,3 @@
----
-title: ESS ServiceNow ITSM – Get User Requests
-type: extension
-category: Copilot Studio / Employee Self-Service
-summary: Adds a topic to the Microsoft Employee Self-Service (ESS) agent that lets employees list their ServiceNow service catalog requests (REQ numbers) via natural language.
-author:
-  - Dean Cron
-version: 1.0.1
-published: "2026-07-30"
-tags:
-  - ESS
-  - Employee Self-Service
-  - ServiceNow
-  - ITSM
-  - service catalog
-  - sc_request
-format: extension
-whatItIs: >-
-  A two-topic + standalone flow extension for the Microsoft Employee Self-Service
-  (ESS) Copilot Studio agent. Employees can ask the agent for a list of their
-  service catalog requests — filtered by state (active, inactive, or all) — and
-  receive a numbered list with direct ServiceNow links.
-whyUseIt:
-  - The ESS shared ITSM orchestrator flow only supports listing incidents (INC).
-    This extension adds sc_request (REQ) list support without modifying any shared flows.
-  - Includes a 15-minute cache for "all requests" queries (matching the Get User Tickets pattern).
-  - Pairs naturally with the ESS ServiceNow ITSM – Get Request Details sample for
-    full REQ request management.
-howToUse: |-
-  See the Setup section below.
-prerequisites:
-  - Microsoft Employee Self-Service agent (deployed)
-  - ServiceNow ITSM extension pack installed in Copilot Studio
-  - An active ServiceNow connection in Power Platform (ships as the maker's
-    embedded connection; on-behalf-of / invoker auth is strongly recommended —
-    see the Configure OBO section)
-  - ESS Maker Kit (for automated deployment via push.py)
----
-
 # ESS ServiceNow ITSM – Get User Requests
 
 ## 📌 Overview
@@ -61,6 +22,15 @@ Extends the Microsoft Employee Self-Service (ESS) agent with the ability to list
 | `topics/ess-hr-servicenow-itsm-system-get-user-requests.mcs.yml` | System topic — routes to the standalone flow and populates the 15-min cache |
 | `workflow/workflow.json` | Standalone Power Automate flow — queries `sc_request` filtered by user email + active state |
 | `workflow/metadata.yml` | Flow metadata for the ESS Maker Kit push script |
+
+---
+
+## ✅ Prerequisites
+
+- Microsoft Employee Self-Service agent (deployed)
+- ServiceNow ITSM extension pack installed in Copilot Studio
+- An active ServiceNow connection in Power Platform — this sample ships with the maker's `embedded` connection; on-behalf-of (`invoker`) auth is strongly recommended, see [Configure OBO](#-configure-obo-strongly-recommended)
+- ESS Maker Kit (for automated deployment via `push.py`)
 
 ---
 
@@ -129,3 +99,11 @@ becomes per-user. Stay on `embedded` only if every agent user is meant to see th
 - **Global cache variables** — the topic uses `Global.ESS_ServiceNow_AllRequests` and `Global.ESS_ServiceNow_NextAllRequestsRefresh`. These are agent-scoped global variables — ensure they don't conflict with other topics in your agent.
 - **Reference fields** — `requested_for` and `assigned_to` come back from `GetRecords` as `{display_value, link}` objects when populated (or an empty string when not set). The flow's `Flatten_Request_Records` **Select** step normalizes these to plain display-value strings across every row before mapping — if you add more reference fields to `sysparm_fields`, apply the same flatten pattern.
 - **Result key** — the ServiceNow connector returns rows under `result` (ServiceNow Table API v2), *not* OData's `value`. Feeding `body(...)?['value']` to the output mapper yields `null` and fails with `A null value was found for the property named 'ServiceNowTableData'`. Keep the `?['result']` references intact if you customise this flow.
+
+---
+
+## Author
+
+| Author | Original Publish Date |
+| --- | --- |
+| Dean Cron | 2026-07-30 |
