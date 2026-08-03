@@ -9,7 +9,7 @@
         "connection": {
           "connectionReferenceLogicalName": "{SERVICENOW_CONNREF}"
         },
-        "runtimeSource": "embedded"
+        "runtimeSource": "invoker"
       },
       "shared_commondataserviceforapps": {
         "api": {
