@@ -112,7 +112,7 @@ The solution ships both flows plus its own ServiceNow connection reference
    - You will **not** be asked to map a Dataverse connection. The flows bind Dataverse through `new_sharedcommondataserviceforapps_41c83`, which is already in your environment courtesy of the ServiceNow extension pack.
 5. Select **Import** and wait for the success banner.
 
-#### B3 — Identify the two packaged workflow IDs
+#### B2 — Identify the two packaged workflow IDs
 
 1. In [Power Automate](https://make.powerautomate.com), select **Solutions**, then open **ESS ServiceNow ITSM - Get Request Details**.
 2. Confirm both flows show **Status: On**. If either is **Off**, open it and select **Turn on**.
@@ -131,7 +131,7 @@ The solution ships both flows plus its own ServiceNow connection reference
    Copilot Studio `InvokeFlowAction`. Keep the two packaged IDs straight: swapping them sends REQ
    lookups to the RITM flow and vice versa, which fails silently with an empty card rather than an error.
 
-#### B4 — Create the three topics
+#### B3 — Create the three topics
 
 For each file in `topics/`:
 
@@ -146,7 +146,7 @@ For each file in `topics/`:
    | `ess-it-servicenow-itsm-system-get-request-item.mcs.yml` | `ESS IT ServiceNow ITSM System Get Request Item` |
    | `servicenow-itsm-get-request-details.mcs.yml` | `ESS ServiceNow ITSM Get Request Details` |
 
-5. In each **system** topic, replace `{FLOW_GUID}` with that topic's matching packaged workflow ID from B3:
+5. In each **system** topic, replace `{FLOW_GUID}` with that topic's matching packaged workflow ID from B2:
    - `…system-get-request-details` → ID of **Get Request Details**
    - `…system-get-request-item` → ID of **Get Request Item**
 6. In the **user-facing** topic, replace both `dialog:` values with the PascalCase schema names the portal generated:
@@ -160,23 +160,23 @@ For each file in `topics/`:
    `Dialog with id '…' not found` at publish — see the note under [Files](#-files).
 7. **Save** each topic.
 
-#### B5 — Publish
+#### B4 — Publish
 
 Select **Publish** in Copilot Studio. If publish reports `Dialog with id … not found`, revisit
-step B4.6; if it reports `IncorrectTypeAssignment` alongside it, that's the same fault, not a
+step B3.6; if it reports `IncorrectTypeAssignment` alongside it, that's the same fault, not a
 second one.
 
 > The solution declares the ServiceNow connection as `"runtimeSource": "invoker"`, so an imported
-> flow is wired for OBO from the start. You still need the connection-side step in B6.
+> flow is wired for OBO from the start. You still need the connection-side step in B5.
 
-#### B6 — Configure OBO (do this after publishing, before testing)
+#### B5 — Configure OBO (do this after publishing, before testing)
 
 Both flows call ServiceNow **as the signed-in employee**, which requires parameter sharing on the
 ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
 [Configure OBO](#-configure-obo-required) below.
 
 > Publish the agent first. The imported flows do not appear under **Settings** → **Connection settings**
-> until the agent has been published, so you cannot configure their connection parameters before B5.
+> until the agent has been published, so you cannot configure their connection parameters before B4.
 
 ### 🔗 Set the portal base URI (required for links)
 
