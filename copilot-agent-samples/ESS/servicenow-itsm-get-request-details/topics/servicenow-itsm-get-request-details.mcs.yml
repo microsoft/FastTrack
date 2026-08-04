@@ -59,6 +59,8 @@ modelDescription: |-
   * "Where is my service request?"
   * "Has my software request been approved?"
   * "Check the status of my access request"
+
+  After displaying the adaptive card, treat the card as the complete response. Do not append a summary, offer more help, or ask a follow-up question.
 beginDialog:
   kind: OnRecognizedIntent
   id: main
