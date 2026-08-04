@@ -266,3 +266,9 @@ running as the maker and every user will see the maker's data — reconfigure be
 | Author | Original Publish Date | Latest Publish Date |
 | --- | --- | --- |
 | Dean Cron | 2026-07-30 | 2026-08-03 |
+
+## Disclaimer
+
+THIS CODE IS PROVIDED AS IS WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED
+WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR
+NON-INFRINGEMENT.
