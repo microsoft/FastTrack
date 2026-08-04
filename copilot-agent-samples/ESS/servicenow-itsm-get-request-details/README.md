@@ -265,7 +265,7 @@ running as the maker and every user will see the maker's data — reconfigure be
 
 | Author | Original Publish Date | Latest Publish Date |
 | --- | --- | --- |
-| Dean Cron | 2026-07-30 | 2026-08-03 |
+| Dean Cron | 2026-07-30 | 2026-08-04 |
 
 ## Disclaimer
 
