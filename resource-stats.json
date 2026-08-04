@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T14:26:11.041Z",
+  "generatedAt": "2026-08-04T20:19:12.207Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -45,8 +45,13 @@
       }
     },
     "viva-insights-copilot-dashboard": {
-      "views": 119,
-      "viewsUniques": 70
+      "views": 3,
+      "viewsUniques": 0,
+      "upvotes": 1,
+      "discussion": {
+        "number": 508,
+        "url": "https://github.com/microsoft/FastTrack/discussions/508"
+      }
     }
   }
 }
