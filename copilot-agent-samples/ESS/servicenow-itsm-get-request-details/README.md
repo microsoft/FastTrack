@@ -112,26 +112,24 @@ The solution ships both flows plus its own ServiceNow connection reference
    - You will **not** be asked to map a Dataverse connection. The flows bind Dataverse through `new_sharedcommondataserviceforapps_41c83`, which is already in your environment courtesy of the ServiceNow extension pack.
 5. Select **Import** and wait for the success banner.
 
-#### B2 — Configure OBO (do this before testing)
-
-Both flows call ServiceNow **as the signed-in employee**, which requires parameter sharing on the
-ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
-[Configure OBO](#-configure-obo-required) below, then return here.
-
-#### B3 — Collect the two flow IDs
+#### B3 — Identify the two packaged workflow IDs
 
 1. In [Power Automate](https://make.powerautomate.com), select **Solutions**, then open **ESS ServiceNow ITSM - Get Request Details**.
 2. Confirm both flows show **Status: On**. If either is **Off**, open it and select **Turn on**.
    - `ESS IT ServiceNow ITSM Get Request Details`
    - `ESS IT ServiceNow ITSM Get Request Item`
-3. Open each flow and read its ID from the browser address bar — it's the GUID immediately after `/flows/`:
+3. Use these packaged workflow IDs in the matching system topics:
 
    ```text
-   https://make.powerautomate.com/environments/{env}/solutions/{sol}/flows/5750fc72-738f-412c-b9cb-5094507f2eb2/details
-                                                                           └──────────── flow ID ────────────┘
+   Get Request Details: 5750fc72-738f-412c-b9cb-5094507f2eb2
+   Get Request Item:    917c7b14-8bcb-4492-bf4a-eb52cfadbc3d
    ```
 
-   Record one ID per flow — they are different values. Keep them straight by flow name: swapping them sends REQ lookups to the RITM flow and vice versa, which fails silently with an empty card rather than an error.
+   Do **not** copy the GUID from either Power Automate browser URL. Solution import creates a
+   generated Power Automate resource ID for each URL, which can look like a second standalone
+   flow. Each is the same imported flow, but it is **not** the Dataverse workflow ID used by the
+   Copilot Studio `InvokeFlowAction`. Keep the two packaged IDs straight: swapping them sends REQ
+   lookups to the RITM flow and vice versa, which fails silently with an empty card rather than an error.
 
 #### B4 — Create the three topics
 
@@ -148,7 +146,7 @@ For each file in `topics/`:
    | `ess-it-servicenow-itsm-system-get-request-item.mcs.yml` | `ESS IT ServiceNow ITSM System Get Request Item` |
    | `servicenow-itsm-get-request-details.mcs.yml` | `ESS ServiceNow ITSM Get Request Details` |
 
-5. In each **system** topic, replace `{FLOW_GUID}` with that topic's matching flow ID from B3:
+5. In each **system** topic, replace `{FLOW_GUID}` with that topic's matching packaged workflow ID from B3:
    - `…system-get-request-details` → ID of **Get Request Details**
    - `…system-get-request-item` → ID of **Get Request Item**
 6. In the **user-facing** topic, replace both `dialog:` values with the PascalCase schema names the portal generated:
@@ -169,7 +167,16 @@ step B4.6; if it reports `IncorrectTypeAssignment` alongside it, that's the same
 second one.
 
 > The solution declares the ServiceNow connection as `"runtimeSource": "invoker"`, so an imported
-> flow is wired for OBO from the start. You still need the connection-side step in B2.
+> flow is wired for OBO from the start. You still need the connection-side step in B6.
+
+#### B6 — Configure OBO (do this after publishing, before testing)
+
+Both flows call ServiceNow **as the signed-in employee**, which requires parameter sharing on the
+ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
+[Configure OBO](#-configure-obo-required) below.
+
+> Publish the agent first. The imported flows do not appear under **Settings** → **Connection settings**
+> until the agent has been published, so you cannot configure their connection parameters before B5.
 
 ### 🔗 Set the portal base URI (required for links)
 
