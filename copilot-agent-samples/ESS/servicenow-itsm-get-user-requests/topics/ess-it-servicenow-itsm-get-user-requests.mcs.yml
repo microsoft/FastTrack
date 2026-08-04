@@ -59,7 +59,7 @@ beginDialog:
               input:
                 binding:
                   IsActive: =Blank()
-                  UserIdentifier: =Global.ESS_UserContext_UPN
+                  UserIdentifier: =Coalesce(Global.ESS_UserContext_UPN, System.User.PrincipalName)
 
               dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-user-requests
               output:
@@ -77,7 +77,7 @@ beginDialog:
           input:
             binding:
               IsActive: =Topic.IsActive
-              UserIdentifier: =Global.ESS_UserContext_UPN
+              UserIdentifier: =Coalesce(Global.ESS_UserContext_UPN, System.User.PrincipalName)
 
           dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-user-requests
           output:

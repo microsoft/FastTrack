@@ -16,7 +16,7 @@ beginDialog:
       id: callGetUserRequestsFlow
       input:
         binding:
-          text: =Topic.UserIdentifier
+          text: =Coalesce(Topic.UserIdentifier, System.User.PrincipalName)
           text_1: =If(IsBlank(Topic.IsActive), "", Text(Topic.IsActive))
 
       output:
