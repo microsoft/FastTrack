@@ -30,22 +30,6 @@ beginDialog:
 
       flowId: {FLOW_GUID}
 
-    - kind: ConditionGroup
-      id: conditionGroup_cacheResult
-      conditions:
-        - id: conditionItem_cacheAll
-          condition: =!IsBlank(Topic.ServiceNowData) && IsBlank(Topic.IsActive)
-          displayName: Cache all-requests response?
-          actions:
-            - kind: SetVariable
-              id: cacheAllRequests
-              variable: Global.ESS_ServiceNow_AllRequests
-              value: =Topic.ServiceNowData
-
-            - kind: SetVariable
-              id: setCacheExpiry
-              variable: Global.ESS_ServiceNow_NextAllRequestsRefresh
-              value: =DateAdd(Now(), 15, TimeUnit.Minutes)
 
 inputType:
   properties:

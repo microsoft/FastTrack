@@ -39,17 +39,8 @@ beginDialog:
   intent: {}
   actions:
     - kind: ConditionGroup
-      id: conditionGroup_checkCache
+      id: conditionGroup_requestState
       conditions:
-        - id: conditionItem_useCache
-          condition: =!IsBlank(Global.ESS_ServiceNow_AllRequests) && !IsBlank(Global.ESS_ServiceNow_NextAllRequestsRefresh) && Global.ESS_ServiceNow_NextAllRequestsRefresh > Now() && (Topic.RequestState = "all" || IsBlank(Topic.RequestState))
-          displayName: Requests list is cached?
-          actions:
-            - kind: SetVariable
-              id: useCachedRequests
-              variable: Topic.ServiceNowData
-              value: =Global.ESS_ServiceNow_AllRequests
-
         - id: conditionItem_allRequests
           condition: =Topic.RequestState = "all" || IsBlank(Topic.RequestState)
           displayName: List all requests
