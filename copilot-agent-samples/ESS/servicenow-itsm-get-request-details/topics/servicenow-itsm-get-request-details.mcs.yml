@@ -216,7 +216,7 @@ beginDialog:
                                         ]
                                       }
 
-                            - kind: CancelAllDialogs
+                            - kind: EndDialog
                               id: cancelAfterRitm
 
                       elseActions:
@@ -226,7 +226,7 @@ beginDialog:
                             text:
                               - I couldn't find a request item matching that RITM number. Please check the number and try again.
 
-                        - kind: CancelAllDialogs
+                        - kind: EndDialog
                           id: cancelAfterRitmNotFound
 
               elseActions:
@@ -364,7 +364,7 @@ beginDialog:
                                     ]
                                   }
 
-                        - kind: CancelAllDialogs
+                        - kind: EndDialog
                           id: cancelAllDialogs
 
                   elseActions:
