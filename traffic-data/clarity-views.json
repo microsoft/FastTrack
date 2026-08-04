@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-07-27",
+  "lastRun": "2026-08-04",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -27,6 +27,18 @@
         "uniques": 0
       },
       "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-08-04": {},
+    "2026-08-03": {
+      "viva-insights-copilot-dashboard": {
+        "views": 3
+      }
+    },
+    "2026-08-02": {
+      "viva-insights-copilot-dashboard": {
         "views": 0,
         "uniques": 0
       }
