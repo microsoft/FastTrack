@@ -95,12 +95,6 @@ The solution ships the flow plus its own ServiceNow connection reference
    - You will **not** be asked to map a Dataverse connection. The flow binds Dataverse through `new_sharedcommondataserviceforapps_41c83`, which is already in your environment courtesy of the ServiceNow extension pack.
 5. Select **Import** and wait for the success banner.
 
-#### B2 — Configure OBO (do this before testing)
-
-The flow calls ServiceNow **as the signed-in employee**, which requires parameter sharing on the
-ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
-[Configure OBO](#-configure-obo-required) below, then return here.
-
 #### B3 — Collect the flow ID
 
 1. In [Power Automate](https://make.powerautomate.com), select **Solutions**, then open **ESS ServiceNow ITSM - Get User Requests**.
@@ -144,7 +138,16 @@ step B4.6; if it reports `IncorrectTypeAssignment` alongside it, that's the same
 second one.
 
 > The solution declares the ServiceNow connection as `"runtimeSource": "invoker"`, so an imported
-> flow is wired for OBO from the start. You still need the connection-side step in B2.
+> flow is wired for OBO from the start. You still need the connection-side step in B6.
+
+#### B6 — Configure OBO (do this after publishing, before testing)
+
+The flow calls ServiceNow **as the signed-in employee**, which requires parameter sharing on the
+ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
+[Configure OBO](#-configure-obo-required) below.
+
+> Publish the agent first. The imported flow does not appear under **Settings** → **Connection settings**
+> until the agent has been published, so you cannot configure its connection parameters before B5.
 
 ### 🔗 Set the portal base URI (required for links)
 
