@@ -16,7 +16,7 @@ inputs:
 modelDescription: |-
   This tool retrieves the list of service catalog requests (REQ numbers) for the user.
 
-  Use this tool when a user asks about their service requests, catalog requests, or REQ items — NOT for incident tickets (INC). Use ServiceNow-ITSM-Get-User-Tickets for incidents.
+  Use this tool when a user asks about their requests, service requests, catalog requests, REQ items, or items they requested — NOT for incident tickets (INC), IT support tickets, helpdesk tickets, or support cases. If the user says "requests" without saying ticket, incident, INC, support, or helpdesk, treat it as a service catalog request and use this tool. Use ServiceNow-ITSM-Get-User-Tickets only for incidents or support tickets.
 
   Example queries:
   * "Show me my service requests"
@@ -36,7 +36,21 @@ modelDescription: |-
 beginDialog:
   kind: OnRecognizedIntent
   id: main
-  intent: {}
+  intent:
+    triggerQueries:
+      - show all my requests
+      - list all my requests
+      - show my requests
+      - list my requests
+      - show me my service requests
+      - list my service requests
+      - what requests do I have open
+      - show my open requests
+      - my pending catalog requests
+      - list my completed requests
+      - what did I request recently
+      - show my REQ items
+
   actions:
     - kind: ConditionGroup
       id: conditionGroup_requestState
