@@ -95,24 +95,22 @@ The solution ships the flow plus its own ServiceNow connection reference
    - You will **not** be asked to map a Dataverse connection. The flow binds Dataverse through `new_sharedcommondataserviceforapps_41c83`, which is already in your environment courtesy of the ServiceNow extension pack.
 5. Select **Import** and wait for the success banner.
 
-#### B2 — Configure OBO (do this before testing)
-
-The flow calls ServiceNow **as the signed-in employee**, which requires parameter sharing on the
-ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
-[Configure OBO](#-configure-obo-required) below, then return here.
-
-#### B3 — Collect the flow ID
+#### B2 — Identify the packaged workflow ID
 
 1. In [Power Automate](https://make.powerautomate.com), select **Solutions**, then open **ESS ServiceNow ITSM - Get User Requests**.
 2. Confirm **ESS IT ServiceNow ITSM Get User Requests** shows **Status: On**. If it's **Off**, open it and select **Turn on**.
-3. Open the flow and read its ID from the browser address bar — it's the GUID immediately after `/flows/`:
+3. Use this packaged workflow ID in the system topic:
 
    ```text
-   https://make.powerautomate.com/environments/{env}/solutions/{sol}/flows/5f08a17c-ed32-42ea-bbe4-29da0e9e98b1/details
-                                                                           └──────────── flow ID ────────────┘
+   5f08a17c-ed32-42ea-bbe4-29da0e9e98b1
    ```
 
-#### B4 — Create the two topics
+   Do **not** copy the GUID from the Power Automate browser URL. Solution import creates a
+   generated Power Automate resource ID for that URL, which can look like a second standalone
+   flow. It is the same imported flow, but it is **not** the Dataverse workflow ID used by the
+   Copilot Studio `InvokeFlowAction`.
+
+#### B3 — Create the two topics
 
 For each file in `topics/`:
 
@@ -126,7 +124,7 @@ For each file in `topics/`:
    | `ess-it-servicenow-itsm-system-get-user-requests.mcs.yml` | `ESS IT ServiceNow ITSM System Get User Requests` |
    | `ess-it-servicenow-itsm-get-user-requests.mcs.yml` | `ESS IT ServiceNow ITSM Get User Requests` |
 
-5. In the **system** topic, replace `{FLOW_GUID}` with the flow ID from B3.
+5. In the **system** topic, replace `{FLOW_GUID}` with the packaged workflow ID from B2.
 6. In the **user-facing** topic, replace **both** `dialog:` values (they appear twice — once in the all-requests branch, once in the filtered branch) with the PascalCase schema name the portal generated:
 
    ```yaml
@@ -137,14 +135,23 @@ For each file in `topics/`:
    `Dialog with id '…' not found` at publish — see the note under [Files](#-files).
 7. **Save** each topic.
 
-#### B5 — Publish
+#### B4 — Publish
 
 Select **Publish** in Copilot Studio. If publish reports `Dialog with id … not found`, revisit
-step B4.6; if it reports `IncorrectTypeAssignment` alongside it, that's the same fault, not a
+step B3.6; if it reports `IncorrectTypeAssignment` alongside it, that's the same fault, not a
 second one.
 
 > The solution declares the ServiceNow connection as `"runtimeSource": "invoker"`, so an imported
-> flow is wired for OBO from the start. You still need the connection-side step in B2.
+> flow is wired for OBO from the start. You still need the connection-side step in B5.
+
+#### B5 — Configure OBO (do this after publishing, before testing)
+
+The flow calls ServiceNow **as the signed-in employee**, which requires parameter sharing on the
+ServiceNow connection. This is configured in **Copilot Studio**, not Power Automate — follow
+[Configure OBO](#-configure-obo-required) below.
+
+> Publish the agent first. The imported flow does not appear under **Settings** → **Connection settings**
+> until the agent has been published, so you cannot configure its connection parameters before B4.
 
 ### 🔗 Set the portal base URI (required for links)
 
@@ -237,3 +244,9 @@ rather than the sole isolation boundary. Note that the 15-minute cache is per-us
 | Author | Original Publish Date | Latest Publish Date |
 | --- | --- | --- |
 | Dean Cron | 2026-07-30 | 2026-08-03 |
+
+## Disclaimer
+
+THIS CODE IS PROVIDED AS IS WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED
+WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR
+NON-INFRINGEMENT.

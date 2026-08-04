@@ -39,17 +39,8 @@ beginDialog:
   intent: {}
   actions:
     - kind: ConditionGroup
-      id: conditionGroup_checkCache
+      id: conditionGroup_requestState
       conditions:
-        - id: conditionItem_useCache
-          condition: =!IsBlank(Global.ESS_ServiceNow_AllRequests) && !IsBlank(Global.ESS_ServiceNow_NextAllRequestsRefresh) && Global.ESS_ServiceNow_NextAllRequestsRefresh > Now() && (Topic.RequestState = "all" || IsBlank(Topic.RequestState))
-          displayName: Requests list is cached?
-          actions:
-            - kind: SetVariable
-              id: useCachedRequests
-              variable: Topic.ServiceNowData
-              value: =Global.ESS_ServiceNow_AllRequests
-
         - id: conditionItem_allRequests
           condition: =Topic.RequestState = "all" || IsBlank(Topic.RequestState)
           displayName: List all requests
@@ -59,7 +50,7 @@ beginDialog:
               input:
                 binding:
                   IsActive: =Blank()
-                  UserIdentifier: =Global.ESS_UserContext_UPN
+                  UserIdentifier: =Coalesce(Global.ESS_UserContext_UPN, System.User.PrincipalName)
 
               dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-user-requests
               output:
@@ -77,7 +68,7 @@ beginDialog:
           input:
             binding:
               IsActive: =Topic.IsActive
-              UserIdentifier: =Global.ESS_UserContext_UPN
+              UserIdentifier: =Coalesce(Global.ESS_UserContext_UPN, System.User.PrincipalName)
 
           dialog: msdyn_copilotforemployeeselfserviceit.topic.ess-it-servicenow-itsm-system-get-user-requests
           output:
