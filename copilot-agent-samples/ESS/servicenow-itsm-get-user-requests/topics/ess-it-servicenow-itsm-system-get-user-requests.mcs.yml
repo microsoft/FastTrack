@@ -28,7 +28,7 @@ beginDialog:
           servicenowtransactionid: Topic.ServiceNowTransactionID
           statuscode: Topic.StatusCode
 
-      flowId: {FLOW_GUID}
+      flowId: "{FLOW_GUID}"
 
 
 inputType:
