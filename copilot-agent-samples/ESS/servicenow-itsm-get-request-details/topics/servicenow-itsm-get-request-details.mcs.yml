@@ -218,6 +218,7 @@ beginDialog:
 
                             - kind: EndDialog
                               id: cancelAfterRitm
+                              clearTopicQueue: true
 
                       elseActions:
                         - kind: SendActivity
@@ -228,6 +229,7 @@ beginDialog:
 
                         - kind: EndDialog
                           id: cancelAfterRitmNotFound
+                          clearTopicQueue: true
 
               elseActions:
                 - kind: BeginDialog
@@ -366,6 +368,7 @@ beginDialog:
 
                         - kind: EndDialog
                           id: cancelAllDialogs
+                          clearTopicQueue: true
 
                   elseActions:
                     - kind: ConditionGroup
