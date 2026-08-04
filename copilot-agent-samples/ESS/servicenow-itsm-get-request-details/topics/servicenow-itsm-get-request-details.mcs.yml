@@ -412,3 +412,9 @@ outputType:
       displayName: RelevantRequestFound
       type: Boolean
       examples:
+
+    ServiceNowData:
+      displayName: ServiceNowData
+      description: Request or request item details returned from ServiceNow.
+      type: String
+      examples:
