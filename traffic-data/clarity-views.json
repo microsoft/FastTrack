@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-07-27",
+  "lastRun": "2026-08-11",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -27,6 +27,24 @@
         "uniques": 0
       },
       "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-08-11": {
+      "copilot-agents-guide": {
+        "views": 1,
+        "uniques": 1
+      }
+    },
+    "2026-08-10": {
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-08-09": {
+      "copilot-agents-guide": {
         "views": 0,
         "uniques": 0
       }
