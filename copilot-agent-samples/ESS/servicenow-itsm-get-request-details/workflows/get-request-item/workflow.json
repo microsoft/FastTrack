@@ -268,8 +268,8 @@
               "issuccessful": "@variables('ResponseBody')?['IsSuccessful']",
               "errormessage": "@{variables('ResponseBody')?['ErrorMessage']}",
               "statuscode": 200,
-              "servicenowsessionid": "",
-              "servicenowtransactionid": ""
+              "servicenowsessionid": "@variables('ResponseBody')?['ServiceNowSessionID']",
+              "servicenowtransactionid": "@variables('ResponseBody')?['ServiceNowTransactionID']"
             }
           },
           "runAfter": {
