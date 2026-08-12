@@ -1,10 +1,14 @@
 {
-  "generatedAt": "2026-08-12T17:13:00.119Z",
+  "generatedAt": "2026-08-12T17:14:25.643Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
+    "agent-brainstorming-template": {
+      "views": 1,
+      "viewsUniques": 1
+    },
     "agents-cost-calculator": {
       "views": 90,
       "viewsUniques": 60
@@ -23,8 +27,8 @@
       "viewsUniques": 1
     },
     "copilot-agents-guide": {
-      "views": 32,
-      "viewsUniques": 6
+      "views": 1,
+      "viewsUniques": 0
     },
     "powerclaw-agent": {
       "views": 1632,
