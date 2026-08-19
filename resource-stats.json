@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-12T17:13:00.119Z",
+  "generatedAt": "2026-08-19T19:10:14.855Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agents-cost-calculator": {
-      "views": 90,
-      "viewsUniques": 60
+      "views": 2,
+      "viewsUniques": 2
     },
     "ai-council": {
       "views": 78,
@@ -19,12 +19,28 @@
       }
     },
     "autoreply-agent": {
-      "views": 1,
+      "views": 4,
       "viewsUniques": 1
     },
     "copilot-agents-guide": {
-      "views": 32,
-      "viewsUniques": 6
+      "views": 3,
+      "viewsUniques": 3
+    },
+    "copilot-studio-workflow": {
+      "views": 1,
+      "viewsUniques": 1
+    },
+    "deepresearch": {
+      "views": 2,
+      "viewsUniques": 2
+    },
+    "export-copilotinteractions": {
+      "views": 1,
+      "viewsUniques": 1
+    },
+    "migrate-copilotstudioagents": {
+      "views": 1,
+      "viewsUniques": 1
     },
     "powerclaw-agent": {
       "views": 1632,
@@ -35,14 +51,22 @@
         "url": "https://github.com/microsoft/FastTrack/discussions/479"
       }
     },
+    "productquote-agent": {
+      "views": 1,
+      "viewsUniques": 0
+    },
     "purview-audit-copilot-report": {
-      "views": 2,
+      "views": 3,
       "viewsUniques": 1,
       "upvotes": 0,
       "discussion": {
         "number": 497,
         "url": "https://github.com/microsoft/FastTrack/discussions/497"
       }
+    },
+    "reasoningagent": {
+      "views": 1,
+      "viewsUniques": 0
     },
     "viva-insights-copilot-dashboard": {
       "views": 119,

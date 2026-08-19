@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-07-27",
+  "lastRun": "2026-08-19",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -27,6 +27,108 @@
         "uniques": 0
       },
       "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-08-19": {
+      "agents-cost-calculator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-agents-guide": {
+        "views": 3,
+        "uniques": 3
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 1
+      },
+      "deepresearch": {
+        "views": 1,
+        "uniques": 1
+      },
+      "export-copilotinteractions": {
+        "views": 1,
+        "uniques": 1
+      },
+      "migrate-copilotstudioagents": {
+        "views": 1,
+        "uniques": 1
+      }
+    },
+    "2026-08-18": {
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 3
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "deepresearch": {
+        "views": 0,
+        "uniques": 0
+      },
+      "export-copilotinteractions": {
+        "views": 0,
+        "uniques": 0
+      },
+      "migrate-copilotstudioagents": {
+        "views": 0,
+        "uniques": 0
+      },
+      "productquote-agent": {
+        "views": 1
+      },
+      "reasoningagent": {
+        "views": 1
+      }
+    },
+    "2026-08-17": {
+      "agents-cost-calculator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "deepresearch": {
+        "views": 1,
+        "uniques": 1
+      },
+      "export-copilotinteractions": {
+        "views": 0,
+        "uniques": 0
+      },
+      "migrate-copilotstudioagents": {
+        "views": 0,
+        "uniques": 0
+      },
+      "productquote-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 1
+      },
+      "reasoningagent": {
         "views": 0,
         "uniques": 0
       }
