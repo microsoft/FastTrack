@@ -18,6 +18,8 @@ updates:
       - "github-actions"
 
   # The catalog build tooling (Node / npm).
+    cooldown:
+      default-days: 7
   - package-ecosystem: "npm"
     directory: "/tools/catalog-build"
     schedule:
