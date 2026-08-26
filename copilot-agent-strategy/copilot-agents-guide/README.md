@@ -46,7 +46,11 @@ as the same thing.
   Agents, Workflows agent, agents in Viva Engage communities, and Microsoft Scout. The Office
   creation-agent guidance calls out the required Anthropic model enablement.
 - **Copilot Studio:** Replaced the old "full declarative" and "full custom" framing with the current
-  three-harness model: Copilot chat, standard, and GitHub Copilot harnesses.
+  three-harness model: Copilot chat, standard, and GitHub Copilot harnesses. Harness-specific MCP,
+  workflow, A2A, connected-agent, and computer-use boundaries are called out.
+- **Copilot Studio identity:** Added automatic Microsoft Entra Agent ID creation for new agents,
+  the July 2026 removal of environment-level opt-out, and Conditional Access guidance for connector
+  permissions.
 - **Agent Builder and SharePoint:** Updated knowledge, sharing, pay-as-you-go, creator, and user
   requirements.
 - **Microsoft 365 Agents Toolkit:** Updated the supported SDK, TypeSpec, Foundry, Visual Studio,
@@ -157,6 +161,8 @@ The scheduled workflow is `.github/workflows/update-message-center.yml`.
 - [Agent Builder in Microsoft 365 Copilot](https://learn.microsoft.com/microsoft-365/copilot/extensibility/agent-builder)
 - [Get started with agents in SharePoint](https://learn.microsoft.com/sharepoint/get-started-sharepoint-agents)
 - [Copilot Studio agents overview](https://learn.microsoft.com/microsoft-copilot-studio/agents-overview)
+- [Microsoft Entra Agent ID in Copilot Studio](https://learn.microsoft.com/microsoft-copilot-studio/admin-use-entra-agent-identities)
+- [Extend a Copilot Studio agent with MCP](https://learn.microsoft.com/microsoft-copilot-studio/agent-extend-action-mcp)
 - [Microsoft 365 Agents Toolkit](https://learn.microsoft.com/microsoftteams/platform/toolkit/overview-agents-toolkit)
 - [Microsoft Agent 365 overview](https://learn.microsoft.com/microsoft-agent-365/overview)
 - [FastTrack scope for Microsoft Copilot agents](https://learn.microsoft.com/microsoft-365/fasttrack/microsoft-365-copilot#microsoft-copilot-agents)

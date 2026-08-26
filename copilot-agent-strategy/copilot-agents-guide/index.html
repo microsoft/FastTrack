@@ -657,6 +657,9 @@
                   description: 'Rule-based agents for structured, repeatable conversations and predictable responses.',
                   capabilities: [
                     'Topics, rules, enterprise knowledge, and actions',
+                    'External agent connections over the A2A protocol',
+                    'MCP servers as tools and resources with generative orchestration',
+                    'Computer use for browser and Windows desktop UI automation; model availability varies',
                     'Consistent behavior for well-understood requests',
                     'Copilot Studio capacity model for billing'
                   ],
@@ -675,7 +678,9 @@
                   description: 'Reasoning-heavy agents that plan multi-step work, adapt to results, and work with files in a secure sandbox.',
                   capabilities: [
                     'Native skills and memory',
-                    'Multi-tool and connected-agent orchestration',
+                    'Workflows as tools for multistep processes',
+                    'MCP servers as tools (preview)',
+                    'Connected agents, limited to other Copilot Studio agents',
                     'Usage-based billing with Copilot Credits'
                   ],
                   whenToUse: 'Complex business processes, document work, and tasks that require judgment and adaptation',
@@ -685,7 +690,8 @@
               capabilities: [
                 'Standard harness for rule-based, predictable conversations',
                 'GitHub Copilot harness for adaptive, multi-step reasoning',
-                'Knowledge, connectors, workflows, REST APIs, MCP servers, and connected agents',
+                'Harness-specific support for workflows, REST APIs, MCP servers, A2A, and connected agents',
+                'Microsoft Entra Agent ID is created automatically for each new agent',
                 'Multi-channel deployment based on the selected harness and channel',
                 'Analytics, evaluations, administration, and cost management',
                 'Human review and approval patterns for sensitive processes'
@@ -694,6 +700,7 @@
                 'Harness choice affects behavior, architecture, billing, and deployment',
                 'GitHub Copilot harness usage is billed with Copilot Credits',
                 'Standard harness uses the Copilot Studio capacity model',
+                'Agents created before the Agent ID rollout can continue using app registrations until Microsoft migrates them',
                 'Production agents need environment, data policy, evaluation, owner, and monitoring plans',
                 'FastTrack custom engine guidance is channel-limited'
               ],
@@ -725,6 +732,7 @@
                 bestPractices: [
                   'Do not treat the harnesses as interchangeable',
                   'Use the simplest harness that meets the process and risk requirements',
+                  'Review Agent ID API permissions and apply Conditional Access to connector access where needed',
                   'Require human review for high-impact actions and decisions',
                   'Test failures, permission boundaries, and tool errors before production',
                   'Monitor quality, adoption, cost, and owner health after launch'
