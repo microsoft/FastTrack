@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31",
+  "generatedAt": "2026-08-21",
   "count": 30,
   "resources": [
     {
@@ -225,8 +225,8 @@
       "type": "strategy",
       "subcategory": "Interactive",
       "category": "Interactive",
-      "description": "Compare Microsoft Copilot agent platforms with capability views, decision guidance, support indicators, and scenarios.",
-      "summary": "Compare Microsoft Copilot agent platforms with capability views, decision guidance, support indicators, and scenarios.",
+      "description": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
+      "summary": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
       "tags": [
         "guide",
         "decision",
@@ -237,16 +237,16 @@
       "featured": true,
       "status": "active",
       "author": "Microsoft FastTrack",
-      "version": "3.1.0",
+      "version": "4.0.0",
       "published": "2025-10-28",
-      "updated": "2026-07-31",
-      "whatItIs": "A self-contained interactive web guide that compares Microsoft Copilot agent types across capabilities, constraints, technical effort, cost, and FastTrack support.",
+      "updated": "2026-08-21",
+      "whatItIs": "A self-contained interactive guide to Microsoft-built agent experiences, Agents in SharePoint, Agent Builder, Copilot Studio harnesses, Microsoft 365 Agents Toolkit, and Microsoft Agent 365.",
       "whyUseIt": [
-        "Shortlist an agent platform based on use case, team skills, budget, timeline, and growth.",
-        "Compare capabilities and limitations side by side before committing to a build path.",
-        "Give business, architecture, and development stakeholders a shared decision framework."
+        "Shortlist an agent approach based on the work, audience, skills, governance, and delivery model.",
+        "Separate generally available capabilities from Frontier and public preview experiences.",
+        "Review current licensing considerations and the published FastTrack service boundary."
       ],
-      "howToUse": "Open `index.html` directly in a modern browser. To host locally, run `python -m http.server 8000` from the resource folder and browse to `http://localhost:8000/index.html`. Use the Overview, Capabilities, Comparison, and Guidance tabs.",
+      "howToUse": "Open `index.html` in a modern browser. Use the Strategy view first, then compare the Overview, Guidance, Capabilities, Comparison, Labs, and Message Center tabs.",
       "prerequisites": [
         "Modern web browser"
       ],

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T17:13:00.119Z",
+  "generatedAt": "2026-08-31T20:17:46.216Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -25,6 +25,10 @@
     "copilot-agents-guide": {
       "views": 32,
       "viewsUniques": 6
+    },
+    "copilot-studio-workflow": {
+      "views": 1,
+      "viewsUniques": 1
     },
     "powerclaw-agent": {
       "views": 1632,
