@@ -99,26 +99,19 @@
 
         // ─── Message Center Data ─────────────────────────────────────────
         const messageCenterPosts = [
-          {"id":"MC1434583","title":"Microsoft 365 Copilot: Configure organization policy link for blocked Copilot Chat users","category":"Stay Informed","severity":"medium","datePublished":"2026-07-20","actionRequiredBy":null,"status":"active","services":["Microsoft 365 Copilot Chat"],"summary":"Starting July 2026, Microsoft 365 Copilot will let admins add a custom policy link for users blocked from Copilot Chat, providing organization-specific guidance. This feature is optional, configurable via the admin center, and does not change existing access policies. No action is required.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","full","declarative","toolkit"]},
-          {"id":"MC1427972","title":"Microsoft SharePoint: Restricted content discovery enhancements for Copilot and Microsoft 365 search","category":"Plan for Change","severity":"medium","datePublished":"2026-07-14","actionRequiredBy":null,"status":"active","services":["SharePoint Online"],"summary":"Microsoft is enhancing SharePoint’s Restricted Content Discovery (RCD) to prevent content from RCD-enabled sites appearing in Copilot and Microsoft 365 search, improving data control and compliance. Changes roll out worldwide in late July 2026, requiring no immediate action but recommending policy reviews and user communication.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","sharepoint","declarative","toolkit"]},
-          {"id":"MC1423101","title":"M365 Copilot usage reports – updated reporting experience, faster refresh, and more Copilot usage metrics in Graph API","category":"Stay Informed","severity":"medium","datePublished":"2026-07-10","actionRequiredBy":null,"status":"active","services":["Microsoft 365 Copilot Chat"],"summary":"Microsoft 365 Copilot usage reports will refresh faster (48 hours), change the default reporting window to 28 days, and separate agent metrics into a dedicated report. Expanded metrics, including user-level data, will be available via Microsoft Graph API. Updates roll out worldwide by late July 2026 with no admin action needed.","tags":["feature-update","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","declarative"]},
-          {"id":"MC1422074","title":"OpenAI models will soon be available as a subprocessor in Microsoft 365 Copilot","category":"Plan for Change","severity":"medium","datePublished":"2026-07-09","actionRequiredBy":"2026-07-24","status":"active","services":["Microsoft 365 suite","Microsoft 365 Copilot Chat"],"summary":"OpenAI models, including GPT-5.6, will be available as a subprocessor in Microsoft 365 Copilot starting July 9, 2026, initially disabled by default and auto-enabled on July 24, 2026, unless admins opt out. This allows faster AI updates with enterprise-grade security and compliance.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","full","declarative","toolkit"]},
-          {"id":"MC1419800","title":"SharePoint button web part: Add custom Copilot in SharePoint prompts or start Power Automate flows","category":"Plan for Change","severity":"medium","datePublished":"2026-07-07","actionRequiredBy":null,"status":"active","services":["SharePoint Online"],"summary":"The SharePoint Button web part will support launching custom Copilot prompts or Power Automate flows, enhancing productivity and automation. Available from late July 2026, it affects SharePoint page owners, Copilot-licensed users, and flow-authorized users, with no admin action required. Existing buttons remain unchanged.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["lite","full","sharepoint","declarative"]},
-          {"id":"MC1419795","title":"PowerPoint for the web: One‑click “Review Presentation” and “Visualize Slide” Copilot skills in the ribbon","category":"Stay Informed","severity":"medium","datePublished":"2026-07-07","actionRequiredBy":null,"status":"active","services":["Microsoft 365 for the web","Microsoft 365 Copilot Chat"],"summary":"PowerPoint for the web introduces one-click Copilot buttons—“Review Presentation” and “Visualize Slide”—in the ribbon to enhance presentation quality and visual storytelling. Rolling out worldwide by early July 2026, these features require Copilot licensing and image generation enabled by admins, with no additional user setup needed.","tags":["updated-message","new-feature","user-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","full","declarative","toolkit"]},
-          {"id":"MC1418558","title":"Change to taskbar pinning behavior for M365 Copilot and companion apps","category":"Plan for Change","severity":"medium","datePublished":"2026-07-07","actionRequiredBy":null,"status":"active","services":["Microsoft 365 Copilot Chat"],"summary":"Starting mid-July 2026, Microsoft 365 admin center taskbar pinning will only manage the Microsoft 365 Copilot app, excluding companion apps (Files, Calendar, People). Existing companion app pins remain unchanged. Organizations needing companion app pinning should use Microsoft Intune policies instead. No action required if only Copilot is pinned.","tags":["feature-update","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","full","declarative","toolkit"]},
-          {"id":"MC1413308","title":"Microsoft Purview | Data Lifecycle Management: Insights for Copilot and AI app interactions","category":"Stay Informed","severity":"medium","datePublished":"2026-07-03","actionRequiredBy":null,"status":"active","services":["Microsoft Purview"],"summary":"Microsoft Purview Data Lifecycle Management will provide new AI-driven insights on Copilot and AI app usage, helping admins improve retention policies and data security. Public preview starts late August 2026, with general availability by mid-October. No immediate action is required, but admins can prepare by reviewing insights and updating governance.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","declarative","toolkit"]},
-          {"id":"MC1413298","title":"Roadmap information for Microsoft Copilot Studio and agents transitioning to the Microsoft 365 Roadmap","category":"Stay Informed","severity":"medium","datePublished":"2026-07-03","actionRequiredBy":null,"status":"active","services":["Microsoft 365 suite"],"summary":"Starting July 2, 2026, Microsoft Copilot Studio and agent roadmap updates will move from Release Planner to the Microsoft 365 Roadmap for unified tracking. Release Planner links will redirect automatically, but some custom planning features will be discontinued. No immediate action is required.","tags":["feature-update","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["lite","full"]},
-          {"id":"MC1411132","title":"Power Automate – UI automation repair agent","category":"Stay Informed","severity":"medium","datePublished":"2026-07-01","actionRequiredBy":null,"status":"active","services":["Microsoft Power Automate"],"summary":"We are announcing the UI automation repair agent in Power Automate. This feature will reach public preview on July 16, 2026.\nHow does this affect me?\nThis feature enables makers to utilize AI-powered capabilities when maintaining reliable desktop automations during debugging. The UI automation repai","tags":["new-feature"],"isHighImpact":false,"agentAudience":["lite","full"]},
-          {"id":"MC1404322","title":"Microsoft Teams: Recap app consolidates meeting recaps in one place","category":"Stay Informed","severity":"medium","datePublished":"2026-06-25","actionRequiredBy":null,"status":"completed","services":["Microsoft Teams"],"summary":"The Microsoft Teams Recap app centralizes meeting recaps with recordings, transcripts, and AI summaries, improving productivity. Available from early July 2026, it supports filtering, audio/video recaps, and 30-day browsing. AI features require a Microsoft 365 Copilot license; the app is pre-installed but not pinned by default.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","declarative","toolkit"]},
-          {"id":"MC1401299","title":"Automatic recording and transcription for Teams Call Queues","category":"Stay Informed","severity":"medium","datePublished":"2026-06-22","actionRequiredBy":null,"status":"completed","services":["Microsoft Teams"],"summary":"Microsoft Teams will introduce automatic recording and transcription for Call Queues starting August 2026. Admins can enable this per queue, with recordings stored in SharePoint and configurable agent access. Organizations should review policies, communicate changes, and ensure Teams Premium licensing for access. Compliance and data handling considerations apply.","tags":["updated-message","new-feature","admin-impact"],"isHighImpact":false,"agentAudience":["full","sharepoint","declarative","toolkit"]},
-          {"id":"MC1396361","title":"Microsoft 365 Copilot: Publish organization prompts to Copilot Chat","category":"Stay Informed","severity":"medium","datePublished":"2026-06-18","actionRequiredBy":null,"status":"completed","services":["Microsoft 365 Copilot Chat"],"summary":"Microsoft 365 Copilot now lets admins create and publish organization-specific prompts in Copilot Chat, guiding users with curated, relevant starting points. This feature, rolling out July 2026, enhances productivity, reflects organizational priorities, includes usage analytics, requires no license changes, and is enabled by default.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","full","declarative","toolkit"]},
-          {"id":"MC1387573","title":"Microsoft Teams: Governance for built-in agents in the Teams admin center","category":"Stay Informed","severity":"medium","datePublished":"2026-06-11","actionRequiredBy":null,"status":"completed","services":["Microsoft Teams"],"summary":"Microsoft Teams now offers a dedicated governance experience in the Teams admin center to manage built-in agents like Channel Agent, Facilitator, and Copilot Agent separately from traditional apps. This improves admin control, policy precision, and AI governance, with rollout completed by mid-July 2026.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","declarative","toolkit"]},
-          {"id":"MC1381120","title":"Microsoft Teams: Improved app and agent access request flows for admin‑blocked apps","category":"Stay Informed","severity":"medium","datePublished":"2026-06-05","actionRequiredBy":null,"status":"completed","services":["Microsoft Teams"],"summary":"Microsoft Teams will introduce a clearer, guided request flow for access to admin-blocked apps and agents, improving user notifications and admin review in Teams Admin Center. Rollout begins mid-June 2026, enhancing transparency and simplifying approval processes without changing existing policies. No action required.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["lite","full","declarative","toolkit"]},
-          {"id":"MC1358831","title":"Copilot settings in classic Outlook for Windows","category":"Stay Informed","severity":"medium","datePublished":"2026-06-04","actionRequiredBy":null,"status":"completed","services":["Microsoft 365 apps","Microsoft 365 Copilot Chat"],"summary":"Copilot settings are being added to classic Outlook for Windows under the File menu, allowing users to manage and toggle Copilot on or off. This rollout starts June 2026 with no changes to licensing, eligibility, or admin controls. No action is required, but support teams should be informed.","tags":["new-feature","user-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","full","declarative","toolkit"]},
-          {"id":"MC1326260","title":"Microsoft Purview Data Security Triage Agent will include sensitive data remediation through Microsoft Teams","category":"Stay Informed","severity":"medium","datePublished":"2026-05-29","actionRequiredBy":null,"status":"completed","services":["Microsoft Teams","Microsoft Purview"],"summary":"Microsoft Purview Data Security Triage Agent will add sensitive data remediation via Microsoft Teams for SharePoint and OneDrive files, automating user notifications and tracking remediation progress. This opt-in feature, launching in public preview late June 2026, aims to reduce compliance risk and improve remediation visibility.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","sharepoint","declarative","toolkit"]},
-          {"id":"MC1326254","title":"Microsoft 365 Archive: file-level archiving public preview","category":"Stay Informed","severity":"medium","datePublished":"2026-05-29","actionRequiredBy":null,"status":"completed","services":["SharePoint Online"],"summary":"Microsoft 365 Archive now supports file-level archiving in public preview, allowing SharePoint files or folders to be moved to low-cost storage while remaining visible with metadata and compliance intact. Admins enable the feature; archived files are excluded from search and Copilot, with reactivation timing varying by duration.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","sharepoint","declarative","toolkit"]},
-          {"id":"MC1325441","title":"Microsoft Purview | Data Lifecycle Management - Archive OneDrive and SharePoint files under retention","category":"Stay Informed","severity":"medium","datePublished":"2026-05-28","actionRequiredBy":null,"status":"completed","services":["Microsoft Purview"],"summary":"Microsoft Purview Data Lifecycle Management will add an Archive option to retention policies, allowing admins to move inactive OneDrive and SharePoint files to Microsoft 365 Archive. Archived content remains compliant and discoverable but is excluded from Copilot indexing. Rollout begins mid-August 2026, requiring admin configuration.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","sharepoint","declarative","toolkit"]},
-          {"id":"MC1325422","title":"Microsoft 365 Copilot app: Simplified, chat-centered experience","category":"Plan for Change","severity":"medium","datePublished":"2026-05-28","actionRequiredBy":null,"status":"completed","services":["Microsoft 365 Copilot Chat"],"summary":"Microsoft 365 Copilot app is updated with a simplified, chat-centered experience featuring streamlined navigation, a new Tasks tab, and a consolidated Work IQ toggle. The update rolls out worldwide starting June 22, 2026, with an opt-out toggle until July 15, after which the new experience becomes default.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["researcherAnalyst","declarative"]},
+          {"id":"MC1461160","title":"Microsoft Teams: Copilot in call recap in the Queues app","category":"Stay Informed","severity":"medium","datePublished":"2026-08-24","actionRequiredBy":null,"status":"active","services":["Microsoft Teams"],"summary":"Microsoft Teams is adding Copilot in call recap within the Queues app for recorded call queue calls, enabling users with Microsoft 365 Copilot and Teams Premium licenses to get summaries and ask questions about calls. Rollout starts early September 2026 with no admin action required.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["declarative","toolkit"]},
+          {"id":"MC1459141","title":"Microsoft Teams: Admin policy to automatically block identified external meeting bots from joining meetings","category":"Stay Informed","severity":"medium","datePublished":"2026-08-21","actionRequiredBy":null,"status":"active","services":["Microsoft Teams"],"summary":"Microsoft Teams will introduce a policy allowing admins to automatically block identified external meeting bots from joining meetings, enhancing security. This feature, off by default, will roll out from August to September 2026. Admins can assign the policy to users or groups and should review bot usage before enabling it.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["declarative","toolkit"]},
+          {"id":"MC1458477","title":"AI overview for SharePoint News posts in the SharePoint app for Teams","category":"Stay Informed","severity":"medium","datePublished":"2026-08-21","actionRequiredBy":null,"status":"active","services":["SharePoint Online"],"summary":"Users with eligible Microsoft 365 Copilot licenses can access AI-generated audio summaries of SharePoint News posts in the SharePoint app for Teams starting mid-August 2026. No action is needed, and administrators can manage access via licensing controls. The feature complies with data residency and processing commitments.","tags":["new-feature","user-impact"],"isHighImpact":false,"agentAudience":["full","sharepoint","declarative","toolkit"]},
+          {"id":"MC1454108","title":"Microsoft 365 Copilot app update: Simpler Copilot access","category":"Plan for Change","severity":"medium","datePublished":"2026-08-13","actionRequiredBy":null,"status":"active","services":["Microsoft 365 Copilot Chat"],"summary":"Microsoft 365 Copilot app is updating to a unified app for personal and work accounts with clearer visual cues, a simpler name and icon, and a new web URL (copilot.cloud.microsoft). Rollout begins mid-August 2026, with no changes to security, compliance, or enterprise controls.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["firstParty","full","declarative","toolkit"]},
+          {"id":"MC1446807","title":"Microsoft Teams: Interpreter agent support in Teams Rooms on Android","category":"Stay Informed","severity":"medium","datePublished":"2026-08-03","actionRequiredBy":null,"status":"active","services":["Microsoft Teams"],"summary":"Microsoft Teams Rooms on Android will support real-time Interpreter agent for up to nine languages, enabling multilingual meetings with voice simulation. Available late August 2026, it requires a Teams Rooms Pro license, includes 20 hours of interpretation monthly, and offers admin controls via Teams meeting policies. No action required.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","declarative","toolkit"]},
+          {"id":"MC1441773","title":"Microsoft Purview | Data Loss Prevention: Unified data access messages in Microsoft 365 Copilot","category":"Plan for Change","severity":"medium","datePublished":"2026-07-28","actionRequiredBy":null,"status":"active","services":["Microsoft Purview"],"summary":"Microsoft 365 Copilot now shows a consistent message when Microsoft Purview DLP policies restrict content access or processing. This update improves transparency by standardizing notifications across Copilot experiences, requiring no user action, and rolling out worldwide by July 2026. Administrators should update guidance accordingly.","tags":["user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","declarative","toolkit"]},
+          {"id":"MC1434583","title":"Microsoft 365 Copilot: Configure organization policy link for blocked Copilot Chat users","category":"Stay Informed","severity":"medium","datePublished":"2026-07-20","actionRequiredBy":null,"status":"completed","services":["Microsoft 365 Copilot Chat"],"summary":"Starting July 2026, Microsoft 365 Copilot will let admins add a custom policy link for users blocked from Copilot Chat, providing organization-specific guidance. This feature is optional, configurable via the admin center, and does not change existing access policies. No action is required.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["firstParty","full","declarative","toolkit"]},
+          {"id":"MC1427972","title":"Microsoft SharePoint: Restricted content discovery enhancements for Copilot and Microsoft 365 search","category":"Plan for Change","severity":"medium","datePublished":"2026-07-14","actionRequiredBy":null,"status":"completed","services":["SharePoint Online"],"summary":"Microsoft is enhancing SharePoint’s Restricted Content Discovery (RCD) to limit content visibility in Copilot and Microsoft 365 search, starting late July 2026. Files on RCD-enabled sites won’t appear in AI-powered search or Copilot, and AI entry points will be removed, ensuring better compliance and content control.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","sharepoint","declarative","toolkit"]},
+          {"id":"MC1423101","title":"M365 Copilot usage reports – updated reporting experience, faster refresh, and more Copilot usage metrics in Graph API","category":"Stay Informed","severity":"medium","datePublished":"2026-07-10","actionRequiredBy":null,"status":"completed","services":["Microsoft 365 Copilot Chat"],"summary":"Microsoft 365 Copilot usage reports will refresh faster (48 hours), change the default reporting window to 28 days, and separate agent metrics into a dedicated report. Expanded metrics, including user-level data, will be available via Microsoft Graph API. Updates roll out worldwide by late July 2026 with no admin action needed.","tags":["feature-update","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["firstParty","declarative"]},
+          {"id":"MC1422074","title":"OpenAI models will soon be available as a subprocessor in Microsoft 365 Copilot","category":"Plan for Change","severity":"medium","datePublished":"2026-07-09","actionRequiredBy":"2026-07-24","status":"completed","services":["Microsoft 365 suite","Microsoft 365 Copilot Chat"],"summary":"OpenAI models, including GPT-5.6, will be available as a subprocessor in Microsoft 365 Copilot starting July 9, 2026, initially disabled by default and auto-enabled on July 24, 2026, unless admins opt out. This allows faster AI updates with enterprise-grade security and compliance.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["firstParty","full","declarative","toolkit"]},
+          {"id":"MC1419800","title":"SharePoint button web part: Add custom Copilot in SharePoint prompts or start Power Automate flows","category":"Plan for Change","severity":"medium","datePublished":"2026-07-07","actionRequiredBy":null,"status":"completed","services":["SharePoint Online"],"summary":"The SharePoint Button web part will support launching custom Copilot prompts or Power Automate flows, enhancing productivity and automation. Available from late July 2026, it affects SharePoint page owners, Copilot-licensed users, and flow-authorized users, with no admin action required. Existing buttons remain unchanged.","tags":["new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["lite","full","sharepoint","declarative"]},
+          {"id":"MC1418558","title":"Change to taskbar pinning behavior for M365 Copilot and companion apps","category":"Plan for Change","severity":"medium","datePublished":"2026-07-07","actionRequiredBy":null,"status":"completed","services":["Microsoft 365 Copilot Chat"],"summary":"Starting mid-July 2026, Microsoft 365 admin center taskbar pinning will only manage the Microsoft 365 Copilot app, excluding companion apps (Files, Calendar, People). Existing companion app pins remain unchanged. Organizations needing companion app pinning should use Microsoft Intune policies instead. No action required if only Copilot is pinned.","tags":["feature-update","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["firstParty","full","declarative","toolkit"]},
+          {"id":"MC1413308","title":"Microsoft Purview | Data Lifecycle Management: Insights for Copilot and AI app interactions","category":"Stay Informed","severity":"medium","datePublished":"2026-07-03","actionRequiredBy":null,"status":"completed","services":["Microsoft Purview"],"summary":"Microsoft Purview Data Lifecycle Management will provide new AI-driven insights on Copilot and AI app usage, helping admins improve retention policies and data security. Public preview starts late August 2026, with general availability by mid-October. No immediate action is required, but admins can prepare by reviewing insights and updating governance.","tags":["updated-message","new-feature","user-impact","admin-impact"],"isHighImpact":false,"agentAudience":["full","declarative","toolkit"]},
         ];
 
 
@@ -239,16 +232,18 @@
 
           const agentTypes = useMemo(() => ({
             firstParty: {
-              name: 'First-Party Agents',
-              subtitle: 'Built-in Microsoft 365 Copilot agents — no code, immediate value',
+              name: 'Microsoft-built agents and experiences',
+              subtitle: 'Selected ready-to-use experiences in Microsoft Copilot',
               icon: FileSearch,
               color: 'bg-indigo-500',
               gradient: 'from-indigo-400 to-indigo-600',
-              timeToMarket: 'Immediate',
+              timeToMarket: 'Immediate to preview-gated',
               technicalLevel: 'Beginner',
-              shortName: 'First-Party Agents',
+              shortName: 'Microsoft-built',
               fastTrackSupported: true,
-              description: 'Ready-to-use agents built into Microsoft 365 Copilot that deliver immediate value without custom development. Powered by multi-model intelligence from OpenAI and Anthropic, with Researcher Critique and Model Council available to Frontier program participants. From deep research and data analysis to community knowledge sharing and workflow automation, these agents cover the most common productivity scenarios out of the box.',
+              fastTrackNote: 'FastTrack covers agent fundamentals and guidance for Microsoft prebuilt agents, plus Cowork configuration and consumption controls.',
+              sourceUrl: 'https://learn.microsoft.com/microsoft-365/copilot/agent-essentials/m365-agents-admin-guide',
+              description: 'Microsoft provides ready-to-use agents and agentic experiences for research, analysis, content creation, automation, and delegated work. This guide highlights representative options rather than an exhaustive catalog. Availability, licensing, language support, and preview terms vary by experience.',
               subAgents: [
                 {
                   id: 'researcher',
@@ -259,16 +254,14 @@
                   borderColor: 'border-indigo-200 dark:border-indigo-800/30',
                   status: 'GA',
                   statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-                  description: 'Complex multi-step research powered by multi-model intelligence, with a model picker for GPT and Claude. Critique and Model Council are additional research modes that require the Frontier program.',
+                  description: 'Deep, multi-step research across work data, Microsoft Graph connectors, and the web, with citations and optional multi-model research modes.',
                   capabilities: [
-                    'Critique (Frontier): a report is generated by GPT, then given a second reasoning pass by Claude',
-                    'Model Council (Frontier): runs GPT and Claude in parallel and highlights where they agree and diverge',
-                    'Multi-source research synthesis across work files, emails, meetings, and web',
-                    'Microsoft Graph connector support',
-                    'Structured reports with source citations and rubric-based evaluation',
-                    'Over 30 languages supported'
+                    'Critique uses one model to draft and another to review',
+                    'Council compares model results and highlights agreement and differences',
+                    'Supports more than 30 languages and Microsoft Graph connectors'
                   ],
-                  whenToUse: 'Complex research projects, go-to-market strategies, competitive analysis, policy synthesis, cross-model validation'
+                  whenToUse: 'Deep research, competitive analysis, policy synthesis, and source-backed reports',
+                  sourceUrl: 'https://learn.microsoft.com/microsoft-365/copilot/faq-researcher'
                 },
                 {
                   id: 'analyst',
@@ -279,437 +272,548 @@
                   borderColor: 'border-blue-200 dark:border-blue-800/30',
                   status: 'GA',
                   statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-                  description: 'Advanced data analysis with Python execution and chain-of-thought reasoning.',
+                  description: 'Data analysis agent for exploring files and datasets with Python-backed analysis and visualizations.',
                   capabilities: [
-                    'Advanced data analysis with Python execution',
-                    'Chain-of-thought reasoning for insights',
-                    'Visualizations and trend identification',
-                    'Works across messy or multiple datasets'
+                    'Analyzes spreadsheets, CSV files, and mixed datasets',
+                    'Uses Python for calculations and data exploration',
+                    'Creates visualizations and explains patterns'
                   ],
-                  whenToUse: 'Data analysis, trend identification, customer behavior insights, dataset exploration'
+                  whenToUse: 'Data exploration, trends, anomalies, forecasts, and repeatable analysis',
+                  sourceUrl: 'https://go.microsoft.com/fwlink/?linkid=2329729'
                 },
                 {
-                  id: 'vivaEngage',
-                  name: 'Viva Engage Community Agent',
-                  icon: 'MessageCircle',
-                  color: 'text-rose-500',
-                  bgColor: 'bg-rose-50 dark:bg-rose-950/20',
-                  borderColor: 'border-rose-200 dark:border-rose-800/30',
-                  status: 'Preview',
-                  statusColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
-                  description: 'Proactive AI agent inside Viva Engage communities that identifies unanswered questions and drafts expert-verified responses grounded in community conversations and SharePoint.',
+                  id: 'cowork',
+                  name: 'Copilot Cowork',
+                  icon: 'Layers',
+                  color: 'text-purple-500',
+                  bgColor: 'bg-purple-50 dark:bg-purple-950/20',
+                  borderColor: 'border-purple-200 dark:border-purple-800/30',
+                  status: 'GA (work/school)',
+                  statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                  description: 'Carries out multi-step work across Microsoft 365, pauses for approval before sensitive actions, and supports scheduled and event-driven tasks.',
                   capabilities: [
-                    'Proactive identification of unanswered questions',
-                    'Responses grounded in community threads and SharePoint',
-                    'Expert verification workflow with "Verified" marking',
-                    '@mentions coming soon for on-demand Q&A by Copilot-licensed members',
-                    'Admin controls: auto-post vs. review mode'
+                    'Creates documents and manages files, email, calendar, and Teams',
+                    'Supports built-in and custom skills plus marketplace plugins',
+                    'Runs scheduled prompts and event-driven automations'
                   ],
-                  whenToUse: 'Community knowledge sharing, recurring Q&A deflection, expert-verified organizational knowledge'
+                  whenToUse: 'Open-ended delegated work that spans several Microsoft 365 apps and tools',
+                  sourceUrl: 'https://learn.microsoft.com/microsoft-365/copilot/cowork/'
                 },
                 {
                   id: 'workflows',
-                  name: 'Workflows Agent',
+                  name: 'Workflows agent',
                   icon: 'Zap',
                   color: 'text-amber-500',
                   bgColor: 'bg-amber-50 dark:bg-amber-950/20',
                   borderColor: 'border-amber-200 dark:border-amber-800/30',
-                  status: 'Available',
-                  statusColor: 'bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-300',
-                  description: 'Automate routine tasks directly from Microsoft 365 Copilot — create flows, set reminders, send notifications, and manage approvals using natural language. Available within Microsoft 365 Copilot and controlled by admins from the Microsoft 365 admin center; English only.',
+                  status: 'Frontier preview',
+                  statusColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+                  description: 'Creates, edits, and explains Microsoft 365 automation flows from natural-language requests.',
                   capabilities: [
-                    'Natural language workflow creation',
-                    'Pre-built templates for common automations',
-                    'Integration with Power Automate',
-                    'Approvals, reminders, and notifications',
-                    'No-code task automation from Copilot Chat'
+                    'Creates and edits flows from natural language',
+                    'Works with a limited set of Microsoft 365 connectors',
+                    'Provides a visual designer for review and testing'
                   ],
-                  whenToUse: 'Routine task automation, approval workflows, notifications, simple business process automation'
+                  whenToUse: 'Routine Outlook, Teams, SharePoint, and Planner automation',
+                  sourceUrl: 'https://support.microsoft.com/microsoft-365-copilot/get-started-with-workflows-in-microsoft-365-copilot'
+                },
+                {
+                  id: 'vivaEngage',
+                  name: 'Agents in Viva Engage communities',
+                  icon: 'MessageCircle',
+                  color: 'text-rose-500',
+                  bgColor: 'bg-rose-50 dark:bg-rose-950/20',
+                  borderColor: 'border-rose-200 dark:border-rose-800/30',
+                  status: 'Public preview',
+                  statusColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+                  description: 'Drafts grounded answers to unanswered community questions using past conversations and approved SharePoint sources.',
+                  capabilities: [
+                    'Can post automatically or require expert review',
+                    'Uses community conversations and SharePoint for grounding',
+                    'Marks approved responses as verified answers'
+                  ],
+                  whenToUse: 'Active communities with repeated questions and designated experts',
+                  sourceUrl: 'https://learn.microsoft.com/viva/engage/ai-technology-with-viva-engage/agents-community-network-deployment-config'
+                },
+                {
+                  id: 'officeAgents',
+                  name: 'Word, Excel, and PowerPoint Agents',
+                  icon: 'FileSearch',
+                  color: 'text-cyan-600',
+                  bgColor: 'bg-cyan-50 dark:bg-cyan-950/20',
+                  borderColor: 'border-cyan-200 dark:border-cyan-800/30',
+                  status: 'Available',
+                  statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                  description: 'Microsoft-built creation agents that generate Word, Excel, and PowerPoint files from Microsoft Copilot.',
+                  capabilities: [
+                    'Creates Office files and saves them in OneDrive',
+                    'Uses Work IQ for organizational data when the user has a Copilot license',
+                    'Available to eligible users with or without a Copilot license',
+                    'Requires an admin to enable Anthropic models for the tenant'
+                  ],
+                  whenToUse: 'Creating a first draft of a document, workbook, or presentation',
+                  sourceUrl: 'https://learn.microsoft.com/microsoft-365/copilot/wordexcelppt-agents'
+                },
+                {
+                  id: 'scout',
+                  name: 'Microsoft Scout',
+                  icon: 'Target',
+                  color: 'text-teal-600',
+                  bgColor: 'bg-teal-50 dark:bg-teal-950/20',
+                  borderColor: 'border-teal-200 dark:border-teal-800/30',
+                  status: 'Frontier preview',
+                  statusColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+                  description: 'Desktop agent for local files, commands, browser automation, Microsoft 365 data, and background work with approval gates.',
+                  capabilities: [
+                    'Works across local files, shell, browser, and Microsoft 365',
+                    'Supports automations, memory, skills, and delegated sub-agents',
+                    'Available on Windows and macOS'
+                  ],
+                  whenToUse: 'Desktop work that must combine local and cloud tools under user control',
+                  sourceUrl: 'https://learn.microsoft.com/microsoft-scout/overview'
                 }
               ],
               capabilities: [
-                'Researcher: Multi-source synthesis with Microsoft Graph connector support',
-                'Analyst: Advanced data analysis with Python and chain-of-thought reasoning',
-                'Viva Engage: Proactive community Q&A with expert verification (preview)',
-                'Workflows: Natural language task automation and approvals (English only)',
-                'All: Pre-built into Microsoft 365 Copilot — no custom development',
-                'All: Immediate or same-day deployment',
-                'Researcher: Critique and Model Council research modes (Frontier program)',
-                'Researcher: Over 30 languages supported',
-                'Viva Engage: Grounded in community conversations and SharePoint',
-                'Workflows: Integration with Power Automate templates'
+                'Ready-to-use Microsoft experiences with no custom agent build',
+                'Researcher provides cited, multi-source research with a 25-query monthly limit',
+                'Analyst provides Python-backed data analysis and visualizations',
+                'Cowork is generally available for work and school accounts',
+                'Workflows, Engage community agents, and Scout remain preview experiences',
+                'Word, Excel, and PowerPoint Agents create files directly from Microsoft Copilot'
               ],
               limitations: [
-                'Requires Microsoft 365 Copilot license',
-                'Researcher: 25 queries per user per month',
-                'Researcher: Critique and Model Council require the Frontier program',
-                'Workflows: English only',
-                'No support for external deployment channels',
-                'Viva Engage: Requires active communities with conversation history for best results',
-                'Limited customization — designed for specific built-in scenarios'
+                'Licensing and availability differ by experience and cloud',
+                'Researcher is limited to 25 queries per user per month',
+                'Cowork requires a Microsoft 365 Copilot license and usage-based billing with Copilot Credits',
+                'Workflows is English-only and supports a limited set of Microsoft 365 connectors',
+                'Preview experiences can change and might require Frontier or tenant opt-in',
+                'Word, Excel, and PowerPoint Agents require Anthropic models to be enabled by an admin'
               ],
               whenToUse: [
-                'Complex research projects requiring multiple sources',
-                'Data analysis across messy or multiple datasets',
-                'Community knowledge sharing and recurring Q&A',
-                'Routine task automation and approval workflows',
-                'Proving AI value quickly before investing in custom builds',
-                'Organizations new to Copilot agents — fastest path to adoption'
+                'Research or analysis without building a custom agent',
+                'Multi-step personal work across Microsoft 365',
+                'Document, workbook, or presentation creation',
+                'Microsoft 365 workflow automation',
+                'Community question answering with expert review',
+                'Evaluating preview agent experiences before broader deployment'
               ],
               metrics: {
-                setupTime: 'Immediate',
-                maintenanceEffort: 'None',
-                scalability: 'High',
-                customization: 'None'
+                setupTime: 'Immediate to gated',
+                maintenanceEffort: 'Low',
+                scalability: 'Varies',
+                customization: 'Low'
+              },
+              comparison: {
+                externalApis: 'Managed plugins only',
+                deploymentSurfaces: 'Microsoft apps and desktop',
+                codeRequired: 'No'
               },
               guidance: {
                 gettingStarted: [
-                  { step: 1, title: 'Verify M365 Copilot license', description: 'Ensure users have active Microsoft 365 Copilot licenses assigned.' },
-                  { step: 2, title: 'Open M365 Copilot', description: 'Navigate to the Microsoft 365 Copilot app — Researcher and Analyst are pre-pinned and ready to use.' },
-                  { step: 3, title: 'Try Researcher', description: 'Start with a research question like "Analyze competitive landscape for [topic]" to see multi-source synthesis in action.' },
-                  { step: 4, title: 'Try Analyst', description: 'Upload a spreadsheet and ask Analyst to find trends, anomalies, or create visualizations.' },
-                  { step: 5, title: 'Enable Viva Engage Community Agent', description: 'Community admins can enable the agent in Viva Engage community settings, configure SharePoint knowledge sources, and choose auto-post or review mode.' },
-                  { step: 6, title: 'Explore Workflows Agent', description: 'Ask Copilot to automate a routine task — try "Create an approval flow for expense reports" to see natural language automation.' }
+                  { step: 1, title: 'Match the experience to the work', description: 'Choose a Microsoft-built experience based on whether the user needs research, analysis, document creation, automation, or delegated work.' },
+                  { step: 2, title: 'Verify availability and licensing', description: 'Confirm the current license, cloud, language, Frontier, AI model, and usage-billing requirements in the linked product documentation.' },
+                  { step: 3, title: 'Review admin controls', description: 'Use Microsoft 365 admin center controls to manage access, preview enrollment, models, plugins, and usage limits.' },
+                  { step: 4, title: 'Pilot with real work', description: 'Test with representative tasks, review outputs and actions, and expand only after the experience meets your quality and governance needs.' }
                 ],
                 bestPractices: [
-                  'Use Researcher for multi-source synthesis — if your tenant is in the Frontier program, Critique adds a second reasoning pass and Model Council compares GPT and Claude side by side',
-                  'Use Analyst for structured data — spreadsheets, CSVs, and datasets with Python execution',
-                  'Enable Viva Engage Community Agent in communities with active discussions and identified subject-matter experts',
-                  'Designate community experts to verify and mark AI-drafted answers as "Trusted" for knowledge curation',
-                  'Use Workflows Agent for repetitive tasks first — approvals, notifications, and reminders are quick wins',
-                  'Monitor the 25 queries/month limit for Researcher and plan usage accordingly'
+                  'Use Researcher for cited synthesis and Analyst for data-heavy questions',
+                  'Keep approval prompts enabled for Cowork actions that send, post, delete, or schedule',
+                  'Review and test every flow created by Workflows before enabling it',
+                  'Use active communities and designated experts for Engage community agents',
+                  'Track Copilot Credit usage for Cowork and other metered experiences',
+                  'Treat preview status as a deployment constraint, not a production commitment'
                 ],
                 deploymentChecklist: [
-                  { item: 'M365 Copilot licenses assigned', critical: true },
-                  { item: 'Users trained on which first-party agent fits their scenario', critical: false },
-                  { item: 'Viva Engage communities identified for agent enablement', critical: false },
-                  { item: 'Community experts designated for answer verification', critical: false },
-                  { item: 'Sample prompts shared with team for each agent', critical: false },
-                  { item: "Researcher's 25-query-per-user monthly limit communicated to users", critical: false }
+                  { item: 'License and usage-billing requirements confirmed', critical: true },
+                  { item: 'Preview or Frontier access approved where required', critical: true },
+                  { item: 'Admin access and model controls reviewed', critical: true },
+                  { item: 'Pilot users and representative scenarios selected', critical: false },
+                  { item: 'Usage and quality review process defined', critical: false }
                 ]
               }
             },
             sharepoint: {
-              name: 'SharePoint Agents',
-              subtitle: 'Site-specific intelligent assistants',
+              name: 'Agents in SharePoint',
+              subtitle: 'Permission-aware assistants grounded in SharePoint content',
               icon: Building,
               color: 'bg-orange-500',
               gradient: 'from-orange-400 to-orange-600',
-              timeToMarket: '1 day',
+              timeToMarket: 'Hours',
               technicalLevel: 'Beginner',
               shortName: 'SharePoint',
               fastTrackSupported: true,
-              description: 'AI agents that live within SharePoint, now supporting cross-site querying through Copilot and sharing into Microsoft Teams conversations.',
+              fastTrackNote: 'FastTrack provides remote guidance for deploying agents in SharePoint.',
+              sourceUrl: 'https://learn.microsoft.com/sharepoint/get-started-sharepoint-agents',
+              description: 'Agents in SharePoint help users find information and insights from sites, pages, folders, and document libraries. Responses follow each user\'s existing permissions, and agents can be used from SharePoint and Teams chat.',
               capabilities: [
-                'Site-specific knowledge grounding',
-                'Automatic content indexing',
-                'SharePoint permissions respect',
-                'Document summarization',
-                'Cross-site querying via Copilot integration',
-                'Shareable into Teams group chats, meeting chats, and channels via @mention'
+                'Grounding in selected SharePoint sites, pages, folders, and files',
+                'Responses based on each user\'s existing SharePoint permissions',
+                'Creation from eligible SharePoint locations',
+                'Use in SharePoint and Teams chat',
+                'Sharing governed by existing permissions and security settings',
+                'Usage monitoring through SharePoint, Purview, and Microsoft Cost Management'
               ],
               limitations: [
-                'Basic conversation capabilities only',
-                'No external integrations',
-                'Up to 20 source items per agent — sites, document libraries, folders, and files combined',
-                'Teams 1:1 chat with SharePoint-created agents is not supported yet',
-                'Cross-site requires M365 Copilot license'
+                'Creators need a Microsoft Copilot license and permission to add files to the site',
+                'Users need a Copilot license or tenant pay-as-you-go access',
+                'Designed for SharePoint-grounded knowledge, not external APIs or business actions',
+                'Response quality depends on content quality, permissions, and information architecture'
               ],
               whenToUse: [
-                'Site-specific knowledge bases',
-                'Department portals',
-                'Project sites',
-                'Team collaboration spaces',
-                'Cross-site knowledge discovery and search',
-                'Teams-based document Q&A'
+                'Department or project knowledge bases',
+                'Site, library, folder, or file-specific questions',
+                'Permission-aware document discovery',
+                'Quick knowledge assistants inside SharePoint',
+                'Teams chat access to approved SharePoint content'
               ],
               metrics: {
-                setupTime: '1-2 hours',
-                maintenanceEffort: 'Very Low',
-                scalability: 'Medium',
-                customization: 'Low'
-              },
-              guidance: {
-                gettingStarted: [
-                  { step: 1, title: 'Choose your SharePoint site', description: 'Identify the site with the content you want your agent to access.' },
-                  { step: 2, title: 'Create the agent', description: 'From the site home, a library, or a list: choose New > Agent (or use the AI actions > Create an agent option) to build your SharePoint agent.' },
-                  { step: 3, title: 'Configure knowledge sources', description: 'Select the sites, document libraries, folders, and files the agent should reference — up to 20 source items in total.' },
-                  { step: 4, title: 'Test and share', description: 'Test the agent with sample questions, then share with your team via the site.' }
-                ],
-                bestPractices: [
-                  'Keep documents well-organized with clear naming conventions for better agent responses',
-                  'Use metadata and content types to improve content discoverability',
-                  'Start with a single focused site before expanding to cross-site scenarios',
-                  'Test with real user questions to validate response quality before broad rollout'
-                ],
-                deploymentChecklist: [
-                  { item: 'SharePoint site with organized content identified', critical: true },
-                  { item: 'Site permissions reviewed and appropriate', critical: true },
-                  { item: 'Document libraries indexed and up to date', critical: false },
-                  { item: 'Test questions prepared for validation', critical: false }
-                ]
-              }
-            },
-            lite: {
-              name: 'Agent Builder',
-              subtitle: 'Build agents within Microsoft 365 Copilot',
-              icon: MessageSquare,
-              color: 'bg-blue-500',
-              gradient: 'from-blue-400 to-blue-600',
-              timeToMarket: '1-2 days',
-              technicalLevel: 'Beginner',
-              shortName: 'Agent Builder',
-              fastTrackSupported: true,
-              description: 'Create AI agents using natural language directly within Microsoft 365 Copilot. Perfect for quick prototyping and personal productivity enhancements.',
-              capabilities: [
-                'Natural language agent creation',
-                'Web search knowledge grounding',
-                'SharePoint content integration',
-                'Microsoft 365 Copilot connectors',
-                'Basic conversation starters',
-                'Real-time test pane'
-              ],
-              limitations: [
-                'Cannot publish to external channels beyond M365',
-                'No custom code or complex business logic',
-                'Limited to declarative agent functionality only',
-                'Cannot integrate with external APIs directly'
-              ],
-              whenToUse: [
-                'Quick prototyping and proof of concepts',
-                'Personal productivity and knowledge management',
-                'Simple Q&A bots for small teams',
-                'Knowledge retrieval from existing documents'
-              ],
-              metrics: {
-                setupTime: '2-4 hours',
+                setupTime: 'Hours',
                 maintenanceEffort: 'Low',
                 scalability: 'Medium',
                 customization: 'Low'
               },
+              comparison: {
+                externalApis: 'No',
+                deploymentSurfaces: 'SharePoint and Teams chat',
+                codeRequired: 'No'
+              },
               guidance: {
                 gettingStarted: [
-                  { step: 1, title: 'Open M365 Copilot', description: 'Access the Microsoft 365 Copilot app where Lite agent creation is built in.' },
-                  { step: 2, title: 'Create with natural language', description: 'Describe your agent in plain English — what it should do and know about.' },
-                  { step: 3, title: 'Add knowledge sources', description: 'Connect SharePoint sites or web sources to ground your agent\'s responses.' },
-                  { step: 4, title: 'Test in the preview pane', description: 'Use the real-time test pane to refine your agent\'s behavior before sharing.' }
+                  { step: 1, title: 'Choose focused content', description: 'Select the site, page, folder, library, or files that contain the knowledge the agent should use.' },
+                  { step: 2, title: 'Confirm creator permissions', description: 'The creator needs a Microsoft Copilot license and permission to add files to the SharePoint site.' },
+                  { step: 3, title: 'Create and configure the agent', description: 'Create the agent from an eligible SharePoint location and define the knowledge it should reference.' },
+                  { step: 4, title: 'Test permissions and answers', description: 'Test with users who have different access levels, then share the agent using existing SharePoint controls.' }
                 ],
                 bestPractices: [
-                  'Start with a clear, focused purpose — one job done well beats many done poorly',
-                  'Write conversation starters to guide users on what to ask',
-                  'Ground in specific SharePoint content rather than broad web searches for accurate answers',
-                  'Iterate quickly — Lite agents are designed for rapid prototyping'
+                  'Start with a focused content set and clear business purpose',
+                  'Review permissions before testing response quality',
+                  'Improve naming, metadata, and content freshness before expanding access',
+                  'Test with questions from real users and verify citations'
                 ],
                 deploymentChecklist: [
-                  { item: 'M365 Copilot license for creator', critical: true },
-                  { item: 'Knowledge sources identified (SharePoint/web)', critical: true },
-                  { item: 'Agent purpose clearly defined', critical: false },
-                  { item: 'Conversation starters written', critical: false }
+                  { item: 'Copilot license assigned to each creator', critical: true },
+                  { item: 'Copilot licenses or pay-as-you-go access configured for users', critical: true },
+                  { item: 'SharePoint permissions and content scope reviewed', critical: true },
+                  { item: 'Representative test questions prepared', critical: false },
+                  { item: 'Usage and cost monitoring planned', critical: false }
+                ]
+              }
+            },
+            lite: {
+              name: 'Agent Builder in Microsoft 365 Copilot',
+              subtitle: 'Fast, natural-language authoring for declarative agents',
+              icon: MessageSquare,
+              color: 'bg-blue-500',
+              gradient: 'from-blue-400 to-blue-600',
+              timeToMarket: 'Hours to days',
+              technicalLevel: 'Beginner',
+              shortName: 'Agent Builder',
+              fastTrackSupported: true,
+              fastTrackNote: 'FastTrack guidance covers declarative agents in Microsoft Copilot Chat. Exact assistance depends on the requested deployment scope.',
+              sourceUrl: 'https://learn.microsoft.com/microsoft-365/copilot/extensibility/agent-builder',
+              description: 'Agent Builder provides a guided way to create declarative agents in Microsoft 365 Copilot with natural language, templates, instructions, and selected knowledge sources. Move to Copilot Studio when the scenario needs actions or deeper process logic.',
+              capabilities: [
+                'Natural-language and manual agent configuration',
+                'Templates for common workplace scenarios',
+                'Knowledge from public websites, SharePoint, OneDrive files, and Copilot connectors',
+                'Default response modes and conversation starters',
+                'Built-in test pane',
+                'Sharing with users, groups, and teams plus governed Agent Store submission'
+              ],
+              limitations: [
+                'Actions and direct external-service integration require Copilot Studio',
+                'No custom code or custom orchestrator',
+                'Not available on mobile',
+                'Agents created in Agent Builder cannot be used in Teams chat',
+                'Sharing SharePoint sources can require manual permission updates'
+              ],
+              whenToUse: [
+                'Quick internal knowledge agents',
+                'Personal or small-team productivity scenarios',
+                'Fast prototypes before a Copilot Studio build',
+                'Agents grounded in selected Microsoft 365 or public content'
+              ],
+              metrics: {
+                setupTime: 'Hours to days',
+                maintenanceEffort: 'Low',
+                scalability: 'Medium',
+                customization: 'Low'
+              },
+              comparison: {
+                externalApis: 'No actions',
+                deploymentSurfaces: 'Microsoft Copilot',
+                codeRequired: 'No'
+              },
+              guidance: {
+                gettingStarted: [
+                  { step: 1, title: 'Confirm access', description: 'Use a Microsoft 365 Copilot license or a tenant configuration that enables Agent Builder through pay-as-you-go.' },
+                  { step: 2, title: 'Describe a focused agent', description: 'Use natural language or a template to define one clear job, audience, and response style.' },
+                  { step: 3, title: 'Add approved knowledge', description: 'Add public websites, SharePoint, OneDrive files, or Copilot connector content that users are allowed to access.' },
+                  { step: 4, title: 'Test, share, and govern', description: 'Test the agent, confirm source permissions, then share it or submit it for admin-reviewed Agent Store publishing.' }
+                ],
+                bestPractices: [
+                  'Keep the purpose narrow and the instructions explicit',
+                  'Prefer a curated knowledge set over broad content',
+                  'Test with users who have different permissions',
+                  'Move to Copilot Studio when the design needs actions, external systems, or predictable process control'
+                ],
+                deploymentChecklist: [
+                  { item: 'Agent Builder access and billing model confirmed', critical: true },
+                  { item: 'Knowledge sources and permissions reviewed', critical: true },
+                  { item: 'Purpose, audience, and instructions defined', critical: true },
+                  { item: 'Sharing or Agent Store approval path confirmed', critical: false }
                 ]
               }
             },
             declarative: {
-              name: 'Copilot Studio Full Declarative Agents',
-              subtitle: 'M365 Copilot-orchestrated agents',
+              name: 'Copilot Studio: Copilot chat harness',
+              subtitle: 'Low-code agents that extend Microsoft 365 Copilot Chat',
               icon: Sparkles,
               color: 'bg-green-500',
               gradient: 'from-green-400 to-green-600',
-              timeToMarket: '1-2 weeks',
+              timeToMarket: 'Days to weeks',
               technicalLevel: 'Intermediate',
-              shortName: 'Copilot Studio Declarative',
+              shortName: 'Studio: Copilot chat',
               fastTrackSupported: true,
-              description: 'Declarative agents built in Copilot Studio Full that extend Microsoft 365 Copilot using its orchestrator, with Agent Store publishing and support for connecting to other agents for advanced scenarios.',
+              fastTrackNote: 'FastTrack provides remote guidance for configuring and deploying declarative agents with Microsoft Copilot Chat and Copilot Studio.',
+              sourceUrl: 'https://learn.microsoft.com/microsoft-copilot-studio/agents-overview#copilot-chat-harness',
+              description: 'The Copilot chat harness is the Copilot Studio path for extending Microsoft 365 Copilot Chat with organizational instructions, knowledge, and tools. It is designed for internal, knowledge-first scenarios that should stay in the Microsoft Copilot experience.',
               capabilities: [
-                'Uses M365 Copilot orchestrator',
-                'Custom instructions and behavior',
-                'Enterprise knowledge integration',
-                'Plugin actions for external systems',
-                'Agent Store publishing and distribution',
-                'Classic experience: external agent connections over the A2A protocol (generally available)',
-                'New agent experience: connected agents (preview) — currently limited to other Copilot Studio agents',
-                'Available in Microsoft 365 Copilot and Microsoft 365 apps (Teams, Word, Excel, Outlook)',
-                'Inherits M365 Copilot security'
+                'Extends Microsoft 365 Copilot Chat with domain-specific behavior',
+                'Uses organizational knowledge and current Copilot chat models',
+                'Supports tools, connectors, REST APIs, MCP servers, and connected agents',
+                'Publishes to internal Microsoft 365 audiences',
+                'Uses Microsoft 365 identity, security, and governance controls',
+                'Supports analytics, evaluations, and administration in Copilot Studio'
               ],
               limitations: [
-                "Access and billing depend on the agent's grounding and capabilities: agents grounded only in instructions or public web data can be used without pay-as-you-go, while SharePoint, file, Dataverse, and Copilot connector grounding requires pay-as-you-go or a Microsoft 365 Copilot license, and email, people, and Teams grounding requires a Microsoft 365 Copilot license. Eligible licensed usage is included, subject to fair-use limits.",
-                'Agents created in the new agent experience cannot be converted to the classic experience, and vice versa',
-                'Limited to Microsoft 365 ecosystem',
-                'Plugin development requires technical skills',
-                'RAI validation checks required for publishing'
+                'Focused on internal Microsoft 365 publishing rather than public channels',
+                'Billing is included for licensed users or metered for eligible Copilot Chat scenarios',
+                'Tools and knowledge sources still require correct permissions and data policies',
+                'More advanced builds require environment, lifecycle, testing, and owner planning'
               ],
               whenToUse: [
-                'Extend M365 Copilot for specific business scenarios',
-                'Need enterprise knowledge grounding',
-                'Require external API integrations via plugins',
-                'Publishing agents via Agent Store for org-wide use',
-                'Want familiar M365 Copilot UI for users'
+                'Employee knowledge agents inside Microsoft Copilot',
+                'Domain-specific instructions and enterprise grounding',
+                'Internal actions through connectors, APIs, or MCP',
+                'Organization-wide agents with a managed publishing path'
               ],
               metrics: {
-                setupTime: '1-2 weeks',
+                setupTime: 'Days to weeks',
                 maintenanceEffort: 'Medium',
                 scalability: 'High',
                 customization: 'High'
               },
+              comparison: {
+                externalApis: 'Yes, through tools',
+                deploymentSurfaces: 'Microsoft 365',
+                codeRequired: 'Optional'
+              },
               guidance: {
                 gettingStarted: [
-                  { step: 1, title: 'Open Copilot Studio', description: 'Access Copilot Studio and choose to create a new Declarative Agent.' },
-                  { step: 2, title: 'Define instructions', description: 'Write clear behavioral instructions — how the agent should respond and what it knows.' },
-                  { step: 3, title: 'Connect knowledge & actions', description: 'Add enterprise knowledge sources and plugin actions for external systems.' },
-                  { step: 4, title: 'Publish to M365 Copilot', description: 'Submit for admin approval and publish to M365 Copilot for your organization.' }
+                  { step: 1, title: 'Choose the Copilot chat harness', description: 'Use this harness when the agent should extend Microsoft 365 Copilot Chat for an internal audience.' },
+                  { step: 2, title: 'Define instructions and knowledge', description: 'Specify the agent\'s purpose, behavior, approved enterprise content, and ownership.' },
+                  { step: 3, title: 'Add tools only when needed', description: 'Connect approved actions through connectors, REST APIs, MCP servers, or other supported agents.' },
+                  { step: 4, title: 'Evaluate and publish', description: 'Run representative evaluations, complete admin review, and publish through the managed Microsoft 365 path.' }
                 ],
                 bestPractices: [
-                  'Write detailed system instructions — the orchestrator follows them closely',
-                  'Use Power Platform connectors to extend capabilities without code',
-                  'Consider Agent Store publishing for org-wide distribution',
-                  'Test with the M365 Copilot orchestrator context in mind — behavior differs from standalone testing'
+                  'Use the Copilot chat harness for knowledge-first internal scenarios',
+                  'Keep permissions, DLP, and connector governance in the design',
+                  'Use evaluations before broad publication',
+                  'Track ownership and lifecycle from the first release'
                 ],
                 deploymentChecklist: [
-                  { item: 'Microsoft 365 Copilot Chat available to target users; pay-as-you-go or Copilot Credits configured where the agent grounds in tenant data', critical: true },
-                  { item: 'Copilot Studio environment provisioned', critical: true },
-                  { item: 'Agent instructions and knowledge sources defined', critical: true },
-                  { item: 'Plugin actions configured (if needed)', critical: false },
-                  { item: 'Admin approval process understood', critical: false }
+                  { item: 'Copilot Studio environment and billing model confirmed', critical: true },
+                  { item: 'Instructions, knowledge, and owners defined', critical: true },
+                  { item: 'Tools and data policies reviewed', critical: true },
+                  { item: 'Evaluation set completed', critical: false },
+                  { item: 'Admin approval and publishing path confirmed', critical: false }
                 ]
               }
             },
             full: {
-              name: 'Copilot Studio Full Custom Agents',
-              subtitle: 'Advanced agents with complex workflows',
+              name: 'Copilot Studio: Standard and GitHub Copilot harnesses',
+              subtitle: 'Predictable conversations or reasoning-heavy business processes',
               icon: Wrench,
               color: 'bg-purple-500',
               gradient: 'from-purple-400 to-purple-600',
-              timeToMarket: '2-4 weeks',
+              timeToMarket: 'Weeks',
               technicalLevel: 'Intermediate',
-              shortName: 'Copilot Studio Custom Engine',
+              shortName: 'Copilot Studio',
               fastTrackSupported: true,
-              description: 'Full-featured Copilot Studio with advanced capabilities, including multi-agent orchestration, Agent Store publishing, computer use for browser and Windows desktop automation, a choice of supported OpenAI and Anthropic models, custom connectors, multi-channel publishing, and enterprise-grade features.',
+              fastTrackNote: 'FastTrack guidance for custom engine agents built in Copilot Studio is limited to Teams, Microsoft Copilot, or SharePoint deployment channels.',
+              sourceUrl: 'https://learn.microsoft.com/microsoft-copilot-studio/agents-overview',
+              description: 'Copilot Studio now uses three harnesses. This path covers the standard harness for rule-based, predictable conversations and the GitHub Copilot harness for reasoning-heavy, multi-step work. Use the separate Copilot chat harness path when the goal is to extend Microsoft 365 Copilot Chat.',
+              subAgents: [
+                {
+                  id: 'standardHarness',
+                  name: 'Standard harness',
+                  icon: 'GitBranch',
+                  color: 'text-blue-600',
+                  bgColor: 'bg-blue-50 dark:bg-blue-950/20',
+                  borderColor: 'border-blue-200 dark:border-blue-800/30',
+                  status: 'Available',
+                  statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                  description: 'Rule-based agents for structured, repeatable conversations and predictable responses.',
+                  capabilities: [
+                    'Topics, rules, enterprise knowledge, and actions',
+                    'External agent connections over the A2A protocol',
+                    'MCP servers as tools and resources with generative orchestration',
+                    'Computer use for browser and Windows desktop UI automation; model availability varies',
+                    'Consistent behavior for well-understood requests',
+                    'Copilot Studio capacity model for billing'
+                  ],
+                  whenToUse: 'Help desks, guided conversations, information lookup, and predictable support',
+                  sourceUrl: 'https://learn.microsoft.com/microsoft-copilot-studio/agents-overview#standard-harness'
+                },
+                {
+                  id: 'githubHarness',
+                  name: 'GitHub Copilot harness',
+                  icon: 'Sparkles',
+                  color: 'text-purple-600',
+                  bgColor: 'bg-purple-50 dark:bg-purple-950/20',
+                  borderColor: 'border-purple-200 dark:border-purple-800/30',
+                  status: 'Available',
+                  statusColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                  description: 'Reasoning-heavy agents that plan multi-step work, adapt to results, and work with files in a secure sandbox.',
+                  capabilities: [
+                    'Native skills and memory',
+                    'Workflows as tools for multistep processes',
+                    'MCP servers as tools (preview)',
+                    'Connected agents, limited to other Copilot Studio agents',
+                    'Usage-based billing with Copilot Credits'
+                  ],
+                  whenToUse: 'Complex business processes, document work, and tasks that require judgment and adaptation',
+                  sourceUrl: 'https://learn.microsoft.com/microsoft-copilot-studio/agents-overview#github-copilot-harness'
+                }
+              ],
               capabilities: [
-                'Advanced conversation flows and logic',
-                'Custom connectors and API integrations',
-                'Multi-channel publishing',
-                'Multi-agent orchestration (agent collaboration)',
-                'Agent Store marketplace publishing',
-                'Computer use for browser and Windows desktop UI automation (generally available)',
-                'Human-in-the-loop (HITL) controls',
-                'Automated agent evaluation and testing',
-                'Choice of supported OpenAI and Anthropic models; availability varies by region and agent experience',
-                'Power Platform integration',
-                'Advanced analytics and monitoring',
-                'Custom authentication and security'
+                'Standard harness for rule-based, predictable conversations',
+                'GitHub Copilot harness for adaptive, multi-step reasoning',
+                'Harness-specific support for workflows, REST APIs, MCP servers, A2A, and connected agents',
+                'Microsoft Entra Agent ID is created automatically for each new agent',
+                'Multi-channel deployment based on the selected harness and channel',
+                'Analytics, evaluations, administration, and cost management',
+                'Human review and approval patterns for sensitive processes'
               ],
               limitations: [
-                'Requires technical expertise and training',
-                'Copilot Studio license required',
-                'Agents created in the new agent experience cannot be converted to the classic experience, and vice versa',
-                'FastTrack remote guidance covers custom engine agents only when the deployment channel is Teams, Microsoft 365 Copilot, or SharePoint',
-                'Higher development time investment required',
-                'Ongoing maintenance and monitoring needed'
+                'Harness choice affects behavior, architecture, billing, and deployment',
+                'GitHub Copilot harness usage is billed with Copilot Credits',
+                'Standard harness uses the Copilot Studio capacity model',
+                'Agents created before the Agent ID rollout can continue using app registrations until Microsoft migrates them',
+                'Production agents need environment, data policy, evaluation, owner, and monitoring plans',
+                'FastTrack custom engine guidance is channel-limited'
               ],
               whenToUse: [
-                'Complex business process automation',
-                'Customer service and support at scale',
-                'Multi-step workflows and approval processes',
-                'Multi-agent workflows requiring orchestration',
-                'Browser and Windows desktop automation for apps without APIs',
-                'Integration with external systems and APIs'
+                'Structured help desk or service conversations',
+                'Reasoning-heavy, multi-step business processes',
+                'File-intensive work and document generation',
+                'External systems and actions',
+                'Multi-channel or connected-agent solutions'
               ],
               metrics: {
-                setupTime: '2-4 weeks',
-                maintenanceEffort: 'Medium',
+                setupTime: 'Weeks',
+                maintenanceEffort: 'Medium to high',
                 scalability: 'High',
                 customization: 'High'
               },
+              comparison: {
+                externalApis: 'Yes',
+                deploymentSurfaces: 'Microsoft 365, web, and channels',
+                codeRequired: 'Optional'
+              },
               guidance: {
                 gettingStarted: [
-                  { step: 1, title: 'Set up Copilot Studio', description: 'Provision your Copilot Studio environment and configure the appropriate licensing for your organization.' },
-                  { step: 2, title: 'Plan your conversation flow', description: 'Map out the agent\'s topics, triggers, and conversation paths before building.' },
-                  { step: 3, title: 'Build with topics & actions', description: 'Create topics for different intents, add knowledge sources, and connect API actions.' },
-                  { step: 4, title: 'Test and iterate', description: 'Use the built-in test canvas and evaluation tools to refine responses.' },
-                  { step: 5, title: 'Deploy to channels', description: 'Publish to Teams, web, or other channels. Set up analytics monitoring.' }
+                  { step: 1, title: 'Choose the harness first', description: 'Use standard for predictable, rule-based conversations or GitHub Copilot for adaptive, reasoning-heavy work.' },
+                  { step: 2, title: 'Confirm the billing model', description: 'Plan for standard-harness capacity or GitHub Copilot harness usage through Copilot Credits.' },
+                  { step: 3, title: 'Design knowledge, tools, and guardrails', description: 'Define approved data, actions, workflows, connected agents, human review, and failure handling.' },
+                  { step: 4, title: 'Evaluate before publishing', description: 'Use test sets and evaluations, then deploy to the approved channels with analytics and ownership in place.' }
                 ],
                 bestPractices: [
-                  'Start with 3-5 core topics and expand based on user feedback',
-                  'Use the evaluation and testing framework to maintain quality as you scale',
-                  'Implement human-in-the-loop for high-stakes decisions',
-                  'Monitor analytics closely in the first 30 days to catch issues early',
-                  'Forecast Copilot Credit consumption based on agent design, enabled features, and expected usage volume'
+                  'Do not treat the harnesses as interchangeable',
+                  'Use the simplest harness that meets the process and risk requirements',
+                  'Review Agent ID API permissions and apply Conditional Access to connector access where needed',
+                  'Require human review for high-impact actions and decisions',
+                  'Test failures, permission boundaries, and tool errors before production',
+                  'Monitor quality, adoption, cost, and owner health after launch'
                 ],
                 deploymentChecklist: [
-                  { item: 'Copilot Studio license procured', critical: true },
-                  { item: 'Environment and DLP policies configured', critical: true },
-                  { item: 'Conversation flows designed and documented', critical: true },
-                  { item: 'Knowledge sources connected', critical: true },
-                  { item: 'Testing and evaluation plan in place', critical: false },
-                  { item: 'Channel deployment strategy defined', critical: false },
-                  { item: 'Analytics and monitoring configured', critical: false }
+                  { item: 'Harness and billing model selected', critical: true },
+                  { item: 'Environment, DLP, and connector policies configured', critical: true },
+                  { item: 'Knowledge, tools, and human controls designed', critical: true },
+                  { item: 'Evaluation and failure tests completed', critical: true },
+                  { item: 'Channels, owners, analytics, and support model confirmed', critical: false }
                 ]
               }
             },
             toolkit: {
               name: 'Microsoft 365 Agents Toolkit',
-              subtitle: 'Pro-code declarative agent development',
+              subtitle: 'Pro-code agent and app development tooling',
               icon: Code,
               color: 'bg-red-500',
               gradient: 'from-red-400 to-red-600',
-              timeToMarket: '2-4 weeks',
+              timeToMarket: 'Weeks to months',
               technicalLevel: 'Expert',
               shortName: 'M365 Agents Toolkit',
               fastTrackSupported: false,
-              description: 'Build declarative and custom engine agents with full developer control using VS Code, Visual Studio, and CLI extensions, with Agent Store publishing, Microsoft 365 Agents SDK integration, and support for adding remote MCP servers as plugins. Note: FastTrack does not cover creating custom agents with developer toolchains.',
+              fastTrackNote: 'FastTrack does not create custom agents with Microsoft 365 Agents Toolkit, Agents SDK, Teams SDK, Foundry, or similar pro-code tools.',
+              sourceUrl: 'https://learn.microsoft.com/microsoftteams/platform/toolkit/overview-agents-toolkit',
+              description: 'Microsoft 365 Agents Toolkit is a suite of developer tools for enterprise agents and apps across Microsoft 365 Copilot, Teams, Office, web, and third-party messaging channels. It supports declarative agents and custom engine agents through Microsoft 365 Agents SDK, Teams SDK, Microsoft Foundry, and TypeSpec.',
               capabilities: [
-                'Full pro-code development workflow',
-                'Microsoft 365 Agents SDK integration for multichannel custom engine agents',
-                'Direct integration with Azure services',
-                'Version control and CI/CD support',
-                'Advanced plugin development',
-                'Agent Store multi-channel publishing',
-                'Add remote MCP servers as plugins for declarative agents',
-                'Agents Playground for local testing',
-                'VS Code, Visual Studio, and CLI extensions',
-                'Custom engine agent support (bring your own LLM)'
+                'Project scaffolding, local testing, provisioning, and publishing',
+                'Microsoft 365 Agents SDK for multi-channel custom engine agents',
+                'Teams SDK for collaborative Teams scenarios',
+                'TypeSpec for declarative agents',
+                'Microsoft Foundry integration',
+                'Visual Studio Code, Visual Studio, and CLI experiences',
+                'SSO, storage, serverless functions, and CI/CD support',
+                'Microsoft 365 Agents Playground for local testing'
               ],
               limitations: [
-                'Requires software development expertise',
-                'More complex setup and maintenance',
-                'Steeper learning curve',
-                'Requires DevOps practices',
-                'A2A is implemented by the agent runtime using dedicated protocol SDKs — it is not provided by the Toolkit itself',
-                'Creating custom agents with developer toolchains is outside FastTrack scope — see the FastTrack service description'
+                'Requires software engineering, cloud architecture, security, and DevOps skills',
+                'Custom engine agents can require separate hosting and model costs',
+                'Teams and Microsoft 365 publishing still requires tenant configuration and approval',
+                'Publishing through Agents Toolkit is not supported in Microsoft 365 Government tenants',
+                'Pro-code agent creation is outside FastTrack deployment scope'
               ],
               whenToUse: [
-                'Need full control over agent behavior',
-                'Complex enterprise integrations',
-                'Want version control and CI/CD',
-                'Publishing agents to Agent Store at scale',
-                'Building custom engine agents with your own LLM',
-                'Have dedicated development teams'
+                'Full control over models, orchestration, code, and hosting',
+                'Declarative agents managed as source code',
+                'Multi-channel custom engine agents',
+                'Existing Microsoft Foundry or custom AI investments',
+                'Solutions that need CI/CD and enterprise software lifecycle practices'
               ],
               metrics: {
-                setupTime: '2-4 weeks',
+                setupTime: 'Weeks to months',
                 maintenanceEffort: 'High',
-                scalability: 'Very High',
-                customization: 'Very High'
+                scalability: 'Very high',
+                customization: 'Very high'
+              },
+              comparison: {
+                externalApis: 'Yes',
+                deploymentSurfaces: 'Microsoft 365 and 10+ channels',
+                codeRequired: 'Yes'
               },
               guidance: {
                 gettingStarted: [
-                  { step: 1, title: 'Set up development environment', description: 'Install VS Code or Visual Studio with the M365 Agents Toolkit extension.' },
-                  { step: 2, title: 'Scaffold your project', description: 'Use the toolkit to create a new agent project with your preferred template.' },
-                  { step: 3, title: 'Develop locally', description: 'Build your agent logic with TypeScript/C# and test locally with Agents Playground.' },
-                  { step: 4, title: 'Deploy to Azure', description: 'Set up CI/CD and deploy to Azure. Publish to Agent Store for distribution.' }
+                  { step: 1, title: 'Choose the agent architecture', description: 'Decide between a declarative agent and a custom engine agent, then select the SDK or TypeSpec path that fits.' },
+                  { step: 2, title: 'Install the toolkit', description: 'Use the Visual Studio Code extension, Visual Studio workload, or CLI for the chosen language and workflow.' },
+                  { step: 3, title: 'Build and test locally', description: 'Use source control, automated tests, telemetry, and Agents Playground where it fits the target experience.' },
+                  { step: 4, title: 'Provision and publish', description: 'Provision the required tenant and hosting resources, then publish through the approved organizational or store path.' }
                 ],
                 bestPractices: [
-                  'Use Agents Playground for fast local iteration before cloud deployment',
-                  'Implement proper error handling and telemetry from day one',
-                  'Follow the MCP protocol patterns for interoperability',
-                  'Set up CI/CD early — version control and automated testing save time long-term'
+                  'Choose the SDK and hosting model before scaffolding the project',
+                  'Use source control, CI/CD, telemetry, and automated tests from the start',
+                  'Design identity, permissions, data access, and approval gates before adding tools',
+                  'Use Agents Playground for rapid local iteration when supported',
+                  'Plan an explicit production owner and support model'
                 ],
                 deploymentChecklist: [
-                  { item: 'Development environment configured (VS Code/Visual Studio)', critical: true },
-                  { item: 'Azure subscription provisioned', critical: true },
-                  { item: 'Microsoft 365 Agents Toolkit extension installed for VS Code or Visual Studio', critical: true },
-                  { item: 'CI/CD pipeline configured', critical: false },
-                  { item: 'Agents Playground tested locally', critical: false },
-                  { item: 'Agent Store submission prepared', critical: false }
+                  { item: 'Agent type, SDK, language, and hosting model selected', critical: true },
+                  { item: 'Development and tenant environments configured', critical: true },
+                  { item: 'Identity, permissions, data, and threat model reviewed', critical: true },
+                  { item: 'Automated tests, telemetry, and CI/CD configured', critical: false },
+                  { item: 'Publishing, operations, and support ownership confirmed', critical: false }
                 ]
               }
             }
@@ -759,7 +863,7 @@
 
           const selectedAgentKeyForContent = agentTypes[safeSelectedAgentKey] ? safeSelectedAgentKey : 'firstParty';
           const currentAgent = agentTypes[selectedAgentKeyForContent];
-          const subAgentIconMap = { FileSearch, BarChart3, MessageCircle, Zap, Target, Users, Shield, Star, Layers };
+          const subAgentIconMap = { FileSearch, BarChart3, MessageCircle, Zap, Target, Users, Shield, Star, Layers, Sparkles, GitBranch, Code, Bot, Cloud };
           const IconComponent = currentAgent.icon;
 
           // Message Center computed values (must be after safeSelectedAgentKey)
@@ -860,19 +964,19 @@
                       <div className="space-y-2 text-sm">
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Research or data analysis?</span> → Researcher or Analyst <span className="text-xs text-gray-400">(First-Party Agents)</span></p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Research or data analysis?</span> → Researcher or Analyst <span className="text-xs text-gray-400">(Microsoft-built)</span></p>
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Multi-step personal tasks or delegated knowledge work?</span> → Copilot Cowork <span className="text-xs text-green-600 font-medium">(Generally available)</span></p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Multi-step personal tasks or delegated knowledge work?</span> → Copilot Cowork <span className="text-xs text-green-600 font-medium">(GA for work/school)</span></p>
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Community Q&A or recurring questions?</span> → Viva Engage Community Agent <span className="text-xs text-gray-400">(First-Party Agents)</span></p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Community Q&A or recurring questions?</span> → Agents in Viva Engage communities <span className="text-xs text-amber-600">(Public preview)</span></p>
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Routine task automation or approvals?</span> → Workflows Agent <span className="text-xs text-gray-400">(First-Party Agents)</span></p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Routine Microsoft 365 automation?</span> → Workflows agent <span className="text-xs text-amber-600">(Frontier preview)</span></p>
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
@@ -884,11 +988,11 @@
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Need reusable instructions, knowledge, or actions in M365 Copilot?</span> → Declarative agents</p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Need an internal knowledge or action agent in Microsoft Copilot?</span> → Copilot Studio Copilot chat harness</p>
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">External audience or complex workflows?</span> → Copilot Studio custom engine agents <span className="text-xs text-gray-400">(FastTrack remote guidance covers Teams, Microsoft 365 Copilot, and SharePoint channels)</span></p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Need predictable conversations or reasoning-heavy workflows?</span> → Copilot Studio standard or GitHub Copilot harness</p>
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
@@ -900,7 +1004,7 @@
                         </div>
                         <div className="flex items-start gap-2">
                           <ArrowRight className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0" />
-                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Agent governance & management?</span> → Agent 365 + Copilot Control System</p>
+                          <p className="text-gray-600 dark:text-gray-300"><span className="font-semibold">Need enterprise agent governance and protection?</span> → Microsoft Agent 365</p>
                         </div>
                       </div>
                     </div>
@@ -916,15 +1020,15 @@
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="bg-green-50 dark:bg-green-950/30 rounded p-3">
                           <p className="font-semibold text-green-800 mb-1">No technical skills needed:</p>
-                          <p className="text-sm text-gray-700 dark:text-gray-200">First-party agents (Researcher, Analyst, Viva Engage, Workflows), SharePoint agents, Agent Builder, Copilot Cowork</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-200">Microsoft-built agents and experiences, Agents in SharePoint, and Agent Builder</p>
                         </div>
                         <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded p-3">
                           <p className="font-semibold text-yellow-800 mb-1">Some IT knowledge helpful:</p>
-                          <p className="text-sm text-gray-700 dark:text-gray-200">Declarative agents, Copilot Studio deployment, admin/governance setup</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-200">Copilot Studio harness selection, environment setup, tools, data policy, and deployment</p>
                         </div>
                         <div className="bg-orange-50 dark:bg-orange-950/30 rounded p-3 md:col-span-2">
                           <p className="font-semibold text-orange-800 mb-1">Development expertise required:</p>
-                          <p className="text-sm text-gray-700 dark:text-gray-200">Microsoft 365 Agents Toolkit and custom engine agents (TypeScript, APIs, DevOps)</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-200">Microsoft 365 Agents Toolkit and pro-code custom engine agents (SDKs, APIs, hosting, DevOps)</p>
                         </div>
                       </div>
                     </div>
@@ -942,11 +1046,11 @@
                           <div className="space-y-2">
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <Clock className="w-4 h-4 text-green-600" />
-                              <span>First-party agents (Researcher, Analyst, Viva Engage, Workflows): Immediate once enabled</span>
+                              <span>Microsoft-built GA experiences: Immediate once licensed and enabled</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <Clock className="w-4 h-4 text-green-600" />
-                              <span>Copilot Cowork: Available after tenant enablement and usage-based billing configuration <span className="text-xs text-green-600 font-medium">(Generally available)</span></span>
+                              <span>Copilot Cowork: Immediate after licensing and Copilot Credit controls are configured <span className="text-xs text-green-600 font-medium">(GA)</span></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <Clock className="w-4 h-4 text-green-600" />
@@ -967,11 +1071,11 @@
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-blue-600" />
-                              <span>Agent 365 adds enterprise agent governance — GA May 1 — <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">see current licensing</a></span>
+                              <span>Microsoft Agent 365 adds enterprise agent governance and protection; it became GA on May 1, 2026. <a href="https://learn.microsoft.com/microsoft-agent-365/overview" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">See current requirements</a></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-indigo-600" />
-                              <span>Microsoft 365 E7 Frontier Suite bundles Copilot, Agent 365, Entra, and E5 security — GA May 1 — <a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">see current licensing</a></span>
+                              <span>Microsoft 365 E7 includes Microsoft 365 E5, Microsoft Copilot, Microsoft Agent 365, and Microsoft Entra Suite. <a href="https://learn.microsoft.com/microsoft-365/admin/manage/agent-365-overview#licensing-for-agent-management" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">See current licensing</a></span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                               <DollarSign className="w-4 h-4 text-yellow-600" />
@@ -998,7 +1102,7 @@
                           <ArrowRight className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                           <span className="font-semibold text-gray-800 dark:text-gray-100">Scale Up</span>
                         </div>
-                         <p className="text-xs text-gray-600 dark:text-gray-300 mt-3">Start with Copilot Cowork and first-party agents like Researcher, Analyst, Viva Engage Community Agent, or SharePoint agents — these are the fastest way to demonstrate personal productivity value. Prove adoption with Agent Builder, then scale to Copilot Studio or the Toolkit when you need repeatable multi-user processes, compliance guardrails, governance, or external channels. FastTrack provides remote guidance for deployment planning within its published scope; adoption and change management strategy are not part of the FastTrack benefit.</p>
+                         <p className="text-xs text-gray-600 dark:text-gray-300 mt-3">Start with a generally available Microsoft-built experience, Agents in SharePoint, or Agent Builder when one of those options fits the work. Move to the appropriate Copilot Studio harness or Microsoft 365 Agents Toolkit only when the scenario needs stronger process control, custom tools, broader channels, or pro-code lifecycle management. FastTrack provides remote guidance within its published service scope; implementation, custom adoption plans, and pro-code agent creation remain out of scope.</p>
                       </div>
                     </div>
                   </div>
@@ -1013,13 +1117,13 @@
                   <Layers className="w-7 h-7 text-gray-600 dark:text-gray-300" />
                   Cowork vs. Structured Agents: Choosing the Right Approach
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Copilot Cowork is generally available to Microsoft 365 Copilot tenants worldwide in tier-1 languages, giving customers clear guidance on when to use adaptive AI delegation vs. structured agent automation.</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Copilot Cowork is generally available for work and school accounts. Use it for adaptive, user-directed work; use a structured agent when a shared process needs predictable behavior, managed tools, and a defined lifecycle.</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border-2 border-purple-500/30">
                     <div className="flex items-center gap-2 mb-3">
                       <Zap className="w-5 h-5 text-purple-500" />
-                      <h4 className="font-bold text-gray-900 dark:text-white">Adaptive — Copilot Cowork</h4>
+                      <h4 className="font-bold text-gray-900 dark:text-white">Adaptive: Copilot Cowork</h4>
                     </div>
                     <p className="text-sm text-gray-700 dark:text-gray-200 mb-3">Open-ended delegation for personal productivity and knowledge work. End-user-led, multi-step reasoning with autonomous task execution.</p>
                     <div className="space-y-2 text-sm">
@@ -1045,7 +1149,7 @@
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border-2 border-blue-500/30">
                     <div className="flex items-center gap-2 mb-3">
                       <Shield className="w-5 h-5 text-blue-500" />
-                      <h4 className="font-bold text-gray-900 dark:text-white">Structured — Agent Builder, Studio, SharePoint</h4>
+                      <h4 className="font-bold text-gray-900 dark:text-white">Structured: Agent Builder, Copilot Studio, SharePoint</h4>
                     </div>
                     <p className="text-sm text-gray-700 dark:text-gray-200 mb-3">Predefined flows with guardrails for business process automation. IT/admin-led with connectors, governance, and consistent behavior.</p>
                     <div className="space-y-2 text-sm">
@@ -1069,6 +1173,25 @@
                   </div>
                 </div>
 
+                <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border border-gray-200 dark:border-white/[0.08]">
+                  <div className="flex items-center gap-2 mb-3">
+                    <GitBranch className="w-5 h-5 text-green-500" />
+                    <h4 className="font-bold text-gray-900 dark:text-white">Extend Cowork with skills and plugins</h4>
+                  </div>
+                  <p className="text-sm text-gray-700 dark:text-gray-200 mb-3">Cowork supports built-in skills, custom skills, and plugins from the Microsoft 365 App Store. Plugins can add domain expertise or connectors to approved external services.</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="bg-purple-50 dark:bg-purple-950/20 rounded p-3 text-center">
+                      <p className="font-semibold text-purple-800 dark:text-purple-300 text-sm">Custom skills</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300 mt-1">Teach Cowork repeatable domain instructions and file-based workflows</p>
+                    </div>
+                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded p-3 text-center">
+                      <p className="font-semibold text-blue-800 dark:text-blue-300 text-sm">Plugins and connectors</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300 mt-1">Add approved services, data sources, and specialized capabilities</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">Skills and plugins extend Cowork, but they do not replace a governed Copilot Studio agent when a shared process needs a defined harness, lifecycle, and publishing model.</p>
+                </div>
+
                 <div className="bg-white dark:bg-white/[0.03] rounded-lg p-5 border border-gray-200 dark:border-white/[0.08] mt-4">
                   <div className="flex items-center gap-2 mb-3">
                     <Target className="w-5 h-5 text-orange-500" />
@@ -1078,7 +1201,7 @@
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
                     <div className="bg-orange-50 dark:bg-orange-950/20 rounded p-3">
                       <p className="font-semibold text-orange-800 dark:text-orange-300 mb-1">Build Trust in Delegation</p>
-                      <p className="text-xs text-gray-700 dark:text-gray-300">Encourage your team to delegate multi-step tasks and let go of manual control — start small, then expand as confidence grows</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-300">Start with low-risk multi-step tasks, keep approval prompts enabled, and expand only after users trust the results</p>
                     </div>
                     <div className="bg-orange-50 dark:bg-orange-950/20 rounded p-3">
                       <p className="font-semibold text-orange-800 dark:text-orange-300 mb-1">Learn Prompt-to-Plan Thinking</p>
@@ -1111,10 +1234,10 @@
                     </h4>
                     <div className="space-y-2 text-sm">
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
-                        <p className="font-semibold text-green-800">Immediate: First-party agents (Researcher, Analyst, Viva Engage, Workflows)</p>
+                        <p className="font-semibold text-green-800">Immediate: Generally available Microsoft-built experiences once licensed and enabled</p>
                       </div>
                       <div className="p-3 bg-purple-50 dark:bg-purple-950/30 rounded">
-                        <p className="font-semibold text-purple-800">Tenant setup required: Copilot Cowork <span className="text-xs font-normal">(Generally available)</span></p>
+                        <p className="font-semibold text-purple-800">Immediate: Copilot Cowork <span className="text-xs font-normal">(GA for work/school; billing setup required)</span></p>
                       </div>
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
                         <p className="font-semibold text-green-800">Minutes to hours: SharePoint agents</p>
@@ -1136,23 +1259,23 @@
                     <div className="space-y-2 text-sm">
                       <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded">
                         <p className="font-semibold text-green-800 mb-1">Often covered by existing Copilot licensing:</p>
-                        <p className="text-gray-700 dark:text-gray-200 text-xs">First-party agents (Researcher, Analyst, Viva Engage, Workflows), Agent Builder, and many agents published to Microsoft 365 Copilot for licensed users</p>
+                        <p className="text-gray-700 dark:text-gray-200 text-xs">Researcher, Analyst, Agent Builder, and many agents published to Microsoft Copilot for licensed users; exact entitlements vary</p>
                       </div>
                       <div className="p-3 bg-purple-50 dark:bg-purple-950/30 rounded">
                         <p className="font-semibold text-purple-800 mb-1">Copilot Cowork:</p>
-                        <p className="text-gray-700 dark:text-gray-200 text-xs">Generally available to Microsoft 365 Copilot tenants worldwide in tier-1 languages. Requires an active Microsoft 365 Copilot license, a supported browser, Cowork enabled, usage-based billing enabled, and Anthropic approved as a tenant subprocessor. Local browser use in Microsoft Edge remains a Frontier capability. Check current licensing details for metered usage.</p>
+                        <p className="text-gray-700 dark:text-gray-200 text-xs">Requires a Microsoft 365 Copilot license plus usage-based billing with Copilot Credits. Admins can set per-user or per-group limits.</p>
                       </div>
                       <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded">
-                        <p className="font-semibold text-blue-800 mb-1"><a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">Agent 365</a> — enterprise agent governance:</p>
+                        <p className="font-semibold text-blue-800 mb-1"><a href="https://learn.microsoft.com/microsoft-agent-365/overview" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">Microsoft Agent 365</a>: enterprise agent governance and protection</p>
                         <p className="text-gray-700 dark:text-gray-200 text-xs">Control plane for observing, securing, and governing agents at scale via Admin Center, Defender, Entra, and Purview</p>
                       </div>
                       <div className="p-3 bg-indigo-50 dark:bg-indigo-950/30 rounded">
-                        <p className="font-semibold text-indigo-800 mb-1"><a href="https://www.microsoft.com/en-us/microsoft-365/microsoft-365-enterprise" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">Microsoft 365 E7 Frontier Suite</a>:</p>
+                        <p className="font-semibold text-indigo-800 mb-1"><a href="https://learn.microsoft.com/microsoft-365/admin/manage/agent-365-overview#licensing-for-agent-management" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">Microsoft 365 E7</a>:</p>
                         <p className="text-gray-700 dark:text-gray-200 text-xs">Bundles M365 Copilot, Agent 365, Entra Suite, and M365 E5 security (Defender, Intune, Purview) for comprehensive agent + user protection</p>
                       </div>
                       <div className="p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded">
                         <p className="font-semibold text-yellow-800 mb-1">Additional licensing or consumption may apply:</p>
-                        <p className="text-gray-700 dark:text-gray-200 text-xs">Advanced Copilot Studio scenarios, metered usage in Copilot Chat, tenant-data grounding, and premium connectors</p>
+                        <p className="text-gray-700 dark:text-gray-200 text-xs">Copilot Studio, Cowork, metered Copilot Chat scenarios, shared tenant data, premium connectors, and custom hosting can add consumption or platform costs</p>
                       </div>
                       <div className="p-3 bg-orange-50 dark:bg-orange-950/30 rounded">
                         <p className="font-semibold text-orange-800 mb-1">Variable delivery costs:</p>
@@ -1236,7 +1359,24 @@
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
-                        <p className="text-sm text-gray-700 dark:text-gray-200">Delegate open-ended work that benefits from adaptive reasoning — Cowork runs in the background while you focus elsewhere</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-200">Delegate open-ended work that benefits from adaptive planning while keeping approval gates for sensitive actions</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border border-gray-200 dark:border-white/[0.08] rounded-lg p-4 bg-gray-50 dark:bg-white/[0.03]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">SCENARIO</p>
+                        <p className="font-bold text-gray-900 dark:text-white">Reasoning-heavy, multi-step business process with files and several tools</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">RECOMMENDATION</p>
+                        <p className="font-bold text-gray-900 dark:text-white text-lg">Copilot Studio GitHub Copilot harness</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-200">Designed for adaptive business processes that need skills, memory, file work, and multi-tool orchestration</p>
                       </div>
                     </div>
                   </div>
@@ -1249,11 +1389,11 @@
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">RECOMMENDATION</p>
-                        <p className="font-bold text-gray-900 dark:text-white text-lg">Viva Engage Community Agent</p>
+                        <p className="font-bold text-gray-900 dark:text-white text-lg">Agents in Viva Engage communities</p>
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
-                        <p className="text-sm text-gray-700 dark:text-gray-200">Proactively surfaces answers grounded in community conversations and SharePoint — experts verify and build trusted organizational knowledge over time</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-200">Drafts answers grounded in community conversations and approved SharePoint sources; experts can review and verify them</p>
                       </div>
                     </div>
                   </div>
@@ -1266,7 +1406,7 @@
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">RECOMMENDATION</p>
-                        <p className="font-bold text-gray-900 dark:text-white text-lg">Copilot Studio declarative agent</p>
+                        <p className="font-bold text-gray-900 dark:text-white text-lg">Copilot Studio Copilot chat harness</p>
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
@@ -1283,7 +1423,7 @@
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">RECOMMENDATION</p>
-                        <p className="font-bold text-gray-800 dark:text-gray-100 text-lg">Copilot Studio custom engine agent</p>
+                        <p className="font-bold text-gray-800 dark:text-gray-100 text-lg">Copilot Studio standard harness</p>
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
@@ -1300,7 +1440,7 @@
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">RECOMMENDATION</p>
-                        <p className="font-bold text-gray-900 dark:text-white text-lg">Custom engine agent + Toolkit</p>
+                        <p className="font-bold text-gray-900 dark:text-white text-lg">Custom engine agent with Agents Toolkit</p>
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">WHY?</p>
@@ -1318,20 +1458,20 @@
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">📌 Key Takeaways</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">🚪 Cowork Is a Low-Friction Starting Point</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Copilot Cowork lets individual users delegate multi-step work without building anything, so it can be a practical first step. Once engaged, they often want to explore structured agents for team and business processes.</p>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">🚪 Use Cowork for Delegated Work</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Choose Cowork when a licensed user needs adaptive, multi-step work across Microsoft 365 and the organization can manage Copilot Credit consumption.</p>
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Start with Built-In Value</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Use Cowork and first-party agents (Researcher, Analyst, Viva Engage, Workflows) to prove personal and team productivity value before investing in custom builds.</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Use a generally available Microsoft-built experience when it already fits the job. Treat Frontier and public preview experiences as controlled evaluations.</p>
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">🔧 Right Tool for the Right Job</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Cowork excels at personal, adaptive work. Studio agents shine for repeatable, governed, multi-user processes. Help customers understand the spectrum and pick the right tool for each scenario.</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Cowork fits adaptive personal work. Agents in SharePoint and Agent Builder fit focused knowledge. Copilot Studio fits shared processes that need a defined harness, tools, and lifecycle.</p>
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Then Scale with Agent Builder & Studio</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Create lightweight agents with Agent Builder, then scale successful patterns into Copilot Studio for compliance, governance, and broader deployment.</p>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Choose the Harness Deliberately</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">In Copilot Studio, choose Copilot chat for internal knowledge, standard for predictable conversations, or GitHub Copilot for reasoning-heavy multi-step work.</p>
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Match Complexity to Risk</h4>
@@ -1339,7 +1479,7 @@
                   </div>
                   <div className="bg-white dark:bg-white/[0.03] rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Govern from Day One</h4>
-                    <p className="text-sm text-gray-700 dark:text-gray-200">Plan ownership, sharing, audit, DLP, and lifecycle management with Agent 365 and Copilot Control System. Consider Microsoft 365 E7 for unified Copilot + governance + security.</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-200">Plan ownership, identity, sharing, audit, DLP, cost, and lifecycle management. Use Microsoft Agent 365 when the organization needs a unified control plane to observe, govern, and secure agents.</p>
                   </div>
                 </div>
               </div>
@@ -1469,10 +1609,14 @@
                     )}
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 text-xs px-2.5 py-1 rounded-full border border-transparent dark:border-white/[0.08]">
+                  <div className="flex items-center gap-2">
+                    <div className="hidden lg:flex items-center gap-2 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 text-xs px-2.5 py-1 rounded-full border border-blue-100 dark:border-blue-400/20">
+                      <Check className="w-3 h-3" />
+                      <span>Reviewed August 21, 2026</span>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-2 bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 text-xs px-2.5 py-1 rounded-full border border-transparent dark:border-white/[0.08]">
                       <Clock className="w-3 h-3" />
-                      <span>Updated July 2026</span>
+                      <span>Message Center updated August 2026</span>
                     </div>
                     <button
                       onClick={() => setIsDark(!isDark)}
@@ -1482,6 +1626,15 @@
                       {isDark ? '☀️' : '🌙'}
                     </button>
                   </div>
+                </div>
+              </div>
+
+              <div className="max-w-7xl mx-auto px-4 mb-6">
+                <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-xl px-4 py-3 flex items-start gap-3">
+                  <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-gray-700 dark:text-gray-200">
+                    <span className="font-semibold">Accuracy note:</span> Product status and licensing change frequently. Core guidance was reviewed on August 21, 2026 against the official Microsoft links shown in each section. Planning estimates are directional.
+                  </p>
                 </div>
               </div>
 
@@ -1495,7 +1648,7 @@
                       className="px-3 mb-4" 
                     />
 
-                    <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 px-3">Agent Types</h3>
+                    <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 px-3">Agent approaches</h3>
                     {Object.entries(filteredAgents).map(([key, agent]) => {
                       const Icon = agent.icon;
                       const isSelected = viewMode === 'agent' && safeSelectedAgentKey === key;
@@ -1513,9 +1666,9 @@
                             <div className="flex items-center gap-1.5 mt-0.5">
                               <span className="text-xs text-gray-400 dark:text-gray-500 truncate">{agent.timeToMarket}</span>
                               {agent.fastTrackSupported && (
-                                <span title="Microsoft FastTrack provides remote guidance for this agent type" className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-400/10 border border-emerald-100 dark:border-emerald-400/20 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap leading-none">
+                                <span title="Microsoft FastTrack remote guidance is available within the published service scope" className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-400/10 border border-emerald-100 dark:border-emerald-400/20 px-1.5 py-0.5 rounded font-semibold whitespace-nowrap leading-none">
                                   <Zap className="w-2 h-2" />
-                                  FastTrack Supported
+                                  FastTrack guidance
                                 </span>
                               )}
                             </div>
@@ -1525,7 +1678,7 @@
                     })}
                     
                     <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/[0.08]">
-                      <a href="https://www.microsoft.com/en-us/microsoft-agent-365" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2.5 text-xs text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg transition-colors">
+                      <a href="https://learn.microsoft.com/microsoft-agent-365/overview" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2.5 text-xs text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg transition-colors">
                         <Shield className="w-3.5 h-3.5" />
                         <div className="flex-1 min-w-0">
                           <span>Agent 365 — Control Plane</span>
@@ -1606,9 +1759,9 @@
                       <div className={`lg:col-span-2 bg-gradient-to-br ${currentAgent.gradient} rounded-xl p-8 text-white relative shadow-lg`}>
                         {/* Subtle FastTrack Badge in Overview */}
                         {currentAgent.fastTrackSupported && (
-                          <div title="Microsoft FastTrack provides remote guidance for this agent type" className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-3 py-1 flex items-center gap-1.5">
+                          <div title="Microsoft FastTrack remote guidance is available within the published service scope" className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-3 py-1 flex items-center gap-1.5">
                             <Zap className="w-3.5 h-3.5 text-white/90" />
-                            <span className="text-xs font-medium text-white/90">FastTrack Supported</span>
+                            <span className="text-xs font-medium text-white/90">FastTrack guidance</span>
                           </div>
                         )}
                         
@@ -1624,6 +1777,15 @@
                         <p className="text-lg text-white/90 leading-relaxed">
                           {currentAgent.description}
                         </p>
+                        <a
+                          href={currentAgent.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
+                        >
+                          Official Microsoft guidance
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
                       </div>
 
                       <div className="space-y-4">
@@ -1657,12 +1819,33 @@
                       ))}
                     </div>
 
-                    {/* Sub-Agent Cards (for First-Party Agents) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                      <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-lg p-4 flex items-start gap-3">
+                        <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white">Accuracy boundary</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">Product claims were reviewed against the linked Microsoft guidance on August 21, 2026. Setup times and qualitative ratings are planning estimates, not Microsoft commitments.</p>
+                        </div>
+                      </div>
+                      <div className={`rounded-lg p-4 flex items-start gap-3 border ${
+                        currentAgent.fastTrackSupported
+                          ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-100 dark:border-emerald-900/30'
+                          : 'bg-amber-50 dark:bg-amber-950/20 border-amber-100 dark:border-amber-900/30'
+                      }`}>
+                        <Zap className={`w-5 h-5 flex-shrink-0 mt-0.5 ${currentAgent.fastTrackSupported ? 'text-emerald-600' : 'text-amber-600'}`} />
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white">FastTrack scope</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">{currentAgent.fastTrackNote}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sub-Agent Cards */}
                     {currentAgent.subAgents && (
                       <div className="mb-8">
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                           <Layers className="w-6 h-6 text-indigo-600" />
-                          Included Agents
+                          {selectedAgentKeyForContent === 'firstParty' ? 'Selected experiences' : 'Harnesses in this path'}
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {currentAgent.subAgents.map((sub) => {
@@ -1688,6 +1871,15 @@
                                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 pt-2 border-t border-gray-200 dark:border-white/[0.08]">
                                   <span className="font-semibold">Best for:</span> {sub.whenToUse}
                                 </p>
+                                <a
+                                  href={sub.sourceUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-blue-700 dark:text-blue-300 hover:underline"
+                                >
+                                  Official guidance
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
                               </div>
                             );
                           })}
@@ -1699,7 +1891,7 @@
                     <div className="bg-gray-50 dark:bg-black/50 rounded-xl p-6 mb-6 border border-gray-100 dark:border-white/[0.06]">
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                         <Lightbulb className="w-6 h-6 text-green-600" />
-                        When to Use This Agent Type
+                        When to Use This Approach
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {currentAgent.whenToUse.map((useCase, index) => (
@@ -1797,7 +1989,7 @@
                         <PlayCircle className="w-7 h-7 text-blue-600" />
                         Getting Started with {currentAgent.shortName}
                       </h3>
-                      <p className="text-gray-500 dark:text-gray-400 mb-6">Follow these steps to deploy your first {currentAgent.shortName} agent.</p>
+                      <p className="text-gray-500 dark:text-gray-400 mb-6">Follow these steps to evaluate and deploy the {currentAgent.shortName} approach.</p>
                       
                       <div className="space-y-4">
                         {currentAgent.guidance.gettingStarted.map((step) => (
@@ -1861,8 +2053,11 @@
                   <div key={`comparison-${safeSelectedAgentKey}`} className="bg-white dark:bg-white/[0.03] rounded-xl border border-gray-100 dark:border-white/[0.08] shadow-sm p-8 tab-content">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                       <BarChart3 className="w-7 h-7 text-gray-600 dark:text-gray-300" />
-                      Feature Comparison Matrix
+                      Decision Comparison
                     </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">
+                      Product capabilities and FastTrack scope are sourced from the linked Microsoft guidance. Setup time, scalability, customization, and maintenance are directional planning estimates.
+                    </p>
                     
                     <div className="overflow-x-auto">
                       <table className="w-full border-collapse">
@@ -1876,7 +2071,7 @@
                                   {agent.fastTrackSupported && (
                                     <span className="text-xs bg-gray-200 dark:bg-white/15 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded flex items-center gap-0.5">
                                       <Zap className="w-2.5 h-2.5" />
-                                      FastTrack
+                                      Guidance
                                     </span>
                                   )}
                                 </div>
@@ -1886,7 +2081,7 @@
                         </thead>
                         <tbody>
                           <tr className="hover:bg-gray-50 dark:hover:bg-white/5">
-                            <td className="p-4 font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-white/[0.08]">FastTrack Remote Guidance</td>
+                            <td className="p-4 font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-white/[0.08]">FastTrack remote guidance</td>
                             {Object.entries(agentTypes).map(([key, agent]) => (
                               <td key={key} className="p-4 text-center border-b border-gray-200 dark:border-white/[0.08]">
                                 {agent.fastTrackSupported ? 
@@ -1927,38 +2122,21 @@
                             ))}
                           </tr>
                           <tr className="hover:bg-gray-50 dark:hover:bg-white/5">
-                            <td className="p-4 font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-white/[0.08]">External APIs</td>
+                            <td className="p-4 font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-white/[0.08]">External APIs and tools</td>
                             {Object.entries(agentTypes).map(([key, agent]) => (
-                              <td key={key} className="p-4 text-center border-b border-gray-200 dark:border-white/[0.08]">
-                                {key === 'lite' || key === 'firstParty' ? 
-                                  <X className="w-5 h-5 text-red-500 mx-auto" /> : 
-                                  <Check className="w-5 h-5 text-green-500 mx-auto" />
-                                }
-                              </td>
+                              <td key={key} className="p-4 text-center text-sm border-b border-gray-200 dark:border-white/[0.08]">{agent.comparison.externalApis}</td>
                             ))}
                           </tr>
                           <tr className="hover:bg-gray-50 dark:hover:bg-white/5">
-                            <td className="p-4 font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-white/[0.08]">Multi-channel</td>
+                            <td className="p-4 font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-white/[0.08]">Deployment surfaces</td>
                             {Object.entries(agentTypes).map(([key, agent]) => (
-                              <td key={key} className="p-4 text-center border-b border-gray-200 dark:border-white/[0.08]">
-                                {key === 'full' || key === 'toolkit' ? 
-                                  <Check className="w-5 h-5 text-green-500 mx-auto" /> : 
-                                  <X className="w-5 h-5 text-red-500 mx-auto" />
-                                }
-                              </td>
+                              <td key={key} className="p-4 text-center text-sm border-b border-gray-200 dark:border-white/[0.08]">{agent.comparison.deploymentSurfaces}</td>
                             ))}
                           </tr>
                           <tr className="hover:bg-gray-50 dark:hover:bg-white/5">
                             <td className="p-4 font-semibold text-gray-900 dark:text-white">Code Required</td>
                             {Object.entries(agentTypes).map(([key, agent]) => (
-                              <td key={key} className="p-4 text-center">
-                                {key === 'toolkit' ? 
-                                  <Check className="w-5 h-5 text-green-500 mx-auto" /> : 
-                                  key === 'full' || key === 'declarative' ?
-                                  <span className="text-gray-600 dark:text-gray-300">Optional</span> :
-                                  <X className="w-5 h-5 text-red-500 mx-auto" />
-                                }
-                              </td>
+                              <td key={key} className="p-4 text-center text-sm">{agent.comparison.codeRequired}</td>
                             ))}
                           </tr>
                         </tbody>
@@ -2396,17 +2574,17 @@
                 {/* Footer */}
                 <div className="text-center mt-12 py-6 border-t border-gray-100 dark:border-white/[0.08]">
                   <p className="text-gray-400 dark:text-gray-500 text-sm mb-2">
-                    Microsoft Copilot Agents Guide • 2026
+                    Microsoft Copilot Agents Guide • Core guidance reviewed August 21, 2026
                   </p>
                   <div className="flex items-center justify-center gap-3 text-xs text-gray-400 dark:text-gray-500">
                     <a 
-                      href="https://learn.microsoft.com/en-us/microsoft-365/fasttrack/microsoft-365-copilot#microsoft-365-copilot-agents"
+                      href="https://learn.microsoft.com/microsoft-365/fasttrack/microsoft-365-copilot#microsoft-copilot-agents"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                     >
                       <Zap className="w-3 h-3" />
-                      FastTrack Service Description
+                      FastTrack scope for agents
                     </a>
                     <span className="text-gray-200 dark:text-gray-700">·</span>
                     <a 
