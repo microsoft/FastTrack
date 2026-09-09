@@ -35,10 +35,18 @@
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1,
+        "uniques": 1
       }
     },
     "2026-09-08": {
       "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
         "views": 0,
         "uniques": 0
       }
@@ -50,6 +58,10 @@
       },
       "get-siteinventory": {
         "views": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
       }
     }
   }
