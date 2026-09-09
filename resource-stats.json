@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-30T21:49:54.356Z",
+  "generatedAt": "2026-09-09T18:11:28.079Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -26,6 +26,13 @@
       "views": 32,
       "viewsUniques": 6
     },
+    "copilot-studio-workflow": {
+      "views": 2,
+      "viewsUniques": 1
+    },
+    "get-siteinventory": {
+      "views": 1
+    },
     "powerclaw-agent": {
       "views": 1632,
       "viewsUniques": 961,
@@ -46,7 +53,12 @@
     },
     "viva-insights-copilot-dashboard": {
       "views": 119,
-      "viewsUniques": 70
+      "viewsUniques": 70,
+      "upvotes": 1,
+      "discussion": {
+        "number": 508,
+        "url": "https://github.com/microsoft/FastTrack/discussions/508"
+      }
     }
   }
 }

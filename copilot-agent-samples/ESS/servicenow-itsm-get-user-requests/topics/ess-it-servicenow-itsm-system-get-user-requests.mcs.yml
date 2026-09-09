@@ -1,0 +1,50 @@
+kind: AdaptiveDialog
+inputs:
+  - kind: ManualTaskInput
+    propertyName: IsActive
+    value: =true
+
+  - kind: ManualTaskInput
+    propertyName: UserIdentifier
+    value: "=\"\""
+
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: InvokeFlowAction
+      id: callGetUserRequestsFlow
+      input:
+        binding:
+          text: =Coalesce(Topic.UserIdentifier, System.User.PrincipalName)
+          text_1: =If(IsBlank(Topic.IsActive), "", Text(Topic.IsActive))
+
+      output:
+        binding:
+          errormessage: Topic.ErrorMessage
+          issuccessful: Topic.IsSuccessful
+          servicenowdata: Topic.ServiceNowData
+          servicenowsessionid: Topic.ServiceNowSessionID
+          servicenowtransactionid: Topic.ServiceNowTransactionID
+          statuscode: Topic.StatusCode
+
+      flowId: "{FLOW_GUID}"
+
+
+inputType:
+  properties:
+    IsActive:
+      displayName: IsActive
+      type: Boolean
+
+    UserIdentifier:
+      displayName: UserIdentifier
+      type: String
+
+outputType:
+  properties:
+    ServiceNowData:
+      displayName: ServiceNowData
+      description: List of service catalog requests returned from ServiceNow.
+      type: String
+

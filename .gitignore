@@ -1,2 +1,5 @@
 .vscode/launch.json
 node_modules/
+
+# Local auth/token caches and per-folder scratch state - never commit
+.local/
