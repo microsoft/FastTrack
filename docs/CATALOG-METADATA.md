@@ -65,6 +65,7 @@ prerequisites:
 | `tags` | string list | Lowercase discovery terms. Prefer a few specific tags over many broad ones. |
 | `format` | enum | One of `ps1`, `bundle`, `declarative`, `interactive`, `pptx`, `pbix`, or `md`. This replaces the former `artifact` label. |
 | `interactiveKind` | enum | Only for `format: interactive`. Set `guide` for a walkthrough or implementation/decision guide, or `tool` for a calculator or utility. Defaults to `tool`, which the catalog labels "Interactive tool"; `guide` is labeled "Interactive guide". |
+| `preview` | string | Optional relative path (inside the resource folder) to a screenshot the catalog detail page renders above the description, for example `preview.webp`. Use an optimized local image (WebP or PNG). No URLs, absolute paths, `..`, or backslashes. Omit it for resources without a screenshot. |
 | `featured` | boolean | Use sparingly for resources selected for catalog promotion. Default is `false`. |
 | `status` | enum | `active`, `preview`, or `archived`. Default is `active`. |
 | `url` | HTTPS URL | Optional GitHub or destination URL. When omitted, the generator derives a GitHub URL from the resource path. |

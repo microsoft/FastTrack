@@ -7,7 +7,7 @@ author:
   - "Pratik Bhusal"
   - "Manas Biswas"
   - "Alejandro Lopez"
-version: 1.0.1
+version: 1.0.2
 published: 2026-09-09
 updated: 2026-09-09
 tags:
@@ -17,6 +17,7 @@ tags:
   - security
 format: interactive
 interactiveKind: guide
+preview: preview.webp
 featured: false
 status: active
 whatItIs: >-

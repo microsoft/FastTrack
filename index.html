@@ -757,6 +757,44 @@
     .detail-main #detailDesc {
       font-size: 1.15rem; line-height: 1.7; color: var(--text); margin: 0 0 2.5rem;
     }
+    /* Resource preview screenshot */
+    .detail-preview { margin: 0 0 2.5rem; }
+    .detail-preview-frame {
+      display: block; width: 100%; margin: 0; padding: 0; border: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; position: relative;
+      box-shadow: 0 12px 32px -20px rgba(0, 0, 0, 0.55);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .detail-preview-frame img {
+      display: block; width: 100%; height: auto; aspect-ratio: 1600 / 960;
+      object-fit: cover; object-position: top center;
+    }
+    .detail-preview-frame[role="button"] { cursor: pointer; }
+    .detail-preview-frame[role="button"]:hover,
+    .detail-preview-frame[role="button"]:focus-visible {
+      border-color: var(--accent); transform: translateY(-2px);
+      box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.6);
+    }
+    .detail-preview-frame[role="button"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .detail-preview-badge {
+      position: absolute; bottom: 0.75rem; right: 0.75rem;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 0.7rem; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 600; color: #fff;
+      background: rgba(17, 24, 39, 0.82); backdrop-filter: blur(4px);
+      opacity: 0; transform: translateY(4px); transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+    .detail-preview-frame[role="button"]:hover .detail-preview-badge,
+    .detail-preview-frame[role="button"]:focus-visible .detail-preview-badge { opacity: 1; transform: translateY(0); }
+    .detail-preview-caption {
+      margin: 0.6rem 0 0; font-size: 0.8rem; color: var(--text-muted);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .detail-preview-frame, .detail-preview-badge { transition: none; }
+      .detail-preview-frame[role="button"]:hover, .detail-preview-frame[role="button"]:focus-visible { transform: none; }
+    }
     .detail-section-label,
     .detail-main h3 {
       font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
@@ -1451,6 +1489,12 @@
     <div class="detail-grid">
       <div class="detail-main">
         <p id="detailDesc"></p>
+        <figure class="detail-preview d-none" id="detailPreviewFigure">
+          <div class="detail-preview-frame" id="detailPreviewFrame">
+            <span class="detail-preview-badge" id="detailPreviewBadge" aria-hidden="true"></span>
+          </div>
+          <figcaption class="detail-preview-caption d-none" id="detailPreviewCaption"></figcaption>
+        </figure>
         <h3>About this resource</h3>
         <div id="detailSynthesis">
           <section class="detail-content-section detail-what" id="detailWhatSection">
@@ -2510,6 +2554,66 @@
       } else {
         viewBtn.style.display = 'none';
         viewBtn.onclick = null;
+      }
+
+      // Resource preview screenshot (graceful when a resource has no preview)
+      const previewFigure = document.getElementById('detailPreviewFigure');
+      const previewFrame = document.getElementById('detailPreviewFrame');
+      const previewBadge = document.getElementById('detailPreviewBadge');
+      const previewCaption = document.getElementById('detailPreviewCaption');
+      let previewImg = document.getElementById('detailPreviewImg');
+      if (!previewImg) {
+        previewImg = document.createElement('img');
+        previewImg.id = 'detailPreviewImg';
+        previewImg.loading = 'lazy';
+        previewImg.decoding = 'async';
+        previewImg.width = 1600;
+        previewImg.height = 960;
+        previewFrame.insertBefore(previewImg, previewBadge);
+      }
+      if (resource.preview) {
+        previewImg.src = resource.preview;
+        previewImg.alt = `Preview of the ${resource.name} ${formatArtifact(resource.artifact, resource).toLowerCase()}`;
+        const canOpen = Boolean(embedUrl);
+        // Reuse the existing viewer overlay pattern to offer a larger, interactive view.
+        const eyeSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>';
+        if (canOpen) {
+          previewFrame.setAttribute('role', 'button');
+          previewFrame.setAttribute('tabindex', '0');
+          previewFrame.setAttribute('aria-label', `Open ${resource.name} in the interactive viewer`);
+          previewBadge.innerHTML = `${eyeSvg}<span>Open interactive view</span>`;
+          previewBadge.classList.remove('d-none');
+          previewCaption.textContent = 'Select the preview to open the interactive guide.';
+          previewCaption.classList.remove('d-none');
+          previewFrame.onclick = () => openViewer(resource.name, embedUrl);
+          previewFrame.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openViewer(resource.name, embedUrl); }
+          };
+        } else {
+          previewFrame.removeAttribute('role');
+          previewFrame.removeAttribute('tabindex');
+          previewFrame.removeAttribute('aria-label');
+          previewBadge.classList.add('d-none');
+          previewBadge.innerHTML = '';
+          previewCaption.classList.add('d-none');
+          previewCaption.textContent = '';
+          previewFrame.onclick = null;
+          previewFrame.onkeydown = null;
+        }
+        previewFigure.classList.remove('d-none');
+      } else {
+        previewFigure.classList.add('d-none');
+        previewImg.removeAttribute('src');
+        previewImg.alt = '';
+        previewFrame.removeAttribute('role');
+        previewFrame.removeAttribute('tabindex');
+        previewFrame.removeAttribute('aria-label');
+        previewBadge.classList.add('d-none');
+        previewBadge.innerHTML = '';
+        previewCaption.classList.add('d-none');
+        previewCaption.textContent = '';
+        previewFrame.onclick = null;
+        previewFrame.onkeydown = null;
       }
       
       // Mount giscus discussion
