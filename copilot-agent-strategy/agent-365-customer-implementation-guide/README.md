@@ -7,7 +7,7 @@ author:
   - "Pratik Bhusal"
   - "Manas Biswas"
   - "Alejandro Lopez"
-version: 1.0.0
+version: 1.0.1
 published: 2026-09-09
 updated: 2026-09-09
 tags:
@@ -16,6 +16,7 @@ tags:
   - governance
   - security
 format: interactive
+interactiveKind: guide
 featured: false
 status: active
 whatItIs: >-
