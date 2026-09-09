@@ -236,10 +236,11 @@
       "format": "interactive",
       "featured": true,
       "status": "active",
+      "interactiveKind": "guide",
       "author": "Microsoft FastTrack",
-      "version": "4.0.0",
+      "version": "4.0.1",
       "published": "2025-10-28",
-      "updated": "2026-08-21",
+      "updated": "2026-09-09",
       "whatItIs": "A self-contained interactive guide to Microsoft-built agent experiences, Agents in SharePoint, Agent Builder, Copilot Studio harnesses, Microsoft 365 Agents Toolkit, and Microsoft Agent 365.",
       "whyUseIt": [
         "Shortlist an agent approach based on the work, audience, skills, governance, and delivery model.",
@@ -702,12 +703,13 @@
       "format": "interactive",
       "featured": false,
       "status": "active",
+      "interactiveKind": "guide",
       "author": [
         "Pratik Bhusal",
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2026-09-09",
       "updated": "2026-09-09",
       "whatItIs": "A self-contained interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
