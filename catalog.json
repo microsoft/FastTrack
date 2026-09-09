@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-16",
+  "generatedAt": "2026-07-31",
   "count": 30,
   "resources": [
     {
@@ -237,9 +237,9 @@
       "featured": true,
       "status": "active",
       "author": "Microsoft FastTrack",
-      "version": "3.0.0",
+      "version": "3.1.0",
       "published": "2025-10-28",
-      "updated": "2026-04-17",
+      "updated": "2026-07-31",
       "whatItIs": "A self-contained interactive web guide that compares Microsoft Copilot agent types across capabilities, constraints, technical effort, cost, and FastTrack support.",
       "whyUseIt": [
         "Shortlist an agent platform based on use case, team skills, budget, timeline, and growth.",

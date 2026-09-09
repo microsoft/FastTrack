@@ -815,6 +815,33 @@
       background-color: var(--accent);
     }
 
+    /* Community & upvotes sign-in guidance */
+    .giscus-notice {
+      display: flex; gap: 0.6rem; align-items: flex-start;
+      margin: 0 0 1rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 0.85rem; line-height: 1.55;
+    }
+    .giscus-notice a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .giscus-notice-icon { flex: 0 0 auto; font-size: 0.95rem; line-height: 1.45; }
+    .giscus-notice strong { color: var(--text); font-weight: 600; }
+    .giscus-notice code {
+      font-family: var(--font-mono); font-size: 0.85em;
+      background: var(--surface-hover); border: 1px solid var(--border);
+      padding: 0.05rem 0.3rem; border-radius: 4px; color: var(--text);
+    }
+    /* Escalated state: the signed-in account is enterprise-managed and cannot react */
+    .giscus-notice.is-emu {
+      border-color: rgba(234, 88, 12, 0.4);
+      background: var(--type-strategy-bg);
+      color: var(--text);
+    }
+    .giscus-notice.is-emu a { color: var(--type-strategy); }
+
     /* How to use styles */
     .detail-how-text { white-space: pre-wrap; margin-bottom: 0.75rem; }
     .detail-how-text:last-child { margin-bottom: 0; }
@@ -1445,6 +1472,12 @@
         </div>
         <div class="detail-giscus-section">
           <h3>Community &amp; upvotes</h3>
+          <!-- Sign-in guidance. Upgraded to the EMU warning by handleGiscusMessage() when the
+               signed-in giscus account turns out to be enterprise-managed. -->
+          <div class="giscus-notice" id="giscusNotice">
+            <span class="giscus-notice-icon" aria-hidden="true">💡</span>
+            <span id="giscusNoticeText">Reactions and comments run on GitHub Discussions, so you need to be signed in to GitHub. Work accounts managed by your company (Enterprise Managed Users, usually written <code>name_company</code>) can read this repo but <strong>cannot react or comment</strong> on it, so their votes never save. <a href="https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises/abilities-and-restrictions-of-managed-user-accounts#interactions" target="_blank" rel="noopener noreferrer">Why?</a></span>
+          </div>
           <!-- giscus embed is mounted per-resource by mountGiscus() using the resource slug as data-term -->
           <div id="giscusContainer"></div>
         </div>
@@ -2330,6 +2363,38 @@
     // silently drops likes.
     const giscusState = { slug: null };
 
+    // EMU (Enterprise Managed User) accounts can READ public repos but cannot react to or comment
+    // on anything outside their own enterprise, so a 👍 from one of those accounts looks like it
+    // worked and then vanishes on reload. Nothing on our side can grant them access — it is a
+    // GitHub platform restriction. The best we can do is tell the user before they waste a click.
+    // Detection: EMU logins carry a `_shortcode` suffix, and underscores are illegal in regular
+    // github.com usernames, so an underscore in viewer.login is a reliable EMU signal.
+    // We turn on emit-metadata purely to read `viewer`. We NEVER remount on it — see the note above.
+    // The warning is account-level rather than resource-level, so once shown it stays for the session.
+    const EMU_DOCS_URL = 'https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises/abilities-and-restrictions-of-managed-user-accounts#interactions';
+
+    function isEmuLogin(login) {
+      return typeof login === 'string' && login.includes('_');
+    }
+
+    function showEmuNotice(login) {
+      const notice = document.getElementById('giscusNotice');
+      const text = document.getElementById('giscusNoticeText');
+      if (!notice || !text || notice.classList.contains('is-emu')) return;
+      notice.classList.add('is-emu');
+      notice.querySelector('.giscus-notice-icon').textContent = '⚠️';
+      text.innerHTML = `You're signed in as <code></code>, an enterprise-managed account. GitHub blocks these accounts from reacting or commenting on public repositories, so <strong>your vote will look like it saved and then disappear</strong>. Sign out below and sign back in with a personal github.com account. An incognito window is the quickest way. <a href="${EMU_DOCS_URL}" target="_blank" rel="noopener noreferrer">Read the GitHub restriction</a>`;
+      text.querySelector('code').textContent = login;
+    }
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== 'https://giscus.app') return;
+      const payload = event.data?.giscus;
+      if (!payload) return;
+      const login = payload.viewer?.login;
+      if (isEmuLogin(login)) showEmuNotice(login);
+    });
+
     function mountGiscus(slug, theme) {
       const container = document.getElementById('giscusContainer');
       if (!container) return;
@@ -2345,6 +2410,7 @@
       script.setAttribute("data-term", slug);
       script.setAttribute("data-strict", "1");
       script.setAttribute("data-reactions-enabled", "1");
+      script.setAttribute("data-emit-metadata", "1");
       script.setAttribute("data-input-position", "bottom");
       script.setAttribute("data-theme", theme === "dark" ? "dark_dimmed" : "light");
       script.setAttribute("data-lang", "en");
