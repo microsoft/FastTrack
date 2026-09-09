@@ -6,14 +6,15 @@ summary: >-
   Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common
   scenarios.
 author: Microsoft FastTrack
-version: 4.0.0
+version: 4.0.1
 published: "2025-10-28"
-updated: "2026-08-21"
+updated: "2026-09-09"
 tags:
   - guide
   - decision
   - planning
 format: interactive
+interactiveKind: guide
 featured: true
 whatItIs: >-
   A self-contained interactive guide to Microsoft-built agent experiences, Agents in SharePoint,

@@ -1355,7 +1355,7 @@
           <span class="stat-chip">Updated weekly</span>
         </div>
         <h1 class="display-title">Tools &amp; templates for Microsoft 365</h1>
-        <p class="hero-subtitle">Browse agents, analytics, and strategy resources &mdash; no coding required.</p>
+        <p class="hero-subtitle">Browse agents, analytics, and guides &mdash; no coding required.</p>
       </div>
       <div class="hero-search">
         <div class="search-container">
@@ -1573,7 +1573,7 @@
       { id: 'all', label: 'All', desc: 'Browse everything' },
       { id: 'script', label: 'Scripts', colorVar: '--type-script', desc: 'PowerShell automation' },
       { id: 'agent', label: 'Agents', colorVar: '--type-agent', desc: 'Ready-to-use AI assistants' },
-      { id: 'strategy', label: 'Strategy', colorVar: '--type-strategy', desc: 'Planning tools & guides' },
+      { id: 'strategy', label: 'Guides & planning', colorVar: '--type-strategy', desc: 'Implementation guides, planning tools & walkthroughs' },
       { id: 'analytics', label: 'Analytics', colorVar: '--type-analytics', desc: 'Power BI & reporting' },
       { id: 'prompt', label: 'Prompts', colorVar: '--type-prompt', desc: 'Copilot prompt templates' },
       { id: 'skill', label: 'Skills', colorVar: '--type-skill', desc: 'Interactive SME skills' }
@@ -1652,13 +1652,15 @@
       return t && t.colorVar ? `var(${t.colorVar}-bg)` : 'var(--surface-hover)';
     };
 
-    const formatArtifact = (artifact) => {
+    const formatArtifact = (artifact, resource) => {
+      if (artifact === 'interactive') {
+        return resource && resource.interactiveKind === 'guide' ? 'Interactive guide' : 'Interactive tool';
+      }
       const map = {
         'pbix': '.pbix · Power BI',
         'ps1': '.ps1 · PowerShell',
         'pptx': '.pptx · Slides',
         'md': '.md · Doc',
-        'interactive': 'interactive · Web tool',
         'bundle': 'bundle · Agent',
         'declarative': 'declarative · Agent'
       };
@@ -2176,8 +2178,8 @@
             </span>` : ''}
           </div>
           <div class="card-artifact-container">
-            <div class="card-artifact" aria-label="Format: ${data.artifact}">
-              ${star} ${formatArtifact(data.artifact)}
+            <div class="card-artifact" aria-label="Format: ${formatArtifact(data.artifact, data)}">
+              ${star} ${formatArtifact(data.artifact, data)}
             </div>
             <div class="compact-date">${formatDate(data.updated)}</div>
             <div class="card-link-out">View details <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
@@ -2443,7 +2445,7 @@
       
       // Detail content
       document.getElementById('detailDesc').textContent = resource.description;
-      const fmt = formatArtifact(resource.artifact);
+      const fmt = formatArtifact(resource.artifact, resource);
       const fallbackWhat = `This ${typeDef.label.toLowerCase()} is part of the ${resource.subcategory} category. It is provided as ${fmt} to assist with FastTrack deployments.`;
       renderMarkdownish(document.getElementById('detailWhatItIs'), resource.whatItIs || fallbackWhat);
 
