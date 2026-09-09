@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-16",
-  "count": 30,
+  "generatedAt": "2026-09-09",
+  "count": 31,
   "resources": [
     {
       "name": "Agent Brainstorming Template",
@@ -225,8 +225,8 @@
       "type": "strategy",
       "subcategory": "Interactive",
       "category": "Interactive",
-      "description": "Compare Microsoft Copilot agent platforms with capability views, decision guidance, support indicators, and scenarios.",
-      "summary": "Compare Microsoft Copilot agent platforms with capability views, decision guidance, support indicators, and scenarios.",
+      "description": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
+      "summary": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
       "tags": [
         "guide",
         "decision",
@@ -237,16 +237,16 @@
       "featured": true,
       "status": "active",
       "author": "Microsoft FastTrack",
-      "version": "3.0.0",
+      "version": "4.0.0",
       "published": "2025-10-28",
-      "updated": "2026-04-17",
-      "whatItIs": "A self-contained interactive web guide that compares Microsoft Copilot agent types across capabilities, constraints, technical effort, cost, and FastTrack support.",
+      "updated": "2026-08-21",
+      "whatItIs": "A self-contained interactive guide to Microsoft-built agent experiences, Agents in SharePoint, Agent Builder, Copilot Studio harnesses, Microsoft 365 Agents Toolkit, and Microsoft Agent 365.",
       "whyUseIt": [
-        "Shortlist an agent platform based on use case, team skills, budget, timeline, and growth.",
-        "Compare capabilities and limitations side by side before committing to a build path.",
-        "Give business, architecture, and development stakeholders a shared decision framework."
+        "Shortlist an agent approach based on the work, audience, skills, governance, and delivery model.",
+        "Separate generally available capabilities from Frontier and public preview experiences.",
+        "Review current licensing considerations and the published FastTrack service boundary."
       ],
-      "howToUse": "Open `index.html` directly in a modern browser. To host locally, run `python -m http.server 8000` from the resource folder and browse to `http://localhost:8000/index.html`. Use the Overview, Capabilities, Comparison, and Guidance tabs.",
+      "howToUse": "Open `index.html` in a modern browser. Use the Strategy view first, then compare the Overview, Guidance, Capabilities, Comparison, Labs, and Message Center tabs.",
       "prerequisites": [
         "Modern web browser"
       ],
@@ -682,6 +682,48 @@
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-ManagerSimulator",
       "source": "copilot-agent-samples/agent-builder-agents/da-ManagerSimulator/README.md"
+    },
+    {
+      "name": "Microsoft Agent 365 Customer Implementation Guide",
+      "title": "Microsoft Agent 365 Customer Implementation Guide",
+      "slug": "microsoft-agent-365-customer-implementation-guide",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Plan and configure a governed Microsoft Agent 365 baseline with simple guidance and detailed implementation tasks.",
+      "summary": "Plan and configure a governed Microsoft Agent 365 baseline with simple guidance and detailed implementation tasks.",
+      "tags": [
+        "agent-365",
+        "implementation",
+        "governance",
+        "security"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": false,
+      "status": "active",
+      "author": [
+        "Pratik Bhusal",
+        "Manas Biswas",
+        "Alejandro Lopez"
+      ],
+      "version": "1.0.0",
+      "published": "2026-09-09",
+      "updated": "2026-09-09",
+      "whatItIs": "A self-contained interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
+      "whyUseIt": [
+        "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
+        "Follow 65 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references.",
+        "Use the guide offline without a server, sign-in, external runtime dependency, or saved browser progress."
+      ],
+      "howToUse": "1. Download or open `index.html` in a modern browser.\n2. Select **Simple** for the concise configuration reference or **Detailed** for the full implementation journey.\n3. Use the built-in navigation, theme, and print controls while applying the guidance in your own tenant.\n4. Confirm product availability, licensing, roles, and portal behavior in your tenant before making production changes.",
+      "prerequisites": [
+        "Modern web browser",
+        "Appropriate Microsoft 365, Agent 365, security, compliance, identity, and endpoint licenses for the features you plan to configure",
+        "Administrative roles required by the configuration tasks you choose to perform"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-customer-implementation-guide",
+      "source": "copilot-agent-strategy/agent-365-customer-implementation-guide/README.md"
     },
     {
       "name": "Migrate-CopilotStudioAgents",
