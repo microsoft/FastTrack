@@ -2,6 +2,10 @@
 
 All notable changes to the Microsoft Agent 365 Customer Implementation Guide are documented here.
 
+## 1.0.3 - 2026-09-09
+
+- Made the wrapper credit footer visually quieter with restrained spacing, slightly smaller but readable type, and a muted disclosure control. Author credits, the full MIT License text, keyboard access, and theme behavior are unchanged.
+
 ## 1.0.2 - 2026-09-09
 
 - Added a `preview.webp` catalog screenshot and `preview` metadata so the catalog detail page shows a real preview of the guide. Guide content is unchanged.
