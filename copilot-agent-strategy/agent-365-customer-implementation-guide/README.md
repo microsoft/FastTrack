@@ -7,7 +7,7 @@ author:
   - "Pratik Bhusal"
   - "Manas Biswas"
   - "Alejandro Lopez"
-version: 1.0.2
+version: 1.0.3
 published: 2026-09-09
 updated: 2026-09-09
 tags:
