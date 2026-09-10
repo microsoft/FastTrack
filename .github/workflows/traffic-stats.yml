@@ -25,6 +25,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          # An approved fine-grained PAT enables automatic downstream workflow runs.
+          # The built-in token fallback may require manual PR creation and approval.
+          token: ${{ secrets.AUTOMATION_PAT || github.token }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -37,7 +41,9 @@ jobs:
         run: npm ci
         working-directory: tools/catalog-build
 
-      - name: Collect and persist traffic data
+      - name: Collect and persist GitHub traffic data
+        id: github-traffic
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
         run: |
@@ -55,6 +61,12 @@ jobs:
             exit 1
           fi
 
+          is_non_retryable_api_error() {
+            grep -Eq \
+              'Bad credentials \(HTTP 401\)|SAML enforcement|Resource not accessible by personal access token|Must have (admin rights|push access) to [Rr]epository|HTTP 404|HTTP 422' \
+              "$1"
+          }
+
           gh_api_retry() {
             local max_attempts=3
             local delay=5
@@ -71,6 +83,11 @@ jobs:
               # Keep gh's stderr: without it every failure looks identical and the
               # real cause (401 / 403 / 404 / rate limit) is invisible in the log.
               echo "::warning::gh api attempt $attempt/$max_attempts failed: $(tr '\n' ' ' <"$err_file" | cut -c1-400)" >&2
+              # Authentication, SSO and permission failures cannot recover during
+              # this run. Do not hide the actionable error behind needless retries.
+              if is_non_retryable_api_error "$err_file"; then
+                break
+              fi
               [ "$attempt" -lt "$max_attempts" ] && sleep "$delay"
               delay=$((delay * 2))
               attempt=$((attempt + 1))
@@ -88,7 +105,7 @@ jobs:
             # substitution, so anything on stdout is captured into the caller's
             # variable instead of being printed to the workflow log.
             if ! response=$(gh_api_retry "$endpoint"); then
-              echo "::error::Failed to fetch $label from $endpoint after retries. Most likely the TRAFFIC_TOKEN secret has expired or lost administration:read on $REPO." >&2
+              echo "::error::Failed to fetch $label from $endpoint. Verify that TRAFFIC_TOKEN is current, authorized for the microsoft organization (including SAML SSO when required), approved for $REPO, and has Administration read access." >&2
               return 1
             fi
 
@@ -206,28 +223,56 @@ jobs:
           echo "✅ Saved $DATA_DIR/$DATE.json"
 
       - name: Build resource stats
+        id: stats
+        if: always()
+        continue-on-error: true
         env:
           CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node tools/catalog-build/build-stats.js
+        run: node tools/catalog-build/build-stats.js --require-clarity
 
       - name: Commit and open PR
+        id: publish
+        if: always() && (steps.github-traffic.outcome == 'success' || steps.stats.outputs.clarity_available == 'true')
+        continue-on-error: true
         env:
-          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          # Publishing must not depend on the separate PAT used only for GitHub's
+          # traffic API. Prefer an approved fine-grained PAT.
+          GH_TOKEN: ${{ secrets.AUTOMATION_PAT || github.token }}
+          AUTOMATION_PAT_CONFIGURED: ${{ secrets.AUTOMATION_PAT != '' }}
         run: |
+          set -euo pipefail
+
+          if [ "$AUTOMATION_PAT_CONFIGURED" != "true" ]; then
+            echo "::warning::AUTOMATION_PAT is not configured. The built-in token may be blocked from creating pull requests; if it creates one, its pull_request runs may require a writer to approve them. Push-triggered workflows remain suppressed."
+            {
+              echo "### ⚠️ Publishing is using the built-in token"
+              echo ""
+              echo "Publishing may require manual PR creation and approval of downstream workflow runs. Configure an organization-approved fine-grained PAT as \`AUTOMATION_PAT\` for automatic runs. A GitHub App migration is an alternative design, but is not implemented here."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add traffic-data/ resource-stats.json resource-discussions.json
-          if [ -f design-concepts/resource-stats.json ]; then
-            git add design-concepts/resource-stats.json
+
+          DATE=$(date -u +%Y-%m-%d)
+          if [ "${{ steps.github-traffic.outcome }}" = "success" ]; then
+            git add "traffic-data/$DATE.json"
           fi
+          if [ "${{ steps.stats.outputs.generated }}" = "true" ]; then
+            git add resource-stats.json resource-discussions.json traffic-data/clarity-views.json
+            if [ -f design-concepts/resource-stats.json ]; then
+              git add design-concepts/resource-stats.json
+            fi
+          fi
+
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
 
-          DATE=$(date -u +%Y-%m-%d)
           BRANCH="traffic-data/$DATE"
+          COMPARE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/master...${BRANCH}?expand=1"
 
           # Create a fresh branch and push
           git checkout -b "$BRANCH"
@@ -239,24 +284,37 @@ jobs:
           if [ -n "$existing_pr" ]; then
             echo "PR #$existing_pr already exists for $BRANCH"
           else
-            gh pr create \
+            if create_output=$(gh pr create \
               --title "📊 Traffic data for $DATE" \
               --body "Automated daily traffic data collection." \
               --head "$BRANCH" \
-              --base master
-            echo "✅ PR created"
+              --base master 2>&1); then
+              echo "✅ PR created: $create_output"
+              existing_pr=$(printf '%s' "$create_output" | grep -oE 'pull/[0-9]+' | tail -n1 | cut -d/ -f2)
+            else
+              echo "$create_output"
+              echo "::error::The data branch was pushed, but automation could not open its pull request. Configure an approved fine-grained PAT as AUTOMATION_PAT, or open the PR manually: $COMPARE_URL"
+              {
+                echo "### ⚠️ Traffic data needs a manual PR"
+                echo ""
+                echo "The safe generated outputs were pushed to \`$BRANCH\`, but the workflow could not create a PR."
+                echo ""
+                echo "**Open the PR:** $COMPARE_URL"
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
           fi
 
           # Enable auto-merge (requires repo setting "Allow auto-merge" to be on)
-          pr_number=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          pr_number="${existing_pr:-}"
           if [ -n "$pr_number" ]; then
             gh pr merge "$pr_number" --auto --squash \
               && echo "✅ Auto-merge enabled for PR #$pr_number" \
               || echo "::warning::Could not enable auto-merge — check repo settings"
           fi
 
-      - name: Alert on failure
-        if: failure()
+      - name: Alert on GitHub traffic collection failure
+        if: always() && steps.github-traffic.outcome == 'failure'
         env:
           # Use the built-in token here: TRAFFIC_TOKEN may itself be the failure
           # (e.g. expired), so the alert must not depend on it.
@@ -271,14 +329,19 @@ jobs:
           Traffic data has **stopped being captured**. Because GitHub only retains a rolling
           14-day traffic window, every day this stays broken is data lost permanently.
 
-          **Most likely cause:** the \`TRAFFIC_TOKEN\` secret has **expired or lost access**.
-          The traffic API requires a PAT with push / \`administration:read\` on this repo — the
-          built-in \`GITHUB_TOKEN\` cannot read traffic.
+          **Most likely cause:** the \`TRAFFIC_TOKEN\` secret is expired, revoked, not
+          authorized for the Microsoft organization's SAML SSO, or no longer approved for
+          this repository. The traffic API requires \`administration:read\`; the built-in
+          \`GITHUB_TOKEN\` cannot read repository traffic.
 
           **Fix:**
-          1. Create a new PAT (classic \`repo\` scope, or fine-grained: Administration read + Contents R/W + Pull requests R/W).
-          2. \`gh secret set TRAFFIC_TOKEN --repo ${GITHUB_REPOSITORY} --body "<NEW_PAT>"\`
-          3. Re-run: \`gh workflow run traffic-stats.yml --repo ${GITHUB_REPOSITORY}\`
+          1. Create or renew an organization-approved fine-grained PAT owned by a user
+             with write access to the repository. Select \`${GITHUB_REPOSITORY}\` and
+             grant Administration read access.
+          2. Replace the \`TRAFFIC_TOKEN\` Actions secret with the PAT.
+          3. Re-run this workflow and confirm the traffic endpoints return successfully.
+
+          A GitHub App migration is another option, but it is not implemented by this workflow.
 
           Failed run: ${RUN_URL}
 
@@ -305,3 +368,29 @@ jobs:
               --label "traffic-collection-failure"
             echo "🚨 Opened new alert issue"
           fi
+
+      - name: Report Clarity collection failure
+        if: always() && steps.stats.outputs.generated == 'true' && steps.stats.outputs.clarity_available != 'true'
+        run: |
+          echo "::error::Clarity export was unavailable. Existing accumulated values were preserved; no missing resource was written as zero."
+          {
+            echo "### ⚠️ Clarity stats were not refreshed"
+            echo ""
+            echo "Check \`CLARITY_API_TOKEN\` and the Clarity Data Export API. Its maximum three-day lookback makes prompt recovery important."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report stats generation failure
+        if: always() && steps.stats.outcome == 'failure' && steps.stats.outputs.generated != 'true'
+        run: |
+          echo "::error::Resource stats generation failed before safe outputs were produced; no generated stats files were staged."
+
+      - name: Report publishing failure
+        if: always() && steps.publish.outcome == 'failure'
+        run: |
+          echo "::error::Safe collected outputs could not be published. Review the Commit and open PR step and its manual PR link, if available."
+
+      - name: Fail when collection or publishing was incomplete
+        if: always() && (steps.github-traffic.outcome == 'failure' || steps.stats.outcome == 'failure' || steps.publish.outcome == 'failure')
+        run: |
+          echo "::error::One or more independent traffic sources or the publishing step failed. Successful source outputs were preserved and published when possible."
+          exit 1

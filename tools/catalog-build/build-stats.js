@@ -1,10 +1,11 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(toolDirectory, '..', '..');
 const checkOnly = process.argv.includes('--check');
+const requireClarity = process.argv.includes('--require-clarity');
 const trafficDirectory = join(repositoryRoot, 'traffic-data');
 const clarityStatePath = join(trafficDirectory, 'clarity-views.json');
 const catalogPath = join(repositoryRoot, 'catalog.json');
@@ -139,10 +140,13 @@ function parseClarityTraffic(data, knownSlugs) {
   const traffic = Array.isArray(data)
     ? data.find(metric => metric?.metricName === 'Traffic')
     : undefined;
+  if (!traffic || !Array.isArray(traffic.information)) {
+    throw new Error('Clarity response did not include the Traffic metric');
+  }
   const totals = new Map();
   const dated = new Map();
 
-  for (const row of Array.isArray(traffic?.information) ? traffic.information : []) {
+  for (const row of traffic.information) {
     const slug = slugFromClarityUrl(row.URL ?? row.Url ?? row.url, knownSlugs);
     if (!slug) continue;
     const metrics = metricsFromClarityRow(row);
@@ -199,10 +203,16 @@ function mapToObject(map) {
   return Object.fromEntries([...map].sort(([left], [right]) => left.localeCompare(right)));
 }
 
+function setActionOutput(name, value) {
+  if (process.env.GITHUB_OUTPUT) {
+    appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`);
+  }
+}
+
 async function updateClarityState(state, knownSlugs) {
   if (!clarityToken) {
     console.log('CLARITY_API_TOKEN is not set; preserving accumulated Clarity views.');
-    return false;
+    return { available: false, changed: false };
   }
 
   try {
@@ -225,10 +235,10 @@ async function updateClarityState(state, knownSlugs) {
       state.days[dates[2]] = mapToObject(subtractClarityTotals(threeDays.totals, twoDays.totals));
     }
     state.lastRun = runDate;
-    return true;
+    return { available: true, changed: true };
   } catch (error) {
     console.warn(`Warning: could not collect Clarity views: ${error.message}`);
-    return false;
+    return { available: false, changed: false };
   }
 }
 
@@ -358,7 +368,7 @@ const discussionConfig = readOptionalJson(discussionsPath, {
 const clarityState = readOptionalJson(clarityStatePath, { lastRun: '', days: {} });
 if (!clarityState.days || typeof clarityState.days !== 'object') clarityState.days = {};
 
-const clarityChanged = await updateClarityState(clarityState, knownSlugs);
+const clarityResult = await updateClarityState(clarityState, knownSlugs);
 const clarityViews = collectClarityViews(clarityState, knownSlugs);
 const fallbackViews = collectFallbackViews(resourceFolders);
 const discussions = await collectDiscussions();
@@ -404,9 +414,17 @@ if (!checkOnly) {
   if (!existsSync(discussionsPath)) {
     writeFileSync(discussionsPath, `${JSON.stringify(discussionConfig, null, 2)}\n`);
   }
-  if (clarityChanged || !existsSync(clarityStatePath)) {
+  if (clarityResult.changed || !existsSync(clarityStatePath)) {
     writeFileSync(clarityStatePath, `${JSON.stringify(clarityState, null, 2)}\n`);
   }
 }
 
 console.log(`${checkOnly ? 'Checked' : 'Wrote'} real stats for ${viewCount} resource${viewCount === 1 ? '' : 's'} with views and ${upvoteCount} resource${upvoteCount === 1 ? '' : 's'} with upvotes.`);
+
+setActionOutput('generated', 'true');
+setActionOutput('clarity_available', String(clarityResult.available));
+
+if (requireClarity && !clarityResult.available) {
+  console.error('Clarity collection is required but unavailable; accumulated values were preserved and no missing metrics were replaced with zero.');
+  process.exitCode = 1;
+}
