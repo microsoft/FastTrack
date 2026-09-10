@@ -23,6 +23,7 @@ const excludedSegments = new Set(['archive', '_sample_templates', 'samples']);
 const allowedTypes = new Set(['script', 'agent', 'strategy', 'analytics', 'prompt', 'skill']);
 const allowedFormats = new Set(['ps1', 'bundle', 'declarative', 'interactive', 'pptx', 'pbix', 'md']);
 const allowedStatuses = new Set(['active', 'preview', 'archived']);
+const allowedInteractiveKinds = new Set(['guide', 'tool']);
 const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -133,6 +134,20 @@ function validate(data, file) {
   if (data.format !== undefined && !allowedFormats.has(data.format)) add('format', `must be one of: ${[...allowedFormats].join(', ')}`);
   if (data.featured !== undefined && typeof data.featured !== 'boolean') add('featured', 'must be true or false');
   if (data.status !== undefined && !allowedStatuses.has(data.status)) add('status', `must be one of: ${[...allowedStatuses].join(', ')}`);
+  if (data.interactiveKind !== undefined && !allowedInteractiveKinds.has(data.interactiveKind)) {
+    add('interactiveKind', `must be one of: ${[...allowedInteractiveKinds].join(', ')}`);
+  }
+  if (data.interactiveKind !== undefined && data.format !== 'interactive') {
+    add('interactiveKind', 'is only allowed when format is interactive');
+  }
+  if (data.preview !== undefined) {
+    if (!isNonEmptyString(data.preview)) add('preview', 'must be a non-empty string');
+    else if (/^[a-z]+:\/\//i.test(data.preview) || data.preview.startsWith('/') || data.preview.includes('..') || data.preview.includes('\\')) {
+      add('preview', 'must be a relative path inside the resource folder (no URL, absolute path, "..", or backslash)');
+    } else if (!existsSync(join(dirname(file), data.preview))) {
+      add('preview', 'points to a file that does not exist');
+    }
+  }
   if (data.whatItIs !== undefined && !isNonEmptyString(data.whatItIs)) add('whatItIs', 'must be a non-empty string');
   if (data.whyUseIt !== undefined && !isStringList(data.whyUseIt)) add('whyUseIt', 'must be a non-empty list of strings');
   if (data.howToUse !== undefined && !isNonEmptyString(data.howToUse)) add('howToUse', 'must be a non-empty Markdown string');
@@ -163,6 +178,9 @@ function slugify(value) {
 
 function createResource(data, file, updated) {
   const relativePath = toPosix(relative(repositoryRoot, file));
+  const preview = data.preview
+    ? toPosix(relative(repositoryRoot, join(dirname(file), data.preview)))
+    : undefined;
   const resource = {
     name: data.title,
     title: data.title,
@@ -177,6 +195,8 @@ function createResource(data, file, updated) {
     format: data.format ?? 'md',
     featured: data.featured ?? false,
     status: data.status ?? 'active',
+    interactiveKind: data.interactiveKind,
+    preview,
     author: data.author,
     version: data.version,
     published: data.published,
