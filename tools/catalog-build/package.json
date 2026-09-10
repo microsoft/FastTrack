@@ -13,6 +13,6 @@
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",
-    "js-yaml": "^5.2.2"
+    "js-yaml": "^5.4.1"
   }
 }
