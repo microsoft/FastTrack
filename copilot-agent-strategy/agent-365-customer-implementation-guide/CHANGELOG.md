@@ -2,6 +2,10 @@
 
 All notable changes to the Microsoft Agent 365 Customer Implementation Guide are documented here.
 
+## 1.0.4 - 2026-09-10
+
+- Removed the visible wrapper credit footer (author credits and the "View full MIT License" disclosure) so the guide fills the full viewport height. The author attribution and complete MIT License notice are retained in a non-rendered HTML source comment, so downloaded copies keep the attribution and license. Guide content, Simple/Detailed switching, theme, and print controls are unchanged.
+
 ## 1.0.3 - 2026-09-09
 
 - Made the wrapper credit footer visually quieter with restrained spacing, slightly smaller but readable type, and a muted disclosure control. Author credits, the full MIT License text, keyboard access, and theme behavior are unchanged.
