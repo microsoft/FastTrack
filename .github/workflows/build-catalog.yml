@@ -127,7 +127,7 @@ jobs:
             else
               echo "$create_output"
               if printf '%s' "$create_output" | grep -qi "not permitted to create or approve pull requests"; then
-                echo "::warning::Catalog rebuild is on branch $BRANCH, but this repo blocks GitHub Actions from opening pull requests. Open it manually: $COMPARE_URL"
+                echo "::error::Catalog rebuild is on branch $BRANCH, but this repo blocks GitHub Actions from opening pull requests. Open it manually: $COMPARE_URL"
                 {
                   echo "### ⚠️ Catalog rebuild needs a manual PR"
                   echo ""
@@ -135,7 +135,7 @@ jobs:
                   echo ""
                   echo "**Open the PR:** $COMPARE_URL"
                 } >> "$GITHUB_STEP_SUMMARY"
-                exit 0
+                exit 1
               fi
               echo "::error::Failed to open the catalog rebuild PR for $BRANCH."
               exit 1
