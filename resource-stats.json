@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-09T18:11:28.079Z",
+  "generatedAt": "2026-09-10T20:09:11.677Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -23,15 +23,19 @@
       "viewsUniques": 1
     },
     "copilot-agents-guide": {
-      "views": 32,
-      "viewsUniques": 6
+      "views": 1,
+      "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 2,
+      "views": 3,
       "viewsUniques": 1
     },
     "get-siteinventory": {
       "views": 1
+    },
+    "microsoft-agent-365-customer-implementation-guide": {
+      "views": 8,
+      "viewsUniques": 8
     },
     "powerclaw-agent": {
       "views": 1632,

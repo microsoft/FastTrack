@@ -1,7 +1,44 @@
 {
-  "generatedAt": "2026-09-09",
-  "count": 31,
+  "generatedAt": "2026-09-10",
+  "count": 32,
   "resources": [
+    {
+      "name": "Agent 365 Lifecycle Atlas",
+      "title": "Agent 365 Lifecycle Atlas",
+      "slug": "agent-365-lifecycle-atlas",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Explore Agent 365 lifecycles, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
+      "summary": "Explore Agent 365 lifecycles, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
+      "tags": [
+        "agent-365",
+        "architecture",
+        "governance",
+        "lifecycle"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": true,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2026-09-10",
+      "updated": "2026-09-10",
+      "whatItIs": "A self-contained interactive architecture reference that maps how Microsoft Agent 365 discovers, identifies, governs, and observes agents across Microsoft and third-party platforms.",
+      "whyUseIt": [
+        "Follow five agent classes through build, connection, identity, packaging, runtime, and governance.",
+        "Trace Agent 365 identity, token, SDK, CLI, MCP, telemetry, and administration relationships.",
+        "Search and filter 18 representative public API endpoints with linked Microsoft Learn sources."
+      ],
+      "howToUse": "Open `index.html` in a modern browser. Use the section navigation and linked architecture nodes to move through the atlas, zoom the main diagram, switch themes, and filter the endpoint catalog by text or status.",
+      "prerequisites": [
+        "Modern web browser",
+        "Current Microsoft Learn documentation for implementation validation"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-lifecycle-atlas",
+      "source": "copilot-agent-strategy/agent-365-lifecycle-atlas/README.md"
+    },
     {
       "name": "Agent Brainstorming Template",
       "title": "Agent Brainstorming Template",
@@ -236,10 +273,11 @@
       "format": "interactive",
       "featured": true,
       "status": "active",
+      "interactiveKind": "guide",
       "author": "Microsoft FastTrack",
-      "version": "4.0.0",
+      "version": "4.0.1",
       "published": "2025-10-28",
-      "updated": "2026-08-21",
+      "updated": "2026-09-09",
       "whatItIs": "A self-contained interactive guide to Microsoft-built agent experiences, Agents in SharePoint, Agent Builder, Copilot Studio harnesses, Microsoft 365 Agents Toolkit, and Microsoft Agent 365.",
       "whyUseIt": [
         "Shortlist an agent approach based on the work, audience, skills, governance, and delivery model.",
@@ -702,14 +740,16 @@
       "format": "interactive",
       "featured": false,
       "status": "active",
+      "interactiveKind": "guide",
+      "preview": "copilot-agent-strategy/agent-365-customer-implementation-guide/preview.webp",
       "author": [
         "Pratik Bhusal",
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.0.0",
+      "version": "1.0.4",
       "published": "2026-09-09",
-      "updated": "2026-09-09",
+      "updated": "2026-09-10",
       "whatItIs": "A self-contained interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
