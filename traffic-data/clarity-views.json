@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-10",
+  "lastRun": "2026-09-11",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -32,19 +32,33 @@
       }
     },
     "2026-09-09": {
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0
+      },
       "agents-cost-calculator": {
-        "views": 0
+        "views": 0,
+        "uniques": 0
       },
       "copilot-agents-guide": {
-        "views": 1
+        "views": 0,
+        "uniques": 0
       },
       "copilot-studio-workflow": {
-        "views": 1,
+        "views": 0,
         "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 3,
-        "uniques": 6
+        "views": 0,
+        "uniques": 0
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-09-08": {
@@ -75,13 +89,53 @@
       }
     },
     "2026-09-10": {
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0
+      },
+      "copilot-agents-guide": {
+        "views": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 7,
+        "uniques": 7
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-09-11": {
+      "agent-365-lifecycle-atlas": {
+        "views": 1,
+        "uniques": 1
+      },
+      "agent-brainstorming-template": {
+        "views": 1,
+        "uniques": 1
+      },
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 1
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 5,
+        "views": 4,
         "uniques": 2
+      },
+      "powerclaw-agent": {
+        "views": 2,
+        "uniques": 1
       }
     }
   }

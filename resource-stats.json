@@ -1,10 +1,18 @@
 {
-  "generatedAt": "2026-09-10T20:09:11.677Z",
+  "generatedAt": "2026-09-11T06:04:48.455Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
+    "agent-365-lifecycle-atlas": {
+      "views": 1,
+      "viewsUniques": 1
+    },
+    "agent-brainstorming-template": {
+      "views": 1,
+      "viewsUniques": 1
+    },
     "agents-cost-calculator": {
       "views": 90,
       "viewsUniques": 60
@@ -34,12 +42,12 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 8,
-      "viewsUniques": 8
+      "views": 11,
+      "viewsUniques": 9
     },
     "powerclaw-agent": {
-      "views": 1632,
-      "viewsUniques": 961,
+      "views": 2,
+      "viewsUniques": 1,
       "upvotes": 1,
       "discussion": {
         "number": 479,
