@@ -2,6 +2,11 @@
 
 All notable changes to the Microsoft Agent 365 Customer Implementation Guide are documented here.
 
+## 1.1.0 - 2026-09-11
+
+- Removed the "Roadmap" section and its navigation link from the Simple view, along with the section's dedicated CSS. Legitimate references to the public Microsoft 365 Roadmap elsewhere in the guide are unchanged.
+- Added the public Agent 365 whole-system architecture diagram as the first card in the Diagrams section, extracted faithfully from the public Agent 365 Lifecycle Atlas. The diagram is embedded inline (keeping the guide self-contained and offline), follows the guide's light/dark theme, offers an accessible native modal enlargement, carries a source attribution, and links onward with "For more diagrams, click here" to https://aka.ms/fasttrackext/a365diagram.
+
 ## 1.0.4 - 2026-09-10
 
 - Removed the visible wrapper credit footer (author credits and the "View full MIT License" disclosure) so the guide fills the full viewport height. The author attribution and complete MIT License notice are retained in a non-rendered HTML source comment, so downloaded copies keep the attribution and license. Guide content, Simple/Detailed switching, theme, and print controls are unchanged.
