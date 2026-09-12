@@ -1,10 +1,18 @@
 {
-  "generatedAt": "2026-09-10T20:09:11.677Z",
+  "generatedAt": "2026-09-12T03:57:07.645Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
+    "agent-365-lifecycle-atlas": {
+      "views": 6,
+      "viewsUniques": 4
+    },
+    "agent-brainstorming-template": {
+      "views": 1,
+      "viewsUniques": 0
+    },
     "agents-cost-calculator": {
       "views": 90,
       "viewsUniques": 60
@@ -23,23 +31,23 @@
       "viewsUniques": 1
     },
     "copilot-agents-guide": {
-      "views": 1,
+      "views": 2,
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 3,
+      "views": 5,
       "viewsUniques": 1
     },
     "get-siteinventory": {
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 8,
-      "viewsUniques": 8
+      "views": 15,
+      "viewsUniques": 16
     },
     "powerclaw-agent": {
-      "views": 1632,
-      "viewsUniques": 961,
+      "views": 4,
+      "viewsUniques": 2,
       "upvotes": 1,
       "discussion": {
         "number": 479,

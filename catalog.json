@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-10",
-  "count": 32,
+  "generatedAt": "2026-09-11",
+  "count": 33,
   "resources": [
     {
       "name": "Agent 365 Lifecycle Atlas",
@@ -290,6 +290,47 @@
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-agents-guide",
       "source": "copilot-agent-strategy/copilot-agents-guide/README.md"
+    },
+    {
+      "name": "Copilot Analytics Reports Navigator",
+      "title": "Copilot Analytics Reports Navigator",
+      "slug": "copilot-analytics-reports-navigator",
+      "type": "analytics",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Compare 21 Microsoft reports and 22 public community projects by purpose, metrics, location, timing, and release status.",
+      "summary": "Compare 21 Microsoft reports and 22 public community projects by purpose, metrics, location, timing, and release status.",
+      "tags": [
+        "copilot",
+        "analytics",
+        "reporting",
+        "adoption"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": false,
+      "status": "active",
+      "interactiveKind": "guide",
+      "preview": "copilot-analytics-samples/copilot-analytics-reports-navigator/preview.webp",
+      "author": [
+        "Alejandro Lopez"
+      ],
+      "version": "1.0.0",
+      "published": "2026-09-11",
+      "updated": "2026-09-11",
+      "whatItIs": "A self-contained interactive navigator for comparing 21 documented Microsoft reports and 22 public community projects related to Microsoft Copilot analytics and reporting.",
+      "whyUseIt": [
+        "Find reports by the questions they answer, the metrics they include, where they are accessed, and when their data becomes available.",
+        "Compare documented Microsoft reports with public community projects without treating every item as generally available.",
+        "Review public preview and verify-status labels before choosing a reporting approach."
+      ],
+      "howToUse": "1. Open the published navigator or download `index.html` and open it in a modern browser.\n2. Use the question picker, search, or available filters to find relevant reports.\n3. Open the linked public documentation or project page to confirm current availability and requirements.\n4. Use the navigator as a selection guide; it does not query a tenant or connect to reporting data.",
+      "prerequisites": [
+        "Modern web browser",
+        "Access to the products, roles, licenses, and data sources required by any report you choose to use"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-analytics-reports-navigator",
+      "source": "copilot-analytics-samples/copilot-analytics-reports-navigator/README.md"
     },
     {
       "name": "Copilot Interaction Report",
