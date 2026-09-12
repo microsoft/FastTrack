@@ -34,10 +34,10 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # Updated dates can fall back to Git history.
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 20
           cache: npm
@@ -54,10 +54,10 @@ jobs:
       contents: write # Only the publish job may push the rebuilt catalog.
       pull-requests: write # Needed when branch protection forces a PR instead.
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 20
           cache: npm
@@ -127,7 +127,7 @@ jobs:
             else
               echo "$create_output"
               if printf '%s' "$create_output" | grep -qi "not permitted to create or approve pull requests"; then
-                echo "::warning::Catalog rebuild is on branch $BRANCH, but this repo blocks GitHub Actions from opening pull requests. Open it manually: $COMPARE_URL"
+                echo "::error::Catalog rebuild is on branch $BRANCH, but this repo blocks GitHub Actions from opening pull requests. Open it manually: $COMPARE_URL"
                 {
                   echo "### ⚠️ Catalog rebuild needs a manual PR"
                   echo ""
@@ -135,7 +135,7 @@ jobs:
                   echo ""
                   echo "**Open the PR:** $COMPARE_URL"
                 } >> "$GITHUB_STEP_SUMMARY"
-                exit 0
+                exit 1
               fi
               echo "::error::Failed to open the catalog rebuild PR for $BRANCH."
               exit 1
