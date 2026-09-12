@@ -89,6 +89,10 @@
       "copilot-agents-guide": {
         "views": 1
       },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 0
@@ -104,16 +108,20 @@
     },
     "2026-09-12": {
       "agent-365-lifecycle-atlas": {
-        "views": 5,
-        "uniques": 4
+        "views": 7,
+        "uniques": 5
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 1,
+        "uniques": 1
       },
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 1
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 1,
-        "uniques": 1
+        "views": 2,
+        "uniques": 2
       },
       "powerclaw-agent": {
         "views": 2,
@@ -128,13 +136,17 @@
       "agent-brainstorming-template": {
         "views": 1
       },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 4,
-        "uniques": 2
+        "uniques": 1
       },
       "powerclaw-agent": {
         "views": 2,
