@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "node index.js",
-    "check": "node index.js --check && node test-traffic-workflow.js",
+    "check": "node index.js --check && node test-traffic-workflow.js && node test-category-filtering.js",
     "check:traffic-workflow": "node test-traffic-workflow.js",
+    "check:category-filtering": "node test-category-filtering.js",
     "build:stats": "node build-stats.js",
     "check:stats": "node build-stats.js --check",
     "create:vote-discussions": "node create-vote-discussions.js"
