@@ -2,6 +2,11 @@
 
 All notable changes to the Microsoft Agent 365 Customer Implementation Guide are documented here.
 
+## 1.1.1 - 2026-09-14
+
+- Fixed the Detailed navigation so selecting an item in the left rail scrolls the matching section into view while keeping all task content visible. Arrow key, Home, and End navigation use the same behavior and respect the reader's reduced-motion preference.
+- Added a discoverable **Submit feedback** link to the guide header in both Simple and Detailed modes. The native link opens the FastTrack issues list and remains available when scripts are restricted.
+
 ## 1.1.0 - 2026-09-11
 
 - Removed the "Roadmap" section and its navigation link from the Simple view, along with the section's dedicated CSS. Legitimate references to the public Microsoft 365 Roadmap elsewhere in the guide are unchanged.
