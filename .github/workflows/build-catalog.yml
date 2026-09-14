@@ -66,11 +66,8 @@ jobs:
         working-directory: tools/catalog-build
       - run: npm run build
         working-directory: tools/catalog-build
-      - run: npm run build:stats
+      - run: npm run build:stats -- --render-only
         working-directory: tools/catalog-build
-        env:
-          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Commit generated catalog
         env:
           # Prefer a PAT when configured; the built-in token can be blocked from
