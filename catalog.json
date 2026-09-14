@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11",
+  "generatedAt": "2026-09-14",
   "count": 33,
   "resources": [
     {
@@ -788,9 +788,9 @@
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.0.4",
+      "version": "1.1.1",
       "published": "2026-09-09",
-      "updated": "2026-09-10",
+      "updated": "2026-09-14",
       "whatItIs": "A self-contained interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
