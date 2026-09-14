@@ -64,11 +64,21 @@ prerequisites:
 | --- | --- | --- |
 | `tags` | string list | Lowercase discovery terms. Prefer a few specific tags over many broad ones. |
 | `format` | enum | One of `ps1`, `bundle`, `declarative`, `interactive`, `pptx`, `pbix`, or `md`. This replaces the former `artifact` label. |
-| `interactiveKind` | enum | Only for `format: interactive`. Set `guide` for a walkthrough or implementation/decision guide, or `tool` for a calculator or utility. Defaults to `tool`, which the catalog labels "Interactive tool"; `guide` is labeled "Interactive guide". |
+| `interactiveKind` | enum | Only for `format: interactive`. Set `guide` for a walkthrough or implementation/decision guide, or `tool` for a calculator or utility. Defaults to `tool`, which the catalog labels "Interactive tool"; `guide` is labeled "Interactive guide". A `guide` is also cross-listed under **Guides & planning** (see below), while a `tool` is not. |
 | `preview` | string | Optional relative path (inside the resource folder) to a screenshot the catalog detail page renders above the description, for example `preview.webp`. Use an optimized local image (WebP or PNG). No URLs, absolute paths, `..`, or backslashes. Omit it for resources without a screenshot. |
 | `featured` | boolean | Use sparingly for resources selected for catalog promotion. Default is `false`. |
 | `status` | enum | `active`, `preview`, or `archived`. Default is `active`. |
 | `url` | HTTPS URL | Optional GitHub or destination URL. When omitted, the generator derives a GitHub URL from the resource path. |
+
+## Guides & planning cross-listing
+
+The catalog site keeps every resource's `type` exactly as authored, but the root catalog's **Guides & planning** selection is a virtual, cross-topic collection. It lists every `strategy` resource **plus** any interactive guide (`format: interactive` with `interactiveKind: guide`) regardless of that resource's own `type`.
+
+- An interactive guide keeps its own category too. An `analytics` interactive guide appears under both **Analytics** (by its `type`) and **Guides & planning** (as a guide).
+- Interactive tools and calculators (`format: interactive` without `interactiveKind: guide`) are **not** cross-listed; they stay only under their own `type`.
+- Cross-listing is display-only. It never changes `type`, badges, tags, folders, URLs, the **All** listing, related-resource suggestions, or `catalog.json`. The **Guides & planning** count reflects this same cross-listed set, and each resource still renders as a single card with no duplicates.
+
+Set `interactiveKind: guide` (rather than the default `tool`) when you want a walkthrough or implementation/decision guide to be discoverable under **Guides & planning** in addition to its own category. This is purely a browsing convenience in the site; the metadata schema and generated catalog are unchanged.
 
 ## Detail-page content
 

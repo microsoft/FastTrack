@@ -1696,6 +1696,23 @@
       return t && t.colorVar ? `var(${t.colorVar}-bg)` : 'var(--surface-hover)';
     };
 
+    // --- CATEGORY MEMBERSHIP ---
+    // Single source of truth for "does this resource belong to the selected
+    // category?" Interactive guides (format: interactive + interactiveKind: guide)
+    // are virtually cross-listed under "Guides & planning" (the strategy category)
+    // in addition to their own type, so an Analytics guide appears in both Analytics
+    // and Guides & planning. This never mutates r.type: badges, metadata, folders,
+    // URLs, the All listing, related resources, and counts all reflect the original
+    // type. See docs/CATALOG-METADATA.md ("Guides & planning cross-listing").
+    /* @category-predicate:start */
+    const isInteractiveGuide = (r) => r.format === 'interactive' && r.interactiveKind === 'guide';
+    const matchesCategory = (r, typeId) => {
+      if (typeId === 'all') return true;
+      if (typeId === 'strategy') return r.type === 'strategy' || isInteractiveGuide(r);
+      return r.type === typeId;
+    };
+    /* @category-predicate:end */
+
     const formatArtifact = (artifact, resource) => {
       if (artifact === 'interactive') {
         return resource && resource.interactiveKind === 'guide' ? 'Interactive guide' : 'Interactive tool';
@@ -1922,8 +1939,8 @@
                        r.name.toLowerCase().includes(q) || 
                        r.description.toLowerCase().includes(q) || 
                        r.tags.some(t => t.toLowerCase().includes(q));
-        // Type Match
-        const matchType = state.type === 'all' || r.type === state.type;
+        // Type Match (interactive guides also surface under Guides & planning)
+        const matchType = matchesCategory(r, state.type);
         // Tag Match
         const matchTag = state.tag === 'all' || r.tags.includes(state.tag);
 
@@ -2036,7 +2053,7 @@
         if (t.id === 'script') {
           countDisplay = "12";
         } else if (!t.soon) {
-          countDisplay = RESOURCES.filter(r => r.type === t.id).length;
+          countDisplay = RESOURCES.filter(r => matchesCategory(r, t.id)).length;
         }
 
         const btn = document.createElement('button');
@@ -2083,7 +2100,7 @@
         } else if (t.soon) {
           countDisplay = 0;
         } else {
-          countDisplay = RESOURCES.filter(r => r.type === t.id).length;
+          countDisplay = RESOURCES.filter(r => matchesCategory(r, t.id)).length;
         }
 
         const btn = document.createElement('button');
@@ -2131,7 +2148,7 @@
       const q = tempState.q.toLowerCase();
       const baseResources = RESOURCES.filter(r => {
         const matchQ = !q || r.name.toLowerCase().includes(q) || r.description.toLowerCase().includes(q) || r.tags.some(t => t.toLowerCase().includes(q));
-        const matchType = tempState.type === 'all' || r.type === tempState.type;
+        const matchType = matchesCategory(r, tempState.type);
         return matchQ && matchType;
       });
 

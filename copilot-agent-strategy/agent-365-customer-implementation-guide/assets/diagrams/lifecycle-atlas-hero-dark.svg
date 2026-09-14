@@ -1,0 +1,119 @@
+<!-- Source: Microsoft Agent 365 Lifecycle Atlas (copilot-agent-strategy/agent-365-lifecycle-atlas/index.html section id=architecture). Extracted faithfully; theme variables baked in for dark. -->
+<svg xmlns="http://www.w3.org/2000/svg" id="archsvg" viewBox="0 0 1600 1060" role="img" class="diagram a-diagram" preserveAspectRatio="xMinYMin meet" style="width:100%;height:auto;max-width:100%;min-width:900px" aria-labelledby="archsvg-t archsvg-d">
+<style>:root,svg{--cp-paper:#1b1a19;--cp-paper-2:#242322;--cp-paper-3:#2d2c2b;--cp-ink:#f3f2f1;--cp-muted:#c8c6c4;--cp-soft:#a19f9d;--cp-rule:rgba(255,255,255,0.14);--cp-rule-2:rgba(255,255,255,0.28);--cp-accent:#60cdff;--cp-accent-ink:#a9e0ff;--cp-accent-tint:rgba(96,205,255,0.10);--cp-accent-tint-2:rgba(96,205,255,0.18);--cp-preview:#f7c948;--cp-preview-tint:rgba(247,201,72,0.12);--cp-preview-rule:rgba(247,201,72,0.45);--cp-sans:'Segoe UI Variable Text','Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;--cp-mono:'Cascadia Code','Cascadia Mono',Consolas,'Courier New',monospace;}.d-sub{font-family:var(--cp-sans);font-size:11px;fill:var(--cp-muted)}.d-box{fill:var(--cp-paper);stroke:var(--cp-rule-2);stroke-width:1}.d-box-accent{fill:var(--cp-accent-tint);stroke:var(--cp-accent);stroke-width:1}.d-box-soft{fill:var(--cp-paper-3);stroke:var(--cp-rule);stroke-width:1}.d-box-prev{fill:var(--cp-preview-tint);stroke:var(--cp-preview-rule);stroke-width:1;stroke-dasharray:5 3}.d-lane-bg{fill:var(--cp-paper-3);stroke:var(--cp-rule);stroke-width:1}.d-conn{stroke:var(--cp-rule-2);stroke-width:1.5;fill:none}.d-conn-accent{stroke:var(--cp-accent);stroke-width:1.5;fill:none}.d-arrowhead{fill:var(--cp-rule-2)}.d-tag-box{fill:var(--cp-preview-tint);stroke:var(--cp-preview-rule);stroke-width:.75}.d-tag{font-family:var(--cp-sans);font-size:8.5px;font-weight:600;fill:var(--cp-preview);letter-spacing:.03em}.d-life{stroke:var(--cp-rule-2);stroke-width:1;stroke-dasharray:3 3}.a-stage{font-family:var(--cp-sans);font-size:13px;font-weight:600;letter-spacing:.04em;fill:var(--cp-accent)}.a-title{font-family:var(--cp-sans);font-size:15px;font-weight:600;fill:var(--cp-ink)}.a-sub{font-family:var(--cp-sans);font-size:12px;fill:var(--cp-muted)}.a-lane{font-family:var(--cp-sans);font-size:14px;font-weight:600;fill:var(--cp-ink)}.a-edge{font-family:var(--cp-sans);font-size:11px;font-weight:600;fill:var(--cp-soft)}.a-edgebg{fill:var(--cp-paper-2)}.a-num{font-family:var(--cp-mono);font-size:12px;font-weight:700;fill:var(--cp-accent)}.a-hub{fill:#0b3b66;stroke:#2f6da3;stroke-width:1.5}.a-hub-title{font-family:var(--cp-sans);font-size:16px;font-weight:600;fill:#ffffff}.a-hub-sub{font-family:var(--cp-sans);font-size:12px;fill:#cfe4f5}.a-hub-chip{fill:rgba(255,255,255,0.10);stroke:rgba(255,255,255,0.42);stroke-width:1}.a-chip-t{font-family:var(--cp-sans);font-size:12.5px;font-weight:600;fill:#ffffff}.a-chip-s{font-family:var(--cp-sans);font-size:11px;fill:#cfe4f5}.a-gw{fill:var(--cp-accent-tint);stroke:var(--cp-accent);stroke-width:1;stroke-dasharray:4 3}.a-hubdiv{stroke:rgba(255,255,255,0.28);stroke-width:1}</style>
+<title id="archsvg-t">Agent 365 whole-system architecture</title>
+<desc id="archsvg-d">Left to right: four entry routes (built-in platform agents; manifest ZIP upload; connected-platform sync, in preview; and custom-coded agents) each pass through their own configure-and-identify card — platform-managed integration (no SDK needed for inventory), admin upload and approval (catalog availability, separate from code hosting), connected-platform sync (metadata only), and the Agent 365 SDK and CLI with an Entra Agent ID for custom integration. Distinct connectors route them into the central Agent 365 registry and control plane, a unified inventory of distinct objects: the registry record, the package or catalog entry, and the identity blueprint reference. The control plane exposes right-hand surfaces: Registry UI with Microsoft Graph inventory and selected governance actions, Microsoft Entra, and Microsoft Defender with Purview, plus independent operations that do not cascade across objects. A separate runtime plane along the bottom runs the agent on its own platform, Azure, or partner host, using governed MCP tools and WorkIQ in preview to reach downstream Microsoft 365 services; the control plane governs it and receives telemetry back.</desc>
+<defs><marker id="aarw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-arrowhead"/></marker><marker id="aarwA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--cp-accent)"/></marker></defs>
+<text x="190" y="52" text-anchor="middle" class="a-stage">Sources &amp; entry routes</text>
+<text x="625" y="52" text-anchor="middle" class="a-stage">Configure &amp; identify</text>
+<text x="1020" y="52" text-anchor="middle" class="a-stage">Unified control plane</text>
+<text x="1420" y="52" text-anchor="middle" class="a-stage">Observe · govern · secure</text>
+<line x1="40" y1="66" x2="1560" y2="66" class="d-life"/>
+<path d="M340 156 L478 156" class="d-conn" marker-end="url(#aarw)"/>
+<path d="M340 282 L478 282" class="d-conn" marker-end="url(#aarw)"/>
+<path d="M340 408 L478 408" class="d-conn" marker-end="url(#aarw)"/>
+<path d="M340 545 L478 545" class="d-conn" marker-end="url(#aarw)"/>
+<path d="M778 156 L802 156 L802 239 L844 239" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<path d="M778 282 L814 282 L814 341 L844 341" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<path d="M778 408 L802 408 L802 239 L844 239" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<path d="M778 545 L818 545 L818 443 L844 443" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<path d="M1210 172 L1262 172" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<path d="M1210 300 L1262 300" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<path d="M1210 428 L1262 428" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<a href="#lanes"><title>Go to section 01 — Lifecycle overview</title>
+<rect class="d-box a-boxhit" x="40" y="96" width="300" height="120" rx="7"/>
+<circle cx="64" cy="120" r="11" fill="var(--cp-accent-tint)" stroke="var(--cp-accent)"/><text x="64" y="124" text-anchor="middle" class="a-num">1</text>
+<text x="86" y="125" class="a-title">Built-in platform agents</text>
+<text class="a-sub"><tspan x="58" y="151">Agent Builder (declarative), Copilot</tspan><tspan x="58" dy="15">Studio, Azure AI Foundry &amp; integrated</tspan><tspan x="58" dy="15">partners. Built-in registration where</tspan><tspan x="58" dy="15">the platform supports it.</tspan></text></a>
+<a href="#lanes"><title>Go to section 01 — Lifecycle overview</title>
+<rect class="d-box a-boxhit" x="40" y="230" width="300" height="104" rx="7"/>
+<circle cx="64" cy="254" r="11" fill="var(--cp-accent-tint)" stroke="var(--cp-accent)"/><text x="64" y="258" text-anchor="middle" class="a-num">2</text>
+<text x="86" y="259" class="a-title">Manifest ZIP upload</text>
+<text class="a-sub"><tspan x="58" y="285">Catalog publication route. Not code</tspan><tspan x="58" dy="15">hosting, not a universal registration</tspan><tspan x="58" dy="15">bypass.</tspan></text></a>
+<a href="#caveats"><title>Go to section 10 — Caveats &amp; conflicts</title>
+<rect class="d-box-prev a-boxhit" x="40" y="348" width="300" height="120" rx="7"/>
+<circle cx="64" cy="372" r="11" fill="var(--cp-preview-tint)" stroke="var(--cp-preview-rule)"/><text x="64" y="376" text-anchor="middle" class="a-num">3</text>
+<rect class="d-tag-box" x="252" y="356" width="64" height="15" rx="3"/><text x="284" y="367" text-anchor="middle" class="d-tag">PREVIEW</text>
+<text x="86" y="377" class="a-title">External registry sync</text>
+<text class="a-sub"><tspan x="58" y="403">Metadata discovery imports (e.g.</tspan><tspan x="58" dy="15">Vertex AI, Bedrock). Metadata only</tspan><tspan x="58" dy="15">— no auto-instrumentation, identity</tspan><tspan x="58" dy="15">or runtime integration.</tspan></text></a>
+<a href="#sdk"><title>Go to section 05 — SDKs, tooling &amp; the a365 CLI</title>
+<rect class="d-box a-boxhit" x="40" y="482" width="300" height="126" rx="7"/>
+<circle cx="64" cy="506" r="11" fill="var(--cp-accent-tint)" stroke="var(--cp-accent)"/><text x="64" y="510" text-anchor="middle" class="a-num">4</text>
+<text x="86" y="511" class="a-title">Custom-coded agents</text>
+<text class="a-sub"><tspan x="58" y="537">Built on the M365 Agents SDK, Agent</tspan><tspan x="58" dy="15">Framework or other runtimes. Wired in</tspan><tspan x="58" dy="15">and registered through the Agent 365</tspan><tspan x="58" dy="15">SDK / CLI.</tspan></text></a>
+<rect class="a-gw" x="462" y="96" width="326" height="524" rx="9"/>
+<a href="#lanes"><title>Go to section 01 — Lifecycle overview</title>
+<rect class="d-box a-boxhit" x="478" y="108" width="300" height="96" rx="7"/>
+<text x="498" y="136" class="a-title">Platform-managed integration</text>
+<text class="a-sub"><tspan x="498" y="158">Built-in platforms register where the</tspan><tspan x="498" dy="15">platform supports it — no Agent 365</tspan><tspan x="498" dy="15">SDK needed for inventory.</tspan></text></a>
+<a href="#lanes"><title>Go to section 01 — Lifecycle overview</title>
+<rect class="d-box a-boxhit" x="478" y="234" width="300" height="96" rx="7"/>
+<text x="498" y="262" class="a-title">Admin upload / approval</text>
+<text class="a-sub"><tspan x="498" y="284">Manifest ZIP enters the org catalog.</tspan><tspan x="498" dy="15">Catalog availability is separate from</tspan><tspan x="498" dy="15">code hosting.</tspan></text></a>
+<a href="#caveats"><title>Go to section 10 — Caveats &amp; conflicts</title>
+<rect class="d-box-prev a-boxhit" x="478" y="360" width="300" height="96" rx="7"/>
+<rect class="d-tag-box" x="688" y="368" width="64" height="15" rx="3"/><text x="720" y="379" text-anchor="middle" class="d-tag">PREVIEW</text>
+<text x="498" y="388" class="a-title">Connected-platform sync</text>
+<text class="a-sub"><tspan x="498" y="410">Imports metadata from external</tspan><tspan x="498" dy="15">registries. Metadata only — no</tspan><tspan x="498" dy="15">identity or runtime wiring.</tspan></text></a>
+<a href="#sdk"><title>Go to section 05 — SDKs, tooling &amp; the a365 CLI</title>
+<rect class="d-box a-boxhit" x="478" y="489" width="300" height="112" rx="7"/>
+<text x="498" y="517" class="a-title">Agent 365 SDK / CLI + Agent ID</text>
+<text class="a-sub"><tspan x="498" y="541">Custom integration. Registers the agent</tspan><tspan x="498" dy="15">and derives a per-agent Entra Agent ID</tspan><tspan x="498" dy="15">via blueprint auth &#8594; token exchange.</tspan><tspan x="498" dy="15">Optional Agent user (Frontier preview).</tspan></text></a>
+<rect class="a-hub" x="822" y="96" width="388" height="560" rx="10"/>
+<text x="844" y="132" class="a-hub-title">Agent 365 registry &amp; control plane</text>
+<text class="a-hub-sub"><tspan x="844" y="156">Unified inventory hub. Metadata &amp;</tspan><tspan x="844" dy="15">governance only — never hosting or runtime.</tspan></text>
+<a href="#lanes"><title>Go to section 01 — Lifecycle overview</title>
+<rect class="a-hub-chip a-boxhit" x="844" y="196" width="344" height="86" rx="6"/>
+<text x="864" y="224" class="a-chip-t">Registry record</text>
+<text class="a-chip-s"><tspan x="864" y="246">Ownership · source · status metadata.</tspan><tspan x="864" dy="15">Metadata record; not publication or deployment.</tspan></text></a>
+<a href="#endpoints"><title>Go to section 09 — Representative endpoint catalog</title>
+<rect class="a-hub-chip a-boxhit" x="844" y="298" width="344" height="86" rx="6"/>
+<text x="864" y="326" class="a-chip-t">Package / organizational catalog</text>
+<text class="a-chip-s"><tspan x="864" y="348">Publishable app package &amp; catalog entry.</tspan><tspan x="864" dy="15">Upload, approval &amp; install are separate steps.</tspan></text></a>
+<a href="#identity"><title>Go to section 03 — Identity objects &amp; relationships</title>
+<rect class="a-hub-chip a-boxhit" x="844" y="400" width="344" height="86" rx="6"/>
+<text x="864" y="428" class="a-chip-t">Identity blueprint reference</text>
+<text class="a-chip-s"><tspan x="864" y="450">Points to the Entra Agent ID object —</tspan><tspan x="864" dy="15">the record does not store the credential.</tspan></text></a>
+<line x1="844" y1="512" x2="1188" y2="512" class="a-hubdiv"/>
+<text class="a-hub-sub"><tspan x="844" y="536">Distinct lifecycle objects, not one database row.</tspan><tspan x="844" dy="16">Publish / install / block, identity disable, stop</tspan><tspan x="844" dy="16">compute and delete are independent. Do not</tspan><tspan x="844" dy="16">assume cross-object deletion cascades.</tspan></text>
+<a href="#admin"><title>Go to section 08 — Administration &amp; action semantics</title>
+<rect class="d-box-accent a-boxhit" x="1262" y="118" width="300" height="112" rx="7"/>
+<text x="1282" y="146" class="a-title">Registry UI + Microsoft Graph</text>
+<text class="a-sub"><tspan x="1282" y="172">Inventory &amp; governance surface: browse,</tspan><tspan x="1282" dy="15">publish, install, block. Graph covers</tspan><tspan x="1282" dy="15">inventory plus selected governance actions.</tspan></text></a>
+<a href="#identity"><title>Go to section 03 — Identity objects &amp; relationships</title>
+<rect class="d-box-accent a-boxhit" x="1262" y="248" width="300" height="104" rx="7"/>
+<text x="1282" y="276" class="a-title">Microsoft Entra</text>
+<text class="a-sub"><tspan x="1282" y="302">Agent identity controls. Disabling an</tspan><tspan x="1282" dy="15">Agent ID blocks sign-in but does not</tspan><tspan x="1282" dy="15">delete the record or the compute.</tspan></text></a>
+<a href="#telemetry"><title>Go to section 07 — Observability &amp; telemetry</title>
+<rect class="d-box-accent a-boxhit" x="1262" y="370" width="300" height="104" rx="7"/>
+<text x="1282" y="398" class="a-title">Microsoft Defender &amp; Purview</text>
+<text class="a-sub"><tspan x="1282" y="424">Security telemetry &amp; compliance</tspan><tspan x="1282" dy="15">signals for governed agents.</tspan></text></a>
+<a href="#admin"><title>Go to section 08 — Administration &amp; action semantics</title>
+<rect class="d-box-soft a-boxhit" x="1262" y="492" width="300" height="164" rx="7"/>
+<text x="1282" y="520" class="a-title">Independent operations</text>
+<text class="a-sub"><tspan x="1282" y="546">&#8226; publish / install / block</tspan><tspan x="1282" dy="17">&#8226; identity disable</tspan><tspan x="1282" dy="17">&#8226; stop compute</tspan><tspan x="1282" dy="17">&#8226; delete record</tspan></text>
+<text x="1282" y="642" class="a-edge">No automatic cascade between them.</text></a>
+<path d="M986 656 L986 700" class="d-conn-accent" marker-end="url(#aarwA)" stroke-dasharray="5 3"/>
+<rect class="a-edgebg" x="928" y="668" width="52" height="16" rx="3"/><text x="954" y="680" text-anchor="middle" class="a-edge">governs</text>
+<path d="M1050 700 L1050 656" class="d-conn-accent" marker-end="url(#aarwA)"/>
+<rect class="a-edgebg" x="1056" y="668" width="60" height="16" rx="3"/><text x="1086" y="680" text-anchor="middle" class="a-edge">telemetry</text>
+<rect class="d-lane-bg" x="40" y="700" width="1522" height="320" rx="9"/>
+<text x="64" y="732" class="a-lane">Runtime plane</text>
+<text class="a-sub"><tspan x="64" y="756">Agents run on their own platform, Azure or partner host. Agent 365 governs; it does not execute code.</tspan></text>
+<path d="M522 872 L574 872" class="d-conn" marker-end="url(#aarw)"/>
+<rect class="a-edgebg" x="512" y="844" width="74" height="16" rx="3"/><text x="549" y="856" text-anchor="middle" class="a-edge">tool calls</text>
+<path d="M1022 872 L1074 872" class="d-conn" marker-end="url(#aarw)"/>
+<a href="#lanes"><title>Go to section 02 — Per-class lifecycle detail</title>
+<rect class="d-box-soft a-boxhit" x="80" y="792" width="442" height="164" rx="7"/>
+<text x="102" y="822" class="a-title">Agent runtime host</text>
+<text class="a-sub"><tspan x="102" y="848">Platform-, Azure- or partner-hosted compute —</tspan><tspan x="102" dy="15">where the agent&#39;s code actually executes. The</tspan><tspan x="102" dy="15">registry record and identity are separate from</tspan><tspan x="102" dy="15">this host.</tspan></text></a>
+<a href="#mcp"><title>Go to section 06 — Governed MCP tooling</title>
+<rect class="d-box-prev a-boxhit" x="574" y="792" width="446" height="164" rx="7"/>
+<rect class="d-tag-box" x="930" y="800" width="64" height="15" rx="3"/><text x="962" y="811" text-anchor="middle" class="d-tag">PREVIEW</text>
+<text x="596" y="822" class="a-title">Governed MCP tools + WorkIQ</text>
+<text class="a-sub"><tspan x="596" y="848">Policy-checked tool calls under the agent&#39;s</tspan><tspan x="596" dy="15">delegated user context — not autonomous</tspan><tspan x="596" dy="15">service-to-service. Registration alone does</tspan><tspan x="596" dy="15">not activate every capability.</tspan></text></a>
+<a href="#telemetry"><title>Go to section 07 — Observability &amp; telemetry</title>
+<rect class="d-box-soft a-boxhit" x="1072" y="792" width="446" height="164" rx="7"/>
+<text x="1094" y="822" class="a-title">Downstream Microsoft 365 services</text>
+<text class="a-sub"><tspan x="1094" y="848">Graph, mail, files and more — reached only</tspan><tspan x="1094" dy="15">under governance. Activity emits telemetry</tspan><tspan x="1094" dy="15">that surfaces back in the control plane and</tspan><tspan x="1094" dy="15">in Defender &amp; Purview.</tspan></text></a>
+</svg>
