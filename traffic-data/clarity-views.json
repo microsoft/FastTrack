@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-12",
+  "lastRun": "2026-09-15",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -139,6 +139,63 @@
       "powerclaw-agent": {
         "views": 2,
         "uniques": 1
+      }
+    },
+    "2026-09-15": {
+      "agent-365-lifecycle-atlas": {
+        "views": 5,
+        "uniques": 5
+      },
+      "copilot-agents-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 2,
+        "uniques": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 2,
+        "uniques": 2
+      }
+    },
+    "2026-09-14": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2,
+        "uniques": 3
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-09-13": {
+      "agent-365-lifecycle-atlas": {
+        "views": 7,
+        "uniques": 8
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1
       }
     }
   }
