@@ -6,7 +6,7 @@ summary: >-
   Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin
   actions, and 18 public API endpoints in one atlas.
 author: Alejandro Lopez
-version: 1.2.0
+version: 1.2.1
 published: "2026-09-10"
 updated: "2026-09-16"
 tags:
