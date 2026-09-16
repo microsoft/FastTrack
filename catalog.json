@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11",
+  "generatedAt": "2026-09-16",
   "count": 33,
   "resources": [
     {
@@ -9,8 +9,8 @@
       "type": "strategy",
       "subcategory": "Interactive",
       "category": "Interactive",
-      "description": "Explore Agent 365 lifecycles, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
-      "summary": "Explore Agent 365 lifecycles, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
+      "description": "Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
+      "summary": "Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
       "tags": [
         "agent-365",
         "architecture",
@@ -22,12 +22,13 @@
       "featured": true,
       "status": "active",
       "author": "Alejandro Lopez",
-      "version": "1.0.0",
+      "version": "1.1.1",
       "published": "2026-09-10",
-      "updated": "2026-09-10",
+      "updated": "2026-09-16",
       "whatItIs": "A self-contained interactive architecture reference that maps how Microsoft Agent 365 discovers, identifies, governs, and observes agents across Microsoft and third-party platforms.",
       "whyUseIt": [
         "Follow five agent classes through build, connection, identity, packaging, runtime, and governance.",
+        "Distinguish registry ingestion, Agent Map inventory, and Shadow AI discovery boundaries.",
         "Trace Agent 365 identity, token, SDK, CLI, MCP, telemetry, and administration relationships.",
         "Search and filter 18 representative public API endpoints with linked Microsoft Learn sources."
       ],
@@ -788,9 +789,9 @@
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.0.4",
+      "version": "1.1.1",
       "published": "2026-09-09",
-      "updated": "2026-09-10",
+      "updated": "2026-09-14",
       "whatItIs": "A self-contained interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
