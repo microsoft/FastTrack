@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-15",
+  "lastRun": "2026-09-16",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -144,19 +144,29 @@
     "2026-09-15": {
       "agent-365-lifecycle-atlas": {
         "views": 5,
-        "uniques": 5
+        "uniques": 4
+      },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
       },
       "copilot-agents-guide": {
         "views": 1,
         "uniques": 1
       },
       "copilot-analytics-reports-navigator": {
-        "views": 2,
-        "uniques": 1
+        "views": 2
       },
       "copilot-studio-workflow": {
-        "views": 2,
-        "uniques": 2
+        "views": 2
+      },
+      "get-aadadminrolemembers": {
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-09-14": {
@@ -164,6 +174,14 @@
         "views": 2,
         "uniques": 3
       },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-agents-guide": {
         "views": 0,
         "uniques": 0
@@ -173,6 +191,10 @@
         "uniques": 0
       },
       "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-aadadminrolemembers": {
         "views": 0,
         "uniques": 0
       }
@@ -196,6 +218,28 @@
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 1
+      }
+    },
+    "2026-09-16": {
+      "agent-365-lifecycle-atlas": {
+        "views": 14,
+        "uniques": 11
+      },
+      "agent-brainstorming-template": {
+        "views": 1,
+        "uniques": 1
+      },
+      "agents-cost-calculator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 1
+      },
+      "get-aadadminrolemembers": {
+        "views": 1,
+        "uniques": 1
       }
     }
   }

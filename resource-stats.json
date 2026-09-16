@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-15T06:05:11.554Z",
+  "generatedAt": "2026-09-16T06:05:00.134Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 20,
-      "viewsUniques": 20,
+      "views": 34,
+      "viewsUniques": 30,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -15,12 +15,12 @@
       }
     },
     "agent-brainstorming-template": {
-      "views": 1,
-      "viewsUniques": 0
+      "views": 2,
+      "viewsUniques": 1
     },
     "agents-cost-calculator": {
-      "views": 90,
-      "viewsUniques": 60
+      "views": 1,
+      "viewsUniques": 1
     },
     "ai-council": {
       "views": 78,
@@ -37,15 +37,19 @@
     },
     "copilot-agents-guide": {
       "views": 3,
-      "viewsUniques": 1
+      "viewsUniques": 2
     },
     "copilot-analytics-reports-navigator": {
       "views": 3,
-      "viewsUniques": 2
+      "viewsUniques": 1
     },
     "copilot-studio-workflow": {
       "views": 7,
-      "viewsUniques": 3
+      "viewsUniques": 1
+    },
+    "get-aadadminrolemembers": {
+      "views": 1,
+      "viewsUniques": 1
     },
     "get-siteinventory": {
       "views": 1
