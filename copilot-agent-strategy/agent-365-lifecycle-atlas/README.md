@@ -3,12 +3,12 @@ title: Agent 365 Lifecycle Atlas
 type: strategy
 category: Interactive
 summary: >-
-  Explore Agent 365 lifecycles, identity, tooling, telemetry, admin actions, and
-  18 public API endpoints in one atlas.
+  Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin
+  actions, and 18 public API endpoints in one atlas.
 author: Alejandro Lopez
-version: 1.0.0
+version: 1.1.0
 published: "2026-09-10"
-updated: "2026-09-10"
+updated: "2026-09-15"
 tags:
   - agent-365
   - architecture
@@ -23,6 +23,7 @@ whatItIs: >-
   and third-party platforms.
 whyUseIt:
   - Follow five agent classes through build, connection, identity, packaging, runtime, and governance.
+  - Distinguish registry ingestion, Agent Map inventory, and Shadow AI discovery boundaries.
   - Trace Agent 365 identity, token, SDK, CLI, MCP, telemetry, and administration relationships.
   - Search and filter 18 representative public API endpoints with linked Microsoft Learn sources.
 howToUse: >-
@@ -43,8 +44,10 @@ run, and which governance and observability interfaces apply at each stage.
 
 ## What the atlas covers
 
-- Nine linked architecture and sequence diagrams
+- Eleven linked architecture and sequence diagrams
 - Five agent classes across six lifecycle stages
+- Native onboarding and connected-platform registry ingestion
+- Agent Map inventory and the separate Shadow AI discovery experience
 - Entra agent identity objects and token exchanges
 - Agent 365 SDK and CLI boundaries
 - Governed MCP tooling and telemetry flows
@@ -54,6 +57,16 @@ run, and which governance and observability interfaces apply at each stage.
 The atlas keeps generally available, preview, and beta capabilities visibly
 separate. Preview and beta details must be checked against current Microsoft
 documentation for the target tenant, cloud, and scenario before implementation.
+
+## September 15, 2026 update
+
+This update adds a discovery and inventory section to the atlas. It distinguishes
+native Agent 365 onboarding from connected-platform metadata synchronization,
+shows Agent Map as a registry-backed visual inventory, and keeps Shadow AI in a
+separate unmanaged-agent governance lane. Connected-platform synchronization is
+manual in the currently documented preview; scheduled synchronization is a
+future release. The diagrams also identify the documented external platform
+categories and their current examples.
 
 ## Usage
 
@@ -74,9 +87,9 @@ Use the page to:
 ## Sources and scope
 
 The content is compiled from the public Microsoft Learn sources linked inside
-the atlas and was reviewed on September 10, 2026. It is an architecture
-reference, not a deploy-ready configuration or an official product
-specification.
+the atlas. The full atlas was reviewed on September 10, 2026, and the discovery
+and inventory update was reviewed on September 15, 2026. It is an architecture
+reference, not a deploy-ready configuration or an official product specification.
 
 ## Applies To
 
