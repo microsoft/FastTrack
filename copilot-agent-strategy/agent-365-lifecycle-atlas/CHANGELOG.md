@@ -2,6 +2,23 @@
 
 All notable changes to the Agent 365 Lifecycle Atlas are documented here.
 
+## 1.2.0 - 2026-09-16
+
+- Added an SDK-adjacent section and sequence diagram for the seven stages behind
+  `a365 setup all`.
+- Documented blueprint, child identity, credential, permission, grant, and
+  programmatic registration relationships.
+- Clarified application ID, object ID, and Agent 365 identity mappings,
+  including the current CLI's child service-principal object ID behavior.
+- Added representative Microsoft Graph operations, conditional project-path
+  synchronization behavior, production checks, and recovery guidance.
+- Clarified that setup neither deploys hosted agent code nor installs an SDK,
+  and that host deployment is separate from ZIP publishing and administrator
+  availability-instance creation.
+- Expanded the public bibliography from 31 to 36 sources, including pinned
+  public CLI implementation references reviewed on September 16, 2026, without
+  treating that source version as a universal installed-binary guarantee.
+
 ## 1.1.1 - 2026-09-16
 
 - Reconciled conflicting public documentation for connected-platform and
