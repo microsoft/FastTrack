@@ -2,6 +2,12 @@
 
 All notable changes to the Agent 365 Lifecycle Atlas are documented here.
 
+## 1.2.2 - 2026-09-16
+
+- Improved the visibility of the connected-platform and registry synchronization
+  status-note badges with larger bold text and a dedicated row, without changing
+  their wording or status meaning.
+
 ## 1.2.1 - 2026-09-16
 
 - Fixed overlapping sticky headers in horizontally scrollable atlas tables
