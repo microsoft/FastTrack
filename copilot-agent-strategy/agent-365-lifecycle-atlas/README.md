@@ -6,9 +6,9 @@ summary: >-
   Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin
   actions, and 18 public API endpoints in one atlas.
 author: Alejandro Lopez
-version: 1.1.0
+version: 1.1.1
 published: "2026-09-10"
-updated: "2026-09-15"
+updated: "2026-09-16"
 tags:
   - agent-365
   - architecture
@@ -51,12 +51,22 @@ run, and which governance and observability interfaces apply at each stage.
 - Entra agent identity objects and token exchanges
 - Agent 365 SDK and CLI boundaries
 - Governed MCP tooling and telemetry flows
-- Administration actions and their non-cascading behavior
+- Administration actions and documented deletion behavior
 - Eighteen representative API endpoints with public Microsoft Learn sources
 
 The atlas keeps generally available, preview, and beta capabilities visibly
 separate. Preview and beta details must be checked against current Microsoft
 documentation for the target tenant, cloud, and scenario before implementation.
+
+## September 16, 2026 accuracy update
+
+This correction pass reconciles conflicting public descriptions of connected
+platform and registry synchronization status instead of asserting a single
+release stage. It also corrects Entra blueprint deletion behavior, the Agentic
+User on-behalf-of token chain, custom MCP server publishing and approval,
+conversation and run terminology, Agent Map limits and licensing, and the
+documented scope of Shadow AI discovery. The bibliography now contains 31
+public sources, with unresolved documentation conflicts called out inline.
 
 ## September 15, 2026 update
 
@@ -86,10 +96,10 @@ Use the page to:
 
 ## Sources and scope
 
-The content is compiled from the public Microsoft Learn sources linked inside
-the atlas. The full atlas was reviewed on September 10, 2026, and the discovery
-and inventory update was reviewed on September 15, 2026. It is an architecture
-reference, not a deploy-ready configuration or an official product specification.
+The content is compiled from the public Microsoft Learn and Microsoft 365
+Roadmap sources linked inside the atlas. The full atlas was accuracy-reviewed on
+September 16, 2026. It is an architecture reference, not a deploy-ready
+configuration or an official product specification.
 
 ## Applies To
 
