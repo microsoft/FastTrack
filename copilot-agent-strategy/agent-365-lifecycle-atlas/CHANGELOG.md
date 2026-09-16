@@ -2,6 +2,11 @@
 
 All notable changes to the Agent 365 Lifecycle Atlas are documented here.
 
+## 1.2.1 - 2026-09-16
+
+- Fixed overlapping sticky headers in horizontally scrollable atlas tables
+  while preserving the page-level table header offset.
+
 ## 1.2.0 - 2026-09-16
 
 - Added an SDK-adjacent section and sequence diagram for the seven stages behind
