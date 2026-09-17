@@ -2,6 +2,13 @@
 
 All notable changes to the Agent 365 Lifecycle Atlas are documented here.
 
+## 1.2.3 - 2026-09-16
+
+- Aligned connected-platform registry sync labels with the public Microsoft
+  Learn integration-options guidance, which documents registry sync as Preview.
+- Replaced the longer status-conflict note with a concise citation while
+  preserving the existing capability and hosting boundaries.
+
 ## 1.2.2 - 2026-09-16
 
 - Improved the visibility of the connected-platform and registry synchronization
