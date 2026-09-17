@@ -6,9 +6,9 @@ summary: >-
   Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin
   actions, and 18 public API endpoints in one atlas.
 author: Alejandro Lopez
-version: 1.1.0
+version: 1.2.3
 published: "2026-09-10"
-updated: "2026-09-15"
+updated: "2026-09-16"
 tags:
   - agent-365
   - architecture
@@ -24,7 +24,7 @@ whatItIs: >-
 whyUseIt:
   - Follow five agent classes through build, connection, identity, packaging, runtime, and governance.
   - Distinguish registry ingestion, Agent Map inventory, and Shadow AI discovery boundaries.
-  - Trace Agent 365 identity, token, SDK, CLI, MCP, telemetry, and administration relationships.
+  - Trace Agent 365 identity, token, SDK, CLI setup, MCP, telemetry, and administration relationships.
   - Search and filter 18 representative public API endpoints with linked Microsoft Learn sources.
 howToUse: >-
   Open `index.html` in a modern browser. Use the section navigation and linked
@@ -44,19 +44,46 @@ run, and which governance and observability interfaces apply at each stage.
 
 ## What the atlas covers
 
-- Eleven linked architecture and sequence diagrams
+- Twelve linked architecture and sequence diagrams
 - Five agent classes across six lifecycle stages
 - Native onboarding and connected-platform registry ingestion
 - Agent Map inventory and the separate Shadow AI discovery experience
 - Entra agent identity objects and token exchanges
 - Agent 365 SDK and CLI boundaries
+- The seven-stage `a365 setup all` flow and custom-agent identity binding
 - Governed MCP tooling and telemetry flows
-- Administration actions and their non-cascading behavior
+- Administration actions and documented deletion behavior
 - Eighteen representative API endpoints with public Microsoft Learn sources
 
 The atlas keeps generally available, preview, and beta capabilities visibly
 separate. Preview and beta details must be checked against current Microsoft
 documentation for the target tenant, cloud, and scenario before implementation.
+
+## September 16, 2026 setup update
+
+This additive update explains the seven stages behind `a365 setup all`, including
+the blueprint application and service principal, credentials, inheritable
+permissions and grants, child identity, programmatic registration, and optional
+project-path synchronization. It distinguishes application IDs from object IDs,
+shows the current CLI's child service-principal object ID mapping, and links the
+setup flow to the Agent 365 SDK and representative Microsoft Graph operations.
+
+The atlas also makes the hosting boundary explicit: setup does not deploy agent
+code or install an SDK, and host deployment remains separate from publishing a
+ZIP package for administrator upload and availability-instance creation.
+Production guidance calls out token validation, exporter settings, source
+warnings, secret protection, read-only checks, and recovery steps. The CLI
+implementation references are pinned to public source reviewed on September 16,
+2026; that source version is not asserted to match every installed CLI binary.
+
+## September 16, 2026 accuracy update
+
+Connected-platform registry sync is now labeled Preview throughout the atlas,
+following the public Microsoft Learn integration-options guidance checked on
+September 16, 2026. The update also keeps the earlier corrections for Entra
+blueprint deletion behavior, the Agentic User on-behalf-of token chain, custom
+MCP server publishing and approval, conversation and run terminology, Agent Map
+limits and licensing, and the documented scope of Shadow AI discovery.
 
 ## September 15, 2026 update
 
@@ -86,10 +113,12 @@ Use the page to:
 
 ## Sources and scope
 
-The content is compiled from the public Microsoft Learn sources linked inside
-the atlas. The full atlas was reviewed on September 10, 2026, and the discovery
-and inventory update was reviewed on September 15, 2026. It is an architecture
-reference, not a deploy-ready configuration or an official product specification.
+The content is compiled from the public Microsoft Learn and Microsoft 365
+Roadmap sources and pinned public Agent 365 CLI implementation references linked
+inside the atlas. The full atlas was accuracy-reviewed on September 16, 2026. It
+is an architecture reference, not a deploy-ready configuration or an official
+product specification. Validate details against the target tenant, cloud,
+scenario, and installed CLI version before implementation.
 
 ## Applies To
 
