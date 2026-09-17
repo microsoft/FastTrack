@@ -6,7 +6,7 @@ summary: >-
   Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin
   actions, and 18 public API endpoints in one atlas.
 author: Alejandro Lopez
-version: 1.2.2
+version: 1.2.3
 published: "2026-09-10"
 updated: "2026-09-16"
 tags:
@@ -78,14 +78,12 @@ implementation references are pinned to public source reviewed on September 16,
 
 ## September 16, 2026 accuracy update
 
-This correction pass reconciles conflicting public descriptions of connected
-platform and registry synchronization status instead of asserting a single
-release stage. It also corrects Entra blueprint deletion behavior, the Agentic
-User on-behalf-of token chain, custom MCP server publishing and approval,
-conversation and run terminology, Agent Map limits and licensing, and the
-documented scope of Shadow AI discovery. The bibliography now contains 31
-public sources at that correction point, with unresolved documentation
-conflicts called out inline.
+Connected-platform registry sync is now labeled Preview throughout the atlas,
+following the public Microsoft Learn integration-options guidance checked on
+September 16, 2026. The update also keeps the earlier corrections for Entra
+blueprint deletion behavior, the Agentic User on-behalf-of token chain, custom
+MCP server publishing and approval, conversation and run terminology, Agent Map
+limits and licensing, and the documented scope of Shadow AI discovery.
 
 ## September 15, 2026 update
 
