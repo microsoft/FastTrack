@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-16",
+  "lastRun": "2026-09-17",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -159,12 +159,18 @@
         "uniques": 1
       },
       "copilot-analytics-reports-navigator": {
-        "views": 2
+        "views": 2,
+        "uniques": 1
       },
       "copilot-studio-workflow": {
-        "views": 2
+        "views": 2,
+        "uniques": 1
       },
       "get-aadadminrolemembers": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
         "views": 0,
         "uniques": 0
       }
@@ -223,23 +229,54 @@
     "2026-09-16": {
       "agent-365-lifecycle-atlas": {
         "views": 14,
-        "uniques": 11
+        "uniques": 8
       },
       "agent-brainstorming-template": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "agents-cost-calculator": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "copilot-agents-guide": {
         "views": 0,
         "uniques": 1
       },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
       "get-aadadminrolemembers": {
+        "views": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-09-17": {
+      "agent-365-lifecycle-atlas": {
+        "views": 29,
+        "uniques": 19
+      },
+      "copilot-agents-guide": {
         "views": 1,
         "uniques": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 2,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3,
+        "uniques": 2
       }
     }
   }
