@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-17T06:05:20.570Z",
+  "generatedAt": "2026-09-18T06:05:14.427Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 63,
-      "viewsUniques": 46,
+      "views": 72,
+      "viewsUniques": 52,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -33,18 +33,18 @@
     },
     "autoreply-agent": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 2
     },
     "copilot-agents-guide": {
       "views": 4,
-      "viewsUniques": 3
+      "viewsUniques": 2
     },
     "copilot-analytics-reports-navigator": {
-      "views": 4,
-      "viewsUniques": 3
+      "views": 6,
+      "viewsUniques": 4
     },
     "copilot-studio-workflow": {
-      "views": 9,
+      "views": 10,
       "viewsUniques": 3
     },
     "get-aadadminrolemembers": {
@@ -55,8 +55,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 19,
-      "viewsUniques": 18,
+      "views": 22,
+      "viewsUniques": 19,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -65,7 +65,7 @@
     },
     "powerclaw-agent": {
       "views": 4,
-      "viewsUniques": 2,
+      "viewsUniques": 3,
       "upvotes": 1,
       "discussion": {
         "number": 479,

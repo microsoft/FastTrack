@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-17",
+  "lastRun": "2026-09-18",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -237,6 +237,14 @@
       "agents-cost-calculator": {
         "views": 1
       },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "comparedocs": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-agents-guide": {
         "views": 0,
         "uniques": 1
@@ -252,19 +260,50 @@
       "get-aadadminrolemembers": {
         "views": 1
       },
+      "get-licenseusage": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-teamsuseractivityreport": {
+        "views": 0,
+        "uniques": 0
+      },
+      "managersimulator": {
+        "views": 0,
+        "uniques": 0
+      },
       "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "reasoningagent": {
         "views": 0,
         "uniques": 0
       }
     },
     "2026-09-17": {
       "agent-365-lifecycle-atlas": {
-        "views": 29,
-        "uniques": 19
+        "views": 30,
+        "uniques": 18
+      },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "comparedocs": {
+        "views": 0,
+        "uniques": 0
       },
       "copilot-agents-guide": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "copilot-analytics-reports-navigator": {
         "views": 1,
@@ -272,11 +311,85 @@
       },
       "copilot-studio-workflow": {
         "views": 2,
-        "uniques": 1
+        "uniques": 0
+      },
+      "get-licenseusage": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-teamsuseractivityreport": {
+        "views": 0,
+        "uniques": 0
+      },
+      "managersimulator": {
+        "views": 0,
+        "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 3,
         "uniques": 2
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "reasoningagent": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-09-18": {
+      "agent-365-lifecycle-atlas": {
+        "views": 8,
+        "uniques": 7
+      },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 1
+      },
+      "comparedocs": {
+        "views": 0,
+        "uniques": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 2,
+        "uniques": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 1
+      },
+      "get-licenseusage": {
+        "views": 0,
+        "uniques": 1
+      },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 1
+      },
+      "get-teamsuseractivityreport": {
+        "views": 0,
+        "uniques": 1
+      },
+      "managersimulator": {
+        "views": 0,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3,
+        "uniques": 1
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 1
+      },
+      "reasoningagent": {
+        "views": 0,
+        "uniques": 1
       }
     }
   }
