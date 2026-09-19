@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-18T06:05:14.427Z",
+  "generatedAt": "2026-09-19T06:05:02.589Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 72,
-      "viewsUniques": 52,
+      "views": 82,
+      "viewsUniques": 57,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -19,8 +19,8 @@
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 1,
-      "viewsUniques": 0
+      "views": 2,
+      "viewsUniques": 1
     },
     "ai-council": {
       "views": 78,
@@ -33,18 +33,18 @@
     },
     "autoreply-agent": {
       "views": 1,
-      "viewsUniques": 2
+      "viewsUniques": 1
     },
     "copilot-agents-guide": {
       "views": 4,
       "viewsUniques": 2
     },
     "copilot-analytics-reports-navigator": {
-      "views": 6,
+      "views": 7,
       "viewsUniques": 4
     },
     "copilot-studio-workflow": {
-      "views": 10,
+      "views": 11,
       "viewsUniques": 3
     },
     "get-aadadminrolemembers": {
@@ -55,8 +55,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 22,
-      "viewsUniques": 19,
+      "views": 26,
+      "viewsUniques": 20,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -64,8 +64,8 @@
       }
     },
     "powerclaw-agent": {
-      "views": 4,
-      "viewsUniques": 3,
+      "views": 5,
+      "viewsUniques": 4,
       "upvotes": 1,
       "discussion": {
         "number": 479,
