@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-20",
+  "lastRun": "2026-09-21",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -399,7 +399,8 @@
     },
     "2026-09-19": {
       "agent-365-lifecycle-atlas": {
-        "views": 10
+        "views": 10,
+        "uniques": 9
       },
       "agents-cost-calculator": {
         "views": 1
@@ -422,9 +423,18 @@
       }
     },
     "2026-09-20": {
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
       "analyze-sharepointrisk": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      }
+    },
+    "2026-09-21": {
+      "agent-365-lifecycle-atlas": {
+        "views": 5,
+        "uniques": 4
       }
     }
   }
