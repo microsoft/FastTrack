@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-21",
+  "lastRun": "2026-09-22",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -429,12 +429,42 @@
       },
       "analyze-sharepointrisk": {
         "views": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-09-21": {
       "agent-365-lifecycle-atlas": {
         "views": 5,
-        "uniques": 4
+        "uniques": 2
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-09-22": {
+      "agent-365-lifecycle-atlas": {
+        "views": 14,
+        "uniques": 11
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 2,
+        "uniques": 1
       }
     }
   }
