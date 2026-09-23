@@ -2,6 +2,28 @@
 
 All notable changes to the Agent 365 Lifecycle Atlas are documented here.
 
+## 1.3.0 - 2026-09-22
+
+- Corrected `a365 setup all` runtime-configuration synchronization: it depends on
+  detecting a supported project (with a configuration-file-directory fallback),
+  not on a project-path flag alone, so the config-free path can still write
+  configuration and only `--agent-registration-only` deliberately skips it.
+- Scoped the setup sequence diagram, heading, and accessible description to the
+  default standard-agent, non-AI-teammate path, and clarified that `--aiteammate`
+  provisions only the blueprint and permissions during setup.
+- Clarified language-specific generated defaults: .NET `TokenValidation.Enabled =
+  false` and `EnableAgent365Exporter ??= false` (explicit values preserved);
+  Node.js/Python `ENABLE_A365_OBSERVABILITY_EXPORTER=false`. Noted that written
+  configuration does not prove the SDK, token validation, or exporter is active.
+- Corrected observability identity binding so `gen_ai.agent.id` equals the agent's
+  authenticated `appId` / OAuth `client_id`, never the Entra object or blueprint
+  ID, and added per-request identity resolution for shared multi-instance hosts.
+- Added a "What changes in my code?" runtime-integration architecture diagram and
+  illustrative code-area table describing customer-hosted integration boundaries.
+- Labeled the package lifecycle specifically as Microsoft 365 package distribution.
+- Corrections grounded in public Microsoft Learn and the pinned public
+  `microsoft/Agent365-devTools` source reviewed on September 22, 2026.
+
 ## 1.2.3 - 2026-09-16
 
 - Aligned connected-platform registry sync labels with the public Microsoft

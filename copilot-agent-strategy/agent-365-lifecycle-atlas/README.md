@@ -6,9 +6,9 @@ summary: >-
   Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin
   actions, and 18 public API endpoints in one atlas.
 author: Alejandro Lopez
-version: 1.2.3
+version: 1.3.0
 published: "2026-09-10"
-updated: "2026-09-16"
+updated: "2026-09-22"
 tags:
   - agent-365
   - architecture
@@ -58,6 +58,24 @@ run, and which governance and observability interfaces apply at each stage.
 The atlas keeps generally available, preview, and beta capabilities visibly
 separate. Preview and beta details must be checked against current Microsoft
 documentation for the target tenant, cloud, and scenario before implementation.
+
+## September 22, 2026 runtime-integration update
+
+This update corrects the `a365 setup all` runtime-configuration behavior and adds
+a "What changes in my code?" runtime-integration diagram. Runtime-config
+synchronization now depends on detecting a supported project (with a
+configuration-file-directory fallback), not simply on a project-path flag, so the
+config-free path can still write configuration; only `--agent-registration-only`
+deliberately skips it. The setup sequence is scoped to the default standard-agent,
+non-AI-teammate path. Language-specific generated defaults are clarified: .NET sets
+`TokenValidation.Enabled = false` and applies `EnableAgent365Exporter ??= false`
+(preserving explicit values), while Node.js and Python set
+`ENABLE_A365_OBSERVABILITY_EXPORTER=false`. The observability guidance now binds
+`gen_ai.agent.id` to the agent's authenticated `appId` / OAuth `client_id` rather
+than the Entra object or blueprint ID, with per-request identity resolution for
+shared multi-instance hosts. Package lifecycle is labeled Microsoft 365 package
+distribution. These corrections are grounded in public Microsoft Learn and the
+pinned public `microsoft/Agent365-devTools` source reviewed on September 22, 2026.
 
 ## September 16, 2026 setup update
 
