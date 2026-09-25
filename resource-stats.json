@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-24T06:05:29.208Z",
+  "generatedAt": "2026-09-25T06:05:20.444Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 109,
-      "viewsUniques": 75,
+      "views": 112,
+      "viewsUniques": 76,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -48,7 +48,7 @@
       "viewsUniques": 3
     },
     "copilot-studio-workflow": {
-      "views": 14,
+      "views": 15,
       "viewsUniques": 3
     },
     "get-aadadminrolemembers": {
@@ -60,7 +60,7 @@
     },
     "microsoft-agent-365-customer-implementation-guide": {
       "views": 32,
-      "viewsUniques": 22,
+      "viewsUniques": 21,
       "upvotes": 1,
       "discussion": {
         "number": 534,
