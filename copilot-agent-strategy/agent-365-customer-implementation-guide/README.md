@@ -7,9 +7,9 @@ author:
   - "Pratik Bhusal"
   - "Manas Biswas"
   - "Alejandro Lopez"
-version: 1.1.1
+version: 1.2.0
 published: 2026-09-09
-updated: 2026-09-14
+updated: 2026-09-25
 tags:
   - agent-365
   - implementation
@@ -21,17 +21,18 @@ preview: preview.webp
 featured: false
 status: active
 whatItIs: >-
-  A self-contained interactive implementation guide for planning and configuring a governed
-  Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.
+  A self-contained, community-built interactive implementation guide for planning and configuring a
+  governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.
 whyUseIt:
   - "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences."
   - "Follow 65 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references."
+  - "Start hunting with eight sample Microsoft Defender advanced hunting (KQL) queries for agent inventory, activity, alerts, and protection events."
   - "Use the guide offline without a server, sign-in, external runtime dependency, or saved browser progress."
 howToUse: |-
   1. Download or open `index.html` in a modern browser.
   2. Select **Simple** for the concise configuration reference or **Detailed** for the full implementation journey.
   3. Use the built-in navigation, theme, and print controls while applying the guidance in your own tenant.
-  4. Confirm product availability, licensing, roles, and portal behavior in your tenant before making production changes.
+  4. Treat the guide as a template: confirm product availability, licensing, roles, and portal behavior in your tenant, and tailor the guidance before making production changes.
 prerequisites:
   - "Modern web browser"
   - "Appropriate Microsoft 365, Agent 365, security, compliance, identity, and endpoint licenses for the features you plan to configure"
@@ -44,11 +45,16 @@ This self-contained browser guide helps administrators, architects, and security
 configure a governed Microsoft Agent 365 baseline. It provides two views of the same implementation
 scope:
 
-- **Simple:** A concise reference covering 58 specific controls and decisions.
+- **Simple:** A concise reference covering 58 specific controls and decisions, including sample
+  Microsoft Defender advanced hunting (KQL) queries.
 - **Detailed:** A 65-task deployment journey with implementation context and validation guidance.
 
-The guide includes 39 embedded images. All runtime dependencies are inline, so the downloaded
-file works offline and does not require a web server, sign-in, or installation.
+Diagrams, screenshots, and all runtime dependencies are inline, so the downloaded file works offline
+and does not require a web server, sign-in, or installation.
+
+> **Community guide:** This guide is built and supported by the community and isn't official
+> Microsoft documentation. Use it as a template: review, update, and tailor it for your
+> organization. Contributions are welcome; see [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 ## Use the guide
 
