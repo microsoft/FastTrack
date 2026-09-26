@@ -13,6 +13,7 @@ All notable changes to the Microsoft Agent 365 Customer Implementation Guide are
 - Fixed the Detailed rail item for tab 15, which scrolled into the Entra tab and didn't show its progress count, and made the Shadow AI portal path consistent (**Agents → Shadow AI**).
 - Fixed links that returned "page not found": seven Microsoft Learn links in the Detailed view now point to current pages (policy templates, agent settings, Agent Builder org catalog submission, Copilot DLP, DSPM permissions, eDiscovery for AI data, and the Agent 365 SDK capabilities overview), and every link in both views was rechecked.
 - Polished the UI: disabled code-font ligatures so KQL operators such as `!=` display as typed, made in-page links open collapsed sections, removed empty navigation groups and a duplicated heading from the Detailed view, corrected the Detailed view's static task counts, defined "MAC", and standardized US English spelling and date formats.
+- Refreshed `preview.webp` so the catalog card shows the current guide.
 
 ## 1.1.1 - 2026-09-14
 
