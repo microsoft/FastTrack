@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11",
+  "generatedAt": "2026-09-25",
   "count": 33,
   "resources": [
     {
@@ -9,8 +9,8 @@
       "type": "strategy",
       "subcategory": "Interactive",
       "category": "Interactive",
-      "description": "Explore Agent 365 lifecycles, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
-      "summary": "Explore Agent 365 lifecycles, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
+      "description": "Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
+      "summary": "Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.",
       "tags": [
         "agent-365",
         "architecture",
@@ -22,13 +22,14 @@
       "featured": true,
       "status": "active",
       "author": "Alejandro Lopez",
-      "version": "1.0.0",
+      "version": "1.3.0",
       "published": "2026-09-10",
-      "updated": "2026-09-10",
+      "updated": "2026-09-22",
       "whatItIs": "A self-contained interactive architecture reference that maps how Microsoft Agent 365 discovers, identifies, governs, and observes agents across Microsoft and third-party platforms.",
       "whyUseIt": [
         "Follow five agent classes through build, connection, identity, packaging, runtime, and governance.",
-        "Trace Agent 365 identity, token, SDK, CLI, MCP, telemetry, and administration relationships.",
+        "Distinguish registry ingestion, Agent Map inventory, and Shadow AI discovery boundaries.",
+        "Trace Agent 365 identity, token, SDK, CLI setup, MCP, telemetry, and administration relationships.",
         "Search and filter 18 representative public API endpoints with linked Microsoft Learn sources."
       ],
       "howToUse": "Open `index.html` in a modern browser. Use the section navigation and linked architecture nodes to move through the atlas, zoom the main diagram, switch themes, and filter the endpoint catalog by text or status.",
@@ -788,16 +789,17 @@
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.0.4",
+      "version": "1.2.0",
       "published": "2026-09-09",
-      "updated": "2026-09-10",
-      "whatItIs": "A self-contained interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
+      "updated": "2026-09-25",
+      "whatItIs": "A self-contained, community-built interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
         "Follow 65 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references.",
+        "Start hunting with eight sample Microsoft Defender advanced hunting (KQL) queries for agent inventory, activity, alerts, and protection events.",
         "Use the guide offline without a server, sign-in, external runtime dependency, or saved browser progress."
       ],
-      "howToUse": "1. Download or open `index.html` in a modern browser.\n2. Select **Simple** for the concise configuration reference or **Detailed** for the full implementation journey.\n3. Use the built-in navigation, theme, and print controls while applying the guidance in your own tenant.\n4. Confirm product availability, licensing, roles, and portal behavior in your tenant before making production changes.",
+      "howToUse": "1. Download or open `index.html` in a modern browser.\n2. Select **Simple** for the concise configuration reference or **Detailed** for the full implementation journey.\n3. Use the built-in navigation, theme, and print controls while applying the guidance in your own tenant.\n4. Treat the guide as a template: confirm product availability, licensing, roles, and portal behavior in your tenant, and tailor the guidance before making production changes.",
       "prerequisites": [
         "Modern web browser",
         "Appropriate Microsoft 365, Agent 365, security, compliance, identity, and endpoint licenses for the features you plan to configure",
