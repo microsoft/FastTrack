@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-26T06:04:52.111Z",
+  "generatedAt": "2026-09-27T06:04:59.140Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 123,
+      "views": 124,
       "viewsUniques": 81,
       "upvotes": 1,
       "discussion": {
@@ -23,8 +23,8 @@
       "viewsUniques": 0
     },
     "ai-council": {
-      "views": 78,
-      "viewsUniques": 61,
+      "views": 2,
+      "viewsUniques": 2,
       "upvotes": 1,
       "discussion": {
         "number": 501,
@@ -49,7 +49,7 @@
     },
     "copilot-studio-workflow": {
       "views": 17,
-      "viewsUniques": 3
+      "viewsUniques": 2
     },
     "get-aadadminrolemembers": {
       "views": 1,

@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-26",
+  "lastRun": "2026-09-27",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -499,6 +499,10 @@
         "views": 3,
         "uniques": 0
       },
+      "ai-council": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 0
@@ -507,10 +511,23 @@
     "2026-09-26": {
       "agent-365-lifecycle-atlas": {
         "views": 11,
-        "uniques": 7
+        "uniques": 6
+      },
+      "ai-council": {
+        "views": 1,
+        "uniques": 1
       },
       "copilot-studio-workflow": {
-        "views": 2,
+        "views": 2
+      }
+    },
+    "2026-09-27": {
+      "agent-365-lifecycle-atlas": {
+        "views": 1,
+        "uniques": 1
+      },
+      "ai-council": {
+        "views": 1,
         "uniques": 1
       }
     }
