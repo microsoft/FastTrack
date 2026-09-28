@@ -5,7 +5,7 @@ category: Interactive
 summary: >-
   Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder,
   SharePoint, and Foundry agents.
-author: Microsoft FastTrack
+author: Georgi Nunev
 version: 2.0.0
 published: "2026-04-01"
 updated: "2026-09-28"
