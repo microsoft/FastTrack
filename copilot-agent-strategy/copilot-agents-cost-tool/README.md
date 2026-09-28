@@ -3,12 +3,12 @@ title: Agents Cost Calculator
 type: strategy
 category: Interactive
 summary: >-
-  Estimate test and production costs for Copilot Studio, Agent Builder, SharePoint, and Foundry
-  agents.
+  Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder,
+  SharePoint, and Foundry agents.
 author: Microsoft FastTrack
-version: 1.0.0
+version: 2.0.0
 published: "2026-04-01"
-updated: "2026-07-16"
+updated: "2026-09-28"
 tags:
   - cost
   - roi
@@ -16,153 +16,212 @@ tags:
 format: interactive
 featured: true
 whatItIs: >-
-  A self-contained browser calculator for modeling Copilot Credits or token-based costs across
-  custom, Agent Builder, SharePoint, and Microsoft Foundry agents.
+  A self-contained browser calculator that models Copilot Credits, Microsoft Foundry token and
+  infrastructure costs, and purchase commitments for Copilot Studio (Standard and GitHub Copilot
+  harnesses), Agent Builder, SharePoint, and Microsoft Foundry agents. It separates consumption
+  value from purchase commitments and shows a dated source for every rate.
 whyUseIt:
-  - Trace per-turn costs before testing or production rollout.
-  - Compare pay-as-you-go, capacity, model, knowledge, tool, and conversation assumptions.
-  - Export a scenario to CSV or print a shareable planning snapshot.
-howToUse: >-
-  Open `index.html` in a browser, select an agent type, and optionally load a quick-start template.
-  Enter knowledge, component, conversation, test-scale, or token assumptions, then review the cost
-  trace and production estimate. Export CSV or print the results.
+  - Forecast a monthly production workload or budget a single test suite from counted billable operations.
+  - Compare PAYG, credit packs, Copilot Credit P3, and Microsoft Agent P3 without mixing consumption with commitment.
+  - Trace every meter, licence exclusion, and test exemption, then export the scenario to CSV or print it.
+howToUse: |-
+  1. Open `index.html` in a browser.
+  2. Choose the agent or harness, the estimate mode (production month or test suite), and optionally a quick-start template.
+  3. Enter licence eligibility, billable operations per run (or Foundry tokens/tools, or measured GitHub Copilot harness task credits), integrations, and a purchase scenario.
+  4. Review the results, purchase economics, capacity impact, and cost trace, then export CSV or print.
 prerequisites:
   - Modern web browser
   - Current licensing and pricing inputs for planning validation
 ---
 
-# M365 Copilot Agents Cost Calculator
+# Copilot & Foundry Agent Cost Calculator
 
-A self-contained, browser-based cost estimator for Microsoft 365 Copilot agents.
-Open `index.html` in any modern browser — no server, no dependencies, no login required.
+A self-contained, browser-based cost estimator for Microsoft Copilot and Microsoft Foundry agents.
+Open `index.html` in any modern browser. No server, build step, or login is required.
 
-> **This tool produces planning estimates only. Results are not a billing commitment.**
-> Actual charges depend on runtime behavior, orchestration paths, tenant configuration,
-> model usage, Microsoft licensing changes, and feature availability.
+> **This tool produces planning estimates only. Results are not a quote or billing commitment.**
+> Figures are USD list-price assumptions, excluding taxes, currency conversion, and negotiated
+> discounts. Runtime behavior, licensing, billing aggregation, and service availability can change
+> the outcome. Validate against actual consumption before purchasing.
+
+**Version 2.0.0** · Billing content reviewed 28 September 2026. Foundry numeric rates are a
+historical May 2026 snapshot or user-supplied values; they were not reverified in this review.
+
+---
+
+## What's new in 2.0.0
+
+- **Operation-based model.** You count billable operations per conversation or run (generative
+  responses, graph-grounded messages, classic answers, agent actions, flows, prompts). Knowledge
+  sources are a planning inventory only; they no longer add a fixed charge per "lookup turn".
+- **Production and test modes.** Forecast one production month (users × conversations × active days
+  + autonomous runs) or budget one test suite (scenarios × iterations). Standard-harness embedded
+  maker tests apply the documented test exclusions.
+- **Harness-aware agent types.** Copilot Studio Standard harness, Copilot Studio GitHub Copilot
+  harness (measured all-in credits per task), Agent Builder, SharePoint agent, and Microsoft Foundry.
+- **Token-metered AI tools and reasoning.** Prompt tools and reasoning models use credits per started
+  1,000 tokens (basic 0.1, standard 1.5, premium 10) instead of a flat per-call surcharge.
+- **Licence eligibility, not a blanket discount.** The covered share applies only to eligible meter
+  rows, only for Microsoft employee-facing channels, and requires an explicit confirmation.
+- **Purchase economics.** PAYG, credit packs, 9 Copilot Credit P3 tiers, and 3 Microsoft Agent P3
+  tiers, with commitment, allocated usage value, unused pool, and annual projections.
+- **Richer Foundry model.** Model calls per turn, history mode (full, sliding window, stateless),
+  prompt caching, reasoning tokens, hosted-agent compute, vector storage, search, and monitoring
+  allowances. Newer models require you to enter rates rather than using invented prices.
+- **Work IQ and external costs.** Work IQ Tools API (0.1 credit per call), measured Work IQ
+  Chat/Context credits, and an explicit allowance for other Azure or third-party costs.
+- **Validation and provenance.** Invalid or missing inputs block the estimate rather than showing a
+  misleading zero. Every rate source has a review date and confidence note.
 
 ---
 
 ## What it covers
 
-| Agent type | Billing model |
+| Agent / harness | Billing model |
 |---|---|
-| **Custom agent** (Copilot Studio) | Copilot Credits — per classic answer, generative answer, agent action, graph grounding, AI prompt, agent flow, content processing |
-| **Agent Builder agent** (M365 Copilot declarative) | Copilot Credits — knowledge sources only; public website grounding is free |
-| **SharePoint agent** | Copilot Credits — SharePoint via tenant graph grounding |
-| **Foundry agent** (Azure AI Foundry Agent Service) | Token-based — input + output tokens billed to Azure subscription; no Copilot Credits |
+| **Copilot Studio – Standard harness** | Copilot Credits: generative and classic answers, agent actions, tenant graph grounding, token-metered prompt tools and reasoning, agent flows, AI tools inside flows, content processing, and measured excluded-feature allowances |
+| **Agent Builder – Copilot Chat harness** | Copilot Credits: generative + tenant graph meters for graph-grounded responses; non-graph generative responses are exempt |
+| **SharePoint agent** | Copilot Credits: explicitly counted generative responses and graph-grounded messages (no automatic Agent Builder exemption) |
+| **Copilot Studio – GitHub Copilot harness** | Measured all-in Copilot Credits per task plus an LLM authoring/evaluation budget; standard feature tariffs and Copilot licence zero-rating do not apply |
+| **Microsoft Foundry agent** | Azure USD: input (uncached/cached) and output tokens, built-in tools, and optional infrastructure allowances; Work IQ API calls add a separate Copilot Credit ledger |
 
 ---
 
 ## How to use
 
 1. Open `index.html` in a browser.
-2. **Select your agent type** at the top.
-3. (Optional) **Pick a quick-start template** to pre-fill a realistic enterprise scenario.
-4. Fill in the steps:
-   - **Knowledge sources** — which sources your agent uses and how many.
-   - **Components** (custom agents) — topics, tools, AI prompts, flows.
-   - **Conversation profile** — how many turns per conversation and what happens in each.
-   - **Test plan scale** — number of scenarios × iterations.
-   - **Foundry agents** — model, token sizes, turns, and built-in tools (File Search, Code Interpreter).
-5. Review the **Example Prompt & Cost Trace** to validate the per-turn breakdown.
-6. Review the **Production Cost Estimate** panel for totals, a credit breakdown chart, and capacity impact.
-7. Use **Export CSV** to save the configuration and results, or **Print** for a shareable snapshot.
-8. Click **Start Over** (header or results panel) to reset everything.
+2. **Agent and billing scope:** choose the agent or harness, and optionally a quick-start template.
+3. **Forecast period and workload:** choose *Production forecast – one month* or *Test budget – one
+   suite* and enter users/conversations or scenarios/iterations.
+4. **Licence eligibility:** enter the share of *usage* (not headcount) covered by a Microsoft Copilot
+   licence and confirm eligibility. External or unauthenticated channels receive no reduction.
+5. **Billable operations per conversation or run** (Standard, Agent Builder, SharePoint), **measured
+   task budget** (GitHub Copilot harness), or **model, tokens, and tools** (Foundry).
+6. **Separately billed integrations:** Work IQ APIs and other Azure or third-party allowances.
+7. **Purchase commitment and capacity:** choose a purchase scenario and optionally enter your
+   applicable prepaid pool and existing consumption.
+8. Review the results panel, **Purchase economics**, **Billable credit distribution**, **Capacity
+   impact**, and the **Cost trace and assumptions** table.
+9. Use **Export CSV** or **Print snapshot**. **Start Over** resets all inputs.
+
+See [GUIDE.md](./GUIDE.md) for a step-by-step walk-through.
 
 ---
 
 ## Quick-start templates
 
-| Template | Agent type | What it models |
+Templates are illustrative workloads, not observed usage or licensing recommendations. Selecting a
+template keeps the current estimate mode and resets other inputs to defaults first.
+
+| Template | Agent type | Per-run operations modeled |
 |---|---|---|
-| Enterprise FAQ agent | Custom (Copilot Studio) | SharePoint + enterprise connectors, authored topics, no tools or flows |
-| HR policy agent | Custom (Copilot Studio) | SharePoint, connectors, uploaded files, pure internal knowledge — no tools, flows, or AI prompts |
-| IT helpdesk with tools + flows | Custom (Copilot Studio) | SharePoint, connectors, tools, agent flow, AI prompts, reasoning model |
-| Employee Self-Service — HR agent starter | Custom (Copilot Studio) | SharePoint HR policies + ServiceNow Knowledge KB + Workday connector; HRSD topics for create/get/update HR cases; shared orchestrator flow; no reasoning; 70% M365 user share |
-| Employee Self-Service — IT agent starter | Custom (Copilot Studio) | SharePoint IT docs + ServiceNow Knowledge KB + Microsoft Self-Help connector; ITSM topics for create/get/update tickets; reasoning model for diagnostic classification; 50% M365 user share |
-| General purpose assistant (GPT-4o) | Foundry agent | GPT-4o, 5 turns with file search, token-based billing |
-| Code assistant (GPT-4.1) | Foundry agent | GPT-4.1, 6 turns with code interpreter, token-based billing |
+| Enterprise FAQ agent | Standard harness | 3 generative (3 graph-grounded), 1 classic |
+| HR policy agent | Standard harness | 4 generative (3 graph-grounded), 1 classic |
+| IT helpdesk with tools + flows | Standard harness | 3 generative (2 graph), 1 classic, 2 actions, 1 prompt, 1 flow × 12 actions, 1 reasoning call |
+| Employee Self-Service – HR | Standard harness | 4 generative (2 graph), 1 classic, 3 actions, 1 prompt, 2 flows × 18 actions |
+| Employee Self-Service – IT | Standard harness | 3 generative (2 graph), 1 classic, 3 actions, 1 prompt, 1 flow × 22 actions, 1 reasoning call |
+| Foundry general assistant | Foundry | Historical GPT-4o rates, 600-token system prompt, 3 file-search calls |
+| Foundry code assistant | Foundry | Historical GPT-4.1 rates, 6 turns, 2 Code Interpreter sessions |
 
 ---
 
 ## Billing rates reference
 
-### Copilot Studio / M365 Copilot agents
+Rates below are the values used by the calculator, reviewed 28 September 2026. Always confirm
+current rates with the linked sources.
 
-Source: [Copilot Credits billing rates (Microsoft Learn)](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#copilot-credits-billing-rates)
+### Copilot Credits (Standard and Copilot Chat harnesses)
 
-| Feature | Credits | Unit |
+Source: [Copilot Studio billing rates and management (Microsoft Learn)](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management)
+
+| Meter | Rate | Notes |
 |---|---|---|
-| Classic answer | 1 | per response |
-| Generative answer | 2 | per response |
-| Agent action (tool call, flow trigger) | 5 | per action |
-| Tenant graph grounding | 10 | per message |
-| SharePoint or connector (graph-grounded) | 12 | per query (10 graph + 2 gen) |
-| Agent flow actions | 13 | per 100 actions |
-| AI tools — basic | 1 | per 10 responses |
-| AI tools — standard | 15 | per 10 responses |
-| AI tools — premium | 100 | per 10 responses |
-| Content processing | 8 | per page |
-| Reasoning model surcharge | +10 | per generative answer and agent action |
+| Classic answer | 1 credit / response | Standard harness |
+| Generative answer | 2 credits / response | Agent Builder non-graph responses exempt |
+| Agent action | 5 credits / action | No automatic extra generative answer |
+| Tenant graph grounding | 10 credits / message | Only actual graph-grounded messages |
+| Agent-flow actions | 13 credits / 100 executed actions | Flow invocation also adds 5 (generative) or 1 (topic) credits |
+| AI tools – basic / standard / premium | 0.1 / 1.5 / 10 credits per 1K tokens | Input + output tokens; started 1K units per invocation |
+| Reasoning model | Premium token rate (10 credits / 1K tokens) | Additional to the core operation |
+| Content processing | 8 credits / page or image | Capability-specific, not all document grounding |
+| Work IQ Tools API | 0.1 credit / call | Not covered by a Copilot user licence |
+| Work IQ Chat/Context API | Variable, measured | No universal per-query rate |
 
-**Pricing options** (all bill in Copilot Credits):
+**GitHub Copilot harness:** there is no per-feature tariff. Supply measured all-in credits per task
+([billing overview](https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/billing-credit-overview)).
 
-| Option | Effective $/credit | Notes |
+**Voice** (reference only, not in the numeric estimate): classic 10, GenAI 35, premium GenAI 75
+credits per minute, measured to the nearest second.
+
+### Purchase options
+
+| Option | Terms |
+|---|---|
+| Pay-as-you-go | $0.01 per credit |
+| Copilot Credit pack | $200/month for 25,000 credits, billed annually; monthly credits do not roll over |
+| Copilot Credit P3 | 9 tiers, 3,000–3,000,000 CCCUs/year (1 CCCU = 100 credits), 5%–20% discount; one-year upfront, unused units expire |
+| Microsoft Agent P3 | 3 tiers, 20,000 / 100,000 / 500,000 ACUs/year, 5% / 10% / 15% discount; can cover eligible Copilot Studio and Foundry usage |
+
+Discounts do not stack. Sources: [Copilot Studio Licensing Guide, September 2026](https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/ai/Microsoft-Copilot-Studio-Licensing-Guide-September-2026.pdf) ·
+[Copilot Credit P3](https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/copilot-credit-p3) ·
+[Agent P3](https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/agent-pre-purchase)
+
+**Licensed Microsoft Copilot users:** eligible Standard / Copilot Chat usage is zero-rated only for
+employee-facing usage in eligible Microsoft channels under the licensed user's authenticated
+identity, subject to fair use. Work IQ APIs, computer use, external services, and independently
+triggered agent flows remain billable.
+
+### Microsoft Foundry agents
+
+Source: [Azure OpenAI pricing](https://azure.microsoft.com/en-us/pricing/details/azure-openai/) ·
+[Foundry Agent Service overview](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)
+
+Foundry presets are a **historical May 2026 Global Standard snapshot, not reverified**. Newer models
+(for example GPT-5.3, GPT-5.5, GPT-5.6, and GPT-6 families) have no built-in price; enter a dated
+Azure rate or quote. Data Zone, Regional, and long-context selections also require quoted rates.
+
+| Historical preset | Input (USD / 1M) | Output (USD / 1M) |
 |---|---|---|
-| Pay-as-you-go (PAYG) meter | $0.0100 | Postpaid; billed via Azure subscription. No commitment. |
-| Copilot Credit pack (subscription) | $0.0080 | $200/month for 25,000 credits. Unused credits do not roll over. |
-| Copilot Credit Pre-Purchase Plan (P3) | $0.0095 → $0.0080 | 1-year commit, 9 tiers, 5% → 20% discount (3,000 → 3,000,000 CCCUs). 1 CCCU = 100 credits. |
-| **Microsoft Agent Pre-Purchase Plan (P3)** *(NEW May 2026)* | $0.0095 / $0.0090 / $0.0085 | 1-year commit, 3 tiers, 5% / 10% / 15%. **Covers BOTH Copilot Studio AND Microsoft Foundry usage.** 1 ACU = 100 credits or $1 Foundry. |
-
-Source: [Microsoft Copilot Studio Licensing Guide (May 2026)](https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/bizapps/Microsoft-Copilot-Studio-Licensing-Guide-May-2026-PUB.pdf).
-
-**M365 Copilot licensed users** consume zero credits for all features when operating under their authenticated M365 Copilot identity (subject to fair-use limits).
-
-**Voice agents** (introduced in the May 2026 Licensing Guide) are billed by **total call length to the nearest second** plus the configured voice orchestration. Voice agents are **not modeled** in this tool — estimate them separately.
-
-**Agent Builder and SharePoint agents** using pay-as-you-go: billing is configured in the Microsoft 365 admin center and billed to the linked Azure subscription under Microsoft 365 Copilot pay-as-you-go — not Copilot Studio meters.
-
-### Azure Foundry agents
-
-Source: [Azure OpenAI pricing](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/) · [Foundry Agent Service overview](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)
-
-Billed by tokens (input + output) to your Azure subscription. Context accumulates each turn — every user message re-sends the full conversation history as input, so costs grow with conversation length.
-
-Selected models (Global Standard pay-as-you-go, USD / 1M tokens):
-
-| Model | Input | Output |
-|---|---|---|
-| GPT-4.1-nano | $0.10 | $0.40 |
+| GPT-5 nano | $0.05 | $0.40 |
+| GPT-4.1 nano | $0.10 | $0.40 |
 | GPT-4o mini | $0.15 | $0.60 |
-| GPT-5-nano | $0.05 | $0.40 |
-| GPT-5-mini | $0.25 | $2.00 |
-| GPT-5.1-codex-mini | $0.25 | $2.00 |
-| GPT-4.1-mini | $0.40 | $1.60 |
-| GPT-4.1 | $2.00 | $8.00 |
-| GPT-4o (2024-11-20) | $2.50 | $10.00 |
+| GPT-5.4 nano | $0.20 | $1.25 |
+| GPT-5 mini / GPT-5.1 codex mini | $0.25 | $2.00 |
+| GPT-4.1 mini | $0.40 | $1.60 |
+| GPT-5.4 mini | $0.75 | $4.50 |
 | o4-mini | $1.10 | $4.40 |
-| o3 | $2.00 | $8.00 |
-| GPT-5 (2025-08-07) | $1.25 | $10.00 |
-| GPT-5.1 | $1.25 | $10.00 |
+| GPT-5 / GPT-5.1 | $1.25 | $10.00 |
 | GPT-5.2 | $1.75 | $14.00 |
-| GPT-5.3 | $1.75 | $14.00 |
-| GPT-5.4-nano | $0.20 | $1.25 |
-| GPT-5.4-mini | $0.75 | $4.50 |
-| GPT-5.4 (<272k ctx) | $2.50 | $15.00 |
-| GPT-5.4 Pro (<272k ctx) | $30.00 | $180.00 |
+| GPT-4.1 / o3 | $2.00 | $8.00 |
+| GPT-4o (2024-11-20) | $2.50 | $10.00 |
+| GPT-5.4 (short context, ≤272K) | $2.50 | $15.00 |
+| GPT-5.4 Pro (short context, ≤272K) | $30.00 | $180.00 |
 
-Built-in tools: File Search $2.50/1K calls · Code Interpreter $0.033/session.
+Built-in tool baselines (May 2026, not reverified): File Search $2.50 / 1K calls (Responses API),
+Code Interpreter $0.033 / session, vector storage $0.11 / GB-day after a 1 GB allowance. Hosted-agent
+compute, search, and monitoring are user-entered allowances; zero means *not estimated*, not free.
+
+---
+
+## Not estimated
+
+Dataverse storage overage, standalone Power Automate licensing, telephony and voice, provisioned
+model throughput, networking, image/audio/video generation, support, implementation labor,
+third-party subscriptions, and Microsoft Copilot user licence costs. Use the explicit allowance
+fields or a separate estimate.
+
+---
+
+## Privacy
+
+Inputs are not saved by the page. The page loads the Microsoft Clarity analytics tag when online.
+Avoid entering confidential information into notes. Calculations run entirely in the browser.
 
 ---
 
 ## Other resources
 
-- [Microsoft agent usage estimator](https://microsoft.github.io/copilot-studio-estimator/) — for monthly *production* usage forecasting
-- [Overage enforcement](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management#overage-enforcement)
-- [Cost considerations for M365 Copilot extensibility](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/cost-considerations)
-- [M365 Copilot pay-as-you-go overview](https://learn.microsoft.com/en-us/copilot/microsoft-365/pay-as-you-go/overview)
-
-
-> **1 Copilot Credit = $0.01 USD**
-
-The [Microsoft agent usage estimator](https://microsoft.github.io/copilot-studio-estimator/) forecasts monthly production usage. This tool does the opposite — it calculates the cost of your **test plan** based on individual conversations, so you can budget before you start testing.
+- [Microsoft agent usage estimator](https://microsoft.github.io/copilot-studio-estimator/) — complementary scenario estimator for standard agents
+- [Compare Copilot Studio harnesses](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview)
+- [Copilot Credits Guide, September 2026](https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/ai/CopilotCreditsGuideSeptember2026.pdf)
+- [Foundry model retirements](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirements)

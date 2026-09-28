@@ -9,7 +9,7 @@ A curated collection of strategic tools, templates, and guides to help you plan,
 | **[Agent 365 Lifecycle Atlas](./agent-365-lifecycle-atlas/)** | Interactive Architecture Atlas | Maps Agent 365 lifecycles, discovery and inventory, identity, token flows, SDK and CLI boundaries, governed MCP tooling, telemetry, administration, and public API endpoints. | Developers, architects, and administrators implementing or governing agents with Agent 365 |
 | **[Copilot Agents Guide](./copilot-agents-guide/)** | Interactive Dashboard | Comprehensive comparison of all Microsoft Copilot agent types with decision frameworks, capabilities matrix, and deployment guidance. Includes Researcher & Analyst, Lite, Full Custom, SharePoint, Declarative, and Toolkit options. | Business decision makers, IT leadership, solution architects planning agent strategy |
 | **[Agent Brainstorming Template](./copilot-agent-brainstorm/)** | PowerPoint | Visual template to map out agent specifications before building. Choose your agent type (SharePoint, Declarative, or Custom), map user interactions, identify knowledge sources, and plan agent flow. | Product managers, developers, business analysts designing specific agents |
-| **[Agents Cost Calculator](./copilot-agents-cost-tool/)** | Interactive Calculator | Estimate production costs for M365 Copilot agents — Custom (Copilot Studio), Agent Builder, SharePoint, and Azure Foundry agents. Includes quick-start templates, credit/token modeling, capacity tracking, and CSV export. | Finance, IT leadership, solution architects estimating agent costs |
+| **[Agents Cost Calculator](./copilot-agents-cost-tool/)** | Interactive Calculator | Estimate monthly production, test-suite, and purchase-commitment costs for Copilot Studio (Standard and GitHub Copilot harnesses), Agent Builder, SharePoint, and Microsoft Foundry agents. Includes quick-start templates, operation-based credit and token modeling, P3/credit-pack economics, capacity tracking, dated rate sources, and CSV export. | Finance, IT leadership, solution architects estimating agent costs |
 
 ## 🎯 What You'll Find Here
 
@@ -33,8 +33,8 @@ Start with the **Copilot Agents Guide** to:
 ### For Cost Estimation
 Use the **Agents Cost Calculator** to:
 1. Model credit costs for Copilot Studio, Agent Builder, and SharePoint agents
-2. Estimate token costs for Azure Foundry agents
-3. Compare pay-as-you-go vs. prepaid pricing
+2. Estimate token and infrastructure costs for Microsoft Foundry agents
+3. Compare pay-as-you-go, credit packs, and pre-purchase plans (P3)
 4. Generate cost reports to share with finance and leadership
 
 ### For Agent Design
