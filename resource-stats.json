@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T06:04:59.140Z",
+  "generatedAt": "2026-09-28T06:07:08.383Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -7,7 +7,7 @@
   "resources": {
     "agent-365-lifecycle-atlas": {
       "views": 124,
-      "viewsUniques": 81,
+      "viewsUniques": 80,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -24,7 +24,7 @@
     },
     "ai-council": {
       "views": 2,
-      "viewsUniques": 2,
+      "viewsUniques": 1,
       "upvotes": 1,
       "discussion": {
         "number": 501,
@@ -40,8 +40,8 @@
       "viewsUniques": 1
     },
     "copilot-agents-guide": {
-      "views": 4,
-      "viewsUniques": 2
+      "views": 5,
+      "viewsUniques": 3
     },
     "copilot-analytics-reports-navigator": {
       "views": 7,

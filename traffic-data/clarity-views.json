@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-27",
+  "lastRun": "2026-09-28",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -517,16 +517,28 @@
         "views": 1,
         "uniques": 1
       },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-studio-workflow": {
         "views": 2
       }
     },
     "2026-09-27": {
       "agent-365-lifecycle-atlas": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "ai-council": {
+        "views": 1
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-09-28": {
+      "copilot-agents-guide": {
         "views": 1,
         "uniques": 1
       }
