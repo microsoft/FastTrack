@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-28",
+  "lastRun": "2026-09-29",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -527,7 +527,12 @@
     },
     "2026-09-27": {
       "agent-365-lifecycle-atlas": {
-        "views": 1
+        "views": 1,
+        "uniques": 1
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
       },
       "ai-council": {
         "views": 1
@@ -535,10 +540,51 @@
       "copilot-agents-guide": {
         "views": 0,
         "uniques": 0
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-09-28": {
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-agents-guide": {
+        "views": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-09-29": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2,
+        "uniques": 1
+      },
+      "agents-cost-calculator": {
+        "views": 2,
+        "uniques": 2
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-studio-workflow": {
         "views": 1,
         "uniques": 1
       }
