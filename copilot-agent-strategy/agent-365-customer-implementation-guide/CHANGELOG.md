@@ -2,6 +2,10 @@
 
 All notable changes to the Microsoft Agent 365 Customer Implementation Guide are documented here.
 
+## 1.2.1 - 2026-09-30
+
+- Clarified how to scope Purview DLP to Agent 365 agents. Purview has no separate "Agent 365 instances" picker: each instance is an Entra agent user account, so the Simple checklist control **Scope DLP to Agent 365 instances and supported interactions** now starts by adding the approved agents to a reviewed security group, then includes that group under **Edit** for each Exchange, Teams, and OneDrive location. It also notes that Exchange scoping accepts only groups and that SharePoint is scoped by site. Detailed task **4.21** now sets this scope in the **Locations** step instead of after the rule actions.
+
 ## 1.2.0 - 2026-09-25
 
 - Removed the "Value plays" section, its navigation link, the related hero metric, CSS, and scripts. Its Microsoft Defender advanced hunting queries now live where you use them: the Simple checklist row **Hunt for agent inventory and activity with advanced hunting** and Detailed task **2a**, each with a schema check, eight sample queries, and copy buttons. The queries were rechecked against current Microsoft Learn schemas; the activity query now filters on the documented Agent 365 `ActionType` values, and the behavior query summarizes the values your tenant emits.
