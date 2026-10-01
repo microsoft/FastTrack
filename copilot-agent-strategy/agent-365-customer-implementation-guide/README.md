@@ -7,9 +7,9 @@ author:
   - "Pratik Bhusal"
   - "Manas Biswas"
   - "Alejandro Lopez"
-version: 1.2.0
+version: 1.2.1
 published: 2026-09-09
-updated: 2026-09-25
+updated: 2026-09-30
 tags:
   - agent-365
   - implementation
