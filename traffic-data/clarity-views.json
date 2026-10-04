@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-03",
+  "lastRun": "2026-10-04",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -666,15 +666,25 @@
         "views": 0,
         "uniques": 0
       },
-      "autoreply-agent": {
-        "views": 1
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
       },
-      "copilot-studio-workflow": {
+      "autoreply-agent": {
         "views": 1
       }
     },
     "2026-10-03": {
       "agent-365-lifecycle-atlas": {
+        "views": 1
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-10-04": {
+      "agents-cost-calculator": {
         "views": 1,
         "uniques": 1
       }
