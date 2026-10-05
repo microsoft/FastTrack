@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-04",
+  "lastRun": "2026-10-05",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -676,15 +676,83 @@
     },
     "2026-10-03": {
       "agent-365-lifecycle-atlas": {
-        "views": 1
+        "views": 1,
+        "uniques": 0
       },
       "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-interaction-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
         "views": 0,
         "uniques": 0
       }
     },
     "2026-10-04": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2
+      },
       "agents-cost-calculator": {
+        "views": 2
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-interaction-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-10-05": {
+      "copilot-analytics-reports-navigator": {
+        "views": 2,
+        "uniques": 2
+      },
+      "copilot-interaction-report": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "purview-audit-copilot-report": {
+        "views": 1,
+        "uniques": 1
+      },
+      "viva-insights-copilot-dashboard": {
         "views": 1,
         "uniques": 1
       }

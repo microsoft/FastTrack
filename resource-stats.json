@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-04T07:58:06.840Z",
+  "generatedAt": "2026-10-05T06:11:02.506Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 134,
+      "views": 136,
       "viewsUniques": 86,
       "upvotes": 1,
       "discussion": {
@@ -19,8 +19,8 @@
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 12,
-      "viewsUniques": 3
+      "views": 13,
+      "viewsUniques": 2
     },
     "ai-council": {
       "views": 2,
@@ -36,7 +36,7 @@
       "viewsUniques": 0
     },
     "autoreply-agent": {
-      "views": 4,
+      "views": 5,
       "viewsUniques": 3
     },
     "copilot-agents-guide": {
@@ -44,8 +44,12 @@
       "viewsUniques": 3
     },
     "copilot-analytics-reports-navigator": {
-      "views": 8,
-      "viewsUniques": 3
+      "views": 10,
+      "viewsUniques": 5
+    },
+    "copilot-interaction-report": {
+      "views": 1,
+      "viewsUniques": 1
     },
     "copilot-studio-workflow": {
       "views": 19,
@@ -59,8 +63,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 47,
-      "viewsUniques": 22,
+      "views": 48,
+      "viewsUniques": 23,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -77,8 +81,8 @@
       }
     },
     "purview-audit-copilot-report": {
-      "views": 2,
-      "viewsUniques": 1,
+      "views": 3,
+      "viewsUniques": 2,
       "upvotes": 0,
       "discussion": {
         "number": 497,
@@ -86,8 +90,8 @@
       }
     },
     "viva-insights-copilot-dashboard": {
-      "views": 119,
-      "viewsUniques": 70,
+      "views": 1,
+      "viewsUniques": 1,
       "upvotes": 1,
       "discussion": {
         "number": 508,
