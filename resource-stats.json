@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-05T06:11:02.506Z",
+  "generatedAt": "2026-10-06T06:05:21.826Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 136,
-      "viewsUniques": 86,
+      "views": 140,
+      "viewsUniques": 91,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -15,8 +15,8 @@
       }
     },
     "agent-brainstorming-template": {
-      "views": 3,
-      "viewsUniques": 0
+      "views": 5,
+      "viewsUniques": 1
     },
     "agents-cost-calculator": {
       "views": 13,
@@ -36,24 +36,24 @@
       "viewsUniques": 0
     },
     "autoreply-agent": {
-      "views": 5,
-      "viewsUniques": 3
+      "views": 6,
+      "viewsUniques": 4
     },
     "copilot-agents-guide": {
-      "views": 8,
-      "viewsUniques": 3
+      "views": 9,
+      "viewsUniques": 4
     },
     "copilot-analytics-reports-navigator": {
-      "views": 10,
-      "viewsUniques": 5
+      "views": 15,
+      "viewsUniques": 6
     },
     "copilot-interaction-report": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 19,
-      "viewsUniques": 4
+      "views": 20,
+      "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
       "views": 1,
@@ -63,8 +63,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 48,
-      "viewsUniques": 23,
+      "views": 51,
+      "viewsUniques": 25,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -82,16 +82,24 @@
     },
     "purview-audit-copilot-report": {
       "views": 3,
-      "viewsUniques": 2,
+      "viewsUniques": 1,
       "upvotes": 0,
       "discussion": {
         "number": 497,
         "url": "https://github.com/microsoft/FastTrack/discussions/497"
       }
     },
-    "viva-insights-copilot-dashboard": {
+    "reasoningagent": {
       "views": 1,
-      "viewsUniques": 1,
+      "viewsUniques": 1
+    },
+    "researcher-automation-opportunities": {
+      "views": 1,
+      "viewsUniques": 1
+    },
+    "viva-insights-copilot-dashboard": {
+      "views": 2,
+      "viewsUniques": 2,
       "upvotes": 1,
       "discussion": {
         "number": 508,
