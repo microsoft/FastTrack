@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-06",
+  "lastRun": "2026-10-07",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -769,6 +769,10 @@
         "views": 0,
         "uniques": 0
       },
+      "ai-council": {
+        "views": 0,
+        "uniques": 0
+      },
       "autoreply-agent": {
         "views": 0,
         "uniques": 0
@@ -811,13 +815,52 @@
     "2026-10-06": {
       "agent-365-lifecycle-atlas": {
         "views": 4,
-        "uniques": 3
+        "uniques": 2
       },
       "agent-brainstorming-template": {
+        "views": 2
+      },
+      "ai-council": {
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 1
+      },
+      "copilot-agents-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 4,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3,
+        "uniques": 1
+      },
+      "reasoningagent": {
+        "views": 1,
+        "uniques": 0
+      },
+      "researcher-automation-opportunities": {
+        "views": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1,
+        "uniques": 0
+      }
+    },
+    "2026-10-07": {
+      "agent-365-lifecycle-atlas": {
         "views": 2,
         "uniques": 1
       },
-      "autoreply-agent": {
+      "ai-council": {
         "views": 1,
         "uniques": 1
       },
@@ -826,7 +869,7 @@
         "uniques": 1
       },
       "copilot-analytics-reports-navigator": {
-        "views": 4,
+        "views": 10,
         "uniques": 2
       },
       "copilot-studio-workflow": {
@@ -834,14 +877,10 @@
         "uniques": 1
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 3,
-        "uniques": 2
+        "views": 8,
+        "uniques": 7
       },
       "reasoningagent": {
-        "views": 1,
-        "uniques": 1
-      },
-      "researcher-automation-opportunities": {
         "views": 1,
         "uniques": 1
       },

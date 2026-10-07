@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-06T06:05:21.826Z",
+  "generatedAt": "2026-10-07T06:04:29.274Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 140,
+      "views": 142,
       "viewsUniques": 91,
       "upvotes": 1,
       "discussion": {
@@ -16,15 +16,15 @@
     },
     "agent-brainstorming-template": {
       "views": 5,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "agents-cost-calculator": {
       "views": 13,
       "viewsUniques": 2
     },
     "ai-council": {
-      "views": 2,
-      "viewsUniques": 1,
+      "views": 3,
+      "viewsUniques": 2,
       "upvotes": 1,
       "discussion": {
         "number": 501,
@@ -37,14 +37,14 @@
     },
     "autoreply-agent": {
       "views": 6,
-      "viewsUniques": 4
+      "viewsUniques": 3
     },
     "copilot-agents-guide": {
-      "views": 9,
-      "viewsUniques": 4
+      "views": 10,
+      "viewsUniques": 5
     },
     "copilot-analytics-reports-navigator": {
-      "views": 15,
+      "views": 25,
       "viewsUniques": 6
     },
     "copilot-interaction-report": {
@@ -52,7 +52,7 @@
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 20,
+      "views": 21,
       "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
@@ -63,8 +63,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 51,
-      "viewsUniques": 25,
+      "views": 59,
+      "viewsUniques": 31,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -90,15 +90,15 @@
       }
     },
     "reasoningagent": {
-      "views": 1,
+      "views": 2,
       "viewsUniques": 1
     },
     "researcher-automation-opportunities": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "viva-insights-copilot-dashboard": {
-      "views": 2,
+      "views": 3,
       "viewsUniques": 2,
       "upvotes": 1,
       "discussion": {
