@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-07T06:04:29.274Z",
+  "generatedAt": "2026-10-08T06:05:15.396Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
   },
   "resources": {
     "agent-365-lifecycle-atlas": {
-      "views": 142,
-      "viewsUniques": 91,
+      "views": 144,
+      "viewsUniques": 93,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -24,7 +24,7 @@
     },
     "ai-council": {
       "views": 3,
-      "viewsUniques": 2,
+      "viewsUniques": 1,
       "upvotes": 1,
       "discussion": {
         "number": 501,
@@ -41,18 +41,18 @@
     },
     "copilot-agents-guide": {
       "views": 10,
-      "viewsUniques": 5
+      "viewsUniques": 4
     },
     "copilot-analytics-reports-navigator": {
-      "views": 25,
-      "viewsUniques": 6
+      "views": 28,
+      "viewsUniques": 7
     },
     "copilot-interaction-report": {
       "views": 1,
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 21,
+      "views": 22,
       "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
@@ -63,8 +63,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 59,
-      "viewsUniques": 31,
+      "views": 62,
+      "viewsUniques": 33,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -91,14 +91,14 @@
     },
     "reasoningagent": {
       "views": 2,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "researcher-automation-opportunities": {
       "views": 1,
       "viewsUniques": 0
     },
     "viva-insights-copilot-dashboard": {
-      "views": 3,
+      "views": 5,
       "viewsUniques": 2,
       "upvotes": 1,
       "discussion": {
