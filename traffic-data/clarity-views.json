@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-02",
+  "lastRun": "2026-10-09",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -640,7 +640,8 @@
     },
     "2026-10-01": {
       "agent-365-lifecycle-atlas": {
-        "views": 5
+        "views": 5,
+        "uniques": 3
       },
       "agent-brainstorming-template": {
         "views": 1
@@ -661,11 +662,267 @@
       }
     },
     "2026-10-02": {
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
       "autoreply-agent": {
+        "views": 1
+      }
+    },
+    "2026-10-03": {
+      "agent-365-lifecycle-atlas": {
+        "views": 1,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-interaction-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-10-04": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2,
+        "uniques": 2
+      },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 2
+      },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-interaction-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "reasoningagent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "researcher-automation-opportunities": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-10-05": {
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0
+      },
+      "ai-council": {
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 3,
+        "uniques": 1
+      },
+      "copilot-interaction-report": {
+        "views": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
         "views": 1,
         "uniques": 1
       },
+      "purview-audit-copilot-report": {
+        "views": 1
+      },
+      "reasoningagent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "researcher-automation-opportunities": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1,
+        "uniques": 1
+      }
+    },
+    "2026-10-06": {
+      "agent-365-lifecycle-atlas": {
+        "views": 4,
+        "uniques": 2
+      },
+      "agent-brainstorming-template": {
+        "views": 2
+      },
+      "ai-council": {
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 1
+      },
+      "copilot-agents-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 4,
+        "uniques": 0
+      },
       "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3,
+        "uniques": 1
+      },
+      "reasoningagent": {
+        "views": 1,
+        "uniques": 0
+      },
+      "researcher-automation-opportunities": {
+        "views": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1,
+        "uniques": 0
+      }
+    },
+    "2026-10-07": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2,
+        "uniques": 1
+      },
+      "ai-council": {
+        "views": 1
+      },
+      "copilot-agents-guide": {
+        "views": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 10,
+        "uniques": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 8,
+        "uniques": 7
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "reasoningagent": {
+        "views": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1,
+        "uniques": 0
+      }
+    },
+    "2026-10-08": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 3
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 2,
+        "uniques": 0
+      }
+    },
+    "2026-10-09": {
+      "copilot-studio-workflow": {
+        "views": 2,
+        "uniques": 1
+      },
+      "powerclaw-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "viva-insights-copilot-dashboard": {
         "views": 1,
         "uniques": 1
       }
