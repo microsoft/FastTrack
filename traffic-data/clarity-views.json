@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-08",
+  "lastRun": "2026-10-09",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -878,6 +878,10 @@
         "views": 8,
         "uniques": 7
       },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
       "reasoningagent": {
         "views": 1
       },
@@ -888,23 +892,38 @@
     },
     "2026-10-08": {
       "agent-365-lifecycle-atlas": {
-        "views": 2,
-        "uniques": 2
+        "views": 2
       },
       "copilot-analytics-reports-navigator": {
-        "views": 3,
-        "uniques": 2
+        "views": 3
       },
       "copilot-studio-workflow": {
         "views": 1,
-        "uniques": 1
+        "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 3,
-        "uniques": 2
+        "views": 3
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
       },
       "viva-insights-copilot-dashboard": {
         "views": 2,
+        "uniques": 0
+      }
+    },
+    "2026-10-09": {
+      "copilot-studio-workflow": {
+        "views": 2,
+        "uniques": 1
+      },
+      "powerclaw-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1,
         "uniques": 1
       }
     }
