@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-09",
+  "lastRun": "2026-10-10",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -894,6 +894,10 @@
       "agent-365-lifecycle-atlas": {
         "views": 2
       },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-analytics-reports-navigator": {
         "views": 3
       },
@@ -902,7 +906,8 @@
         "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 3
+        "views": 3,
+        "uniques": 2
       },
       "powerclaw-agent": {
         "views": 0,
@@ -914,15 +919,35 @@
       }
     },
     "2026-10-09": {
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-studio-workflow": {
         "views": 2,
-        "uniques": 1
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
       },
       "powerclaw-agent": {
+        "views": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1
+      }
+    },
+    "2026-10-10": {
+      "agents-cost-calculator": {
+        "views": 3,
+        "uniques": 3
+      },
+      "copilot-studio-workflow": {
         "views": 1,
         "uniques": 1
       },
-      "viva-insights-copilot-dashboard": {
+      "microsoft-agent-365-customer-implementation-guide": {
         "views": 1,
         "uniques": 1
       }
