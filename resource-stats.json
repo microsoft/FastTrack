@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T06:04:43.993Z",
+  "generatedAt": "2026-10-13T06:07:03.474Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -19,8 +19,8 @@
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 16,
-      "viewsUniques": 2
+      "views": 17,
+      "viewsUniques": 3
     },
     "ai-council": {
       "views": 3,
@@ -36,8 +36,8 @@
       "viewsUniques": 0
     },
     "autoreply-agent": {
-      "views": 6,
-      "viewsUniques": 3
+      "views": 7,
+      "viewsUniques": 4
     },
     "copilot-agents-guide": {
       "views": 10,
@@ -72,8 +72,8 @@
       }
     },
     "powerclaw-agent": {
-      "views": 6,
-      "viewsUniques": 3,
+      "views": 7,
+      "viewsUniques": 4,
       "upvotes": 1,
       "discussion": {
         "number": 479,
