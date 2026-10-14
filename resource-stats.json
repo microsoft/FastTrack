@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T06:07:03.474Z",
+  "generatedAt": "2026-10-14T06:04:54.126Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -20,7 +20,7 @@
     },
     "agents-cost-calculator": {
       "views": 17,
-      "viewsUniques": 3
+      "viewsUniques": 2
     },
     "ai-council": {
       "views": 3,
@@ -37,7 +37,7 @@
     },
     "autoreply-agent": {
       "views": 7,
-      "viewsUniques": 4
+      "viewsUniques": 3
     },
     "copilot-agents-guide": {
       "views": 10,
@@ -52,8 +52,8 @@
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 25,
-      "viewsUniques": 4
+      "views": 27,
+      "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
       "views": 1,
@@ -63,8 +63,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 63,
-      "viewsUniques": 33,
+      "views": 65,
+      "viewsUniques": 34,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -73,7 +73,7 @@
     },
     "powerclaw-agent": {
       "views": 7,
-      "viewsUniques": 4,
+      "viewsUniques": 3,
       "upvotes": 1,
       "discussion": {
         "number": 479,
