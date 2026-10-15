@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T06:04:54.126Z",
+  "generatedAt": "2026-10-15T06:05:21.074Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -15,8 +15,8 @@
       }
     },
     "agent-brainstorming-template": {
-      "views": 5,
-      "viewsUniques": 0
+      "views": 8,
+      "viewsUniques": 3
     },
     "agents-cost-calculator": {
       "views": 17,
@@ -52,7 +52,7 @@
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 27,
+      "views": 28,
       "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
@@ -64,7 +64,7 @@
     },
     "microsoft-agent-365-customer-implementation-guide": {
       "views": 65,
-      "viewsUniques": 34,
+      "viewsUniques": 33,
       "upvotes": 1,
       "discussion": {
         "number": 534,
