@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-15",
+  "lastRun": "2026-10-16",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -1018,17 +1018,43 @@
         "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 2
+        "views": 2,
+        "uniques": 1
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-10-15": {
       "agent-brainstorming-template": {
-        "views": 3,
-        "uniques": 3
+        "views": 3
       },
       "copilot-studio-workflow": {
         "views": 1,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-10-16": {
+      "copilot-studio-workflow": {
+        "views": 1,
         "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "powerclaw-agent": {
+        "views": 2,
+        "uniques": 2
       }
     }
   }
