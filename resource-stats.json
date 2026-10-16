@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T06:05:45.453Z",
+  "generatedAt": "2026-10-16T06:04:59.519Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -15,11 +15,11 @@
       }
     },
     "agent-brainstorming-template": {
-      "views": 5,
+      "views": 8,
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 13,
+      "views": 17,
       "viewsUniques": 2
     },
     "ai-council": {
@@ -36,7 +36,7 @@
       "viewsUniques": 0
     },
     "autoreply-agent": {
-      "views": 6,
+      "views": 7,
       "viewsUniques": 3
     },
     "copilot-agents-guide": {
@@ -52,7 +52,7 @@
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 24,
+      "views": 29,
       "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
@@ -63,8 +63,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 62,
-      "viewsUniques": 31,
+      "views": 66,
+      "viewsUniques": 35,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -72,8 +72,8 @@
       }
     },
     "powerclaw-agent": {
-      "views": 6,
-      "viewsUniques": 4,
+      "views": 9,
+      "viewsUniques": 5,
       "upvotes": 1,
       "discussion": {
         "number": 479,
@@ -99,7 +99,7 @@
     },
     "viva-insights-copilot-dashboard": {
       "views": 6,
-      "viewsUniques": 2,
+      "viewsUniques": 1,
       "upvotes": 1,
       "discussion": {
         "number": 508,
