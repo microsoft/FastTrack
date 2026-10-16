@@ -2,6 +2,16 @@
 
 All notable changes to the Microsoft Agent 365 Customer Implementation Guide are documented here.
 
+## 1.3.0 - 2026-10-15
+
+- Rebuilt the Detailed Defender tab (tab 2) as ten tasks, **2.01** through **2.10**, in deployment order: Security for AI and the Microsoft 365 connector, Copilot Studio per-environment setup, prompt evidence, SaaS generative AI app discovery, local agent discovery, real-time protection rules, AI agent inventory and advanced hunting, the shadow-agent inventory, threat detection and investigation, and the July 1, 2026 license transition. Every task now lists its portal path, required role, steps, validation, rollback, and Microsoft Learn references.
+- Added Defender coverage the tab was missing: discovering SaaS generative AI apps with Defender for Cloud Apps cloud discovery (2.04), discovering local agents with Defender for Endpoint (2.05), reviewing Shadow AI in the Microsoft 365 admin center (2.08), and detecting and investigating agent threats (2.09). The tab also opens with a status note, an assumed starting point, a map of how the tasks fit together, and a table of the Microsoft 365 admin center agent settings.
+- Kept the existing Defender content and rechecked it against Microsoft Learn: the locked default audit rule and custom blocking rules, the Copilot Studio per-environment setup, prompt evidence, the `AgentsInfo` sample queries, and the July 1, 2026 license transition guidance. The old task labels map to the new ones as 2a → 2.07, 2b → 2.01, 2c → 2.06, 2d → 2.02, 2e → 2.03, and 2f → 2.10, and the Power Platform tab now points to 2.02.
+- Stated the licensing and preview limits Microsoft documents: local agent discovery needs Defender for Endpoint Plan 2, with risk level and recommendations needing Microsoft 365 E7 or Agent 365 plus Defender for Endpoint Plan 2; Shadow AI needs the Frontier program and Microsoft 365 E5, and blocks only OpenClaw today; threat detection covers published Foundry agents only.
+- Reordered the recommended onboarding order on the Detailed overview to set up Entra before Defender, and SharePoint before Purview. Each step is now a link that opens its tab.
+- Replaced three Learn links to the retired Agent 365 observability article, which now redirects to an archived SDK page, with the current observability concepts article.
+- The Detailed view now has 69 tasks (59 in Part A, 8 in Part B, and 2 in Part C).
+
 ## 1.2.1 - 2026-09-30
 
 - Clarified how to scope Purview DLP to Agent 365 agents. Purview has no separate "Agent 365 instances" picker: each instance is an Entra agent user account, so the Simple checklist control **Scope DLP to Agent 365 instances and supported interactions** now starts by adding the approved agents to a reviewed security group, then includes that group under **Edit** for each Exchange, Teams, and OneDrive location. It also notes that Exchange scoping accepts only groups and that SharePoint is scoped by site. Detailed task **4.21** now sets this scope in the **Locations** step instead of after the rule actions.
