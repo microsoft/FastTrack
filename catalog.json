@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28",
+  "generatedAt": "2026-10-15",
   "count": 33,
   "resources": [
     {
@@ -789,13 +789,13 @@
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.2.0",
+      "version": "1.3.0",
       "published": "2026-09-09",
-      "updated": "2026-09-25",
+      "updated": "2026-10-15",
       "whatItIs": "A self-contained, community-built interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
-        "Follow 65 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references.",
+        "Follow 69 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references.",
         "Start hunting with eight sample Microsoft Defender advanced hunting (KQL) queries for agent inventory, activity, alerts, and protection events.",
         "Use the guide offline without a server, sign-in, external runtime dependency, or saved browser progress."
       ],
