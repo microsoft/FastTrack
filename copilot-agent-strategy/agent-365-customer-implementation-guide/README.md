@@ -7,9 +7,9 @@ author:
   - "Pratik Bhusal"
   - "Manas Biswas"
   - "Alejandro Lopez"
-version: 1.2.1
+version: 1.3.0
 published: 2026-09-09
-updated: 2026-09-30
+updated: 2026-10-15
 tags:
   - agent-365
   - implementation
@@ -25,7 +25,7 @@ whatItIs: >-
   governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.
 whyUseIt:
   - "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences."
-  - "Follow 65 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references."
+  - "Follow 69 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references."
   - "Start hunting with eight sample Microsoft Defender advanced hunting (KQL) queries for agent inventory, activity, alerts, and protection events."
   - "Use the guide offline without a server, sign-in, external runtime dependency, or saved browser progress."
 howToUse: |-
@@ -47,7 +47,7 @@ scope:
 
 - **Simple:** A concise reference covering 58 specific controls and decisions, including sample
   Microsoft Defender advanced hunting (KQL) queries.
-- **Detailed:** A 65-task deployment journey with implementation context and validation guidance.
+- **Detailed:** A 69-task deployment journey with implementation context and validation guidance.
 
 Diagrams, screenshots, and all runtime dependencies are inline, so the downloaded file works offline
 and does not require a web server, sign-in, or installation.
