@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T06:04:59.519Z",
+  "generatedAt": "2026-10-17T06:04:05.018Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -52,7 +52,7 @@
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 29,
+      "views": 30,
       "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
@@ -63,8 +63,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 66,
-      "viewsUniques": 35,
+      "views": 71,
+      "viewsUniques": 36,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -73,7 +73,7 @@
     },
     "powerclaw-agent": {
       "views": 9,
-      "viewsUniques": 5,
+      "viewsUniques": 3,
       "upvotes": 1,
       "discussion": {
         "number": 479,
