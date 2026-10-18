@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-17",
+  "lastRun": "2026-10-18",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -1058,13 +1058,12 @@
     },
     "2026-10-17": {
       "copilot-studio-workflow": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 5,
-        "uniques": 2
+        "views": 5
       }
-    }
+    },
+    "2026-10-18": {}
   }
 }
