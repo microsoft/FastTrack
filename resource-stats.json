@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T06:05:17.736Z",
+  "generatedAt": "2026-10-23T06:04:56.180Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -56,7 +56,7 @@
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 33,
+      "views": 34,
       "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
@@ -67,8 +67,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 84,
-      "viewsUniques": 42,
+      "views": 90,
+      "viewsUniques": 44,
       "upvotes": 1,
       "discussion": {
         "number": 534,
