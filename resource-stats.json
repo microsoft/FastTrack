@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T06:04:30.743Z",
+  "generatedAt": "2026-10-25T06:04:23.980Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -7,7 +7,7 @@
   "resources": {
     "agent-365-lifecycle-atlas": {
       "views": 151,
-      "viewsUniques": 95,
+      "viewsUniques": 93,
       "upvotes": 1,
       "discussion": {
         "number": 535,
