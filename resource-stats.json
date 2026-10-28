@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T06:04:56.180Z",
+  "generatedAt": "2026-10-28T21:40:23.618Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -100,6 +100,10 @@
     "researcher-automation-opportunities": {
       "views": 1,
       "viewsUniques": 0
+    },
+    "update-vivaengagelicensingtoggle": {
+      "views": 222,
+      "viewsUniques": 139
     },
     "viva-insights-copilot-dashboard": {
       "views": 7,
