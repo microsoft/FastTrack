@@ -141,6 +141,13 @@ const catalogStats = catalogWorkflow.jobs.publish.steps.find(
 );
 assert(catalogStats.run.includes('--render-only') && !catalogStats.env,
   'Catalog publishing must render persisted stats without collecting short-lived sources.');
+
+const catalogPublish = catalogWorkflow.jobs.publish;
+const catalogCommit = catalogPublish.steps.find(step => step.name === 'Commit generated catalog');
+assert(catalogCommit && !catalogCommit.run.includes('gh pr') && !catalogCommit.run.includes('catalog-refresh') &&
+  catalogCommit.run.includes('::warning::') && !catalogCommit.run.includes('exit 1') &&
+  !('pull-requests' in catalogPublish.permissions),
+  'Catalog publishing must not open pull requests or fail when the direct push is rejected; it must warn instead.');
 assert(!workflowSource.includes('BRANCH="traffic-data/$DATE"'),
   'The workflow must not create date-named daily PR branches.');
 
