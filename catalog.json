@@ -2128,9 +2128,9 @@
         "Manish Kumar",
         "Brian Lyttle"
       ],
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2025-10-01",
-      "updated": "2025-11-11",
+      "updated": "2026-10-28",
       "whatItIs": "A PowerShell script (BlockUsersWithoutLicense.ps1) that calls the Viva Engage network REST API with a Microsoft Entra access token to read the current per-user license enforcement state or to enforce per-user licensing for the network. Enforcement is irreversible, so confirm that the required service plans are provisioned to all users first.",
       "whyUseIt": [
         "Check whether per-user licensing is already enforced for your Viva Engage network.",
@@ -2204,9 +2204,9 @@
       "featured": false,
       "status": "preview",
       "author": "Dean Cron",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2024-07-31",
-      "updated": "2024-11-13",
+      "updated": "2026-10-28",
       "whatItIs": "An importable Power Apps solution (VivaEngageCommunityCreationApp.zip) containing a canvas app and a Power Automate flow. The app collects a community name, description, and privacy setting, and the flow gets a Microsoft Graph token with an Entra app registration and creates the community through the community creation API, with the signed-in user as owner. It is a sample and not intended for production use.",
       "whyUseIt": [
         "See an end-to-end example of the Viva Engage community creation API behind a Power App front end.",

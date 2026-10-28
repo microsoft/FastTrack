@@ -4,9 +4,9 @@ type: script
 category: Power Apps
 summary: Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.
 author: Dean Cron
-version: 1.0.0
+version: 1.0.1
 published: "2024-07-31"
-updated: "2024-11-13"
+updated: "2026-10-28"
 tags:
   - viva-engage
   - communities

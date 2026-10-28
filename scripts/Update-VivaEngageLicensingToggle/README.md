@@ -6,9 +6,9 @@ summary: Check or irreversibly enforce per-user licensing for a Viva Engage netw
 author:
   - Manish Kumar
   - Brian Lyttle
-version: 1.0.0
+version: 1.0.1
 published: "2025-10-01"
-updated: "2025-11-11"
+updated: "2026-10-28"
 tags:
   - viva-engage
   - administration
