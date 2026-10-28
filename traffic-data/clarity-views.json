@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-26",
+  "lastRun": "2026-10-28",
   "days": {
     "2026-07-27": {
       "autoreply-agent": {
@@ -1207,6 +1207,44 @@
       }
     },
     "2026-10-25": {},
-    "2026-10-26": {}
+    "2026-10-26": {
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-10-28": {
+      "copilot-studio-workflow": {
+        "views": 2,
+        "uniques": 2
+      }
+    },
+    "2026-10-27": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2
+      },
+      "agents-cost-calculator": {
+        "views": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1
+      }
+    }
   }
 }
