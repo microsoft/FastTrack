@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T03:57:07.645Z",
+  "generatedAt": "2026-10-28T21:22:43.289Z",
   "sources": {
     "views": "clarity",
     "upvotes": "github-discussions"
@@ -14,8 +14,8 @@
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 90,
-      "viewsUniques": 60
+      "views": 112,
+      "viewsUniques": 79
     },
     "ai-council": {
       "views": 78,
@@ -62,6 +62,10 @@
         "number": 497,
         "url": "https://github.com/microsoft/FastTrack/discussions/497"
       }
+    },
+    "update-vivaengagelicensingtoggle": {
+      "views": 222,
+      "viewsUniques": 139
     },
     "viva-insights-copilot-dashboard": {
       "views": 119,
