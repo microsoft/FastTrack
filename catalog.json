@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-10-28",
-  "count": 57,
+  "count": 58,
   "resources": [
     {
       "name": "Add-EngageGroupAdmins",
@@ -65,7 +65,7 @@
       "author": [
         "Alejandro Lopez"
       ],
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2026-10-28",
       "updated": "2026-10-28",
       "whatItIs": "A self-contained, offline tracker for planning and tracking a Microsoft Agent 365 enablement. It organizes the work into workstreams with role-based tasks, shows a readiness dashboard, and exports to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start your own.",
@@ -102,12 +102,12 @@
       ],
       "artifact": "interactive",
       "format": "interactive",
-      "featured": true,
-      "status": "active",
+      "featured": false,
+      "status": "archived",
       "author": "Alejandro Lopez",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "published": "2026-09-10",
-      "updated": "2026-09-22",
+      "updated": "2026-10-28",
       "whatItIs": "A self-contained interactive architecture reference that maps how Microsoft Agent 365 discovers, identifies, governs, and observes agents across Microsoft and third-party platforms.",
       "whyUseIt": [
         "Follow five agent classes through build, connection, identity, packaging, runtime, and governance.",
@@ -1516,6 +1516,51 @@
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-customer-implementation-guide",
       "source": "copilot-agent-strategy/agent-365-customer-implementation-guide/README.md",
       "permalink": "r/microsoft-agent-365-customer-implementation-guide/"
+    },
+    {
+      "name": "Microsoft Agent 365 Technical Advisory",
+      "title": "Microsoft Agent 365 Technical Advisory",
+      "slug": "microsoft-agent-365-technical-advisory",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.",
+      "summary": "Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.",
+      "tags": [
+        "agent-365",
+        "architecture",
+        "governance",
+        "security",
+        "identity"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": true,
+      "status": "active",
+      "interactiveKind": "guide",
+      "preview": "copilot-agent-strategy/agent-365-technical-advisory/preview.webp",
+      "author": [
+        "Carlos Suarez",
+        "Alejandro Lopez"
+      ],
+      "version": "1.0.0",
+      "published": "2026-10-28",
+      "updated": "2026-10-28",
+      "whatItIs": "A 19-page technical advisory for architects, identity, security, developer, and business leaders. It lays out an enterprise reference architecture and best practices for discovering, governing, securing, building, and measuring AI agents with Microsoft Agent 365, with 75 cited Microsoft Learn and Microsoft sources. This page wraps the PDF in a viewer so you can jump to any page.",
+      "whyUseIt": [
+        "See how every onboarding route converges on one governed inventory across Microsoft Entra, Purview, and Defender.",
+        "Design agent identity, accountability, and lifecycle: blueprints per workload and environment, sponsors and owners, and retirement.",
+        "Compare four agent types (Agent Builder, Copilot Studio, Microsoft Foundry, and custom pro-code) across identity, access, risk, and operations.",
+        "Follow a phased configuration blueprint, an operating model with RACI and cadence, and the analytics that show usage, adoption, and impact."
+      ],
+      "howToUse": "1. Open `index.html` in a modern browser, or use the hosted copy from the catalog.\n2. Use the Contents list to jump to a page, and copy a link to share a specific page.\n3. Download the PDF to read it offline or share it. If your browser cannot show PDFs inline, the page offers the download instead.\n4. Treat it as guidance: confirm product availability, licensing, roles, and preview or Frontier status in your tenant before making production changes.",
+      "prerequisites": [
+        "Modern web browser or PDF reader",
+        "Current Microsoft Learn documentation to validate preview and Frontier capabilities for your tenant"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-technical-advisory",
+      "source": "copilot-agent-strategy/agent-365-technical-advisory/README.md",
+      "permalink": "r/microsoft-agent-365-technical-advisory/"
     },
     {
       "name": "Migrate-CopilotStudioAgents",

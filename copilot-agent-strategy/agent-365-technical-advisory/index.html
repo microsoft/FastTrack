@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Microsoft Agent 365 Technical Advisory: enterprise reference architecture and best practices. View the 19-page PDF in your browser or download it to share.">
+  <title>Microsoft Agent 365 Technical Advisory</title>
+  <script>
+    (() => {
+      // Precedence: the saved theme, then the OS setting.
+      const valid = (t) => (t === "dark" || t === "light" ? t : null);
+      let stored = null;
+      try { stored = localStorage.getItem("fasttrack-advisory-theme"); } catch (_) { /* storage unavailable */ }
+      const theme = valid(stored)
+        || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #faf9f8;
+      --elevated: #f3f2f1;
+      --surface: #ffffff;
+      --border: #e1dfdd;
+      --border-strong: #8a8886;
+      --text: #201f1e;
+      --text-muted: #605e5c;
+      --accent: #0078d4;
+      --accent-hover: #106ebe;
+      --accent-fg: #ffffff;
+      --accent-soft: rgba(0, 120, 212, 0.1);
+      --shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+      --radius: 10px;
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #202020;
+      --elevated: #262626;
+      --surface: #303030;
+      --border: #505050;
+      --border-strong: #a19f9d;
+      --text: #f3f2f1;
+      --text-muted: #c8c6c4;
+      --accent: #60cdff;
+      --accent-hover: #8ad8ff;
+      --accent-fg: #00243a;
+      --accent-soft: rgba(96, 205, 255, 0.14);
+      --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    a { color: var(--accent); }
+    .skip {
+      position: absolute; left: -9999px; top: 0;
+      background: var(--accent); color: var(--accent-fg); padding: 8px 12px; z-index: 10;
+    }
+    .skip:focus { left: 12px; top: 12px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .hero {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .hero-inner {
+      max-width: 1440px; margin: 0 auto; padding: 22px 24px 20px;
+      display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px;
+    }
+    .eyebrow {
+      margin: 0 0 6px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 2.6vw, 2.25rem); line-height: 1.2; font-weight: 600; }
+    .lede { margin: 0 0 14px; max-width: 72ch; color: var(--text-muted); font-size: 1.02rem; }
+    .stats { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; padding: 0; list-style: none; }
+    .stats li {
+      border: 1px solid var(--border); border-radius: 999px; padding: 3px 12px;
+      font-size: 0.85rem; color: var(--text-muted); background: var(--elevated);
+    }
+    .stats strong { color: var(--text); font-weight: 600; }
+    .byline { margin: 0; max-width: 96ch; font-size: 0.88rem; color: var(--text-muted); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 40px;
+      padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-strong);
+      background: var(--surface); color: var(--text); font: inherit; font-weight: 600;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+    }
+    .btn:hover { background: var(--elevated); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+    .btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn svg { width: 16px; height: 16px; flex: none; }
+    .btn .size { font-weight: 400; opacity: 0.85; }
+    .btn.icon { width: 40px; padding: 0; justify-content: center; }
+    .btn.icon svg { width: 18px; height: 18px; }
+    html[data-theme="dark"] .theme-toggle .moon,
+    html:not([data-theme="dark"]) .theme-toggle .sun { display: none; }
+
+    .layout {
+      max-width: 1440px; margin: 0 auto; padding: 20px 24px 32px;
+      display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start;
+    }
+    .toc {
+      position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px 10px 10px;
+    }
+    .toc h2 { margin: 0 8px 8px; font-size: 0.95rem; }
+    .toc h3 {
+      margin: 14px 8px 4px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 600;
+    }
+    .toc ol { list-style: none; margin: 0; padding: 0; }
+    .toc button {
+      display: grid; grid-template-columns: 2.1em minmax(0, 1fr); gap: 6px; width: 100%;
+      text-align: left; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent;
+      color: var(--text); font: inherit; font-size: 0.9rem; cursor: pointer;
+    }
+    .toc button:hover { background: var(--elevated); }
+    .toc button[aria-current="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+    .toc .num { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+    .toc button[aria-current="true"] .num { color: inherit; }
+
+    .viewer {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .viewer-bar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--elevated);
+    }
+    .viewer-bar p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+    .viewer-bar strong { color: var(--text); }
+    .viewer-bar .btn { min-height: 32px; padding: 4px 12px; font-size: 0.85rem; }
+    .viewer-bar .tools { display: flex; gap: 8px; }
+    .frame-wrap { position: relative; height: max(520px, calc(100vh - 120px)); background: #525659; }
+    .frame-wrap iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+    .fallback { display: none; padding: 24px; text-align: center; }
+    .fallback img {
+      display: block; width: 100%; max-width: 900px; height: auto; margin: 0 auto 18px;
+      border: 1px solid var(--border); border-radius: 6px;
+    }
+    .fallback p { margin: 0 auto 16px; max-width: 60ch; color: var(--text-muted); }
+    .fallback .actions { justify-content: center; }
+    .no-inline-pdf .frame-wrap { display: none; }
+    .no-inline-pdf .fallback { display: block; }
+
+    .note { margin: 14px 2px 0; font-size: 0.85rem; color: var(--text-muted); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; }
+      .toc { position: static; max-height: none; }
+      .frame-wrap { height: 75vh; }
+    }
+    @media (forced-colors: active) {
+      .btn, .toc button[aria-current="true"] { border: 1px solid ButtonText; }
+    }
+    @media print {
+      .toc, .viewer-bar, .actions, .frame-wrap { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#viewer">Skip to the document</a>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Microsoft FastTrack · Technical advisory</p>
+        <h1>Microsoft Agent 365 Technical Advisory</h1>
+        <p class="lede">Enterprise reference architecture and best practices for architects, identity, security, developer and business leaders to discover, govern, secure, build and measure AI agents across the enterprise.</p>
+        <ul class="stats" aria-label="At a glance">
+          <li><strong>19</strong> pages</li>
+          <li><strong>4</strong> agent types compared</li>
+          <li><strong>75</strong> cited sources</li>
+          <li>Version <strong>v20260930</strong></li>
+        </ul>
+        <p class="byline">Prepared by Carlos Suarez and Alejandro Lopez · Contributor: Victor Adeyanju · Based on Microsoft Learn; preview and Frontier capabilities may change.</p>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="Agent-365-Technical-Advisory.pdf" download="Agent-365-Technical-Advisory-v20260930.pdf">
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 1.5a.75.75 0 0 1 .75.75v6.69l2.22-2.22a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 0 1 1.06-1.06l2.22 2.22V2.25A.75.75 0 0 1 8 1.5ZM2.75 13a.75.75 0 0 0 0 1.5h10.5a.75.75 0 0 0 0-1.5H2.75Z"/></svg>
+          Download PDF <span class="size">(817 KB)</span>
+        </a>
+        <a class="btn" href="Agent-365-Technical-Advisory.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M9.5 2a.75.75 0 0 0 0 1.5h1.94L7.22 7.72a.75.75 0 0 0 1.06 1.06l4.22-4.22V6.5a.75.75 0 0 0 1.5 0v-4a.5.5 0 0 0-.5-.5h-4ZM3.5 4A1.5 1.5 0 0 0 2 5.5v7A1.5 1.5 0 0 0 3.5 14h7a1.5 1.5 0 0 0 1.5-1.5V9.75a.75.75 0 0 0-1.5 0v2.75h-7v-7h2.75a.75.75 0 0 0 0-1.5H3.5Z"/></svg>
+          Open full screen
+        </a>
+        <button class="btn icon theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme">
+          <svg class="moon" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M6.2 1.6a.6.6 0 0 1 .15.65 5.5 5.5 0 0 0 7.4 7.4.6.6 0 0 1 .8.75A6.7 6.7 0 1 1 5.6 1.45a.6.6 0 0 1 .6.15Zm-1.3 1.6a5.5 5.5 0 1 0 7.9 7.9A6.7 6.7 0 0 1 4.9 3.2Z"/></svg>
+          <svg class="sun" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 1.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9ZM8 0a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 0Zm0 13.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 13.5ZM16 8a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 16 8ZM2.5 8a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 2.5 8Zm10.9-5.4a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM4.36 11.64a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Zm9.04 1.76a.75.75 0 0 1-1.06 0l-.7-.7a.75.75 0 1 1 1.06-1.06l.7.7a.75.75 0 0 1 0 1.06ZM4.36 4.36a.75.75 0 0 1-1.06 0l-.7-.7A.75.75 0 0 1 3.66 2.6l.7.7a.75.75 0 0 1 0 1.06Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <nav class="toc" aria-label="Pages in this advisory">
+      <h2>Contents</h2>
+      <h3>Start here</h3>
+      <ol>
+        <li><button type="button" data-page="1"><span class="num">01</span><span>Overview</span></button></li>
+      </ol>
+      <h3>1 · Orient</h3>
+      <ol>
+        <li><button type="button" data-page="2"><span class="num">02</span><span>Technical Advisory Map</span></button></li>
+        <li><button type="button" data-page="3"><span class="num">03</span><span>Enterprise Reference Architecture</span></button></li>
+        <li><button type="button" data-page="4"><span class="num">04</span><span>Agent 365 Discovery Paths</span></button></li>
+      </ol>
+      <h3>2 · Govern &amp; secure</h3>
+      <ol>
+        <li><button type="button" data-page="5"><span class="num">05</span><span>Identity Architecture &amp; Lifecycle</span></button></li>
+        <li><button type="button" data-page="6"><span class="num">06</span><span>AuthN / AuthZ &amp; MCP Governance</span></button></li>
+        <li><button type="button" data-page="7"><span class="num">07</span><span>Risk, Observability &amp; Human Oversight</span></button></li>
+        <li><button type="button" data-page="8"><span class="num">08</span><span>Security Architecture &amp; Blast Radius</span></button></li>
+      </ol>
+      <h3>3 · Agent types &amp; build</h3>
+      <ol>
+        <li><button type="button" data-page="9"><span class="num">09</span><span>Agent Types · Identity &amp; Access</span></button></li>
+        <li><button type="button" data-page="10"><span class="num">10</span><span>Agent Types · Risk &amp; Operations</span></button></li>
+        <li><button type="button" data-page="11"><span class="num">11</span><span>Developer Guide · Pro-Code Agents</span></button></li>
+      </ol>
+      <h3>4 · Configure &amp; operate</h3>
+      <ol>
+        <li><button type="button" data-page="12"><span class="num">12</span><span>Agent 365 Control Plane</span></button></li>
+        <li><button type="button" data-page="13"><span class="num">13</span><span>Configuration Blueprint</span></button></li>
+        <li><button type="button" data-page="14"><span class="num">14</span><span>Connected Platforms Setup</span></button></li>
+        <li><button type="button" data-page="15"><span class="num">15</span><span>Operating Model</span></button></li>
+      </ol>
+      <h3>5 · Measure &amp; learn</h3>
+      <ol>
+        <li><button type="button" data-page="16"><span class="num">16</span><span>Analytics · Usage, Adoption &amp; Impact</span></button></li>
+        <li><button type="button" data-page="17"><span class="num">17</span><span>Case Studies &amp; Lessons Learned</span></button></li>
+        <li><button type="button" data-page="18"><span class="num">18</span><span>References</span></button></li>
+        <li><button type="button" data-page="19"><span class="num">19</span><span>Change Log</span></button></li>
+      </ol>
+    </nav>
+
+    <section class="viewer" id="viewer" aria-label="Document viewer" tabindex="-1">
+      <div class="viewer-bar">
+        <p id="viewer-status" aria-live="polite">Showing <strong>page 1 · Overview</strong></p>
+        <div class="tools">
+          <button class="btn" type="button" id="copy-link">Copy link to this page</button>
+        </div>
+      </div>
+      <div class="frame-wrap">
+        <iframe id="pdf-frame" title="Microsoft Agent 365 Technical Advisory (PDF)" src="Agent-365-Technical-Advisory.pdf#page=1"></iframe>
+      </div>
+      <div class="fallback">
+        <img src="preview.webp" width="1600" height="898" alt="Cover page of the Microsoft Agent 365 Technical Advisory, listing the five themes and 18 deep-dive pages.">
+        <p>Your browser can't show PDFs inline. Download the advisory or open it in your device's PDF viewer.</p>
+        <div class="actions">
+          <a class="btn primary" href="Agent-365-Technical-Advisory.pdf" download="Agent-365-Technical-Advisory-v20260930.pdf">Download PDF <span class="size">(817 KB)</span></a>
+          <a class="btn" href="Agent-365-Technical-Advisory.pdf" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <noscript>
+    <p class="note" style="max-width:1440px;margin:0 auto;padding:0 24px 24px">Page navigation needs JavaScript. You can still scroll the embedded PDF or <a href="Agent-365-Technical-Advisory.pdf" download>download it</a>.</p>
+  </noscript>
+
+  <script>
+    (() => {
+      const PDF = "Agent-365-Technical-Advisory.pdf";
+      const TOTAL = 19;
+
+      const themeToggle = document.getElementById("theme-toggle");
+      function syncThemeToggle() {
+        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        const label = `Switch to ${next} theme`;
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.title = label;
+      }
+      themeToggle.addEventListener("click", () => {
+        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try { localStorage.setItem("fasttrack-advisory-theme", next); } catch (_) { /* storage unavailable */ }
+        syncThemeToggle();
+      });
+      syncThemeToggle();
+
+      let frame = document.getElementById("pdf-frame");
+      // Firefox reloads once so the initial page also gets page-fit; others keep the static src.
+      let shownPage = 0;
+      const fitParam = /\bFirefox\//.test(navigator.userAgent) ? "&zoom=page-fit" : "";
+      if (!fitParam) shownPage = 1;
+      const status = document.getElementById("viewer-status");
+      const copyButton = document.getElementById("copy-link");
+      const buttons = Array.from(document.querySelectorAll(".toc button[data-page]"));
+      const titles = new Map(buttons.map((b) => [Number(b.dataset.page), b.lastElementChild.textContent]));
+
+      if (navigator.pdfViewerEnabled === false) {
+        document.body.classList.add("no-inline-pdf");
+      }
+
+      function pageFromHash() {
+        const match = /^#page-(\d{1,2})$/.exec(window.location.hash);
+        const page = match ? Number(match[1]) : 1;
+        return page >= 1 && page <= TOTAL ? page : 1;
+      }
+
+      function show(page, { updateHash = true, focus = false } = {}) {
+        if (page !== shownPage) {
+          // Replace the iframe so every browser's built-in viewer honours #page.
+          const next = frame.cloneNode(false);
+          next.src = `${PDF}#page=${page}${fitParam}`;
+          frame.replaceWith(next);
+          frame = next;
+          shownPage = page;
+        }
+        buttons.forEach((b) => b.setAttribute("aria-current", String(Number(b.dataset.page) === page)));
+        status.innerHTML = "";
+        status.append("Showing ");
+        const strong = document.createElement("strong");
+        strong.textContent = `page ${page} · ${titles.get(page) || ""}`;
+        status.append(strong);
+        if (updateHash) {
+          history.replaceState(null, "", `${window.location.pathname}${window.location.search}#page-${page}`);
+        }
+        if (focus && window.matchMedia("(max-width: 960px)").matches) {
+          document.getElementById("viewer").focus();
+        }
+      }
+
+      let current = pageFromHash();
+      show(current, { updateHash: window.location.hash !== "" });
+
+      buttons.forEach((b) => b.addEventListener("click", () => {
+        current = Number(b.dataset.page);
+        show(current, { focus: true });
+      }));
+
+      window.addEventListener("hashchange", () => {
+        current = pageFromHash();
+        show(current, { updateHash: false });
+      });
+
+      copyButton.addEventListener("click", async () => {
+        const url = new URL(window.location.href);
+        url.hash = `page-${current}`;
+        const original = copyButton.textContent;
+        try {
+          await navigator.clipboard.writeText(url.href);
+          copyButton.textContent = "Link copied";
+        } catch {
+          window.prompt("Copy this link:", url.href);
+        }
+        setTimeout(() => { copyButton.textContent = original; }, 2000);
+      });
+    })();
+  </script>
+</body>
+</html>
