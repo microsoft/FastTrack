@@ -2,12 +2,26 @@ import {
   clarityStateContains,
   reconcileClarityStates,
   replaceClarityDays,
+  slugFromClarityUrl,
   unchangedStatsPayload
 } from './stats-state.js';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
+
+// Views on both the catalog detail route (#slug) and the shareable page (/r/slug/) count.
+const known = new Set(['ai-council', 'agents-cost-calculator']);
+assert(slugFromClarityUrl('https://microsoft.github.io/FastTrack/#ai-council', known) === 'ai-council',
+  'Hash routes must resolve to a slug.');
+assert(slugFromClarityUrl('https://microsoft.github.io/FastTrack/r/agents-cost-calculator/', known) === 'agents-cost-calculator',
+  'Shareable resource pages must resolve to a slug.');
+assert(slugFromClarityUrl('https://microsoft.github.io/FastTrack/r/agents-cost-calculator', known) === 'agents-cost-calculator',
+  'A missing trailing slash must still resolve.');
+assert(slugFromClarityUrl('https://microsoft.github.io/FastTrack/r/unknown/', known) === undefined,
+  'Unknown slugs must not resolve.');
+assert(slugFromClarityUrl('https://microsoft.github.io/FastTrack/', known) === undefined,
+  'The landing page is not a resource view.');
 
 const state = {
   lastRun: '2026-09-10',

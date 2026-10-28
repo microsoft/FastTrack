@@ -1,3 +1,22 @@
+// Resolves a Clarity page URL to a catalog slug. The catalog's detail view uses
+// `/#<slug>` and each shareable resource page lives at `/r/<slug>/`; both count as views.
+export function slugFromClarityUrl(value, knownSlugs) {
+  if (typeof value !== 'string') return undefined;
+  try {
+    const url = new URL(value);
+    const fromHash = decodeURIComponent(url.hash.slice(1));
+    if (knownSlugs.has(fromHash)) return fromHash;
+    const fromPath = url.pathname.match(/\/r\/([^/]+)\/?$/);
+    if (fromPath) {
+      const slug = decodeURIComponent(fromPath[1]);
+      if (knownSlugs.has(slug)) return slug;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function replaceClarityDays(state, buckets, lastRun) {
   for (const [date, metrics] of buckets) {
     state.days[date] = Object.fromEntries(
