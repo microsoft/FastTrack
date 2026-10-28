@@ -46,4 +46,4 @@ When the scheduled workflow cannot authenticate (for example, its `TRAFFIC_TOKEN
 
 ## Known gaps
 
-The scheduled workflow stopped authenticating on 2026-07-22, and the last committed snapshot before this fix is `2026-06-30.json`. GitHub does not keep older traffic, so views and clones between 2026-07-01 and the first manual snapshot cannot be recovered.
+The scheduled workflow stopped authenticating on 2026-07-22, and the last snapshot before the fix is `2026-06-30.json`. GitHub does not keep older traffic, so views and clones from 2026-07-01 through 2026-10-13 could not be recovered. Collection resumed with a manual snapshot, `2026-10-28.json`, which covers 2026-10-14 through 2026-10-27.
