@@ -54,10 +54,11 @@ assert(!/countDisplay = "\d+"/.test(indexSource), 'index.html must not hard-code
 assert(!/Browse all \d+ scripts/.test(indexSource), 'index.html must not hard-code the script total.');
 assert(!/\d+ resource types/.test(indexSource.replace('id="heroTypeCount">Resource types', '')), 'index.html must derive the resource-type count.');
 
-// 5. The browse cards are exactly Guides, Agents, Analytics, and Scripts, in that order.
-assert(
-  indexSource.includes("const TILE_TYPES = ['strategy', 'agent', 'analytics', 'script'];"),
-  'The landing page cards must be Guides, Agents, Analytics, and Scripts.'
-);
+// 5. Only the four main types have filter pills; Prompts and Skills stay hidden for now.
+assert(/id: 'prompt'[^\n]*hidden: true/.test(indexSource), 'The Prompts pill must stay hidden.');
+assert(/id: 'skill'[^\n]*hidden: true/.test(indexSource), 'The Skills pill must stay hidden.');
+for (const id of ['strategy', 'agent', 'analytics', 'script']) {
+  assert(!new RegExp(`id: '${id}'[^\\n]*hidden: true`).test(indexSource), `The ${id} pill must stay visible.`);
+}
 
 console.log('Static resource pages and landing-page guards are valid.');

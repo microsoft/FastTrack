@@ -39,8 +39,8 @@ assert(
   'Temp-state tag/search facet filtering must use matchesCategory.'
 );
 assert(
-  (indexSource.match(/RESOURCES\.filter\(r => matchesCategory\(r, t\.id\)\)\.length/g) || []).length === 2,
-  'Category tile counts and pill counts must both use matchesCategory.'
+  (indexSource.match(/RESOURCES\.filter\(r => matchesCategory\(r, t\.id\)\)\.length/g) || []).length === 1,
+  'Type pill counts must use matchesCategory.'
 );
 assert(
   indexSource.includes('RESOURCES.filter(r => r.type === resource.type'),
