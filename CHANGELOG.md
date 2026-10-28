@@ -8,6 +8,10 @@ This file captures only selected high-level milestones.
 
 ### October 2026
 
+#### New resources
+
+* Added the Agent 365 Enablement Checklist, a sample Agent 365 deployment plan in one HTML file, and a check that fails when a FastTrack link in a resource page or README no longer resolves.
+
 #### Catalog and site
 
 * Added a shareable page for every resource (`r/<slug>/`) with link previews, plus `sitemap.xml` and an Atom `feed.xml`.
