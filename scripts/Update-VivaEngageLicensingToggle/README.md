@@ -1,8 +1,48 @@
+---
+title: Update-VivaEngageLicensingToggle
+type: script
+category: PowerShell
+summary: Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.
+author:
+  - Manish Kumar
+  - Brian Lyttle
+version: 1.0.0
+published: "2025-10-01"
+updated: "2025-11-11"
+tags:
+  - viva-engage
+  - administration
+  - licensing
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell script (BlockUsersWithoutLicense.ps1) that calls the Viva Engage network REST API with a
+  Microsoft Entra access token to read the current per-user license enforcement state or to enforce
+  per-user licensing for the network. Enforcement is irreversible, so confirm that the required service
+  plans are provisioned to all users first.
+whyUseIt:
+  - Check whether per-user licensing is already enforced for your Viva Engage network.
+  - Enforce per-user licensing with the supported script instead of building your own REST calls.
+howToUse: |-
+  1. Provision Viva Engage Core (recommended) or Yammer Enterprise service plans to all users. Enforcement can't be reversed.
+  2. Get a valid Microsoft Entra access token for a Global Administrator of the Viva Engage network.
+  3. Check the current state, then enforce when ready:
+
+     ```powershell
+     ./BlockUsersWithoutLicense.ps1 fetch_current_license_state "<ENTRA_ACCESS_TOKEN>"
+     ./BlockUsersWithoutLicense.ps1 enforce_user_license "<ENTRA_ACCESS_TOKEN>"
+     ```
+prerequisites:
+  - "Global administrator access to the Viva Engage network"
+  - "Viva Engage Core (recommended) or Yammer Enterprise service plans provisioned to all users before enforcing"
+  - "PowerShell 5.1 or later and network access to Viva Engage"
+  - "Applies to networks that have not previously enforced per-user licensing through the legacy Yammer admin center"
+---
+
 # Microsoft FastTrack Open Source - Update-VivaEngageLicensingToggle
 
->**IMPORTANT:** This script and readme are being published ahead of the availability of both the endpoint and additional documentation. This message will be removed when the underlying REST API is available for use.
-
-This sample script checks the status and enforce per-user licensing for a Viva Engage network using a REST API endpoint. The script is designed to be used as-is, but you can modify it to suit your organization's requirements, if required.
+This sample script (`BlockUsersWithoutLicense.ps1`) checks the status and enforces per-user licensing for a Viva Engage network using a REST API endpoint. It is also documented on Microsoft Learn: [Enforce Microsoft 365 identity for Viva Engage users](https://learn.microsoft.com/viva/engage/configure-your-viva-engage-network/enforce-office-365-identity#enforcement-with-a-powershell-script). The script is designed to be used as-is, but you can modify it to suit your organization's requirements, if required.
 
 > **⚠️ Warning:** This script makes changes to the Viva Engage network which are **irreversible**. Ensure that Viva Engage Core (recommended) or Yammer Enterprise service plans have been provisioned to all users before running this script.
 
@@ -19,8 +59,8 @@ This sample script checks the status and enforce per-user licensing for a Viva E
 
 |Parameter|Description
 |----|--------------------------
-|Action|Either *enforce_user_license* or *fetch_current_license_state*|
-|Token|A string containing a valid Entra token with Global Admin privileges|
+|Action (first argument)|Either *enforce_user_license* or *fetch_current_license_state*|
+|Token (second argument)|A string containing a valid Entra token with Global Admin privileges|
 
 ### Usage
 
@@ -28,7 +68,7 @@ This sample script checks the status and enforce per-user licensing for a Viva E
 
 Check the current setting:
 
-```./license.ps1 fetch_current_license_state "<AAD_ACCESS_TOKEN>"```
+```./BlockUsersWithoutLicense.ps1 fetch_current_license_state "<AAD_ACCESS_TOKEN>"```
 
 This makes the following request: 
 
@@ -38,7 +78,7 @@ This makes the following request:
 
 Enforce per-user licensing (this cannot be reversed):
 
-```./license.ps1 enforce_user_license "<AAD_ACCESS_TOKEN>"```
+```./BlockUsersWithoutLicense.ps1 enforce_user_license "<AAD_ACCESS_TOKEN>"```
  
 This makes the following request: 
 

@@ -1,3 +1,47 @@
+---
+title: Find-MailboxDelegates
+type: script
+category: PowerShell
+summary: Collect Exchange mailbox permissions and build migration batches that keep delegates together for hybrid migrations.
+author:
+  - Alejandro Lopez
+  - Sam Portelli
+version: 1.0.0
+published: "2018-07-24"
+updated: "2023-11-15"
+tags:
+  - exchange
+  - mailbox-migration
+  - hybrid
+  - delegates
+  - permissions
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell script for Exchange hybrid migrations to Exchange Online. It collects Full Access, Send
+  As, Send on Behalf, and calendar permissions from on-premises mailboxes, finds associated delegates
+  (spider-web batching), and writes CSV files with permissions, recommended migration batches, and a
+  migration schedule in the format used by the Microsoft FastTrack Mail Migration team. The README
+  documents Exchange 2010 and 2013 environments.
+whyUseIt:
+  - Keep mailboxes that share a manager or delegate in the same migration batch so their access to each other's mailboxes isn't broken by cross-premises permission limits in a hybrid environment.
+  - Choose which permission types to collect, and enumerate groups or exclude service accounts and groups.
+  - Resume an interrupted run on large environments, or run only the batching and scheduling steps from an existing permissions file.
+howToUse: |-
+  1. Run the script from a machine with the Exchange Management Tools and the Active Directory PowerShell module. Choose the permission types to collect.
+  2. The script collects permissions, finds batches based on them, and creates a migration schedule. Use `-GetPermissionsOnly`, `-BatchUsers`, or `-BatchUsersOnly` to run only some of these steps.
+  3. Example that collects all permission types and enumerates groups:
+
+     ```powershell
+     .\Find-MailboxDelegates.ps1 -FullAccess -SendOnBehalfTo -SendAs -Calendar -EnumerateGroups
+     ```
+prerequisites:
+  - "On-premises Exchange environment with the Exchange Management Tools (the README lists Exchange 2010 and 2013)"
+  - "Active Directory PowerShell module"
+  - "PowerShell 3.0 or later"
+---
+
 # Microsoft FastTrack Open Source - Find-MailboxDelegates
 
 Migrating to Exchange Online (EXO) using Exchange Hybrid? Make sure to migrate mailboxes with the same manager or delegate (associated delegates) in the same batch otherwise their access to each other's mailbox will be broken. This is because Send-As, Receive-As, or Send on behalf cross premises permissions are not supported with Exchange hybrid environments. You can read all about it here: https://technet.microsoft.com/en-us/library/jj906433(v=exchg.150).aspx

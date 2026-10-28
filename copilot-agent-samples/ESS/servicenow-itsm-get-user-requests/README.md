@@ -1,3 +1,50 @@
+---
+title: ESS ServiceNow ITSM Get User Requests
+type: agent
+category: Copilot Studio
+summary: Extend the Employee Self-Service agent to list a user's open, closed, or all ServiceNow service catalog requests (REQ).
+author: Dean Cron
+version: 1.0.0
+published: "2026-07-30"
+updated: "2026-08-11"
+tags:
+  - employee-self-service
+  - servicenow
+  - itsm
+  - copilot-studio
+  - power-automate
+format: bundle
+featured: false
+status: active
+whatItIs: >-
+  A Copilot Studio and Power Automate sample for the Microsoft Employee Self-Service (ESS) agent. The
+  built-in ITSM orchestrator only lists incidents, so this adds a flow that queries the ServiceNow
+  `sc_request` table for the current user, plus a user-facing topic and a system topic. The topic works
+  out whether the user wants active, closed, or all requests, caches results for 15 minutes, and
+  returns a numbered list with links to open each request in ServiceNow.
+whyUseIt:
+  - Let employees ask for their service catalog requests, such as "Show me my open requests".
+  - Calls ServiceNow as the signed-in employee (on-behalf-of), so ServiceNow's own access controls decide what each person can see.
+  - Deploy with the ESS Maker Kit or import a ready-made solution.
+howToUse: |-
+  1. Install the ServiceNow ITSM extension pack, deploy the ESS agent, and create a ServiceNow connection that uses on-behalf-of (invoker) authentication.
+  2. Deploy with the ESS Maker Kit (copy the topics and flow into your workspace, replace the `{FLOW_GUID}` and connection reference placeholders, then push) or import `solution/ESSServiceNowITSMGetUserRequests_1_0_0_0.zip` and create the two topics in Copilot Studio.
+  3. Set the `ServiceNowITSMPortalBaseURI` environment variable (for example `https://<instance>.service-now.com/esc`), turn the flow on in Power Automate, and enable parameter sharing for the ServiceNow connection in Copilot Studio.
+  4. Wire the topic to the flow, publish the agent, and try a prompt such as "Show me my open requests". With the Maker Kit:
+
+     ```text
+     python scripts/push.py
+     python scripts/push.py --repair "Get User Requests"
+     ```
+prerequisites:
+  - "Microsoft Employee Self-Service agent deployed"
+  - "ServiceNow ITSM extension pack installed in Copilot Studio"
+  - "ServiceNow connection in Power Platform configured for on-behalf-of (invoker) authentication"
+  - "ServiceNowITSMPortalBaseURI environment variable set to your ServiceNow portal URL"
+  - "ESS Maker Kit (for the push.py deployment path)"
+  - "ServiceNow users with read access to sc_request"
+---
+
 # ESS ServiceNow ITSM – Get User Requests
 
 ## 📌 Overview

@@ -1,3 +1,49 @@
+---
+title: Teams Upgrade Snippets
+type: script
+category: PowerShell
+summary: PowerShell snippets to upgrade Skype for Business users to Teams Only mode and run the Meeting Migration Service.
+author: David Whitney
+version: 1.0.0
+published: "2020-01-30"
+updated: "2021-03-16"
+tags:
+  - teams
+  - teams-upgrade
+  - skype-for-business
+  - meeting-migration
+  - snippets
+format: md
+featured: false
+status: archived
+whatItIs: >-
+  A README of PowerShell snippets, run with the MicrosoftTeams module, for the journey from Skype for
+  Business to Teams Only mode. They upgrade a list of users with Grant-CsTeamsUpgradePolicy, run a
+  server-side batch policy assignment for long lists, and queue and report on the Meeting Migration
+  Service after an org-wide upgrade. Kept for reference because Skype for Business Online has been
+  retired.
+whyUseIt:
+  - Reference for the upgrade policy, batch policy assignment, and Meeting Migration Service cmdlets.
+  - Example of using a CSV of users with TeamsUpgradePolicy and `New-CsBatchPolicyAssignmentOperation`.
+howToUse: |-
+  1. Install the MicrosoftTeams PowerShell module (2.0.0 or later) and connect with `Connect-MicrosoftTeams`.
+  2. Prepare a CSV with a `UserPrincipalName` column.
+  3. Run the snippet you need from the README, for example to upgrade a list of users to Teams Only mode:
+
+     ```powershell
+     $upgradeusers = Import-Csv "C:\path\to\upgradeusers.csv"
+
+     foreach ($user in $upgradeusers) {
+         Grant-CsTeamsUpgradePolicy -Identity $user.UserPrincipalName -PolicyName "UpgradeToTeams"
+     }
+     ```
+prerequisites:
+  - "MicrosoftTeams PowerShell module, version 2.0.0 or later"
+  - "CSV with a UserPrincipalName column for the bulk snippets"
+---
+
+> **Archived:** These snippets cover upgrading Skype for Business users to Teams Only mode and running the Meeting Migration Service. Skype for Business Online was retired on July 31, 2021, and Skype for Business Server 2015 and 2019 reached end of support on October 14, 2025, so this sample is kept for reference. See [Skype for Business Online retirement](https://learn.microsoft.com/microsoftteams/skype-for-business-online-retirement) and the current Teams upgrade guidance on Microsoft Learn instead.
+
 # Microsoft FastTrack Open Source - Teams Upgrade Snippets
 
 Here are a few common Teams Upgrade PowerShell snippets that our customers have found useful in their journey to Teams Only mode.

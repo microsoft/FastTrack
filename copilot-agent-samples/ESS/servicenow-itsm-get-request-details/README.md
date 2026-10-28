@@ -1,3 +1,51 @@
+---
+title: ESS ServiceNow ITSM Get Request Details
+type: agent
+category: Copilot Studio
+summary: Extend the Employee Self-Service agent to look up ServiceNow service catalog requests (REQ) and request items (RITM).
+author: Dean Cron
+version: 1.0.0
+published: "2026-07-30"
+updated: "2026-08-12"
+tags:
+  - employee-self-service
+  - servicenow
+  - itsm
+  - copilot-studio
+  - power-automate
+format: bundle
+featured: false
+status: active
+whatItIs: >-
+  A Copilot Studio and Power Automate sample for the Microsoft Employee Self-Service (ESS) agent. The
+  built-in ITSM orchestrator only handles incidents, so this adds two flows (one for the ServiceNow
+  `sc_request` table and one for `sc_req_item`) and three topics. A single user-facing topic extracts
+  the number from the user's message, routes RITM numbers to the request-item flow and everything else
+  to the request flow, and shows an adaptive card with a link to open the record in ServiceNow.
+whyUseIt:
+  - Let employees ask for the status of a service catalog request or request item by number.
+  - Calls ServiceNow as the signed-in employee (on-behalf-of), so ServiceNow's own access controls decide what each person can see.
+  - Deploy with the ESS Maker Kit or import a ready-made solution.
+howToUse: |-
+  1. Install the ServiceNow ITSM extension pack, deploy the ESS agent, and create a ServiceNow connection that uses on-behalf-of (invoker) authentication.
+  2. Deploy with the ESS Maker Kit (copy the topics and both flows into your workspace, replace the `{FLOW_GUID}` and connection reference placeholders, then push) or import `solution/ESSServiceNowITSMGetRequestDetails_1_0_0_0.zip` and create the three topics in Copilot Studio.
+  3. Set the `ServiceNowITSMPortalBaseURI` environment variable (for example `https://<instance>.service-now.com/esc`), turn both flows on in Power Automate, and enable parameter sharing for the ServiceNow connection in Copilot Studio.
+  4. Wire the topics to the flows, publish the agent, and try a prompt such as "What's the status of my request REQ0012345?" With the Maker Kit:
+
+     ```text
+     python scripts/push.py
+     python scripts/push.py --repair "Get Request Details"
+     python scripts/push.py --repair "Get Request Item"
+     ```
+prerequisites:
+  - "Microsoft Employee Self-Service agent deployed"
+  - "ServiceNow ITSM extension pack installed in Copilot Studio"
+  - "ServiceNow connection in Power Platform configured for on-behalf-of (invoker) authentication"
+  - "ServiceNowITSMPortalBaseURI environment variable set to your ServiceNow portal URL"
+  - "ESS Maker Kit (for the push.py deployment path)"
+  - "ServiceNow users with read access to sc_request and sc_req_item"
+---
+
 # ESS ServiceNow ITSM – Get Request Details (REQ + RITM)
 
 ## 📌 Overview

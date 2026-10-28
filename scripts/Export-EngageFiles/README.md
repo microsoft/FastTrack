@@ -1,3 +1,43 @@
+---
+title: Export-EngageFiles
+type: script
+category: PowerShell
+summary: Export files uploaded to a Viva Engage network during a date range by using the Yammer Files Export API.
+author: Dean Cron
+version: 1.0.0
+published: "2023-06-14"
+updated: "2026-07-22"
+tags:
+  - viva-engage
+  - administration
+  - export
+  - data-export
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell sample that signs in interactively with MSAL.PS, submits a request to the Yammer Files
+  Export API for a start and end date, waits for the export to be packaged, and downloads the resulting
+  zip file or files into a dated folder together with a script log. In native-mode networks no files
+  are downloaded; you get a CSV of file information that includes each file's URL.
+whyUseIt:
+  - Archive files stored in Viva Engage (Yammer) storage for a date range.
+  - The API packages files into zip files on the back end, which the README recommends over downloading files with the Network Data Export script for large volumes.
+  - Writes a detailed log next to each export for troubleshooting.
+howToUse: |-
+  1. Create a Microsoft Entra app registration with the delegated Yammer `access_as_user` permission and install the module with `Install-Module MSAL.PS`.
+  2. Set `$ClientId`, `$TenantId`, `$RedirectUri`, and `$rootPath` near the top of the script.
+  3. Run with a start and end date in YYYY-MM-DD format. Use shorter date windows if packaging fails:
+
+     ```powershell
+     .\Export-EngageFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31
+     ```
+prerequisites:
+  - "Microsoft Entra app registration with the delegated Yammer access_as_user permission"
+  - "MSAL.PS PowerShell module"
+  - "Viva Engage verified administrator account"
+---
+
 # Microsoft FastTrack Open Source - Export-EngageFiles
 
 This sample script calls the Yammer Files Export API to export files from your Yammer network that were uploaded by users during the date range specified in the command. 
