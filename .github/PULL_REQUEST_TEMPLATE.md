@@ -1,20 +1,24 @@
-# Category
+## Category
+
+- [ ] New resource (script, agent, guide, analytics, skill)
+- [ ] Update to an existing resource
 - [ ] Bug fix
-- [ ] New script
-- [ ] New sample
+- [ ] Docs, site, or tooling
 
-# Instructions
-_You can delete this section after reading._
-* Please update this PR information accordingly. We'll use this as part of our release notes in monthly communications.
-* Ensure you have updated any associated docs files based on your code changes
-* Ensure you have followed the contributing guidance
+## What's in this pull request?
 
-# Related Issues
+<!-- Describe the change and why. If it adds or updates a resource, say what it does and who it helps. -->
 
-fixes #X, mentioned in #Y
+## Related issues
 
-# What's in this Pull Request?
+<!-- fixes #X, mentioned in #Y -->
 
-_Please describe the changes in this PR with sufficient detail so we can understand what you've done. Please check back to see if we have any follow-up questions._
+## Checklist
 
+- [ ] No private, customer-specific, or unlicensed content, and no secrets
+- [ ] README front matter is valid: `npm ci --prefix tools/catalog-build && npm run check --prefix tools/catalog-build`
+- [ ] `version` and `updated` were bumped (and `published` was preserved)
+- [ ] Installation and usage steps were tested
+- [ ] Files over 5 MB were avoided (link large media instead)
 
+See [CONTRIBUTING.md](https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md) for details.
