@@ -111,10 +111,6 @@ npm run check --prefix tools\catalog-build
 
 Validation reports every file and field that must be fixed. The default `npm run build` command writes `catalog.json`, a shareable page per resource under `r/`, `sitemap.xml`, and `feed.xml` at the repository root. Do not edit those generated files by hand.
 
-## Landing-page curation
-
-The landing page's spotlight and "Start here" paths are editorial, not metadata. They live in [`tools/catalog-build/site-config.json`](../tools/catalog-build/site-config.json) and reference resources by slug (the lowercased, hyphenated `title`). `npm run check` fails if a slug is unknown or archived, so a path can never point at a missing resource.
-
 ## Social cards
 
 Each resource page and the landing page use a 1200x630 social card for link previews in Teams, LinkedIn, and similar apps. Cards are committed under `assets/og/<slug>.png`. Render missing ones locally (needs Edge or Chrome) with `npm run og` from `tools/catalog-build`, or re-render all with `npm run og -- --all`. Resources without a card fall back to `assets/og-default.png`.

@@ -10,20 +10,16 @@
 [![Last commit](https://img.shields.io/github/last-commit/microsoft/FastTrack)](https://github.com/microsoft/FastTrack/commits/master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/microsoft/FastTrack/pulls)
 
-> **New:** Deploying Microsoft Agent 365? Start with the [Customer Implementation Guide](https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/), then explore the [Lifecycle Atlas](https://microsoft.github.io/FastTrack/r/agent-365-lifecycle-atlas/) and the [Agents Cost Calculator](https://microsoft.github.io/FastTrack/r/agents-cost-calculator/).
+## Browse the catalog
 
-## Start here
+The [catalog](https://microsoft.github.io/FastTrack/) is the easiest way to search, filter, and preview everything in this repo.
 
-The [catalog](https://microsoft.github.io/FastTrack/) is the easiest way to browse, filter, and preview everything in this repo. Pick the outcome you are working toward:
-
-| I want to... | Start with |
+| Browse | What you will find |
 |---|---|
-| **Deploy and govern Agent 365** | [Implementation Guide](https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/) · [Lifecycle Atlas](https://microsoft.github.io/FastTrack/r/agent-365-lifecycle-atlas/) · [Agents Cost Calculator](https://microsoft.github.io/FastTrack/r/agents-cost-calculator/) · [Copilot Agents Guide](https://microsoft.github.io/FastTrack/r/copilot-agents-guide/) |
-| **Measure Copilot adoption** | [Copilot Interaction Report](https://microsoft.github.io/FastTrack/r/copilot-interaction-report/) · [Purview Audit Report](https://microsoft.github.io/FastTrack/r/purview-audit-copilot-report/) · [Viva Insights Dashboard](https://microsoft.github.io/FastTrack/r/viva-insights-copilot-dashboard/) · [Analytics Reports Navigator](https://microsoft.github.io/FastTrack/r/copilot-analytics-reports-navigator/) |
-| **Prepare my tenant** | [Copilot Readiness assessment](https://microsoft.github.io/FastTrack/r/get-m365copilotreadiness/) · [SharePoint oversharing risk](https://microsoft.github.io/FastTrack/r/analyze-sharepointrisk/) · [OneDrive preflight](https://microsoft.github.io/FastTrack/r/preflight-onedrive/) |
-| **Plan and build agents** | [PowerClaw](https://microsoft.github.io/FastTrack/r/powerclaw-agent/) · [ProductQuote](https://microsoft.github.io/FastTrack/r/productquote-agent/) · [AI Council](https://microsoft.github.io/FastTrack/r/ai-council/) · [Brainstorming template](https://microsoft.github.io/FastTrack/r/agent-brainstorming-template/) · [Copilot Studio workflow skill](https://microsoft.github.io/FastTrack/r/copilot-studio-workflow/) |
-| **Move to Teams Phone** | [Teams Phone User Migration](https://microsoft.github.io/FastTrack/r/teams-phone-user-migration/) · [Teams Rooms, phone, and conferencing snippets](https://microsoft.github.io/FastTrack/?collection=teams-phone) |
-| **Administer Viva Engage** | [Create communities](https://microsoft.github.io/FastTrack/r/create-engagecommunities/) · [Export network data](https://microsoft.github.io/FastTrack/r/export-engagenetworkdata/) · [Enforce per-user licensing](https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/) · [all Viva Engage tools](https://microsoft.github.io/FastTrack/?collection=viva-engage) |
+| [Guides & planning](https://microsoft.github.io/FastTrack/?type=strategy) | Interactive implementation guides, decision guides, calculators, and planning templates for Copilot and agent deployments. |
+| [Agents](https://microsoft.github.io/FastTrack/?type=agent) | Ready-to-use agents for Copilot Studio, Agent Builder, and GitHub Copilot, plus Employee Self-Service extensions. |
+| [Analytics](https://microsoft.github.io/FastTrack/?type=analytics) | Power BI templates, interactive report navigators, and Copilot usage reporting. |
+| [Scripts](https://microsoft.github.io/FastTrack/?type=script) | PowerShell scripts and snippets for Microsoft 365 administration, including Teams, Viva Engage, and SharePoint. |
 
 ## What is in this repo
 

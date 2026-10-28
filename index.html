@@ -317,11 +317,8 @@
       margin-bottom: 3rem;
     }
     @media (min-width: 768px) {
-      .category-tiles { grid-template-columns: repeat(3, 1fr); }
+      .category-tiles { grid-template-columns: repeat(4, 1fr); }
     }
-    .category-tile { cursor: pointer; }
-    .category-tile .tile-title { align-items: flex-start; line-height: 1.3; }
-    .category-tile .tile-title .pill-dot { margin-top: 0.35rem; }
     .category-tile {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1342,49 +1339,6 @@
       opacity: 0.9;
     }
 
-    /* Section headings */
-    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 0 0 1rem; }
-    .section-head h2 { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
-    .section-head p { font-size: 0.875rem; color: var(--text-muted); }
-
-    /* Spotlight */
-    .spotlight {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 1.5rem;
-      padding: 1.75rem;
-      margin-bottom: 3rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, var(--type-strategy-bg) 0%, var(--surface) 65%);
-      box-shadow: var(--shadow-sm);
-    }
-    @media (min-width: 900px) {
-      .spotlight.has-preview { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; padding: 2rem; }
-    }
-    .spotlight-eyebrow {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.06em; color: var(--type-strategy);
-    }
-    .spotlight-title {
-      font-size: clamp(1.5rem, 3vw, 2.125rem); font-weight: 700; line-height: 1.15;
-      letter-spacing: -0.03em; color: var(--text); margin: 0.5rem 0 0.75rem;
-    }
-    .spotlight-desc { color: var(--text-muted); font-size: 1rem; max-width: 40rem; }
-    .spotlight-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
-    .spotlight-also { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-top: 1.25rem; font-size: 0.875rem; color: var(--text-muted); }
-    .spotlight-also a { color: var(--text); font-weight: 500; border-bottom: 1px solid var(--border-strong); }
-    .spotlight-also a:hover { color: var(--accent); border-color: var(--accent); }
-    .spotlight-media {
-      display: block; border: 1px solid var(--border); border-radius: var(--radius-sm);
-      overflow: hidden; background: var(--surface); box-shadow: var(--shadow-md);
-      transition: transform 0.2s ease;
-    }
-    .spotlight-media:hover { transform: translateY(-2px); }
-    .spotlight-media img { display: block; width: 100%; height: auto; }
-    .spotlight .btn-primary, .spotlight .btn-secondary { text-decoration: none; }
-
     /* Status badges and archived toggle */
     .status-badge {
       display: inline-block; margin-left: 0.5rem; padding: 0.0625rem 0.5rem;
@@ -1397,18 +1351,6 @@
     .card.is-archived { opacity: 0.72; }
     .archived-toggle { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-muted); cursor: pointer; user-select: none; }
     .archived-toggle input { accent-color: var(--accent); width: 1rem; height: 1rem; }
-    .collection-banner {
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-      padding: 0.875rem 1rem; margin-bottom: 1rem;
-      border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--accent-bg);
-    }
-    .collection-banner strong { color: var(--text); }
-    .collection-banner span { color: var(--text-muted); font-size: 0.875rem; }
-    .collection-banner button {
-      font-size: 0.8125rem; font-weight: 600; color: var(--text);
-      padding: 0.375rem 0.75rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface);
-    }
-    .collection-banner button:hover { background: var(--surface-hover); }
     .notice-banner {
       margin: 0 0 1.5rem; padding: 0.875rem 1rem; font-size: 0.9375rem; color: var(--text);
       border: 1px solid rgba(245, 158, 11, 0.45); border-radius: var(--radius-sm); background: rgba(245, 158, 11, 0.08);
@@ -1504,17 +1446,9 @@
       </div>
     </div>
 
-    <section class="spotlight d-none" id="spotlight" aria-labelledby="spotlightTitle"></section>
-
-    <div class="section-head" id="startHereHead">
-      <h2>Start here</h2>
-      <p>Pick the outcome you are working toward.</p>
-    </div>
     <div class="category-tiles" id="categoryTiles">
-      <!-- Start-here tiles rendered via JS -->
+      <!-- Category tiles rendered via JS -->
     </div>
-
-    <div id="collectionBanner" class="collection-banner d-none"></div>
 
     <div class="facet-row">
       <span class="facet-label">Type</span>
@@ -1735,8 +1669,6 @@
     const MIN_VIEWS_SHOWN = 50;
     let ALL_RESOURCES = [];
     let RESOURCES = []; // the visible set: archived items are excluded unless toggled on
-    let COLLECTIONS = [];
-    let SPOTLIGHT = null;
     let STATS = {};
 
     const TYPE_DEF = [
@@ -1755,7 +1687,6 @@
       q: '',
       type: 'all',
       tag: 'all',
-      collection: null,
       showArchived: false,
       sort: 'featured',
       showAllTags: false,
@@ -1911,8 +1842,6 @@
           tags: Array.isArray(resource.tags) ? resource.tags : []
         }));
         ALL_RESOURCES.forEach(r => { if (!r.slug) r.slug = slugify(r.name); });
-        COLLECTIONS = Array.isArray(catalog.collections) ? catalog.collections : [];
-        SPOTLIGHT = catalog.spotlight || null;
         CATALOG_UPDATED = catalog.generatedAt || '';
         applyVisibility();
         return true;
@@ -1936,7 +1865,6 @@
       state.q = params.get('q') || '';
       state.type = params.get('type') || 'all';
       state.tag = params.get('tag') || 'all';
-      state.collection = params.get('collection') || null;
       state.showArchived = params.get('archived') === '1';
       let sort = params.get('sort') || 'featured';
       if (sort === 'az') sort = 'featured';
@@ -2049,7 +1977,6 @@
         state.q = '';
         state.type = 'all';
         state.tag = 'all';
-        state.collection = null;
         searchInput.value = '';
         updateState();
       });
@@ -2071,7 +1998,6 @@
         url.searchParams.delete('q');
         url.searchParams.delete('type');
         url.searchParams.delete('tag');
-        url.searchParams.delete('collection');
         url.searchParams.delete('archived');
         url.searchParams.delete('sort');
       } else {
@@ -2079,7 +2005,6 @@
         if (state.q) url.searchParams.set('q', state.q); else url.searchParams.delete('q');
         if (state.type !== 'all') url.searchParams.set('type', state.type); else url.searchParams.delete('type');
         if (state.tag !== 'all') url.searchParams.set('tag', state.tag); else url.searchParams.delete('tag');
-        if (state.collection) url.searchParams.set('collection', state.collection); else url.searchParams.delete('collection');
         if (state.showArchived) url.searchParams.set('archived', '1'); else url.searchParams.delete('archived');
         if (state.sort !== 'featured') url.searchParams.set('sort', state.sort); else url.searchParams.delete('sort');
       }
@@ -2106,19 +2031,12 @@
         const matchType = matchesCategory(r, state.type);
         // Tag Match
         const matchTag = state.tag === 'all' || r.tags.includes(state.tag);
-        // Collection Match ("Start here" paths)
-        const matchCollection = !activeCollection() || activeCollection().slugs.includes(r.slug);
 
-        return matchQ && matchType && matchTag && matchCollection;
+        return matchQ && matchType && matchTag;
       });
     }
 
-    function activeCollection() {
-      return state.collection ? COLLECTIONS.find(c => c.id === state.collection) || null : null;
-    }
-
     function sortResources(resources) {
-      const collection = activeCollection();
       const byName = (a, b) => a.name.localeCompare(b.name);
       return [...resources].sort((a, b) => {
         const statsA = getStats(a);
@@ -2135,9 +2053,7 @@
           return new Date(b.updated) - new Date(a.updated) || byName(a, b);
         }
 
-        // Featured: a Start-here path keeps its curated order; otherwise featured items
-        // lead, then the most recently updated.
-        if (collection) return collection.slugs.indexOf(a.slug) - collection.slugs.indexOf(b.slug);
+        // Featured: featured items lead, then the most recently updated.
         if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
         return new Date(b.updated) - new Date(a.updated) || byName(a, b);
       });
@@ -2168,9 +2084,7 @@
       const filtered = getFilteredResources();
       const sorted = sortResources(filtered);
 
-      renderSpotlight();
-      renderCollectionTiles();
-      renderCollectionBanner();
+      renderCategoryTiles();
       renderTypeFilters();
       renderTagFilters();
       renderArchivedToggle();
@@ -2214,91 +2128,46 @@
       }
     }
 
-    function renderSpotlight() {
-      const container = document.getElementById('spotlight');
-      const primary = SPOTLIGHT && findResource(SPOTLIGHT.primary);
-      const showSpotlight = primary && !isArchived(primary) && !state.q && state.type === 'all' && state.tag === 'all' && !state.collection;
-      container.classList.toggle('d-none', !showSpotlight);
-      if (!showSpotlight) { container.innerHTML = ''; return; }
+    // The four browse cards. Counts come from the visible catalog, so they stay correct as
+    // resources are added, archived, or retired. Add a type here to bring its card back.
+    const TILE_TYPES = ['strategy', 'agent', 'analytics', 'script'];
 
-      const interactiveUrl = primary.artifact === 'interactive' && primary.source
-        ? primary.source.replace(/README\.md$/i, 'index.html').split('/').map(encodeURIComponent).join('/')
-        : null;
-      const secondary = (SPOTLIGHT.secondary || []).map(findResource).filter(r => r && !isArchived(r));
-      const noun = primary.interactiveKind === 'guide' ? 'guide' : 'tool';
-
-      container.classList.toggle('has-preview', Boolean(primary.preview));
-      container.innerHTML = `
-        <div class="spotlight-body">
-          <span class="spotlight-eyebrow">${escapeHTML(SPOTLIGHT.eyebrow)}</span>
-          <h2 class="spotlight-title" id="spotlightTitle">${escapeHTML(SPOTLIGHT.title)}</h2>
-          <p class="spotlight-desc">${escapeHTML(SPOTLIGHT.description)}</p>
-          <div class="spotlight-actions">
-            ${interactiveUrl
-              ? `<a class="btn-primary" href="${interactiveUrl}" data-event="spotlight_open">Open the ${noun}</a>
-                 <a class="btn-secondary resource-link" href="#${escapeHTML(primary.slug)}">About this ${noun}</a>`
-              : `<a class="btn-primary resource-link" href="#${escapeHTML(primary.slug)}">View ${escapeHTML(primary.name)}</a>`}
-          </div>
-          ${secondary.length ? `<div class="spotlight-also"><span>Also in this path:</span>${secondary.map(r => `<a class="resource-link" href="#${escapeHTML(r.slug)}">${escapeHTML(r.name)}</a>`).join('')}</div>` : ''}
-        </div>
-        ${primary.preview ? `<a class="spotlight-media" href="${interactiveUrl || `#${escapeHTML(primary.slug)}`}" aria-label="Open ${escapeHTML(primary.name)}">
-          <img src="${escapeHTML(primary.preview)}" alt="Preview of ${escapeHTML(primary.name)}" width="1600" height="960" decoding="async">
-        </a>` : ''}
-      `;
-      container.querySelectorAll('[data-event]').forEach(el => el.addEventListener('click', () => {
-        if (typeof window.clarity !== 'undefined') window.clarity('event', el.dataset.event);
-      }));
-    }
-
-    function renderCollectionTiles() {
+    function renderCategoryTiles() {
       const container = document.getElementById('categoryTiles');
-      const head = document.getElementById('startHereHead');
-      const tiles = COLLECTIONS
-        .map(c => ({ c, count: c.slugs.filter(slug => RESOURCES.some(r => r.slug === slug)).length }))
-        .filter(({ count }) => count > 0);
-      head.classList.toggle('d-none', tiles.length === 0);
-      container.classList.toggle('d-none', tiles.length === 0);
+      if (!container) return;
       container.innerHTML = '';
 
-      tiles.forEach(({ c, count }) => {
+      TILE_TYPES.map(id => TYPE_DEF.find(t => t.id === id)).filter(Boolean).forEach(t => {
+        const countDisplay = RESOURCES.filter(r => matchesCategory(r, t.id)).length;
+        if (countDisplay === 0 && state.type !== t.id) return;
+
         const btn = document.createElement('button');
-        btn.type = 'button';
-        const isActive = state.collection === c.id;
-        btn.className = `category-tile ${isActive ? 'active' : ''}`;
-        btn.style.setProperty('--tile-color', 'var(--accent)');
-        btn.style.setProperty('--tile-bg', 'var(--accent-bg)');
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        btn.className = `category-tile ${state.type === t.id ? 'active' : ''}`;
+
+        const color = t.colorVar ? `var(${t.colorVar})` : 'var(--border)';
+        const bgColor = t.colorVar ? `var(${t.colorVar}-bg)` : 'var(--surface-hover)';
+        btn.style.setProperty('--tile-color', color);
+        btn.style.setProperty('--tile-bg', bgColor);
+
         btn.onclick = () => {
-          state.collection = isActive ? null : c.id;
-          state.type = 'all';
+          state.type = t.id;
           state.tag = 'all';
-          state.q = '';
-          searchInput.value = '';
           updateState();
-          if (state.collection) document.getElementById('collectionBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.getElementById('grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
+
         btn.innerHTML = `
           <div class="tile-header">
-            <div class="tile-title">${escapeHTML(c.title)}</div>
-            <span class="tile-count">${count}</span>
+            <div class="tile-title">
+              <div class="pill-dot" style="background-color: ${color}"></div>
+              ${t.label}
+            </div>
+            <span class="tile-count">${countDisplay}</span>
           </div>
-          <div class="tile-desc">${escapeHTML(c.description)}</div>
+          <div class="tile-desc">${t.desc}</div>
         `;
         container.appendChild(btn);
       });
-    }
-
-    function renderCollectionBanner() {
-      const banner = document.getElementById('collectionBanner');
-      const collection = activeCollection();
-      banner.classList.toggle('d-none', !collection);
-      if (!collection) { banner.innerHTML = ''; return; }
-      banner.innerHTML = `<div><strong>${escapeHTML(collection.title)}</strong> <span>&mdash; ${escapeHTML(collection.description)}</span></div>`;
-      const clear = document.createElement('button');
-      clear.type = 'button';
-      clear.textContent = 'Show all resources';
-      clear.onclick = () => { state.collection = null; updateState(); };
-      banner.appendChild(clear);
     }
 
     function renderArchivedToggle() {
@@ -2318,17 +2187,14 @@
 
     function renderTypeFilters() {
       typeFilters.innerHTML = '';
-      // Counts follow the active "Start here" path so they match what a click will show.
-      const collection = activeCollection();
-      const scope = collection ? RESOURCES.filter(r => collection.slugs.includes(r.slug)) : RESOURCES;
       
       TYPE_DEF.forEach(t => {
         // Calculate count
         let countDisplay = 0;
         if (t.id === 'all') {
-          countDisplay = scope.length;
+          countDisplay = RESOURCES.length;
         } else {
-          countDisplay = scope.filter(r => matchesCategory(r, t.id)).length;
+          countDisplay = RESOURCES.filter(r => matchesCategory(r, t.id)).length;
         }
         // Hide types with nothing to show (for example after their last resource is archived).
         if (t.id !== 'all' && countDisplay === 0 && state.type !== t.id) return;
@@ -2375,12 +2241,10 @@
       // Determine relevant tags based on current type and search ONLY
       const tempState = { ...state, tag: 'all' };
       const q = tempState.q.toLowerCase();
-      const collection = activeCollection();
       const baseResources = RESOURCES.filter(r => {
         const matchQ = !q || r.name.toLowerCase().includes(q) || r.description.toLowerCase().includes(q) || r.tags.some(t => t.toLowerCase().includes(q));
         const matchType = matchesCategory(r, tempState.type);
-        const matchCollection = !collection || collection.slugs.includes(r.slug);
-        return matchQ && matchType && matchCollection;
+        return matchQ && matchType;
       });
 
       const tagCounts = {};
@@ -2745,7 +2609,6 @@
           state.resource = null;
           state.tag = t;
           state.type = 'all';
-          state.collection = null;
           state.q = '';
           searchInput.value = '';
           updateState(true);

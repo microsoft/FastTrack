@@ -2,7 +2,7 @@
 
 PowerShell scripts for Microsoft 365 administration, built and shared by FastTrack engineers and the community. Each folder has its own README that explains what the script does, what it needs, and how to run it.
 
-The easiest way to browse and filter them is the [catalog](https://microsoft.github.io/FastTrack/?type=script). It also groups related scripts into paths such as [Viva Engage administration](https://microsoft.github.io/FastTrack/?collection=viva-engage) and [Prepare your tenant](https://microsoft.github.io/FastTrack/?collection=prepare-tenant).
+The easiest way to browse and filter them is the [catalog](https://microsoft.github.io/FastTrack/?type=script). Related scripts share tags, so you can narrow to a topic such as [Viva Engage](https://microsoft.github.io/FastTrack/?type=script&tag=viva-engage).
 
 ## Before you run anything
 

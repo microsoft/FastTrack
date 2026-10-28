@@ -23,7 +23,7 @@ const base = {
   prerequisites: ['Needs <img src=x onerror=alert(1)>'],
   url: 'https://github.com/microsoft/FastTrack/tree/master/scripts/demo', source: 'scripts/demo/README.md'
 };
-const context = resources => ({ resources, collections: [], repositoryRoot: undefined });
+const context = resources => ({ resources, repositoryRoot: undefined });
 
 // 1. Untrusted metadata is escaped everywhere it is rendered.
 const page = renderResourcePage(base, context([base]));
@@ -53,5 +53,11 @@ assert(indexSource.includes("r.status !== 'archived'"), 'index.html must hide ar
 assert(!/countDisplay = "\d+"/.test(indexSource), 'index.html must not hard-code resource counts.');
 assert(!/Browse all \d+ scripts/.test(indexSource), 'index.html must not hard-code the script total.');
 assert(!/\d+ resource types/.test(indexSource.replace('id="heroTypeCount">Resource types', '')), 'index.html must derive the resource-type count.');
+
+// 5. The browse cards are exactly Guides, Agents, Analytics, and Scripts, in that order.
+assert(
+  indexSource.includes("const TILE_TYPES = ['strategy', 'agent', 'analytics', 'script'];"),
+  'The landing page cards must be Guides, Agents, Analytics, and Scripts.'
+);
 
 console.log('Static resource pages and landing-page guards are valid.');

@@ -132,14 +132,11 @@ function authorsOf(resource) {
   return Array.isArray(resource.author) ? resource.author : [resource.author].filter(Boolean);
 }
 
-function relatedResources(resource, resources, collections) {
-  const candidates = resources.filter(other => other.slug !== resource.slug && other.status !== 'archived');
-  const shared = new Set(
-    collections.filter(collection => collection.slugs.includes(resource.slug)).flatMap(collection => collection.slugs)
-  );
-  const score = other => (shared.has(other.slug) ? 2 : 0) + (other.type === resource.type ? 1 : 0);
-  return candidates
-    .filter(other => score(other) > 0)
+function relatedResources(resource, resources) {
+  const tags = new Set(resource.tags ?? []);
+  const score = other => (other.tags ?? []).filter(tag => tags.has(tag)).length * 2 + (other.type === resource.type ? 1 : 0);
+  return resources
+    .filter(other => other.slug !== resource.slug && other.status !== 'archived' && score(other) > 0)
     .sort((a, b) => score(b) - score(a) || a.title.localeCompare(b.title))
     .slice(0, 3);
 }
@@ -170,7 +167,7 @@ function section(title, body) {
   return body ? `<section class="block"><h2>${title}</h2>${body}</section>` : '';
 }
 
-export function renderResourcePage(resource, { resources, collections, repositoryRoot }) {
+export function renderResourcePage(resource, { resources, repositoryRoot }) {
   const slug = resource.slug;
   const canonical = `${SITE_URL}${resourcePath(resource)}`;
   const archived = resource.status === 'archived';
@@ -181,7 +178,7 @@ export function renderResourcePage(resource, { resources, collections, repositor
   const label = typeLabel(resource.type);
   const title = `${resource.title} | Microsoft FastTrack`;
   const description = resource.summary;
-  const related = relatedResources(resource, resources, collections);
+  const related = relatedResources(resource, resources);
   const issueUrl = `${REPO_URL}/issues/new?template=resource-feedback.yml&resource=${encodeURIComponent(resource.title)}&title=${encodeURIComponent(`[${resource.title}] `)}`;
 
   const statusBadge = archived

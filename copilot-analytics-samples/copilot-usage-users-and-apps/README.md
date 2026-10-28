@@ -9,4 +9,4 @@ Looking for Copilot usage reporting? These FastTrack resources are maintained:
 - [Copilot Interaction Report](https://microsoft.github.io/FastTrack/r/copilot-interaction-report/): an HTML usage dashboard generated from Copilot interaction history.
 - [Copilot Analytics Reports Navigator](https://microsoft.github.io/FastTrack/r/copilot-analytics-reports-navigator/): compare Microsoft and community Copilot analytics reports by purpose and metrics.
 
-Browse everything in the [Measure Copilot adoption](https://microsoft.github.io/FastTrack/?collection=measure-adoption) path.
+Browse everything in the [Analytics](https://microsoft.github.io/FastTrack/?type=analytics) section of the catalog.

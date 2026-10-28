@@ -58,7 +58,6 @@ Contributors update only their resource files. The workflow handles the catalog 
 - Add a `preview` screenshot (`preview: preview.webp`, 1600x960) so the resource page and the landing page show it. Keep images under 1 MB.
 - Do not commit videos or files over 5 MB. Link to a hosted video or attach large assets to a GitHub release instead.
 - Social cards (`assets/og/<slug>.png`) are optional and rendered locally with `npm run og` from `tools/catalog-build`. Resources without a card use the default card.
-- The landing page's "Start here" paths and spotlight are curated in [`tools/catalog-build/site-config.json`](tools/catalog-build/site-config.json). To propose your resource for a path, mention it in your pull request.
 
 ## Retiring a resource
 

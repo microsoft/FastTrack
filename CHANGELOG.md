@@ -11,7 +11,7 @@ This file captures only selected high-level milestones.
 #### Catalog and site
 
 * Added a shareable page for every resource (`r/<slug>/`) with link previews, plus `sitemap.xml` and an Atom `feed.xml`.
-* Added a spotlight and outcome-based "Start here" paths to the landing page; archived resources are now hidden by default.
+* Added a shareable page for every resource, and archived resources are now hidden by default.
 * Cataloged 23 previously unlisted scripts, snippets, and samples (Viva Engage administration, Teams Phone and Rooms, SimpleGraph, ESS extensions) and archived scripts that depend on retired modules or services.
 * Archived the prompt samples and removed a 41 MB archived demo video.
 * Added issue forms, a refreshed pull request template, and a manual traffic collection command.
