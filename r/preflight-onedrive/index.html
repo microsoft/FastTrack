@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-slug="preflight-onedrive">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preflight-OneDrive | Microsoft FastTrack</title>
+  <meta name="description" content="Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/preflight-onedrive/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="Preflight-OneDrive">
+  <meta property="og:description" content="Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/preflight-onedrive/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/preflight-onedrive.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Preflight-OneDrive">
+  <meta name="twitter:description" content="Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/preflight-onedrive.png">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack updates" href="../../feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../assets/resource-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Preflight-OneDrive","description":"Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.","url":"https://microsoft.github.io/FastTrack/r/preflight-onedrive/","datePublished":"2019-08-02","dateModified":"2019-08-02","version":"1.0.0","inLanguage":"en","keywords":"onedrive, migration","author":[{"@type":"Person","name":"Alejandro Lopez"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+</head>
+<body class="type-script">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="../../">Catalog</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Catalog</a><span aria-hidden="true">/</span><a href="../../?type=script">Scripts</a><span aria-hidden="true">/</span><span aria-current="page">Preflight-OneDrive</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell </div>
+      <h1>Preflight-OneDrive</h1>
+      <p class="lede">Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/scripts/Preflight-OneDrive" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
+        <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/preflight-onedrive/">Copy link</button>
+      </div>
+      <div class="tags"><a class="tag" href="../../?tag=onedrive">onedrive</a><a class="tag" href="../../?tag=migration">migration</a></div>
+    </section>
+
+    <div class="layout">
+      <article>
+        <section class="block"><h2>What it is</h2><p>A PowerShell preflight scanner that checks a local folder or UNC path for potential OneDrive for Business synchronization issues.</p></section>
+        <section class="block"><h2>Why use it</h2><ul><li>Find problematic paths before deploying the OneDrive sync client.</li><li>Review results in the console or an optional HTML report.</li></ul></section>
+        <section class="block"><h2>How to use it</h2><p>Install the external dependencies, then run:</p>
+<pre><code>.\Preflight-OneDrive.ps1 -Path &quot;\\dc.contoso.com\smb&quot; -GenerateHTMLReport</code></pre></section>
+        <section class="block"><h2>Prerequisites</h2><ul><li>EnhancedHTML2 module</li><li>Test-OneDrivePath function</li><li>Read access to the folder being scanned</li></ul></section>
+        
+    <section class="block related">
+      <h2>Related resources</h2>
+      <ul class="related-list">
+        <li><a href="../migrate-copilotstudioagents/"><strong>Migrate-CopilotStudioAgents</strong><span>Inventory and copy classic Copilot Studio agents into department-mapped Power Platform environments with ownership recovery.</span></a></li>
+        <li><a href="../teams-phone-user-migration/"><strong>Teams Phone User Migration</strong><span>Run a two-phase CSV-driven Teams Phone migration for voice policies, phone numbers, and emergency locations.</span></a></li>
+        <li><a href="../add-engagegroupadmins/"><strong>Add-EngageGroupAdmins</strong><span>Bulk-add owners (admins) to Viva Engage communities from a CSV by using the Microsoft Graph group owners API.</span></a></li>
+      </ul>
+    </section>
+      </article>
+      <aside>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.ps1 · PowerShell</dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Aug 2, 2019</dd></div><div class="row"><dt>Author</dt><dd>Alejandro Lopez</dd></div></dl>
+        <div class="aside-links">
+          <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=Preflight-OneDrive&amp;title=%5BPreflight-OneDrive%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
+          <a href="../../#preflight-onedrive">Comments &amp; upvotes in the catalog</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <p><a href="../../">Browse the catalog</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Issues</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/resource-page.js" data-clarity="w810tntgw1" defer></script>
+</body>
+</html>

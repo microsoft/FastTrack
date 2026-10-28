@@ -1,3 +1,42 @@
+---
+title: Disable-InsightsHeadSpace
+type: script
+category: PowerShell
+summary: Disable the retired Headspace feature in Viva Insights for every user with a Personal Insights service plan.
+author: Dean Cron
+version: 1.0.0
+published: "2024-07-18"
+updated: "2024-07-19"
+tags:
+  - viva-insights
+  - headspace
+  - administration
+  - exchange-online
+format: ps1
+featured: false
+status: archived
+whatItIs: >-
+  A PowerShell script that uses Microsoft Graph to find users assigned the Exchange Analytics or
+  MyAnalytics (Personal Insights) service plans and runs `Set-VivaInsightsSettings -Feature headspace
+  -Enabled $false` for each of them through Exchange Online. Microsoft has removed Headspace from Viva
+  Insights, so it is kept for reference only.
+whyUseIt:
+  - Reference for how Viva Insights features were disabled per user with `Set-VivaInsightsSettings`.
+  - Example of filtering users by service plan ID with the Microsoft Graph PowerShell module.
+howToUse: |-
+  1. Install the Microsoft Graph PowerShell (`Microsoft.Graph.Users`) and Exchange Online (`ExchangeOnlineManagement`) modules.
+  2. Run the script and sign in to Microsoft Graph (`User.Read.All`) and Exchange Online when prompted:
+
+     ```powershell
+     .\Disable-InsightsHeadSpace.ps1
+     ```
+prerequisites:
+  - "Microsoft.Graph.Users and ExchangeOnlineManagement PowerShell modules"
+  - "Account that can consent to the User.Read.All Microsoft Graph scope and run Set-VivaInsightsSettings in Exchange Online"
+---
+
+> **Archived:** Microsoft removed Headspace content from Viva Insights in July 2024 (Message Center MC823285), so there is nothing left for this script to disable. It is kept for reference only and no replacement is needed.
+
 # Microsoft FastTrack Open Source - Disable-InsightsHeadSpace
 
 This sample script disables HeadSpace in Viva Insights for all users with a Personal Insights service plan

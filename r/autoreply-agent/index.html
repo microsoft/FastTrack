@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-slug="autoreply-agent">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoReply Agent | Microsoft FastTrack</title>
+  <meta name="description" content="Research incoming email questions against trusted sources and draft thoughtful replies for review.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/autoreply-agent/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="AutoReply Agent">
+  <meta property="og:description" content="Research incoming email questions against trusted sources and draft thoughtful replies for review.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/autoreply-agent/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/autoreply-agent.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AutoReply Agent">
+  <meta name="twitter:description" content="Research incoming email questions against trusted sources and draft thoughtful replies for review.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/autoreply-agent.png">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack updates" href="../../feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../assets/resource-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"AutoReply Agent","description":"Research incoming email questions against trusted sources and draft thoughtful replies for review.","url":"https://microsoft.github.io/FastTrack/r/autoreply-agent/","datePublished":"2025-06-17","dateModified":"2025-08-06","version":"1.0.0","inLanguage":"en","keywords":"email, research, automation","author":[{"@type":"Person","name":"Alejandro Lopez"},{"@type":"Person","name":"Shervin Shaffie"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+</head>
+<body class="type-agent">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="../../">Catalog</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Catalog</a><span aria-hidden="true">/</span><a href="../../?type=agent">Agents</a><span aria-hidden="true">/</span><span aria-current="page">AutoReply Agent</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Agents · Copilot Studio </div>
+      <h1>AutoReply Agent</h1>
+      <p class="lede">Research incoming email questions against trusted sources and draft thoughtful replies for review.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
+        <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/autoreply-agent/">Copy link</button>
+      </div>
+      <div class="tags"><a class="tag" href="../../?tag=email">email</a><a class="tag" href="../../?tag=research">research</a><a class="tag" href="../../?tag=automation">automation</a></div>
+    </section>
+
+    <div class="layout">
+      <article>
+        <section class="block"><h2>What it is</h2><p>An autonomous Copilot Studio pattern that triggers on new mail, researches the questions against configured knowledge, and emails a draft response to the owner.</p></section>
+        <section class="block"><h2>Why use it</h2><ul><li>Reduce time spent researching repetitive questions in individual or shared mailboxes.</li><li>Keep answers grounded in explicitly configured knowledge sources.</li><li>Review a prepared response before replying to the original sender.</li></ul></section>
+        <section class="block"><h2>How to use it</h2><ol class="steps"><li>Create the Copilot Studio agent with the instructions in this README.</li><li>Add the <code>Send an email (V2)</code> tool and <code>When a new email arrives (V3)</code> trigger.</li><li>Configure trusted knowledge sources and an inbox rule that prevents test-message loops.</li><li>Test with a non-production mailbox before broader use.</li></ol></section>
+        <section class="block"><h2>Prerequisites</h2><ul><li>Microsoft Copilot Studio</li><li>Power Automate</li><li>Exchange Online mailbox</li></ul></section>
+        
+    <section class="block related">
+      <h2>Related resources</h2>
+      <ul class="related-list">
+        <li><a href="../powerclaw-agent/"><strong>PowerClaw Agent</strong><span>A 24/7 AI chief of staff with autonomous briefings, task execution, and proactive coordination.</span></a></li>
+        <li><a href="../ai-council/"><strong>AI Council</strong><span>Run Claude, GPT, and Gemini in parallel to surface consensus, disagreements, and a synthesized decision recommendation.</span></a></li>
+        <li><a href="../ess-servicenow-itsm-get-request-details/"><strong>ESS ServiceNow ITSM Get Request Details</strong><span>Extend the Employee Self-Service agent to look up ServiceNow service catalog requests (REQ) and request items (RITM).</span></a></li>
+      </ul>
+    </section>
+      </article>
+      <aside>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Agents</dd></div><div class="row"><dt>Category</dt><dd>Copilot Studio</dd></div><div class="row"><dt>Format</dt><dd>bundle · Agent</dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Aug 6, 2025</dd></div><div class="row"><dt>Author</dt><dd>Alejandro Lopez, Shervin Shaffie</dd></div></dl>
+        <div class="aside-links">
+          <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=AutoReply%20Agent&amp;title=%5BAutoReply%20Agent%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
+          <a href="../../#autoreply-agent">Comments &amp; upvotes in the catalog</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <p><a href="../../">Browse the catalog</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Issues</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/resource-page.js" data-clarity="w810tntgw1" defer></script>
+</body>
+</html>

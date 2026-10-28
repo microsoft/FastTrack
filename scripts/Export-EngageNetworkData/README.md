@@ -1,3 +1,43 @@
+---
+title: Export-EngageNetworkData
+type: script
+category: PowerShell
+summary: Export Viva Engage network messages and files for a date range by using the Network Data Export API.
+author: Dean Cron
+version: 1.0.0
+published: "2023-06-14"
+updated: "2026-07-22"
+tags:
+  - viva-engage
+  - administration
+  - export
+  - data-export
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell sample that signs in interactively with MSAL.PS and calls the Yammer Network Data Export
+  API for a date range. It downloads the export zip and writes a script log into a folder named for the
+  export range. File attachments are only exported from legacy (pre-native mode) networks; native-mode
+  networks return a files.csv with SharePoint and OneDrive links instead.
+whyUseIt:
+  - Export Viva Engage messages and related data for compliance, analytics, or archival needs.
+  - Limit the export to a start and end date, with an option to include file attachments from legacy networks.
+  - Detailed activity and error logging goes to a log file next to the export.
+howToUse: |-
+  1. Create a Microsoft Entra app registration with the delegated Yammer `access_as_user` permission and install the module with `Install-Module MSAL.PS`.
+  2. Set `$ClientId`, `$TenantId`, `$RedirectUri`, and `$rootPath` near the top of the script.
+  3. Run with a start date, plus an end date and `-IncludeFiles` if needed. Keep the date range reasonable to avoid timeouts, and note that `-IncludeFiles All` only applies to legacy networks:
+
+     ```powershell
+     .\Export-EngageNetworkData.ps1 -startdate 2023-01-14 -enddate 2023-01-31 -IncludeFiles All
+     ```
+prerequisites:
+  - "Microsoft Entra app registration with the delegated Yammer access_as_user permission"
+  - "MSAL.PS PowerShell module"
+  - "Viva Engage verified administrator account"
+---
+
 # Microsoft FastTrack Open Source - Export-EngageNetworkData
 
 This sample script calls the Yammer Network Data Export API to export messages and (optionally) files from your Yammer network for the date range specified in the command. 

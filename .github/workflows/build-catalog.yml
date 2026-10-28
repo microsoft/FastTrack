@@ -4,11 +4,15 @@ on:
   pull_request:
     paths:
       - "scripts/**"
+      - "samples/**"
       - "copilot-agent-samples/**"
       - "copilot-agent-strategy/**"
       - "copilot-analytics-samples/**"
       - "copilot-prompt-samples/**"
       - "tools/catalog-build/**"
+      - "tools/SimpleGraph/**"
+      - "assets/**"
+      - "index.html"
       - "docs/CATALOG-METADATA.md"
       - ".github/workflows/build-catalog.yml"
   push:
@@ -16,11 +20,15 @@ on:
       - master
     paths:
       - "scripts/**"
+      - "samples/**"
       - "copilot-agent-samples/**"
       - "copilot-agent-strategy/**"
       - "copilot-analytics-samples/**"
       - "copilot-prompt-samples/**"
       - "tools/catalog-build/**"
+      - "tools/SimpleGraph/**"
+      - "assets/**"
+      - "index.html"
       - "docs/CATALOG-METADATA.md"
       - ".github/workflows/build-catalog.yml"
   workflow_dispatch: # Allow maintainers to rebuild/verify the catalog on demand.
@@ -77,7 +85,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          git add catalog.json resource-stats.json traffic-data/clarity-views.json resource-discussions.json
+          git add catalog.json sitemap.xml feed.xml r resource-stats.json traffic-data/clarity-views.json resource-discussions.json
           if [ -f design-concepts/resource-stats.json ]; then
             git add design-concepts/resource-stats.json
           fi
