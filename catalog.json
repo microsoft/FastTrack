@@ -125,6 +125,7 @@
       "description": "Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.",
       "summary": "Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.",
       "tags": [
+        "agent-365",
         "cost",
         "roi",
         "calculator"
@@ -311,6 +312,7 @@
       "description": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
       "summary": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
       "tags": [
+        "agent-365",
         "guide",
         "decision",
         "planning"

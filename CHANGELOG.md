@@ -11,7 +11,7 @@ This file captures only selected high-level milestones.
 #### Catalog and site
 
 * Added a shareable page for every resource (`r/<slug>/`) with link previews, plus `sitemap.xml` and an Atom `feed.xml`.
-* Added a shareable page for every resource; archived resources are now hidden by default; added a "Recently updated" row and "New" badges to the landing page.
+* Added a shareable page for every resource; archived resources are now hidden by default; added an Agent 365 highlight row (driven by the `agent-365` tag) and "New" badges to the landing page.
 * Cataloged 23 previously unlisted scripts, snippets, and samples (Viva Engage administration, Teams Phone and Rooms, SimpleGraph, ESS extensions) and archived scripts that depend on retired modules or services.
 * Archived the prompt samples and removed a 41 MB archived demo video.
 * Added issue forms, a refreshed pull request template, and a manual traffic collection command.

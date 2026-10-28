@@ -61,4 +61,8 @@ for (const id of ['strategy', 'agent', 'analytics', 'script']) {
   assert(!new RegExp(`id: '${id}'[^\\n]*hidden: true`).test(indexSource), `The ${id} pill must stay visible.`);
 }
 
+// 6. The highlight row is driven by a tag, not hand-written content.
+assert(/const HIGHLIGHT = \{\s*tag: '[a-z0-9-]+'/.test(indexSource), 'index.html must define the HIGHLIGHT tag.');
+assert(!/id="spotlight"/.test(indexSource), 'The hand-written spotlight must not return.');
+
 console.log('Static resource pages and landing-page guards are valid.');
