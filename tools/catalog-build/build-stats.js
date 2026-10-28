@@ -1,7 +1,7 @@
 import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { replaceClarityDays, unchangedStatsPayload } from './stats-state.js';
+import { replaceClarityDays, slugFromClarityUrl, unchangedStatsPayload } from './stats-state.js';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(toolDirectory, '..', '..');
@@ -96,16 +96,6 @@ function collectFallbackViews(resourceFolders) {
   }
 
   return totals;
-}
-
-function slugFromClarityUrl(value, knownSlugs) {
-  if (typeof value !== 'string') return undefined;
-  try {
-    const slug = decodeURIComponent(new URL(value).hash.slice(1));
-    return knownSlugs.has(slug) ? slug : undefined;
-  } catch {
-    return undefined;
-  }
 }
 
 function dateFromClarityRow(row) {
