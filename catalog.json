@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-10-28",
-  "count": 56,
+  "count": 57,
   "resources": [
     {
       "name": "Add-EngageGroupAdmins",
@@ -39,6 +39,51 @@
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Add-EngageGroupAdmins",
       "source": "scripts/Add-EngageGroupAdmins/README.md",
       "permalink": "r/add-engagegroupadmins/"
+    },
+    {
+      "name": "Agent 365 Enablement Checklist",
+      "title": "Agent 365 Enablement Checklist",
+      "slug": "agent-365-enablement-checklist",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.",
+      "summary": "A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.",
+      "tags": [
+        "agent-365",
+        "deployment",
+        "checklist",
+        "planning",
+        "governance"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": false,
+      "status": "active",
+      "interactiveKind": "tool",
+      "preview": "copilot-agent-strategy/agent-365-enablement-checklist/preview.webp",
+      "author": [
+        "Alejandro Lopez"
+      ],
+      "version": "1.0.0",
+      "published": "2026-10-28",
+      "updated": "2026-10-28",
+      "whatItIs": "A self-contained, offline tracker for planning and tracking a Microsoft Agent 365 enablement. It organizes the work into workstreams with role-based tasks, shows a readiness dashboard, and exports to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start your own.",
+      "whyUseIt": [
+        "Scope the plan by agent type, pillar, or feature so each team sees the tasks that apply to it.",
+        "Track every task through to the go-live baseline, with owners, dates, and notes, and watch readiness on the dashboard.",
+        "Share the plan with your steering group as an Excel workbook (a dashboard plus one sheet per workstream), a CSV task list for Planner, DevOps, or Jira, or a printable report.",
+        "Work entirely offline: it is a single file with no server, sign-in, tracking, or network requests."
+      ],
+      "howToUse": "1. Open `index.html` in a modern browser, or use the hosted copy from the catalog.\n2. Explore the sample plan, then start your own: set the customer name, deployment lead, sponsor, and go-live date.\n3. Scope the plan, then work through the tasks by workstream and role, marking status, owners, dates, and notes as you go.\n4. Export to Excel, CSV, or a JSON backup, or print or save a report. Your plan autosaves in your browser on that device, so use the JSON backup to move it or share it.",
+      "prerequisites": [
+        "Modern web browser",
+        "Appropriate Microsoft 365, Agent 365, security, compliance, identity, and endpoint licenses for the features you plan to enable",
+        "Administrative roles required by the tasks you choose to perform"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-enablement-checklist",
+      "source": "copilot-agent-strategy/agent-365-enablement-checklist/README.md",
+      "permalink": "r/agent-365-enablement-checklist/"
     },
     {
       "name": "Agent 365 Lifecycle Atlas",

@@ -7,6 +7,13 @@
   <link href="https://microsoft.github.io/FastTrack/"/>
   <updated>2026-10-28T00:00:00Z</updated>
   <entry>
+    <id>https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/</id>
+    <title>Agent 365 Enablement Checklist (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/"/>
+    <updated>2026-10-28T00:00:00Z</updated>
+    <summary>A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.</summary>
+  </entry>
+  <entry>
     <id>https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/</id>
     <title>Update-VivaEngageLicensingToggle (v1.0.1)</title>
     <link href="https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/"/>
@@ -138,12 +145,5 @@
     <link href="https://microsoft.github.io/FastTrack/r/migrate-copilotstudioagents/"/>
     <updated>2026-07-15T00:00:00Z</updated>
     <summary>Inventory and copy classic Copilot Studio agents into department-mapped Power Platform environments with ownership recovery.</summary>
-  </entry>
-  <entry>
-    <id>https://microsoft.github.io/FastTrack/r/purview-audit-copilot-report/</id>
-    <title>Purview Audit Copilot Report (v1.0.0)</title>
-    <link href="https://microsoft.github.io/FastTrack/r/purview-audit-copilot-report/"/>
-    <updated>2026-07-14T00:00:00Z</updated>
-    <summary>Analyze Copilot adoption by user, app, agent, department, and trend using Purview audit and Entra export data.</summary>
   </entry>
 </feed>
