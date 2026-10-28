@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-slug="viva-engage-community-creation-app">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viva Engage Community Creation App | Microsoft FastTrack</title>
+  <meta name="description" content="Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/viva-engage-community-creation-app/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="Viva Engage Community Creation App">
+  <meta property="og:description" content="Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/viva-engage-community-creation-app/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/viva-engage-community-creation-app.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Viva Engage Community Creation App">
+  <meta name="twitter:description" content="Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/viva-engage-community-creation-app.png">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack updates" href="../../feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../assets/resource-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Viva Engage Community Creation App","description":"Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.","url":"https://microsoft.github.io/FastTrack/r/viva-engage-community-creation-app/","datePublished":"2024-07-31","dateModified":"2024-11-13","version":"1.0.0","inLanguage":"en","keywords":"viva-engage, communities, power-apps, power-automate, microsoft-graph","author":[{"@type":"Person","name":"Dean Cron"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+</head>
+<body class="type-script">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="../../">Catalog</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Catalog</a><span aria-hidden="true">/</span><a href="../../?type=script">Scripts</a><span aria-hidden="true">/</span><span aria-current="page">Viva Engage Community Creation App</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Scripts · Power Apps <span class="badge badge-preview">Preview</span></div>
+      <h1>Viva Engage Community Creation App</h1>
+      <p class="lede">Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/samples/Viva-Engage-Community-Creation-App" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
+        <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/viva-engage-community-creation-app/">Copy link</button>
+      </div>
+      <div class="tags"><a class="tag" href="../../?tag=viva-engage">viva-engage</a><a class="tag" href="../../?tag=communities">communities</a><a class="tag" href="../../?tag=power-apps">power-apps</a><a class="tag" href="../../?tag=power-automate">power-automate</a><a class="tag" href="../../?tag=microsoft-graph">microsoft-graph</a></div>
+    </section>
+
+    <p class="notice">Preview: this resource is still maturing. Validate it in a non-production environment before relying on it.</p>
+
+    <div class="layout">
+      <article>
+        <section class="block"><h2>What it is</h2><p>An importable Power Apps solution (VivaEngageCommunityCreationApp.zip) containing a canvas app and a Power Automate flow. The app collects a community name, description, and privacy setting, and the flow gets a Microsoft Graph token with an Entra app registration and creates the community through the community creation API, with the signed-in user as owner. It is a sample and not intended for production use.</p></section>
+        <section class="block"><h2>Why use it</h2><ul><li>See an end-to-end example of the Viva Engage community creation API behind a Power App front end.</li><li>Start from a working app and flow and adapt them to your own community creation process.</li></ul></section>
+        <section class="block"><h2>How to use it</h2><ol class="steps"><li>Create an Entra app registration with the Microsoft Graph <code>Community.ReadWrite.All</code> and <code>User.Read.All</code> application permissions, grant admin consent, and create a client secret. Note the application (client) ID and directory (tenant) ID.</li><li>In Power Apps, choose Import canvas app, upload <code>VivaEngageCommunityCreationApp.zip</code>, and select or create an Office 365 Users connection.</li><li>Edit the app, remove and re-add the <code>Viva Engage CC Flow</code> in the Power Automate pane, and enter your values in the flow&#39;s <code>Get Access Token</code> action, which uses this request body:</li></ol>
+<pre><code>grant_type=client_credentials
+&amp;client_id=CLIENTID
+&amp;client_secret=CLIENTSECRET
+&amp;scope=https://graph.microsoft.com/.default</code></pre>
+<ol start="4" class="steps"><li>Turn the flow on in Power Automate, then save and publish the app. The full steps are in <code>AppImportInstructions.docx</code>.</li></ol></section>
+        <section class="block"><h2>Prerequisites</h2><ul><li>Microsoft Viva Engage</li><li>Power Apps and Power Automate environment where you can import a solution</li><li>Microsoft Entra app registration with Community.ReadWrite.All and User.Read.All application permissions and a client secret</li><li>Office 365 Users connection</li></ul></section>
+        
+    <section class="block related">
+      <h2>Related resources</h2>
+      <ul class="related-list">
+        <li><a href="../add-engagegroupadmins/"><strong>Add-EngageGroupAdmins</strong><span>Bulk-add owners (admins) to Viva Engage communities from a CSV by using the Microsoft Graph group owners API.</span></a></li>
+        <li><a href="../create-engagecommunities/"><strong>Create-EngageCommunities</strong><span>Bulk-create up to 50 sample Viva Engage communities from JSON and assign a chosen or random owner.</span></a></li>
+        <li><a href="../delete-allcommunityposts/"><strong>Delete-AllCommunityPosts</strong><span>Delete every message in a Viva Engage community; dry run by default, optional CSV backup, and deletion can&#39;t be undone.</span></a></li>
+      </ul>
+    </section>
+      </article>
+      <aside>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>Power Apps</dd></div><div class="row"><dt>Format</dt><dd>bundle · Agent</dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Nov 13, 2024</dd></div><div class="row"><dt>Author</dt><dd>Dean Cron</dd></div></dl>
+        <div class="aside-links">
+          <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=Viva%20Engage%20Community%20Creation%20App&amp;title=%5BViva%20Engage%20Community%20Creation%20App%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
+          <a href="../../#viva-engage-community-creation-app">Comments &amp; upvotes in the catalog</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <p><a href="../../">Browse the catalog</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Issues</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/resource-page.js" data-clarity="w810tntgw1" defer></script>
+</body>
+</html>

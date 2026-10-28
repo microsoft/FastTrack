@@ -1,6 +1,6 @@
 # Catalog metadata schema
 
-The FastTrack catalog is generated from YAML front matter at the very top of each resource's `README.md`. Prompt resources use the same front matter at the top of their single Markdown file. The catalog build ignores legacy Markdown files without front matter.
+The FastTrack catalog is generated from YAML front matter at the very top of each resource's `README.md`. The catalog build ignores legacy Markdown files without front matter. (The `prompt` type is still accepted by the schema for a single archived sample, but FastTrack is not adding new prompts.)
 
 Use `---` on its own line before and after the YAML. YAML block scalars (`>-` and `|-`) are recommended for readable detail content.
 
@@ -67,7 +67,7 @@ prerequisites:
 | `interactiveKind` | enum | Only for `format: interactive`. Set `guide` for a walkthrough or implementation/decision guide, or `tool` for a calculator or utility. Defaults to `tool`, which the catalog labels "Interactive tool"; `guide` is labeled "Interactive guide". A `guide` is also cross-listed under **Guides & planning** (see below), while a `tool` is not. |
 | `preview` | string | Optional relative path (inside the resource folder) to a screenshot the catalog detail page renders above the description, for example `preview.webp`. Use an optimized local image (WebP or PNG). No URLs, absolute paths, `..`, or backslashes. Omit it for resources without a screenshot. |
 | `featured` | boolean | Use sparingly for resources selected for catalog promotion. Default is `false`. |
-| `status` | enum | `active`, `preview`, or `archived`. Default is `active`. |
+| `status` | enum | `active`, `preview`, or `archived`. Default is `active`. `archived` resources are hidden from the default catalog view and the sitemap (visitors can reveal them with **Show archived**), and their pages are marked `noindex`. `preview` resources get a Preview badge. |
 | `url` | HTTPS URL | Optional GitHub or destination URL. When omitted, the generator derives a GitHub URL from the resource path. |
 
 ## Guides & planning cross-listing
@@ -109,4 +109,12 @@ npm ci --prefix tools\catalog-build
 npm run check --prefix tools\catalog-build
 ```
 
-Validation reports every file and field that must be fixed. The default `npm run build` command writes `catalog.json` at the repository root and mirrors it to `design-concepts/catalog.json` for the static site. Do not edit either generated file by hand.
+Validation reports every file and field that must be fixed. The default `npm run build` command writes `catalog.json`, a shareable page per resource under `r/`, `sitemap.xml`, and `feed.xml` at the repository root. Do not edit those generated files by hand.
+
+## Landing-page curation
+
+The landing page's spotlight and "Start here" paths are editorial, not metadata. They live in [`tools/catalog-build/site-config.json`](../tools/catalog-build/site-config.json) and reference resources by slug (the lowercased, hyphenated `title`). `npm run check` fails if a slug is unknown or archived, so a path can never point at a missing resource.
+
+## Social cards
+
+Each resource page and the landing page use a 1200x630 social card for link previews in Teams, LinkedIn, and similar apps. Cards are committed under `assets/og/<slug>.png`. Render missing ones locally (needs Edge or Chrome) with `npm run og` from `tools/catalog-build`, or re-render all with `npm run og -- --all`. Resources without a card fall back to `assets/og-default.png`.

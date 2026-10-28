@@ -3,9 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Microsoft FastTrack</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23ffffff' d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E">
-  <meta property="og:title" content="Microsoft FastTrack">
+  <title>Microsoft FastTrack | Tools &amp; guides for Microsoft 365 Copilot and agents</title>
+  <meta name="description" content="Field-tested guides, agents, scripts, and analytics from Microsoft FastTrack to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack: new and updated resources" href="feed.xml">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
+  <meta name="theme-color" content="#4f46e5">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="Microsoft FastTrack: tools &amp; guides for Microsoft 365 Copilot and agents">
+  <meta property="og:description" content="Field-tested guides, agents, scripts, and analytics to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Microsoft FastTrack: tools &amp; guides for Microsoft 365 Copilot and agents">
+  <meta name="twitter:description" content="Field-tested guides, agents, scripts, and analytics to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og-default.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/","description":"Field-tested guides, agents, scripts, and analytics from Microsoft FastTrack for Microsoft 365 Copilot and agents.","publisher":{"@type":"Organization","name":"Microsoft FastTrack"},"potentialAction":{"@type":"SearchAction","target":"https://microsoft.github.io/FastTrack/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   
   <script type="text/javascript">
    (function(c,l,a,r,i,t,y){
@@ -302,9 +319,9 @@
     @media (min-width: 768px) {
       .category-tiles { grid-template-columns: repeat(3, 1fr); }
     }
-    @media (min-width: 1024px) {
-      .category-tiles { grid-template-columns: repeat(6, 1fr); }
-    }
+    .category-tile { cursor: pointer; }
+    .category-tile .tile-title { align-items: flex-start; line-height: 1.3; }
+    .category-tile .tile-title .pill-dot { margin-top: 0.35rem; }
     .category-tile {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1325,6 +1342,87 @@
       opacity: 0.9;
     }
 
+    /* Section headings */
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 0 0 1rem; }
+    .section-head h2 { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+    .section-head p { font-size: 0.875rem; color: var(--text-muted); }
+
+    /* Spotlight */
+    .spotlight {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+      padding: 1.75rem;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--type-strategy-bg) 0%, var(--surface) 65%);
+      box-shadow: var(--shadow-sm);
+    }
+    @media (min-width: 900px) {
+      .spotlight.has-preview { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; padding: 2rem; }
+    }
+    .spotlight-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em; color: var(--type-strategy);
+    }
+    .spotlight-title {
+      font-size: clamp(1.5rem, 3vw, 2.125rem); font-weight: 700; line-height: 1.15;
+      letter-spacing: -0.03em; color: var(--text); margin: 0.5rem 0 0.75rem;
+    }
+    .spotlight-desc { color: var(--text-muted); font-size: 1rem; max-width: 40rem; }
+    .spotlight-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+    .spotlight-also { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-top: 1.25rem; font-size: 0.875rem; color: var(--text-muted); }
+    .spotlight-also a { color: var(--text); font-weight: 500; border-bottom: 1px solid var(--border-strong); }
+    .spotlight-also a:hover { color: var(--accent); border-color: var(--accent); }
+    .spotlight-media {
+      display: block; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      overflow: hidden; background: var(--surface); box-shadow: var(--shadow-md);
+      transition: transform 0.2s ease;
+    }
+    .spotlight-media:hover { transform: translateY(-2px); }
+    .spotlight-media img { display: block; width: 100%; height: auto; }
+    .spotlight .btn-primary, .spotlight .btn-secondary { text-decoration: none; }
+
+    /* Status badges and archived toggle */
+    .status-badge {
+      display: inline-block; margin-left: 0.5rem; padding: 0.0625rem 0.5rem;
+      font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600;
+      letter-spacing: 0.03em; text-transform: uppercase; vertical-align: middle;
+      border-radius: var(--radius-full); border: 1px solid var(--border-strong); color: var(--text-muted);
+    }
+    .status-badge.preview { color: #b45309; border-color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
+    [data-theme="dark"] .status-badge.preview { color: #fbbf24; }
+    .card.is-archived { opacity: 0.72; }
+    .archived-toggle { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-muted); cursor: pointer; user-select: none; }
+    .archived-toggle input { accent-color: var(--accent); width: 1rem; height: 1rem; }
+    .collection-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      padding: 0.875rem 1rem; margin-bottom: 1rem;
+      border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--accent-bg);
+    }
+    .collection-banner strong { color: var(--text); }
+    .collection-banner span { color: var(--text-muted); font-size: 0.875rem; }
+    .collection-banner button {
+      font-size: 0.8125rem; font-weight: 600; color: var(--text);
+      padding: 0.375rem 0.75rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface);
+    }
+    .collection-banner button:hover { background: var(--surface-hover); }
+    .notice-banner {
+      margin: 0 0 1.5rem; padding: 0.875rem 1rem; font-size: 0.9375rem; color: var(--text);
+      border: 1px solid rgba(245, 158, 11, 0.45); border-radius: var(--radius-sm); background: rgba(245, 158, 11, 0.08);
+    }
+
+    /* All-resources index (crawlable list of every resource page) */
+    .all-resources { margin-top: 1.5rem; text-align: left; font-size: 0.875rem; }
+    .all-resources summary { cursor: pointer; color: var(--text-muted); text-align: center; }
+    .all-resources ul { list-style: none; columns: 2; column-gap: 2rem; margin-top: 1rem; }
+    @media (min-width: 900px) { .all-resources ul { columns: 3; } }
+    .all-resources li { break-inside: avoid; padding: 0.125rem 0; }
+    .all-resources a { color: var(--text-muted); }
+    .all-resources a:hover { color: var(--accent); }
+
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
@@ -1389,11 +1487,11 @@
       <div class="hero-content">
         <div class="hero-stats">
           <span class="stat-chip" id="heroTotalCount">Loading resources</span>
-          <span class="stat-chip">6 resource types</span>
-          <span class="stat-chip">Updated weekly</span>
+          <span class="stat-chip" id="heroTypeCount">Resource types</span>
+          <span class="stat-chip" id="heroUpdated">Updated regularly</span>
         </div>
-        <h1 class="display-title">Tools &amp; templates for Microsoft 365</h1>
-        <p class="hero-subtitle">Browse agents, analytics, and guides &mdash; no coding required.</p>
+        <h1 class="display-title">Tools &amp; guides for Microsoft 365 Copilot and agents</h1>
+        <p class="hero-subtitle">Field-tested guides, agents, scripts, and analytics from Microsoft FastTrack. Pick a goal below or search the catalog.</p>
       </div>
       <div class="hero-search">
         <div class="search-container">
@@ -1406,9 +1504,17 @@
       </div>
     </div>
 
-    <div class="category-tiles" id="categoryTiles">
-      <!-- Category tiles rendered via JS -->
+    <section class="spotlight d-none" id="spotlight" aria-labelledby="spotlightTitle"></section>
+
+    <div class="section-head" id="startHereHead">
+      <h2>Start here</h2>
+      <p>Pick the outcome you are working toward.</p>
     </div>
+    <div class="category-tiles" id="categoryTiles">
+      <!-- Start-here tiles rendered via JS -->
+    </div>
+
+    <div id="collectionBanner" class="collection-banner d-none"></div>
 
     <div class="facet-row">
       <span class="facet-label">Type</span>
@@ -1440,11 +1546,15 @@
         </div>
         <div class="sort-divider"></div>
         <div class="density-toggle sort-pills" role="group" aria-label="Sort resources">
-          <button class="density-btn" data-sort="popular" aria-pressed="true">Popular</button>
-          <button class="density-btn" data-sort="trending" aria-pressed="false">Trending</button>
-          <button class="density-btn" data-sort="new" aria-pressed="false">New</button>
-          <button class="density-btn" data-sort="engaging" aria-pressed="false">Engaging</button>
+          <button class="density-btn" data-sort="featured" aria-pressed="true">Featured</button>
+          <button class="density-btn" data-sort="popular" aria-pressed="false">Popular</button>
+          <button class="density-btn" data-sort="new" aria-pressed="false">Recently updated</button>
         </div>
+        <div class="sort-divider"></div>
+        <label class="archived-toggle d-none" id="archivedToggle">
+          <input type="checkbox" id="showArchived">
+          <span>Show archived (<span id="archivedCount">0</span>)</span>
+        </label>
       </div>
     </div>
 
@@ -1485,6 +1595,7 @@
       <h1 class="detail-title" id="detailTitle"></h1>
       <div class="detail-tags" id="detailTags"></div>
     </div>
+    <p class="notice-banner d-none" id="detailStatusNotice"></p>
 
     <div class="detail-grid">
       <div class="detail-main">
@@ -1567,7 +1678,10 @@
               Open on GitHub 
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg>
             </a>
-            <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener" class="btn-secondary">
+            <button class="btn-secondary" id="btnDetailShare" type="button" style="width: 100%; justify-content: center;">
+              Copy share link
+            </button>
+            <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml" target="_blank" rel="noopener" class="btn-secondary" id="btnDetailIssue">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
               Report an issue
             </a>
@@ -1583,10 +1697,16 @@
       <div class="footer-links">
         <a href="https://aka.ms/ftcsd" target="_blank" rel="noopener">Service description</a>
         <a href="mailto:ftgithub@microsoft.com">Contact: ftgithub@microsoft.com</a>
-        <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Report issue</a>
+        <a href="https://github.com/microsoft/FastTrack/issues/new/choose" target="_blank" rel="noopener">Report issue</a>
+        <a href="https://github.com/microsoft/FastTrack/discussions" target="_blank" rel="noopener">Discussions</a>
+        <a href="feed.xml">What&rsquo;s new (Atom feed)</a>
         <a href="https://opensource.microsoft.com/codeofconduct/" target="_blank" rel="noopener">Code of Conduct</a>
         <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a>
       </div>
+      <details class="all-resources d-none" id="allResources">
+        <summary>All resources (A&ndash;Z)</summary>
+        <ul id="allResourcesList"></ul>
+      </details>
     </div>
   </footer>
 
@@ -1610,7 +1730,13 @@
     // --- DATASET ---
     const CATALOG_URL = 'catalog.json';
     const STATS_URL = 'resource-stats.json';
-    let RESOURCES = [];
+    // View counts come from a short analytics window, so small numbers are noise
+    // and read as negative social proof. Only show a count once it is meaningful.
+    const MIN_VIEWS_SHOWN = 50;
+    let ALL_RESOURCES = [];
+    let RESOURCES = []; // the visible set: archived items are excluded unless toggled on
+    let COLLECTIONS = [];
+    let SPOTLIGHT = null;
     let STATS = {};
 
     const TYPE_DEF = [
@@ -1620,7 +1746,7 @@
       { id: 'strategy', label: 'Guides & planning', colorVar: '--type-strategy', desc: 'Implementation guides, planning tools & walkthroughs' },
       { id: 'analytics', label: 'Analytics', colorVar: '--type-analytics', desc: 'Power BI & reporting' },
       { id: 'prompt', label: 'Prompts', colorVar: '--type-prompt', desc: 'Copilot prompt templates' },
-      { id: 'skill', label: 'Skills', colorVar: '--type-skill', desc: 'Interactive SME skills' }
+      { id: 'skill', label: 'Skills', colorVar: '--type-skill', desc: 'Reusable skills for GitHub Copilot and Claude Code' }
     ];
 
     // --- STATE ---
@@ -1629,6 +1755,8 @@
       q: '',
       type: 'all',
       tag: 'all',
+      collection: null,
+      showArchived: false,
       sort: 'featured',
       showAllTags: false,
       density: 'comfortable'
@@ -1666,13 +1794,13 @@
 
     const getStats = (r) => {
       const s = (STATS && STATS[r.slug]) || {};
-      const hasViews = Number.isFinite(s.views);
+      const hasViews = Number.isFinite(s.views) && s.views >= MIN_VIEWS_SHOWN;
       const hasDiscussion = !!(s.discussion && s.discussion.url);
       const discussionUrl = s.discussion?.url || null;
       const discussionNumber = s.discussion?.number ?? null;
       const hasUpvotes = hasDiscussion;
       return {
-        views: hasViews ? s.views : 0,
+        views: Number.isFinite(s.views) ? s.views : 0,
         hasViews,
         upvotes: Number.isFinite(s.upvotes) ? s.upvotes : 0,
         hasUpvotes,
@@ -1730,11 +1858,27 @@
 
     const slugify = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
+    // Archived resources stay in catalog.json (and on GitHub) but are hidden by default so
+    // the site only shows content that is current. RESOURCES is always the visible set.
+    function applyVisibility() {
+      RESOURCES = ALL_RESOURCES.filter(r => state.showArchived || r.status !== 'archived');
+    }
+    let CATALOG_UPDATED = '';
+    const findResource = slug => ALL_RESOURCES.find(r => r.slug === slug);
+    const isArchived = r => r.status === 'archived';
+    const staticUrl = r => new URL(`r/${r.slug}/`, document.baseURI).href;
+
     const formatDate = (iso) => {
       if (!iso) return '';
       const d = new Date(iso);
       if (isNaN(d)) return '';
       return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    };
+
+    const formatFullDate = (iso) => {
+      const d = new Date(`${iso}T00:00:00Z`);
+      if (isNaN(d)) return '';
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
     };
     
     async function loadCatalog() {
@@ -1757,14 +1901,20 @@
           console.warn('Failed to load stats:', e);
         }
 
-        RESOURCES = catalog.resources.map(resource => ({
+        ALL_RESOURCES = catalog.resources.map(resource => ({
           ...resource,
           name: resource.name || resource.title,
           subcategory: resource.subcategory || resource.category,
           description: resource.description || resource.summary,
           artifact: resource.artifact || resource.format || 'md',
+          status: resource.status || 'active',
           tags: Array.isArray(resource.tags) ? resource.tags : []
         }));
+        ALL_RESOURCES.forEach(r => { if (!r.slug) r.slug = slugify(r.name); });
+        COLLECTIONS = Array.isArray(catalog.collections) ? catalog.collections : [];
+        SPOTLIGHT = catalog.spotlight || null;
+        CATALOG_UPDATED = catalog.generatedAt || '';
+        applyVisibility();
         return true;
       } catch (error) {
         console.error('Unable to load FastTrack catalog:', error);
@@ -1779,16 +1929,36 @@
     }
 
     // --- INITIALIZATION ---
+    // Reads the catalog filters (but not the theme or density) from the URL into state.
+    function readRoute() {
+      const params = new URLSearchParams(window.location.search);
+      state.resource = window.location.hash ? window.location.hash.substring(1) : (params.get('resource') || null);
+      state.q = params.get('q') || '';
+      state.type = params.get('type') || 'all';
+      state.tag = params.get('tag') || 'all';
+      state.collection = params.get('collection') || null;
+      state.showArchived = params.get('archived') === '1';
+      let sort = params.get('sort') || 'featured';
+      if (sort === 'az') sort = 'featured';
+      if (sort === 'newest') sort = 'new';
+      if (sort === 'trending' || sort === 'engaging') sort = 'popular';
+      state.sort = sort;
+      // A shared link to an archived resource must still open, so reveal archived items for it.
+      const linked = state.resource && findResource(state.resource);
+      if (linked && isArchived(linked)) state.showArchived = true;
+      applyVisibility();
+    }
+
+    function renderHeroStats() {
+      document.getElementById('heroTotalCount').textContent = `${RESOURCES.length} resources`;
+      const types = new Set(RESOURCES.map(r => r.type));
+      document.getElementById('heroTypeCount').textContent = `${types.size} resource types`;
+      const updated = formatFullDate(CATALOG_UPDATED);
+      document.getElementById('heroUpdated').textContent = updated ? `Updated ${updated}` : 'Updated regularly';
+    }
+
     async function init() {
       if (!await loadCatalog()) return;
-
-      // 0. Build Slugs
-      RESOURCES.forEach(r => {
-        if (!r.slug) r.slug = slugify(r.name);
-      });
-
-      // Set initial count in hero
-      document.getElementById('heroTotalCount').textContent = `${RESOURCES.length} resources`;
 
       // 1. Theme
       const savedTheme = localStorage.getItem('theme');
@@ -1807,36 +1977,24 @@
       updateDensityUI();
 
       // 2. Read URL Params and Hash
-      const params = new URLSearchParams(window.location.search);
-      if (window.location.hash) {
-        state.resource = window.location.hash.substring(1);
-      } else if (params.has('resource')) {
-        state.resource = params.get('resource');
-      }
-      if (params.has('q')) state.q = params.get('q');
-      if (params.has('type')) state.type = params.get('type');
-      if (params.has('tag')) state.tag = params.get('tag');
-      let initialSort = params.get('sort') || 'popular';
-      if (initialSort === 'featured' || initialSort === 'az') initialSort = 'popular';
-      if (initialSort === 'newest') initialSort = 'new';
-      state.sort = initialSort;
-      
+      readRoute();
+      renderHeroStats();
+      renderAllResourcesIndex();
       searchInput.value = state.q;
-      // We don't have sortSelect anymore, we'll update the pill UI in render
       
       // 3. Bind Events
       window.addEventListener('popstate', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        state.resource = window.location.hash ? window.location.hash.substring(1) : (urlParams.get('resource') || null);
-        state.q = urlParams.get('q') || '';
-        state.type = urlParams.get('type') || 'all';
-        state.tag = urlParams.get('tag') || 'all';
-        let routeSort = urlParams.get('sort') || 'popular';
-        if (routeSort === 'featured' || routeSort === 'az') routeSort = 'popular';
-        if (routeSort === 'newest') routeSort = 'new';
-        state.sort = routeSort;
+        readRoute();
+        renderHeroStats();
         searchInput.value = state.q;
         render();
+      });
+
+      document.getElementById('showArchived').addEventListener('change', (e) => {
+        state.showArchived = e.target.checked;
+        applyVisibility();
+        renderHeroStats();
+        updateState();
       });
 
       document.addEventListener('click', (e) => {
@@ -1891,6 +2049,7 @@
         state.q = '';
         state.type = 'all';
         state.tag = 'all';
+        state.collection = null;
         searchInput.value = '';
         updateState();
       });
@@ -1912,13 +2071,17 @@
         url.searchParams.delete('q');
         url.searchParams.delete('type');
         url.searchParams.delete('tag');
+        url.searchParams.delete('collection');
+        url.searchParams.delete('archived');
         url.searchParams.delete('sort');
       } else {
         url.searchParams.delete('resource');
         if (state.q) url.searchParams.set('q', state.q); else url.searchParams.delete('q');
         if (state.type !== 'all') url.searchParams.set('type', state.type); else url.searchParams.delete('type');
         if (state.tag !== 'all') url.searchParams.set('tag', state.tag); else url.searchParams.delete('tag');
-        if (state.sort !== 'popular') url.searchParams.set('sort', state.sort); else url.searchParams.delete('sort');
+        if (state.collection) url.searchParams.set('collection', state.collection); else url.searchParams.delete('collection');
+        if (state.showArchived) url.searchParams.set('archived', '1'); else url.searchParams.delete('archived');
+        if (state.sort !== 'featured') url.searchParams.set('sort', state.sort); else url.searchParams.delete('sort');
       }
       
       const urlStr = url.pathname + url.search + (state.resource ? '#' + state.resource : '');
@@ -1943,40 +2106,46 @@
         const matchType = matchesCategory(r, state.type);
         // Tag Match
         const matchTag = state.tag === 'all' || r.tags.includes(state.tag);
+        // Collection Match ("Start here" paths)
+        const matchCollection = !activeCollection() || activeCollection().slugs.includes(r.slug);
 
-        return matchQ && matchType && matchTag;
+        return matchQ && matchType && matchTag && matchCollection;
       });
     }
 
+    function activeCollection() {
+      return state.collection ? COLLECTIONS.find(c => c.id === state.collection) || null : null;
+    }
+
     function sortResources(resources) {
+      const collection = activeCollection();
+      const byName = (a, b) => a.name.localeCompare(b.name);
       return [...resources].sort((a, b) => {
         const statsA = getStats(a);
         const statsB = getStats(b);
-        const ageA = Math.max(0, (Date.now() - new Date(a.updated)) / 86400000);
-        const ageB = Math.max(0, (Date.now() - new Date(b.updated)) / 86400000);
+
+        // Archived items (only visible when toggled on) always sink to the bottom.
+        if (isArchived(a) !== isArchived(b)) return isArchived(a) ? 1 : -1;
 
         if (state.sort === 'popular') {
           if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
           if (statsA.views !== statsB.views) return statsB.views - statsA.views;
-          return a.name.localeCompare(b.name);
-        } else if (state.sort === 'trending') {
-          const hotA = (statsA.upvotes * 3 + statsA.views / 40) / Math.pow(ageA + 2, 0.75);
-          const hotB = (statsB.upvotes * 3 + statsB.views / 40) / Math.pow(ageB + 2, 0.75);
-          return hotB - hotA;
+          return byName(a, b);
         } else if (state.sort === 'new') {
-          return new Date(b.updated) - new Date(a.updated);
-        } else if (state.sort === 'engaging') {
-          if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
-          if (statsA.views !== statsB.views) return statsB.views - statsA.views;
-          return a.name.localeCompare(b.name);
+          return new Date(b.updated) - new Date(a.updated) || byName(a, b);
         }
-        return 0;
+
+        // Featured: a Start-here path keeps its curated order; otherwise featured items
+        // lead, then the most recently updated.
+        if (collection) return collection.slugs.indexOf(a.slug) - collection.slugs.indexOf(b.slug);
+        if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
+        return new Date(b.updated) - new Date(a.updated) || byName(a, b);
       });
     }
 
     function render() {
       if (state.resource) {
-        const r = RESOURCES.find(res => res.slug === state.resource);
+        const r = findResource(state.resource);
         if (r) {
           renderDetailView(r);
           return;
@@ -1994,13 +2163,17 @@
 
       document.getElementById('catalogView').classList.remove('d-none');
       document.getElementById('detailView').classList.add('d-none');
+      document.title = 'Microsoft FastTrack | Tools & guides for Microsoft 365 Copilot and agents';
 
       const filtered = getFilteredResources();
       const sorted = sortResources(filtered);
 
-      renderCategoryTiles();
+      renderSpotlight();
+      renderCollectionTiles();
+      renderCollectionBanner();
       renderTypeFilters();
       renderTagFilters();
+      renderArchivedToggle();
       
       // Update sort pills UI
       document.querySelectorAll('.sort-pills .density-btn').forEach(btn => {
@@ -2031,8 +2204,8 @@
           grid.appendChild(card);
         });
 
-        // Special Script CTA logic
-        if (state.type === 'script' || state.type === 'all') {
+        // The scripts folder holds more than the catalog lists, so point script browsers at it.
+        if (state.type === 'script') {
           const cta = createScriptCTA();
           cta.style.animationDelay = `${sorted.length * 0.05}s`;
           cta.classList.add('card-animate');
@@ -2041,71 +2214,127 @@
       }
     }
 
-    function renderCategoryTiles() {
+    function renderSpotlight() {
+      const container = document.getElementById('spotlight');
+      const primary = SPOTLIGHT && findResource(SPOTLIGHT.primary);
+      const showSpotlight = primary && !isArchived(primary) && !state.q && state.type === 'all' && state.tag === 'all' && !state.collection;
+      container.classList.toggle('d-none', !showSpotlight);
+      if (!showSpotlight) { container.innerHTML = ''; return; }
+
+      const interactiveUrl = primary.artifact === 'interactive' && primary.source
+        ? primary.source.replace(/README\.md$/i, 'index.html').split('/').map(encodeURIComponent).join('/')
+        : null;
+      const secondary = (SPOTLIGHT.secondary || []).map(findResource).filter(r => r && !isArchived(r));
+      const noun = primary.interactiveKind === 'guide' ? 'guide' : 'tool';
+
+      container.classList.toggle('has-preview', Boolean(primary.preview));
+      container.innerHTML = `
+        <div class="spotlight-body">
+          <span class="spotlight-eyebrow">${escapeHTML(SPOTLIGHT.eyebrow)}</span>
+          <h2 class="spotlight-title" id="spotlightTitle">${escapeHTML(SPOTLIGHT.title)}</h2>
+          <p class="spotlight-desc">${escapeHTML(SPOTLIGHT.description)}</p>
+          <div class="spotlight-actions">
+            ${interactiveUrl
+              ? `<a class="btn-primary" href="${interactiveUrl}" data-event="spotlight_open">Open the ${noun}</a>
+                 <a class="btn-secondary resource-link" href="#${escapeHTML(primary.slug)}">About this ${noun}</a>`
+              : `<a class="btn-primary resource-link" href="#${escapeHTML(primary.slug)}">View ${escapeHTML(primary.name)}</a>`}
+          </div>
+          ${secondary.length ? `<div class="spotlight-also"><span>Also in this path:</span>${secondary.map(r => `<a class="resource-link" href="#${escapeHTML(r.slug)}">${escapeHTML(r.name)}</a>`).join('')}</div>` : ''}
+        </div>
+        ${primary.preview ? `<a class="spotlight-media" href="${interactiveUrl || `#${escapeHTML(primary.slug)}`}" aria-label="Open ${escapeHTML(primary.name)}">
+          <img src="${escapeHTML(primary.preview)}" alt="Preview of ${escapeHTML(primary.name)}" width="1600" height="960" decoding="async">
+        </a>` : ''}
+      `;
+      container.querySelectorAll('[data-event]').forEach(el => el.addEventListener('click', () => {
+        if (typeof window.clarity !== 'undefined') window.clarity('event', el.dataset.event);
+      }));
+    }
+
+    function renderCollectionTiles() {
       const container = document.getElementById('categoryTiles');
-      if (!container) return;
+      const head = document.getElementById('startHereHead');
+      const tiles = COLLECTIONS
+        .map(c => ({ c, count: c.slugs.filter(slug => RESOURCES.some(r => r.slug === slug)).length }))
+        .filter(({ count }) => count > 0);
+      head.classList.toggle('d-none', tiles.length === 0);
+      container.classList.toggle('d-none', tiles.length === 0);
       container.innerHTML = '';
-      
-      TYPE_DEF.forEach(t => {
-        if (t.id === 'all') return; // Skip "All" for big tiles
-        
-        let countDisplay = 0;
-        if (t.id === 'script') {
-          countDisplay = "12";
-        } else if (!t.soon) {
-          countDisplay = RESOURCES.filter(r => matchesCategory(r, t.id)).length;
-        }
 
+      tiles.forEach(({ c, count }) => {
         const btn = document.createElement('button');
-        btn.className = `category-tile ${state.type === t.id ? 'active' : ''}`;
-        if (t.soon) btn.classList.add('soon');
-        
-        const color = t.colorVar ? `var(${t.colorVar})` : 'var(--border)';
-        const bgColor = t.colorVar ? `var(${t.colorVar}-bg)` : 'var(--surface-hover)';
-        btn.style.setProperty('--tile-color', color);
-        btn.style.setProperty('--tile-bg', bgColor);
-        
+        btn.type = 'button';
+        const isActive = state.collection === c.id;
+        btn.className = `category-tile ${isActive ? 'active' : ''}`;
+        btn.style.setProperty('--tile-color', 'var(--accent)');
+        btn.style.setProperty('--tile-bg', 'var(--accent-bg)');
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
         btn.onclick = () => {
-          if (t.soon) return;
-          state.type = t.id;
+          state.collection = isActive ? null : c.id;
+          state.type = 'all';
           state.tag = 'all';
+          state.q = '';
+          searchInput.value = '';
           updateState();
-          document.getElementById('grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (state.collection) document.getElementById('collectionBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
-
         btn.innerHTML = `
           <div class="tile-header">
-            <div class="tile-title">
-              <div class="pill-dot" style="background-color: ${color}"></div>
-              ${t.label}
-            </div>
-            ${t.soon ? '<span class="pill-soon" style="margin:0;">Soon</span>' : `<span class="tile-count">${countDisplay}</span>`}
+            <div class="tile-title">${escapeHTML(c.title)}</div>
+            <span class="tile-count">${count}</span>
           </div>
-          <div class="tile-desc">${t.desc}</div>
+          <div class="tile-desc">${escapeHTML(c.description)}</div>
         `;
         container.appendChild(btn);
       });
     }
 
+    function renderCollectionBanner() {
+      const banner = document.getElementById('collectionBanner');
+      const collection = activeCollection();
+      banner.classList.toggle('d-none', !collection);
+      if (!collection) { banner.innerHTML = ''; return; }
+      banner.innerHTML = `<div><strong>${escapeHTML(collection.title)}</strong> <span>&mdash; ${escapeHTML(collection.description)}</span></div>`;
+      const clear = document.createElement('button');
+      clear.type = 'button';
+      clear.textContent = 'Show all resources';
+      clear.onclick = () => { state.collection = null; updateState(); };
+      banner.appendChild(clear);
+    }
+
+    function renderArchivedToggle() {
+      const archivedCount = ALL_RESOURCES.filter(isArchived).length;
+      document.getElementById('archivedToggle').classList.toggle('d-none', archivedCount === 0);
+      document.getElementById('archivedCount').textContent = archivedCount;
+      document.getElementById('showArchived').checked = state.showArchived;
+    }
+
+    // A crawlable, plain-link index of every resource page (and a handy A-Z for visitors).
+    function renderAllResourcesIndex() {
+      const list = document.getElementById('allResourcesList');
+      const items = ALL_RESOURCES.filter(r => !isArchived(r)).sort((a, b) => a.name.localeCompare(b.name));
+      list.innerHTML = items.map(r => `<li><a href="r/${encodeURIComponent(r.slug)}/">${escapeHTML(r.name)}</a></li>`).join('');
+      document.getElementById('allResources').classList.toggle('d-none', items.length === 0);
+    }
+
     function renderTypeFilters() {
       typeFilters.innerHTML = '';
+      // Counts follow the active "Start here" path so they match what a click will show.
+      const collection = activeCollection();
+      const scope = collection ? RESOURCES.filter(r => collection.slugs.includes(r.slug)) : RESOURCES;
       
       TYPE_DEF.forEach(t => {
         // Calculate count
         let countDisplay = 0;
         if (t.id === 'all') {
-          countDisplay = RESOURCES.length;
-        } else if (t.id === 'script') {
-          countDisplay = "12"; // Hardcoded as per prompt req (12 shown of 54)
-        } else if (t.soon) {
-          countDisplay = 0;
+          countDisplay = scope.length;
         } else {
-          countDisplay = RESOURCES.filter(r => matchesCategory(r, t.id)).length;
+          countDisplay = scope.filter(r => matchesCategory(r, t.id)).length;
         }
+        // Hide types with nothing to show (for example after their last resource is archived).
+        if (t.id !== 'all' && countDisplay === 0 && state.type !== t.id) return;
 
         const btn = document.createElement('button');
         btn.className = `pill ${state.type === t.id ? 'active' : ''}`;
-        btn.disabled = t.soon && state.type !== t.id; // Disable 'skill' unless it's currently selected somehow
         
         btn.title = t.desc || '';
         
@@ -2146,10 +2375,12 @@
       // Determine relevant tags based on current type and search ONLY
       const tempState = { ...state, tag: 'all' };
       const q = tempState.q.toLowerCase();
+      const collection = activeCollection();
       const baseResources = RESOURCES.filter(r => {
         const matchQ = !q || r.name.toLowerCase().includes(q) || r.description.toLowerCase().includes(q) || r.tags.some(t => t.toLowerCase().includes(q));
         const matchType = matchesCategory(r, tempState.type);
-        return matchQ && matchType;
+        const matchCollection = !collection || collection.slugs.includes(r.slug);
+        return matchQ && matchType && matchCollection;
       });
 
       const tagCounts = {};
@@ -2197,6 +2428,7 @@
     function createCard(data) {
       const card = document.createElement('article');
       card.className = 'card';
+      if (isArchived(data)) card.classList.add('is-archived');
       
       const initials = getInitials(data.name);
       const bg = getTypeBg(data.type);
@@ -2204,6 +2436,9 @@
       const stats = getStats(data);
       
       const star = data.featured ? `<span class="featured-star" aria-label="Featured">★</span>` : '';
+      const statusBadge = data.status === 'archived'
+        ? '<span class="status-badge">Archived</span>'
+        : data.status === 'preview' ? '<span class="status-badge preview">Preview</span>' : '';
       
       card.style.setProperty('--card-color', color);
       
@@ -2214,7 +2449,7 @@
           </div>
           <div class="card-title-group">
             <h2 class="card-title">
-              <a href="#${data.slug}" class="resource-link">${data.name}</a>
+              <a href="#${data.slug}" class="resource-link">${data.name}</a>${statusBadge}
             </h2>
             <div class="card-sub">
               <div class="pill-dot" style="background-color: ${color}; width: 6px; height: 6px;"></div>
@@ -2258,8 +2493,8 @@
       tile.rel = "noopener";
       tile.className = "card cta-tile";
       tile.innerHTML = `
-        <h3>Browse all 54 scripts &rarr;</h3>
-        <p>Explore the full repository on GitHub</p>
+        <h3>Browse the scripts folder on GitHub &rarr;</h3>
+        <p>Includes archived scripts kept for reference</p>
       `;
       return tile;
     }
@@ -2500,9 +2735,24 @@
       
       // Tags
       const tagsContainer = document.getElementById('detailTags');
-      tagsContainer.innerHTML = resource.tags.map(t =>
-        `<a href="?tag=${t}" class="card-tag" onclick="event.preventDefault(); document.querySelector('a[data-tag=&quot;${t}&quot;]').click();">${t}</a>`
-      ).join('');
+      tagsContainer.replaceChildren(...resource.tags.map(t => {
+        const link = document.createElement('a');
+        link.href = `?tag=${encodeURIComponent(t)}`;
+        link.className = 'card-tag';
+        link.textContent = t;
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          state.resource = null;
+          state.tag = t;
+          state.type = 'all';
+          state.collection = null;
+          state.q = '';
+          searchInput.value = '';
+          updateState(true);
+          window.scrollTo(0, 0);
+        });
+        return link;
+      }));
       
       // Detail content
       document.getElementById('detailDesc').textContent = resource.description;
@@ -2560,6 +2810,32 @@
       document.getElementById('metaVersionRow').classList.toggle('d-none', !resource.version);
       
       document.getElementById('btnDetailOpen').href = resource.url;
+
+      // Share link: the static page has a real title/description/preview for chat and social unfurls.
+      const shareBtn = document.getElementById('btnDetailShare');
+      shareBtn.textContent = 'Copy share link';
+      shareBtn.onclick = async () => {
+        const link = staticUrl(resource);
+        try {
+          await navigator.clipboard.writeText(link);
+          shareBtn.textContent = 'Link copied';
+          setTimeout(() => { shareBtn.textContent = 'Copy share link'; }, 1800);
+        } catch (err) {
+          window.prompt('Copy this link', link);
+        }
+      };
+      document.getElementById('btnDetailIssue').href =
+        `https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&resource=${encodeURIComponent(resource.name)}&title=${encodeURIComponent(`[${resource.name}] `)}`;
+
+      const notice = document.getElementById('detailStatusNotice');
+      const noticeText = resource.status === 'archived'
+        ? 'This resource is archived and kept for reference. It is no longer actively maintained; check its README for a current alternative.'
+        : resource.status === 'preview'
+          ? 'Preview: this resource is still maturing. Validate it in a non-production environment before relying on it.'
+          : '';
+      notice.textContent = noticeText;
+      notice.classList.toggle('d-none', !noticeText);
+      document.title = `${resource.name} | Microsoft FastTrack`;
 
       const embedUrl = resource.artifact === 'interactive' && resource.source
         ? resource.source.replace(/README\.md$/i, 'index.html')

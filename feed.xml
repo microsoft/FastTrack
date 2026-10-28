@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://microsoft.github.io/FastTrack/</id>
+  <title>Microsoft FastTrack: new and updated resources</title>
+  <subtitle>The 20 most recently updated tools, guides, agents, and scripts in the FastTrack catalog.</subtitle>
+  <link href="https://microsoft.github.io/FastTrack/feed.xml" rel="self"/>
+  <link href="https://microsoft.github.io/FastTrack/"/>
+  <updated>2026-10-15T00:00:00Z</updated>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/</id>
+    <title>Microsoft Agent 365 Customer Implementation Guide (v1.3.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/"/>
+    <updated>2026-10-15T00:00:00Z</updated>
+    <summary>Plan and configure a governed Microsoft Agent 365 baseline with simple guidance and detailed implementation tasks.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/agents-cost-calculator/</id>
+    <title>Agents Cost Calculator (v2.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/agents-cost-calculator/"/>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/agent-365-lifecycle-atlas/</id>
+    <title>Agent 365 Lifecycle Atlas (v1.3.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/agent-365-lifecycle-atlas/"/>
+    <updated>2026-09-22T00:00:00Z</updated>
+    <summary>Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin actions, and 18 public API endpoints in one atlas.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/copilot-analytics-reports-navigator/</id>
+    <title>Copilot Analytics Reports Navigator (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/copilot-analytics-reports-navigator/"/>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <summary>Compare 21 Microsoft reports and 22 public community projects by purpose, metrics, location, timing, and release status.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/copilot-agents-guide/</id>
+    <title>Copilot Agents Guide (v4.0.1)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/copilot-agents-guide/"/>
+    <updated>2026-09-09T00:00:00Z</updated>
+    <summary>Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/ess-servicenow-itsm-get-request-details/</id>
+    <title>ESS ServiceNow ITSM Get Request Details (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/ess-servicenow-itsm-get-request-details/"/>
+    <updated>2026-08-12T00:00:00Z</updated>
+    <summary>Extend the Employee Self-Service agent to look up ServiceNow service catalog requests (REQ) and request items (RITM).</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/ess-servicenow-itsm-get-user-requests/</id>
+    <title>ESS ServiceNow ITSM Get User Requests (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/ess-servicenow-itsm-get-user-requests/"/>
+    <updated>2026-08-11T00:00:00Z</updated>
+    <summary>Extend the Employee Self-Service agent to list a user&apos;s open, closed, or all ServiceNow service catalog requests (REQ).</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/add-engagegroupadmins/</id>
+    <title>Add-EngageGroupAdmins (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/add-engagegroupadmins/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Bulk-add owners (admins) to Viva Engage communities from a CSV by using the Microsoft Graph group owners API.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/delete-allcommunityposts/</id>
+    <title>Delete-AllCommunityPosts (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/delete-allcommunityposts/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Delete every message in a Viva Engage community; dry run by default, optional CSV backup, and deletion can&apos;t be undone.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/delete-engagegroups/</id>
+    <title>Delete-EngageGroups (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/delete-engagegroups/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Bulk-delete Viva Engage communities from a CSV through Microsoft Graph; dry run by default and deletion can&apos;t be undone.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/delete-engageusers/</id>
+    <title>Delete-EngageUsers (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/delete-engageusers/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Bulk-remove users from Viva Engage communities from a CSV through Microsoft Graph; dry run by default, accounts are not deleted.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/export-engagefiles/</id>
+    <title>Export-EngageFiles (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/export-engagefiles/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Export files uploaded to a Viva Engage network during a date range by using the Yammer Files Export API.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/export-engagenetworkdata/</id>
+    <title>Export-EngageNetworkData (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/export-engagenetworkdata/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Export Viva Engage network messages and files for a date range by using the Network Data Export API.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/get-allinsightslicensedusers/</id>
+    <title>Get-AllInsightsLicensedUsers (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/get-allinsightslicensedusers/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Export Entra users licensed for Viva Insights, with manager and department, to build the organizational data file.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/get-engagegroupinfo/</id>
+    <title>Get-EngageGroupInfo (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/get-engagegroupinfo/"/>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <summary>Report every Viva Engage community&apos;s IDs, member count, and admins to CSV by using Microsoft Graph.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/productquote-agent/</id>
+    <title>ProductQuote Agent (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/productquote-agent/"/>
+    <updated>2026-07-16T00:00:00Z</updated>
+    <summary>Generate product quotes from Excel inventory, populate a Word template, and email the finished document.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/migrate-copilotstudioagents/</id>
+    <title>Migrate-CopilotStudioAgents (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/migrate-copilotstudioagents/"/>
+    <updated>2026-07-15T00:00:00Z</updated>
+    <summary>Inventory and copy classic Copilot Studio agents into department-mapped Power Platform environments with ownership recovery.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/purview-audit-copilot-report/</id>
+    <title>Purview Audit Copilot Report (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/purview-audit-copilot-report/"/>
+    <updated>2026-07-14T00:00:00Z</updated>
+    <summary>Analyze Copilot adoption by user, app, agent, department, and trend using Purview audit and Entra export data.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/copilot-interaction-report/</id>
+    <title>Copilot Interaction Report (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/copilot-interaction-report/"/>
+    <updated>2026-06-10T00:00:00Z</updated>
+    <summary>Export Copilot interaction history from Microsoft Graph and build a self-contained HTML usage dashboard without Power BI.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/powerclaw-agent/</id>
+    <title>PowerClaw Agent (v1.2.11)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/powerclaw-agent/"/>
+    <updated>2026-05-27T00:00:00Z</updated>
+    <summary>A 24/7 AI chief of staff with autonomous briefings, task execution, and proactive coordination.</summary>
+  </entry>
+</feed>

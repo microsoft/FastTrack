@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-slug="get-teamsuseractivityreport">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-TeamsUserActivityReport | Microsoft FastTrack</title>
+  <meta name="description" content="Export detailed Microsoft Teams user activity for all users or a targeted CSV list through Microsoft Graph.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/get-teamsuseractivityreport/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="Get-TeamsUserActivityReport">
+  <meta property="og:description" content="Export detailed Microsoft Teams user activity for all users or a targeted CSV list through Microsoft Graph.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/get-teamsuseractivityreport/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/get-teamsuseractivityreport.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Get-TeamsUserActivityReport">
+  <meta name="twitter:description" content="Export detailed Microsoft Teams user activity for all users or a targeted CSV list through Microsoft Graph.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/get-teamsuseractivityreport.png">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack updates" href="../../feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../assets/resource-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Get-TeamsUserActivityReport","description":"Export detailed Microsoft Teams user activity for all users or a targeted CSV list through Microsoft Graph.","url":"https://microsoft.github.io/FastTrack/r/get-teamsuseractivityreport/","datePublished":"2025-09-30","dateModified":"2025-09-30","version":"1.0.0","inLanguage":"en","keywords":"teams, reporting","author":[{"@type":"Person","name":"Alejandro Lopez"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+</head>
+<body class="type-script">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="../../">Catalog</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Catalog</a><span aria-hidden="true">/</span><a href="../../?type=script">Scripts</a><span aria-hidden="true">/</span><span aria-current="page">Get-TeamsUserActivityReport</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell </div>
+      <h1>Get-TeamsUserActivityReport</h1>
+      <p class="lede">Export detailed Microsoft Teams user activity for all users or a targeted CSV list through Microsoft Graph.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/scripts/Get-TeamsUserActivityReport" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
+        <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/get-teamsuseractivityreport/">Copy link</button>
+      </div>
+      <div class="tags"><a class="tag" href="../../?tag=teams">teams</a><a class="tag" href="../../?tag=reporting">reporting</a></div>
+    </section>
+
+    <div class="layout">
+      <article>
+        <section class="block"><h2>What it is</h2><p>A PowerShell report that calls Microsoft Graph directly with application permissions and exports detailed Teams activity for all or selected users.</p></section>
+        <section class="block"><h2>Why use it</h2><ul><li>Report meetings, calls, chats, durations, and other Teams activity metrics.</li><li>Target a pilot group with a UPN CSV or report across the tenant.</li><li>Run as an authorized background process without the Microsoft.Graph PowerShell module.</li></ul></section>
+        <section class="block"><h2>How to use it</h2><p>Create an Entra app registration with <code>Reports.Read.All</code> application permission and a client secret. Run <code>./Get-TeamsUserActivityReport.ps1 -Period &quot;D7&quot;</code> for all users, or add <code>-UserCsvPath</code> with a CSV containing <code>UserPrincipalName</code>.</p></section>
+        <section class="block"><h2>Prerequisites</h2><ul><li>PowerShell 5.1 or later</li><li>Entra app registration</li><li>Reports.Read.All application permission with admin consent</li></ul></section>
+        
+    <section class="block related">
+      <h2>Related resources</h2>
+      <ul class="related-list">
+        <li><a href="../export-copilotinteractions/"><strong>Export-CopilotInteractions</strong><span>Export user-level Copilot prompts and responses from Microsoft Graph into analysis-ready CSV datasets.</span></a></li>
+        <li><a href="../export-m365copilotreports/"><strong>Export-M365CopilotReports</strong><span>Export Entra users, Purview Copilot audit events, all audit interactions, or Microsoft 365 Copilot usage reports.</span></a></li>
+        <li><a href="../get-allinsightslicensedusers/"><strong>Get-AllInsightsLicensedUsers</strong><span>Export Entra users licensed for Viva Insights, with manager and department, to build the organizational data file.</span></a></li>
+      </ul>
+    </section>
+      </article>
+      <aside>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.ps1 · PowerShell</dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Sep 30, 2025</dd></div><div class="row"><dt>Author</dt><dd>Alejandro Lopez</dd></div></dl>
+        <div class="aside-links">
+          <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=Get-TeamsUserActivityReport&amp;title=%5BGet-TeamsUserActivityReport%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
+          <a href="../../#get-teamsuseractivityreport">Comments &amp; upvotes in the catalog</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <p><a href="../../">Browse the catalog</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Issues</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/resource-page.js" data-clarity="w810tntgw1" defer></script>
+</body>
+</html>

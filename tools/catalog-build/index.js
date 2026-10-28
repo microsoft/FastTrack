@@ -1,9 +1,10 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import * as yaml from 'js-yaml';
+import { renderFeed, renderResourcePage, renderSitemap, resourcePath } from './site-pages.js';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(toolDirectory, '..', '..');
@@ -11,40 +12,46 @@ const checkOnly = process.argv.includes('--check');
 
 const folderRoots = [
   'scripts',
+  'samples',
+  'tools/SimpleGraph',
   'copilot-agent-samples/copilot-studio-agents',
   'copilot-agent-samples/agent-builder-agents',
   'copilot-agent-samples/github-copilot-agents',
   'copilot-agent-samples/github-copilot-skills',
+  'copilot-agent-samples/ESS',
   'copilot-agent-strategy',
   'copilot-analytics-samples'
 ];
 const promptRoot = 'copilot-prompt-samples';
-const excludedSegments = new Set(['archive', '_sample_templates', 'samples']);
+const excludedSegments = new Set(['archive', '_sample_templates', 'node_modules']);
 const allowedTypes = new Set(['script', 'agent', 'strategy', 'analytics', 'prompt', 'skill']);
 const allowedFormats = new Set(['ps1', 'bundle', 'declarative', 'interactive', 'pptx', 'pbix', 'md']);
 const allowedStatuses = new Set(['active', 'preview', 'archived']);
 const allowedInteractiveKinds = new Set(['guide', 'tool']);
 const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+const kebabPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function toPosix(path) {
   return path.split(sep).join('/');
 }
 
-function isExcluded(path) {
-  return toPosix(relative(repositoryRoot, path))
+// Segments are checked relative to the scanned root so a root that is itself
+// named like an excluded segment (for example "samples") is still scanned.
+function isExcluded(path, root) {
+  return toPosix(relative(root, path))
     .toLowerCase()
     .split('/')
     .some(segment => excludedSegments.has(segment));
 }
 
-function collectReadmes(directory, files = []) {
-  if (!existsSync(directory) || isExcluded(directory)) return files;
+function collectReadmes(directory, root = directory, files = []) {
+  if (!existsSync(directory) || isExcluded(directory, root)) return files;
 
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (isExcluded(path)) continue;
-    if (entry.isDirectory()) collectReadmes(path, files);
+    if (isExcluded(path, root)) continue;
+    if (entry.isDirectory()) collectReadmes(path, root, files);
     else if (entry.name.toLowerCase() === 'readme.md') files.push(path);
   }
   return files;
@@ -242,6 +249,81 @@ if (resources.length === 0 && errors.length === 0) {
   errors.push({ file: repositoryRoot, field: 'catalog', message: 'contains no resources with YAML front matter' });
 }
 
+const seenSlugs = new Map();
+for (const resource of resources) {
+  const first = seenSlugs.get(resource.slug);
+  if (first) {
+    errors.push({ file: join(repositoryRoot, resource.source), field: 'title', message: `produces the slug "${resource.slug}", which is already used by ${first}` });
+  } else {
+    seenSlugs.set(resource.slug, resource.source);
+  }
+}
+
+const siteConfigPath = join(toolDirectory, 'site-config.json');
+let siteConfig = { spotlight: undefined, collections: [] };
+
+// The spotlight and "Start here" collections are editorial config. Validating
+// them here keeps the landing page from ever pointing at a missing or archived resource.
+function validateSiteConfig(config) {
+  const problems = [];
+  const bySlug = new Map(resources.map(resource => [resource.slug, resource]));
+  const add = message => problems.push({ file: siteConfigPath, field: 'site-config', message });
+  const checkSlug = (slug, where) => {
+    const resource = bySlug.get(slug);
+    if (!resource) add(`${where} references unknown slug "${slug}"`);
+    else if (resource.status === 'archived') add(`${where} references archived resource "${slug}"`);
+  };
+
+  const spotlight = config.spotlight;
+  if (spotlight !== undefined) {
+    for (const field of ['eyebrow', 'title', 'description', 'primary']) {
+      if (!isNonEmptyString(spotlight[field])) add(`spotlight.${field} must be a non-empty string`);
+    }
+    if (isNonEmptyString(spotlight.primary)) checkSlug(spotlight.primary, 'spotlight.primary');
+    if (!Array.isArray(spotlight.secondary) || spotlight.secondary.length === 0) add('spotlight.secondary must list at least one slug');
+    else spotlight.secondary.forEach(slug => checkSlug(slug, 'spotlight.secondary'));
+  }
+
+  const ids = new Set();
+  if (!Array.isArray(config.collections)) add('collections must be a list');
+  for (const collection of Array.isArray(config.collections) ? config.collections : []) {
+    const where = `collection "${collection.id}"`;
+    if (!isNonEmptyString(collection.id) || !kebabPattern.test(collection.id)) add(`${where} needs a kebab-case id`);
+    if (ids.has(collection.id)) add(`${where} is defined more than once`);
+    ids.add(collection.id);
+    if (!isNonEmptyString(collection.title)) add(`${where} needs a title`);
+    if (!isNonEmptyString(collection.description)) add(`${where} needs a description`);
+    else if ([...collection.description].length > 90) add(`${where} description must be 90 characters or fewer`);
+    if (!isStringList(collection.slugs)) add(`${where} needs a non-empty slugs list`);
+    else {
+      if (new Set(collection.slugs).size !== collection.slugs.length) add(`${where} lists a slug more than once`);
+      collection.slugs.forEach(slug => checkSlug(slug, where));
+    }
+  }
+  return problems;
+}
+
+if (errors.length === 0) {
+  try {
+    siteConfig = JSON.parse(readFileSync(siteConfigPath, 'utf8'));
+    errors.push(...validateSiteConfig(siteConfig));
+  } catch (error) {
+    errors.push({ file: siteConfigPath, field: 'site-config', message: `could not be read: ${error.message}` });
+  }
+}
+
+function writeSiteOutputs(sortedResources, collections) {
+  const pagesDirectory = join(repositoryRoot, 'r');
+  rmSync(pagesDirectory, { recursive: true, force: true });
+  for (const resource of sortedResources) {
+    const directory = join(pagesDirectory, resource.slug);
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(join(directory, 'index.html'), renderResourcePage(resource, { resources: sortedResources, collections, repositoryRoot }));
+  }
+  writeFileSync(join(repositoryRoot, 'sitemap.xml'), renderSitemap(sortedResources));
+  writeFileSync(join(repositoryRoot, 'feed.xml'), renderFeed(sortedResources));
+}
+
 if (errors.length > 0) {
   console.error(`Catalog validation failed with ${errors.length} error${errors.length === 1 ? '' : 's'}:`);
   for (const error of errors) {
@@ -249,21 +331,27 @@ if (errors.length > 0) {
   }
   process.exitCode = 1;
 } else if (checkOnly) {
+  // Rendering every page in memory proves the templates cope with all current metadata.
+  for (const resource of resources) {
+    renderResourcePage(resource, { resources, collections: siteConfig.collections, repositoryRoot });
+  }
   console.log(`Catalog metadata is valid for ${resources.length} resources.`);
 } else {
   resources.sort((a, b) => a.title.localeCompare(b.title));
+  for (const resource of resources) resource.permalink = resourcePath(resource);
   const latestUpdated = resources.reduce((max, resource) => (
     resource.updated && resource.updated > max ? resource.updated : max
   ), '');
   const catalog = {
     generatedAt: latestUpdated,
     count: resources.length,
+    spotlight: siteConfig.spotlight,
+    collections: siteConfig.collections,
     resources
   };
-  const output = `${JSON.stringify(catalog, null, 2)}\n`;
-  const rootOutput = join(repositoryRoot, 'catalog.json');
-  const siteOutput = join(repositoryRoot, 'design-concepts', 'catalog.json');
-  writeFileSync(rootOutput, output);
-  if (existsSync(dirname(siteOutput))) writeFileSync(siteOutput, output);
-  console.log(`Wrote ${resources.length} resources to ${toPosix(relative(repositoryRoot, rootOutput))} and design-concepts/catalog.json.`);
+  writeFileSync(join(repositoryRoot, 'catalog.json'), `${JSON.stringify(catalog, null, 2)}\n`);
+  writeSiteOutputs(resources, siteConfig.collections);
+  console.log(`Wrote catalog.json, sitemap.xml, feed.xml, and ${resources.length} pages under r/.`);
 }
+
+

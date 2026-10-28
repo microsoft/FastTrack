@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-slug="teams-audio-conferencing-snippets">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teams Audio Conferencing Snippets | Microsoft FastTrack</title>
+  <meta name="description" content="PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/teams-audio-conferencing-snippets/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="Teams Audio Conferencing Snippets">
+  <meta property="og:description" content="PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/teams-audio-conferencing-snippets/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/teams-audio-conferencing-snippets.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Teams Audio Conferencing Snippets">
+  <meta name="twitter:description" content="PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/teams-audio-conferencing-snippets.png">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack updates" href="../../feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../assets/resource-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Teams Audio Conferencing Snippets","description":"PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.","url":"https://microsoft.github.io/FastTrack/r/teams-audio-conferencing-snippets/","datePublished":"2021-01-27","dateModified":"2022-01-24","version":"1.0.0","inLanguage":"en","keywords":"teams, audio-conferencing, snippets, bulk-update","author":[{"@type":"Person","name":"David Whitney"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+</head>
+<body class="type-script">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="../../">Catalog</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Catalog</a><span aria-hidden="true">/</span><a href="../../?type=script">Scripts</a><span aria-hidden="true">/</span><span aria-current="page">Teams Audio Conferencing Snippets</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell </div>
+      <h1>Teams Audio Conferencing Snippets</h1>
+      <p class="lede">PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/samples/teams-audioconferencing-snippets" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
+        <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/teams-audio-conferencing-snippets/">Copy link</button>
+      </div>
+      <div class="tags"><a class="tag" href="../../?tag=teams">teams</a><a class="tag" href="../../?tag=audio-conferencing">audio-conferencing</a><a class="tag" href="../../?tag=snippets">snippets</a><a class="tag" href="../../?tag=bulk-update">bulk-update</a></div>
+    </section>
+
+    <div class="layout">
+      <article>
+        <section class="block"><h2>What it is</h2><p>A README of short PowerShell snippets, run interactively with the MicrosoftTeams module, for common Teams Audio Conferencing configuration. They change the bridge number shown in users&#39; meeting invites, disable or limit dial-out from Audio Conferencing meetings with Grant-CsDialOutPolicy, and disable toll-free dial-in for selected users, using a CSV of users.</p></section>
+        <section class="block"><h2>Why use it</h2><ul><li>Update meeting invite bridge numbers for many users after changing your default bridge or adding local numbers.</li><li>Limit or disable call-me and dial-out destinations to control Communication Credits use.</li><li>Disable toll-free dial-in for specific users while leaving it on for others.</li></ul></section>
+        <section class="block"><h2>How to use it</h2><ol class="steps"><li>Install the MicrosoftTeams PowerShell module (2.0.0 or later) and connect to Teams.</li><li>Prepare a CSV with a <code>UserPrincipalName</code> column for the bulk snippets.</li><li>Copy the snippet you need from the README and adjust the values, for example to change the bridge number in meeting invites:</li></ol>
+<pre><code>Import-Module MicrosoftTeams
+Connect-MicrosoftTeams
+
+$newbridgenumber = &quot;+15551234567&quot;
+$updatebridgeusers = Import-Csv &quot;C:\path\to\updatebridgeusers.csv&quot;
+
+foreach ($user in $updatebridgeusers) {
+    Set-CsOnlineDialInConferencingUser -Identity $user.UserPrincipalName -ServiceNumber $newbridgenumber
+}</code></pre></section>
+        <section class="block"><h2>Prerequisites</h2><ul><li>MicrosoftTeams PowerShell module, version 2.0.0 or later</li><li>Users enabled for Teams Audio Conferencing</li><li>CSV with a UserPrincipalName column for the bulk snippets</li></ul></section>
+        
+    <section class="block related">
+      <h2>Related resources</h2>
+      <ul class="related-list">
+        <li><a href="../get-recurringteamsmeetings/"><strong>Get-RecurringTeamsMeetings</strong><span>Find recurring Teams meetings on user calendars and export organizer, subject, recurrence, and attendees to CSV.</span></a></li>
+        <li><a href="../teams-phone-system-snippets/"><strong>Teams Phone System Snippets</strong><span>PowerShell snippet to assign Teams Phone numbers in bulk from a CSV for Calling Plan, Operator Connect, or Direct Routing.</span></a></li>
+        <li><a href="../teams-phone-user-migration/"><strong>Teams Phone User Migration</strong><span>Run a two-phase CSV-driven Teams Phone migration for voice policies, phone numbers, and emergency locations.</span></a></li>
+      </ul>
+    </section>
+      </article>
+      <aside>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.md · Doc</dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Jan 24, 2022</dd></div><div class="row"><dt>Author</dt><dd>David Whitney</dd></div></dl>
+        <div class="aside-links">
+          <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=Teams%20Audio%20Conferencing%20Snippets&amp;title=%5BTeams%20Audio%20Conferencing%20Snippets%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
+          <a href="../../#teams-audio-conferencing-snippets">Comments &amp; upvotes in the catalog</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <p><a href="../../">Browse the catalog</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Issues</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/resource-page.js" data-clarity="w810tntgw1" defer></script>
+</body>
+</html>

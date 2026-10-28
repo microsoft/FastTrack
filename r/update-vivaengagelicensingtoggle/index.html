@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" data-slug="update-vivaengagelicensingtoggle">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update-VivaEngageLicensingToggle | Microsoft FastTrack</title>
+  <meta name="description" content="Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="Update-VivaEngageLicensingToggle">
+  <meta property="og:description" content="Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/update-vivaengagelicensingtoggle.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Update-VivaEngageLicensingToggle">
+  <meta name="twitter:description" content="Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/update-vivaengagelicensingtoggle.png">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack updates" href="../../feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../assets/resource-page.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Update-VivaEngageLicensingToggle","description":"Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.","url":"https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/","datePublished":"2025-10-01","dateModified":"2025-11-11","version":"1.0.0","inLanguage":"en","keywords":"viva-engage, administration, licensing","author":[{"@type":"Person","name":"Manish Kumar"},{"@type":"Person","name":"Brian Lyttle"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+</head>
+<body class="type-script">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="../../">Catalog</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Catalog</a><span aria-hidden="true">/</span><a href="../../?type=script">Scripts</a><span aria-hidden="true">/</span><span aria-current="page">Update-VivaEngageLicensingToggle</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell </div>
+      <h1>Update-VivaEngageLicensingToggle</h1>
+      <p class="lede">Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/scripts/Update-VivaEngageLicensingToggle" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
+        <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/">Copy link</button>
+      </div>
+      <div class="tags"><a class="tag" href="../../?tag=viva-engage">viva-engage</a><a class="tag" href="../../?tag=administration">administration</a><a class="tag" href="../../?tag=licensing">licensing</a></div>
+    </section>
+
+    <div class="layout">
+      <article>
+        <section class="block"><h2>What it is</h2><p>A PowerShell script (BlockUsersWithoutLicense.ps1) that calls the Viva Engage network REST API with a Microsoft Entra access token to read the current per-user license enforcement state or to enforce per-user licensing for the network. Enforcement is irreversible, so confirm that the required service plans are provisioned to all users first.</p></section>
+        <section class="block"><h2>Why use it</h2><ul><li>Check whether per-user licensing is already enforced for your Viva Engage network.</li><li>Enforce per-user licensing with the supported script instead of building your own REST calls.</li></ul></section>
+        <section class="block"><h2>How to use it</h2><ol class="steps"><li>Provision Viva Engage Core (recommended) or Yammer Enterprise service plans to all users. Enforcement can&#39;t be reversed.</li><li>Get a valid Microsoft Entra access token for a Global Administrator of the Viva Engage network.</li><li>Check the current state, then enforce when ready:</li></ol>
+<pre><code>./BlockUsersWithoutLicense.ps1 fetch_current_license_state &quot;&lt;ENTRA_ACCESS_TOKEN&gt;&quot;
+./BlockUsersWithoutLicense.ps1 enforce_user_license &quot;&lt;ENTRA_ACCESS_TOKEN&gt;&quot;</code></pre></section>
+        <section class="block"><h2>Prerequisites</h2><ul><li>Global administrator access to the Viva Engage network</li><li>Viva Engage Core (recommended) or Yammer Enterprise service plans provisioned to all users before enforcing</li><li>PowerShell 5.1 or later and network access to Viva Engage</li><li>Applies to networks that have not previously enforced per-user licensing through the legacy Yammer admin center</li></ul></section>
+        
+    <section class="block related">
+      <h2>Related resources</h2>
+      <ul class="related-list">
+        <li><a href="../add-engagegroupadmins/"><strong>Add-EngageGroupAdmins</strong><span>Bulk-add owners (admins) to Viva Engage communities from a CSV by using the Microsoft Graph group owners API.</span></a></li>
+        <li><a href="../create-engagecommunities/"><strong>Create-EngageCommunities</strong><span>Bulk-create up to 50 sample Viva Engage communities from JSON and assign a chosen or random owner.</span></a></li>
+        <li><a href="../delete-allcommunityposts/"><strong>Delete-AllCommunityPosts</strong><span>Delete every message in a Viva Engage community; dry run by default, optional CSV backup, and deletion can&#39;t be undone.</span></a></li>
+      </ul>
+    </section>
+      </article>
+      <aside>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.ps1 · PowerShell</dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Nov 11, 2025</dd></div><div class="row"><dt>Author</dt><dd>Manish Kumar, Brian Lyttle</dd></div></dl>
+        <div class="aside-links">
+          <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=Update-VivaEngageLicensingToggle&amp;title=%5BUpdate-VivaEngageLicensingToggle%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
+          <a href="../../#update-vivaengagelicensingtoggle">Comments &amp; upvotes in the catalog</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <p><a href="../../">Browse the catalog</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Issues</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/resource-page.js" data-clarity="w810tntgw1" defer></script>
+</body>
+</html>

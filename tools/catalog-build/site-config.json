@@ -1,0 +1,102 @@
+{
+  "$comment": "Editorial config for the landing page. Edit this file (not index.html) to change the spotlight or the 'Start here' paths. Slugs must exist in the catalog and must not be archived; `npm run check` enforces this.",
+  "spotlight": {
+    "eyebrow": "Spotlight",
+    "title": "Agent 365: plan it, configure it, govern it",
+    "description": "Everything you need to move from a Microsoft Agent 365 plan to a governed baseline: a step-by-step implementation guide, an architecture atlas, and a cost model.",
+    "primary": "microsoft-agent-365-customer-implementation-guide",
+    "secondary": [
+      "agent-365-lifecycle-atlas",
+      "agents-cost-calculator"
+    ]
+  },
+  "collections": [
+    {
+      "id": "agent-365",
+      "title": "Deploy and govern Agent 365",
+      "description": "Plan, configure, and cost an Agent 365 baseline.",
+      "slugs": [
+        "microsoft-agent-365-customer-implementation-guide",
+        "agent-365-lifecycle-atlas",
+        "agents-cost-calculator",
+        "copilot-agents-guide"
+      ]
+    },
+    {
+      "id": "measure-adoption",
+      "title": "Measure Copilot adoption",
+      "description": "Dashboards, reports, and data exports for Copilot usage and impact.",
+      "slugs": [
+        "copilot-interaction-report",
+        "purview-audit-copilot-report",
+        "viva-insights-copilot-dashboard",
+        "copilot-analytics-reports-navigator",
+        "export-copilotinteractions",
+        "export-m365copilotreports",
+        "get-teamsuseractivityreport",
+        "get-allinsightslicensedusers",
+        "get-groupsmembersmanagers"
+      ]
+    },
+    {
+      "id": "prepare-tenant",
+      "title": "Prepare your tenant",
+      "description": "Assess readiness and oversharing risk before you roll out Copilot.",
+      "slugs": [
+        "get-m365copilotreadiness",
+        "analyze-sharepointrisk",
+        "preflight-onedrive",
+        "find-mailboxdelegates"
+      ]
+    },
+    {
+      "id": "build-agents",
+      "title": "Plan and build agents",
+      "description": "Decide what to build, then start from working agent samples.",
+      "slugs": [
+        "copilot-agents-guide",
+        "agent-brainstorming-template",
+        "agents-cost-calculator",
+        "powerclaw-agent",
+        "productquote-agent",
+        "autoreply-agent",
+        "vibewriting-agent",
+        "ai-council",
+        "ess-servicenow-itsm-get-request-details",
+        "ess-servicenow-itsm-get-user-requests",
+        "copilot-studio-workflow",
+        "migrate-copilotstudioagents"
+      ]
+    },
+    {
+      "id": "teams-phone",
+      "title": "Teams Phone, Rooms and meetings",
+      "description": "Migrate users to Teams Phone and manage voice, rooms, and meetings at scale.",
+      "slugs": [
+        "teams-phone-user-migration",
+        "teams-phone-system-snippets",
+        "teams-audio-conferencing-snippets",
+        "teams-rooms-snippets",
+        "get-recurringteamsmeetings"
+      ]
+    },
+    {
+      "id": "viva-engage",
+      "title": "Administer Viva Engage",
+      "description": "Provision, export, report on, and clean up Viva Engage communities.",
+      "slugs": [
+        "create-engagecommunities",
+        "viva-engage-community-creation-app",
+        "add-engagegroupadmins",
+        "get-engagegroupinfo",
+        "export-engagefiles",
+        "export-engagenetworkdata",
+        "get-yammersitesize",
+        "update-vivaengagelicensingtoggle",
+        "delete-allcommunityposts",
+        "delete-engagegroups",
+        "delete-engageusers"
+      ]
+    }
+  ]
+}
