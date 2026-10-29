@@ -18,7 +18,7 @@ This file captures only selected high-level milestones.
 #### Catalog and site
 
 * Added a shareable page for every resource (`r/<slug>/`) with link previews, plus `sitemap.xml` and an Atom `feed.xml`.
-* The Build catalog workflow no longer tries to push to `master` or open pull requests when the repository blocks it. It reports which generated files are out of date in its run summary instead, and `tools/catalog-build/README.md` now describes how to publish them.
+* The Build catalog workflow no longer tries to push to `master` or open pull requests when the repository blocks it. It reports which generated files are out of date in its run summary instead, and `tools/catalog-build/README.md` now describes how to publish them. It warns only when the catalog itself changed; a stats-only difference, which happens on every run, is a notice.
 * Added a shareable page for every resource; archived resources are now hidden by default; added an Agent 365 highlight row (driven by the `agent-365` tag) and "New" badges to the landing page.
 * Cataloged 23 previously unlisted scripts, snippets, and samples (Viva Engage administration, Teams Phone and Rooms, SimpleGraph, ESS extensions) and archived scripts that depend on retired modules or services.
 * Archived the prompt samples and removed a 41 MB archived demo video.
