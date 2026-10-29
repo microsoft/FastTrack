@@ -102,6 +102,16 @@ jobs:
           # The default branch requires pull requests and this repo blocks GitHub
           # Actions from opening them, so the rebuild cannot land from here. Report
           # what is out of date instead of failing the run or stranding a branch.
+          #
+          # Resource stats, Clarity views, and discussion data are published by the
+          # weekly traffic pull request, and the stats file is stamped with the time
+          # it was rendered, so it differs on every run. Only a difference in the
+          # catalog itself means someone forgot to commit rebuilt output.
+          CATALOG_FILES=$(printf '%s\n' "$CHANGED_FILES" | grep -E '^(catalog\.json|sitemap\.xml|feed\.xml|r/)' || true)
+          if [ -z "$CATALOG_FILES" ]; then
+            echo "::notice::Only resource stats changed. They are published by the weekly traffic pull request."
+            exit 0
+          fi
           echo "::warning::The catalog rebuild produced changes that were not committed. Rebuild locally and include them in a pull request."
           CHANGED_COUNT=$(printf '%s\n' "$CHANGED_FILES" | wc -l)
           {

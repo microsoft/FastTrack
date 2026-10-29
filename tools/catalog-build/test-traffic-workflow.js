@@ -148,6 +148,8 @@ assert(catalogCommit && !catalogCommit.run.includes('gh pr') && !catalogCommit.r
   catalogCommit.run.includes('::warning::') && !catalogCommit.run.includes('exit 1') &&
   !('pull-requests' in catalogPublish.permissions),
   'Catalog publishing must not open pull requests or fail when the direct push is rejected; it must warn instead.');
+assert(catalogCommit.run.includes('CATALOG_FILES') && catalogCommit.run.indexOf('::notice::Only resource stats changed') < catalogCommit.run.indexOf('::warning::'),
+  'Catalog publishing must warn only when the catalog itself changed; a stats-only difference is a notice.');
 assert(!workflowSource.includes('BRANCH="traffic-data/$DATE"'),
   'The workflow must not create date-named daily PR branches.');
 

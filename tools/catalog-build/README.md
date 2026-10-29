@@ -29,7 +29,7 @@ GitHub Pages serves the generated files that are committed to `master`, so inclu
 2. For a new resource, run `npm run og`, then `npm run build` again. Resource pages link to the social card only if it exists when they are built.
 3. Commit `catalog.json`, `sitemap.xml`, `feed.xml`, `r/`, and any new `assets/og/` card with your change, and open the pull request.
 
-After the pull request merges, Pages redeploys on its own. The **Build catalog** run on `master` then rebuilds and checks the generated files. The repository blocks GitHub Actions from pushing to `master` or opening pull requests, so the run does not try. If it reports **Generated files are out of date** in its summary, run the commands above on an up-to-date checkout and open a pull request with the result.
+After the pull request merges, Pages redeploys on its own. The **Build catalog** run on `master` then rebuilds and checks the generated files. The repository blocks GitHub Actions from pushing to `master` or opening pull requests, so the run does not try. If it reports **Generated files are out of date** in its summary, run the commands above on an up-to-date checkout and open a pull request with the result. That warning only covers the catalog itself (`catalog.json`, `sitemap.xml`, `feed.xml`, and `r/`). Resource stats are stamped with the time they are rendered and are published by the weekly traffic pull request, so a stats-only difference shows as a notice, not a warning.
 
 Daily traffic collection and the weekly traffic pull request are separate. See [`traffic-data/README.md`](../../traffic-data/README.md).
 
