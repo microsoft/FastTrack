@@ -1,12 +1,18 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import vm from 'node:vm';
 import * as yaml from 'js-yaml';
 import {
   assertParsed,
   checkSync,
+  compareFingerprints,
+  currentFingerprints,
   decodeEntities,
+  guideKey,
+  linkKeyFor,
   loadChecklist,
   loadGuide,
+  loadSyncState,
   normalizeLearnUrl,
   parseChecklist,
   parseGuide,
@@ -14,6 +20,7 @@ import {
   resolveReference
 } from './agent365-content.js';
 import { buildReport, classifyResponse, collectCitations, daysBetween, fetchPage, renderMarkdown } from './agent365-freshness.js';
+import { checkGuide, patchGuide } from './guide-deeplinks.js';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -70,8 +77,29 @@ assert(status('02 Microsoft Defender, 4.04a') === 'broken', 'A code in a differe
 assert(status('99 Missing section, 4.04a') === 'broken', 'An unknown section must fail.');
 assert(status('06 Microsoft-built agents') === 'section', 'A section-only reference must resolve to the section.');
 assert(status('Power Platform, PP3') === 'ok', 'Power Platform references must resolve.');
-assert(status('02 Microsoft Defender, AI agent inventory and advanced hunting') === 'ok', 'A description must match a step title loosely.');
-assert(status('02 Microsoft Defender, something unrelated entirely') === 'unverified', 'An unmatched description must be reported as unverified, not failed.');
+assert(status('02 Microsoft Defender, 2.07 AI agent inventory and advanced hunting') === 'ok', 'A code followed by a description must resolve by its code.');
+assert(status('02 Microsoft Defender, AI agent inventory and advanced hunting') === 'unverified',
+  'A description with no step code must be unverified: matching it loosely picked the wrong step once.');
+assert(status('02 Microsoft Defender, something unrelated entirely') === 'unverified', 'An unmatched description must be reported as unverified.');
+
+assert(linkKeyFor('04 Microsoft Purview, 4.04a') === '4.04a' && linkKeyFor('12 Custom pro-code agents, 12d and 12e') === '12d',
+  'A deep link must target the first step code in a reference.');
+assert(linkKeyFor('05 SharePoint, 5·0') === '5-0' && linkKeyFor('Power Platform, PP3') === 'pp3' && guideKey('PP3') === 'pp3',
+  'Step keys must be lowercase and use a hyphen for 5·0.');
+assert(linkKeyFor('06 Microsoft-built agents') === '06' && linkKeyFor('Power Platform') === 'pp', 'A section-only reference must target its section.');
+assert(richGuide.keys.has('4.04a') && richGuide.keys.has('04') && richGuide.keys.has('pp') && richGuide.keys.has('pp3') && richGuide.keys.has('12d'),
+  'The guide reader must list every address a deep link can use.');
+
+const fingerprintGuide = html => parseGuide(html).codes.get('4.04a').fingerprint;
+const stepHtml = (body, tail = '') => `<h2>04. Microsoft Purview</h2><h4>4.04a · Enable Purview</h4><p>${body}</p>${tail}<h4>4.05 · Next step</h4><p>other</p>`;
+assert(fingerprintGuide(stepHtml('Turn it on.')) === fingerprintGuide(stepHtml('Turn   it\non.')), 'Whitespace changes must not change a step fingerprint.');
+assert(fingerprintGuide(stepHtml('Turn it on.')) !== fingerprintGuide(stepHtml('Turn it off.')), 'A text change must change the step fingerprint.');
+assert(fingerprintGuide(stepHtml('Turn it on.', '<a href="https://x/a">l</a>')) !== fingerprintGuide(stepHtml('Turn it on.', '<a href="https://x/b">l</a>')),
+  'A link change must change the step fingerprint.');
+assert(fingerprintGuide(stepHtml('Turn it on.')) === fingerprintGuide(stepHtml('Turn it on.', '<script>var added = 1;</script>')),
+  'Script and style text must not change a step fingerprint.');
+assert(parseGuide(stepHtml('Turn it on.')).codes.get('4.05').fingerprint !== fingerprintGuide(stepHtml('Turn it on.')),
+  'Each step must have its own fingerprint.');
 
 const sync = checkSync(richGuide, { tasks: [
   { workstream: 'W', number: 1, title: 'A', deep: '04 Microsoft Purview, 4.04a' },
@@ -79,6 +107,18 @@ const sync = checkSync(richGuide, { tasks: [
 ] });
 assert(sync.referenceCount === 2 && sync.broken.length === 1 && sync.uncovered.some(entry => entry.code === 'PP3'),
   'The sync check must report broken references and guide steps nothing points at.');
+
+const fixtureSync = checkSync(richGuide, { tasks: [{ workstream: 'W', number: 1, title: 'A', deep: '04 Microsoft Purview, 4.04a' }] });
+const fixturePrints = currentFingerprints(richGuide, fixtureSync);
+assert(Object.keys(fixturePrints.steps).join() === '4.04a' && fixturePrints.sections['04'], 'Only cited steps and sections must be fingerprinted.');
+assert(compareFingerprints(fixturePrints, fixturePrints, fixtureSync).length === 0, 'Matching fingerprints must report no changes.');
+const changedPrints = compareFingerprints({ steps: { '4.04a': 'old' }, sections: fixturePrints.sections }, fixturePrints, fixtureSync);
+assert(changedPrints.length === 1 && changedPrints[0].reason === 'changed' && changedPrints[0].tasks[0].includes('task 1: A'),
+  'A changed step must be reported with the checklist tasks that cite it.');
+assert(compareFingerprints({ steps: {}, sections: {} }, fixturePrints, fixtureSync).some(change => change.reason === 'is not recorded yet'),
+  'A newly cited step must be reported until it is recorded.');
+assert(compareFingerprints({ steps: { ...fixturePrints.steps, '9z': 'x' }, sections: fixturePrints.sections }, fixturePrints, fixtureSync).some(change => change.key === '9z'),
+  'A recorded step that is no longer cited must be reported.');
 
 assert(classifyResponse('https://learn.microsoft.com/en-us/a/b', { status: 404 }).kind === 'broken', '404 must be broken.');
 assert(classifyResponse('https://learn.microsoft.com/en-us/a/b', { status: 503 }).kind === 'unreachable', '5xx must be unreachable, not broken.');
@@ -134,8 +174,36 @@ const realGuide = loadGuide();
 const realChecklist = loadChecklist();
 assertParsed(realGuide, realChecklist);
 const realSync = checkSync(realGuide, realChecklist);
+const list = items => items.map(item => `- "${item.label}"${item.problems ? `: ${item.problems.join(' ')}` : ''}${item.key ? ` (links to #advanced/${item.key})` : ''}`).join('\n');
 assert(realSync.broken.length === 0,
-  `The checklist points at guide sections or steps that do not exist:\n${realSync.broken.map(item => `- "${item.label}": ${item.problems.join(' ')}`).join('\n')}\nUpdate the checklist reference or the guide so they match.`);
+  `The checklist points at guide sections or steps that do not exist:\n${list(realSync.broken)}\nUpdate the checklist reference or the guide so they match.`);
+assert(realSync.unverified.length === 0,
+  `These checklist references name no guide step code, so they cannot link to a step or be checked:\n${list(realSync.unverified)}\nWrite the step code first, for example "02 Microsoft Defender, 2.07 AI agent inventory".`);
+assert(realSync.missingTargets.length === 0,
+  `These checklist references link to an address the guide does not offer:\n${list(realSync.missingTargets)}`);
+
+// The guide must carry the script that opens #advanced/<key>, exactly as tools/catalog-build/guide-deeplinks.js writes it.
+const deepLinkCheck = checkGuide(realGuide.source);
+assert(deepLinkCheck.ok, deepLinkCheck.problem);
+assert(patchGuide(realGuide.source) === realGuide.source, 'Applying the deep-link patch to the guide must change nothing.');
+assert(/function guideHref\(deep\)/.test(realChecklist.source), 'The checklist must build its guide links with guideHref().');
+
+// Run the checklist's own link builder and compare it with the expected address for every reference.
+const guideUrl = /var GUIDE_URL = "([^"]+)"/.exec(realChecklist.source)[1];
+const builderSource = /function guideHref\(deep\) \{[\s\S]*?\n\}\n/.exec(realChecklist.source)?.[0];
+assert(builderSource, 'Could not read guideHref() from the checklist.');
+const sandbox = { GUIDE_URL: guideUrl };
+vm.runInNewContext(`${builderSource}; this.guideHref = guideHref;`, sandbox);
+const wrongLinks = [...new Set(realChecklist.tasks.filter(task => task.deep).map(task => task.deep))]
+  .map(label => ({ label, built: sandbox.guideHref(label), expected: `${guideUrl}${linkKeyFor(label) ? `/${linkKeyFor(label)}` : ''}` }))
+  .filter(link => link.built !== link.expected);
+assert(wrongLinks.length === 0, `The checklist builds the wrong guide address for:\n${wrongLinks.map(link => `- "${link.label}": ${link.built} (expected ${link.expected})`).join('\n')}`);
+assert(/index\.html#advanced$/.test(guideUrl), 'The checklist guide address must open the Detailed view.');
+
+// Every cited guide step must be unchanged since the checklist was last aligned with it.
+const guideChanges = compareFingerprints(loadSyncState(), currentFingerprints(realGuide, realSync), realSync);
+assert(guideChanges.length === 0,
+  `The guide changed where the checklist depends on it:\n${guideChanges.map(change => `- ${change.label} ${change.key} ${change.reason}${change.tasks.length ? `\n    cited by: ${[...new Set(change.tasks)].slice(0, 4).join('; ')}${new Set(change.tasks).size > 4 ? `; and ${new Set(change.tasks).size - 4} more` : ''}` : ''}`).join('\n')}\nReview those checklist tasks against the guide, update whichever is out of date, then run "npm run sync:agent365" and commit tools/catalog-build/agent365-sync-state.json.`);
 
 const freshnessWorkflowSource = readFileSync(join(repositoryRoot, '.github', 'workflows', 'agent365-freshness.yml'), 'utf8');
 const freshnessWorkflow = yaml.load(freshnessWorkflowSource);
@@ -146,4 +214,4 @@ assert(JSON.stringify(freshnessWorkflow.permissions) === JSON.stringify({ conten
 assert(!freshnessWorkflowSource.includes('gh pr ') && !freshnessWorkflowSource.includes('git push'),
   'The freshness workflow must not push or open pull requests; the repository blocks both.');
 
-console.log(`Agent 365 guide and checklist stay aligned: ${realSync.referenceCount} references resolve; ${realSync.uncovered.length} guide steps have no checklist task (informational).`);
+console.log(`Agent 365 guide and checklist stay aligned: ${realSync.referenceCount} references link to existing guide steps and sections, the guide's deep-link script is current, and ${Object.keys(loadSyncState().steps).length} cited steps are unchanged since the last review (${realSync.uncovered.length} guide steps have no checklist task; informational).`);

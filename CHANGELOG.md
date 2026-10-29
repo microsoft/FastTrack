@@ -12,6 +12,7 @@ This file captures only selected high-level milestones.
 
 * Added the Agent 365 Enablement Checklist, a sample Agent 365 deployment plan in one HTML file, and a check that fails when a FastTrack link in a resource page or README no longer resolves.
 * Added a check that every guide reference in the Agent 365 Enablement Checklist still resolves in the Customer Implementation Guide, and a weekly workflow that reports broken or moved Microsoft Learn links and Learn pages that changed since either file was last reviewed.
+* Added deep links to the Agent 365 Customer Implementation Guide (`#advanced/<step>`). Each Enablement Checklist task now opens its exact guide step, and a check fails the pull request when a cited guide step changes without a review of the checklist tasks that depend on it.
 * Added the Microsoft Agent 365 Technical Advisory, a 19-page reference architecture and best-practices PDF with a page-by-page viewer. It replaces the Agent 365 Lifecycle Atlas, which is archived and stays at its address so existing links keep working.
 
 #### Catalog and site

@@ -5,9 +5,9 @@ category: "Interactive"
 summary: "A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel."
 author:
   - "Alejandro Lopez"
-version: 1.0.1
+version: 1.0.2
 published: 2026-10-28
-updated: 2026-10-28
+updated: 2026-10-29
 tags:
   - agent-365
   - deployment
@@ -59,7 +59,7 @@ The checklist is a single file with no server, sign-in, tracking, or network req
 
 ## Works with the other Agent 365 guides
 
-This checklist and the [Agent 365 Customer Implementation Guide](../agent-365-customer-implementation-guide/) are companions: the guide explains each configuration in detail, and the checklist helps you plan and track the work. The checklist links to the guide's Detailed view (`index.html#advanced`), to the [Microsoft Agent 365 Technical Advisory](../agent-365-technical-advisory/) for reference architecture and best practices, and to the [Agents Cost Calculator](../copilot-agents-cost-tool/) for budgeting.
+This checklist and the [Agent 365 Customer Implementation Guide](../agent-365-customer-implementation-guide/) are companions: the guide explains each configuration in detail, and the checklist helps you plan and track the work. The checklist links to the guide's Detailed view and opens the exact step for each task, for example `index.html#advanced/4.04a`, to the [Microsoft Agent 365 Technical Advisory](../agent-365-technical-advisory/) for reference architecture and best practices, and to the [Agents Cost Calculator](../copilot-agents-cost-tool/) for budgeting.
 
 When you rename or move any of these folders, update the links in the others. `npm run check` in `tools/catalog-build` fails if a FastTrack link in a resource page or README no longer resolves.
 

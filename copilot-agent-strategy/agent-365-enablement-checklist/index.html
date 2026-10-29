@@ -990,6 +990,20 @@ var LEVEL_INFO = {
 
 var GUIDE_URL = "https://microsoft.github.io/FastTrack/copilot-agent-strategy/agent-365-customer-implementation-guide/index.html#advanced";
 
+/* Where a task's guide reference opens in the guide: its first step code (4.04a, 12b, PP3), else its section number. The guide reads #advanced/<key>. */
+function guideHref(deep) {
+  var parts = String(deep).split(",");
+  var code = /(?:^|[^\w.])(5\u00B70|\d{1,2}\.\d{2}[a-z]?|\d{1,2}[a-z]|PP\d+)(?![\w.])/.exec(parts.slice(1).join(","));
+  var key = "";
+  if (code) key = code[1].toLowerCase().replace("\u00B7", "-");
+  else {
+    var scope = parts[0].trim();
+    var section = /^(\d{2})\s/.exec(scope);
+    key = section ? section[1] : /^Power Platform/i.test(scope) ? "pp" : "";
+  }
+  return GUIDE_URL + (key ? "/" + key : "");
+}
+
 /* Attribution and disclaimer, shown in Help, the sidebar, exports, and the printed report. */
 var ATTRIBUTION = "Built by Microsoft FastTrack";
 var DISCLAIMER = "This checklist is a sample template, provided as is, without warranty of any kind, express or implied. It isn't official Microsoft product documentation and isn't supported under any Microsoft standard support program or service. Using it doesn't guarantee that your environment is secure or compliant. Review, test, and tailor every step for your organization, and confirm product details on Microsoft Learn.";
@@ -2413,7 +2427,7 @@ var WORKSTREAMS = [
 "ord": 10,
 "rollback": "Keep the old queries and workflow definitions until the migrated ones are validated, so you can switch back if a detection fails. Disable a re-created block rule on the Real-time protection page if it blocks expected agent actions.",
 "step": 5,
-"deep": "02 Microsoft Defender, licensing transition"
+"deep": "02 Microsoft Defender, 2.10 licensing transition"
 },
 {
 "n": 2,
@@ -2446,7 +2460,7 @@ var WORKSTREAMS = [
 "ord": 20,
 "rollback": "Leave the Enable toggle on, because Off stops AI agent data collection and disables all Security for AI capabilities. To back out one capability, change that connector or rule instead.",
 "step": 5,
-"deep": "02 Microsoft Defender, Security for AI Get started"
+"deep": "02 Microsoft Defender, 2.01 Security for AI Get started"
 },
 {
 "n": 3,
@@ -2478,7 +2492,7 @@ var WORKSTREAMS = [
 "ord": 30,
 "rollback": "Clear the components you added, or disconnect the connector, only through change control. Defender then loses agent investigation and hunting data, and Copilot Studio blocks still happen but don't raise alerts or incidents.",
 "step": 5,
-"deep": "02 Microsoft Defender, Security for AI Get started"
+"deep": "02 Microsoft Defender, 2.01 Security for AI Get started"
 },
 {
 "n": 4,
@@ -2519,7 +2533,7 @@ var WORKSTREAMS = [
 ],
 "ord": 40,
 "step": 5,
-"deep": "02 Microsoft Defender, AI agent inventory and advanced hunting"
+"deep": "02 Microsoft Defender, 2.07 AI agent inventory and advanced hunting"
 },
 {
 "n": 5,
@@ -2551,7 +2565,7 @@ var WORKSTREAMS = [
 ],
 "ord": 50,
 "step": 5,
-"deep": "02 Microsoft Defender, AI agent inventory and advanced hunting"
+"deep": "02 Microsoft Defender, 2.07 AI agent inventory and advanced hunting"
 },
 {
 "n": 6,
@@ -2592,7 +2606,7 @@ var WORKSTREAMS = [
 "ord": 60,
 "rollback": "Turn off a custom detection rule that creates noise from Hunting → Custom detection rules. Delete also removes the rule permanently, so turn it off first if you might reuse it.",
 "step": 5,
-"deep": "02 Microsoft Defender, AI agent inventory and advanced hunting"
+"deep": "02 Microsoft Defender, 2.07 AI agent inventory and advanced hunting"
 },
 {
 "n": 7,
@@ -2626,7 +2640,7 @@ var WORKSTREAMS = [
 "ord": 70,
 "rollback": "Select the rule and choose Disable or Delete on the Real-time protection page. The Default rule keeps auditing, and near-real-time alerts resume for agents no longer covered by a blocking rule.",
 "step": 5,
-"deep": "02 Microsoft Defender, real-time protection"
+"deep": "02 Microsoft Defender, 2.06 real-time protection rules"
 },
 {
 "n": 8,
@@ -2663,7 +2677,7 @@ var WORKSTREAMS = [
 "platforms": [
 "copilotstudio"
 ],
-"deep": "02 Microsoft Defender, Copilot Studio real-time protection"
+"deep": "02 Microsoft Defender, 2.02 Copilot Studio real-time protection"
 },
 {
 "n": 9,
@@ -2695,7 +2709,7 @@ var WORKSTREAMS = [
 "ord": 90,
 "rollback": "Set Enabled back to its previous value under Settings → Security for AI → Prompt evidence collection. When it's off, Defender doesn't add prompt snippets to alerts, so record the change and approver.",
 "step": 5,
-"deep": "02 Microsoft Defender, prompt evidence collection"
+"deep": "02 Microsoft Defender, 2.03 prompt evidence collection"
 },
 {
 "n": 10,
@@ -9386,7 +9400,7 @@ function taskRow(t, ctx) {
         ${t.examples && t.examples.length ? t.examples.map(function (ex) { return html`<div><div class="k">Worked example: ${ex.title}</div><ol class="steps">${ex.steps.map(function (s) { return html`<li>${s}</li>`; })}</ol></div>`; }) : ""}
       </div>
       <div class="stack">
-        ${t.deep ? html`<div><div class="k">Detailed walkthrough</div><div class="refs"><a href="${GUIDE_URL}" target="_blank" rel="noopener noreferrer">${ico("ext", 14)}Customer implementation guide: ${t.deep}</a></div><p class="walk-note">Open the Detailed tab, then this section, for screenshots and field-level steps. Where it differs from this checklist, follow this checklist.</p></div>` : ""}
+        ${t.deep ? html`<div><div class="k">Detailed walkthrough</div><div class="refs"><a href="${guideHref(t.deep)}" target="_blank" rel="noopener noreferrer">${ico("ext", 14)}Customer implementation guide: ${t.deep}</a></div><p class="walk-note">Opens this step in the guide's Detailed view, with screenshots and field-level steps. Where it differs from this checklist, follow this checklist.</p></div>` : ""}
         ${t.links.length ? html`<div><div class="k">References</div><div class="refs">${t.links.map(function (l) { return html`<a href="${l[1]}" target="_blank" rel="noopener noreferrer">${ico("ext", 14)}${l[0]}</a>`; })}</div></div>` : ""}
         ${t.ft ? html`<p class="ft-hint">${ico("info", 14)}<span>Eligible customers can get remote guidance for this task from <a href="${FT_URL}" target="_blank" rel="noopener noreferrer">FastTrack</a>.</span></p>` : ""}
         <div><label class="k" for="n-${did}">Notes</label><textarea class="field" id="n-${did}" data-f="notes" data-key="${t.key}" maxlength="2000" placeholder="Add a note, blocker, decision, or evidence link">${t.notes}</textarea></div>
@@ -9700,7 +9714,7 @@ function viewHelp() {
         <tr><td>Secure</td><td>Posture is reviewed, threat detection is on, and a safe test proves the intended block works.</td><td>Telemetry is present, but nothing enforces controls on the agent's actual runtime, tools, or data.</td></tr>
       </tbody></table>
       <h2>Detailed walkthroughs</h2>
-      <p>Most tasks link to the matching section of the <a href="${GUIDE_URL}" target="_blank" rel="noopener noreferrer">Agent 365 Customer implementation guide</a> (Detailed tab), which has screenshots, field-level steps, and validation for each control. Use this checklist as the plan of record. Where the two differ, follow this checklist, which was reviewed against Microsoft Learn more recently.</p>
+      <p>Most tasks link to the matching step of the <a href="${GUIDE_URL}" target="_blank" rel="noopener noreferrer">Agent 365 Customer implementation guide</a> (Detailed view), which has screenshots, field-level steps, and validation for each control. Use this checklist as the plan of record. Where the two differ, follow this checklist, which was reviewed against Microsoft Learn more recently.</p>
       <h2>What the labels mean</h2>
       <div class="def-grid">
         <div class="def"><b>${chip("Required", "gray", "chip-outline")}</b><p>The minimum for a safe pilot and go-live. Start here; these gate go-live.</p></div>

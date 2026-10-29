@@ -5,13 +5,20 @@
   <subtitle>The 20 most recently updated tools, guides, agents, and scripts in the FastTrack catalog.</subtitle>
   <link href="https://microsoft.github.io/FastTrack/feed.xml" rel="self"/>
   <link href="https://microsoft.github.io/FastTrack/"/>
-  <updated>2026-10-28T00:00:00Z</updated>
+  <updated>2026-10-29T00:00:00Z</updated>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/</id>
-    <title>Agent 365 Enablement Checklist (v1.0.1)</title>
+    <title>Agent 365 Enablement Checklist (v1.0.2)</title>
     <link href="https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/"/>
-    <updated>2026-10-28T00:00:00Z</updated>
+    <updated>2026-10-29T00:00:00Z</updated>
     <summary>A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/</id>
+    <title>Microsoft Agent 365 Customer Implementation Guide (v1.4.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/"/>
+    <updated>2026-10-29T00:00:00Z</updated>
+    <summary>Plan and configure a governed Microsoft Agent 365 baseline with simple guidance and detailed implementation tasks.</summary>
   </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/</id>
@@ -33,13 +40,6 @@
     <link href="https://microsoft.github.io/FastTrack/r/viva-engage-community-creation-app/"/>
     <updated>2026-10-28T00:00:00Z</updated>
     <summary>Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.</summary>
-  </entry>
-  <entry>
-    <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/</id>
-    <title>Microsoft Agent 365 Customer Implementation Guide (v1.3.0)</title>
-    <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/"/>
-    <updated>2026-10-15T00:00:00Z</updated>
-    <summary>Plan and configure a governed Microsoft Agent 365 baseline with simple guidance and detailed implementation tasks.</summary>
   </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/agents-cost-calculator/</id>

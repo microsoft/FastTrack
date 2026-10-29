@@ -20,5 +20,6 @@
 - [ ] `version` and `updated` were bumped (and `published` was preserved)
 - [ ] Installation and usage steps were tested
 - [ ] Files over 5 MB were avoided (link large media instead)
+- [ ] If this changes the Agent 365 Customer Implementation Guide or Enablement Checklist: I reviewed the checklist tasks and guide steps that cite each other, then ran `npm run sync:agent365 --prefix tools/catalog-build` (see [the catalog build README](https://github.com/microsoft/FastTrack/blob/master/tools/catalog-build/README.md#agent-365-guide-and-checklist))
 
 See [CONTRIBUTING.md](https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md) for details.

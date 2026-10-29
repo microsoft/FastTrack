@@ -114,7 +114,7 @@ export function collectCitations(guide, checklist) {
 export function buildReport({ guide, checklist, sync, pages, citations, now, maxAgeDays, offline }) {
   const today = now.slice(0, 10);
   const artifacts = {
-    guide: { name: 'Customer Implementation Guide', version: guide.version, reviewed: guide.reviewed, basis: 'README `updated` date' },
+    guide: { name: 'Customer Implementation Guide', version: guide.version, reviewed: guide.reviewed, basis: '`reviewed.guide` in `agent365-sync-state.json`' },
     checklist: { name: 'Enablement Checklist', version: checklist.version, reviewed: checklist.reviewed, basis: '`CONTENT_REVIEWED` date' }
   };
   for (const artifact of Object.values(artifacts)) artifact.ageDays = daysBetween(artifact.reviewed, today);
@@ -223,7 +223,7 @@ export function renderMarkdown(report, limit = Infinity) {
 
   out.push('### How to clear this', '');
   out.push('1. Open the changed Learn pages, update any task or step that no longer matches, and fix broken or moved links.');
-  out.push('2. When you finish a review, record it: set `CONTENT_REVIEWED` in the checklist, and bump `version` and `updated` in the guide README. The next run measures from that date.');
+  out.push('2. When you finish a review, record it: set `CONTENT_REVIEWED` in the checklist, and run `npm run sync:agent365 -- --guide-reviewed` for the guide. The next run measures from those dates.');
   out.push('3. Run `npm run check` in `tools/catalog-build` before opening the pull request. It also verifies that every guide reference in the checklist still resolves.', '');
   out.push('_Opened and updated by the Agent 365 Content Freshness workflow._');
   return out.join('\n');
