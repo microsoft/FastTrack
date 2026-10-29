@@ -1,10 +1,11 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import * as yaml from 'js-yaml';
 import { renderFeed, renderResourcePage, renderSitemap, resourcePath } from './site-pages.js';
+import { downloadName, fileExists, findDownloadFile } from './downloads.js';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(toolDirectory, '..', '..');
@@ -154,6 +155,14 @@ function validate(data, file) {
       add('preview', 'points to a file that does not exist');
     }
   }
+  if (data.download !== undefined) {
+    if (!isNonEmptyString(data.download)) add('download', 'must be a non-empty string');
+    else if (/^[a-z]+:\/\//i.test(data.download) || data.download.startsWith('/') || data.download.includes('..') || data.download.includes('\\')) {
+      add('download', 'must be a relative path inside the resource folder (no URL, absolute path, "..", or backslash)');
+    } else if (!fileExists(dirname(file), data.download)) {
+      add('download', 'points to a file that does not exist');
+    }
+  }
   if (data.whatItIs !== undefined && !isNonEmptyString(data.whatItIs)) add('whatItIs', 'must be a non-empty string');
   if (data.whyUseIt !== undefined && !isStringList(data.whyUseIt)) add('whyUseIt', 'must be a non-empty list of strings');
   if (data.howToUse !== undefined && !isNonEmptyString(data.howToUse)) add('howToUse', 'must be a non-empty Markdown string');
@@ -187,10 +196,16 @@ function createResource(data, file, updated) {
   const preview = data.preview
     ? toPosix(relative(repositoryRoot, join(dirname(file), data.preview)))
     : undefined;
+  const slug = slugify(data.title);
+  // Archived resources are kept for reference and are not promoted, so they get no Download button.
+  const downloadFile = (data.status ?? 'active') === 'archived'
+    ? ''
+    : findDownloadFile(dirname(file), data.format ?? 'md', data.download);
+  const download = downloadFile ? toPosix(relative(repositoryRoot, join(dirname(file), downloadFile))) : undefined;
   const resource = {
     name: data.title,
     title: data.title,
-    slug: slugify(data.title),
+    slug,
     type: data.type,
     subcategory: data.category,
     category: data.category,
@@ -203,6 +218,9 @@ function createResource(data, file, updated) {
     status: data.status ?? 'active',
     interactiveKind: data.interactiveKind,
     preview,
+    download,
+    downloadName: download ? downloadName(slug, download) : undefined,
+    downloadSize: download ? statSync(join(repositoryRoot, download)).size : undefined,
     author: data.author,
     version: data.version,
     published: data.published,

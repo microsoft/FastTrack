@@ -6,9 +6,9 @@ summary: "Reference architecture and best practices to discover, govern, secure,
 author:
   - "Carlos Suarez"
   - "Alejandro Lopez"
-version: 1.0.0
+version: 1.0.1
 published: 2026-10-28
-updated: 2026-10-28
+updated: 2026-10-29
 tags:
   - agent-365
   - architecture
@@ -18,6 +18,7 @@ tags:
 format: interactive
 interactiveKind: guide
 preview: preview.webp
+download: Agent-365-Technical-Advisory.pdf
 featured: true
 status: active
 whatItIs: >-
