@@ -4,36 +4,43 @@
 Exports Microsoft 365 Copilot user-level interaction history for Power BI reporting.
 
 .DESCRIPTION
-Enumerates licensed Microsoft 365 users, identifies users with Copilot-related SKU assignments, and exports
+Enumerates licensed Microsoft 365 users, identifies users with an eligible Microsoft 365 Copilot license, and exports
 user and interaction datasets to CSV files. Interaction data is read from the Microsoft Graph Beta endpoint:
 /beta/copilot/users/{id}/interactionHistory/getAllEnterpriseInteractions.
 
+License detection combines each user's assignedLicenses and assignedPlans with the tenant's subscribedSkus.
+The required "Microsoft Copilot with Graph-grounded chat" service plan is identified by its name
+(M365_COPILOT_BUSINESS_CHAT) or ID (3f30311c-6b1e-48a4-ab79-725b469da960). Bundles that include it are supported.
+
 IMPORTANT:
+- This exporter does not collect Copilot Chat (Basic) usage from users without an eligible Microsoft 365 Copilot
+  license. Use the Copilot Chat usage report in the Microsoft 365 admin center or the Copilot Dashboard data export
+  in Viva Insights for usage metrics from those users.
+- Only app-only client secret or certificate authentication is supported. The interaction export API does not
+  support delegated interactive authentication.
 - This script uses Microsoft Graph Beta APIs. Beta APIs are subject to change and are not supported for production use.
 - getAllEnterpriseInteractions does NOT include Copilot Studio agent interactions.
 - Interaction body content can contain actual user prompts and AI responses. Review privacy, legal, retention,
   and compliance requirements before exporting or sharing the CSV output.
-- The SKU-to-tier mapping may need updates as Microsoft changes Copilot licensing SKU part numbers.
+- License classification reflects the current directory state, not the user's license at the time of each interaction.
+- Microsoft can change service plan IDs and SKU part numbers. Override -CopilotServicePlans or -SkuTierMap if needed.
 
-Required Microsoft Graph permissions:
-- App-only: AiEnterpriseInteraction.Read.All for interaction history.
-- User/license enumeration: User.Read.All and Reports.Read.All are commonly required by customers for this report.
-  Grant admin consent for application permissions when using client secret or certificate authentication.
+Required Microsoft Graph application permissions (grant admin consent):
+- AiEnterpriseInteraction.Read.All for interaction history.
+- User.Read.All for users and their license assignments.
+- LicenseAssignment.Read.All for subscribed SKU and service plan metadata.
 
 .PARAMETER TenantId
 Microsoft Entra tenant ID.
 
 .PARAMETER ClientId
-Application (client) ID used for app-only auth. Optional for interactive delegated auth.
+Application (client) ID used for app-only authentication.
 
 .PARAMETER ClientSecret
 Application client secret as a SecureString. Use Read-Host -AsSecureString to avoid putting secrets in shell history.
 
 .PARAMETER CertificateThumbprint
 Certificate thumbprint for app-only certificate authentication.
-
-.PARAMETER Interactive
-Use delegated interactive authentication for testing.
 
 .PARAMETER OutputDirectory
 Directory where Users.csv, Interactions.csv, UsageByUserAppDay.csv, UsageByAppFeatureDay.csv, and Errors.csv are written. Defaults to the script directory.
@@ -50,11 +57,25 @@ Maximum number of Copilot users to process. Use 0 for all users.
 .PARAMETER DelayBetweenUserRequestsMilliseconds
 Delay between per-user interaction requests to reduce throttling risk. Defaults to 200 milliseconds.
 
+.PARAMETER CopilotServicePlans
+Service plan IDs or names that identify Microsoft 365 Copilot. Defaults to
+3f30311c-6b1e-48a4-ab79-725b469da960 / M365_COPILOT_BUSINESS_CHAT.
+The plan must be enabled for an assigned license and have an Enabled or Warning capability status for the user.
+
 .PARAMETER SkuTierMap
-Hashtable mapping SKU part numbers to tier labels such as Basic or Premium.
+Fallback hashtable of SKU part numbers mapped to Premium. Used only when a subscribed SKU has no service plan
+metadata, and the user still has an available, configured service plan ID that is not disabled for that license.
+Mappings to other tiers are ignored.
 
 .PARAMETER IncludeAllUsers
-Enumerate all users instead of only users with any assigned license. Useful if the tenant uses non-standard licensing.
+Enumerate all users instead of only users with any assigned license. Copilot eligibility checks still apply.
+
+.NOTES
+Version 2.0.0 (2026-10-29)
+- Limited exports to users with an eligible Microsoft 365 Copilot license, including qualifying bundles.
+- Added -CopilotServicePlans and UsersSkippedWithoutCopilotLicense; removed the Basic tier and basicUsers column.
+- Removed unsupported -Interactive authentication and replaced delegated-only licenseDetails lookups with
+  app-only-compatible user assignments and subscribedSkus. LicenseAssignment.Read.All replaces Reports.Read.All.
 
 .EXAMPLE
 $secret = Read-Host 'Client secret' -AsSecureString
@@ -63,21 +84,17 @@ $secret = Read-Host 'Client secret' -AsSecureString
 .EXAMPLE
 .\Export-CopilotInteractions.ps1 -TenantId '<tenant-id>' -ClientId '<app-id>' -CertificateThumbprint '<thumbprint>' -OutputDirectory '.\out'
 
-.EXAMPLE
-.\Export-CopilotInteractions.ps1 -TenantId '<tenant-id>' -Interactive -StartDate (Get-Date).AddDays(-7) -MaxUsers 10
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'ClientSecret')]
 param(
     [Parameter(Mandatory = $true, ParameterSetName = 'ClientSecret')]
     [Parameter(Mandatory = $true, ParameterSetName = 'Certificate')]
-    [Parameter(Mandatory = $false, ParameterSetName = 'Interactive')]
     [ValidateNotNullOrEmpty()]
     [string]$TenantId,
 
     [Parameter(Mandatory = $true, ParameterSetName = 'ClientSecret')]
     [Parameter(Mandatory = $true, ParameterSetName = 'Certificate')]
-    [Parameter(Mandatory = $false, ParameterSetName = 'Interactive')]
     [ValidateNotNullOrEmpty()]
     [string]$ClientId,
 
@@ -88,9 +105,6 @@ param(
     [Parameter(Mandatory = $true, ParameterSetName = 'Certificate')]
     [ValidateNotNullOrEmpty()]
     [string]$CertificateThumbprint,
-
-    [Parameter(Mandatory = $true, ParameterSetName = 'Interactive')]
-    [switch]$Interactive,
 
     [Parameter()]
     [ValidateNotNullOrEmpty()]
@@ -111,13 +125,17 @@ param(
     [int]$DelayBetweenUserRequestsMilliseconds = 200,
 
     [Parameter()]
+    [ValidateNotNullOrEmpty()]
+    [string[]]$CopilotServicePlans = @(
+        '3f30311c-6b1e-48a4-ab79-725b469da960',
+        'M365_COPILOT_BUSINESS_CHAT'
+    ),
+
+    [Parameter()]
     [hashtable]$SkuTierMap = @{
         'Microsoft_365_Copilot' = 'Premium'
         'Microsoft_Copilot_for_Microsoft365' = 'Premium'
         'M365_Copilot' = 'Premium'
-        'Microsoft_365_Copilot_Chat' = 'Basic'
-        'Microsoft_Copilot' = 'Basic'
-        'Copilot_Chat' = 'Basic'
     },
 
     [Parameter()]
@@ -138,12 +156,13 @@ function Assert-GraphAuthenticationModule {
 function Connect-CopilotGraph {
     param(
         [Parameter(Mandatory = $true)]
-        [ValidateSet('ClientSecret', 'Certificate', 'Interactive')]
+        [ValidateSet('ClientSecret', 'Certificate')]
         [string]$AuthenticationMode
     )
 
     $commonParameters = @{
         NoWelcome = $true
+        ContextScope = 'Process'
     }
 
     if ($TenantId) {
@@ -161,18 +180,6 @@ function Connect-CopilotGraph {
             $connectParameters = $commonParameters.Clone()
             $connectParameters['ClientId'] = $ClientId
             $connectParameters['CertificateThumbprint'] = $CertificateThumbprint
-            Connect-MgGraph @connectParameters | Out-Null
-        }
-        'Interactive' {
-            $connectParameters = $commonParameters.Clone()
-            $connectParameters['Scopes'] = @(
-                'User.Read.All',
-                'Reports.Read.All',
-                'AiEnterpriseInteraction.Read.All'
-            )
-            if ($ClientId) {
-                $connectParameters['ClientId'] = $ClientId
-            }
             Connect-MgGraph @connectParameters | Out-Null
         }
     }
@@ -536,24 +543,72 @@ function Get-CopilotLicenseInfo {
         [object]$User,
 
         [Parameter(Mandatory = $true)]
-        [hashtable]$TierMap
+        [hashtable]$TierMap,
+
+        [Parameter(Mandatory = $true)]
+        [string[]]$ServicePlans,
+
+        [Parameter(Mandatory = $true)]
+        [hashtable]$SkuDetailsById
     )
 
-    $userId = Get-ObjectPropertyValue -InputObject $User -PropertyName 'id'
-    $licenseUri = "https://graph.microsoft.com/beta/users/$([System.Uri]::EscapeDataString($userId))/licenseDetails?`$select=skuId,skuPartNumber"
-    $licenseDetails = @(Get-GraphCollection -Uri $licenseUri)
-    $skuPartNumbers = @($licenseDetails | ForEach-Object { Get-ObjectPropertyValue -InputObject $_ -PropertyName 'skuPartNumber' } | Where-Object { $_ })
-    $copilotSkuPartNumbers = [System.Collections.Generic.List[string]]::new()
-    $tierCandidates = [System.Collections.Generic.List[string]]::new()
+    if (-not $User.PSObject.Properties['assignedLicenses'] -or -not $User.PSObject.Properties['assignedPlans']) {
+        throw 'Graph did not return assignedLicenses and assignedPlans; cannot determine Copilot eligibility.'
+    }
 
-    foreach ($skuPartNumber in $skuPartNumbers) {
-        if ($TierMap.ContainsKey($skuPartNumber)) {
-            $copilotSkuPartNumbers.Add($skuPartNumber)
-            $tierCandidates.Add($TierMap[$skuPartNumber])
+    $assignedLicenses = @(Get-CollectionPropertyValues -InputObject $User -PropertyNames @('assignedLicenses'))
+    $availableServicePlanIds = @(
+        Get-CollectionPropertyValues -InputObject $User -PropertyNames @('assignedPlans') |
+            Where-Object { (Get-ObjectPropertyValue -InputObject $_ -PropertyName 'capabilityStatus') -in @('Enabled', 'Warning') } |
+            ForEach-Object { [string](Get-ObjectPropertyValue -InputObject $_ -PropertyName 'servicePlanId') } |
+            Where-Object { $_ }
+    )
+    $skuPartNumbers = [System.Collections.Generic.List[string]]::new()
+    $copilotSkuPartNumbers = [System.Collections.Generic.List[string]]::new()
+
+    foreach ($assignedLicense in $assignedLicenses) {
+        $skuId = [string](Get-ObjectPropertyValue -InputObject $assignedLicense -PropertyName 'skuId')
+        if ([string]::IsNullOrWhiteSpace($skuId) -or -not $SkuDetailsById.ContainsKey($skuId)) {
+            throw ("Graph did not return subscribed SKU metadata for assigned SKU '{0}'; cannot determine Copilot eligibility." -f $skuId)
         }
-        elseif ($skuPartNumber -match '(?i)copilot') {
+
+        $skuDetail = $SkuDetailsById[$skuId]
+        $skuPartNumber = [string](Get-ObjectPropertyValue -InputObject $skuDetail -PropertyName 'skuPartNumber')
+        if ([string]::IsNullOrWhiteSpace($skuPartNumber)) {
+            throw ("Graph did not return a SKU part number for assigned SKU '{0}'." -f $skuId)
+        }
+
+        $skuPartNumbers.Add($skuPartNumber)
+        $disabledPlanIds = @(Get-CollectionPropertyValues -InputObject $assignedLicense -PropertyNames @('disabledPlans'))
+        $servicePlanItems = @(Get-CollectionPropertyValues -InputObject $skuDetail -PropertyNames @('servicePlans'))
+        $grantsCopilot = $false
+
+        if ($servicePlanItems.Count -gt 0) {
+            foreach ($servicePlan in $servicePlanItems) {
+                $servicePlanId = [string](Get-ObjectPropertyValue -InputObject $servicePlan -PropertyName 'servicePlanId')
+                $servicePlanName = [string](Get-ObjectPropertyValue -InputObject $servicePlan -PropertyName 'servicePlanName')
+                $isCopilotServicePlan = ($ServicePlans -contains $servicePlanId) -or ($ServicePlans -contains $servicePlanName)
+
+                if ($isCopilotServicePlan -and
+                    ($availableServicePlanIds -contains $servicePlanId) -and
+                    ($disabledPlanIds -notcontains $servicePlanId)) {
+                    $grantsCopilot = $true
+                    break
+                }
+            }
+        }
+        elseif ($TierMap.ContainsKey($skuPartNumber) -and ([string]$TierMap[$skuPartNumber] -ieq 'Premium')) {
+            # A SKU fallback must not override a disabled or unavailable user plan.
+            foreach ($servicePlanId in $availableServicePlanIds) {
+                if (($ServicePlans -contains $servicePlanId) -and ($disabledPlanIds -notcontains $servicePlanId)) {
+                    $grantsCopilot = $true
+                    break
+                }
+            }
+        }
+
+        if ($grantsCopilot) {
             $copilotSkuPartNumbers.Add($skuPartNumber)
-            $tierCandidates.Add('Unknown')
         }
     }
 
@@ -561,18 +616,10 @@ function Get-CopilotLicenseInfo {
         return $null
     }
 
-    $tier = 'Unknown'
-    if ($tierCandidates -contains 'Premium') {
-        $tier = 'Premium'
-    }
-    elseif ($tierCandidates -contains 'Basic') {
-        $tier = 'Basic'
-    }
-
     return [pscustomobject]@{
-        Tier = $tier
+        Tier = 'Premium'
         Licenses = (ConvertTo-DelimitedText -Values $copilotSkuPartNumbers.ToArray())
-        AllLicenses = (ConvertTo-DelimitedText -Values $skuPartNumbers)
+        AllLicenses = (ConvertTo-DelimitedText -Values $skuPartNumbers.ToArray())
     }
 }
 
@@ -788,8 +835,6 @@ function Get-EnterpriseInteractionsForUser {
         [datetime]$ToDate
     )
 
-    # NOTE: The docs only show $filter support for appClass, not createdDateTime.
-    # We first try without a date filter. Client-side date filtering is applied after retrieval.
     $escapedUserId = [System.Uri]::EscapeDataString($UserId)
     $uri = "https://graph.microsoft.com/beta/copilot/users/$escapedUserId/interactionHistory/getAllEnterpriseInteractions?`$top=100"
 
@@ -957,7 +1002,6 @@ function New-UsageByAppFeatureDayRows {
                 totalInteractions = 0
                 userIds = @{}
                 premiumUserIds = @{}
-                basicUserIds = @{}
             }
         }
 
@@ -983,9 +1027,6 @@ function New-UsageByAppFeatureDayRows {
             if ($copilotTier -ieq 'Premium') {
                 $group.premiumUserIds[$userKey] = $true
             }
-            elseif ($copilotTier -ieq 'Basic') {
-                $group.basicUserIds[$userKey] = $true
-            }
         }
     }
 
@@ -1001,7 +1042,6 @@ function New-UsageByAppFeatureDayRows {
             responseCount = $group.responseCount
             totalInteractions = $group.totalInteractions
             premiumUsers = $group.premiumUserIds.Keys.Count
-            basicUsers = $group.basicUserIds.Keys.Count
         })
     }
 
@@ -1031,15 +1071,32 @@ $errorsPath = Join-Path -Path $OutputDirectory -ChildPath 'Errors.csv'
 Assert-GraphAuthenticationModule
 Connect-CopilotGraph -AuthenticationMode $PSCmdlet.ParameterSetName
 
+Write-Host 'Scope: only users with an eligible Microsoft 365 Copilot license are exported. Copilot Chat (Basic) usage without that license is not collected.'
+
+$ignoredSkuMappings = @($SkuTierMap.Keys | Where-Object { [string]$SkuTierMap[$_] -ine 'Premium' })
+if ($ignoredSkuMappings.Count -gt 0) {
+    Write-Warning ("These -SkuTierMap entries are ignored because only Premium mappings are supported: {0}" -f ($ignoredSkuMappings -join ', '))
+}
+
+Write-Host 'Retrieving subscribed SKU and service plan metadata from Microsoft Graph...'
+$skuDetailsById = @{}
+foreach ($skuDetail in @(Get-GraphCollection -Uri 'https://graph.microsoft.com/v1.0/subscribedSkus?$select=skuId,skuPartNumber,servicePlans')) {
+    $skuId = [string](Get-ObjectPropertyValue -InputObject $skuDetail -PropertyName 'skuId')
+    if ([string]::IsNullOrWhiteSpace($skuId)) {
+        throw 'Graph returned a subscribed SKU without a SKU ID; cannot determine Copilot eligibility.'
+    }
+    $skuDetailsById[$skuId] = $skuDetail
+}
+
 $headers = $null
-$userQuery = "`$select=id,displayName,userPrincipalName&`$top=999"
+$userQuery = "`$select=id,displayName,userPrincipalName,assignedLicenses,assignedPlans&`$top=999"
 if (-not $IncludeAllUsers) {
     $headers = @{ ConsistencyLevel = 'eventual' }
     $assignedLicenseFilter = [System.Uri]::EscapeDataString('assignedLicenses/$count ne 0')
     $userQuery = "$userQuery&`$count=true&`$filter=$assignedLicenseFilter"
 }
 
-$directoryUsersUri = "https://graph.microsoft.com/beta/users?$userQuery"
+$directoryUsersUri = "https://graph.microsoft.com/v1.0/users?$userQuery"
 Write-Host 'Retrieving candidate users from Microsoft Graph...'
 $directoryUsers = @(Get-GraphCollection -Uri $directoryUsersUri -Headers $headers)
 
@@ -1048,8 +1105,13 @@ $interactionRows = [System.Collections.Generic.List[object]]::new()
 $errorRows = [System.Collections.Generic.List[object]]::new()
 $processedCopilotUsers = 0
 $examinedUsers = 0
+$skippedUsersWithoutCopilotLicense = 0
 
 foreach ($user in $directoryUsers) {
+    if ($MaxUsers -gt 0 -and $processedCopilotUsers -ge $MaxUsers) {
+        break
+    }
+
     $examinedUsers++
     $userId = Get-ObjectPropertyValue -InputObject $user -PropertyName 'id'
     $userPrincipalName = Get-ObjectPropertyValue -InputObject $user -PropertyName 'userPrincipalName'
@@ -1057,8 +1119,9 @@ foreach ($user in $directoryUsers) {
     Write-Progress -Activity 'Exporting Microsoft 365 Copilot interactions' -Status "Checking licenses for $userPrincipalName" -PercentComplete (($examinedUsers / [Math]::Max(1, $directoryUsers.Count)) * 100)
 
     try {
-        $licenseInfo = Get-CopilotLicenseInfo -User $user -TierMap $SkuTierMap
+        $licenseInfo = Get-CopilotLicenseInfo -User $user -TierMap $SkuTierMap -ServicePlans $CopilotServicePlans -SkuDetailsById $skuDetailsById
         if (-not $licenseInfo) {
+            $skippedUsersWithoutCopilotLicense++
             continue
         }
 
@@ -1082,9 +1145,6 @@ foreach ($user in $directoryUsers) {
             Start-Sleep -Milliseconds $DelayBetweenUserRequestsMilliseconds
         }
 
-        if ($MaxUsers -gt 0 -and $processedCopilotUsers -ge $MaxUsers) {
-            break
-        }
     }
     catch {
         # Try to extract the Graph error response body for better diagnostics
@@ -1174,8 +1234,7 @@ Export-CsvRows -Rows $usageByAppFeatureDayRows -Path $usageByAppFeatureDayPath -
     'promptCount',
     'responseCount',
     'totalInteractions',
-    'premiumUsers',
-    'basicUsers'
+    'premiumUsers'
 )
 Export-CsvRows -Rows ($errorRows.ToArray()) -Path $errorsPath -Columns @(
     'userId',
@@ -1188,6 +1247,7 @@ Export-CsvRows -Rows ($errorRows.ToArray()) -Path $errorsPath -Columns @(
     OutputDirectory = (Resolve-Path -Path $OutputDirectory).Path
     UsersExamined = $examinedUsers
     CopilotUsersProcessed = $processedCopilotUsers
+    UsersSkippedWithoutCopilotLicense = $skippedUsersWithoutCopilotLicense
     InteractionsExported = $interactionRows.Count
     Errors = $errorRows.Count
     UsersCsv = $usersPath
