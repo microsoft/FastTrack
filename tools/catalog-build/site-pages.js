@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-
+import { formatBytes } from './downloads.js';
 // Build-time generators for the static, shareable side of the site: one crawlable
 // page per resource (r/<slug>/), sitemap.xml, and an Atom feed. The interactive
 // catalog (index.html) stays the browsing experience; these pages exist so every
@@ -204,6 +204,12 @@ export function renderResourcePage(resource, { resources, repositoryRoot }) {
        <a class="btn" href="${escapeHtml(resource.url)}" target="_blank" rel="noopener">View on GitHub</a>`
     : `<a class="btn btn-primary" href="${escapeHtml(resource.url)}" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>`;
 
+  const downloadSize = formatBytes(resource.downloadSize);
+  const downloadButton = resource.download
+    ? `
+        <a class="btn" href="../../${encodePath(resource.download)}" download="${escapeHtml(resource.downloadName)}" data-event="resource_download" aria-label="Download ${escapeHtml(resource.downloadName)}${downloadSize ? ` (${downloadSize})` : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19h14"/></svg>Download${downloadSize ? `<span class="btn-size">${downloadSize}</span>` : ''}</a>`
+    : '';
+
   const relatedHtml = related.length ? `
     <section class="block related">
       <h2>Related resources</h2>
@@ -267,7 +273,7 @@ export function renderResourcePage(resource, { resources, repositoryRoot }) {
       <h1>${escapeHtml(resource.title)}</h1>
       <p class="lede">${escapeHtml(resource.summary)}</p>
       <div class="actions">
-        ${primary}
+        ${primary}${downloadButton}
         <button class="btn" id="copyLink" type="button" data-url="${canonical}">Copy link</button>
       </div>
       ${tagLinks ? `<div class="tags">${tagLinks}</div>` : ''}

@@ -68,6 +68,7 @@ h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.15; letter-spacing:
 .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font: inherit; font-size: 0.9375rem; font-weight: 600; cursor: pointer; }
 .btn:hover { text-decoration: none; background: var(--surface-hover); }
 .btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn-size { font-weight: 400; color: var(--text-muted); }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent); filter: brightness(1.08); }
 [data-theme="dark"] .btn-primary { color: #14141a; }
