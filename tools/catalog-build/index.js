@@ -4,7 +4,7 @@ import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import * as yaml from 'js-yaml';
-import { renderFeed, renderResourcePage, renderSitemap, resourcePath } from './site-pages.js';
+import { renderDownloadPage, renderFeed, renderResourcePage, renderSitemap, resourcePath } from './site-pages.js';
 import { downloadName, fileExists, findDownloadFile } from './downloads.js';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
@@ -283,6 +283,10 @@ function writeSiteOutputs(sortedResources) {
     const directory = join(pagesDirectory, resource.slug);
     mkdirSync(directory, { recursive: true });
     writeFileSync(join(directory, 'index.html'), renderResourcePage(resource, { resources: sortedResources, repositoryRoot }));
+    if (resource.download) {
+      mkdirSync(join(directory, 'download'), { recursive: true });
+      writeFileSync(join(directory, 'download', 'index.html'), renderDownloadPage(resource));
+    }
   }
   writeFileSync(join(repositoryRoot, 'sitemap.xml'), renderSitemap(sortedResources));
   writeFileSync(join(repositoryRoot, 'feed.xml'), renderFeed(sortedResources));
@@ -298,6 +302,7 @@ if (errors.length > 0) {
   // Rendering every page in memory proves the templates cope with all current metadata.
   for (const resource of resources) {
     renderResourcePage(resource, { resources, repositoryRoot });
+    if (resource.download) renderDownloadPage(resource);
   }
   console.log(`Catalog metadata is valid for ${resources.length} resources.`);
 } else {

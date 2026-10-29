@@ -167,6 +167,31 @@ function section(title, body) {
   return body ? `<section class="block"><h2>${title}</h2>${body}</section>` : '';
 }
 
+function siteHeader(root) {
+  return `<header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="${root}" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="${root}">Catalog</a>
+        <a href="${REPO_URL}" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>`;
+}
+
+function siteFooter(root) {
+  return `<footer class="site-footer">
+    <div class="wrap">
+      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <p><a href="${root}">Browse the catalog</a> · <a href="${REPO_URL}/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="${REPO_URL}/issues" target="_blank" rel="noopener">Issues</a> · <a href="${REPO_URL}/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>`;
+}
+
 export function renderResourcePage(resource, { resources, repositoryRoot }) {
   const slug = resource.slug;
   const canonical = `${SITE_URL}${resourcePath(resource)}`;
@@ -207,7 +232,7 @@ export function renderResourcePage(resource, { resources, repositoryRoot }) {
   const downloadSize = formatBytes(resource.downloadSize);
   const downloadButton = resource.download
     ? `
-        <a class="btn" href="../../${encodePath(resource.download)}" download="${escapeHtml(resource.downloadName)}" data-event="resource_download" aria-label="Download ${escapeHtml(resource.downloadName)}${downloadSize ? ` (${downloadSize})` : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19h14"/></svg>Download${downloadSize ? `<span class="btn-size">${downloadSize}</span>` : ''}</a>`
+        <a class="btn" href="download/" aria-label="Download ${escapeHtml(resource.downloadName)}${downloadSize ? ` (${downloadSize})` : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19h14"/></svg>Download${downloadSize ? `<span class="btn-size">${downloadSize}</span>` : ''}</a>`
     : '';
 
   const relatedHtml = related.length ? `
@@ -249,19 +274,7 @@ export function renderResourcePage(resource, { resources, repositoryRoot }) {
   <script type="application/ld+json">${jsonLd(resource)}</script>
 </head>
 <body class="type-${escapeHtml(resource.type)}">
-  <header class="site-header">
-    <div class="wrap bar">
-      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
-        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
-        Microsoft FastTrack
-      </a>
-      <nav class="bar-links" aria-label="Site">
-        <a href="../../">Catalog</a>
-        <a href="${REPO_URL}" target="_blank" rel="noopener">GitHub</a>
-        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
-      </nav>
-    </div>
-  </header>
+  ${siteHeader('../../')}
 
   <main class="wrap">
     <nav class="crumbs" aria-label="Breadcrumb">
@@ -300,13 +313,61 @@ ${archived ? '\n    <p class="notice">This resource is archived and kept for ref
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap">
-      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
-      <p><a href="../../">Browse the catalog</a> · <a href="${REPO_URL}/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="${REPO_URL}/issues" target="_blank" rel="noopener">Issues</a> · <a href="${REPO_URL}/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
-    </div>
-  </footer>
+  ${siteFooter('../../')}
   <script src="../../assets/resource-page.js" data-clarity="${CLARITY_ID}" defer></script>
+</body>
+</html>
+`;
+}
+
+// The Download button opens this page, so every download is a countable page load that
+// reaches resource-stats.json through the Clarity URL export. It starts the file download
+// by itself and always shows a link to the same file for when scripts are blocked.
+export function renderDownloadPage(resource) {
+  const slug = resource.slug;
+  const canonical = `${SITE_URL}${resourcePath(resource)}`;
+  const size = formatBytes(resource.downloadSize);
+  const fileHref = `../../../${encodePath(resource.download)}`;
+  const title = `Download ${resource.downloadName} | Microsoft FastTrack`;
+
+  return `<!DOCTYPE html>
+<html lang="en" data-download-slug="${escapeHtml(slug)}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(title)}</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="${canonical}">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../../assets/resource-page.css">
+</head>
+<body class="type-${escapeHtml(resource.type)}">
+  ${siteHeader('../../../')}
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../../">Catalog</a><span aria-hidden="true">/</span><a href="../">${escapeHtml(resource.title)}</a><span aria-hidden="true">/</span><span aria-current="page">Download</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Download</div>
+      <h1>Your download is starting</h1>
+      <p class="lede">${escapeHtml(resource.title)}: ${escapeHtml(resource.downloadName)}${size ? ` (${size})` : ''}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="${fileHref}" download="${escapeHtml(resource.downloadName)}" data-autodownload>Download again${size ? `<span class="btn-size">${size}</span>` : ''}</a>
+        <a class="btn" href="../">Back to ${escapeHtml(resource.title)}</a>
+      </div>
+      <p class="fine">If the file does not save automatically, select <strong>Download again</strong>. Provided as-is under the <a href="${REPO_URL}/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a>; review it before you use it in your tenant.</p>
+    </section>
+  </main>
+
+  ${siteFooter('../../../')}
+  <script src="../../../assets/resource-page.js" data-clarity="${CLARITY_ID}" defer></script>
 </body>
 </html>
 `;
