@@ -22,7 +22,7 @@ This file captures only selected high-level milestones.
 * Added a shareable page for every resource; archived resources are now hidden by default; added an Agent 365 highlight row (driven by the `agent-365` tag) and "New" badges to the landing page.
 * Cataloged 23 previously unlisted scripts, snippets, and samples (Viva Engage administration, Teams Phone and Rooms, SimpleGraph, ESS extensions) and archived scripts that depend on retired modules or services.
 * Archived the prompt samples and removed a 41 MB archived demo video.
-* Added issue forms, a refreshed pull request template, and a manual traffic collection command.
+* The daily **Collect Traffic Data** workflow no longer collects GitHub repository traffic (views, clones, referrers), which needs a token that expires every few days under organization policy. It skips that step with a notice and keeps collecting Clarity page analytics and discussion votes. Set the repository variable `COLLECT_GITHUB_TRAFFIC` to `true` and replace `TRAFFIC_TOKEN` to resume.
 
 ### April 20, 2018
 
