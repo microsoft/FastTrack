@@ -1,7 +1,14 @@
 import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { replaceClarityDays, slugFromClarityUrl, unchangedStatsPayload } from './stats-state.js';
+import {
+  collectClarityTotals,
+  numberFrom,
+  parseClarityTraffic,
+  replaceClarityDays,
+  subtractClarityTotals,
+  unchangedStatsPayload
+} from './stats-state.js';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(toolDirectory, '..', '..');
@@ -30,11 +37,6 @@ function readOptionalJson(path, fallback) {
     console.warn(`Warning: could not read ${path}: ${error.message}`);
     return fallback;
   }
-}
-
-function numberFrom(value) {
-  const number = typeof value === 'string' && value.trim() !== '' ? Number(value) : value;
-  return Number.isFinite(number) && number >= 0 ? number : undefined;
 }
 
 function logicalRepoPath(pathname) {
@@ -98,67 +100,6 @@ function collectFallbackViews(resourceFolders) {
   return totals;
 }
 
-function dateFromClarityRow(row) {
-  const value = row.date ?? row.Date ?? row.day ?? row.Day;
-  if (typeof value !== 'string') return undefined;
-  const match = value.match(/^\d{4}-\d{2}-\d{2}/);
-  return match?.[0];
-}
-
-function metricsFromClarityRow(row) {
-  const explicitViews = numberFrom(
-    row.pageViews ?? row.pageviews ?? row.PageViews ?? row.views ??
-    row.totalScreenCount ?? row.visitsCount
-  );
-  const sessions = numberFrom(row.totalSessionCount ?? row.sessions ?? row.sessionCount);
-  const pagesPerSession = numberFrom(
-    row.pagesPerSession ?? row.PagesPerSession ?? row.PagesPerSessionPercentage
-  );
-  const views = explicitViews ?? (
-    sessions !== undefined && pagesPerSession !== undefined
-      ? sessions * pagesPerSession
-      : sessions
-  );
-  const uniques = numberFrom(
-    row.distinctUserCount ?? row.distantUserCount ?? row.uniqueUserCount ??
-    row.uniqueUsers ?? row.users
-  );
-  return {
-    ...(views !== undefined ? { views: Math.round(views) } : {}),
-    ...(uniques !== undefined ? { uniques: Math.round(uniques) } : {})
-  };
-}
-
-function parseClarityTraffic(data, knownSlugs) {
-  const traffic = Array.isArray(data)
-    ? data.find(metric => metric?.metricName === 'Traffic')
-    : undefined;
-  if (!traffic || !Array.isArray(traffic.information)) {
-    throw new Error('Clarity response did not include the Traffic metric');
-  }
-  const totals = new Map();
-  const dated = new Map();
-
-  for (const row of traffic.information) {
-    const slug = slugFromClarityUrl(row.URL ?? row.Url ?? row.url, knownSlugs);
-    if (!slug) continue;
-    const metrics = metricsFromClarityRow(row);
-    if (metrics.views === undefined) continue;
-
-    const date = dateFromClarityRow(row);
-    const target = date
-      ? (dated.get(date) ?? new Map())
-      : totals;
-    const current = target.get(slug) ?? { views: 0 };
-    current.views += metrics.views;
-    if (metrics.uniques !== undefined) current.uniques = (current.uniques ?? 0) + metrics.uniques;
-    target.set(slug, current);
-    if (date) dated.set(date, target);
-  }
-
-  return { totals, dated };
-}
-
 async function fetchClarity(days, knownSlugs) {
   const url = new URL('https://www.clarity.ms/export-data/api/v1/project-live-insights');
   url.searchParams.set('numOfDays', String(days));
@@ -171,25 +112,6 @@ async function fetchClarity(days, knownSlugs) {
   });
   if (!response.ok) throw new Error(`Clarity returned ${response.status}`);
   return parseClarityTraffic(await response.json(), knownSlugs);
-}
-
-function subtractClarityTotals(larger, smaller) {
-  const result = new Map();
-  for (const [slug, metrics] of larger) {
-    const previous = smaller.get(slug);
-    const views = metrics.views - (previous?.views ?? 0);
-    if (views < 0) {
-      console.warn(`Warning: Clarity returned a negative window difference for ${slug}; skipping it.`);
-      continue;
-    }
-    const entry = { views: Math.round(views) };
-    if (metrics.uniques !== undefined && previous?.uniques !== undefined) {
-      const uniques = metrics.uniques - previous.uniques;
-      if (uniques >= 0) entry.uniques = Math.round(uniques);
-    }
-    result.set(slug, entry);
-  }
-  return result;
 }
 
 function setActionOutput(name, value) {
@@ -234,24 +156,6 @@ async function updateClarityState(state, knownSlugs) {
     console.warn(`Warning: could not collect Clarity views: ${error.message}`);
     return { available: false, changed: false };
   }
-}
-
-function collectClarityViews(state, knownSlugs) {
-  const totals = new Map();
-  for (const bucket of Object.values(state.days)) {
-    if (!bucket || typeof bucket !== 'object') continue;
-    for (const [slug, metrics] of Object.entries(bucket)) {
-      if (!knownSlugs.has(slug) || !metrics || typeof metrics !== 'object') continue;
-      const views = numberFrom(metrics.views);
-      if (views === undefined) continue;
-      const total = totals.get(slug) ?? { views: 0 };
-      total.views += Math.round(views);
-      const uniques = numberFrom(metrics.uniques);
-      if (uniques !== undefined) total.viewsUniques = (total.viewsUniques ?? 0) + Math.round(uniques);
-      totals.set(slug, total);
-    }
-  }
-  return totals;
 }
 
 async function githubGraphql(query, variables) {
@@ -382,7 +286,7 @@ const clarityState = readOptionalJson(clarityStatePath, { lastRun: '', days: {} 
 if (!clarityState.days || typeof clarityState.days !== 'object') clarityState.days = {};
 
 const clarityResult = await updateClarityState(clarityState, knownSlugs);
-const clarityViews = collectClarityViews(clarityState, knownSlugs);
+const clarityViews = collectClarityTotals(clarityState, knownSlugs);
 const fallbackViews = collectFallbackViews(resourceFolders);
 const discussionResult = await collectDiscussions();
 const upvoteTotals = discussionResult.available
@@ -390,6 +294,7 @@ const upvoteTotals = discussionResult.available
   : previousUpvotes(previousStats, knownSlugs);
 const resources = {};
 let viewCount = 0;
+let downloadCount = 0;
 let upvoteCount = 0;
 
 for (const resource of catalog.resources) {
@@ -399,10 +304,18 @@ for (const resource of catalog.resources) {
 
   // Clarity is authoritative once it has a nonzero cumulative total; legacy GitHub
   // path traffic only prevents existing resources from losing views during migration.
-  const views = clarity?.views > 0 ? clarity : fallback;
+  const views = clarity?.views > 0
+    ? { views: clarity.views, ...(clarity.viewsUniques !== undefined ? { viewsUniques: clarity.viewsUniques } : {}) }
+    : fallback;
   if (views) {
     Object.assign(stats, views);
     viewCount += 1;
+  }
+
+  // Loads of the counted download page (r/<slug>/download/).
+  if (clarity?.downloads > 0) {
+    stats.downloads = clarity.downloads;
+    downloadCount += 1;
   }
 
   const upvotes = upvoteTotals.get(resource.slug);
@@ -417,6 +330,7 @@ for (const resource of catalog.resources) {
 const payload = {
   sources: {
     views: 'clarity',
+    downloads: 'clarity',
     upvotes: 'github-discussions'
   },
   resources
@@ -437,7 +351,7 @@ if (!checkOnly) {
   }
 }
 
-console.log(`${checkOnly ? 'Checked' : 'Wrote'} real stats for ${viewCount} resource${viewCount === 1 ? '' : 's'} with views and ${upvoteCount} resource${upvoteCount === 1 ? '' : 's'} with upvotes.`);
+console.log(`${checkOnly ? 'Checked' : 'Wrote'} real stats for ${viewCount} resource${viewCount === 1 ? '' : 's'} with views, ${downloadCount} with downloads and ${upvoteCount} resource${upvoteCount === 1 ? '' : 's'} with upvotes.`);
 
 setActionOutput('generated', 'true');
 setActionOutput('clarity_available', String(clarityResult.available));

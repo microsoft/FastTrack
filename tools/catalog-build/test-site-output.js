@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderFeed, renderMarkdown, renderResourcePage, renderSitemap } from './site-pages.js';
+import { renderDownloadPage, renderFeed, renderMarkdown, renderResourcePage, renderSitemap } from './site-pages.js';
 
 // Guards the static resource pages (escaping, status handling, sitemap/feed) and the
 // landing-page behaviors that must not regress (archived hidden, no hard-coded counts).
@@ -65,13 +65,23 @@ for (const id of ['strategy', 'agent', 'analytics', 'script']) {
 assert(/const HIGHLIGHT = \{\s*tag: '[a-z0-9-]+'/.test(indexSource), 'index.html must define the HIGHLIGHT tag.');
 assert(!/id="spotlight"/.test(indexSource), 'The hand-written spotlight must not return.');
 
-// 7. Download buttons: only resources with a derived file get one, and clicks are tracked.
+// 7. Download buttons: only resources with a derived file get one, and it opens a counted page.
 const downloadable = { ...base, slug: 'dl', title: 'Download demo', download: 'scripts/demo/My Script.ps1', downloadName: 'My Script.ps1', downloadSize: 2048 };
 const downloadPage = renderResourcePage(downloadable, context([downloadable]));
-assert(downloadPage.includes('href="../../scripts/demo/My%20Script.ps1"'), 'The Download link must point at the encoded file path.');
-assert(downloadPage.includes('download="My Script.ps1"') && downloadPage.includes('data-event="resource_download"'), 'The Download link must name the file and fire the Clarity event.');
-assert(downloadPage.includes('<span class="btn-size">2 KB</span>'), 'The Download link must show the file size.');
-assert(!page.includes('resource_download'), 'A resource without a download file must not render the button.');
+assert(downloadPage.includes('<a class="btn" href="download/" aria-label="Download My Script.ps1 (2 KB)">'), 'The Download button must open the counted download page.');
+assert(downloadPage.includes('<span class="btn-size">2 KB</span>'), 'The Download button must show the file size.');
+assert(!downloadPage.includes('My%20Script.ps1'), 'The resource page must not link the file directly, or the download would not be counted.');
+assert(!page.includes('href="download/"'), 'A resource without a download file must not render the button.');
+
+const counted = renderDownloadPage(downloadable);
+assert(counted.includes('data-download-slug="dl"') && !counted.includes('data-slug='), 'The download page must identify itself as a download, not a resource view.');
+assert(counted.includes('href="../../../scripts/demo/My%20Script.ps1" download="My Script.ps1" data-autodownload'), 'The download page must save the encoded file under its name.');
+assert(counted.includes('name="robots" content="noindex"') && counted.includes('rel="canonical" href="https://microsoft.github.io/FastTrack/r/dl/"'), 'The download page must be noindex and point at the resource page.');
+assert(counted.includes('href="../">Back to Download demo</a>') && counted.includes('src="../../../assets/resource-page.js" data-clarity='), 'The download page must link back and load the shared script from three levels down.');
+assert(!/https:\/\/microsoft\.github\.io\/FastTrack\/r\/dl\/download/.test(renderSitemap([downloadable]) + renderFeed([downloadable])), 'Download pages must stay out of the sitemap and feed.');
+
+const resourcePageScript = readFileSync(join(toolDirectory, '..', '..', 'assets', 'resource-page.js'), 'utf8');
+assert(resourcePageScript.includes("'resource_download'") && resourcePageScript.includes('data-autodownload'), 'The shared script must record the download and start it.');
 
 const catalogResources = JSON.parse(readFileSync(join(toolDirectory, '..', '..', 'catalog.json'), 'utf8')).resources;
 const bySlug = slug => catalogResources.find(resource => resource.slug === slug);
@@ -79,6 +89,7 @@ assert(bySlug('agent-365-enablement-checklist')?.downloadName === 'agent-365-ena
 assert(bySlug('microsoft-agent-365-technical-advisory')?.downloadName === 'Agent-365-Technical-Advisory.pdf', 'The advisory must download its PDF.');
 assert(catalogResources.filter(resource => resource.status === 'archived').every(resource => !resource.download), 'Archived resources must not offer a download.');
 assert(catalogResources.filter(resource => ['bundle', 'declarative', 'md'].includes(resource.format)).every(resource => !resource.download), 'Bundles, declarative agents and Markdown resources must not offer a download.');
-assert(indexSource.includes('btnDetailDownload') && indexSource.includes("'resource_download'"), 'index.html must render the Download button and track it in Clarity.');
+assert(/btnDetailDownload/.test(indexSource) && indexSource.includes('/download/`'), 'index.html must send the Download button to the counted download page.');
+assert(!/id="btnDetailDownload"[^>]*\sdownload[\s>]/.test(indexSource), 'The landing Download button must not link the file directly.');
 
 console.log('Static resource pages and landing-page guards are valid.');

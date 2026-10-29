@@ -29,6 +29,7 @@
   }
 
   // Same Clarity project and event names as the catalog so per-resource view stats keep working.
+  var downloadSlug = document.documentElement.getAttribute('data-download-slug');
   var clarityId = script && script.getAttribute('data-clarity');
   if (clarityId) {
     (function (c, l, a, r, i, t, y) {
@@ -40,9 +41,20 @@
       window.clarity('set', 'page', location.pathname);
       window.clarity('set', 'resource', slug);
       window.clarity('event', 'resource_view');
+    } else if (downloadSlug) {
+      // Loading this page is what counts as a download: the stats read its URL from Clarity.
+      window.clarity('set', 'page', location.pathname);
+      window.clarity('set', 'resource', downloadSlug);
+      window.clarity('event', 'resource_download');
     }
     document.querySelectorAll('[data-event]').forEach(function (element) {
       element.addEventListener('click', function () { window.clarity('event', element.getAttribute('data-event')); });
     });
+  }
+
+  // The download page saves the file by itself; its visible link covers blocked scripts.
+  var autoDownload = document.querySelector('[data-autodownload]');
+  if (autoDownload) {
+    setTimeout(function () { autoDownload.click(); }, 600);
   }
 })();

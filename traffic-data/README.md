@@ -6,7 +6,7 @@ branch so Clarity's three-day export window is preserved without daily pull requ
 
 **Files:**
 - `YYYY-MM-DD.json` — Full daily snapshot (views, clones, referrers, popular paths). Collection of these is paused; see below.
-- `clarity-views.json` — Accumulated Clarity page views per resource, the source of the view counts on the site.
+- `clarity-views.json` — Accumulated Clarity page views and downloads per resource, the source of the view and download counts in `resource-stats.json`. A download is a load of the resource's download page (`r/<slug>/download/`), which the Download button opens; it is never counted as a view.
 
 Data is collected daily at 06:00 UTC via GitHub Actions. Each Friday at 08:00
 `America/Chicago` (including daylight saving time), the workflow updates one

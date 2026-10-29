@@ -1572,7 +1572,7 @@
               View
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
             </button>
-            <a href="#" class="btn-secondary" id="btnDetailDownload" download style="display: none;">
+            <a href="#" class="btn-secondary" id="btnDetailDownload" style="display: none;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19h14"/></svg>
               Download <span id="detailDownloadSize" style="font-weight: 400; opacity: 0.75;"></span>
             </a>
@@ -2704,19 +2704,18 @@
         viewBtn.onclick = null;
       }
 
-      // Download button: only for resources with one self-sufficient file (see tools/catalog-build/downloads.js)
+      // Download button: only for resources with one self-sufficient file (see tools/catalog-build/downloads.js).
+      // It opens the resource's counted download page, which saves the file and records the download.
       const downloadBtn = document.getElementById('btnDetailDownload');
       if (resource.download) {
         const size = formatBytes(resource.downloadSize);
-        downloadBtn.href = resource.download.split('/').map(encodeURIComponent).join('/');
-        downloadBtn.setAttribute('download', resource.downloadName || '');
+        downloadBtn.href = `r/${encodeURIComponent(resource.slug)}/download/`;
         downloadBtn.setAttribute('aria-label', `Download ${resource.downloadName || resource.name}${size ? ` (${size})` : ''}`);
         document.getElementById('detailDownloadSize').textContent = size;
         downloadBtn.style.display = '';
       } else {
         downloadBtn.style.display = 'none';
         downloadBtn.removeAttribute('href');
-        downloadBtn.removeAttribute('download');
         downloadBtn.removeAttribute('aria-label');
         document.getElementById('detailDownloadSize').textContent = '';
       }
@@ -2807,10 +2806,6 @@
       if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
       return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     }
-
-    document.getElementById('btnDetailDownload').addEventListener('click', () => {
-      if (typeof window.clarity !== 'undefined') { window.clarity('event', 'resource_download'); }
-    });
 
     function openViewer(name, url) {
       const overlay = document.getElementById('viewerOverlay');

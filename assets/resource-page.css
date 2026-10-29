@@ -69,6 +69,9 @@ h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.15; letter-spacing:
 .btn:hover { text-decoration: none; background: var(--surface-hover); }
 .btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .btn-size { font-weight: 400; color: var(--text-muted); }
+.btn-primary .btn-size { color: inherit; opacity: 0.85; }
+.fine { margin-top: 1.25rem; font-size: 0.875rem; color: var(--text-muted); max-width: 46rem; }
+.fine a { text-decoration: underline; text-underline-offset: 2px; }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent); filter: brightness(1.08); }
 [data-theme="dark"] .btn-primary { color: #14141a; }
