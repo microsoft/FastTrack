@@ -91,8 +91,13 @@ jobs:
         run: npm ci
         working-directory: tools/catalog-build
 
+      # GitHub repository traffic (views, clones, referrers) is paused: it needs a token that
+      # expires every few days under organization policy, and the site's page analytics come
+      # from Clarity. Set the repository variable COLLECT_GITHUB_TRAFFIC to "true" and replace
+      # the TRAFFIC_TOKEN secret to resume.
       - name: Collect and persist GitHub traffic data
         id: github-traffic
+        if: ${{ vars.COLLECT_GITHUB_TRAFFIC == 'true' }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
@@ -271,6 +276,10 @@ jobs:
             }' > "$DATA_DIR/$DATE.json"
 
           echo "✅ Saved $DATA_DIR/$DATE.json"
+
+      - name: Note that GitHub traffic collection is paused
+        if: ${{ vars.COLLECT_GITHUB_TRAFFIC != 'true' }}
+        run: echo "::notice::GitHub repository traffic collection is paused. Page analytics come from Clarity. To resume, set the repository variable COLLECT_GITHUB_TRAFFIC to true and replace the TRAFFIC_TOKEN secret."
 
       - name: Build resource stats
         id: stats
