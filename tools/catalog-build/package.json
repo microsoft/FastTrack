@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "node index.js",
-    "check": "node index.js --check && node test-internal-links.js && node test-traffic-workflow.js && node test-category-filtering.js && node test-site-output.js && node test-stats-state.js && node test-traffic-git-integration.js",
+    "check": "node index.js --check && node test-internal-links.js && node test-agent365-sync.js && node test-traffic-workflow.js && node test-category-filtering.js && node test-site-output.js && node test-stats-state.js && node test-traffic-git-integration.js",
     "check:links": "node test-internal-links.js",
+    "check:agent365": "node test-agent365-sync.js",
+    "freshness:agent365": "node agent365-freshness.js",
     "check:traffic-workflow": "node test-traffic-workflow.js",
     "check:category-filtering": "node test-category-filtering.js",
     "check:site": "node test-site-output.js",

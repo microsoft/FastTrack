@@ -32,3 +32,21 @@ GitHub Pages serves the generated files that are committed to `master`, so inclu
 After the pull request merges, Pages redeploys on its own. The **Build catalog** run on `master` then rebuilds and checks the generated files. The repository blocks GitHub Actions from pushing to `master` or opening pull requests, so the run does not try. If it reports **Generated files are out of date** in its summary, run the commands above on an up-to-date checkout and open a pull request with the result.
 
 Daily traffic collection and the weekly traffic pull request are separate. See [`traffic-data/README.md`](../../traffic-data/README.md).
+
+## Agent 365 guide and checklist
+
+The [Enablement Checklist](../../copilot-agent-strategy/agent-365-enablement-checklist/) names the section or step of the [Customer Implementation Guide](../../copilot-agent-strategy/agent-365-customer-implementation-guide/) behind most of its tasks (for example `04 Microsoft Purview, 4.04a`). Two checks keep the pair accurate. Neither one edits content.
+
+- **On every pull request** (`npm run check:agent365`, part of `npm run check`): every guide reference in the checklist must resolve to a section or step that exists in the guide. Renumbering or removing a guide step, or mistyping a reference, fails the check and names the checklist tasks affected. It also lists guide steps that no checklist task points at, for information.
+- **Every Monday** (`.github/workflows/agent365-freshness.yml`): reads both files, checks every Microsoft Learn link they cite, and opens or updates one issue labeled `agent-365-freshness` when something needs a look. It reports broken links, links that moved (with the new address), Learn pages that changed after each file was last reviewed, a review older than 30 days, and a guide that is newer than the checklist review. The issue closes itself when everything is clear.
+
+Run the report on demand with `npm run freshness:agent365` (add `-- --offline` to skip the Learn requests), or start the workflow from the Actions tab.
+
+Each file records its last review in one place, and the next run measures from that date:
+
+| File | Review date |
+| --- | --- |
+| Checklist | `CONTENT_REVIEWED` in `index.html` |
+| Guide | `updated` in its README front matter |
+
+Set these only after you have actually reviewed the content. Bumping the guide's `updated` date without a review clears its Learn changes from the report.
