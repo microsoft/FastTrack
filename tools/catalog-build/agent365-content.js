@@ -322,7 +322,8 @@ export function loadGuide() {
 
 export function loadChecklist() {
   const source = readFileSync(join(checklistFolder, 'index.html'), 'utf8');
-  return { ...parseChecklist(source), source };
+  const readme = matter(readFileSync(join(checklistFolder, 'README.md'), 'utf8')).data;
+  return { ...parseChecklist(source), readmeVersion: String(readme.version ?? ''), source };
 }
 
 // These floors exist so that a change to either file's format cannot silently turn the checks
@@ -336,5 +337,9 @@ export function assertParsed(guide, checklist) {
   if (!checklist.tasks.some(task => task.deep)) problems.push('Found no guide references in the checklist.');
   if (!checklist.reviewed) problems.push('Found no CONTENT_REVIEWED date in the checklist.');
   if (!guide.reviewed) problems.push('Found no guide review date in tools/catalog-build/agent365-sync-state.json.');
-  if (problems.length) throw new Error(`Agent 365 guide or checklist format changed:\n- ${problems.join('\n- ')}`);
+  // The version people see inside the checklist (Help page, report footer, exports) must be the catalog version.
+  if (checklist.readmeVersion !== undefined && checklist.version !== checklist.readmeVersion) {
+    problems.push(`The checklist shows version "${checklist.version}" in the app (CONTENT_VERSION) but its README version is "${checklist.readmeVersion}". Keep them equal.`);
+  }
+  if (problems.length) throw new Error(`Agent 365 guide or checklist needs attention:\n- ${problems.join('\n- ')}`);
 }
