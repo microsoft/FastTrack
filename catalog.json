@@ -1,7 +1,96 @@
 {
-  "generatedAt": "2026-09-28",
-  "count": 33,
+  "generatedAt": "2026-10-29",
+  "count": 58,
   "resources": [
+    {
+      "name": "Add-EngageGroupAdmins",
+      "title": "Add-EngageGroupAdmins",
+      "slug": "add-engagegroupadmins",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Bulk-add owners (admins) to Viva Engage communities from a CSV by using the Microsoft Graph group owners API.",
+      "summary": "Bulk-add owners (admins) to Viva Engage communities from a CSV by using the Microsoft Graph group owners API.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "communities",
+        "microsoft-graph"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Add-EngageGroupAdmins/Add-EngageGroupAdmins.ps1",
+      "downloadName": "Add-EngageGroupAdmins.ps1",
+      "downloadSize": 6669,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-06-23",
+      "updated": "2026-07-22",
+      "whatItIs": "A PowerShell sample that reads a CSV of Microsoft 365 group IDs and user email addresses and adds each user as an owner of the group behind a Viva Engage community by calling Microsoft Graph. Group owners are treated as admins of the associated community.",
+      "whyUseIt": [
+        "Add community admins in bulk instead of one community at a time.",
+        "Uses the documented Microsoft Graph group owners API with app-only authentication and waits and retries when Graph throttles requests.",
+        "Prints a success or failure message for every CSV row."
+      ],
+      "howToUse": "1. Create a Microsoft Entra app registration with the Microsoft Graph `Group.ReadWrite.All` application permission and grant admin consent.\n2. Create a CSV with a `GroupID` column (the Microsoft 365 group ID behind the community) and an `Email` column (the UPN of the user to make an admin).\n3. Set `$groupadminsCsvPath`, `$ClientId`, `$TenantId`, and `$ClientSecret` near the top of the script.\n4. Run:\n\n   ```powershell\n   .\\Add-EngageGroupAdmins.ps1\n   ```",
+      "prerequisites": [
+        "Microsoft Entra app registration with the Group.ReadWrite.All application permission and admin consent",
+        "CSV with GroupID and Email columns; GroupID is the Microsoft 365 group GUID, not the legacy numeric Yammer group ID"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Add-EngageGroupAdmins",
+      "source": "scripts/Add-EngageGroupAdmins/README.md",
+      "permalink": "r/add-engagegroupadmins/"
+    },
+    {
+      "name": "Agent 365 Enablement Checklist",
+      "title": "Agent 365 Enablement Checklist",
+      "slug": "agent-365-enablement-checklist",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.",
+      "summary": "A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.",
+      "tags": [
+        "agent-365",
+        "deployment",
+        "checklist",
+        "planning",
+        "governance"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": false,
+      "status": "active",
+      "interactiveKind": "tool",
+      "preview": "copilot-agent-strategy/agent-365-enablement-checklist/preview.webp",
+      "download": "copilot-agent-strategy/agent-365-enablement-checklist/index.html",
+      "downloadName": "agent-365-enablement-checklist.html",
+      "downloadSize": 682771,
+      "author": [
+        "Alejandro Lopez"
+      ],
+      "version": "1.0.2",
+      "published": "2026-10-28",
+      "updated": "2026-10-29",
+      "whatItIs": "A self-contained, offline tracker for planning and tracking a Microsoft Agent 365 enablement. It organizes the work into workstreams with role-based tasks, shows a readiness dashboard, and exports to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start your own.",
+      "whyUseIt": [
+        "Scope the plan by agent type, pillar, or feature so each team sees the tasks that apply to it.",
+        "Track every task through to the go-live baseline, with owners, dates, and notes, and watch readiness on the dashboard.",
+        "Share the plan with your steering group as an Excel workbook (a dashboard plus one sheet per workstream), a CSV task list for Planner, DevOps, or Jira, or a printable report.",
+        "Work entirely offline: it is a single file with no server, sign-in, tracking, or network requests."
+      ],
+      "howToUse": "1. Open `index.html` in a modern browser, or use the hosted copy from the catalog.\n2. Explore the sample plan, then start your own: set the customer name, deployment lead, sponsor, and go-live date.\n3. Scope the plan, then work through the tasks by workstream and role, marking status, owners, dates, and notes as you go.\n4. Export to Excel, CSV, or a JSON backup, or print or save a report. Your plan autosaves in your browser on that device, so use the JSON backup to move it or share it.",
+      "prerequisites": [
+        "Modern web browser",
+        "Appropriate Microsoft 365, Agent 365, security, compliance, identity, and endpoint licenses for the features you plan to enable",
+        "Administrative roles required by the tasks you choose to perform"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-enablement-checklist",
+      "source": "copilot-agent-strategy/agent-365-enablement-checklist/README.md",
+      "permalink": "r/agent-365-enablement-checklist/"
+    },
     {
       "name": "Agent 365 Lifecycle Atlas",
       "title": "Agent 365 Lifecycle Atlas",
@@ -19,12 +108,12 @@
       ],
       "artifact": "interactive",
       "format": "interactive",
-      "featured": true,
-      "status": "active",
+      "featured": false,
+      "status": "archived",
       "author": "Alejandro Lopez",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "published": "2026-09-10",
-      "updated": "2026-09-22",
+      "updated": "2026-10-28",
       "whatItIs": "A self-contained interactive architecture reference that maps how Microsoft Agent 365 discovers, identifies, governs, and observes agents across Microsoft and third-party platforms.",
       "whyUseIt": [
         "Follow five agent classes through build, connection, identity, packaging, runtime, and governance.",
@@ -38,7 +127,8 @@
         "Current Microsoft Learn documentation for implementation validation"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-lifecycle-atlas",
-      "source": "copilot-agent-strategy/agent-365-lifecycle-atlas/README.md"
+      "source": "copilot-agent-strategy/agent-365-lifecycle-atlas/README.md",
+      "permalink": "r/agent-365-lifecycle-atlas/"
     },
     {
       "name": "Agent Brainstorming Template",
@@ -58,6 +148,9 @@
       "format": "pptx",
       "featured": false,
       "status": "active",
+      "download": "copilot-agent-strategy/copilot-agent-brainstorm/Copilot Agent Brainstorming.pptx",
+      "downloadName": "Copilot Agent Brainstorming.pptx",
+      "downloadSize": 411079,
       "author": "Microsoft FastTrack",
       "version": "1.0.0",
       "published": "2025-06-18",
@@ -73,7 +166,8 @@
         "Microsoft PowerPoint or a compatible presentation editor"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-agent-brainstorm",
-      "source": "copilot-agent-strategy/copilot-agent-brainstorm/README.md"
+      "source": "copilot-agent-strategy/copilot-agent-brainstorm/README.md",
+      "permalink": "r/agent-brainstorming-template/"
     },
     {
       "name": "Agents Cost Calculator",
@@ -85,6 +179,7 @@
       "description": "Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.",
       "summary": "Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.",
       "tags": [
+        "agent-365",
         "cost",
         "roi",
         "calculator"
@@ -93,6 +188,9 @@
       "format": "interactive",
       "featured": true,
       "status": "active",
+      "download": "copilot-agent-strategy/copilot-agents-cost-tool/index.html",
+      "downloadName": "agents-cost-calculator.html",
+      "downloadSize": 72937,
       "author": "Georgi Nunev",
       "version": "2.0.0",
       "published": "2026-04-01",
@@ -109,7 +207,8 @@
         "Current licensing and pricing inputs for planning validation"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-agents-cost-tool",
-      "source": "copilot-agent-strategy/copilot-agents-cost-tool/README.md"
+      "source": "copilot-agent-strategy/copilot-agents-cost-tool/README.md",
+      "permalink": "r/agents-cost-calculator/"
     },
     {
       "name": "AI Council",
@@ -146,7 +245,8 @@
         "Copilot CLI plugin support"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-agents/Council",
-      "source": "copilot-agent-samples/github-copilot-agents/Council/README.md"
+      "source": "copilot-agent-samples/github-copilot-agents/Council/README.md",
+      "permalink": "r/ai-council/"
     },
     {
       "name": "Analyze-SharePointRisk",
@@ -181,7 +281,8 @@
         "SharePoint Advanced Management Site Permissions Report CSV"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Analyze-SharePointRisk",
-      "source": "scripts/Analyze-SharePointRisk/README.md"
+      "source": "scripts/Analyze-SharePointRisk/README.md",
+      "permalink": "r/analyze-sharepointrisk/"
     },
     {
       "name": "AutoReply Agent",
@@ -221,7 +322,8 @@
         "Exchange Online mailbox"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent",
-      "source": "copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent/README.md"
+      "source": "copilot-agent-samples/copilot-studio-agents/ca-AutoReplyAgent/README.md",
+      "permalink": "r/autoreply-agent/"
     },
     {
       "name": "CompareDocs",
@@ -254,7 +356,8 @@
         "Treat as historical guidance; validate current platform support before reuse"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-CompareDocs",
-      "source": "copilot-agent-samples/agent-builder-agents/da-CompareDocs/README.md"
+      "source": "copilot-agent-samples/agent-builder-agents/da-CompareDocs/README.md",
+      "permalink": "r/comparedocs/"
     },
     {
       "name": "Copilot Agents Guide",
@@ -266,6 +369,7 @@
       "description": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
       "summary": "Compare Microsoft Copilot agent approaches, availability, licensing, FastTrack scope, and common scenarios.",
       "tags": [
+        "agent-365",
         "guide",
         "decision",
         "planning"
@@ -275,6 +379,9 @@
       "featured": true,
       "status": "active",
       "interactiveKind": "guide",
+      "download": "copilot-agent-strategy/copilot-agents-guide/index.html",
+      "downloadName": "copilot-agents-guide.html",
+      "downloadSize": 210229,
       "author": "Microsoft FastTrack",
       "version": "4.0.1",
       "published": "2025-10-28",
@@ -290,7 +397,8 @@
         "Modern web browser"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-agents-guide",
-      "source": "copilot-agent-strategy/copilot-agents-guide/README.md"
+      "source": "copilot-agent-strategy/copilot-agents-guide/README.md",
+      "permalink": "r/copilot-agents-guide/"
     },
     {
       "name": "Copilot Analytics Reports Navigator",
@@ -313,6 +421,9 @@
       "status": "active",
       "interactiveKind": "guide",
       "preview": "copilot-analytics-samples/copilot-analytics-reports-navigator/preview.webp",
+      "download": "copilot-analytics-samples/copilot-analytics-reports-navigator/index.html",
+      "downloadName": "copilot-analytics-reports-navigator.html",
+      "downloadSize": 213362,
       "author": [
         "Alejandro Lopez"
       ],
@@ -331,7 +442,8 @@
         "Access to the products, roles, licenses, and data sources required by any report you choose to use"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-analytics-reports-navigator",
-      "source": "copilot-analytics-samples/copilot-analytics-reports-navigator/README.md"
+      "source": "copilot-analytics-samples/copilot-analytics-reports-navigator/README.md",
+      "permalink": "r/copilot-analytics-reports-navigator/"
     },
     {
       "name": "Copilot Interaction Report",
@@ -369,7 +481,8 @@
         "Microsoft 365 Copilot licensed users"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-interaction-report",
-      "source": "copilot-analytics-samples/copilot-interaction-report/README.md"
+      "source": "copilot-analytics-samples/copilot-interaction-report/README.md",
+      "permalink": "r/copilot-interaction-report/"
     },
     {
       "name": "Copilot Studio Workflow",
@@ -408,7 +521,8 @@
         "Power Platform CLI recommended"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/github-copilot-skills/copilot-studio-workflow",
-      "source": "copilot-agent-samples/github-copilot-skills/copilot-studio-workflow/README.md"
+      "source": "copilot-agent-samples/github-copilot-skills/copilot-studio-workflow/README.md",
+      "permalink": "r/copilot-studio-workflow/"
     },
     {
       "name": "Create-EngageCommunities",
@@ -443,7 +557,8 @@
         "JSON file containing community names and descriptions"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Create-EngageCommunities",
-      "source": "scripts/Create-EngageCommunities/README.md"
+      "source": "scripts/Create-EngageCommunities/README.md",
+      "permalink": "r/create-engagecommunities/"
     },
     {
       "name": "DeepResearch",
@@ -476,7 +591,262 @@
         "Treat as historical guidance; validate current platform support before reuse"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-DeepResearch",
-      "source": "copilot-agent-samples/agent-builder-agents/da-DeepResearch/README.md"
+      "source": "copilot-agent-samples/agent-builder-agents/da-DeepResearch/README.md",
+      "permalink": "r/deepresearch/"
+    },
+    {
+      "name": "Delete-AllCommunityPosts",
+      "title": "Delete-AllCommunityPosts",
+      "slug": "delete-allcommunityposts",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Delete every message in a Viva Engage community; dry run by default, optional CSV backup, and deletion can't be undone.",
+      "summary": "Delete every message in a Viva Engage community; dry run by default, optional CSV backup, and deletion can't be undone.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "communities",
+        "bulk-delete"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Delete-AllCommunityPosts/Delete-AllCommunityPosts.ps1",
+      "downloadName": "Delete-AllCommunityPosts.ps1",
+      "downloadSize": 10979,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2024-10-18",
+      "updated": "2026-07-22",
+      "whatItIs": "A destructive PowerShell sample that signs in interactively with MSAL.PS, lists every message in one Viva Engage community through the Yammer REST API, optionally backs them up to CSV, and then deletes them. Deletion can't be undone. The script header says it is intended for non-production environments, runs as a dry run by default (`$whatIfMode = $true`), and soft-deletes unless `$hardDelete` is set to `$true`, which permanently purges the messages.",
+      "whyUseIt": [
+        "Clear all content from a non-production community in one run.",
+        "Preview what would be deleted first; `$whatIfMode` is `$true` by default.",
+        "Back up the messages to CSV before deleting, and choose soft delete (default) or permanent hard delete.",
+        "Microsoft Graph has no API for community messages, so the Yammer REST API is the only option today."
+      ],
+      "howToUse": "1. Create a Microsoft Entra app registration with the delegated Yammer `access_as_user` permission and install the module with `Install-Module MSAL.PS`.\n2. Find the ID of the community to clear and set `$ClientId`, `$TenantId`, `$RedirectUri`, and `$GroupId` near the top of the script.\n3. Run with the default `$whatIfMode = $true` and review the output. Set it to `$false` only when you are sure.\n4. Run:\n\n   ```powershell\n   .\\Delete-AllCommunityPosts.ps1\n   ```",
+      "prerequisites": [
+        "Test in a non-production tenant first; deletion can't be undone and hard delete is unrecoverable",
+        "Microsoft Entra app registration with the delegated Yammer access_as_user permission",
+        "MSAL.PS PowerShell module",
+        "ID of the Viva Engage community to clear",
+        "Viva Engage admin account"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Delete-AllCommunityPosts",
+      "source": "scripts/Delete-AllCommunityPosts/README.md",
+      "permalink": "r/delete-allcommunityposts/"
+    },
+    {
+      "name": "Delete-EngageGroups",
+      "title": "Delete-EngageGroups",
+      "slug": "delete-engagegroups",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Bulk-delete Viva Engage communities from a CSV through Microsoft Graph; dry run by default and deletion can't be undone.",
+      "summary": "Bulk-delete Viva Engage communities from a CSV through Microsoft Graph; dry run by default and deletion can't be undone.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "communities",
+        "bulk-delete",
+        "microsoft-graph"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Delete-EngageGroups/Delete-EngageGroups.ps1",
+      "downloadName": "Delete-EngageGroups.ps1",
+      "downloadSize": 6116,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-07-06",
+      "updated": "2026-07-22",
+      "whatItIs": "A destructive PowerShell sample that reads Viva Engage community IDs from a CSV and deletes each community through the Microsoft Graph community API (beta endpoint) with app-only authentication. Deletion can't be undone. The script runs as a dry run by default (`$whatIfMode = $true`) and only deletes after you set it to `$false`.",
+      "whyUseIt": [
+        "Remove many communities in one run instead of deleting them one at a time.",
+        "Preview the communities that would be deleted first; `$whatIfMode` is `$true` by default.",
+        "Continues past communities that aren't found and waits and retries when Graph throttles requests."
+      ],
+      "howToUse": "1. Create a Microsoft Entra app registration with the Microsoft Graph `Community.ReadWrite.All` application permission and grant admin consent.\n2. Create a CSV with a single `CommunityId` column containing the Graph community IDs (not the legacy numeric Yammer group IDs).\n3. Set `$ClientId`, `$TenantId`, `$ClientSecret`, and `$groupsToBeDeletedCSV` near the top of the script.\n4. Run with the default `$whatIfMode = $true` and review the output. Set it to `$false` only when you are sure.\n5. Run:\n\n   ```powershell\n   .\\Delete-EngageGroups.ps1\n   ```",
+      "prerequisites": [
+        "Test in a non-production tenant first; deletion can't be undone",
+        "Microsoft Entra app registration with the Community.ReadWrite.All application permission and admin consent",
+        "CSV with a CommunityId column of Viva Engage community IDs from Microsoft Graph"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Delete-EngageGroups",
+      "source": "scripts/Delete-EngageGroups/README.md",
+      "permalink": "r/delete-engagegroups/"
+    },
+    {
+      "name": "Delete-EngageUsers",
+      "title": "Delete-EngageUsers",
+      "slug": "delete-engageusers",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Bulk-remove users from Viva Engage communities from a CSV through Microsoft Graph; dry run by default, accounts are not deleted.",
+      "summary": "Bulk-remove users from Viva Engage communities from a CSV through Microsoft Graph; dry run by default, accounts are not deleted.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "communities",
+        "bulk-delete",
+        "microsoft-graph"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Delete-EngageUsers/Delete-EngageUsers.ps1",
+      "downloadName": "Delete-EngageUsers.ps1",
+      "downloadSize": 8028,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-11-28",
+      "updated": "2026-07-22",
+      "whatItIs": "A PowerShell sample that removes users from the Microsoft 365 group behind a Viva Engage community, one group and user per CSV row, through Microsoft Graph. It removes access to the listed communities only; it does not delete the user's account or remove them from any other community. Removal can't be undone by the script. It runs as a dry run by default (`$whatIfMode = $true`).",
+      "whyUseIt": [
+        "Remove many users from communities in one run.",
+        "Preview the removals first; `$whatIfMode` is `$true` by default.",
+        "Resolves each user's object ID from the email address in the CSV for you."
+      ],
+      "howToUse": "1. Create a Microsoft Entra app registration with the Microsoft Graph `Group.ReadWrite.All` application permission and grant admin consent.\n2. Create a CSV with a `GroupID` column (the Microsoft 365 group ID behind the community) and an `Email` column (the user to remove), one pair per row.\n3. Set `$usersToBeDeletedCSV`, `$ClientId`, `$TenantId`, and `$ClientSecret` near the top of the script.\n4. Run with the default `$whatIfMode = $true` and review the output. Set it to `$false` only when you are sure.\n5. Run:\n\n   ```powershell\n   .\\Delete-EngageUsers.ps1\n   ```",
+      "prerequisites": [
+        "Test in a non-production tenant first; removals can't be undone by the script",
+        "Microsoft Entra app registration with the Group.ReadWrite.All application permission and admin consent",
+        "CSV with GroupID and Email columns; GroupID is the Microsoft 365 group GUID behind the community"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Delete-EngageUsers",
+      "source": "scripts/Delete-EngageUsers/README.md",
+      "permalink": "r/delete-engageusers/"
+    },
+    {
+      "name": "Disable-InsightsHeadSpace",
+      "title": "Disable-InsightsHeadSpace",
+      "slug": "disable-insightsheadspace",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Disable the retired Headspace feature in Viva Insights for every user with a Personal Insights service plan.",
+      "summary": "Disable the retired Headspace feature in Viva Insights for every user with a Personal Insights service plan.",
+      "tags": [
+        "viva-insights",
+        "headspace",
+        "administration",
+        "exchange-online"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "archived",
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2024-07-18",
+      "updated": "2024-07-19",
+      "whatItIs": "A PowerShell script that uses Microsoft Graph to find users assigned the Exchange Analytics or MyAnalytics (Personal Insights) service plans and runs `Set-VivaInsightsSettings -Feature headspace -Enabled $false` for each of them through Exchange Online. Microsoft has removed Headspace from Viva Insights, so it is kept for reference only.",
+      "whyUseIt": [
+        "Reference for how Viva Insights features were disabled per user with `Set-VivaInsightsSettings`.",
+        "Example of filtering users by service plan ID with the Microsoft Graph PowerShell module."
+      ],
+      "howToUse": "1. Install the Microsoft Graph PowerShell (`Microsoft.Graph.Users`) and Exchange Online (`ExchangeOnlineManagement`) modules.\n2. Run the script and sign in to Microsoft Graph (`User.Read.All`) and Exchange Online when prompted:\n\n   ```powershell\n   .\\Disable-InsightsHeadSpace.ps1\n   ```",
+      "prerequisites": [
+        "Microsoft.Graph.Users and ExchangeOnlineManagement PowerShell modules",
+        "Account that can consent to the User.Read.All Microsoft Graph scope and run Set-VivaInsightsSettings in Exchange Online"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Disable-InsightsHeadSpace",
+      "source": "scripts/Disable-InsightsHeadSpace/README.md",
+      "permalink": "r/disable-insightsheadspace/"
+    },
+    {
+      "name": "ESS ServiceNow ITSM Get Request Details",
+      "title": "ESS ServiceNow ITSM Get Request Details",
+      "slug": "ess-servicenow-itsm-get-request-details",
+      "type": "agent",
+      "subcategory": "Copilot Studio",
+      "category": "Copilot Studio",
+      "description": "Extend the Employee Self-Service agent to look up ServiceNow service catalog requests (REQ) and request items (RITM).",
+      "summary": "Extend the Employee Self-Service agent to look up ServiceNow service catalog requests (REQ) and request items (RITM).",
+      "tags": [
+        "employee-self-service",
+        "servicenow",
+        "itsm",
+        "copilot-studio",
+        "power-automate"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": false,
+      "status": "active",
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2026-07-30",
+      "updated": "2026-08-12",
+      "whatItIs": "A Copilot Studio and Power Automate sample for the Microsoft Employee Self-Service (ESS) agent. The built-in ITSM orchestrator only handles incidents, so this adds two flows (one for the ServiceNow `sc_request` table and one for `sc_req_item`) and three topics. A single user-facing topic extracts the number from the user's message, routes RITM numbers to the request-item flow and everything else to the request flow, and shows an adaptive card with a link to open the record in ServiceNow.",
+      "whyUseIt": [
+        "Let employees ask for the status of a service catalog request or request item by number.",
+        "Calls ServiceNow as the signed-in employee (on-behalf-of), so ServiceNow's own access controls decide what each person can see.",
+        "Deploy with the ESS Maker Kit or import a ready-made solution."
+      ],
+      "howToUse": "1. Install the ServiceNow ITSM extension pack, deploy the ESS agent, and create a ServiceNow connection that uses on-behalf-of (invoker) authentication.\n2. Deploy with the ESS Maker Kit (copy the topics and both flows into your workspace, replace the `{FLOW_GUID}` and connection reference placeholders, then push) or import `solution/ESSServiceNowITSMGetRequestDetails_1_0_0_0.zip` and create the three topics in Copilot Studio.\n3. Set the `ServiceNowITSMPortalBaseURI` environment variable (for example `https://<instance>.service-now.com/esc`), turn both flows on in Power Automate, and enable parameter sharing for the ServiceNow connection in Copilot Studio.\n4. Wire the topics to the flows, publish the agent, and try a prompt such as \"What's the status of my request REQ0012345?\" With the Maker Kit:\n\n   ```text\n   python scripts/push.py\n   python scripts/push.py --repair \"Get Request Details\"\n   python scripts/push.py --repair \"Get Request Item\"\n   ```",
+      "prerequisites": [
+        "Microsoft Employee Self-Service agent deployed",
+        "ServiceNow ITSM extension pack installed in Copilot Studio",
+        "ServiceNow connection in Power Platform configured for on-behalf-of (invoker) authentication",
+        "ServiceNowITSMPortalBaseURI environment variable set to your ServiceNow portal URL",
+        "ESS Maker Kit (for the push.py deployment path)",
+        "ServiceNow users with read access to sc_request and sc_req_item"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/ESS/servicenow-itsm-get-request-details",
+      "source": "copilot-agent-samples/ESS/servicenow-itsm-get-request-details/README.md",
+      "permalink": "r/ess-servicenow-itsm-get-request-details/"
+    },
+    {
+      "name": "ESS ServiceNow ITSM Get User Requests",
+      "title": "ESS ServiceNow ITSM Get User Requests",
+      "slug": "ess-servicenow-itsm-get-user-requests",
+      "type": "agent",
+      "subcategory": "Copilot Studio",
+      "category": "Copilot Studio",
+      "description": "Extend the Employee Self-Service agent to list a user's open, closed, or all ServiceNow service catalog requests (REQ).",
+      "summary": "Extend the Employee Self-Service agent to list a user's open, closed, or all ServiceNow service catalog requests (REQ).",
+      "tags": [
+        "employee-self-service",
+        "servicenow",
+        "itsm",
+        "copilot-studio",
+        "power-automate"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": false,
+      "status": "active",
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2026-07-30",
+      "updated": "2026-08-11",
+      "whatItIs": "A Copilot Studio and Power Automate sample for the Microsoft Employee Self-Service (ESS) agent. The built-in ITSM orchestrator only lists incidents, so this adds a flow that queries the ServiceNow `sc_request` table for the current user, plus a user-facing topic and a system topic. The topic works out whether the user wants active, closed, or all requests, caches results for 15 minutes, and returns a numbered list with links to open each request in ServiceNow.",
+      "whyUseIt": [
+        "Let employees ask for their service catalog requests, such as \"Show me my open requests\".",
+        "Calls ServiceNow as the signed-in employee (on-behalf-of), so ServiceNow's own access controls decide what each person can see.",
+        "Deploy with the ESS Maker Kit or import a ready-made solution."
+      ],
+      "howToUse": "1. Install the ServiceNow ITSM extension pack, deploy the ESS agent, and create a ServiceNow connection that uses on-behalf-of (invoker) authentication.\n2. Deploy with the ESS Maker Kit (copy the topics and flow into your workspace, replace the `{FLOW_GUID}` and connection reference placeholders, then push) or import `solution/ESSServiceNowITSMGetUserRequests_1_0_0_0.zip` and create the two topics in Copilot Studio.\n3. Set the `ServiceNowITSMPortalBaseURI` environment variable (for example `https://<instance>.service-now.com/esc`), turn the flow on in Power Automate, and enable parameter sharing for the ServiceNow connection in Copilot Studio.\n4. Wire the topic to the flow, publish the agent, and try a prompt such as \"Show me my open requests\". With the Maker Kit:\n\n   ```text\n   python scripts/push.py\n   python scripts/push.py --repair \"Get User Requests\"\n   ```",
+      "prerequisites": [
+        "Microsoft Employee Self-Service agent deployed",
+        "ServiceNow ITSM extension pack installed in Copilot Studio",
+        "ServiceNow connection in Power Platform configured for on-behalf-of (invoker) authentication",
+        "ServiceNowITSMPortalBaseURI environment variable set to your ServiceNow portal URL",
+        "ESS Maker Kit (for the push.py deployment path)",
+        "ServiceNow users with read access to sc_request"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/ESS/servicenow-itsm-get-user-requests",
+      "source": "copilot-agent-samples/ESS/servicenow-itsm-get-user-requests/README.md",
+      "permalink": "r/ess-servicenow-itsm-get-user-requests/"
     },
     {
       "name": "Export-CopilotInteractions",
@@ -495,6 +865,9 @@
       "format": "ps1",
       "featured": false,
       "status": "active",
+      "download": "scripts/Export-CopilotInteractions/Export-CopilotInteractions.ps1",
+      "downloadName": "Export-CopilotInteractions.ps1",
+      "downloadSize": 39521,
       "author": "Alejandro Lopez",
       "version": "1.0.0",
       "published": "2026-05-21",
@@ -513,7 +886,92 @@
         "Entra app registration for app-only authentication"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-CopilotInteractions",
-      "source": "scripts/Export-CopilotInteractions/README.md"
+      "source": "scripts/Export-CopilotInteractions/README.md",
+      "permalink": "r/export-copilotinteractions/"
+    },
+    {
+      "name": "Export-EngageFiles",
+      "title": "Export-EngageFiles",
+      "slug": "export-engagefiles",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Export files uploaded to a Viva Engage network during a date range by using the Yammer Files Export API.",
+      "summary": "Export files uploaded to a Viva Engage network during a date range by using the Yammer Files Export API.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "export",
+        "data-export"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Export-EngageFiles/Export-EngageFiles.ps1",
+      "downloadName": "Export-EngageFiles.ps1",
+      "downloadSize": 12158,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-06-14",
+      "updated": "2026-07-22",
+      "whatItIs": "A PowerShell sample that signs in interactively with MSAL.PS, submits a request to the Yammer Files Export API for a start and end date, waits for the export to be packaged, and downloads the resulting zip file or files into a dated folder together with a script log. In native-mode networks no files are downloaded; you get a CSV of file information that includes each file's URL.",
+      "whyUseIt": [
+        "Archive files stored in Viva Engage (Yammer) storage for a date range.",
+        "The API packages files into zip files on the back end, which the README recommends over downloading files with the Network Data Export script for large volumes.",
+        "Writes a detailed log next to each export for troubleshooting."
+      ],
+      "howToUse": "1. Create a Microsoft Entra app registration with the delegated Yammer `access_as_user` permission and install the module with `Install-Module MSAL.PS`.\n2. Set `$ClientId`, `$TenantId`, `$RedirectUri`, and `$rootPath` near the top of the script.\n3. Run with a start and end date in YYYY-MM-DD format. Use shorter date windows if packaging fails:\n\n   ```powershell\n   .\\Export-EngageFiles.ps1 -startdate 2023-01-14 -enddate 2023-01-31\n   ```",
+      "prerequisites": [
+        "Microsoft Entra app registration with the delegated Yammer access_as_user permission",
+        "MSAL.PS PowerShell module",
+        "Viva Engage verified administrator account"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-EngageFiles",
+      "source": "scripts/Export-EngageFiles/README.md",
+      "permalink": "r/export-engagefiles/"
+    },
+    {
+      "name": "Export-EngageNetworkData",
+      "title": "Export-EngageNetworkData",
+      "slug": "export-engagenetworkdata",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Export Viva Engage network messages and files for a date range by using the Network Data Export API.",
+      "summary": "Export Viva Engage network messages and files for a date range by using the Network Data Export API.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "export",
+        "data-export"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Export-EngageNetworkData/Export-EngageNetworkData.ps1",
+      "downloadName": "Export-EngageNetworkData.ps1",
+      "downloadSize": 9589,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-06-14",
+      "updated": "2026-07-22",
+      "whatItIs": "A PowerShell sample that signs in interactively with MSAL.PS and calls the Yammer Network Data Export API for a date range. It downloads the export zip and writes a script log into a folder named for the export range. File attachments are only exported from legacy (pre-native mode) networks; native-mode networks return a files.csv with SharePoint and OneDrive links instead.",
+      "whyUseIt": [
+        "Export Viva Engage messages and related data for compliance, analytics, or archival needs.",
+        "Limit the export to a start and end date, with an option to include file attachments from legacy networks.",
+        "Detailed activity and error logging goes to a log file next to the export."
+      ],
+      "howToUse": "1. Create a Microsoft Entra app registration with the delegated Yammer `access_as_user` permission and install the module with `Install-Module MSAL.PS`.\n2. Set `$ClientId`, `$TenantId`, `$RedirectUri`, and `$rootPath` near the top of the script.\n3. Run with a start date, plus an end date and `-IncludeFiles` if needed. Keep the date range reasonable to avoid timeouts, and note that `-IncludeFiles All` only applies to legacy networks:\n\n   ```powershell\n   .\\Export-EngageNetworkData.ps1 -startdate 2023-01-14 -enddate 2023-01-31 -IncludeFiles All\n   ```",
+      "prerequisites": [
+        "Microsoft Entra app registration with the delegated Yammer access_as_user permission",
+        "MSAL.PS PowerShell module",
+        "Viva Engage verified administrator account"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-EngageNetworkData",
+      "source": "scripts/Export-EngageNetworkData/README.md",
+      "permalink": "r/export-engagenetworkdata/"
     },
     {
       "name": "Export-M365CopilotReports",
@@ -532,6 +990,9 @@
       "format": "ps1",
       "featured": false,
       "status": "active",
+      "download": "scripts/Export-M365CopilotReports/Export-M365CopilotReports.ps1",
+      "downloadName": "Export-M365CopilotReports.ps1",
+      "downloadSize": 34019,
       "author": "Alejandro Lopez",
       "version": "1.0.0",
       "published": "2025-03-11",
@@ -548,7 +1009,93 @@
         "Permissions required by the selected report"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-M365CopilotReports",
-      "source": "scripts/Export-M365CopilotReports/README.md"
+      "source": "scripts/Export-M365CopilotReports/README.md",
+      "permalink": "r/export-m365copilotreports/"
+    },
+    {
+      "name": "Export-SimplePlacesVisual",
+      "title": "Export-SimplePlacesVisual",
+      "slug": "export-simpleplacesvisual",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Print or save a text tree of the Microsoft Places directory of buildings, floors, sections, rooms, spaces, and desks.",
+      "summary": "Print or save a text tree of the Microsoft Places directory of buildings, floors, sections, rooms, spaces, and desks.",
+      "tags": [
+        "microsoft-places",
+        "reporting",
+        "inventory"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Export-SimplePlacesVIsual/Export-SimplePlacesVisual.ps1",
+      "downloadName": "Export-SimplePlacesVisual.ps1",
+      "downloadSize": 12426,
+      "author": "David Whitney",
+      "version": "1.0.0",
+      "published": "2025-06-12",
+      "updated": "2025-06-25",
+      "whatItIs": "A PowerShell script that reads the Microsoft Places directory with the Places PowerShell module and prints its hierarchy as an indented text tree. You can include each place's PlaceId, start from a specific ancestor such as one building or floor, and save the output to a file.",
+      "whyUseIt": [
+        "See the full Places structure of a tenant at a glance instead of browsing it object by object.",
+        "Add each place's PlaceId to the output when you need to reference specific places.",
+        "Start from any building, floor, or other place with `-AncestorId` to focus on one part of the hierarchy."
+      ],
+      "howToUse": "1. Install the Places PowerShell module and connect to the Places service.\n2. Run the script. Add `-IncludePlaceId` to show IDs, `-AncestorId` to start from one place, or `-OutputFileName` to save the output (the script appends `.html` unless the name already ends in `.html` or `.htm`):\n\n   ```powershell\n   .\\Export-SimplePlacesVisual.ps1 -IncludePlaceId\n   ```",
+      "prerequisites": [
+        "Places PowerShell module installed and an authenticated Places session"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-SimplePlacesVIsual",
+      "source": "scripts/Export-SimplePlacesVIsual/README.md",
+      "permalink": "r/export-simpleplacesvisual/"
+    },
+    {
+      "name": "Find-MailboxDelegates",
+      "title": "Find-MailboxDelegates",
+      "slug": "find-mailboxdelegates",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Collect Exchange mailbox permissions and build migration batches that keep delegates together for hybrid migrations.",
+      "summary": "Collect Exchange mailbox permissions and build migration batches that keep delegates together for hybrid migrations.",
+      "tags": [
+        "exchange",
+        "mailbox-migration",
+        "hybrid",
+        "delegates",
+        "permissions"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Find-MailboxDelegates/Find-MailboxDelegates.ps1",
+      "downloadName": "Find-MailboxDelegates.ps1",
+      "downloadSize": 63333,
+      "author": [
+        "Alejandro Lopez",
+        "Sam Portelli"
+      ],
+      "version": "1.0.0",
+      "published": "2018-07-24",
+      "updated": "2023-11-15",
+      "whatItIs": "A PowerShell script for Exchange hybrid migrations to Exchange Online. It collects Full Access, Send As, Send on Behalf, and calendar permissions from on-premises mailboxes, finds associated delegates (spider-web batching), and writes CSV files with permissions, recommended migration batches, and a migration schedule in the format used by the Microsoft FastTrack Mail Migration team. The README documents Exchange 2010 and 2013 environments.",
+      "whyUseIt": [
+        "Keep mailboxes that share a manager or delegate in the same migration batch so their access to each other's mailboxes isn't broken by cross-premises permission limits in a hybrid environment.",
+        "Choose which permission types to collect, and enumerate groups or exclude service accounts and groups.",
+        "Resume an interrupted run on large environments, or run only the batching and scheduling steps from an existing permissions file."
+      ],
+      "howToUse": "1. Run the script from a machine with the Exchange Management Tools and the Active Directory PowerShell module. Choose the permission types to collect.\n2. The script collects permissions, finds batches based on them, and creates a migration schedule. Use `-GetPermissionsOnly`, `-BatchUsers`, or `-BatchUsersOnly` to run only some of these steps.\n3. Example that collects all permission types and enumerates groups:\n\n   ```powershell\n   .\\Find-MailboxDelegates.ps1 -FullAccess -SendOnBehalfTo -SendAs -Calendar -EnumerateGroups\n   ```",
+      "prerequisites": [
+        "On-premises Exchange environment with the Exchange Management Tools (the README lists Exchange 2010 and 2013)",
+        "Active Directory PowerShell module",
+        "PowerShell 3.0 or later"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Find-MailboxDelegates",
+      "source": "scripts/Find-MailboxDelegates/README.md",
+      "permalink": "r/find-mailboxdelegates/"
     },
     {
       "name": "Get-AADAdminRoleMembers",
@@ -567,11 +1114,11 @@
       "artifact": "ps1",
       "format": "ps1",
       "featured": false,
-      "status": "active",
+      "status": "archived",
       "author": "Brian Baldock",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2020-01-14",
-      "updated": "2021-01-15",
+      "updated": "2026-10-28",
       "whatItIs": "A PowerShell script for reporting Azure AD administrator-role membership across all roles, one named role, or one user.",
       "whyUseIt": [
         "Audit privileged role membership across the directory.",
@@ -584,7 +1131,140 @@
         "Directory account permitted to read administrator roles"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-AADAdminRoleMembers",
-      "source": "scripts/Get-AADAdminRoleMembers/README.md"
+      "source": "scripts/Get-AADAdminRoleMembers/README.md",
+      "permalink": "r/get-aadadminrolemembers/"
+    },
+    {
+      "name": "Get-AllInsightsLicensedUsers",
+      "title": "Get-AllInsightsLicensedUsers",
+      "slug": "get-allinsightslicensedusers",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Export Entra users licensed for Viva Insights, with manager and department, to build the organizational data file.",
+      "summary": "Export Entra users licensed for Viva Insights, with manager and department, to build the organizational data file.",
+      "tags": [
+        "viva-insights",
+        "organizational-data",
+        "entra",
+        "reporting"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Get-AllInsightsLicensedUsers/Get-AllInsightsLicensedUsers.ps1",
+      "downloadName": "Get-AllInsightsLicensedUsers.ps1",
+      "downloadSize": 8292,
+      "author": [
+        "Dean Cron",
+        "Alejandro Lopez"
+      ],
+      "version": "1.0.0",
+      "published": "2025-06-13",
+      "updated": "2026-07-22",
+      "whatItIs": "A PowerShell script that uses the Microsoft Graph PowerShell module to find users assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan, resolves each user's manager with batched Graph requests, and exports PersonId, ManagerId, and Department to InsightsLicensedUsers.csv for the organizational data file used by Viva Insights.",
+      "whyUseIt": [
+        "Build the organizational data source for Viva Insights from the users who actually hold the Insights license.",
+        "Batched manager lookups with retry on throttling keep runs on large tenants from timing out.",
+        "Add more user properties by editing the `-Property` list and the output object."
+      ],
+      "howToUse": "1. Install the Microsoft Graph PowerShell module.\n2. Run the script and sign in with consent for the `User.Read.All` scope. The CSV is written to the current directory:\n\n   ```powershell\n   .\\Get-AllInsightsLicensedUsers.ps1\n   ```",
+      "prerequisites": [
+        "Microsoft Graph PowerShell module",
+        "Account that can consent to the User.Read.All Microsoft Graph scope"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-AllInsightsLicensedUsers",
+      "source": "scripts/Get-AllInsightsLicensedUsers/README.md",
+      "permalink": "r/get-allinsightslicensedusers/"
+    },
+    {
+      "name": "Get-EngageGroupInfo",
+      "title": "Get-EngageGroupInfo",
+      "slug": "get-engagegroupinfo",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Report every Viva Engage community's IDs, member count, and admins to CSV by using Microsoft Graph.",
+      "summary": "Report every Viva Engage community's IDs, member count, and admins to CSV by using Microsoft Graph.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "communities",
+        "reporting",
+        "microsoft-graph"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Get-EngageGroupInfo/Get-EngageGroupInfo.ps1",
+      "downloadName": "Get-EngageGroupInfo.ps1",
+      "downloadSize": 7981,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-12-13",
+      "updated": "2026-07-22",
+      "whatItIs": "A PowerShell sample that lists every Viva Engage community through Microsoft Graph and exports a CSV with the community ID, Microsoft 365 group ID, name, member count, and admins (the group owners) for each. It uses app-only authentication and retries when Graph throttles requests.",
+      "whyUseIt": [
+        "Inventory all communities and their admins in one report.",
+        "Find the Microsoft 365 group and community IDs that the other Engage admin scripts need as input.",
+        "Spot communities with no admins."
+      ],
+      "howToUse": "1. Create a Microsoft Entra app registration with the Microsoft Graph `Community.Read.All` (or `Community.ReadWrite.All`) and `GroupMember.Read.All` (or `Group.Read.All` / `Group.ReadWrite.All`) application permissions and grant admin consent.\n2. Set `$ClientId`, `$TenantId`, `$ClientSecret`, and optionally `$ReportOutput` near the top of the script.\n3. Run:\n\n   ```powershell\n   .\\Get-EngageGroupInfo.ps1\n   ```",
+      "prerequisites": [
+        "Microsoft Entra app registration with Community.Read.All and GroupMember.Read.All application permissions (or the ReadWrite/Group equivalents) and admin consent",
+        "Existing output folder for the CSV (default C:\\Temp)"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-EngageGroupInfo",
+      "source": "scripts/Get-EngageGroupInfo/README.md",
+      "permalink": "r/get-engagegroupinfo/"
+    },
+    {
+      "name": "Get-GroupsMembersManagers",
+      "title": "Get-GroupsMembersManagers",
+      "slug": "get-groupsmembersmanagers",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Export Entra group members with manager and profile details to CSV for Viva Insights organizational data uploads.",
+      "summary": "Export Entra group members with manager and profile details to CSV for Viva Insights organizational data uploads.",
+      "tags": [
+        "viva-insights",
+        "organizational-data",
+        "entra",
+        "reporting"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Get-GroupsMembersManagers/Get-GroupsMembersManagers.ps1",
+      "downloadName": "Get-GroupsMembersManagers.ps1",
+      "downloadSize": 12080,
+      "author": [
+        "Alejandro Lopez",
+        "Dean Cron",
+        "J.G. Parra"
+      ],
+      "version": "1.0.0",
+      "published": "2024-07-26",
+      "updated": "2026-04-22",
+      "whatItIs": "A PowerShell script that uses the Microsoft Graph PowerShell module to report Microsoft Entra group members and their managers. An interactive menu lets you export users from all groups, from one group chosen by display name, or from a CSV with a UPN column. It writes EntraGroupMembersExport.csv with profile details and the manager's UPN.",
+      "whyUseIt": [
+        "Build the file for organizational data uploads in Microsoft 365 or Viva Advanced Insights from existing Entra groups.",
+        "Include extended profile fields such as job title, department, office location, company, and address details.",
+        "Target a pilot population with a CSV of UPNs instead of the whole tenant."
+      ],
+      "howToUse": "1. Install the Microsoft Graph PowerShell module.\n2. Run the script, sign in with consent for the `Group.Read.All` and `User.Read.All` scopes, and choose an option from the menu (all groups, one group, a CSV of UPNs, or exit). The CSV is written to the current directory:\n\n   ```powershell\n   .\\Get-GroupsMembersManagers.ps1\n   ```",
+      "prerequisites": [
+        "Microsoft Graph PowerShell module",
+        "Account that can consent to the Group.Read.All and User.Read.All Microsoft Graph scopes",
+        "Optional CSV with a UPN column for the CSV option"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-GroupsMembersManagers",
+      "source": "scripts/Get-GroupsMembersManagers/README.md",
+      "permalink": "r/get-groupsmembersmanagers/"
     },
     {
       "name": "Get-LicenseUsage",
@@ -602,11 +1282,11 @@
       "artifact": "ps1",
       "format": "ps1",
       "featured": false,
-      "status": "active",
+      "status": "archived",
       "author": "Brian Baldock",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2022-01-19",
-      "updated": "2022-01-19",
+      "updated": "2026-10-28",
       "whatItIs": "A PowerShell sample for selecting between preferred and backup Microsoft 365 subscriptions based on their current assigned and available license counts.",
       "whyUseIt": [
         "Automate a license-assignment decision when equivalent entitlements span multiple subscriptions.",
@@ -618,7 +1298,8 @@
         "Account permitted to read tenant licensing"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-LicenseUsage",
-      "source": "scripts/Get-LicenseUsage/README.md"
+      "source": "scripts/Get-LicenseUsage/README.md",
+      "permalink": "r/get-licenseusage/"
     },
     {
       "name": "Get-M365CopilotReadiness",
@@ -656,7 +1337,47 @@
         "MCCA licensing and roles only when using -IncludeMCCA"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-M365CopilotReadiness",
-      "source": "scripts/Get-M365CopilotReadiness/README.md"
+      "source": "scripts/Get-M365CopilotReadiness/README.md",
+      "permalink": "r/get-m365copilotreadiness/"
+    },
+    {
+      "name": "Get-RecurringTeamsMeetings",
+      "title": "Get-RecurringTeamsMeetings",
+      "slug": "get-recurringteamsmeetings",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Find recurring Teams meetings on user calendars and export organizer, subject, recurrence, and attendees to CSV.",
+      "summary": "Find recurring Teams meetings on user calendars and export organizer, subject, recurrence, and attendees to CSV.",
+      "tags": [
+        "teams",
+        "meetings",
+        "reporting",
+        "microsoft-graph"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "Alejandro Lopez",
+      "version": "1.0.0",
+      "published": "2025-09-24",
+      "updated": "2025-09-24",
+      "whatItIs": "A PowerShell script that connects to Microsoft Graph with an app registration (application permissions) and scans the calendars of all users, or of users listed in a CSV, for recurring online meetings. It writes RecurringMeetingsReport.csv with the calendar owner, subject, recurrence pattern, participant count, invited participants, and creation time.",
+      "whyUseIt": [
+        "Identify recurring Teams meeting series across the tenant or for a pilot group.",
+        "See participant counts and invitee lists for each series.",
+        "Uses app-only application permissions rather than a signed-in user's permissions."
+      ],
+      "howToUse": "1. Install the Microsoft Graph PowerShell module.\n2. Create an Entra app registration with the `Calendars.Read` and `User.Read.All` application permissions, grant admin consent, and create a client secret.\n3. Run the script and enter the tenant ID, application (client) ID, and client secret when prompted. Add `-UserCsvPath` with a CSV that has a `UserPrincipalName` header to scan only specific users:\n\n   ```powershell\n   .\\Get-RecurringTeamsMeetings.ps1 -UserCsvPath \"C:\\path\\to\\your\\users.csv\"\n   ```",
+      "prerequisites": [
+        "Microsoft Graph PowerShell module (PowerShell 7 or later recommended)",
+        "Microsoft Entra app registration with Calendars.Read and User.Read.All application permissions, admin consent, and a client secret",
+        "Optional CSV with a UserPrincipalName header to scan specific users"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-RecurringTeamsMeetings",
+      "source": "scripts/Get-RecurringTeamsMeetings/README.md",
+      "permalink": "r/get-recurringteamsmeetings/"
     },
     {
       "name": "Get-SiteInventory",
@@ -674,11 +1395,11 @@
       "artifact": "ps1",
       "format": "ps1",
       "featured": false,
-      "status": "active",
+      "status": "archived",
       "author": "Patrick Rodgers",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2018-06-22",
-      "updated": "2018-10-30",
+      "updated": "2026-10-28",
       "whatItIs": "A multi-script PowerShell inventory for a SharePoint Online site collection that can process subwebs concurrently and combine outputs into a workbook.",
       "whyUseIt": [
         "Collect site and document-library inventory across a site collection.",
@@ -691,7 +1412,8 @@
         "Microsoft Excel unless using -NoWorkbook"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/get-siteinventory",
-      "source": "scripts/get-siteinventory/README.md"
+      "source": "scripts/get-siteinventory/README.md",
+      "permalink": "r/get-siteinventory/"
     },
     {
       "name": "Get-TeamsUserActivityReport",
@@ -727,7 +1449,49 @@
         "Reports.Read.All application permission with admin consent"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-TeamsUserActivityReport",
-      "source": "scripts/Get-TeamsUserActivityReport/README.md"
+      "source": "scripts/Get-TeamsUserActivityReport/README.md",
+      "permalink": "r/get-teamsuseractivityreport/"
+    },
+    {
+      "name": "Get-YammerSiteSize",
+      "title": "Get-YammerSiteSize",
+      "slug": "get-yammersitesize",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Report the SharePoint storage used by every site created through Viva Engage (Yammer) communities.",
+      "summary": "Report the SharePoint storage used by every site created through Viva Engage (Yammer) communities.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "reporting",
+        "sharepoint",
+        "storage"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Get-YammerSiteSize/Get-YammerSiteSize.ps1",
+      "downloadName": "Get-YammerSiteSize.ps1",
+      "downloadSize": 2941,
+      "author": "Dean Cron",
+      "version": "1.0.0",
+      "published": "2023-07-20",
+      "updated": "2023-07-20",
+      "whatItIs": "A PowerShell sample that connects to SharePoint Online and Exchange Online, finds the Microsoft 365 groups whose GroupSku is Yammer, and exports each connected SharePoint site's title, URL, and current storage usage to a CSV file. It applies to Viva Engage networks in native mode.",
+      "whyUseIt": [
+        "See how much SharePoint storage Viva Engage communities consume.",
+        "Identify the largest community sites before storage planning or cleanup."
+      ],
+      "howToUse": "1. Install the Exchange Online and SharePoint Online PowerShell modules.\n2. Set `$AdminSiteURL` to your tenant's SharePoint admin URL and optionally change `$ReportOutput`.\n3. Run the script and enter your admin credentials when prompted. Sign-in uses `Get-Credential`, which doesn't work for accounts that require MFA:\n\n   ```powershell\n   .\\Get-YammerSiteSize.ps1\n   ```",
+      "prerequisites": [
+        "Exchange Online and SharePoint Online PowerShell modules",
+        "Admin account with Microsoft 365 Groups and SharePoint Online access that can sign in with a username and password prompt"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Get-YammerSiteSize",
+      "source": "scripts/Get-YammerSiteSize/README.md",
+      "permalink": "r/get-yammersitesize/"
     },
     {
       "name": "ManagerSimulator",
@@ -761,7 +1525,8 @@
         "Treat as historical guidance; validate current platform support before reuse"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-ManagerSimulator",
-      "source": "copilot-agent-samples/agent-builder-agents/da-ManagerSimulator/README.md"
+      "source": "copilot-agent-samples/agent-builder-agents/da-ManagerSimulator/README.md",
+      "permalink": "r/managersimulator/"
     },
     {
       "name": "Microsoft Agent 365 Customer Implementation Guide",
@@ -784,18 +1549,21 @@
       "status": "active",
       "interactiveKind": "guide",
       "preview": "copilot-agent-strategy/agent-365-customer-implementation-guide/preview.webp",
+      "download": "copilot-agent-strategy/agent-365-customer-implementation-guide/index.html",
+      "downloadName": "microsoft-agent-365-customer-implementation-guide.html",
+      "downloadSize": 2374553,
       "author": [
         "Pratik Bhusal",
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.2.0",
+      "version": "1.4.0",
       "published": "2026-09-09",
-      "updated": "2026-09-25",
+      "updated": "2026-10-29",
       "whatItIs": "A self-contained, community-built interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
-        "Follow 65 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references.",
+        "Follow 69 detailed implementation tasks with roles, licensing context, validation guidance, and public Microsoft references.",
         "Start hunting with eight sample Microsoft Defender advanced hunting (KQL) queries for agent inventory, activity, alerts, and protection events.",
         "Use the guide offline without a server, sign-in, external runtime dependency, or saved browser progress."
       ],
@@ -806,7 +1574,56 @@
         "Administrative roles required by the configuration tasks you choose to perform"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-customer-implementation-guide",
-      "source": "copilot-agent-strategy/agent-365-customer-implementation-guide/README.md"
+      "source": "copilot-agent-strategy/agent-365-customer-implementation-guide/README.md",
+      "permalink": "r/microsoft-agent-365-customer-implementation-guide/"
+    },
+    {
+      "name": "Microsoft Agent 365 Technical Advisory",
+      "title": "Microsoft Agent 365 Technical Advisory",
+      "slug": "microsoft-agent-365-technical-advisory",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.",
+      "summary": "Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.",
+      "tags": [
+        "agent-365",
+        "architecture",
+        "governance",
+        "security",
+        "identity"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": true,
+      "status": "active",
+      "interactiveKind": "guide",
+      "preview": "copilot-agent-strategy/agent-365-technical-advisory/preview.webp",
+      "download": "copilot-agent-strategy/agent-365-technical-advisory/Agent-365-Technical-Advisory.pdf",
+      "downloadName": "Agent-365-Technical-Advisory.pdf",
+      "downloadSize": 836668,
+      "author": [
+        "Carlos Suarez",
+        "Alejandro Lopez"
+      ],
+      "version": "1.0.1",
+      "published": "2026-10-28",
+      "updated": "2026-10-29",
+      "whatItIs": "A 19-page technical advisory for architects, identity, security, developer, and business leaders. It lays out an enterprise reference architecture and best practices for discovering, governing, securing, building, and measuring AI agents with Microsoft Agent 365, with 75 cited Microsoft Learn and Microsoft sources. This page wraps the PDF in a viewer so you can jump to any page.",
+      "whyUseIt": [
+        "See how every onboarding route converges on one governed inventory across Microsoft Entra, Purview, and Defender.",
+        "Design agent identity, accountability, and lifecycle: blueprints per workload and environment, sponsors and owners, and retirement.",
+        "Compare four agent types (Agent Builder, Copilot Studio, Microsoft Foundry, and custom pro-code) across identity, access, risk, and operations.",
+        "Follow a phased configuration blueprint, an operating model with RACI and cadence, and the analytics that show usage, adoption, and impact."
+      ],
+      "howToUse": "1. Open `index.html` in a modern browser, or use the hosted copy from the catalog.\n2. Use the Contents list to jump to a page, and copy a link to share a specific page.\n3. Download the PDF to read it offline or share it. If your browser cannot show PDFs inline, the page offers the download instead.\n4. Treat it as guidance: confirm product availability, licensing, roles, and preview or Frontier status in your tenant before making production changes.",
+      "prerequisites": [
+        "Modern web browser or PDF reader",
+        "Current Microsoft Learn documentation to validate preview and Frontier capabilities for your tenant"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/agent-365-technical-advisory",
+      "source": "copilot-agent-strategy/agent-365-technical-advisory/README.md",
+      "permalink": "r/microsoft-agent-365-technical-advisory/"
     },
     {
       "name": "Migrate-CopilotStudioAgents",
@@ -844,7 +1661,8 @@
         "Pre-created target environments and target-user access"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Migrate-CopilotStudioAgents",
-      "source": "scripts/Migrate-CopilotStudioAgents/README.md"
+      "source": "scripts/Migrate-CopilotStudioAgents/README.md",
+      "permalink": "r/migrate-copilotstudioagents/"
     },
     {
       "name": "OmniAgent",
@@ -877,7 +1695,8 @@
         "Treat as historical guidance; validate current platform support before reuse"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-OmniAgent",
-      "source": "copilot-agent-samples/agent-builder-agents/da-OmniAgent/README.md"
+      "source": "copilot-agent-samples/agent-builder-agents/da-OmniAgent/README.md",
+      "permalink": "r/omniagent/"
     },
     {
       "name": "PowerClaw Agent",
@@ -916,7 +1735,8 @@
         "Permission to create a SharePoint site"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent",
-      "source": "copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/README.md"
+      "source": "copilot-agent-samples/copilot-studio-agents/ca-PowerClawAgent/README.md",
+      "permalink": "r/powerclaw-agent/"
     },
     {
       "name": "Preflight-OneDrive",
@@ -935,6 +1755,9 @@
       "format": "ps1",
       "featured": false,
       "status": "active",
+      "download": "scripts/Preflight-OneDrive/Preflight-OneDrive.ps1",
+      "downloadName": "Preflight-OneDrive.ps1",
+      "downloadSize": 132832,
       "author": "Alejandro Lopez",
       "version": "1.0.0",
       "published": "2019-08-02",
@@ -951,7 +1774,8 @@
         "Read access to the folder being scanned"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Preflight-OneDrive",
-      "source": "scripts/Preflight-OneDrive/README.md"
+      "source": "scripts/Preflight-OneDrive/README.md",
+      "permalink": "r/preflight-onedrive/"
     },
     {
       "name": "ProductQuote Agent",
@@ -994,7 +1818,8 @@
         "Word template with plain-text content controls"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/copilot-studio-agents/ca-ProductQuoteAgent",
-      "source": "copilot-agent-samples/copilot-studio-agents/ca-ProductQuoteAgent/README.md"
+      "source": "copilot-agent-samples/copilot-studio-agents/ca-ProductQuoteAgent/README.md",
+      "permalink": "r/productquote-agent/"
     },
     {
       "name": "Purview Audit Copilot Report",
@@ -1014,6 +1839,9 @@
       "format": "pbix",
       "featured": false,
       "status": "active",
+      "download": "copilot-analytics-samples/Copilot_Audit_PBI/Copilot_Audit_PBI.pbix",
+      "downloadName": "Copilot_Audit_PBI.pbix",
+      "downloadSize": 2105113,
       "author": "Alejandro Lopez",
       "version": "1.0.0",
       "published": "2025-03-26",
@@ -1031,7 +1859,8 @@
         "Power BI Desktop"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/Copilot_Audit_PBI",
-      "source": "copilot-analytics-samples/Copilot_Audit_PBI/README.md"
+      "source": "copilot-analytics-samples/Copilot_Audit_PBI/README.md",
+      "permalink": "r/purview-audit-copilot-report/"
     },
     {
       "name": "ReasoningAgent",
@@ -1064,7 +1893,8 @@
         "Treat as historical guidance; validate current platform support before reuse"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-ReasoningAgent",
-      "source": "copilot-agent-samples/agent-builder-agents/da-ReasoningAgent/README.md"
+      "source": "copilot-agent-samples/agent-builder-agents/da-ReasoningAgent/README.md",
+      "permalink": "r/reasoningagent/"
     },
     {
       "name": "Researcher — Automation Opportunities",
@@ -1083,11 +1913,11 @@
       "artifact": "md",
       "format": "md",
       "featured": false,
-      "status": "active",
+      "status": "archived",
       "author": "Alexander Hurtado",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2025-05-14",
-      "updated": "2025-05-15",
+      "updated": "2026-10-28",
       "whatItIs": "A Microsoft 365 Researcher prompt that looks across available organizational signals for repetitive, fragmented, or manual workflows suited to intelligent automation.",
       "whyUseIt": [
         "Discover automation opportunities grounded in observed work patterns.",
@@ -1100,7 +1930,126 @@
         "Permission to use the relevant Microsoft 365 organizational data"
       ],
       "url": "https://github.com/microsoft/FastTrack/blob/master/copilot-prompt-samples/Researcher-OrganizationInsights.md",
-      "source": "copilot-prompt-samples/Researcher-OrganizationInsights.md"
+      "source": "copilot-prompt-samples/Researcher-OrganizationInsights.md",
+      "permalink": "r/researcher-automation-opportunities/"
+    },
+    {
+      "name": "SimpleGraph",
+      "title": "SimpleGraph",
+      "slug": "simplegraph",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.",
+      "summary": "A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.",
+      "tags": [
+        "microsoft-graph",
+        "powershell-module",
+        "graph-api",
+        "authentication"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "author": "David Whitney",
+      "version": "1.0.0",
+      "published": "2020-10-15",
+      "updated": "2022-01-20",
+      "whatItIs": "A single-file PowerShell module (SimpleGraph.psm1) that makes web calls to the Microsoft Graph REST API. It provides Connect-SimpleGraph for delegated, client-secret, or client-certificate sign-in through the MSAL.PS module, plus Get-, New-, Set-, and Remove-SimpleGraphObject, Invoke-SimpleGraphRequest, and Get-SimpleGraphReport for reading, creating, updating, deleting, sending custom calls, and pulling usage reports.",
+      "whyUseIt": [
+        "Call any Graph endpoint without waiting for a matching Microsoft Graph PowerShell SDK cmdlet.",
+        "Use the same few cmdlets for reads, creates, updates, deletes, and custom requests, with inline help for each.",
+        "Pull Microsoft 365 usage reports from Graph, such as active user counts by workload for the last 7, 30, 90, or 180 days, as PowerShell objects."
+      ],
+      "howToUse": "1. Install MSAL.PS (`Install-Module MSAL.PS`) and register an Entra application with the redirect URI `https://login.microsoftonline.com/common/oauth2/nativeclient` for delegated sign-in.\n2. Download `SimpleGraph.psm1` and import it, then connect with the scopes your calls need:\n\n   ```powershell\n   Import-Module \"C:\\Users\\you\\Scripts\\SimpleGraph.psm1\"\n   Connect-SimpleGraph -ClientId \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\" -TenantId \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\" -Scopes \"User.Read.All\", \"Group.Read.All\"\n   Get-SimpleGraphObject users/you@domain.com\n   ```",
+      "prerequisites": [
+        "MSAL.PS PowerShell module",
+        "Microsoft Entra application registration (a client secret or certificate plus Graph application permissions for app-only use)",
+        "Graph permissions that match the calls you make"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/tools/SimpleGraph",
+      "source": "tools/SimpleGraph/README.md",
+      "permalink": "r/simplegraph/"
+    },
+    {
+      "name": "Teams Audio Conferencing Snippets",
+      "title": "Teams Audio Conferencing Snippets",
+      "slug": "teams-audio-conferencing-snippets",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.",
+      "summary": "PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.",
+      "tags": [
+        "teams",
+        "audio-conferencing",
+        "snippets",
+        "bulk-update"
+      ],
+      "artifact": "md",
+      "format": "md",
+      "featured": false,
+      "status": "active",
+      "author": "David Whitney",
+      "version": "1.0.0",
+      "published": "2021-01-27",
+      "updated": "2022-01-24",
+      "whatItIs": "A README of short PowerShell snippets, run interactively with the MicrosoftTeams module, for common Teams Audio Conferencing configuration. They change the bridge number shown in users' meeting invites, disable or limit dial-out from Audio Conferencing meetings with Grant-CsDialOutPolicy, and disable toll-free dial-in for selected users, using a CSV of users.",
+      "whyUseIt": [
+        "Update meeting invite bridge numbers for many users after changing your default bridge or adding local numbers.",
+        "Limit or disable call-me and dial-out destinations to control Communication Credits use.",
+        "Disable toll-free dial-in for specific users while leaving it on for others."
+      ],
+      "howToUse": "1. Install the MicrosoftTeams PowerShell module (2.0.0 or later) and connect to Teams.\n2. Prepare a CSV with a `UserPrincipalName` column for the bulk snippets.\n3. Copy the snippet you need from the README and adjust the values, for example to change the bridge number in meeting invites:\n\n   ```powershell\n   Import-Module MicrosoftTeams\n   Connect-MicrosoftTeams\n\n   $newbridgenumber = \"+15551234567\"\n   $updatebridgeusers = Import-Csv \"C:\\path\\to\\updatebridgeusers.csv\"\n\n   foreach ($user in $updatebridgeusers) {\n       Set-CsOnlineDialInConferencingUser -Identity $user.UserPrincipalName -ServiceNumber $newbridgenumber\n   }\n   ```",
+      "prerequisites": [
+        "MicrosoftTeams PowerShell module, version 2.0.0 or later",
+        "Users enabled for Teams Audio Conferencing",
+        "CSV with a UserPrincipalName column for the bulk snippets"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/samples/teams-audioconferencing-snippets",
+      "source": "samples/teams-audioconferencing-snippets/README.md",
+      "permalink": "r/teams-audio-conferencing-snippets/"
+    },
+    {
+      "name": "Teams Phone System Snippets",
+      "title": "Teams Phone System Snippets",
+      "slug": "teams-phone-system-snippets",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "PowerShell snippet to assign Teams Phone numbers in bulk from a CSV for Calling Plan, Operator Connect, or Direct Routing.",
+      "summary": "PowerShell snippet to assign Teams Phone numbers in bulk from a CSV for Calling Plan, Operator Connect, or Direct Routing.",
+      "tags": [
+        "teams",
+        "teams-phone",
+        "phone-system",
+        "snippets",
+        "bulk-update"
+      ],
+      "artifact": "md",
+      "format": "md",
+      "featured": false,
+      "status": "active",
+      "author": "David Whitney",
+      "version": "1.0.0",
+      "published": "2022-11-08",
+      "updated": "2024-10-21",
+      "whatItIs": "A README with a PowerShell snippet, run with the MicrosoftTeams module, that reads a CSV and assigns phone numbers to users with Set-CsPhoneNumberAssignment. It handles Calling Plan numbers (with an emergency location ID), Operator Connect numbers, and Direct Routing numbers, and grants a voice routing policy for Direct Routing users.",
+      "whyUseIt": [
+        "Assign phone numbers to many users at once instead of one at a time in the Teams admin center.",
+        "Use one CSV and loop for Calling Plan, Operator Connect, and Direct Routing number types.",
+        "Reports an error for rows with an invalid PhoneNumberType."
+      ],
+      "howToUse": "1. Install the MicrosoftTeams PowerShell module, run `Connect-MicrosoftTeams`, and update the module to the latest version.\n2. Create a CSV with `UserPrincipalName`, `PhoneNumber`, `PhoneNumberType` (CallingPlan, OperatorConnect, or DirectRouting), `LocationId` (required for CallingPlan), and `VoiceRoutingPolicy` (required for DirectRouting) columns.\n3. Adjust the CSV path and run the snippet from the README:\n\n   ```powershell\n   $assignphoneusers = Import-Csv \"C:\\path\\to\\assignphoneusers.csv\"\n\n   foreach ($user in $assignphoneusers) {\n       if ($user.PhoneNumberType -eq \"CallingPlan\") {\n           Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType -LocationId $user.LocationId\n       }\n       # DirectRouting, OperatorConnect, and error handling branches are in the README\n   }\n   ```",
+      "prerequisites": [
+        "MicrosoftTeams PowerShell module, latest version",
+        "CSV with the columns described above",
+        "Phone numbers available in the tenant and, for Calling Plan numbers, an emergency LocationId"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/samples/teams-phonesystem-snippets",
+      "source": "samples/teams-phonesystem-snippets/README.md",
+      "permalink": "r/teams-phone-system-snippets/"
     },
     {
       "name": "Teams Phone User Migration",
@@ -1137,7 +2086,131 @@
         "Completed migration CSV"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Teams%20Phone%20User%20Migration",
-      "source": "scripts/Teams Phone User Migration/README.md"
+      "source": "scripts/Teams Phone User Migration/README.md",
+      "permalink": "r/teams-phone-user-migration/"
+    },
+    {
+      "name": "Teams Rooms Snippets",
+      "title": "Teams Rooms Snippets",
+      "slug": "teams-rooms-snippets",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "PowerShell snippets to create and configure Microsoft Teams Rooms resource accounts, one at a time or in bulk from a CSV.",
+      "summary": "PowerShell snippets to create and configure Microsoft Teams Rooms resource accounts, one at a time or in bulk from a CSV.",
+      "tags": [
+        "teams",
+        "teams-rooms",
+        "resource-accounts",
+        "exchange-online",
+        "snippets"
+      ],
+      "artifact": "md",
+      "format": "md",
+      "featured": false,
+      "status": "active",
+      "author": "Mihai Filip",
+      "version": "1.0.0",
+      "published": "2023-02-10",
+      "updated": "2023-02-10",
+      "whatItIs": "A README with PowerShell snippets that use the Microsoft Graph and Exchange Online modules to create a room mailbox for a Microsoft Teams Rooms device, set its calendar processing, disable password expiration, set the usage location, and assign a license. One snippet handles a single account and another reads a CSV to create many.",
+      "whyUseIt": [
+        "Provision Teams Rooms resource accounts consistently instead of configuring each by hand.",
+        "Create many accounts from a CSV; a sample resource-accounts.csv is included.",
+        "Control calendar processing options such as automatic acceptance and the additional response text."
+      ],
+      "howToUse": "1. Install the Microsoft Graph and Exchange Online PowerShell modules and connect to both.\n2. Replace the sample UPN, alias, display name, license, usage location, and password with your own, or fill in a CSV like the included `resource-accounts.csv`.\n3. Run the snippet for a single account or the bulk loop:\n\n   ```powershell\n   Connect-MgGraph -Scopes \"User.ReadWrite.All\"\n   Connect-ExchangeOnline\n\n   $path = \".\\resource-accounts.csv\"\n   $RAs = Import-Csv -Path $path\n   # foreach loop that creates and configures each account is in the README\n   ```",
+      "prerequisites": [
+        "Microsoft Graph PowerShell and Exchange Online PowerShell modules",
+        "Permission to create Exchange Online room mailboxes and to manage users and licenses (the README connects with the User.ReadWrite.All scope)",
+        "Available Teams Rooms license, such as Microsoft_Teams_Rooms_Pro",
+        "A password for each room account; the snippets and sample CSV handle it as plain text, so generate and protect it securely"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/samples/teams-rooms-snippets",
+      "source": "samples/teams-rooms-snippets/README.md",
+      "permalink": "r/teams-rooms-snippets/"
+    },
+    {
+      "name": "Teams Upgrade Snippets",
+      "title": "Teams Upgrade Snippets",
+      "slug": "teams-upgrade-snippets",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "PowerShell snippets to upgrade Skype for Business users to Teams Only mode and run the Meeting Migration Service.",
+      "summary": "PowerShell snippets to upgrade Skype for Business users to Teams Only mode and run the Meeting Migration Service.",
+      "tags": [
+        "teams",
+        "teams-upgrade",
+        "skype-for-business",
+        "meeting-migration",
+        "snippets"
+      ],
+      "artifact": "md",
+      "format": "md",
+      "featured": false,
+      "status": "archived",
+      "author": "David Whitney",
+      "version": "1.0.0",
+      "published": "2020-01-30",
+      "updated": "2021-03-16",
+      "whatItIs": "A README of PowerShell snippets, run with the MicrosoftTeams module, for the journey from Skype for Business to Teams Only mode. They upgrade a list of users with Grant-CsTeamsUpgradePolicy, run a server-side batch policy assignment for long lists, and queue and report on the Meeting Migration Service after an org-wide upgrade. Kept for reference because Skype for Business Online has been retired.",
+      "whyUseIt": [
+        "Reference for the upgrade policy, batch policy assignment, and Meeting Migration Service cmdlets.",
+        "Example of using a CSV of users with TeamsUpgradePolicy and `New-CsBatchPolicyAssignmentOperation`."
+      ],
+      "howToUse": "1. Install the MicrosoftTeams PowerShell module (2.0.0 or later) and connect with `Connect-MicrosoftTeams`.\n2. Prepare a CSV with a `UserPrincipalName` column.\n3. Run the snippet you need from the README, for example to upgrade a list of users to Teams Only mode:\n\n   ```powershell\n   $upgradeusers = Import-Csv \"C:\\path\\to\\upgradeusers.csv\"\n\n   foreach ($user in $upgradeusers) {\n       Grant-CsTeamsUpgradePolicy -Identity $user.UserPrincipalName -PolicyName \"UpgradeToTeams\"\n   }\n   ```",
+      "prerequisites": [
+        "MicrosoftTeams PowerShell module, version 2.0.0 or later",
+        "CSV with a UserPrincipalName column for the bulk snippets"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/samples/teams-upgrade-snippets",
+      "source": "samples/teams-upgrade-snippets/README.md",
+      "permalink": "r/teams-upgrade-snippets/"
+    },
+    {
+      "name": "Update-VivaEngageLicensingToggle",
+      "title": "Update-VivaEngageLicensingToggle",
+      "slug": "update-vivaengagelicensingtoggle",
+      "type": "script",
+      "subcategory": "PowerShell",
+      "category": "PowerShell",
+      "description": "Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.",
+      "summary": "Check or irreversibly enforce per-user licensing for a Viva Engage network through the Viva Engage REST endpoint.",
+      "tags": [
+        "viva-engage",
+        "administration",
+        "licensing"
+      ],
+      "artifact": "ps1",
+      "format": "ps1",
+      "featured": false,
+      "status": "active",
+      "download": "scripts/Update-VivaEngageLicensingToggle/BlockUsersWithoutLicense.ps1",
+      "downloadName": "BlockUsersWithoutLicense.ps1",
+      "downloadSize": 2946,
+      "author": [
+        "Manish Kumar",
+        "Brian Lyttle"
+      ],
+      "version": "1.0.1",
+      "published": "2025-10-01",
+      "updated": "2026-10-28",
+      "whatItIs": "A PowerShell script (BlockUsersWithoutLicense.ps1) that calls the Viva Engage network REST API with a Microsoft Entra access token to read the current per-user license enforcement state or to enforce per-user licensing for the network. Enforcement is irreversible, so confirm that the required service plans are provisioned to all users first.",
+      "whyUseIt": [
+        "Check whether per-user licensing is already enforced for your Viva Engage network.",
+        "Enforce per-user licensing with the supported script instead of building your own REST calls."
+      ],
+      "howToUse": "1. Provision Viva Engage Core (recommended) or Yammer Enterprise service plans to all users. Enforcement can't be reversed.\n2. Get a valid Microsoft Entra access token for a Global Administrator of the Viva Engage network.\n3. Check the current state, then enforce when ready:\n\n   ```powershell\n   ./BlockUsersWithoutLicense.ps1 fetch_current_license_state \"<ENTRA_ACCESS_TOKEN>\"\n   ./BlockUsersWithoutLicense.ps1 enforce_user_license \"<ENTRA_ACCESS_TOKEN>\"\n   ```",
+      "prerequisites": [
+        "Global administrator access to the Viva Engage network",
+        "Viva Engage Core (recommended) or Yammer Enterprise service plans provisioned to all users before enforcing",
+        "PowerShell 5.1 or later and network access to Viva Engage",
+        "Applies to networks that have not previously enforced per-user licensing through the legacy Yammer admin center"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Update-VivaEngageLicensingToggle",
+      "source": "scripts/Update-VivaEngageLicensingToggle/README.md",
+      "permalink": "r/update-vivaengagelicensingtoggle/"
     },
     {
       "name": "VibeWriting Agent",
@@ -1172,7 +2245,48 @@
         "Access to Microsoft 365 Copilot Agent Builder"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-samples/agent-builder-agents/da-VibeWritingAgent",
-      "source": "copilot-agent-samples/agent-builder-agents/da-VibeWritingAgent/README.md"
+      "source": "copilot-agent-samples/agent-builder-agents/da-VibeWritingAgent/README.md",
+      "permalink": "r/vibewriting-agent/"
+    },
+    {
+      "name": "Viva Engage Community Creation App",
+      "title": "Viva Engage Community Creation App",
+      "slug": "viva-engage-community-creation-app",
+      "type": "script",
+      "subcategory": "Power Apps",
+      "category": "Power Apps",
+      "description": "Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.",
+      "summary": "Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.",
+      "tags": [
+        "viva-engage",
+        "communities",
+        "power-apps",
+        "power-automate",
+        "microsoft-graph"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": false,
+      "status": "preview",
+      "author": "Dean Cron",
+      "version": "1.0.1",
+      "published": "2024-07-31",
+      "updated": "2026-10-28",
+      "whatItIs": "An importable Power Apps solution (VivaEngageCommunityCreationApp.zip) containing a canvas app and a Power Automate flow. The app collects a community name, description, and privacy setting, and the flow gets a Microsoft Graph token with an Entra app registration and creates the community through the community creation API, with the signed-in user as owner. It is a sample and not intended for production use.",
+      "whyUseIt": [
+        "See an end-to-end example of the Viva Engage community creation API behind a Power App front end.",
+        "Start from a working app and flow and adapt them to your own community creation process."
+      ],
+      "howToUse": "1. Create an Entra app registration with the Microsoft Graph `Community.ReadWrite.All` and `User.Read.All` application permissions, grant admin consent, and create a client secret. Note the application (client) ID and directory (tenant) ID.\n2. In Power Apps, choose Import canvas app, upload `VivaEngageCommunityCreationApp.zip`, and select or create an Office 365 Users connection.\n3. Edit the app, remove and re-add the `Viva Engage CC Flow` in the Power Automate pane, and enter your values in the flow's `Get Access Token` action, which uses this request body:\n\n   ```text\n   grant_type=client_credentials\n   &client_id=CLIENTID\n   &client_secret=CLIENTSECRET\n   &scope=https://graph.microsoft.com/.default\n   ```\n\n4. Turn the flow on in Power Automate, then save and publish the app. The full steps are in `AppImportInstructions.docx`.",
+      "prerequisites": [
+        "Microsoft Viva Engage",
+        "Power Apps and Power Automate environment where you can import a solution",
+        "Microsoft Entra app registration with Community.ReadWrite.All and User.Read.All application permissions and a client secret",
+        "Office 365 Users connection"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/samples/Viva-Engage-Community-Creation-App",
+      "source": "samples/Viva-Engage-Community-Creation-App/README.md",
+      "permalink": "r/viva-engage-community-creation-app/"
     },
     {
       "name": "Viva Insights Copilot Dashboard",
@@ -1208,7 +2322,8 @@
         "Viva Insights person-query export"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample",
-      "source": "copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/README.md"
+      "source": "copilot-analytics-samples/VivaInsights-Copilot-Dashboard-Sample/README.md",
+      "permalink": "r/viva-insights-copilot-dashboard/"
     }
   ]
 }

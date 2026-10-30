@@ -6,14 +6,15 @@ summary: >-
   Analyze Microsoft 365 signals to identify repetitive work and prioritize high-value Copilot agent
   automation opportunities.
 author: Alexander Hurtado
-version: 1.0.0
+version: 1.0.1
 published: "2025-05-14"
-updated: "2025-05-15"
+updated: "2026-10-28"
 tags:
   - researcher
   - frontier
   - automation
 format: md
+status: archived
 whatItIs: >-
   A Microsoft 365 Researcher prompt that looks across available organizational signals for
   repetitive, fragmented, or manual workflows suited to intelligent automation.
@@ -31,6 +32,8 @@ prerequisites:
 ---
 
 # Researcher-AutomationOpportunities
+
+> **Archived:** FastTrack no longer maintains a prompt library. This prompt is kept for reference. For current, community-maintained prompts and agent samples, see [PnP Copilot Prompts](https://pnp.github.io/copilot-prompts/).
 
 ## 🎯 Use Case
 This prompt enables the Researcher agent to analyze organizational data across multiple Microsoft 365 services to identify high-value automation opportunities for Copilot Agents. It focuses on discovering repetitive, manual, or fragmented workflows that could benefit from intelligent automation.

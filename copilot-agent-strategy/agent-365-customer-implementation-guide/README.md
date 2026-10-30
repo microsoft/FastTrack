@@ -7,9 +7,9 @@ author:
   - "Pratik Bhusal"
   - "Manas Biswas"
   - "Alejandro Lopez"
-version: 1.3.0
+version: 1.4.0
 published: 2026-09-09
-updated: 2026-10-15
+updated: 2026-10-29
 tags:
   - agent-365
   - implementation
@@ -63,7 +63,8 @@ and does not require a web server, sign-in, or installation.
 2. Select **Simple** for the configuration reference or **Detailed** for the complete implementation
    journey.
 3. Use the theme and print controls as needed.
-4. Apply the guidance in your own tenant. The guide does not connect to your tenant. Detailed tracks
+4. To link to a specific step, add `#advanced/<step>` to the address, for example `index.html#advanced/4.04a`. The guide opens the Detailed view, scrolls to the step, and highlights it. Use a section number such as `#advanced/04` to open a section.
+5. Apply the guidance in your own tenant. The guide does not connect to your tenant. Detailed tracks
    selections only while the file is open; closing or reloading it resets them.
 
 Product availability, licensing, portal paths, and controls can vary by tenant and rollout. Confirm

@@ -64,6 +64,11 @@ assert(hasUnsafeConflict(['resource-stats.json', 'traffic-data/2026-09-14.json']
   'A mixed conflict set must stop synchronization instead of overwriting source data.');
 assert(githubTraffic?.['continue-on-error'] === true,
   'GitHub traffic failure must not block the independent Clarity source.');
+assert(githubTraffic?.if?.includes("vars.COLLECT_GITHUB_TRAFFIC == 'true'"),
+  'GitHub traffic collection must run only when the COLLECT_GITHUB_TRAFFIC repository variable is true.');
+const pauseNote = collectSteps.find(step => step.name === 'Note that GitHub traffic collection is paused');
+assert(pauseNote?.if?.includes("vars.COLLECT_GITHUB_TRAFFIC != 'true'") && pauseNote.run.includes('::notice::') && !pauseNote.run.includes('::error::'),
+  'A paused GitHub traffic collection must say so as a notice, never as an error.');
 assert(stats?.['continue-on-error'] === true && stats.run.includes('--require-clarity'),
   'Clarity must report unavailability without blocking a healthy GitHub snapshot.');
 assert(stats?.if === 'always()', 'Stats must run even when GitHub traffic collection fails.');
@@ -87,8 +92,8 @@ assert(persist.run.includes('if [ "${{ steps.stats.outputs.generated }}" = "true
 function evaluateCondition(expression, state) {
   const replacements = new Map([
     ['always()', true],
-    ["steps.github-traffic.outcome == 'success'", state.github],
-    ["steps.github-traffic.outcome == 'failure'", !state.github],
+    ["steps.github-traffic.outcome == 'success'", state.github === 'success'],
+    ["steps.github-traffic.outcome == 'failure'", state.github === 'failure'],
     ["steps.stats.outputs.clarity_available == 'true'", state.clarity],
     ["steps.stats.outcome == 'failure'", !state.clarity],
     ["steps.persist.outcome == 'failure'", state.persistFailed]
@@ -101,11 +106,15 @@ function evaluateCondition(expression, state) {
 }
 
 const combinations = [
-  { github: true, clarity: true, persistFailed: false, persist: true, fail: false },
-  { github: true, clarity: false, persistFailed: false, persist: true, fail: true },
-  { github: false, clarity: true, persistFailed: false, persist: true, fail: true },
-  { github: false, clarity: false, persistFailed: false, persist: false, fail: true },
-  { github: true, clarity: true, persistFailed: true, persist: true, fail: true }
+  { github: 'success', clarity: true, persistFailed: false, persist: true, fail: false },
+  { github: 'success', clarity: false, persistFailed: false, persist: true, fail: true },
+  { github: 'failure', clarity: true, persistFailed: false, persist: true, fail: true },
+  { github: 'failure', clarity: false, persistFailed: false, persist: false, fail: true },
+  { github: 'success', clarity: true, persistFailed: true, persist: true, fail: true },
+  // Paused GitHub traffic: Clarity alone keeps the run green and persisted.
+  { github: 'skipped', clarity: true, persistFailed: false, persist: true, fail: false },
+  { github: 'skipped', clarity: false, persistFailed: false, persist: false, fail: true },
+  { github: 'skipped', clarity: true, persistFailed: true, persist: true, fail: true }
 ];
 
 for (const combination of combinations) {
@@ -141,6 +150,15 @@ const catalogStats = catalogWorkflow.jobs.publish.steps.find(
 );
 assert(catalogStats.run.includes('--render-only') && !catalogStats.env,
   'Catalog publishing must render persisted stats without collecting short-lived sources.');
+
+const catalogPublish = catalogWorkflow.jobs.publish;
+const catalogCommit = catalogPublish.steps.find(step => step.name === 'Commit generated catalog');
+assert(catalogCommit && !catalogCommit.run.includes('gh pr') && !catalogCommit.run.includes('catalog-refresh') &&
+  catalogCommit.run.includes('::warning::') && !catalogCommit.run.includes('exit 1') &&
+  !('pull-requests' in catalogPublish.permissions),
+  'Catalog publishing must not open pull requests or fail when the direct push is rejected; it must warn instead.');
+assert(catalogCommit.run.includes('CATALOG_FILES') && catalogCommit.run.indexOf('::notice::Only resource stats changed') < catalogCommit.run.indexOf('::warning::'),
+  'Catalog publishing must warn only when the catalog itself changed; a stats-only difference is a notice.');
 assert(!workflowSource.includes('BRANCH="traffic-data/$DATE"'),
   'The workflow must not create date-named daily PR branches.');
 

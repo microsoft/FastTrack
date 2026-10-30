@@ -1,3 +1,51 @@
+---
+title: Teams Phone System Snippets
+type: script
+category: PowerShell
+summary: PowerShell snippet to assign Teams Phone numbers in bulk from a CSV for Calling Plan, Operator Connect, or Direct Routing.
+author: David Whitney
+version: 1.0.0
+published: "2022-11-08"
+updated: "2024-10-21"
+tags:
+  - teams
+  - teams-phone
+  - phone-system
+  - snippets
+  - bulk-update
+format: md
+featured: false
+status: active
+whatItIs: >-
+  A README with a PowerShell snippet, run with the MicrosoftTeams module, that reads a CSV and assigns
+  phone numbers to users with Set-CsPhoneNumberAssignment. It handles Calling Plan numbers (with an
+  emergency location ID), Operator Connect numbers, and Direct Routing numbers, and grants a voice
+  routing policy for Direct Routing users.
+whyUseIt:
+  - Assign phone numbers to many users at once instead of one at a time in the Teams admin center.
+  - Use one CSV and loop for Calling Plan, Operator Connect, and Direct Routing number types.
+  - Reports an error for rows with an invalid PhoneNumberType.
+howToUse: |-
+  1. Install the MicrosoftTeams PowerShell module, run `Connect-MicrosoftTeams`, and update the module to the latest version.
+  2. Create a CSV with `UserPrincipalName`, `PhoneNumber`, `PhoneNumberType` (CallingPlan, OperatorConnect, or DirectRouting), `LocationId` (required for CallingPlan), and `VoiceRoutingPolicy` (required for DirectRouting) columns.
+  3. Adjust the CSV path and run the snippet from the README:
+
+     ```powershell
+     $assignphoneusers = Import-Csv "C:\path\to\assignphoneusers.csv"
+
+     foreach ($user in $assignphoneusers) {
+         if ($user.PhoneNumberType -eq "CallingPlan") {
+             Set-CsPhoneNumberAssignment -Identity $user.UserPrincipalName -PhoneNumber $user.PhoneNumber -PhoneNumberType $user.PhoneNumberType -LocationId $user.LocationId
+         }
+         # DirectRouting, OperatorConnect, and error handling branches are in the README
+     }
+     ```
+prerequisites:
+  - "MicrosoftTeams PowerShell module, latest version"
+  - "CSV with the columns described above"
+  - "Phone numbers available in the tenant and, for Calling Plan numbers, an emergency LocationId"
+---
+
 # Microsoft FastTrack Open Source - Teams Phone System Snippets
 
 Here are a few common Teams Phone System configuration PowerShell snippets for number configuration and other related tasks.

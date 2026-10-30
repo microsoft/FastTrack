@@ -2,6 +2,10 @@
 
 All notable changes to the Agent 365 Lifecycle Atlas are documented here.
 
+## 1.3.1 - 2026-10-28
+
+- Archived the atlas. It is replaced by the Microsoft Agent 365 Technical Advisory and is no longer maintained. It stays at this address so existing links keep working.
+
 ## 1.3.0 - 2026-09-22
 
 - Corrected `a365 setup all` runtime-configuration synchronization: it depends on

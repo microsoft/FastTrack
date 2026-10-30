@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found | Microsoft FastTrack</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/FastTrack/assets/favicon.svg">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <style>
+    :root { --bg: #fafafa; --surface: #fff; --text: #171717; --muted: #52525b; --border: #e4e4e7; --accent: #4f46e5; }
+    [data-theme="dark"] { --bg: #0a0a0b; --surface: #121214; --text: #ededed; --muted: #a1a1aa; --border: #27272a; --accent: #818cf8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 1.5rem; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.6; }
+    main { max-width: 34rem; }
+    h1 { font-size: 2rem; letter-spacing: -0.03em; margin: 0 0 0.75rem; }
+    p { color: var(--muted); margin: 0 0 1.25rem; }
+    a.btn { display: inline-block; padding: 0.625rem 1rem; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; }
+    [data-theme="dark"] a.btn { color: #14141a; }
+    form { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    input { flex: 1; padding: 0.625rem 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>We couldn&rsquo;t find that page</h1>
+    <p>The resource may have been renamed or retired. Search the catalog to find what you were looking for.</p>
+    <form action="/FastTrack/" method="get">
+      <input type="search" name="q" placeholder="Search resources" aria-label="Search resources" autofocus>
+      <button class="btn" type="submit" style="border:0;cursor:pointer">Search</button>
+    </form>
+    <a class="btn" href="/FastTrack/">Browse the catalog</a>
+  </main>
+</body>
+</html>

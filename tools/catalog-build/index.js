@@ -1,9 +1,11 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import * as yaml from 'js-yaml';
+import { renderDownloadPage, renderFeed, renderResourcePage, renderSitemap, resourcePath } from './site-pages.js';
+import { downloadName, fileExists, findDownloadFile } from './downloads.js';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = join(toolDirectory, '..', '..');
@@ -11,15 +13,18 @@ const checkOnly = process.argv.includes('--check');
 
 const folderRoots = [
   'scripts',
+  'samples',
+  'tools/SimpleGraph',
   'copilot-agent-samples/copilot-studio-agents',
   'copilot-agent-samples/agent-builder-agents',
   'copilot-agent-samples/github-copilot-agents',
   'copilot-agent-samples/github-copilot-skills',
+  'copilot-agent-samples/ESS',
   'copilot-agent-strategy',
   'copilot-analytics-samples'
 ];
 const promptRoot = 'copilot-prompt-samples';
-const excludedSegments = new Set(['archive', '_sample_templates', 'samples']);
+const excludedSegments = new Set(['archive', '_sample_templates', 'node_modules']);
 const allowedTypes = new Set(['script', 'agent', 'strategy', 'analytics', 'prompt', 'skill']);
 const allowedFormats = new Set(['ps1', 'bundle', 'declarative', 'interactive', 'pptx', 'pbix', 'md']);
 const allowedStatuses = new Set(['active', 'preview', 'archived']);
@@ -31,20 +36,22 @@ function toPosix(path) {
   return path.split(sep).join('/');
 }
 
-function isExcluded(path) {
-  return toPosix(relative(repositoryRoot, path))
+// Segments are checked relative to the scanned root so a root that is itself
+// named like an excluded segment (for example "samples") is still scanned.
+function isExcluded(path, root) {
+  return toPosix(relative(root, path))
     .toLowerCase()
     .split('/')
     .some(segment => excludedSegments.has(segment));
 }
 
-function collectReadmes(directory, files = []) {
-  if (!existsSync(directory) || isExcluded(directory)) return files;
+function collectReadmes(directory, root = directory, files = []) {
+  if (!existsSync(directory) || isExcluded(directory, root)) return files;
 
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (isExcluded(path)) continue;
-    if (entry.isDirectory()) collectReadmes(path, files);
+    if (isExcluded(path, root)) continue;
+    if (entry.isDirectory()) collectReadmes(path, root, files);
     else if (entry.name.toLowerCase() === 'readme.md') files.push(path);
   }
   return files;
@@ -148,6 +155,14 @@ function validate(data, file) {
       add('preview', 'points to a file that does not exist');
     }
   }
+  if (data.download !== undefined) {
+    if (!isNonEmptyString(data.download)) add('download', 'must be a non-empty string');
+    else if (/^[a-z]+:\/\//i.test(data.download) || data.download.startsWith('/') || data.download.includes('..') || data.download.includes('\\')) {
+      add('download', 'must be a relative path inside the resource folder (no URL, absolute path, "..", or backslash)');
+    } else if (!fileExists(dirname(file), data.download)) {
+      add('download', 'points to a file that does not exist');
+    }
+  }
   if (data.whatItIs !== undefined && !isNonEmptyString(data.whatItIs)) add('whatItIs', 'must be a non-empty string');
   if (data.whyUseIt !== undefined && !isStringList(data.whyUseIt)) add('whyUseIt', 'must be a non-empty list of strings');
   if (data.howToUse !== undefined && !isNonEmptyString(data.howToUse)) add('howToUse', 'must be a non-empty Markdown string');
@@ -181,10 +196,16 @@ function createResource(data, file, updated) {
   const preview = data.preview
     ? toPosix(relative(repositoryRoot, join(dirname(file), data.preview)))
     : undefined;
+  const slug = slugify(data.title);
+  // Archived resources are kept for reference and are not promoted, so they get no Download button.
+  const downloadFile = (data.status ?? 'active') === 'archived'
+    ? ''
+    : findDownloadFile(dirname(file), data.format ?? 'md', data.download);
+  const download = downloadFile ? toPosix(relative(repositoryRoot, join(dirname(file), downloadFile))) : undefined;
   const resource = {
     name: data.title,
     title: data.title,
-    slug: slugify(data.title),
+    slug,
     type: data.type,
     subcategory: data.category,
     category: data.category,
@@ -197,6 +218,9 @@ function createResource(data, file, updated) {
     status: data.status ?? 'active',
     interactiveKind: data.interactiveKind,
     preview,
+    download,
+    downloadName: download ? downloadName(slug, download) : undefined,
+    downloadSize: download ? statSync(join(repositoryRoot, download)).size : undefined,
     author: data.author,
     version: data.version,
     published: data.published,
@@ -242,6 +266,32 @@ if (resources.length === 0 && errors.length === 0) {
   errors.push({ file: repositoryRoot, field: 'catalog', message: 'contains no resources with YAML front matter' });
 }
 
+const seenSlugs = new Map();
+for (const resource of resources) {
+  const first = seenSlugs.get(resource.slug);
+  if (first) {
+    errors.push({ file: join(repositoryRoot, resource.source), field: 'title', message: `produces the slug "${resource.slug}", which is already used by ${first}` });
+  } else {
+    seenSlugs.set(resource.slug, resource.source);
+  }
+}
+
+function writeSiteOutputs(sortedResources) {
+  const pagesDirectory = join(repositoryRoot, 'r');
+  rmSync(pagesDirectory, { recursive: true, force: true });
+  for (const resource of sortedResources) {
+    const directory = join(pagesDirectory, resource.slug);
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(join(directory, 'index.html'), renderResourcePage(resource, { resources: sortedResources, repositoryRoot }));
+    if (resource.download) {
+      mkdirSync(join(directory, 'download'), { recursive: true });
+      writeFileSync(join(directory, 'download', 'index.html'), renderDownloadPage(resource));
+    }
+  }
+  writeFileSync(join(repositoryRoot, 'sitemap.xml'), renderSitemap(sortedResources));
+  writeFileSync(join(repositoryRoot, 'feed.xml'), renderFeed(sortedResources));
+}
+
 if (errors.length > 0) {
   console.error(`Catalog validation failed with ${errors.length} error${errors.length === 1 ? '' : 's'}:`);
   for (const error of errors) {
@@ -249,9 +299,15 @@ if (errors.length > 0) {
   }
   process.exitCode = 1;
 } else if (checkOnly) {
+  // Rendering every page in memory proves the templates cope with all current metadata.
+  for (const resource of resources) {
+    renderResourcePage(resource, { resources, repositoryRoot });
+    if (resource.download) renderDownloadPage(resource);
+  }
   console.log(`Catalog metadata is valid for ${resources.length} resources.`);
 } else {
   resources.sort((a, b) => a.title.localeCompare(b.title));
+  for (const resource of resources) resource.permalink = resourcePath(resource);
   const latestUpdated = resources.reduce((max, resource) => (
     resource.updated && resource.updated > max ? resource.updated : max
   ), '');
@@ -260,10 +316,9 @@ if (errors.length > 0) {
     count: resources.length,
     resources
   };
-  const output = `${JSON.stringify(catalog, null, 2)}\n`;
-  const rootOutput = join(repositoryRoot, 'catalog.json');
-  const siteOutput = join(repositoryRoot, 'design-concepts', 'catalog.json');
-  writeFileSync(rootOutput, output);
-  if (existsSync(dirname(siteOutput))) writeFileSync(siteOutput, output);
-  console.log(`Wrote ${resources.length} resources to ${toPosix(relative(repositoryRoot, rootOutput))} and design-concepts/catalog.json.`);
+  writeFileSync(join(repositoryRoot, 'catalog.json'), `${JSON.stringify(catalog, null, 2)}\n`);
+  writeSiteOutputs(resources);
+  console.log(`Wrote catalog.json, sitemap.xml, feed.xml, and ${resources.length} pages under r/.`);
 }
+
+

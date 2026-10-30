@@ -1,0 +1,111 @@
+name: Agent 365 Content Freshness
+
+# Checks the Agent 365 Customer Implementation Guide and Enablement Checklist once a week:
+#   - every guide reference in the checklist still resolves to a real section or step,
+#   - every Microsoft Learn link they cite still works, and where it now lives if it moved,
+#   - which cited Learn pages changed after each file was last reviewed,
+#   - whether either review is overdue,
+#   - and, in a separate job, that the guide's #advanced/<step> links open the right step in a real browser.
+# It does NOT change any content. It opens or updates a single tracking issue so a maintainer can
+# review and decide. The issue closes itself once everything is clear.
+
+on:
+  schedule:
+    # 13:00 UTC every Monday
+    - cron: "0 13 * * 1"
+  workflow_dispatch:
+    inputs:
+      max_age_days:
+        description: "Days after which a review is considered overdue"
+        required: false
+        default: "30"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: agent-365-content-freshness
+  cancel-in-progress: false
+
+jobs:
+  freshness:
+    if: github.repository == 'microsoft/FastTrack'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tools/catalog-build/package-lock.json
+      - run: npm ci
+        working-directory: tools/catalog-build
+
+      - name: Build the freshness report
+        working-directory: tools/catalog-build
+        env:
+          MAX_AGE_DAYS: ${{ github.event.inputs.max_age_days || '30' }}
+        # Exit code 2 means the check itself could not run (a file's format changed, or Microsoft
+        # Learn was mostly unreachable). That fails the run on purpose so it is noticed.
+        run: |
+          node agent365-freshness.js \
+            --max-age-days "$MAX_AGE_DAYS" \
+            --out "$RUNNER_TEMP/report.md" \
+            --issue-out "$RUNNER_TEMP/issue.md" \
+            --json "$RUNNER_TEMP/report.json"
+
+      - name: Open, update, or close the tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          LABEL="agent-365-freshness"
+          gh label create "$LABEL" --color "fbca04" \
+            --description "Weekly Agent 365 guide and checklist freshness report" 2>/dev/null || true
+
+          existing=$(gh issue list --label "$LABEL" --state open \
+            --json number --jq '.[0].number // empty')
+
+          if [ "$(jq -r '.actionable' "$RUNNER_TEMP/report.json")" != "true" ]; then
+            if [ -n "$existing" ]; then
+              gh issue comment "$existing" \
+                --body "✅ $(date -u +%Y-%m-%d): nothing needs attention. References resolve, reviews are recent, and no cited Learn page changed since the last review. Closing."
+              gh issue close "$existing" --reason completed
+            fi
+            echo "Nothing needs attention."
+            exit 0
+          fi
+
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file "$RUNNER_TEMP/issue.md"
+            echo "Updated issue #$existing."
+          else
+            gh issue create \
+              --title "Agent 365 guide and checklist need a content review" \
+              --label "$LABEL" \
+              --body-file "$RUNNER_TEMP/issue.md"
+          fi
+
+  # The offline checks cannot run the guide's deep-link script, so a real browser opens every address the
+  # checklist links to. A failure here fails the run; it does not change the report above.
+  deep-links:
+    if: github.repository == 'microsoft/FastTrack'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tools/catalog-build/package-lock.json
+      - run: npm ci
+        working-directory: tools/catalog-build
+      - name: Open each deep link in a headless browser
+        working-directory: tools/catalog-build
+        run: npm run test:guide-deeplinks -- --require-browser
