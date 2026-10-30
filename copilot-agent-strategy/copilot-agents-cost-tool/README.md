@@ -6,9 +6,9 @@ summary: >-
   Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder,
   SharePoint, and Foundry agents.
 author: Georgi Nunev
-version: 2.0.0
+version: 2.0.1
 published: "2026-04-01"
-updated: "2026-09-28"
+updated: "2026-10-30"
 tags:
   - agent-365
   - cost
@@ -45,10 +45,15 @@ Open `index.html` in any modern browser. No server, build step, or login is requ
 > discounts. Runtime behavior, licensing, billing aggregation, and service availability can change
 > the outcome. Validate against actual consumption before purchasing.
 
-**Version 2.0.0** · Billing content reviewed 28 September 2026. Foundry numeric rates are a
+**Version 2.0.1** · Billing content reviewed 28 September 2026. Foundry numeric rates are a
 historical May 2026 snapshot or user-supplied values; they were not reverified in this review.
 
 ---
+
+## What's new in 2.0.1
+
+- Added a footer with Terms and Conditions, the Microsoft Privacy Statement, and a privacy notice
+  that explains the usage analytics this page uses. No calculation or rate changed.
 
 ## What's new in 2.0.0
 

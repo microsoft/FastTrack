@@ -5,13 +5,34 @@
   <subtitle>The 20 most recently updated tools, guides, agents, and scripts in the FastTrack catalog.</subtitle>
   <link href="https://microsoft.github.io/FastTrack/feed.xml" rel="self"/>
   <link href="https://microsoft.github.io/FastTrack/"/>
-  <updated>2026-10-29T00:00:00Z</updated>
+  <updated>2026-10-30T00:00:00Z</updated>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/</id>
-    <title>Agent 365 Enablement Checklist (v1.0.2)</title>
+    <title>Agent 365 Enablement Checklist (v1.0.3)</title>
     <link href="https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/"/>
-    <updated>2026-10-29T00:00:00Z</updated>
+    <updated>2026-10-30T00:00:00Z</updated>
     <summary>A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/agents-cost-calculator/</id>
+    <title>Agents Cost Calculator (v2.0.1)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/agents-cost-calculator/"/>
+    <updated>2026-10-30T00:00:00Z</updated>
+    <summary>Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/</id>
+    <title>Microsoft Agent 365 Technical Advisory (v1.0.2)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/"/>
+    <updated>2026-10-30T00:00:00Z</updated>
+    <summary>Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.</summary>
+  </entry>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/export-copilotinteractions/</id>
+    <title>Export-CopilotInteractions (v2.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/export-copilotinteractions/"/>
+    <updated>2026-10-29T00:00:00Z</updated>
+    <summary>Export licensed Microsoft 365 Copilot users&apos; prompts and responses from Graph into analysis-ready CSV datasets.</summary>
   </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/</id>
@@ -19,13 +40,6 @@
     <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-customer-implementation-guide/"/>
     <updated>2026-10-29T00:00:00Z</updated>
     <summary>Plan and configure a governed Microsoft Agent 365 baseline with simple guidance and detailed implementation tasks.</summary>
-  </entry>
-  <entry>
-    <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/</id>
-    <title>Microsoft Agent 365 Technical Advisory (v1.0.1)</title>
-    <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/"/>
-    <updated>2026-10-29T00:00:00Z</updated>
-    <summary>Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.</summary>
   </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/</id>
@@ -40,13 +54,6 @@
     <link href="https://microsoft.github.io/FastTrack/r/viva-engage-community-creation-app/"/>
     <updated>2026-10-28T00:00:00Z</updated>
     <summary>Sample Power App and Power Automate flow that create Viva Engage communities by calling the Microsoft Graph community creation API.</summary>
-  </entry>
-  <entry>
-    <id>https://microsoft.github.io/FastTrack/r/agents-cost-calculator/</id>
-    <title>Agents Cost Calculator (v2.0.0)</title>
-    <link href="https://microsoft.github.io/FastTrack/r/agents-cost-calculator/"/>
-    <updated>2026-09-28T00:00:00Z</updated>
-    <summary>Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.</summary>
   </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/copilot-analytics-reports-navigator/</id>
@@ -138,12 +145,5 @@
     <link href="https://microsoft.github.io/FastTrack/r/productquote-agent/"/>
     <updated>2026-07-16T00:00:00Z</updated>
     <summary>Generate product quotes from Excel inventory, populate a Word template, and email the finished document.</summary>
-  </entry>
-  <entry>
-    <id>https://microsoft.github.io/FastTrack/r/migrate-copilotstudioagents/</id>
-    <title>Migrate-CopilotStudioAgents (v1.0.0)</title>
-    <link href="https://microsoft.github.io/FastTrack/r/migrate-copilotstudioagents/"/>
-    <updated>2026-07-15T00:00:00Z</updated>
-    <summary>Inventory and copy classic Copilot Studio agents into department-mapped Power Platform environments with ownership recovery.</summary>
   </entry>
 </feed>

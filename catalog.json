@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29",
+  "generatedAt": "2026-10-30",
   "count": 58,
   "resources": [
     {
@@ -67,13 +67,13 @@
       "preview": "copilot-agent-strategy/agent-365-enablement-checklist/preview.webp",
       "download": "copilot-agent-strategy/agent-365-enablement-checklist/index.html",
       "downloadName": "agent-365-enablement-checklist.html",
-      "downloadSize": 682771,
+      "downloadSize": 682871,
       "author": [
         "Alejandro Lopez"
       ],
-      "version": "1.0.2",
+      "version": "1.0.3",
       "published": "2026-10-28",
-      "updated": "2026-10-29",
+      "updated": "2026-10-30",
       "whatItIs": "A self-contained, offline tracker for planning and tracking a Microsoft Agent 365 enablement. It organizes the work into workstreams with role-based tasks, shows a readiness dashboard, and exports to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start your own.",
       "whyUseIt": [
         "Scope the plan by agent type, pillar, or feature so each team sees the tasks that apply to it.",
@@ -190,11 +190,11 @@
       "status": "active",
       "download": "copilot-agent-strategy/copilot-agents-cost-tool/index.html",
       "downloadName": "agents-cost-calculator.html",
-      "downloadSize": 72937,
+      "downloadSize": 73623,
       "author": "Georgi Nunev",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "published": "2026-04-01",
-      "updated": "2026-09-28",
+      "updated": "2026-10-30",
       "whatItIs": "A self-contained browser calculator that models Copilot Credits, Microsoft Foundry token and infrastructure costs, and purchase commitments for Copilot Studio (Standard and GitHub Copilot harnesses), Agent Builder, SharePoint, and Microsoft Foundry agents. It separates consumption value from purchase commitments and shows a dated source for every rate.",
       "whyUseIt": [
         "Forecast a monthly production workload or budget a single test suite from counted billable operations.",
@@ -855,8 +855,8 @@
       "type": "script",
       "subcategory": "PowerShell",
       "category": "PowerShell",
-      "description": "Export user-level Copilot prompts and responses from Microsoft Graph into analysis-ready CSV datasets.",
-      "summary": "Export user-level Copilot prompts and responses from Microsoft Graph into analysis-ready CSV datasets.",
+      "description": "Export licensed Microsoft 365 Copilot users' prompts and responses from Graph into analysis-ready CSV datasets.",
+      "summary": "Export licensed Microsoft 365 Copilot users' prompts and responses from Graph into analysis-ready CSV datasets.",
       "tags": [
         "copilot",
         "graph"
@@ -867,23 +867,24 @@
       "status": "active",
       "download": "scripts/Export-CopilotInteractions/Export-CopilotInteractions.ps1",
       "downloadName": "Export-CopilotInteractions.ps1",
-      "downloadSize": 39521,
+      "downloadSize": 43646,
       "author": "Alejandro Lopez",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "published": "2026-05-21",
-      "updated": "2026-05-21",
-      "whatItIs": "A PowerShell exporter for Microsoft 365 Copilot enterprise interaction history that writes normalized interactions, users, errors, and pre-aggregated usage CSVs.",
+      "updated": "2026-10-29",
+      "whatItIs": "A PowerShell exporter for Microsoft 365 Copilot enterprise interaction history that writes normalized interactions, users, errors, and pre-aggregated usage CSVs for users with an eligible Microsoft 365 Copilot license. It does not collect unlicensed Copilot Chat (Basic) usage.",
       "whyUseIt": [
         "Feed Power BI, Excel, or another analytics tool with user-level interaction data.",
-        "Use interactive, client-secret, or certificate authentication.",
-        "Handle throttling, per-user failures, SKU tiers, and app/feature normalization during export."
+        "Use app-only client-secret or certificate authentication.",
+        "Handle throttling, per-user failures, Copilot license detection, and app/feature normalization during export."
       ],
-      "howToUse": "Install `Microsoft.Graph.Authentication`, grant the documented Graph permissions, and test interactively:\n\n```powershell\n.\\Export-CopilotInteractions.ps1 -TenantId \"contoso.onmicrosoft.com\" -Interactive -MaxUsers 10\n```\n\nReview `Errors.csv`, then remove the user cap for the full export.",
+      "howToUse": "Install `Microsoft.Graph.Authentication`, grant the documented application permissions with admin consent, and test with a certificate:\n\n```powershell\n.\\Export-CopilotInteractions.ps1 -TenantId \"<tenant-id>\" -ClientId \"<app-id>\" -CertificateThumbprint \"<thumbprint>\" -MaxUsers 10\n```\n\nReview `Errors.csv`, then remove the user cap for the full export.",
       "prerequisites": [
         "PowerShell 5.1 or later",
         "Microsoft.Graph.Authentication module",
-        "User.Read.All, Reports.Read.All, and AiEnterpriseInteraction.Read.All",
-        "Entra app registration for app-only authentication"
+        "Eligible Microsoft 365 Copilot license for each user being exported",
+        "User.Read.All, LicenseAssignment.Read.All, and AiEnterpriseInteraction.Read.All application permissions",
+        "Entra app registration with admin consent and a client secret or certificate"
       ],
       "url": "https://github.com/microsoft/FastTrack/tree/master/scripts/Export-CopilotInteractions",
       "source": "scripts/Export-CopilotInteractions/README.md",
@@ -1606,9 +1607,9 @@
         "Carlos Suarez",
         "Alejandro Lopez"
       ],
-      "version": "1.0.1",
+      "version": "1.0.2",
       "published": "2026-10-28",
-      "updated": "2026-10-29",
+      "updated": "2026-10-30",
       "whatItIs": "A 19-page technical advisory for architects, identity, security, developer, and business leaders. It lays out an enterprise reference architecture and best practices for discovering, governing, securing, building, and measuring AI agents with Microsoft Agent 365, with 75 cited Microsoft Learn and Microsoft sources. This page wraps the PDF in a viewer so you can jump to any page.",
       "whyUseIt": [
         "See how every onboarding route converges on one governed inventory across Microsoft Entra, Purview, and Defender.",

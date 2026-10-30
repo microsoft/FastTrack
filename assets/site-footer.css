@@ -1,0 +1,9 @@
+/* Footer pieces shared by the catalog (index.html) and the static resource pages (r/**).
+   Colors come from each page's own theme variables. */
+.site-footer-brand { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-bottom: 0.75rem; font-weight: 600; color: var(--text); }
+.site-footer-brand svg { flex: none; }
+.site-footer-brand-sep { width: 1px; height: 1rem; background: var(--border-strong, var(--border)); }
+.site-footer-disclaimer { max-width: 46rem; margin-left: auto; margin-right: auto; }
+.site-footer-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.5rem; margin-top: 0.75rem; }
+.site-footer-legal a, .site-footer-legal button { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.site-footer-legal a:hover, .site-footer-legal button:hover { color: var(--text); }

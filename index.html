@@ -35,6 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site-footer.css">
   
   <style>
     /* CSS Variables: Linear / Vercel Aesthetic */
@@ -1331,6 +1332,8 @@
       text-align: center;
     }
     .footer-links { margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .site-footer-legal a, .site-footer-legal button { color: var(--text); text-decoration: none; font: inherit; transition: color 0.2s ease; }
+    .site-footer-legal a:hover, .site-footer-legal button:hover { color: var(--accent); }
 
     .concept-badge {
       position: fixed;
@@ -1595,7 +1598,16 @@
 
   <footer>
     <div class="container">
-      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is &mdash; not official Microsoft software, no SLA.</p>
+      <div class="site-footer-brand">
+        <svg viewBox="0 0 21 21" width="16" height="16" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        <span>Microsoft</span><span class="site-footer-brand-sep" aria-hidden="true"></span><span>FastTrack</span>
+      </div>
+      <p class="site-footer-disclaimer">Disclaimer: This community catalog of tools, scripts, and guidance from Microsoft FastTrack is provided as-is, without warranty of any kind, including merchantability or fitness for a particular purpose. It is not official Microsoft software, and support is not available through Microsoft support channels. Report problems through GitHub issues; there is no SLA.</p>
+      <div class="footer-links site-footer-legal">
+        <a href="https://www.microsoft.com/en-us/legal/terms-of-use" target="_blank" rel="noopener">Terms and Conditions</a>
+        <a href="https://privacy.microsoft.com/en-us/privacystatement" target="_blank" rel="noopener">Privacy Statement</a>
+        <button type="button" data-privacy-notice aria-haspopup="dialog" hidden>Privacy notice</button>
+      </div>
       <div class="footer-links">
         <a href="https://aka.ms/ftcsd" target="_blank" rel="noopener">Service description</a>
         <a href="mailto:ftgithub@microsoft.com">Contact: ftgithub@microsoft.com</a>
@@ -1627,6 +1639,8 @@
       <iframe class="viewer-iframe" id="viewerFrame" title="Resource preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
     </div>
   </div>
+
+  <script src="assets/privacy-notice.js" defer></script>
 
   <script>
     // --- DATASET ---

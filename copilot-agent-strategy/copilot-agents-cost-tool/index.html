@@ -66,6 +66,8 @@
   .bar-fill { height:100%; background:var(--accent); }
   .footer-meta { font-size:.85rem; color:var(--muted); }
   .footer-meta p { margin:.5rem 0; }
+  .footer-privacy { background:none; border:0; padding:.25rem 0; margin-left:1.25rem; min-height:0; font:inherit; color:var(--link); text-decoration:underline; text-underline-offset:3px; }
+  .footer-privacy[hidden] { display:none; }
   @media(max-width:600px) { .container { padding:.65rem; } .step,.results,.reference { padding:1rem; } .bar-row { grid-template-columns:1fr auto; } .bar-track { display:none; } }
   @media print {
     :root,body.theme-light { color-scheme:light; --bg:#fff; --card:#fff; --input:#fff; --text:#000; --muted:#333; --border:#777; --link:#004578; }
@@ -230,13 +232,14 @@
     </details>
   </section>
   <footer class="footer-meta">
-    <p><span id="versionBadge">v2.0.0</span> &middot; Billing-content review: 28 September 2026. Foundry numeric rates: historical/user-supplied, not reverified.</p>
+    <p><span id="versionBadge">v2.0.1</span> &middot; Billing-content review: 28 September 2026. Foundry numeric rates: historical/user-supplied, not reverified.</p>
     <p>Calculation inputs are not saved by this page. Avoid entering confidential information into notes. Calculations themselves work without a server.</p>
+    <p class="footer-legal"><a href="https://www.microsoft.com/en-us/legal/terms-of-use" target="_blank" rel="noopener">Terms and Conditions</a> &middot; <a href="https://privacy.microsoft.com/en-us/privacystatement" target="_blank" rel="noopener">Privacy Statement</a><button type="button" class="footer-privacy" data-privacy-notice aria-haspopup="dialog" hidden>Privacy notice</button></p>
   </footer>
 </main>
 <script>
 'use strict';
-const APP_VERSION = 'v2.0.0';
+const APP_VERSION = 'v2.0.1';
 const REVIEW_DATE = '2026-09-28';
 const RATES = Object.freeze({ classic:1, generative:2, action:5, graph:10, flow:0.13, content:8, workIQ:0.1, payg:0.01, packPrice:200, packCredits:25000 });
 const TOKEN_TIERS = Object.freeze({ basic:0.1, standard:1.5, premium:10 });
@@ -825,5 +828,6 @@ el('headerReset').addEventListener('click',resetAll);
 updateVisibility();
 recalculate();
 </script>
+<script src="../../assets/privacy-notice.js" defer></script>
 </body>
 </html>

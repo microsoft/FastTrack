@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2 - 2026-10-30
+
+- Added a page icon to the viewer so browsers no longer request a missing `favicon.ico`.
+
 ## 1.0.1 - 2026-10-29
 
 - The catalog's **Download** button saves the PDF itself (`Agent-365-Technical-Advisory.pdf`) instead of the viewer page.
