@@ -560,15 +560,17 @@ jobs:
           fi
 
           if [ "$AUTOMATION_PAT_CONFIGURED" != "true" ]; then
-            echo "::error::AUTOMATION_PAT is not configured, so the known organization policy blocks automatic PR creation. The staging branch is safe; open the weekly PR manually: $COMPARE_URL"
+            # Known organization policy: Actions cannot open pull requests. The data is staged, so
+            # this is a reminder, not a failure; a failure here would stay red every Friday.
+            echo "::warning::Weekly traffic data is staged on $PUBLISH_BRANCH. Actions cannot open pull requests here (organization policy), so open the weekly PR manually: $COMPARE_URL"
             {
-              echo "### ⚠️ Weekly traffic data needs a manual PR"
+              echo "### Weekly traffic data is ready for a manual PR"
               echo ""
               echo "Daily collection remains safely accumulated on \`$STAGING_BRANCH\`."
               echo ""
               echo "**Open the review-required PR:** $COMPARE_URL"
             } >> "$GITHUB_STEP_SUMMARY"
-            exit 1
+            exit 0
           fi
 
           if ! gh pr create --title "$TITLE" --body "$BODY" \
