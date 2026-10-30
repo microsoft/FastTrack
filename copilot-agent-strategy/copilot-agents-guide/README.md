@@ -10,6 +10,7 @@ version: 4.0.1
 published: "2025-10-28"
 updated: "2026-09-09"
 tags:
+  - agent-365
   - guide
   - decision
   - planning

@@ -5,17 +5,27 @@
   "type": "module",
   "scripts": {
     "build": "node index.js",
-    "check": "node index.js --check && node test-traffic-workflow.js && node test-category-filtering.js && node test-stats-state.js && node test-traffic-git-integration.js",
+    "check": "node index.js --check && node test-internal-links.js && node test-downloads.js && node test-agent365-sync.js && node test-traffic-workflow.js && node test-category-filtering.js && node test-site-output.js && node test-stats-state.js && node test-traffic-git-integration.js",
+    "check:links": "node test-internal-links.js",
+    "check:downloads": "node test-downloads.js",
+    "check:agent365": "node test-agent365-sync.js",
+    "sync:agent365": "node agent365-sync.js",
+    "patch:guide": "node guide-deeplinks.js",
+    "test:guide-deeplinks": "node test-guide-deeplinks.js",
+    "freshness:agent365": "node agent365-freshness.js",
     "check:traffic-workflow": "node test-traffic-workflow.js",
     "check:category-filtering": "node test-category-filtering.js",
+    "check:site": "node test-site-output.js",
     "check:stats-state": "node test-stats-state.js",
     "check:traffic-git": "node test-traffic-git-integration.js",
     "build:stats": "node build-stats.js",
     "check:stats": "node build-stats.js --check",
+    "collect:traffic": "node collect-traffic.js",
+    "og": "node render-og-images.js",
     "create:vote-discussions": "node create-vote-discussions.js"
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",
-    "js-yaml": "^5.4.3"
+    "js-yaml": "^5.5.0"
   }
 }

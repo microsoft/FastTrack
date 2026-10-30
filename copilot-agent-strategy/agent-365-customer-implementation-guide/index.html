@@ -7222,7 +7222,55 @@ Get-MpPreference | Select-Object AiAgentProtection, AiAgentNetworkInspection</co
   }
   document.addEventListener(&quot;click&quot;,onClick,true);
 })();
-})();</script></body></html>" hidden></iframe></main><!-- Visible credit footer removed in v1.0.4. Authorship and the full MIT License notice are retained here in source so downloaded copies keep the attribution and license.
+/*cx-deeplinks:inner:start*/
+(function(){
+  var CODE_RE=/^(5·0|\d{1,2}\.\d{2}[a-z]?|\d{1,2}[a-z]|PP\d+)\s*·/;
+  var index=null;
+  function keyOf(code){ return code.toLowerCase().replace(&quot;·&quot;,&quot;-&quot;); }
+  function buildIndex(){
+    index={};
+    [].slice.call(document.querySelectorAll(&quot;h2&quot;)).forEach(function(h){
+      var t=h.textContent.replace(/\s+/g,&quot; &quot;).trim();
+      var m=/^(\d{2})\./.exec(t);
+      var k=m?m[1]:(/^Power Platform/i.test(t)?&quot;pp&quot;:&quot;&quot;);
+      if(k&amp;&amp;!index[k])index[k]=h;
+    });
+    [].slice.call(document.querySelectorAll(&quot;h3,h4&quot;)).forEach(function(h){
+      var m=CODE_RE.exec(h.textContent.replace(/\s+/g,&quot; &quot;).trim());
+      if(!m)return;
+      var k=keyOf(m[1]);
+      if(!index[k])index[k]=h;
+    });
+  }
+  var st=document.createElement(&quot;style&quot;);
+  st.textContent=&quot;.cx-deeplink-target{outline:3px solid #0078d4;outline-offset:4px;border-radius:8px}@media (forced-colors: active){.cx-deeplink-target{outline-color:Highlight}}&quot;;
+  document.head.appendChild(st);
+  function goToKey(key){
+    if(!index)buildIndex();
+    var el=index[String(key).toLowerCase()];
+    if(!el)return false;
+    var panel=el.closest?el.closest(&quot;.panel&quot;):null;
+    if(panel&amp;&amp;!panel.classList.contains(&quot;active&quot;)&amp;&amp;typeof activate===&quot;function&quot;)activate(panel.id,false);
+    var target=(el.closest&amp;&amp;el.closest(&quot;.task-head&quot;)&amp;&amp;el.closest(&quot;.task-card&quot;))||el;
+    [].slice.call(document.querySelectorAll(&quot;.cx-deeplink-target&quot;)).forEach(function(n){ n.classList.remove(&quot;cx-deeplink-target&quot;); });
+    var rm=false;
+    try{ rm=!!(window.matchMedia&amp;&amp;window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches); }catch(e){}
+    try{ target.scrollIntoView({behavior:rm?&quot;auto&quot;:&quot;smooth&quot;,block:&quot;start&quot;}); }catch(e){ try{ target.scrollIntoView(); }catch(e2){} }
+    var had=el.hasAttribute(&quot;tabindex&quot;);
+    if(!had)el.setAttribute(&quot;tabindex&quot;,&quot;-1&quot;);
+    try{ el.focus({preventScroll:true}); }catch(e){}
+    target.classList.add(&quot;cx-deeplink-target&quot;);
+    window.setTimeout(function(){ target.classList.remove(&quot;cx-deeplink-target&quot;); },4000);
+    return true;
+  }
+  window.addEventListener(&quot;message&quot;,function(e){
+    var d=e.data;
+    if(!d||d.type!==&quot;cx-goto&quot;||e.source!==window.parent)return;
+    var ok=goToKey(d.key);
+    try{ window.parent.postMessage({type:&quot;cx-goto-result&quot;,key:d.key,found:ok},&quot;*&quot;); }catch(err){}
+  });
+})();
+/*cx-deeplinks:inner:end*/})();</script></body></html>" hidden></iframe></main><!-- Visible credit footer removed in v1.0.4. Authorship and the full MIT License notice are retained here in source so downloaded copies keep the attribution and license.
 
 Guide authored by Pratik Bhusal, Manas Biswas, and Alejandro Lopez. Released under the MIT License.
 
@@ -7252,11 +7300,14 @@ SOFTWARE. --><p class="cx-print-fallback">This view is not ready to print. Close
   var frames={simple:document.getElementById("cxSimple"),advanced:document.getElementById("cxAdvanced")};
   var live=document.getElementById("cxLive");
   function announce(t){ if(live){ live.textContent=""; setTimeout(function(){live.textContent=t;},40);} }
-  function current(){ return location.hash==="#advanced"?"advanced":"simple"; }
+  /*cx-deeplinks:hash:start*/
+  function parseHash(){ var m=/^#(simple|advanced)(?:\/(.+))?$/.exec(location.hash); return m?{view:m[1],key:m[2]||""}:{view:"simple",key:""}; }
+  function current(){ return parseHash().view; }
+  /*cx-deeplinks:hash:end*/
   function select(k,focus){
     tabs.forEach(function(t){var on=t.getAttribute("data-exp")===k; t.setAttribute("aria-selected",on?"true":"false"); t.tabIndex=on?0:-1;});
     Object.keys(frames).forEach(function(n){var f=frames[n]; if(f){ f.hidden=(n!==k); }});
-    try{ if(location.hash!=="#"+k){ history.replaceState(null,"","#"+k); } }catch(e){ try{location.hash=k;}catch(e2){} }
+    /*cx-deeplinks:select:start*/try{ var hm=/^#(simple|advanced)(?:\/|$)/.exec(location.hash); if(!hm||hm[1]!==k){ history.replaceState(null,"","#"+k); } }catch(e){ try{location.hash=k;}catch(e2){} }/*cx-deeplinks:select:end*/
     if(focus){var a=document.querySelector('.cx-tab[data-exp="'+k+'"]'); if(a)a.focus();}
     announce(k==="advanced"?"Detailed deployment checklist shown":"Simple configuration guide shown");
   }
@@ -7322,5 +7373,24 @@ SOFTWARE. --><p class="cx-print-fallback">This view is not ready to print. Close
   window.addEventListener("beforeprint",buildPrintMirror);
   window.addEventListener("afterprint",removePrintMirror);
   applyTheme(root.getAttribute("data-theme")||"light");
-  select(current(),false);
+/*cx-deeplinks:wire:start*/
+  var advancedLoaded=false;
+  function sendGoto(){
+    var h=parseHash(); var f=frames.advanced;
+    if(h.view!=="advanced"||!h.key||!f||!advancedLoaded||!f.contentWindow)return;
+    window.requestAnimationFrame(function(){ try{ f.contentWindow.postMessage({type:"cx-goto",key:h.key},"*"); }catch(e){} });
+  }
+  if(frames.advanced){
+    frames.advanced.addEventListener("load",function(){ advancedLoaded=true; sendGoto(); });
+    try{ var d0=frames.advanced.contentDocument; if(d0&&d0.readyState==="complete"&&d0.body&&d0.body.children.length)advancedLoaded=true; }catch(e){}
+  }
+  window.addEventListener("hashchange",sendGoto);
+  window.addEventListener("message",function(e){
+    var d=e.data;
+    if(!d||d.type!=="cx-goto-result"||!frames.advanced||e.source!==frames.advanced.contentWindow)return;
+    root.setAttribute("data-deeplink",(d.found?"found:":"missing:")+d.key);
+    announce(d.found?"Opened the linked step":"That step was not found in the Detailed view");
+  });
+  sendGoto();
+/*cx-deeplinks:wire:end*/  select(current(),false);
 })();</script></body></html>

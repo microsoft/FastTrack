@@ -2,6 +2,11 @@
 
 All notable changes to the Microsoft Agent 365 Customer Implementation Guide are documented here.
 
+## 1.4.0 - 2026-10-29
+
+- Added deep links. Open `index.html#advanced/<step>` to land on a step in the Detailed view, for example `#advanced/4.04a` or `#advanced/12b`. The guide switches to the Detailed view, opens the right section, scrolls to the step, highlights it, and moves keyboard focus to it. A section number such as `#advanced/04` opens the section. `#simple`, `#advanced`, and the Simple and Detailed buttons behave as before. The Agent 365 Enablement Checklist now links each task to its exact step this way.
+- No guide content changed in this release.
+
 ## 1.3.0 - 2026-10-15
 
 - Rebuilt the Detailed Defender tab (tab 2) as ten tasks, **2.01** through **2.10**, in deployment order: Security for AI and the Microsoft 365 connector, Copilot Studio per-environment setup, prompt evidence, SaaS generative AI app discovery, local agent discovery, real-time protection rules, AI agent inventory and advanced hunting, the shadow-agent inventory, threat detection and investigation, and the July 1, 2026 license transition. Every task now lists its portal path, required role, steps, validation, rollback, and Microsoft Learn references.

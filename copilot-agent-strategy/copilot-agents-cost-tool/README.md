@@ -10,6 +10,7 @@ version: 2.0.0
 published: "2026-04-01"
 updated: "2026-09-28"
 tags:
+  - agent-365
   - cost
   - roi
   - calculator

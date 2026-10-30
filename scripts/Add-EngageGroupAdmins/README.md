@@ -1,3 +1,42 @@
+---
+title: Add-EngageGroupAdmins
+type: script
+category: PowerShell
+summary: Bulk-add owners (admins) to Viva Engage communities from a CSV by using the Microsoft Graph group owners API.
+author: Dean Cron
+version: 1.0.0
+published: "2023-06-23"
+updated: "2026-07-22"
+tags:
+  - viva-engage
+  - administration
+  - communities
+  - microsoft-graph
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell sample that reads a CSV of Microsoft 365 group IDs and user email addresses and adds each
+  user as an owner of the group behind a Viva Engage community by calling Microsoft Graph. Group owners
+  are treated as admins of the associated community.
+whyUseIt:
+  - Add community admins in bulk instead of one community at a time.
+  - Uses the documented Microsoft Graph group owners API with app-only authentication and waits and retries when Graph throttles requests.
+  - Prints a success or failure message for every CSV row.
+howToUse: |-
+  1. Create a Microsoft Entra app registration with the Microsoft Graph `Group.ReadWrite.All` application permission and grant admin consent.
+  2. Create a CSV with a `GroupID` column (the Microsoft 365 group ID behind the community) and an `Email` column (the UPN of the user to make an admin).
+  3. Set `$groupadminsCsvPath`, `$ClientId`, `$TenantId`, and `$ClientSecret` near the top of the script.
+  4. Run:
+
+     ```powershell
+     .\Add-EngageGroupAdmins.ps1
+     ```
+prerequisites:
+  - "Microsoft Entra app registration with the Group.ReadWrite.All application permission and admin consent"
+  - "CSV with GroupID and Email columns; GroupID is the Microsoft 365 group GUID, not the legacy numeric Yammer group ID"
+---
+
 # Microsoft FastTrack Open Source - Add-EngageGroupAdmins
 
 This sample script will allow an admin to bulk-add admins (owners) to Viva Engage communities using the Microsoft Graph API.

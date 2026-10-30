@@ -1,49 +1,58 @@
-# Microsoft FastTrack Open Source
+# Microsoft FastTrack open source
+
+[![Browse the catalog](assets/social-preview.png)](https://microsoft.github.io/FastTrack/)
+
+**Field-tested guides, agents, scripts, and analytics from Microsoft FastTrack to plan, deploy, govern, and measure Microsoft 365 Copilot and agents.**
+
+[![Catalog](https://img.shields.io/badge/browse-the%20catalog-4f46e5)](https://microsoft.github.io/FastTrack/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
-[![Contributors](https://img.shields.io/badge/contributors-11-green)](https://github.com/microsoft/FastTrack/contributors)
+[![Contributors](https://img.shields.io/github/contributors/microsoft/FastTrack)](https://github.com/microsoft/FastTrack/graphs/contributors)
+[![Last commit](https://img.shields.io/github/last-commit/microsoft/FastTrack)](https://github.com/microsoft/FastTrack/commits/master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/microsoft/FastTrack/pulls)
 
-![GitHub Watchers](https://img.shields.io/github/watchers/microsoft/fasttrack.svg?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/microsoft/fasttrack.svg?style=social)
-![GitHub Stars](https://img.shields.io/github/stars/microsoft/fasttrack.svg?style=social)
+## Browse the catalog
 
+The [catalog](https://microsoft.github.io/FastTrack/) is the easiest way to search, filter, and preview everything in this repo.
 
+| Browse | What you will find |
+|---|---|
+| [Guides & planning](https://microsoft.github.io/FastTrack/?type=strategy) | Interactive implementation guides, decision guides, calculators, and planning templates for Copilot and agent deployments. |
+| [Agents](https://microsoft.github.io/FastTrack/?type=agent) | Ready-to-use agents for Copilot Studio, Agent Builder, and GitHub Copilot, plus Employee Self-Service extensions. |
+| [Analytics](https://microsoft.github.io/FastTrack/?type=analytics) | Power BI templates, interactive report navigators, and Copilot usage reporting. |
+| [Scripts](https://microsoft.github.io/FastTrack/?type=script) | PowerShell scripts and snippets for Microsoft 365 administration, including Teams, Viva Engage, and SharePoint. |
 
-Welcome to the home for Microsoft FastTrack Open Source Software (FTOSS). Through this initiative we are collecting tools, scripts, and guidance from across the FastTrack program, our partners, and anyone who wants to contribute with the aim to make them easier to find, grow, and improve. Please let us know any questions or feedback you have using the [issues list](https://github.com/Microsoft/FastTrack/issues).
+## What is in this repo
 
-## Scripts
+| Folder | What you will find |
+|---|---|
+| [`copilot-agent-strategy/`](copilot-agent-strategy/) | Interactive guides and planning tools, including the Agent 365 guides, the cost calculator, and the agents guide. |
+| [`copilot-agent-samples/`](copilot-agent-samples/) | Copilot Studio agents, Agent Builder agents, GitHub Copilot agents and skills, and Employee Self-Service extensions. |
+| [`copilot-analytics-samples/`](copilot-analytics-samples/) | Power BI templates, an interactive reports navigator, and an interaction report generator. |
+| [`scripts/`](scripts/) | PowerShell scripts for Microsoft 365 administration. Each folder has its own README; retired scripts are kept in [`scripts/archive/`](scripts/archive/). |
+| [`samples/`](samples/) | Teams and Viva Engage code samples and snippets. |
+| [`tools/`](tools/) | [SimpleGraph](tools/SimpleGraph/) (a lightweight Microsoft Graph wrapper for PowerShell) and the [catalog build tooling](tools/catalog-build/). |
+| [`docs/`](docs/) | The [catalog metadata schema](docs/CATALOG-METADATA.md) used by every resource README. |
+| [`copilot-prompt-samples/`](copilot-prompt-samples/) | Archived. See [PnP Copilot Prompts](https://pnp.github.io/copilot-prompts/) for a maintained prompt library. |
 
-We have a collection of [scripts](scripts) to help with deploying Microsoft 365. Each script folder has a readme describing what the script does and how to use it. If you have scripts you would like to add please submit a Pull Request.
+`catalog.json`, `r/`, `sitemap.xml`, `feed.xml`, and `index.html` power the [catalog site](https://microsoft.github.io/FastTrack/). The first four are generated from each resource's README front matter, so do not edit them by hand. You can follow new and updated resources through the [Atom feed](https://microsoft.github.io/FastTrack/feed.xml).
 
-## Samples
+## Using the resources
 
-|Sample|Description
-|----|--------------------------
-|[Copilot Agent Samples](./copilot-agent-samples/)|Collection of Copilot Agent samples including Declarative Agents and Custom Agents.|
-|[Copilot Agent Strategy](./copilot-agent-strategy/)|Strategic planning tools including an interactive agents guide, brainstorming template, and cost calculator.|
-|[Copilot Analytics Samples](./copilot-analytics-samples/)|Collection of Copilot Analytics samples including PowerBI templates.|
-| [Copilot Prompt Samples](./copilot-prompt-samples/) | Ready-to-use prompt samples for Microsoft 365 Copilot (Chat, Researcher, and more). |
-| [Samples](./samples/) | Teams and Viva Engage code samples, including Teams Phone/Rooms/Audio Conferencing snippets and a Viva Engage community-creation app. |
-| [Tools](./tools/) | Utilities for Microsoft 365 administration, including SimpleGraph, a lightweight Microsoft Graph REST wrapper for PowerShell. |
+Every resource folder has a README that explains what it does, what it needs, and how to run it. Resources are provided as-is, so test them in a non-production tenant first, especially anything that changes or deletes data. Resources marked **Preview** are still maturing, and **Archived** resources are kept for reference only.
 
+## Ideas welcome
 
-## Live Catalog
+If you have ideas that would improve our delivery, experience, or process, [open an issue](https://github.com/microsoft/FastTrack/issues/new/choose) or start a [discussion](https://github.com/microsoft/FastTrack/discussions). We cannot promise every idea will be implemented, but we value your feedback. Please include enough detail for us to understand and respond.
 
-Browse the interactive catalog and Copilot agent analytics on the [FastTrack landing page](https://microsoft.github.io/FastTrack/).
-
-## Ideas Welcome!
-
-If you have ideas for projects that would improve our delivery, experience, or process please [submit an issue](https://github.com/Microsoft/FastTrack/issues) and let us know. We can't promise every idea will be implemented, but we value your feedback. Please be sure to include sufficient information that we can understand your idea and respond.
-
-Do you have a script or tool you use that would be of value to the community? Please let us know so we can discuss potentially adding it to the catalog - or submit a Pull Request to get it added!
+Have a script, agent, or guide that would be valuable to the community? Pull requests are welcome.
 
 ## Contributing
 
-If you have a script or sample you would like to contribute to the Microsoft FastTrack repository please review the [contributing](CONTRIBUTING.md) guidance. If you have any questions, please let us know using the issues list. We'd love to discuss how you'd like to contribute!
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before you start. In short: put your resource in the right folder, start its README from [TEMPLATE-README.md](TEMPLATE-README.md), include the catalog metadata, and keep customer-specific information out. If you have questions, ask in an issue. We would love to talk through your idea first.
 
-## Support Statement
+## Support statement
 
-The scripts, samples, and tools made available through the FastTrack Open Source initiative are provided as-is. These resources are developed in partnership with the community and do not represent official Microsoft software. As such, support is not available through premier or other Microsoft support channels. If you find an issue or have questions please reach out through the issues list and we'll do our best to assist, however there is no associated SLA.
+The scripts, samples, and tools made available through the FastTrack Open Source initiative are provided as-is. These resources are developed in partnership with the community and do not represent official Microsoft software. As such, support is not available through premier or other Microsoft support channels. If you find an issue or have questions please reach out through the [issues list](https://github.com/microsoft/FastTrack/issues) and we'll do our best to assist, however there is no associated SLA.
 
 ## Code of Conduct
 

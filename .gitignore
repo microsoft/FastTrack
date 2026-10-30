@@ -3,3 +3,7 @@ node_modules/
 
 # Local auth/token caches and per-folder scratch state - never commit
 .local/
+
+# Local tool and test-browser state
+.impeccable/
+.playwright-mcp/

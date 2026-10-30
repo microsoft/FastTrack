@@ -1,3 +1,43 @@
+---
+title: Get-AllInsightsLicensedUsers
+type: script
+category: PowerShell
+summary: Export Entra users licensed for Viva Insights, with manager and department, to build the organizational data file.
+author:
+  - Dean Cron
+  - Alejandro Lopez
+version: 1.0.0
+published: "2025-06-13"
+updated: "2026-07-22"
+tags:
+  - viva-insights
+  - organizational-data
+  - entra
+  - reporting
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell script that uses the Microsoft Graph PowerShell module to find users assigned the
+  WORKPLACE_ANALYTICS_INSIGHTS_USER service plan, resolves each user's manager with batched Graph
+  requests, and exports PersonId, ManagerId, and Department to InsightsLicensedUsers.csv for the
+  organizational data file used by Viva Insights.
+whyUseIt:
+  - Build the organizational data source for Viva Insights from the users who actually hold the Insights license.
+  - Batched manager lookups with retry on throttling keep runs on large tenants from timing out.
+  - Add more user properties by editing the `-Property` list and the output object.
+howToUse: |-
+  1. Install the Microsoft Graph PowerShell module.
+  2. Run the script and sign in with consent for the `User.Read.All` scope. The CSV is written to the current directory:
+
+     ```powershell
+     .\Get-AllInsightsLicensedUsers.ps1
+     ```
+prerequisites:
+  - "Microsoft Graph PowerShell module"
+  - "Account that can consent to the User.Read.All Microsoft Graph scope"
+---
+
 # Microsoft FastTrack Open Source - Get-AllInsightsLicensedUSers.ps1
 
 This sample script pulls users specifically assigned the WORKPLACE_ANALYTICS_INSIGHTS_USER service plan from Entra. This can be used to build the Organizational Data file which is later uploaded into M365 or Viva Advanced Insights.

@@ -1,14 +1,14 @@
 {
   "lastRun": "2026-10-28",
   "days": {
-    "2026-07-27": {
+    "2026-07-25": {
       "autoreply-agent": {
-        "views": 1,
-        "uniques": 1
+        "views": 0,
+        "uniques": 0
       },
       "purview-audit-copilot-report": {
-        "views": 2,
-        "uniques": 1
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-07-26": {
@@ -21,30 +21,23 @@
         "uniques": 0
       }
     },
-    "2026-07-25": {
+    "2026-07-27": {
       "autoreply-agent": {
-        "views": 0,
-        "uniques": 0
+        "views": 1,
+        "uniques": 1
       },
       "purview-audit-copilot-report": {
-        "views": 0,
-        "uniques": 0
+        "views": 2,
+        "uniques": 1
       }
     },
-    "2026-09-09": {
-      "agents-cost-calculator": {
-        "views": 0
-      },
-      "copilot-agents-guide": {
-        "views": 1
-      },
+    "2026-09-07": {
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 0
       },
-      "microsoft-agent-365-customer-implementation-guide": {
-        "views": 3,
-        "uniques": 6
+      "get-siteinventory": {
+        "views": 1
       }
     },
     "2026-09-08": {
@@ -65,13 +58,20 @@
         "uniques": 0
       }
     },
-    "2026-09-07": {
+    "2026-09-09": {
+      "agents-cost-calculator": {
+        "views": 0
+      },
+      "copilot-agents-guide": {
+        "views": 1
+      },
       "copilot-studio-workflow": {
         "views": 1,
         "uniques": 0
       },
-      "get-siteinventory": {
-        "views": 1
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3,
+        "uniques": 6
       }
     },
     "2026-09-10": {
@@ -102,24 +102,6 @@
         "uniques": 0
       }
     },
-    "2026-09-12": {
-      "agent-365-lifecycle-atlas": {
-        "views": 5,
-        "uniques": 4
-      },
-      "copilot-studio-workflow": {
-        "views": 1,
-        "uniques": 1
-      },
-      "microsoft-agent-365-customer-implementation-guide": {
-        "views": 1,
-        "uniques": 1
-      },
-      "powerclaw-agent": {
-        "views": 2,
-        "uniques": 1
-      }
-    },
     "2026-09-11": {
       "agent-365-lifecycle-atlas": {
         "views": 1,
@@ -139,6 +121,75 @@
       "powerclaw-agent": {
         "views": 2,
         "uniques": 1
+      }
+    },
+    "2026-09-12": {
+      "agent-365-lifecycle-atlas": {
+        "views": 5,
+        "uniques": 4
+      },
+      "copilot-studio-workflow": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "powerclaw-agent": {
+        "views": 2,
+        "uniques": 1
+      }
+    },
+    "2026-09-13": {
+      "agent-365-lifecycle-atlas": {
+        "views": 7,
+        "uniques": 8
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1
+      }
+    },
+    "2026-09-14": {
+      "agent-365-lifecycle-atlas": {
+        "views": 2,
+        "uniques": 3
+      },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-aadadminrolemembers": {
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-09-15": {
@@ -173,57 +224,6 @@
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 0,
         "uniques": 0
-      }
-    },
-    "2026-09-14": {
-      "agent-365-lifecycle-atlas": {
-        "views": 2,
-        "uniques": 3
-      },
-      "agent-brainstorming-template": {
-        "views": 0,
-        "uniques": 0
-      },
-      "agents-cost-calculator": {
-        "views": 0,
-        "uniques": 0
-      },
-      "copilot-agents-guide": {
-        "views": 0,
-        "uniques": 0
-      },
-      "copilot-analytics-reports-navigator": {
-        "views": 0,
-        "uniques": 0
-      },
-      "copilot-studio-workflow": {
-        "views": 0,
-        "uniques": 0
-      },
-      "get-aadadminrolemembers": {
-        "views": 0,
-        "uniques": 0
-      }
-    },
-    "2026-09-13": {
-      "agent-365-lifecycle-atlas": {
-        "views": 7,
-        "uniques": 8
-      },
-      "copilot-agents-guide": {
-        "views": 0,
-        "uniques": 0
-      },
-      "copilot-analytics-reports-navigator": {
-        "views": 1,
-        "uniques": 1
-      },
-      "copilot-studio-workflow": {
-        "views": 0,
-        "uniques": 0
-      },
-      "microsoft-agent-365-customer-implementation-guide": {
-        "views": 1
       }
     },
     "2026-09-16": {
@@ -1065,32 +1065,46 @@
       }
     },
     "2026-10-18": {},
-    "2026-10-21": {
+    "2026-10-19": {
       "agent-365-lifecycle-atlas": {
-        "views": 2
+        "views": 0,
+        "uniques": 0
       },
       "agent-brainstorming-template": {
-        "views": 2
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
       },
       "comparedocs": {
-        "views": 1
+        "views": 0,
+        "uniques": 0
       },
       "copilot-interaction-report": {
-        "views": 1
+        "views": 0,
+        "uniques": 0
       },
       "copilot-studio-workflow": {
-        "views": 1,
+        "views": 0,
         "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 7,
-        "uniques": 4
+        "views": 0,
+        "uniques": 0
       },
       "powerclaw-agent": {
-        "views": 2
+        "views": 0,
+        "uniques": 0
+      },
+      "reasoningagent": {
+        "views": 0,
+        "uniques": 0
       },
       "viva-insights-copilot-dashboard": {
-        "views": 1
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-10-20": {
@@ -1133,46 +1147,32 @@
         "uniques": 0
       }
     },
-    "2026-10-19": {
+    "2026-10-21": {
       "agent-365-lifecycle-atlas": {
-        "views": 0,
-        "uniques": 0
+        "views": 2
       },
       "agent-brainstorming-template": {
-        "views": 0,
-        "uniques": 0
-      },
-      "autoreply-agent": {
-        "views": 0,
-        "uniques": 0
+        "views": 2
       },
       "comparedocs": {
-        "views": 0,
-        "uniques": 0
+        "views": 1
       },
       "copilot-interaction-report": {
-        "views": 0,
-        "uniques": 0
+        "views": 1
       },
       "copilot-studio-workflow": {
-        "views": 0,
+        "views": 1,
         "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 0,
-        "uniques": 0
+        "views": 7,
+        "uniques": 4
       },
       "powerclaw-agent": {
-        "views": 0,
-        "uniques": 0
-      },
-      "reasoningagent": {
-        "views": 0,
-        "uniques": 0
+        "views": 2
       },
       "viva-insights-copilot-dashboard": {
-        "views": 0,
-        "uniques": 0
+        "views": 1
       }
     },
     "2026-10-22": {
@@ -1225,12 +1225,6 @@
         "uniques": 0
       }
     },
-    "2026-10-28": {
-      "copilot-studio-workflow": {
-        "views": 2,
-        "uniques": 2
-      }
-    },
     "2026-10-27": {
       "agent-365-lifecycle-atlas": {
         "views": 2
@@ -1244,6 +1238,12 @@
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 1
+      }
+    },
+    "2026-10-28": {
+      "copilot-studio-workflow": {
+        "views": 2,
+        "uniques": 2
       }
     }
   }

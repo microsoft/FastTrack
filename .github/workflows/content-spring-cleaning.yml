@@ -1,8 +1,9 @@
 name: Content Spring Cleaning
 
-# Surfaces stale content for human review once a month. It does NOT delete or move
-# anything automatically — it opens/updates a single tracking issue listing directories
-# that have not been touched in over 3 years, so a maintainer can decide what to archive.
+# Surfaces stale content for human review once a month. It does NOT delete or change
+# anything automatically — it opens/updates a single tracking issue listing resources
+# whose README `updated` date is over 2 years old, so a maintainer can decide whether to
+# refresh them or set `status: archived`.
 
 on:
   schedule:
@@ -13,7 +14,7 @@ on:
       threshold_days:
         description: "Age in days after which content is flagged as stale"
         required: false
-        default: "1095"
+        default: "730"
 
 permissions:
   contents: read
@@ -38,38 +39,28 @@ jobs:
       - name: Scan for stale content and open review issue
         env:
           GH_TOKEN: ${{ github.token }}
-          THRESHOLD_DAYS: ${{ github.event.inputs.threshold_days || '1095' }}
+          THRESHOLD_DAYS: ${{ github.event.inputs.threshold_days || '730' }}
         run: |
           set -euo pipefail
 
-          # Content roots to scan. Each immediate subdirectory is treated as one item.
-          ROOTS="scripts copilot-analytics-samples copilot-agent-strategy copilot-agent-samples/agent-builder-agents copilot-agent-samples/copilot-studio-agents copilot-prompt-samples"
-
+          # The catalog already records each resource's last real update in its README front
+          # matter (`updated`). Git history is not a reliable age signal because bulk commits
+          # (metadata passes, renames) touch everything, so use the catalog instead.
           NOW=$(date -u +%s)
           THRESHOLD_SECS=$(( THRESHOLD_DAYS * 86400 ))
           REPORT_FILE=$(mktemp)
           STALE_COUNT=0
 
-          for root in $ROOTS; do
-            [ -d "$root" ] || continue
-            for dir in "$root"/*/; do
-              [ -d "$dir" ] || continue
-              name=$(basename "$dir")
-              # Skip archives and template/sample scaffolding
-              case "$name" in
-                archive|_*) continue ;;
-              esac
-              last=$(git log -1 --format=%cI -- "$dir" 2>/dev/null || true)
-              [ -n "$last" ] || continue
-              last_secs=$(date -u -d "$last" +%s)
-              age_days=$(( (NOW - last_secs) / 86400 ))
-              if [ "$(( NOW - last_secs ))" -gt "$THRESHOLD_SECS" ]; then
-                years=$(awk "BEGIN { printf \"%.1f\", $age_days/365.25 }")
-                printf '| \`%s\` | %s | %sy |\n' "${dir%/}" "${last%%T*}" "$years" >> "$REPORT_FILE"
-                STALE_COUNT=$((STALE_COUNT + 1))
-              fi
-            done
-          done
+          while IFS=$'\t' read -r source updated; do
+            [ -n "$updated" ] || continue
+            updated_secs=$(date -u -d "$updated" +%s)
+            if [ "$(( NOW - updated_secs ))" -gt "$THRESHOLD_SECS" ]; then
+              age_days=$(( (NOW - updated_secs) / 86400 ))
+              years=$(awk "BEGIN { printf \"%.1f\", $age_days/365.25 }")
+              printf '| \`%s\` | %s | %sy |\n' "${source%/README.md}" "$updated" "$years" >> "$REPORT_FILE"
+              STALE_COUNT=$((STALE_COUNT + 1))
+            fi
+          done < <(jq -r '.resources[] | select(.status != "archived") | [.source, .updated] | @tsv' catalog.json)
 
           echo "Found $STALE_COUNT stale item(s) older than ${THRESHOLD_DAYS} days."
 
@@ -95,19 +86,19 @@ jobs:
           BODY=$(cat <<EOF
           ## 🧹 Monthly content spring-cleaning report
 
-          Scan date: **$(date -u +%Y-%m-%d)** · Threshold: **${THRESHOLD_DAYS} days (~3y)** · Flagged: **${STALE_COUNT}**
+          Scan date: **$(date -u +%Y-%m-%d)** · Threshold: **${THRESHOLD_DAYS} days** · Flagged: **${STALE_COUNT}**
 
-          These directories have not been updated in over 3 years and are candidates for
-          archiving (move to \`<root>/archive/\`, which the catalog build ignores) or refreshing.
+          These resources have a README \`updated\` date older than the threshold and are
+          candidates for a refresh or for archiving.
           This is a **review list, not an automatic action** — a maintainer decides.
 
-          | Directory | Last updated | Age |
+          | Resource | Last updated | Age |
           | --- | --- | --- |
           ${SORTED}
 
           ### Suggested triage
-          - **Refresh** if still relevant → update the script and add catalog YAML front-matter.
-          - **Archive** if obsolete → \`git mv <dir> <root>/archive/<name>\` (preserves history + links).
+          - **Refresh** if still relevant → test it, update the resource, and bump \`version\` and \`updated\` in its README front matter.
+          - **Archive** if obsolete → set \`status: archived\` in the front matter and add a notice saying what to use instead. The resource leaves the default catalog view, and its folder and links keep working.
           - Re-run anytime: \`gh workflow run content-spring-cleaning.yml --repo ${GITHUB_REPOSITORY}\`.
 
           _Opened automatically by the Content Spring Cleaning workflow. Reused monthly while the \`${LABEL}\` label stays open._

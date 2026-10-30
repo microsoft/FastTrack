@@ -6,17 +6,17 @@ summary: >-
   Explore Agent 365 lifecycles, discovery, identity, tooling, telemetry, admin
   actions, and 18 public API endpoints in one atlas.
 author: Alejandro Lopez
-version: 1.3.0
+version: 1.3.1
 published: "2026-09-10"
-updated: "2026-09-22"
+updated: "2026-10-28"
 tags:
   - agent-365
   - architecture
   - governance
   - lifecycle
 format: interactive
-featured: true
-status: active
+featured: false
+status: archived
 whatItIs: >-
   A self-contained interactive architecture reference that maps how Microsoft
   Agent 365 discovers, identifies, governs, and observes agents across Microsoft
@@ -36,6 +36,11 @@ prerequisites:
 ---
 
 # Microsoft Agent 365 Lifecycle Atlas
+
+> **Archived.** The atlas is no longer maintained and was last updated on September 22, 2026. Use the
+> [Microsoft Agent 365 Technical Advisory](../agent-365-technical-advisory/) for current reference
+> architecture and best practices. The atlas stays at this address so existing links keep working, so
+> validate anything you use from it against current Microsoft Learn documentation.
 
 The Agent 365 Lifecycle Atlas is a self-contained, interactive reference for
 developers, architects, and administrators. It shows how agents enter the Agent
