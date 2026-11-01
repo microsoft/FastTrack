@@ -80,6 +80,35 @@ assert(counted.includes('name="robots" content="noindex"') && counted.includes('
 assert(counted.includes('href="../">Back to Download demo</a>') && counted.includes('src="../../../assets/resource-page.js" data-clarity='), 'The download page must link back and load the shared script from three levels down.');
 assert(!/https:\/\/microsoft\.github\.io\/FastTrack\/r\/dl\/download/.test(renderSitemap([downloadable]) + renderFeed([downloadable])), 'Download pages must stay out of the sitemap and feed.');
 
+// 8. Every page that loads Clarity carries the footer and the informational privacy notice, and
+// nothing sends a consent signal: the notice is information only and has no choice to record.
+const assetsDirectory = join(toolDirectory, '..', '..', 'assets');
+const costToolSource = readFileSync(join(toolDirectory, '..', '..', 'copilot-agent-strategy', 'copilot-agents-cost-tool', 'index.html'), 'utf8');
+const privacyScript = readFileSync(join(assetsDirectory, 'privacy-notice.js'), 'utf8');
+const footerStyles = readFileSync(join(assetsDirectory, 'site-footer.css'), 'utf8');
+const resourcePageSource = readFileSync(join(assetsDirectory, 'resource-page.js'), 'utf8');
+const footerPages = {
+  'a resource page': [page, '../../assets/'],
+  'a download page': [counted, '../../../assets/'],
+  'the catalog': [indexSource, 'assets/'],
+  'the cost calculator': [costToolSource, '../../assets/']
+};
+for (const [name, [source, assets]] of Object.entries(footerPages)) {
+  assert(source.includes('https://www.microsoft.com/en-us/legal/terms-of-use'), `${name} must link the Microsoft Terms and Conditions.`);
+  assert(source.includes('https://privacy.microsoft.com/en-us/privacystatement'), `${name} must link the Microsoft Privacy Statement.`);
+  assert(/<button type="button"[^>]*data-privacy-notice[^>]*hidden>Privacy notice<\/button>/.test(source), `${name} must carry a Privacy notice button that the script reveals.`);
+  assert(source.includes(`src="${assets}privacy-notice.js" defer`), `${name} must load the shared privacy notice script.`);
+}
+for (const name of ['a resource page', 'a download page', 'the catalog']) {
+  const [source, assets] = footerPages[name];
+  assert(source.includes(`href="${assets}site-footer.css"`), `${name} must load the shared footer styles.`);
+  assert(source.includes('class="site-footer-brand"') && source.includes('Disclaimer: This community catalog'), `${name} must carry the Microsoft | FastTrack footer with its as-is disclaimer.`);
+}
+assert(!/consent(v2)?['"]\s*[,)]/i.test(privacyScript + page + counted + indexSource + costToolSource + resourcePageSource), 'No page or script may call the Clarity consent API.');
+assert(!/clarity\(/.test(privacyScript), 'The privacy notice must not call Clarity.');
+assert(/\.site-footer-brand/.test(footerStyles) && /\.site-footer-legal/.test(footerStyles), 'The shared footer styles must define the brand and legal rows.');
+assert(/role', 'dialog'/.test(privacyScript) && /aria-modal/.test(privacyScript) && /Escape/.test(privacyScript), 'The privacy notice must be an accessible modal that closes on Escape.');
+
 const resourcePageScript = readFileSync(join(toolDirectory, '..', '..', 'assets', 'resource-page.js'), 'utf8');
 assert(resourcePageScript.includes("'resource_download'") && resourcePageScript.includes('data-autodownload'), 'The shared script must record the download and start it.');
 

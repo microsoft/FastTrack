@@ -144,6 +144,16 @@ assert(weeklyPr.run.includes('AUTOMATION_PAT_CONFIGURED') &&
   weeklyPr.run.includes('COMPARE_URL') &&
   !weeklyPr.run.includes('gh pr merge'),
   'Blocked PR creation must provide a manual compare URL and remain review-required.');
+const notConfigured = weeklyPr.run.match(/if \[ "\$AUTOMATION_PAT_CONFIGURED" != "true" \]; then([\s\S]*?)\nfi\n/)?.[1] ?? '';
+assert(notConfigured.includes('::warning::') && notConfigured.includes('$COMPARE_URL') &&
+  notConfigured.includes('GITHUB_STEP_SUMMARY') && notConfigured.includes('exit 0') &&
+  !notConfigured.includes('::error::') && !notConfigured.includes('exit 1'),
+  'The known organization policy (no AUTOMATION_PAT) must warn with the compare link, not fail the Friday run.');
+const createFailure = weeklyPr.run.slice(weeklyPr.run.indexOf('gh pr create'));
+assert(createFailure.includes('::error::') && createFailure.includes('exit 1') &&
+  weeklySteps.some(step => step.name === 'Fail when weekly PR preparation was blocked' &&
+    step.if.includes("steps.weekly-pr.outcome == 'failure'")),
+  'A configured token that still cannot create the weekly PR is unexpected and must fail the run.');
 
 const catalogStats = catalogWorkflow.jobs.publish.steps.find(
   step => typeof step.run === 'string' && step.run.includes('build:stats')

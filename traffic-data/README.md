@@ -12,9 +12,13 @@ Data is collected daily at 06:00 UTC via GitHub Actions. Each Friday at 08:00
 `America/Chicago` (including daylight saving time), the workflow updates one
 review-required pull request from the Friday-only `automation/traffic-stats-weekly`
 branch to `master`. Daily pushes to the staging branch therefore do not change the
-open weekly review. If the optional `AUTOMATION_PAT` is not configured or cannot
-create pull requests, the workflow prints a manual compare URL; daily collection
-continues safely on the staging branch.
+open weekly review. If the optional `AUTOMATION_PAT` is not configured, which is the
+case under the organization's policy against Actions opening pull requests, the Friday
+run stays green and adds a warning and a run summary with a manual compare URL
+(`/compare/master...automation/traffic-stats-weekly`). Open that pull request, check that
+it changes only `resource-stats.json` and `traffic-data/clarity-views.json`, and merge
+it. If a configured token cannot create the pull request, the run fails instead. Daily
+collection continues safely on the staging branch either way.
 
 ## GitHub repository traffic is paused
 

@@ -186,7 +186,12 @@ function siteHeader(root) {
 function siteFooter(root) {
   return `<footer class="site-footer">
     <div class="wrap">
-      <p>Community catalog of tools, scripts, and guidance from Microsoft FastTrack. Provided as-is: not official Microsoft software, no SLA.</p>
+      <div class="site-footer-brand">
+        <svg viewBox="0 0 21 21" width="16" height="16" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        <span>Microsoft</span><span class="site-footer-brand-sep" aria-hidden="true"></span><span>FastTrack</span>
+      </div>
+      <p class="site-footer-disclaimer">Disclaimer: This community catalog of tools, scripts, and guidance from Microsoft FastTrack is provided as-is, without warranty of any kind, including merchantability or fitness for a particular purpose. It is not official Microsoft software, and support is not available through Microsoft support channels. Report problems through GitHub issues; there is no SLA.</p>
+      <p class="site-footer-legal"><a href="https://www.microsoft.com/en-us/legal/terms-of-use" target="_blank" rel="noopener">Terms and Conditions</a><a href="https://privacy.microsoft.com/en-us/privacystatement" target="_blank" rel="noopener">Privacy Statement</a><button type="button" data-privacy-notice aria-haspopup="dialog" hidden>Privacy notice</button></p>
       <p><a href="${root}">Browse the catalog</a> · <a href="${REPO_URL}/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="${REPO_URL}/issues" target="_blank" rel="noopener">Issues</a> · <a href="${REPO_URL}/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
     </div>
   </footer>`;
@@ -271,6 +276,7 @@ export function renderResourcePage(resource, { resources, repositoryRoot }) {
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
   <link rel="stylesheet" href="../../assets/resource-page.css">
+  <link rel="stylesheet" href="../../assets/site-footer.css">
   <script type="application/ld+json">${jsonLd(resource)}</script>
 </head>
 <body class="type-${escapeHtml(resource.type)}">
@@ -314,6 +320,7 @@ ${archived ? '\n    <p class="notice">This resource is archived and kept for ref
   </main>
 
   ${siteFooter('../../')}
+  <script src="../../assets/privacy-notice.js" defer></script>
   <script src="../../assets/resource-page.js" data-clarity="${CLARITY_ID}" defer></script>
 </body>
 </html>
@@ -345,6 +352,7 @@ export function renderDownloadPage(resource) {
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
   <link rel="stylesheet" href="../../../assets/resource-page.css">
+  <link rel="stylesheet" href="../../../assets/site-footer.css">
 </head>
 <body class="type-${escapeHtml(resource.type)}">
   ${siteHeader('../../../')}
@@ -367,6 +375,7 @@ export function renderDownloadPage(resource) {
   </main>
 
   ${siteFooter('../../../')}
+  <script src="../../../assets/privacy-notice.js" defer></script>
   <script src="../../../assets/resource-page.js" data-clarity="${CLARITY_ID}" defer></script>
 </body>
 </html>

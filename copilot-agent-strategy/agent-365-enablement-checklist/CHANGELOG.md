@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.3 - 2026-10-30
+
+- The version shown on the Help page, in the printed report, and in exports now matches the catalog version. It showed an internal number (2.9.1) before.
+- Fixed a broken Microsoft Learn link on the Gateway & compute task "Configure private networking for the gateway". The Learn article for the API Management AI Gateway tier no longer exists. The task now links to the AI Gateway resource article, which lists the limits of the new resource, including that private endpoints aren't supported, and to the AI Gateway overview. The task's steps still describe the earlier gateway tier; validate them against the gateway you use.
+- The two Defender tasks that cite "Connected platforms in Microsoft Agent 365" now link to that article at its current address.
+- The Help page's "Report an issue or suggest a change" link opens the resource feedback form.
+- No other task content changed.
+
 ## 1.0.2 - 2026-10-29
 
 - Each task's guide link now opens the exact step in the Customer Implementation Guide's Detailed view (for example `#advanced/4.04a`) instead of the top of the Detailed view.

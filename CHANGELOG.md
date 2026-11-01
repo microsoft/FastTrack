@@ -24,6 +24,7 @@ This file captures only selected high-level milestones.
 * Archived the prompt samples and removed a 41 MB archived demo video.
 * Added a **Download** button to resource pages and the landing detail view for resources that are one self-contained file: interactive guides and tools (saved as a single HTML file), single-file scripts, PowerPoint decks, Power BI reports, and the Technical Advisory PDF. The button opens a short download page (`r/<slug>/download/`) that saves the file and records the download. Loads of that page are counted per resource as `downloads` in `resource-stats.json`, kept separate from views, and logged as a `resource_download` event in Clarity. An optional `download` front matter field picks the file explicitly; see `docs/CATALOG-METADATA.md`.
 * The daily **Collect Traffic Data** workflow no longer collects GitHub repository traffic (views, clones, referrers), which needs a token that expires every few days under organization policy. It skips that step with a notice and keeps collecting Clarity page analytics and discussion votes. Set the repository variable `COLLECT_GITHUB_TRAFFIC` to `true` and replace `TRAFFIC_TOKEN` to resume.
+* The Friday run of **Collect Traffic Data** no longer fails when it cannot open the weekly traffic pull request because of the organization policy. It stays green and adds a warning and a run summary with the compare link to open it by hand. A configured token that still cannot create the pull request fails the run, as before.
 
 ### April 20, 2018
 

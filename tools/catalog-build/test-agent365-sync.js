@@ -173,6 +173,10 @@ assert(/Showing 40 of 60/.test(renderMarkdown(many, 40)) && !/Showing/.test(rend
 const realGuide = loadGuide();
 const realChecklist = loadChecklist();
 assertParsed(realGuide, realChecklist);
+assert(realChecklist.version === realChecklist.readmeVersion, 'The in-app checklist version must equal the README version.');
+let versionMismatch = '';
+try { assertParsed(realGuide, { ...realChecklist, version: '2.9.1' }); } catch (error) { versionMismatch = error.message; }
+assert(/CONTENT_VERSION/.test(versionMismatch) && new RegExp(`README version is "${realChecklist.readmeVersion}"`).test(versionMismatch), 'A checklist whose in-app version differs from its README version must fail the check.');
 const realSync = checkSync(realGuide, realChecklist);
 const list = items => items.map(item => `- "${item.label}"${item.problems ? `: ${item.problems.join(' ')}` : ''}${item.key ? ` (links to #advanced/${item.key})` : ''}`).join('\n');
 assert(realSync.broken.length === 0,
