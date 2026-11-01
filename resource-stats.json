@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T06:03:46.408Z",
+  "generatedAt": "2026-11-01T06:03:14.711Z",
   "sources": {
     "views": "clarity",
     "downloads": "clarity",
@@ -7,8 +7,8 @@
   },
   "resources": {
     "agent-365-enablement-checklist": {
-      "views": 4,
-      "viewsUniques": 4,
+      "views": 8,
+      "viewsUniques": 6,
       "upvotes": 1,
       "discussion": {
         "number": 566,
@@ -16,8 +16,8 @@
       }
     },
     "agent-365-lifecycle-atlas": {
-      "views": 158,
-      "viewsUniques": 98,
+      "views": 160,
+      "viewsUniques": 97,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -59,15 +59,15 @@
     },
     "copilot-analytics-reports-navigator": {
       "views": 29,
-      "viewsUniques": 6
+      "viewsUniques": 5
     },
     "copilot-interaction-report": {
       "views": 2,
       "viewsUniques": 0
     },
     "copilot-studio-workflow": {
-      "views": 39,
-      "viewsUniques": 6
+      "views": 42,
+      "viewsUniques": 5
     },
     "get-aadadminrolemembers": {
       "views": 1,
@@ -75,13 +75,13 @@
     },
     "get-allinsightslicensedusers": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "get-siteinventory": {
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 92,
+      "views": 95,
       "viewsUniques": 41,
       "upvotes": 1,
       "discussion": {
@@ -90,8 +90,8 @@
       }
     },
     "microsoft-agent-365-technical-advisory": {
-      "views": 6,
-      "viewsUniques": 5,
+      "views": 8,
+      "viewsUniques": 4,
       "upvotes": 1,
       "discussion": {
         "number": 568,
@@ -109,7 +109,7 @@
     },
     "purview-audit-copilot-report": {
       "views": 4,
-      "viewsUniques": 2,
+      "viewsUniques": 1,
       "upvotes": 0,
       "discussion": {
         "number": 497,
@@ -130,7 +130,7 @@
     },
     "viva-insights-copilot-dashboard": {
       "views": 8,
-      "viewsUniques": 2,
+      "viewsUniques": 1,
       "upvotes": 1,
       "discussion": {
         "number": 508,

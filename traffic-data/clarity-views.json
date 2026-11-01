@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-10-30",
+  "lastRun": "2026-11-01",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -1285,23 +1285,21 @@
     "2026-10-30": {
       "agent-365-enablement-checklist": {
         "views": 3,
-        "uniques": 3
+        "uniques": 2
       },
       "agent-365-lifecycle-atlas": {
         "views": 2,
-        "uniques": 2
+        "uniques": 1
       },
       "copilot-analytics-reports-navigator": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "copilot-studio-workflow": {
         "views": 1,
-        "uniques": 1
+        "uniques": 0
       },
       "get-allinsightslicensedusers": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 1,
@@ -1309,15 +1307,14 @@
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 4,
-        "uniques": 3
+        "uniques": 2,
+        "downloads": 0
       },
       "purview-audit-copilot-report": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "viva-insights-copilot-dashboard": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       }
     },
     "2026-10-29": {
@@ -1359,6 +1356,31 @@
       "viva-insights-copilot-dashboard": {
         "views": 0,
         "uniques": 0
+      }
+    },
+    "2026-11-01": {
+      "agent-365-enablement-checklist": {
+        "views": 2,
+        "uniques": 2
+      }
+    },
+    "2026-10-31": {
+      "agent-365-enablement-checklist": {
+        "views": 2,
+        "uniques": 1
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 2
+      },
+      "copilot-studio-workflow": {
+        "views": 3
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 2,
+        "downloads": 0
       }
     }
   }
