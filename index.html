@@ -1554,7 +1554,7 @@
             <div class="metadata-label">Format</div>
             <div class="metadata-val" id="metaFormat"></div>
           </div>
-          <div class="metadata-row" id="metaViewsRow" title="Page views recorded by Microsoft Clarity on this site">
+          <div class="metadata-row" id="metaViewsRow">
             <div class="metadata-label">Views</div>
             <div class="metadata-val" id="metaViews" style="font-family: var(--font-mono); font-variant-numeric: tabular-nums;"></div>
           </div>
@@ -1650,6 +1650,8 @@
     // file has loaded; a resource with no recorded views reads 0. If the file cannot load, no
     // counts are shown, so a failed request is never mistaken for zero views.
     let STATS_LOADED = false;
+    // Shown on hover next to every view count. Keep in step with traffic-data/README.md.
+    const VIEWS_TIP = "Catalog page views recorded by Microsoft Clarity since Jul 2026, plus views of the resource's GitHub folder from saved snapshots (Apr\u2013Jun and 14\u201327 Oct 2026). Some days were never captured, so this is a minimum.";
     let ALL_RESOURCES = [];
     let RESOURCES = []; // the visible set: archived items are excluded unless toggled on
     let STATS = {};
@@ -2331,7 +2333,7 @@
           </div>
         </div>
         <div class="card-desc">${data.description}</div>
-        ${stats.hasViews ? `<div class="compact-views" aria-label="${stats.views} views">
+        ${stats.hasViews ? `<div class="compact-views" aria-label="${stats.views} views" title="${VIEWS_TIP}">
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           ${formatCount(stats.views)}
         </div>` : ''}
@@ -2341,7 +2343,7 @@
             ${data.tags.length > 3 ? `<span class="card-tag">+${data.tags.length - 3}</span>` : ''}
           </div>
           <div class="card-stats">
-            ${stats.hasViews ? `<span class="stat-views" aria-label="${stats.views} views">
+            ${stats.hasViews ? `<span class="stat-views" aria-label="${stats.views} views" title="${VIEWS_TIP}">
               <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               ${formatCount(stats.views)}
             </span>` : ''}
@@ -2664,6 +2666,7 @@
       
       const stats = getStats(resource);
       document.getElementById('metaViewsRow').classList.toggle('d-none', !stats.hasViews);
+      document.getElementById('metaViewsRow').title = VIEWS_TIP;
       if (stats.hasViews) {
         document.getElementById('metaViews').innerHTML = `
           <span class="stat-views" style="display:inline-flex; align-items:center; gap:0.25rem;">

@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   collectClarityTotals,
+  combineViews,
   numberFrom,
   parseClarityTraffic,
   replaceClarityDays,
@@ -302,11 +303,9 @@ for (const resource of catalog.resources) {
   const clarity = clarityViews.get(resource.slug);
   const fallback = fallbackViews.get(resource.slug);
 
-  // Clarity is authoritative once it has a nonzero cumulative total; legacy GitHub
-  // path traffic only prevents existing resources from losing views during migration.
-  const views = clarity?.views > 0
-    ? { views: clarity.views, ...(clarity.viewsUniques !== undefined ? { viewsUniques: clarity.viewsUniques } : {}) }
-    : fallback;
+  // Views add up across the two surfaces (see combineViews). Clarity alone used to replace the
+  // GitHub history as soon as it recorded one view, which wiped out the older, larger counts.
+  const views = combineViews(clarity, fallback);
   if (views) {
     Object.assign(stats, views);
     viewCount += 1;
@@ -329,7 +328,7 @@ for (const resource of catalog.resources) {
 
 const payload = {
   sources: {
-    views: 'clarity',
+    views: 'clarity+github-traffic',
     downloads: 'clarity',
     upvotes: 'github-discussions'
   },

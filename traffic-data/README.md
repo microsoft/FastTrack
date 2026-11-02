@@ -6,7 +6,18 @@ branch so Clarity's three-day export window is preserved without daily pull requ
 
 **Files:**
 - `YYYY-MM-DD.json` — Full daily snapshot (views, clones, referrers, popular paths). Collection of these is paused; see below.
-- `clarity-views.json` — Accumulated Clarity page views and downloads per resource, the source of the view and download counts in `resource-stats.json`. A download is a load of the resource's download page (`r/<slug>/download/`), which the Download button opens; it is never counted as a view.
+- `clarity-views.json` — Accumulated Clarity page views and downloads per resource. A download is a load of the resource's download page (`r/<slug>/download/`), which the Download button opens; it is never counted as a view.
+
+## How views are counted
+
+The view count in `resource-stats.json` (and on the catalog) is the sum of two surfaces:
+
+- **Catalog views**, from `clarity-views.json`: loads of a resource's catalog page (`/#slug`) or its shareable page (`/r/<slug>/`), recorded by Clarity from 2026-07-25.
+- **GitHub folder views**, from the `YYYY-MM-DD.json` snapshots: views of the resource's folder or files on github.com. Snapshots 14 or more days apart are added together, so overlapping windows are never counted twice.
+
+Both are needed. Clarity never sees a visit that goes straight to GitHub, and the snapshots never see the catalog. Before this was a sum, a resource lost its GitHub history as soon as Clarity recorded one view for it (PowerClaw fell from 1,632 views to 4).
+
+The count is a minimum, because some days were never captured: GitHub traffic from 2026-07-01 to 2026-10-13, and Clarity from 2026-07-28 to 2026-09-06. Visitors who block analytics are not counted either.
 
 Data is collected daily at 06:00 UTC via GitHub Actions. Each Friday at 08:00
 `America/Chicago` (including daylight saving time), the workflow updates one
