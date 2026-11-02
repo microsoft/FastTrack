@@ -121,4 +121,12 @@ assert(catalogResources.filter(resource => ['bundle', 'declarative', 'md'].inclu
 assert(/btnDetailDownload/.test(indexSource) && indexSource.includes('/download/`'), 'index.html must send the Download button to the counted download page.');
 assert(!/id="btnDetailDownload"[^>]*\sdownload[\s>]/.test(indexSource), 'The landing Download button must not link the file directly.');
 
+// 9. View counts: every resource shows its count in the list and the detail sidebar once the stats
+// file has loaded (a low or missing count is not hidden), and Popular ranks by those counts.
+assert(!/MIN_VIEWS_SHOWN/.test(indexSource), 'index.html must not hide view counts below a minimum.');
+assert(/const hasViews = STATS_LOADED;/.test(indexSource) && /STATS_LOADED = true;/.test(indexSource), 'View counts must show for every resource once the stats file has loaded, and for none when it has not.');
+assert(/classList\.toggle\('d-none', !stats\.hasViews\)/.test(indexSource), 'The detail sidebar must show the Views row whenever counts are shown.');
+const popularOrder = (/state\.sort === 'popular'\) \{([\s\S]*?)\} else if/.exec(indexSource)?.[1] ?? '').replace(/\/\/.*$/gm, '');
+assert(popularOrder.includes('views') && popularOrder.indexOf('views') < popularOrder.indexOf('upvotes'), 'Popular must rank by views first, with upvotes only breaking ties.');
+
 console.log('Static resource pages and landing-page guards are valid.');
