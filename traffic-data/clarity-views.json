@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-01",
+  "lastRun": "2026-11-02",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -1361,7 +1361,39 @@
     "2026-11-01": {
       "agent-365-enablement-checklist": {
         "views": 2,
-        "uniques": 2
+        "uniques": 1
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "ai-council": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 0,
+        "uniques": 0
+      },
+      "migrate-copilotstudioagents": {
+        "views": 0,
+        "uniques": 0
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "vibewriting-agent": {
+        "views": 0,
+        "uniques": 0
       }
     },
     "2026-10-31": {
@@ -1370,17 +1402,78 @@
         "uniques": 1
       },
       "agent-365-lifecycle-atlas": {
-        "views": 2
+        "views": 2,
+        "uniques": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "ai-council": {
+        "views": 0,
+        "uniques": 0
       },
       "copilot-studio-workflow": {
         "views": 3
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 3
+        "views": 3,
+        "uniques": 2
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 2,
+        "uniques": 2,
         "downloads": 0
+      },
+      "migrate-copilotstudioagents": {
+        "views": 0,
+        "uniques": 0
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "vibewriting-agent": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-11-02": {
+      "agent-365-enablement-checklist": {
+        "views": 2,
+        "uniques": 2
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 1,
+        "uniques": 1
+      },
+      "agents-cost-calculator": {
+        "views": 1,
+        "uniques": 1
+      },
+      "ai-council": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 1,
+        "uniques": 1
+      },
+      "migrate-copilotstudioagents": {
+        "views": 1,
+        "uniques": 1
+      },
+      "powerclaw-agent": {
+        "views": 3,
+        "uniques": 3
+      },
+      "vibewriting-agent": {
+        "views": 1,
+        "uniques": 1
       }
     }
   }

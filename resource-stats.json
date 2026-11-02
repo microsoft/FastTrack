@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T06:03:14.711Z",
+  "generatedAt": "2026-11-02T06:04:45.393Z",
   "sources": {
     "views": "clarity",
     "downloads": "clarity",
@@ -7,8 +7,8 @@
   },
   "resources": {
     "agent-365-enablement-checklist": {
-      "views": 8,
-      "viewsUniques": 6,
+      "views": 10,
+      "viewsUniques": 7,
       "upvotes": 1,
       "discussion": {
         "number": 566,
@@ -16,8 +16,8 @@
       }
     },
     "agent-365-lifecycle-atlas": {
-      "views": 160,
-      "viewsUniques": 97,
+      "views": 161,
+      "viewsUniques": 98,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -29,12 +29,12 @@
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 17,
-      "viewsUniques": 2
+      "views": 18,
+      "viewsUniques": 3
     },
     "ai-council": {
-      "views": 3,
-      "viewsUniques": 1,
+      "views": 4,
+      "viewsUniques": 2,
       "upvotes": 1,
       "discussion": {
         "number": 501,
@@ -81,8 +81,8 @@
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 95,
-      "viewsUniques": 41,
+      "views": 96,
+      "viewsUniques": 44,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -90,17 +90,21 @@
       }
     },
     "microsoft-agent-365-technical-advisory": {
-      "views": 8,
-      "viewsUniques": 4,
+      "views": 9,
+      "viewsUniques": 7,
       "upvotes": 1,
       "discussion": {
         "number": 568,
         "url": "https://github.com/microsoft/FastTrack/discussions/568"
       }
     },
+    "migrate-copilotstudioagents": {
+      "views": 1,
+      "viewsUniques": 1
+    },
     "powerclaw-agent": {
-      "views": 11,
-      "viewsUniques": 3,
+      "views": 14,
+      "viewsUniques": 6,
       "upvotes": 1,
       "discussion": {
         "number": 479,
@@ -127,6 +131,10 @@
     "update-vivaengagelicensingtoggle": {
       "views": 222,
       "viewsUniques": 139
+    },
+    "vibewriting-agent": {
+      "views": 1,
+      "viewsUniques": 1
     },
     "viva-insights-copilot-dashboard": {
       "views": 8,
