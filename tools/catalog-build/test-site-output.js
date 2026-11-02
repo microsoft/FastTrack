@@ -95,8 +95,10 @@ const footerPages = {
   'the cost calculator': [costToolSource, '../../assets/']
 };
 for (const [name, [source, assets]] of Object.entries(footerPages)) {
-  assert(source.includes('https://www.microsoft.com/en-us/legal/terms-of-use'), `${name} must link the Microsoft Terms and Conditions.`);
-  assert(source.includes('https://privacy.microsoft.com/en-us/privacystatement'), `${name} must link the Microsoft Privacy Statement.`);
+  // Exact-match lookups: a substring test on a URL says nothing about which host it names.
+  const hrefs = new Set([...source.matchAll(/href="([^"]*)"/g)].map(match => match[1]));
+  assert(hrefs.has('https://www.microsoft.com/en-us/legal/terms-of-use'), `${name} must link the Microsoft Terms and Conditions.`);
+  assert(hrefs.has('https://privacy.microsoft.com/en-us/privacystatement'), `${name} must link the Microsoft Privacy Statement.`);
   assert(/<button type="button"[^>]*data-privacy-notice[^>]*hidden>Privacy notice<\/button>/.test(source), `${name} must carry a Privacy notice button that the script reveals.`);
   assert(source.includes(`src="${assets}privacy-notice.js" defer`), `${name} must load the shared privacy notice script.`);
 }
@@ -181,6 +183,7 @@ assert(/window\.FastTrackLiveStats\.pick\(statsData, live\)/.test(indexSource) &
 assert(page.includes('src="../../assets/live-stats.js" defer') && page.indexOf('live-stats.js') < page.indexOf('resource-page.js'), 'A resource page must load live-stats.js before resource-page.js.');
 assert(!counted.includes('live-stats.js'), 'A download page must not load the live stats.');
 assert(/FastTrackLiveStats\.pick\(data, results\[1\]\)/.test(resourcePageSource), 'The resource page script must prefer the staged view counts.');
-assert(privacyScript.includes('raw.githubusercontent.com'), 'The privacy notice must disclose the request to raw.githubusercontent.com.');
+const hostsNamedInPrivacyNotice = new Set(privacyScript.match(/[a-z0-9-]+(?:\.[a-z0-9-]+)+/gi) ?? []);
+assert(hostsNamedInPrivacyNotice.has(new URL(liveStats.url).hostname), 'The privacy notice must name the host the live stats are read from.');
 
 console.log('Static resource pages and landing-page guards are valid.');
