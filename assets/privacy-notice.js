@@ -95,6 +95,7 @@
       '<ul>',
       '<li><strong>Google Fonts.</strong> The catalog and resource pages load fonts from fonts.googleapis.com and fonts.gstatic.com.</li>',
       '<li><strong>giscus and GitHub.</strong> A resource&rsquo;s detail view in the catalog loads comments and reactions from giscus.app, which uses GitHub Discussions in the microsoft/FastTrack repository. You sign in with GitHub to react or comment.</li>',
+      '<li><strong>Latest view counts.</strong> The catalog and resource pages read a public statistics file from the microsoft/FastTrack repository on raw.githubusercontent.com. The request carries no cookies and sends no referrer.</li>',
       '<li><strong>Links to other sites</strong>, such as Microsoft Learn and GitHub, follow those sites&rsquo; own privacy statements.</li>',
       '</ul>',
       '</section>',
