@@ -1641,6 +1641,7 @@
   </div>
 
   <script src="assets/privacy-notice.js" defer></script>
+  <script src="assets/live-stats.js"></script>
 
   <script>
     // --- DATASET ---
@@ -1799,9 +1800,16 @@
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
     };
     
+    // How long the first render waits for the latest counts (assets/live-stats.js) before it
+    // falls back to the committed file. Counts that arrive later are not applied.
+    const LIVE_STATS_WAIT_MS = 1500;
+
     async function loadCatalog() {
       grid.classList.add('d-none');
       showEmptyState('Loading catalog…', 'Reading the latest FastTrack resource metadata.', false);
+
+      // Started now so it runs alongside the catalog and stats requests.
+      const liveStats = window.FastTrackLiveStats ? window.FastTrackLiveStats.fetch() : Promise.resolve(null);
 
       try {
         const response = await fetch(CATALOG_URL, { cache: 'no-cache' });
@@ -1815,6 +1823,12 @@
             const statsData = await statsRes.json();
             STATS = statsData.resources || {};
             STATS_LOADED = true;
+            // Take only the view counts from the latest staged stats (see assets/live-stats.js).
+            const live = await Promise.race([liveStats, new Promise(resolve => setTimeout(() => resolve(null), LIVE_STATS_WAIT_MS))]);
+            const liveViews = window.FastTrackLiveStats ? window.FastTrackLiveStats.pick(statsData, live) : null;
+            if (liveViews) {
+              Object.keys(liveViews).forEach(slug => { STATS[slug] = { ...(STATS[slug] || {}), views: liveViews[slug] }; });
+            }
           }
         } catch (e) {
           console.warn('Failed to load stats:', e);

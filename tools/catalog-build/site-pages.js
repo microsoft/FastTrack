@@ -323,6 +323,7 @@ ${archived ? '\n    <p class="notice">This resource is archived and kept for ref
 
   ${siteFooter('../../')}
   <script src="../../assets/privacy-notice.js" defer></script>
+  <script src="../../assets/live-stats.js" defer></script>
   <script src="../../assets/resource-page.js" data-clarity="${CLARITY_ID}" defer></script>
 </body>
 </html>
