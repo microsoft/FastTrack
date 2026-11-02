@@ -52,6 +52,27 @@
     });
   }
 
+  // Views come from the published stats, so the page needs no rebuild when the counts change. The row
+  // stays hidden if the file cannot be read. Keep VIEWS_TIP in step with the catalog (index.html).
+  var VIEWS_TIP = "Catalog page views recorded by Microsoft Clarity since Jul 2026, plus views of the resource's GitHub folder from saved snapshots (Apr\u2013Jun and 14\u201327 Oct 2026). Some days were never captured, so this is a minimum.";
+  var viewsRow = document.getElementById('viewsRow');
+  var viewsValue = document.getElementById('viewsValue');
+  if (viewsRow && viewsValue && slug && script && script.src && window.fetch) {
+    fetch(new URL('../resource-stats.json', script.src).href, { cache: 'no-cache' })
+      .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+      .then(function (data) {
+        if (!data || !data.resources || typeof data.resources !== 'object') return;
+        var entry = data.resources[slug];
+        var views = entry ? Number(entry.views) : 0;
+        if (!isFinite(views) || views < 0) views = 0;
+        var short = views >= 10000 ? (views / 1000).toFixed(0) + 'k' : views >= 1000 ? (views / 1000).toFixed(1) + 'k' : String(views);
+        viewsValue.textContent = short;
+        viewsRow.title = views.toLocaleString('en-US') + (views === 1 ? ' view. ' : ' views. ') + VIEWS_TIP;
+        viewsRow.hidden = false;
+      })
+      .catch(function () { /* leave the row hidden */ });
+  }
+
   // The download page saves the file by itself; its visible link covers blocked scripts.
   var autoDownload = document.querySelector('[data-autodownload]');
   if (autoDownload) {

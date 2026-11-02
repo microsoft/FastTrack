@@ -104,6 +104,8 @@ aside { align-self: start; position: sticky; top: 5rem; }
 .row:last-child { border-bottom: 0; }
 .row dt { color: var(--text-muted); }
 .row dd { text-align: right; font-weight: 500; }
+.row[hidden] { display: none; }
+#viewsValue { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .aside-links { display: grid; gap: 0.5rem; margin-top: 1rem; font-size: 0.875rem; }
 
 .site-footer { border-top: 1px solid var(--border); padding: 2.5rem 0; color: var(--text-muted); font-size: 0.875rem; text-align: center; }
