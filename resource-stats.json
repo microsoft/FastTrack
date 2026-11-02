@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-02T06:04:45.393Z",
+  "generatedAt": "2026-11-02T19:13:42.161Z",
   "sources": {
-    "views": "clarity",
+    "views": "clarity+github-traffic",
     "downloads": "clarity",
     "upvotes": "github-discussions"
   },
@@ -29,12 +29,12 @@
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 18,
-      "viewsUniques": 3
+      "views": 130,
+      "viewsUniques": 82
     },
     "ai-council": {
-      "views": 4,
-      "viewsUniques": 2,
+      "views": 82,
+      "viewsUniques": 63,
       "upvotes": 1,
       "discussion": {
         "number": 501,
@@ -46,16 +46,16 @@
       "viewsUniques": 0
     },
     "autoreply-agent": {
-      "views": 8,
-      "viewsUniques": 3
+      "views": 77,
+      "viewsUniques": 49
     },
     "comparedocs": {
       "views": 1,
       "viewsUniques": 0
     },
     "copilot-agents-guide": {
-      "views": 10,
-      "viewsUniques": 4
+      "views": 42,
+      "viewsUniques": 10
     },
     "copilot-analytics-reports-navigator": {
       "views": 29,
@@ -103,8 +103,8 @@
       "viewsUniques": 1
     },
     "powerclaw-agent": {
-      "views": 14,
-      "viewsUniques": 6,
+      "views": 1646,
+      "viewsUniques": 967,
       "upvotes": 1,
       "discussion": {
         "number": 479,
@@ -112,8 +112,8 @@
       }
     },
     "purview-audit-copilot-report": {
-      "views": 4,
-      "viewsUniques": 1,
+      "views": 672,
+      "viewsUniques": 392,
       "upvotes": 0,
       "discussion": {
         "number": 497,
@@ -137,8 +137,8 @@
       "viewsUniques": 1
     },
     "viva-insights-copilot-dashboard": {
-      "views": 8,
-      "viewsUniques": 1,
+      "views": 127,
+      "viewsUniques": 71,
       "upvotes": 1,
       "discussion": {
         "number": 508,

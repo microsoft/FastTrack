@@ -288,3 +288,18 @@ export function unchangedStatsPayload(previous, next) {
   return JSON.stringify(previous.sources) === JSON.stringify(next.sources) &&
     JSON.stringify(previous.resources) === JSON.stringify(next.resources);
 }
+
+// A resource's views are what the catalog recorded in Clarity plus the views of its GitHub folder
+// from the saved GitHub traffic snapshots. They are different surfaces, so they add up: Clarity
+// never saw the visits that went straight to GitHub, and the snapshots never saw the catalog.
+// Unique counts are summed the same way, so they are an upper bound.
+export function combineViews(clarity, fallback) {
+  const parts = [clarity, fallback];
+  const views = parts.reduce((sum, part) => sum + (numberFrom(part?.views) ?? 0), 0);
+  if (views <= 0) return undefined;
+  const uniques = parts.map(part => numberFrom(part?.viewsUniques)).filter(value => value !== undefined);
+  return {
+    views,
+    ...(uniques.length ? { viewsUniques: uniques.reduce((sum, value) => sum + value, 0) } : {})
+  };
+}
