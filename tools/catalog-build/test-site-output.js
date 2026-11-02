@@ -129,4 +129,17 @@ assert(/classList\.toggle\('d-none', !stats\.hasViews\)/.test(indexSource), 'The
 const popularOrder = (/state\.sort === 'popular'\) \{([\s\S]*?)\} else if/.exec(indexSource)?.[1] ?? '').replace(/\/\/.*$/gm, '');
 assert(popularOrder.includes('views') && popularOrder.indexOf('views') < popularOrder.indexOf('upvotes'), 'Popular must rank by views first, with upvotes only breaking ties.');
 
+// 10. The static resource pages show the same view count as the catalog. The row is hidden until
+// the script has read resource-stats.json, the download pages have none, and the hover text matches.
+const resourceCss = readFileSync(join(assetsDirectory, 'resource-page.css'), 'utf8');
+const formatIndex = page.indexOf('<dt>Format</dt>');
+const viewsIndex = page.indexOf('id="viewsRow" hidden');
+assert(formatIndex !== -1 && viewsIndex > formatIndex && viewsIndex < page.indexOf('<dt>Version</dt>'), 'A resource page must carry a hidden Views row between Format and Version.');
+assert(page.includes('<dt>Views</dt><dd><span id="viewsValue"></span></dd>'), 'The Views row must have a value element for the script to fill.');
+assert(!counted.includes('viewsRow'), 'A download page must not carry a Views row.');
+assert(resourcePageSource.includes("'../resource-stats.json'") && resourcePageSource.includes('data.resources[slug]'), 'The shared script must read the slug\'s views from resource-stats.json.');
+assert(/\.row\[hidden\]\s*\{\s*display:\s*none/.test(resourceCss), 'A hidden detail row must stay hidden despite the flex layout.');
+const viewsTip = source => /VIEWS_TIP = "([^"]+)"/.exec(source)?.[1];
+assert(viewsTip(indexSource) && viewsTip(indexSource) === viewsTip(resourcePageSource), 'The catalog and the resource pages must explain view counts with the same text.');
+
 console.log('Static resource pages and landing-page guards are valid.');
