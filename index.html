@@ -1554,7 +1554,7 @@
             <div class="metadata-label">Format</div>
             <div class="metadata-val" id="metaFormat"></div>
           </div>
-          <div class="metadata-row" id="metaViewsRow">
+          <div class="metadata-row" id="metaViewsRow" title="Page views recorded by Microsoft Clarity on this site">
             <div class="metadata-label">Views</div>
             <div class="metadata-val" id="metaViews" style="font-family: var(--font-mono); font-variant-numeric: tabular-nums;"></div>
           </div>
@@ -1646,9 +1646,10 @@
     // --- DATASET ---
     const CATALOG_URL = 'catalog.json';
     const STATS_URL = 'resource-stats.json';
-    // View counts come from a short analytics window, so small numbers are noise
-    // and read as negative social proof. Only show a count once it is meaningful.
-    const MIN_VIEWS_SHOWN = 50;
+    // View counts come from Microsoft Clarity. Every resource shows its count once the stats
+    // file has loaded; a resource with no recorded views reads 0. If the file cannot load, no
+    // counts are shown, so a failed request is never mistaken for zero views.
+    let STATS_LOADED = false;
     let ALL_RESOURCES = [];
     let RESOURCES = []; // the visible set: archived items are excluded unless toggled on
     let STATS = {};
@@ -1709,7 +1710,7 @@
 
     const getStats = (r) => {
       const s = (STATS && STATS[r.slug]) || {};
-      const hasViews = Number.isFinite(s.views) && s.views >= MIN_VIEWS_SHOWN;
+      const hasViews = STATS_LOADED;
       const hasDiscussion = !!(s.discussion && s.discussion.url);
       const discussionUrl = s.discussion?.url || null;
       const discussionNumber = s.discussion?.number ?? null;
@@ -1811,6 +1812,7 @@
           if (statsRes.ok) {
             const statsData = await statsRes.json();
             STATS = statsData.resources || {};
+            STATS_LOADED = true;
           }
         } catch (e) {
           console.warn('Failed to load stats:', e);
@@ -2030,8 +2032,9 @@
         if (isArchived(a) !== isArchived(b)) return isArchived(a) ? 1 : -1;
 
         if (state.sort === 'popular') {
-          if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
+          // Rank by the view count shown on each row; upvotes only break ties.
           if (statsA.views !== statsB.views) return statsB.views - statsA.views;
+          if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
           return byName(a, b);
         } else if (state.sort === 'new') {
           return new Date(b.updated) - new Date(a.updated) || byName(a, b);
