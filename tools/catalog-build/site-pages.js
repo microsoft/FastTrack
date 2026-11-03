@@ -224,10 +224,12 @@ export function renderResourcePage(resource, { resources, repositoryRoot }) {
     ['Type', escapeHtml(label)],
     ['Category', escapeHtml(resource.category)],
     ['Format', escapeHtml(artifactLabel(resource))],
+    // Hidden until assets/resource-page.js has read resource-stats.json, so the page needs no rebuild when counts change.
+    ['Views', '<span id="viewsValue"></span>', ' id="viewsRow" hidden'],
     ['Version', escapeHtml(resource.version)],
     ['Updated', escapeHtml(formatDate(resource.updated))],
     ['Author', escapeHtml(authorsOf(resource).join(', '))]
-  ].filter(([, value]) => value).map(([key, value]) => `<div class="row"><dt>${key}</dt><dd>${value}</dd></div>`).join('');
+  ].filter(([, value]) => value).map(([key, value, attributes = '']) => `<div class="row"${attributes}><dt>${key}</dt><dd>${value}</dd></div>`).join('');
 
   const primary = interactiveHref
     ? `<a class="btn btn-primary" href="${interactiveHref}" data-event="resource_preview">Open the ${resource.interactiveKind === 'guide' ? 'guide' : 'tool'}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
@@ -321,6 +323,7 @@ ${archived ? '\n    <p class="notice">This resource is archived and kept for ref
 
   ${siteFooter('../../')}
   <script src="../../assets/privacy-notice.js" defer></script>
+  <script src="../../assets/live-stats.js" defer></script>
   <script src="../../assets/resource-page.js" data-clarity="${CLARITY_ID}" defer></script>
 </body>
 </html>

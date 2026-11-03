@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
 import { renderDownloadPage, renderFeed, renderMarkdown, renderResourcePage, renderSitemap } from './site-pages.js';
 
 // Guards the static resource pages (escaping, status handling, sitemap/feed) and the
@@ -94,8 +95,10 @@ const footerPages = {
   'the cost calculator': [costToolSource, '../../assets/']
 };
 for (const [name, [source, assets]] of Object.entries(footerPages)) {
-  assert(source.includes('https://www.microsoft.com/en-us/legal/terms-of-use'), `${name} must link the Microsoft Terms and Conditions.`);
-  assert(source.includes('https://privacy.microsoft.com/en-us/privacystatement'), `${name} must link the Microsoft Privacy Statement.`);
+  // Exact-match lookups: a substring test on a URL says nothing about which host it names.
+  const hrefs = new Set([...source.matchAll(/href="([^"]*)"/g)].map(match => match[1]));
+  assert(hrefs.has('https://www.microsoft.com/en-us/legal/terms-of-use'), `${name} must link the Microsoft Terms and Conditions.`);
+  assert(hrefs.has('https://privacy.microsoft.com/en-us/privacystatement'), `${name} must link the Microsoft Privacy Statement.`);
   assert(/<button type="button"[^>]*data-privacy-notice[^>]*hidden>Privacy notice<\/button>/.test(source), `${name} must carry a Privacy notice button that the script reveals.`);
   assert(source.includes(`src="${assets}privacy-notice.js" defer`), `${name} must load the shared privacy notice script.`);
 }
@@ -120,5 +123,67 @@ assert(catalogResources.filter(resource => resource.status === 'archived').every
 assert(catalogResources.filter(resource => ['bundle', 'declarative', 'md'].includes(resource.format)).every(resource => !resource.download), 'Bundles, declarative agents and Markdown resources must not offer a download.');
 assert(/btnDetailDownload/.test(indexSource) && indexSource.includes('/download/`'), 'index.html must send the Download button to the counted download page.');
 assert(!/id="btnDetailDownload"[^>]*\sdownload[\s>]/.test(indexSource), 'The landing Download button must not link the file directly.');
+
+// 9. View counts: every resource shows its count in the list and the detail sidebar once the stats
+// file has loaded (a low or missing count is not hidden), and Popular ranks by those counts.
+assert(!/MIN_VIEWS_SHOWN/.test(indexSource), 'index.html must not hide view counts below a minimum.');
+assert(/const hasViews = STATS_LOADED;/.test(indexSource) && /STATS_LOADED = true;/.test(indexSource), 'View counts must show for every resource once the stats file has loaded, and for none when it has not.');
+assert(/classList\.toggle\('d-none', !stats\.hasViews\)/.test(indexSource), 'The detail sidebar must show the Views row whenever counts are shown.');
+const popularOrder = (/state\.sort === 'popular'\) \{([\s\S]*?)\} else if/.exec(indexSource)?.[1] ?? '').replace(/\/\/.*$/gm, '');
+assert(popularOrder.includes('views') && popularOrder.indexOf('views') < popularOrder.indexOf('upvotes'), 'Popular must rank by views first, with upvotes only breaking ties.');
+
+// 10. The static resource pages show the same view count as the catalog. The row is hidden until
+// the script has read resource-stats.json, the download pages have none, and the hover text matches.
+const resourceCss = readFileSync(join(assetsDirectory, 'resource-page.css'), 'utf8');
+const formatIndex = page.indexOf('<dt>Format</dt>');
+const viewsIndex = page.indexOf('id="viewsRow" hidden');
+assert(formatIndex !== -1 && viewsIndex > formatIndex && viewsIndex < page.indexOf('<dt>Version</dt>'), 'A resource page must carry a hidden Views row between Format and Version.');
+assert(page.includes('<dt>Views</dt><dd><span id="viewsValue"></span></dd>'), 'The Views row must have a value element for the script to fill.');
+assert(!counted.includes('viewsRow'), 'A download page must not carry a Views row.');
+assert(resourcePageSource.includes("'../resource-stats.json'") && resourcePageSource.includes('data.resources[slug]'), 'The shared script must read the slug\'s views from resource-stats.json.');
+assert(/\.row\[hidden\]\s*\{\s*display:\s*none/.test(resourceCss), 'A hidden detail row must stay hidden despite the flex layout.');
+const viewsTip = source => /VIEWS_TIP = "([^"]+)"/.exec(source)?.[1];
+assert(viewsTip(indexSource) && viewsTip(indexSource) === viewsTip(resourcePageSource), 'The catalog and the resource pages must explain view counts with the same text.');
+
+// 11. The site reads the latest view counts from the staged stats on raw.githubusercontent.com, because
+// publishing them to master needs a pull request that Actions cannot open. Only the counts are taken,
+// and the committed file stays the fallback.
+const liveStatsSource = readFileSync(join(assetsDirectory, 'live-stats.js'), 'utf8');
+const workflowSource = readFileSync(join(toolDirectory, '..', '..', '.github', 'workflows', 'traffic-stats.yml'), 'utf8');
+const stagingBranch = /STAGING_BRANCH:\s*(\S+)/.exec(workflowSource)?.[1];
+assert(stagingBranch, 'The traffic workflow must name its staging branch.');
+const liveContext = { setTimeout, clearTimeout };
+liveContext.window = liveContext;
+vm.runInNewContext(liveStatsSource, liveContext);
+const liveStats = liveContext.FastTrackLiveStats;
+assert(liveStats.url === `https://raw.githubusercontent.com/microsoft/FastTrack/${stagingBranch}/resource-stats.json`, 'The live stats URL must point at resource-stats.json on the workflow\'s staging branch.');
+
+const localDoc = { generatedAt: '2026-11-02T19:13:42.161Z', sources: { views: 'clarity+github-traffic' }, resources: { a: { views: 10 } } };
+const liveDoc = (overrides = {}) => ({
+  generatedAt: '2026-11-03T06:04:00.000Z', sources: { views: 'clarity+github-traffic' },
+  resources: { a: { views: 12, upvotes: 99, discussion: { url: 'https://example.com' } }, b: { views: 3.4 }, bad: { views: 'x' }, neg: { views: -1 } },
+  ...overrides
+});
+assert(JSON.stringify(liveStats.pick(localDoc, liveDoc())) === '{"a":12,"b":3}', 'Newer staged stats must supply rounded view counts only, and skip invalid ones.');
+assert(liveStats.pick(localDoc, liveDoc({ generatedAt: localDoc.generatedAt }))?.a === 12, 'Staged stats rendered at the same moment as the local file must be accepted.');
+assert(liveStats.pick(localDoc, liveDoc({ generatedAt: '2026-11-02T06:04:00.000Z' })) === null, 'Staged stats older than the local file must be ignored.');
+assert(liveStats.pick(localDoc, liveDoc({ sources: { views: 'clarity' } })) === null, 'Staged stats counted by a different method must be ignored.');
+assert(liveStats.pick(localDoc, liveDoc({ generatedAt: 'soon' })) === null && liveStats.pick({ ...localDoc, generatedAt: undefined }, liveDoc()) === null, 'A missing or invalid timestamp must not be trusted.');
+assert(liveStats.pick(localDoc, null) === null && liveStats.pick(localDoc, { resources: 'x' }) === null && liveStats.pick(null, liveDoc()) === null && liveStats.pick(localDoc, liveDoc({ resources: {} })) === null, 'Unusable staged stats must fall back to the local file.');
+
+liveContext.fetch = () => Promise.resolve({ ok: true, json: () => Promise.resolve(liveDoc()) });
+assert((await liveStats.fetch())?.resources?.a?.views === 12, 'A readable staged file must be returned.');
+liveContext.fetch = () => Promise.resolve({ ok: false, status: 404, json: () => Promise.resolve({}) });
+assert(await liveStats.fetch() === null, 'An HTTP error must resolve to null, not throw.');
+liveContext.fetch = () => Promise.reject(new Error('offline'));
+assert(await liveStats.fetch() === null, 'A network failure must resolve to null, not throw.');
+
+assert(indexSource.includes('<script src="assets/live-stats.js"></script>') && indexSource.indexOf('assets/live-stats.js') < indexSource.indexOf('// --- DATASET ---'), 'The catalog must load live-stats.js before its main script.');
+assert(/window\.FastTrackLiveStats\.pick\(statsData, live\)/.test(indexSource) && /STATS\[slug\] = \{ \.\.\.\(STATS\[slug\] \|\| \{\}\), views: liveViews\[slug\] \}/.test(indexSource), 'The catalog must take only the view counts from the staged stats.');
+assert(page.includes('src="../../assets/live-stats.js" defer') && page.indexOf('live-stats.js') < page.indexOf('resource-page.js'), 'A resource page must load live-stats.js before resource-page.js.');
+assert(!counted.includes('live-stats.js'), 'A download page must not load the live stats.');
+assert(/FastTrackLiveStats\.pick\(data, results\[1\]\)/.test(resourcePageSource), 'The resource page script must prefer the staged view counts.');
+const hostsNamedInPrivacyNotice = new Set(privacyScript.match(/[a-z0-9-]+(?:\.[a-z0-9-]+)+/gi) ?? []);
+assert(hostsNamedInPrivacyNotice.has(new URL(liveStats.url).hostname), 'The privacy notice must name the host the live stats are read from.');
 
 console.log('Static resource pages and landing-page guards are valid.');

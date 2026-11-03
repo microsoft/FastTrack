@@ -1,6 +1,7 @@
 import {
   clarityStateContains,
   collectClarityTotals,
+  combineViews,
   downloadSlugFromClarityUrl,
   parseClarityTraffic,
   reconcileClarityStates,
@@ -117,13 +118,23 @@ assert(state.days['2026-09-12']['new-resource'].views === 3,
 assert(state.lastRun === '2026-09-12', 'The state must record the latest successful run.');
 
 const payload = {
-  sources: { views: 'clarity', downloads: 'clarity', upvotes: 'github-discussions' },
+  sources: { views: 'clarity+github-traffic', downloads: 'clarity', upvotes: 'github-discussions' },
   resources: { resource: { views: 5, downloads: 2 } }
 };
 assert(unchangedStatsPayload({ generatedAt: 'old', ...payload }, payload),
   'Timestamp-only differences must not create a new stats commit.');
 assert(!unchangedStatsPayload({ ...payload, resources: {} }, payload),
   'Substantive resource changes must produce a new stats output.');
+
+// Views add up across Clarity and the saved GitHub snapshots. Clarity recording a first view must
+// never discard the older GitHub count (PowerClaw fell from 1,632 views to 4 that way).
+assert(JSON.stringify(combineViews({ views: 14, viewsUniques: 6 }, { views: 1632, viewsUniques: 900 })) === '{"views":1646,"viewsUniques":906}',
+  'Clarity views and GitHub snapshot views must be added together.');
+assert(JSON.stringify(combineViews({ views: 5 }, undefined)) === '{"views":5}' &&
+  JSON.stringify(combineViews(undefined, { views: 222, viewsUniques: 139 })) === '{"views":222,"viewsUniques":139}',
+  'A resource seen by only one source keeps that source\'s count.');
+assert(combineViews(undefined, undefined) === undefined && combineViews({ views: 0 }, { views: 0 }) === undefined,
+  'A resource with no views from either source must not get a views entry.');
 
 const published = {
   lastRun: '2026-09-11',

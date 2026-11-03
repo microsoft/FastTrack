@@ -1641,14 +1641,18 @@
   </div>
 
   <script src="assets/privacy-notice.js" defer></script>
+  <script src="assets/live-stats.js"></script>
 
   <script>
     // --- DATASET ---
     const CATALOG_URL = 'catalog.json';
     const STATS_URL = 'resource-stats.json';
-    // View counts come from a short analytics window, so small numbers are noise
-    // and read as negative social proof. Only show a count once it is meaningful.
-    const MIN_VIEWS_SHOWN = 50;
+    // View counts come from Microsoft Clarity. Every resource shows its count once the stats
+    // file has loaded; a resource with no recorded views reads 0. If the file cannot load, no
+    // counts are shown, so a failed request is never mistaken for zero views.
+    let STATS_LOADED = false;
+    // Shown on hover next to every view count. Keep in step with traffic-data/README.md.
+    const VIEWS_TIP = "Catalog page views recorded by Microsoft Clarity since Jul 2026, plus views of the resource's GitHub folder from saved snapshots (Apr\u2013Jun and 14\u201327 Oct 2026). Some days were never captured, so this is a minimum.";
     let ALL_RESOURCES = [];
     let RESOURCES = []; // the visible set: archived items are excluded unless toggled on
     let STATS = {};
@@ -1709,7 +1713,7 @@
 
     const getStats = (r) => {
       const s = (STATS && STATS[r.slug]) || {};
-      const hasViews = Number.isFinite(s.views) && s.views >= MIN_VIEWS_SHOWN;
+      const hasViews = STATS_LOADED;
       const hasDiscussion = !!(s.discussion && s.discussion.url);
       const discussionUrl = s.discussion?.url || null;
       const discussionNumber = s.discussion?.number ?? null;
@@ -1796,9 +1800,16 @@
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
     };
     
+    // How long the first render waits for the latest counts (assets/live-stats.js) before it
+    // falls back to the committed file. Counts that arrive later are not applied.
+    const LIVE_STATS_WAIT_MS = 1500;
+
     async function loadCatalog() {
       grid.classList.add('d-none');
       showEmptyState('Loading catalog…', 'Reading the latest FastTrack resource metadata.', false);
+
+      // Started now so it runs alongside the catalog and stats requests.
+      const liveStats = window.FastTrackLiveStats ? window.FastTrackLiveStats.fetch() : Promise.resolve(null);
 
       try {
         const response = await fetch(CATALOG_URL, { cache: 'no-cache' });
@@ -1811,6 +1822,13 @@
           if (statsRes.ok) {
             const statsData = await statsRes.json();
             STATS = statsData.resources || {};
+            STATS_LOADED = true;
+            // Take only the view counts from the latest staged stats (see assets/live-stats.js).
+            const live = await Promise.race([liveStats, new Promise(resolve => setTimeout(() => resolve(null), LIVE_STATS_WAIT_MS))]);
+            const liveViews = window.FastTrackLiveStats ? window.FastTrackLiveStats.pick(statsData, live) : null;
+            if (liveViews) {
+              Object.keys(liveViews).forEach(slug => { STATS[slug] = { ...(STATS[slug] || {}), views: liveViews[slug] }; });
+            }
           }
         } catch (e) {
           console.warn('Failed to load stats:', e);
@@ -2030,8 +2048,9 @@
         if (isArchived(a) !== isArchived(b)) return isArchived(a) ? 1 : -1;
 
         if (state.sort === 'popular') {
-          if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
+          // Rank by the view count shown on each row; upvotes only break ties.
           if (statsA.views !== statsB.views) return statsB.views - statsA.views;
+          if (statsA.upvotes !== statsB.upvotes) return statsB.upvotes - statsA.upvotes;
           return byName(a, b);
         } else if (state.sort === 'new') {
           return new Date(b.updated) - new Date(a.updated) || byName(a, b);
@@ -2328,7 +2347,7 @@
           </div>
         </div>
         <div class="card-desc">${data.description}</div>
-        ${stats.hasViews ? `<div class="compact-views" aria-label="${stats.views} views">
+        ${stats.hasViews ? `<div class="compact-views" aria-label="${stats.views} views" title="${VIEWS_TIP}">
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           ${formatCount(stats.views)}
         </div>` : ''}
@@ -2338,7 +2357,7 @@
             ${data.tags.length > 3 ? `<span class="card-tag">+${data.tags.length - 3}</span>` : ''}
           </div>
           <div class="card-stats">
-            ${stats.hasViews ? `<span class="stat-views" aria-label="${stats.views} views">
+            ${stats.hasViews ? `<span class="stat-views" aria-label="${stats.views} views" title="${VIEWS_TIP}">
               <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               ${formatCount(stats.views)}
             </span>` : ''}
@@ -2661,6 +2680,7 @@
       
       const stats = getStats(resource);
       document.getElementById('metaViewsRow').classList.toggle('d-none', !stats.hasViews);
+      document.getElementById('metaViewsRow').title = VIEWS_TIP;
       if (stats.hasViews) {
         document.getElementById('metaViews').innerHTML = `
           <span class="stat-views" style="display:inline-flex; align-items:center; gap:0.25rem;">

@@ -6,7 +6,29 @@ branch so Clarity's three-day export window is preserved without daily pull requ
 
 **Files:**
 - `YYYY-MM-DD.json` — Full daily snapshot (views, clones, referrers, popular paths). Collection of these is paused; see below.
-- `clarity-views.json` — Accumulated Clarity page views and downloads per resource, the source of the view and download counts in `resource-stats.json`. A download is a load of the resource's download page (`r/<slug>/download/`), which the Download button opens; it is never counted as a view.
+- `clarity-views.json` — Accumulated Clarity page views and downloads per resource. A download is a load of the resource's download page (`r/<slug>/download/`), which the Download button opens; it is never counted as a view.
+
+## How views are counted
+
+The view count in `resource-stats.json` (and on the catalog) is the sum of two surfaces:
+
+- **Catalog views**, from `clarity-views.json`: loads of a resource's catalog page (`/#slug`) or its shareable page (`/r/<slug>/`), recorded by Clarity from 2026-07-25.
+- **GitHub folder views**, from the `YYYY-MM-DD.json` snapshots: views of the resource's folder or files on github.com. Snapshots 14 or more days apart are added together, so overlapping windows are never counted twice.
+
+Both are needed. Clarity never sees a visit that goes straight to GitHub, and the snapshots never see the catalog. Before this was a sum, a resource lost its GitHub history as soon as Clarity recorded one view for it (PowerClaw fell from 1,632 views to 4).
+
+The count is a minimum, because some days were never captured: GitHub traffic from 2026-07-01 to 2026-10-13, and Clarity from 2026-07-28 to 2026-09-06. Visitors who block analytics are not counted either.
+
+## How the live site stays current
+
+Daily collection writes `resource-stats.json` to the `automation/traffic-stats-staging` branch. Publishing it to `master` takes the weekly pull request, which GitHub Actions cannot open under the organization's policy, so the committed copy is only as fresh as the last merged weekly PR.
+
+So that the numbers on the site do not wait for that PR, the catalog and the resource pages also read the staged file straight from `raw.githubusercontent.com` (`assets/live-stats.js`). Only the view counts are taken from it. The committed `resource-stats.json` stays the source for everything else and the fallback in every other case: the staged file cannot be read within 1.5 seconds, it is older than the committed file, or it was counted by a different method (`sources.views`). A page therefore never shows a wrong count because of the staged file, only a less fresh one.
+
+- The staged file is cached for five minutes by raw.githubusercontent.com, so a daily run shows up on the site within a few minutes of finishing.
+- If the staging branch is renamed, update `LIVE_STATS_URL` in `assets/live-stats.js`. `npm run check` fails until it matches `STAGING_BRANCH` in the workflow.
+- If you change how views are counted, change `sources.views` in `build-stats.js` too. Until the next daily run re-renders the staged file with the new method, the site uses the committed file.
+- The weekly pull request is still worth merging: it keeps the committed copy, which is the fallback, current.
 
 Data is collected daily at 06:00 UTC via GitHub Actions. Each Friday at 08:00
 `America/Chicago` (including daylight saving time), the workflow updates one
