@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Ask a question or share what you built
+    url: https://github.com/microsoft/FastTrack/discussions
+    about: Use Discussions for questions, ideas, and show-and-tell.
+  - name: FastTrack service description
+    url: https://aka.ms/ftcsd
+    about: What FastTrack does, who is eligible, and how to request help.

@@ -1,3 +1,46 @@
+---
+title: Delete-EngageUsers
+type: script
+category: PowerShell
+summary: Bulk-remove users from Viva Engage communities from a CSV through Microsoft Graph; dry run by default, accounts are not deleted.
+author: Dean Cron
+version: 1.0.0
+published: "2023-11-28"
+updated: "2026-07-22"
+tags:
+  - viva-engage
+  - administration
+  - communities
+  - bulk-delete
+  - microsoft-graph
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell sample that removes users from the Microsoft 365 group behind a Viva Engage community,
+  one group and user per CSV row, through Microsoft Graph. It removes access to the listed communities
+  only; it does not delete the user's account or remove them from any other community. Removal can't
+  be undone by the script. It runs as a dry run by default (`$whatIfMode = $true`).
+whyUseIt:
+  - Remove many users from communities in one run.
+  - Preview the removals first; `$whatIfMode` is `$true` by default.
+  - Resolves each user's object ID from the email address in the CSV for you.
+howToUse: |-
+  1. Create a Microsoft Entra app registration with the Microsoft Graph `Group.ReadWrite.All` application permission and grant admin consent.
+  2. Create a CSV with a `GroupID` column (the Microsoft 365 group ID behind the community) and an `Email` column (the user to remove), one pair per row.
+  3. Set `$usersToBeDeletedCSV`, `$ClientId`, `$TenantId`, and `$ClientSecret` near the top of the script.
+  4. Run with the default `$whatIfMode = $true` and review the output. Set it to `$false` only when you are sure.
+  5. Run:
+
+     ```powershell
+     .\Delete-EngageUsers.ps1
+     ```
+prerequisites:
+  - "Test in a non-production tenant first; removals can't be undone by the script"
+  - "Microsoft Entra app registration with the Group.ReadWrite.All application permission and admin consent"
+  - "CSV with GroupID and Email columns; GroupID is the Microsoft 365 group GUID behind the community"
+---
+
 # Microsoft FastTrack Open Source - Delete-EngageUsers
 
 This sample script bulk-removes users from a specific Viva Engage community (Microsoft 365 group) using the Microsoft Graph API.

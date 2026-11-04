@@ -1,3 +1,43 @@
+---
+title: Get-RecurringTeamsMeetings
+type: script
+category: PowerShell
+summary: Find recurring Teams meetings on user calendars and export organizer, subject, recurrence, and attendees to CSV.
+author: Alejandro Lopez
+version: 1.0.0
+published: "2025-09-24"
+updated: "2025-09-24"
+tags:
+  - teams
+  - meetings
+  - reporting
+  - microsoft-graph
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell script that connects to Microsoft Graph with an app registration (application
+  permissions) and scans the calendars of all users, or of users listed in a CSV, for recurring online
+  meetings. It writes RecurringMeetingsReport.csv with the calendar owner, subject, recurrence pattern,
+  participant count, invited participants, and creation time.
+whyUseIt:
+  - Identify recurring Teams meeting series across the tenant or for a pilot group.
+  - See participant counts and invitee lists for each series.
+  - Uses app-only application permissions rather than a signed-in user's permissions.
+howToUse: |-
+  1. Install the Microsoft Graph PowerShell module.
+  2. Create an Entra app registration with the `Calendars.Read` and `User.Read.All` application permissions, grant admin consent, and create a client secret.
+  3. Run the script and enter the tenant ID, application (client) ID, and client secret when prompted. Add `-UserCsvPath` with a CSV that has a `UserPrincipalName` header to scan only specific users:
+
+     ```powershell
+     .\Get-RecurringTeamsMeetings.ps1 -UserCsvPath "C:\path\to\your\users.csv"
+     ```
+prerequisites:
+  - "Microsoft Graph PowerShell module (PowerShell 7 or later recommended)"
+  - "Microsoft Entra app registration with Calendars.Read and User.Read.All application permissions, admin consent, and a client secret"
+  - "Optional CSV with a UserPrincipalName header to scan specific users"
+---
+
 # 📜 Microsoft Teams Recurring Meeting Report
 
 This PowerShell script scans user calendars in a Microsoft 365 tenant to find and report on all recurring Teams meetings. It can run against **all users** in the tenant or a **targeted list of users** from a CSV file. It exports key details to a CSV file, including the organizer, meeting subject, participant count, and a list of invited participants.

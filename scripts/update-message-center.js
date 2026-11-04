@@ -149,7 +149,7 @@ function inferAgentAudience(post) {
   // Score each agent from service-name and keyword signals; only strong scores
   // become targeted audiences.
   const scores = {
-    researcherAnalyst: 0,
+    firstParty: 0,
     lite: 0,
     full: 0,
     sharepoint: 0,
@@ -184,7 +184,7 @@ function inferAgentAudience(post) {
 
   // A) Precise service-name mapping (exact matches).
   if (hasService('Microsoft 365 Copilot')) {
-    add('researcherAnalyst', 3);
+    add('firstParty', 3);
     add('lite', 3);
     add('full', 3);
     add('sharepoint', 3);
@@ -192,7 +192,7 @@ function inferAgentAudience(post) {
     add('toolkit', 3);
   }
   if (hasService('Microsoft 365 Copilot Chat')) {
-    add('researcherAnalyst', 4);
+    add('firstParty', 4);
     add('declarative', 3);
   }
   if (hasService('SharePoint Online')) {
@@ -222,7 +222,7 @@ function inferAgentAudience(post) {
     add('declarative', 3);
   }
   if (hasService('Exchange Online') || hasService('Outlook')) {
-    add('researcherAnalyst', 4);
+    add('firstParty', 4);
   }
   if (hasService('Power BI')) add('full', 4);
   if (hasService('Microsoft Intune')) add('full', 4);
@@ -266,12 +266,12 @@ function inferAgentAudience(post) {
     add('declarative', 2);
   }
   if (/\bresearcher\b|\banalyst\b|\breasoning\b|\bo3\b/.test(text)) {
-    add('researcherAnalyst', 4);
+    add('firstParty', 4);
   }
-  if (/\bcopilot chat\b|\bbusiness chat\b/.test(text)) add('researcherAnalyst', 4);
-  if (/\bword\b|\boutlook\b/.test(text)) add('researcherAnalyst', 2);
+  if (/\bcopilot chat\b|\bbusiness chat\b/.test(text)) add('firstParty', 4);
+  if (/\bword\b|\boutlook\b/.test(text)) add('firstParty', 2);
   if (/\bagent\b.*\bchat\b|\bchat\b.*\bagent\b/.test(text)) {
-    add('researcherAnalyst', 2);
+    add('firstParty', 2);
     add('declarative', 2);
   }
   if (/\bgrounding\b/.test(text)) {
@@ -533,7 +533,7 @@ async function main() {
   const finalPosts = posts.slice(0, 30);
 
   // Verify agent audience distribution
-  const agents = ['researcherAnalyst', 'lite', 'full', 'sharepoint', 'declarative', 'toolkit'];
+  const agents = ['firstParty', 'lite', 'full', 'sharepoint', 'declarative', 'toolkit'];
   for (const a of agents) {
     const count = finalPosts.filter(
       (p) => p.agentAudience.includes(a)
@@ -561,30 +561,29 @@ async function main() {
   }
 
   const postsJs = finalPosts.map(serialisePost).join(',\n');
+  const postsBlock = finalPosts.length > 0 ? `\n${postsJs},\n` : '\n';
   const updated =
     html.slice(0, startIdx) +
     startMarker +
-    '\n' +
-    postsJs +
-    ',\n' +
+    postsBlock +
     html.slice(endIdx);
 
-  fs.writeFileSync(INDEX_PATH, updated, 'utf8');
-
-  // Update the "Updated MONTH YEAR" badge
+  // Update only the Message Center freshness badge. Core guidance review dates
+  // are maintained separately so a feed refresh cannot imply a full fact check.
   const monthYear = today.toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',
   });
-  const updatedHtml = fs
-    .readFileSync(INDEX_PATH, 'utf8')
-    .replace(/Updated \w+ \d{4}/, `Updated ${monthYear}`);
+  const updatedHtml = updated.replace(
+    /Message Center updated \w+ \d{4}/,
+    `Message Center updated ${monthYear}`
+  );
   fs.writeFileSync(INDEX_PATH, updatedHtml, 'utf8');
 
   console.log(
     `\n✅ Updated ${finalPosts.length} real message center posts (window: ${iso(windowStart)} to ${iso(windowEnd)})`
   );
-  console.log(`✅ Updated date badge to "${monthYear}"`);
+  console.log(`✅ Updated Message Center badge to "${monthYear}"`);
   console.log(`📖 Source: https://github.com/merill/mc`);
 }
 

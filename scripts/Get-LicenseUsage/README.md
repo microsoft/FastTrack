@@ -6,13 +6,14 @@ summary: >-
   Choose a preferred or backup Microsoft 365 subscription for assignment based on current license
   availability.
 author: Brian Baldock
-version: 1.0.0
+version: 1.0.1
 published: "2022-01-19"
-updated: "2022-01-19"
+updated: "2026-10-28"
 tags:
   - licensing
   - reporting
 format: ps1
+status: archived
 whatItIs: >-
   A PowerShell sample for selecting between preferred and backup Microsoft 365 subscriptions based
   on their current assigned and available license counts.
@@ -31,6 +32,8 @@ prerequisites:
   - Azure AD PowerShell module
   - Account permitted to read tenant licensing
 ---
+
+> **Archived:** This script requires the AzureAD / AzureADPreview PowerShell module, which Microsoft deprecated on March 30, 2024, and is kept for reference. Use the Microsoft Graph PowerShell SDK instead, for example `Get-MgSubscribedSku`, which returns the consumed and prepaid units for each subscription.
 
 # Microsoft FastTrack Open Source - AAD PowerShell - Licensing usage versus available
 

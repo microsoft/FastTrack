@@ -1,0 +1,38 @@
+kind: AdaptiveDialog
+inputs:
+  - kind: ManualTaskInput
+    propertyName: SysId
+    value: =""
+
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: InvokeFlowAction
+      id: callGetRequestItemFlow
+      input:
+        binding:
+          text: =Topic.SysId
+      output:
+        binding:
+          errormessage: Topic.ErrorMessage
+          issuccessful: Topic.IsSuccessful
+          servicenowdata: Topic.ServiceNowData
+          servicenowsessionid: Topic.ServiceNowSessionID
+          servicenowtransactionid: Topic.ServiceNowTransactionID
+          statuscode: Topic.StatusCode
+      # Replace {FLOW_GUID} with the workflowId from workflow/metadata.yml
+      flowId: "{FLOW_GUID}"
+
+inputType:
+  properties:
+    SysId:
+      displayName: SysId
+      type: String
+
+outputType:
+  properties:
+    ServiceNowData:
+      displayName: ServiceNowData
+      description: Request item details data returned from ServiceNow.
+      type: String

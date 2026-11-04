@@ -1,3 +1,42 @@
+---
+title: Get-EngageGroupInfo
+type: script
+category: PowerShell
+summary: Report every Viva Engage community's IDs, member count, and admins to CSV by using Microsoft Graph.
+author: Dean Cron
+version: 1.0.0
+published: "2023-12-13"
+updated: "2026-07-22"
+tags:
+  - viva-engage
+  - administration
+  - communities
+  - reporting
+  - microsoft-graph
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell sample that lists every Viva Engage community through Microsoft Graph and exports a CSV
+  with the community ID, Microsoft 365 group ID, name, member count, and admins (the group owners) for
+  each. It uses app-only authentication and retries when Graph throttles requests.
+whyUseIt:
+  - Inventory all communities and their admins in one report.
+  - Find the Microsoft 365 group and community IDs that the other Engage admin scripts need as input.
+  - Spot communities with no admins.
+howToUse: |-
+  1. Create a Microsoft Entra app registration with the Microsoft Graph `Community.Read.All` (or `Community.ReadWrite.All`) and `GroupMember.Read.All` (or `Group.Read.All` / `Group.ReadWrite.All`) application permissions and grant admin consent.
+  2. Set `$ClientId`, `$TenantId`, `$ClientSecret`, and optionally `$ReportOutput` near the top of the script.
+  3. Run:
+
+     ```powershell
+     .\Get-EngageGroupInfo.ps1
+     ```
+prerequisites:
+  - "Microsoft Entra app registration with Community.Read.All and GroupMember.Read.All application permissions (or the ReadWrite/Group equivalents) and admin consent"
+  - "Existing output folder for the CSV (default C:\\Temp)"
+---
+
 # Microsoft FastTrack Open Source - Get-EngageGroupInfo
 
 This sample script gets key information about every Viva Engage community in your tenant using the Microsoft Graph API, including community/group ID, name, member count, and community admins.

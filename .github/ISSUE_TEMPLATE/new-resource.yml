@@ -1,0 +1,46 @@
+name: Suggest a new resource
+description: Propose a script, agent, guide, analytics sample, or skill that would help the community.
+title: "[Suggestion] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Resources should be generic and useful to a wide range of customers. Please do not include customer-specific information or secrets.
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of resource
+      options:
+        - Script
+        - Agent
+        - Guide or planning tool
+        - Analytics (Power BI, reports)
+        - Skill
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: What problem would it solve?
+      description: Describe the scenario and who would use it.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should it do?
+      description: Describe the inputs, outputs, and any Microsoft 365 services involved.
+    validations:
+      required: true
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you like to build it?
+      options:
+        - "Yes, I plan to open a pull request"
+        - "Maybe, I would like guidance"
+        - "No, I am suggesting it for others"
+    validations:
+      required: true

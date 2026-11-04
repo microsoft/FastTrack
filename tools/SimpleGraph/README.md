@@ -1,3 +1,45 @@
+---
+title: SimpleGraph
+type: script
+category: PowerShell
+summary: A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.
+author: David Whitney
+version: 1.0.0
+published: "2020-10-15"
+updated: "2022-01-20"
+tags:
+  - microsoft-graph
+  - powershell-module
+  - graph-api
+  - authentication
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A single-file PowerShell module (SimpleGraph.psm1) that makes web calls to the Microsoft Graph REST
+  API. It provides Connect-SimpleGraph for delegated, client-secret, or client-certificate sign-in
+  through the MSAL.PS module, plus Get-, New-, Set-, and Remove-SimpleGraphObject, Invoke-SimpleGraphRequest,
+  and Get-SimpleGraphReport for reading, creating, updating, deleting, sending custom calls, and
+  pulling usage reports.
+whyUseIt:
+  - Call any Graph endpoint without waiting for a matching Microsoft Graph PowerShell SDK cmdlet.
+  - Use the same few cmdlets for reads, creates, updates, deletes, and custom requests, with inline help for each.
+  - Pull Microsoft 365 usage reports from Graph, such as active user counts by workload for the last 7, 30, 90, or 180 days, as PowerShell objects.
+howToUse: |-
+  1. Install MSAL.PS (`Install-Module MSAL.PS`) and register an Entra application with the redirect URI `https://login.microsoftonline.com/common/oauth2/nativeclient` for delegated sign-in.
+  2. Download `SimpleGraph.psm1` and import it, then connect with the scopes your calls need:
+
+     ```powershell
+     Import-Module "C:\Users\you\Scripts\SimpleGraph.psm1"
+     Connect-SimpleGraph -ClientId "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -TenantId "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -Scopes "User.Read.All", "Group.Read.All"
+     Get-SimpleGraphObject users/you@domain.com
+     ```
+prerequisites:
+  - "MSAL.PS PowerShell module"
+  - "Microsoft Entra application registration (a client secret or certificate plus Graph application permissions for app-only use)"
+  - "Graph permissions that match the calls you make"
+---
+
 # Microsoft FastTrack Open Source - SimpleGraph module for generic PowerShell access to MS Graph API
 
 This PowerShell module provides a generic but simplified way to access Microsoft Graph API resources with PowerShell. It relies on the Graph authentication provided with the [MSAL.PS PowerShell module](https://github.com/AzureAD/MSAL.PS).

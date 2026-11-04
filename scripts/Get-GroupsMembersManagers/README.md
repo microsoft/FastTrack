@@ -1,3 +1,45 @@
+---
+title: Get-GroupsMembersManagers
+type: script
+category: PowerShell
+summary: Export Entra group members with manager and profile details to CSV for Viva Insights organizational data uploads.
+author:
+  - Alejandro Lopez
+  - Dean Cron
+  - J.G. Parra
+version: 1.0.0
+published: "2024-07-26"
+updated: "2026-04-22"
+tags:
+  - viva-insights
+  - organizational-data
+  - entra
+  - reporting
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell script that uses the Microsoft Graph PowerShell module to report Microsoft Entra group
+  members and their managers. An interactive menu lets you export users from all groups, from one group
+  chosen by display name, or from a CSV with a UPN column. It writes EntraGroupMembersExport.csv with
+  profile details and the manager's UPN.
+whyUseIt:
+  - Build the file for organizational data uploads in Microsoft 365 or Viva Advanced Insights from existing Entra groups.
+  - Include extended profile fields such as job title, department, office location, company, and address details.
+  - Target a pilot population with a CSV of UPNs instead of the whole tenant.
+howToUse: |-
+  1. Install the Microsoft Graph PowerShell module.
+  2. Run the script, sign in with consent for the `Group.Read.All` and `User.Read.All` scopes, and choose an option from the menu (all groups, one group, a CSV of UPNs, or exit). The CSV is written to the current directory:
+
+     ```powershell
+     .\Get-GroupsMembersManagers.ps1
+     ```
+prerequisites:
+  - "Microsoft Graph PowerShell module"
+  - "Account that can consent to the Group.Read.All and User.Read.All Microsoft Graph scopes"
+  - "Optional CSV with a UPN column for the CSV option"
+---
+
 # Microsoft FastTrack Open Source - Get-GroupsMembersManagers.ps1
 
 This sample script generates a report of Microsoft Entra groups, their members, and their managers. It supports three input modes: all groups, a single group by display name, or users supplied from a CSV file. The output can be used to build the Organizational Data file later uploaded into M365 or Viva Advanced Insights.

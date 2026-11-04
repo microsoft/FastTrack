@@ -8,7 +8,7 @@ Thank you for contributing to the Microsoft FastTrack public catalog. Keep each 
 - Sync your branch with the current `master` before opening the pull request.
 - Do not include personal data, customer-specific information, credentials, or other private details.
 - Do not include software, dependencies, or copied code that conflicts with the repository licenses.
-- Put scripts in a slug-cased folder under `scripts/`. Follow the existing content-root structure for agents, strategy resources, analytics, prompts, and skills.
+- Put scripts in a slug-cased folder under `scripts/`. Follow the existing content-root structure for agents, strategy resources, analytics, and skills. We are not accepting new prompt samples; see [PnP Copilot Prompts](https://pnp.github.io/copilot-prompts/).
 
 ## Resource README and catalog metadata
 
@@ -48,10 +48,21 @@ For every resource change:
 The catalog is generated from README front matter:
 
 1. A pull-request workflow runs `npm run check` in `tools/catalog-build` and reports all invalid metadata.
-2. After merge to `master`, the workflow regenerates `catalog.json` and its static-site copy.
-3. The catalog site fetches that generated JSON at runtime.
+2. After merge to `master`, the workflow regenerates `catalog.json`, a shareable page for every resource under `r/`, `sitemap.xml`, and `feed.xml`.
+3. The catalog site fetches `catalog.json` at runtime. Resources with `status: archived` are hidden by default but stay reachable.
 
 Contributors update only their resource files. The workflow handles the catalog output.
+
+## Making your resource look great
+
+- Add a `preview` screenshot (`preview: preview.webp`, 1600x960) so the resource page and the landing page show it. Keep images under 1 MB.
+- Do not commit videos or files over 5 MB. Link to a hosted video or attach large assets to a GitHub release instead.
+- Social cards (`assets/og/<slug>.png`) are optional and rendered locally with `npm run og` from `tools/catalog-build`. Resources without a card use the default card.
+- The landing page highlights a campaign in a row of related resources. It lists every active resource tagged with the tag set in `HIGHLIGHT` in [`index.html`](index.html) (currently `agent-365`). Add that tag to be included, or archive a resource to drop it. Resources first published in the last 60 days also get a **New** badge automatically.
+
+## Retiring a resource
+
+Do not delete resources that people link to. Set `status: archived` in the front matter (bump `version` and `updated`) and add a short notice under the front matter that says why and what to use instead. Archived resources disappear from the default catalog view and from the sitemap, but their GitHub folder keeps working.
 
 ## Pull request checklist
 

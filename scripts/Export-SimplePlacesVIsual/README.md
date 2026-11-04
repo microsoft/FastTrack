@@ -1,3 +1,38 @@
+---
+title: Export-SimplePlacesVisual
+type: script
+category: PowerShell
+summary: Print or save a text tree of the Microsoft Places directory of buildings, floors, sections, rooms, spaces, and desks.
+author: David Whitney
+version: 1.0.0
+published: "2025-06-12"
+updated: "2025-06-25"
+tags:
+  - microsoft-places
+  - reporting
+  - inventory
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell script that reads the Microsoft Places directory with the Places PowerShell module and
+  prints its hierarchy as an indented text tree. You can include each place's PlaceId, start from a
+  specific ancestor such as one building or floor, and save the output to a file.
+whyUseIt:
+  - See the full Places structure of a tenant at a glance instead of browsing it object by object.
+  - Add each place's PlaceId to the output when you need to reference specific places.
+  - Start from any building, floor, or other place with `-AncestorId` to focus on one part of the hierarchy.
+howToUse: |-
+  1. Install the Places PowerShell module and connect to the Places service.
+  2. Run the script. Add `-IncludePlaceId` to show IDs, `-AncestorId` to start from one place, or `-OutputFileName` to save the output (the script appends `.html` unless the name already ends in `.html` or `.htm`):
+
+     ```powershell
+     .\Export-SimplePlacesVisual.ps1 -IncludePlaceId
+     ```
+prerequisites:
+  - "Places PowerShell module installed and an authenticated Places session"
+---
+
 # Microsoft FastTrack Open Source - Export-SimplePlacesVisual
 
 Exports a simple visual representation of the Places directory structure, showing the hierarchy of sections, rooms, spaces, and desks. The output is a text-based tree structure that is displayed in the console or can be saved to a file.

@@ -6,9 +6,14 @@ A curated collection of strategic tools, templates, and guides to help you plan,
 
 | Resource | Type | Description | Best For |
 |----------|------|-------------|----------|
+| **[Agent 365 Enablement Checklist](./agent-365-enablement-checklist/)** | Interactive Tracker | A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track role-based tasks to go-live on a readiness dashboard, and export to Excel, CSV, or JSON. | Project managers, administrators, and steering groups planning an Agent 365 rollout |
+| **[Agent 365 Customer Implementation Guide](./agent-365-customer-implementation-guide/)** | Interactive Guide | Plan and configure a governed Agent 365 baseline with a concise reference (Simple view) and detailed implementation tasks (Detailed view). | Administrators, architects, and security teams configuring Agent 365 |
+| **[Microsoft Agent 365 Technical Advisory](./agent-365-technical-advisory/)** | Interactive Guide (PDF) | Enterprise reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365: identity and lifecycle, authentication and MCP governance, risk and observability, four agent types compared, a phased configuration blueprint, and an operating model. | Architects, identity, security, and developer leaders designing a governed Agent 365 rollout |
 | **[Copilot Agents Guide](./copilot-agents-guide/)** | Interactive Dashboard | Comprehensive comparison of all Microsoft Copilot agent types with decision frameworks, capabilities matrix, and deployment guidance. Includes Researcher & Analyst, Lite, Full Custom, SharePoint, Declarative, and Toolkit options. | Business decision makers, IT leadership, solution architects planning agent strategy |
 | **[Agent Brainstorming Template](./copilot-agent-brainstorm/)** | PowerPoint | Visual template to map out agent specifications before building. Choose your agent type (SharePoint, Declarative, or Custom), map user interactions, identify knowledge sources, and plan agent flow. | Product managers, developers, business analysts designing specific agents |
-| **[Agents Cost Calculator](./copilot-agents-cost-tool/)** | Interactive Calculator | Estimate production costs for M365 Copilot agents — Custom (Copilot Studio), Agent Builder, SharePoint, and Azure Foundry agents. Includes quick-start templates, credit/token modeling, capacity tracking, and CSV export. | Finance, IT leadership, solution architects estimating agent costs |
+| **[Agents Cost Calculator](./copilot-agents-cost-tool/)** | Interactive Calculator | Estimate monthly production, test-suite, and purchase-commitment costs for Copilot Studio (Standard and GitHub Copilot harnesses), Agent Builder, SharePoint, and Microsoft Foundry agents. Includes quick-start templates, operation-based credit and token modeling, P3/credit-pack economics, capacity tracking, dated rate sources, and CSV export. | Finance, IT leadership, solution architects estimating agent costs |
+
+The [Agent 365 Lifecycle Atlas](./agent-365-lifecycle-atlas/) is archived and replaced by the Technical Advisory. It stays available so existing links keep working.
 
 ## 🎯 What You'll Find Here
 
@@ -32,8 +37,8 @@ Start with the **Copilot Agents Guide** to:
 ### For Cost Estimation
 Use the **Agents Cost Calculator** to:
 1. Model credit costs for Copilot Studio, Agent Builder, and SharePoint agents
-2. Estimate token costs for Azure Foundry agents
-3. Compare pay-as-you-go vs. prepaid pricing
+2. Estimate token and infrastructure costs for Microsoft Foundry agents
+3. Compare pay-as-you-go, credit packs, and pre-purchase plans (P3)
 4. Generate cost reports to share with finance and leadership
 
 ### For Agent Design

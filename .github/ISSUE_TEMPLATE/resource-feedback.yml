@@ -1,0 +1,46 @@
+name: Resource feedback
+description: Report a problem with, or suggest an update to, an existing FastTrack resource.
+title: "[Resource] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping keep FastTrack resources accurate. This is not a general support channel for FastTrack or Microsoft 365. Questions should relate to a resource in this repository.
+  - type: input
+    id: resource
+    attributes:
+      label: Resource
+      description: The name of the resource, or a link to its page or folder.
+      placeholder: Get-M365CopilotReadiness
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of feedback is this?
+      options:
+        - Something is broken or inaccurate
+        - Something is out of date
+        - Documentation is unclear
+        - Suggestion for improvement
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: Include error messages and what you ran. Remove tenant names, user details, and secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Optional, but it helps us fix problems faster.

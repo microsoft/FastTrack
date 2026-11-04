@@ -16,6 +16,8 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+    cooldown:
+      default-days: 7
 
   # The catalog build tooling (Node / npm).
   - package-ecosystem: "npm"
@@ -30,3 +32,5 @@ updates:
     labels:
       - "dependencies"
       - "javascript"
+    cooldown:
+      default-days: 7

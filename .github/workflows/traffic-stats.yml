@@ -2,8 +2,11 @@ name: Collect Traffic Data
 
 on:
   schedule:
-    # Runs daily at 06:00 UTC to capture traffic before the 14-day window expires
+    # Daily collection persists the short-lived source data without opening a PR.
     - cron: "0 6 * * *"
+    # Weekly publishing follows Chicago local time, including daylight saving time.
+    - cron: "0 8 * * 5"
+      timezone: "America/Chicago"
   workflow_dispatch: # Allow manual runs
 
 permissions:
@@ -18,16 +21,67 @@ concurrency:
 
 jobs:
   collect-traffic:
-    if: github.repository == 'microsoft/FastTrack'
+    if: >-
+      github.repository == 'microsoft/FastTrack' &&
+      (github.event_name == 'workflow_dispatch' || github.event.schedule == '0 6 * * *')
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      STAGING_BRANCH: automation/traffic-stats-staging
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # An approved fine-grained PAT enables automatic downstream workflow runs.
+          # The built-in token fallback may require manual PR creation and approval.
+          token: ${{ secrets.AUTOMATION_PAT || github.token }}
+          fetch-depth: 0
+
+      - name: Prepare durable staging branch
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin master
+
+          if git fetch origin "$STAGING_BRANCH"; then
+            git checkout -B "$STAGING_BRANCH" "origin/$STAGING_BRANCH"
+          else
+            echo "::notice::Creating the first durable traffic staging branch from origin/master."
+            git checkout -B "$STAGING_BRANCH" origin/master
+          fi
+
+          if ! git merge --no-edit origin/master; then
+            conflicts=$(git diff --name-only --diff-filter=U)
+            if [ -n "$conflicts" ] &&
+              printf '%s\n' "$conflicts" |
+                grep -Ev '^(resource-stats\.json|design-concepts/resource-stats\.json|traffic-data/clarity-views\.json)$' >/dev/null; then
+              echo "::error::Staging cannot be synchronized safely because durable or source files conflict with master:"
+              printf '%s\n' "$conflicts"
+              git merge --abort
+              exit 1
+            fi
+
+            while IFS= read -r file; do
+              [ -n "$file" ] || continue
+              if [ "$file" = "traffic-data/clarity-views.json" ]; then
+                if ! node tools/catalog-build/reconcile-stats-conflict.js "$file"; then
+                  git merge --abort
+                  exit 1
+                fi
+              else
+                echo "::notice::Keeping derived stats temporarily; collection will regenerate them from reconciled durable state."
+                git checkout --ours -- "$file"
+              fi
+              git add "$file"
+            done <<< "$conflicts"
+            git commit --no-edit
+          fi
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 20
           cache: npm
@@ -37,7 +91,14 @@ jobs:
         run: npm ci
         working-directory: tools/catalog-build
 
-      - name: Collect and persist traffic data
+      # GitHub repository traffic (views, clones, referrers) is paused: it needs a token that
+      # expires every few days under organization policy, and the site's page analytics come
+      # from Clarity. Set the repository variable COLLECT_GITHUB_TRAFFIC to "true" and replace
+      # the TRAFFIC_TOKEN secret to resume.
+      - name: Collect and persist GitHub traffic data
+        id: github-traffic
+        if: ${{ vars.COLLECT_GITHUB_TRAFFIC == 'true' }}
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
         run: |
@@ -55,6 +116,12 @@ jobs:
             exit 1
           fi
 
+          is_non_retryable_api_error() {
+            grep -Eq \
+              'Bad credentials \(HTTP 401\)|SAML enforcement|Resource not accessible by personal access token|Must have (admin rights|push access) to [Rr]epository|HTTP 404|HTTP 422' \
+              "$1"
+          }
+
           gh_api_retry() {
             local max_attempts=3
             local delay=5
@@ -71,6 +138,11 @@ jobs:
               # Keep gh's stderr: without it every failure looks identical and the
               # real cause (401 / 403 / 404 / rate limit) is invisible in the log.
               echo "::warning::gh api attempt $attempt/$max_attempts failed: $(tr '\n' ' ' <"$err_file" | cut -c1-400)" >&2
+              # Authentication, SSO and permission failures cannot recover during
+              # this run. Do not hide the actionable error behind needless retries.
+              if is_non_retryable_api_error "$err_file"; then
+                break
+              fi
               [ "$attempt" -lt "$max_attempts" ] && sleep "$delay"
               delay=$((delay * 2))
               attempt=$((attempt + 1))
@@ -88,7 +160,7 @@ jobs:
             # substitution, so anything on stdout is captured into the caller's
             # variable instead of being printed to the workflow log.
             if ! response=$(gh_api_retry "$endpoint"); then
-              echo "::error::Failed to fetch $label from $endpoint after retries. Most likely the TRAFFIC_TOKEN secret has expired or lost administration:read on $REPO." >&2
+              echo "::error::Failed to fetch $label from $endpoint. Verify that TRAFFIC_TOKEN is current, authorized for the microsoft organization (including SAML SSO when required), approved for $REPO, and has Administration read access." >&2
               return 1
             fi
 
@@ -205,58 +277,87 @@ jobs:
 
           echo "✅ Saved $DATA_DIR/$DATE.json"
 
+      - name: Note that GitHub traffic collection is paused
+        if: ${{ vars.COLLECT_GITHUB_TRAFFIC != 'true' }}
+        run: echo "::notice::GitHub repository traffic collection is paused. Page analytics come from Clarity. To resume, set the repository variable COLLECT_GITHUB_TRAFFIC to true and replace the TRAFFIC_TOKEN secret."
+
       - name: Build resource stats
+        id: stats
+        if: always()
+        continue-on-error: true
         env:
           CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node tools/catalog-build/build-stats.js
+        run: node tools/catalog-build/build-stats.js --require-clarity
 
-      - name: Commit and open PR
-        env:
-          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+      - name: Persist collected data on staging branch
+        id: persist
+        if: always() && (steps.github-traffic.outcome == 'success' || steps.stats.outputs.clarity_available == 'true')
+        continue-on-error: true
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add traffic-data/ resource-stats.json resource-discussions.json
-          if [ -f design-concepts/resource-stats.json ]; then
-            git add design-concepts/resource-stats.json
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          DATE=$(date -u +%Y-%m-%d)
+          if [ "${{ steps.github-traffic.outcome }}" = "success" ]; then
+            git add "traffic-data/$DATE.json"
           fi
+          if [ "${{ steps.stats.outputs.generated }}" = "true" ]; then
+            git add resource-stats.json resource-discussions.json traffic-data/clarity-views.json
+            if [ -f design-concepts/resource-stats.json ]; then
+              git add design-concepts/resource-stats.json
+            fi
+          fi
+
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No new source data to commit."
+          else
+            git commit -m "chore: collect traffic data for $DATE"
+          fi
+
+          if git push origin "HEAD:refs/heads/$STAGING_BRANCH"; then
+            echo "✅ Daily traffic state persisted on $STAGING_BRANCH. No pull request was attempted."
             exit 0
           fi
 
-          DATE=$(date -u +%Y-%m-%d)
-          BRANCH="traffic-data/$DATE"
-
-          # Create a fresh branch and push
-          git checkout -b "$BRANCH"
-          git commit -m "📊 Traffic data for $DATE"
-          git push --set-upstream origin "$BRANCH"
-
-          # Create or update PR (--fill uses commit message as title/body)
-          existing_pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
-          if [ -n "$existing_pr" ]; then
-            echo "PR #$existing_pr already exists for $BRANCH"
-          else
-            gh pr create \
-              --title "📊 Traffic data for $DATE" \
-              --body "Automated daily traffic data collection." \
-              --head "$BRANCH" \
-              --base master
-            echo "✅ PR created"
+          echo "::warning::The staging branch advanced while this run was collecting. Merging once and retrying without force."
+          git fetch origin "$STAGING_BRANCH"
+          if ! git merge --no-edit "origin/$STAGING_BRANCH"; then
+            conflicts=$(git diff --name-only --diff-filter=U)
+            if [ -n "$conflicts" ] &&
+              printf '%s\n' "$conflicts" |
+                grep -Ev '^(resource-stats\.json|design-concepts/resource-stats\.json|traffic-data/clarity-views\.json)$' >/dev/null; then
+              echo "::error::Concurrent staging updates could not be merged safely:"
+              printf '%s\n' "$conflicts"
+              git merge --abort
+              exit 1
+            fi
+            while IFS= read -r file; do
+              [ -n "$file" ] || continue
+              if [ "$file" = "traffic-data/clarity-views.json" ]; then
+                if ! node tools/catalog-build/reconcile-stats-conflict.js "$file"; then
+                  git merge --abort
+                  exit 1
+                fi
+              else
+                git checkout --ours -- "$file"
+              fi
+              git add "$file"
+            done <<< "$conflicts"
+            git commit --no-edit
           fi
 
-          # Enable auto-merge (requires repo setting "Allow auto-merge" to be on)
-          pr_number=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
-          if [ -n "$pr_number" ]; then
-            gh pr merge "$pr_number" --auto --squash \
-              && echo "✅ Auto-merge enabled for PR #$pr_number" \
-              || echo "::warning::Could not enable auto-merge — check repo settings"
+          node tools/catalog-build/build-stats.js --render-only
+          git add resource-stats.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: reconcile concurrent traffic state"
           fi
+          git push origin "HEAD:refs/heads/$STAGING_BRANCH"
 
-      - name: Alert on failure
-        if: failure()
+      - name: Alert on GitHub traffic collection failure
+        if: always() && steps.github-traffic.outcome == 'failure'
         env:
           # Use the built-in token here: TRAFFIC_TOKEN may itself be the failure
           # (e.g. expired), so the alert must not depend on it.
@@ -271,14 +372,19 @@ jobs:
           Traffic data has **stopped being captured**. Because GitHub only retains a rolling
           14-day traffic window, every day this stays broken is data lost permanently.
 
-          **Most likely cause:** the \`TRAFFIC_TOKEN\` secret has **expired or lost access**.
-          The traffic API requires a PAT with push / \`administration:read\` on this repo — the
-          built-in \`GITHUB_TOKEN\` cannot read traffic.
+          **Most likely cause:** the \`TRAFFIC_TOKEN\` secret is expired, revoked, not
+          authorized for the Microsoft organization's SAML SSO, or no longer approved for
+          this repository. The traffic API requires \`administration:read\`; the built-in
+          \`GITHUB_TOKEN\` cannot read repository traffic.
 
           **Fix:**
-          1. Create a new PAT (classic \`repo\` scope, or fine-grained: Administration read + Contents R/W + Pull requests R/W).
-          2. \`gh secret set TRAFFIC_TOKEN --repo ${GITHUB_REPOSITORY} --body "<NEW_PAT>"\`
-          3. Re-run: \`gh workflow run traffic-stats.yml --repo ${GITHUB_REPOSITORY}\`
+          1. Create or renew an organization-approved fine-grained PAT owned by a user
+             with write access to the repository. Select \`${GITHUB_REPOSITORY}\` and
+             grant Administration read access.
+          2. Replace the \`TRAFFIC_TOKEN\` Actions secret with the PAT.
+          3. Re-run this workflow and confirm the traffic endpoints return successfully.
+
+          A GitHub App migration is another option, but it is not implemented by this workflow.
 
           Failed run: ${RUN_URL}
 
@@ -305,3 +411,181 @@ jobs:
               --label "traffic-collection-failure"
             echo "🚨 Opened new alert issue"
           fi
+
+      - name: Report Clarity collection failure
+        if: always() && steps.stats.outputs.generated == 'true' && steps.stats.outputs.clarity_available != 'true'
+        run: |
+          echo "::error::Clarity export was unavailable. Existing accumulated values were preserved; no missing resource was written as zero."
+          {
+            echo "### ⚠️ Clarity stats were not refreshed"
+            echo ""
+            echo "Check \`CLARITY_API_TOKEN\` and the Clarity Data Export API. Its maximum three-day lookback makes prompt recovery important."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report stats generation failure
+        if: always() && steps.stats.outcome == 'failure' && steps.stats.outputs.generated != 'true'
+        run: |
+          echo "::error::Resource stats generation failed before safe outputs were produced; no generated stats files were staged."
+
+      - name: Report publishing failure
+        if: always() && steps.persist.outcome == 'failure'
+        run: |
+          echo "::error::Safe collected outputs could not be persisted to the durable staging branch."
+
+      - name: Fail when collection or publishing was incomplete
+        if: always() && (steps.github-traffic.outcome == 'failure' || steps.stats.outcome == 'failure' || steps.persist.outcome == 'failure')
+        run: |
+          echo "::error::One or more independent traffic sources or the staging persistence step failed. Successful source outputs were preserved when possible."
+          exit 1
+
+  publish-weekly:
+    if: >-
+      github.repository == 'microsoft/FastTrack' &&
+      github.event_name == 'schedule' &&
+      github.event.schedule == '0 8 * * 5'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      STAGING_BRANCH: automation/traffic-stats-staging
+      PUBLISH_BRANCH: automation/traffic-stats-weekly
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ secrets.AUTOMATION_PAT || github.token }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tools/catalog-build/package-lock.json
+
+      - name: Install catalog build dependencies
+        run: npm ci
+        working-directory: tools/catalog-build
+
+      - name: Synchronize weekly branch and render safe outputs
+        id: sync
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin master
+          if ! git fetch origin "$STAGING_BRANCH"; then
+            echo "::error::The durable staging branch does not exist yet. Run daily collection successfully before weekly publishing."
+            exit 1
+          fi
+
+          if git fetch origin "$PUBLISH_BRANCH"; then
+            git checkout -B "$PUBLISH_BRANCH" "origin/$PUBLISH_BRANCH"
+          else
+            echo "::notice::Creating the first weekly publication branch from origin/master."
+            git checkout -B "$PUBLISH_BRANCH" origin/master
+          fi
+
+          merge_safely() {
+            local source="$1"
+            if git merge --no-edit "$source"; then
+              return 0
+            fi
+
+            conflicts=$(git diff --name-only --diff-filter=U)
+            if [ -n "$conflicts" ] &&
+              printf '%s\n' "$conflicts" |
+                grep -Ev '^(resource-stats\.json|design-concepts/resource-stats\.json|traffic-data/clarity-views\.json)$' >/dev/null; then
+              echo "::error::Weekly publishing found a conflict in durable or source data while merging $source:"
+              printf '%s\n' "$conflicts"
+              git merge --abort
+              return 1
+            fi
+            while IFS= read -r file; do
+              [ -n "$file" ] || continue
+              if [ "$file" = "traffic-data/clarity-views.json" ]; then
+                if ! node tools/catalog-build/reconcile-stats-conflict.js "$file"; then
+                  git merge --abort
+                  return 1
+                fi
+              else
+                git checkout --ours -- "$file"
+              fi
+              git add "$file"
+            done <<< "$conflicts"
+            git commit --no-edit
+          }
+
+          merge_safely origin/master
+          merge_safely "origin/$STAGING_BRANCH"
+
+          node tools/catalog-build/build-stats.js --render-only
+          git add resource-stats.json
+          if git diff --cached --quiet; then
+            echo "Derived stats are already current."
+          else
+            git commit -m "chore: render weekly traffic stats"
+          fi
+
+          git push origin "HEAD:refs/heads/$PUBLISH_BRANCH"
+          if git diff --quiet origin/master HEAD; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "Staging has no unpublished traffic data."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prepare or update weekly pull request
+        id: weekly-pr
+        if: steps.sync.outputs.has_changes == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.AUTOMATION_PAT || github.token }}
+          AUTOMATION_PAT_CONFIGURED: ${{ secrets.AUTOMATION_PAT != '' }}
+        run: |
+          set -euo pipefail
+
+          TITLE="chore: publish weekly traffic stats"
+          BODY="Publishes the daily traffic and Clarity data accumulated on \`$STAGING_BRANCH\` through the Friday-only \`$PUBLISH_BRANCH\`. This pull request is intentionally review-required and is not auto-merged."
+          COMPARE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/master...${PUBLISH_BRANCH}?expand=1"
+          existing_pr=$(gh pr list --head "$PUBLISH_BRANCH" --base master --state open \
+            --json number --jq '.[0].number // empty')
+
+          if [ -n "$existing_pr" ]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/pulls/${existing_pr}" \
+              -f title="$TITLE" -f body="$BODY" >/dev/null
+            echo "✅ Updated the existing weekly PR #$existing_pr."
+            exit 0
+          fi
+
+          if [ "$AUTOMATION_PAT_CONFIGURED" != "true" ]; then
+            # Known organization policy: Actions cannot open pull requests. The data is staged, so
+            # this is a reminder, not a failure; a failure here would stay red every Friday.
+            echo "::warning::Weekly traffic data is staged on $PUBLISH_BRANCH. Actions cannot open pull requests here (organization policy), so open the weekly PR manually: $COMPARE_URL"
+            {
+              echo "### Weekly traffic data is ready for a manual PR"
+              echo ""
+              echo "Daily collection remains safely accumulated on \`$STAGING_BRANCH\`."
+              echo ""
+              echo "**Open the review-required PR:** $COMPARE_URL"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if ! gh pr create --title "$TITLE" --body "$BODY" \
+            --head "$PUBLISH_BRANCH" --base master; then
+            echo "::error::The approved token could not create the weekly PR. No data was lost; open it manually: $COMPARE_URL"
+            {
+              echo "### ⚠️ Weekly traffic data needs a manual PR"
+              echo ""
+              echo "**Open the review-required PR:** $COMPARE_URL"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: Fail when weekly PR preparation was blocked
+        if: always() && steps.sync.outputs.has_changes == 'true' && steps.weekly-pr.outcome == 'failure'
+        run: |
+          echo "::error::Weekly traffic data is staged safely, but its pull request requires the manual compare link shown above."
+          exit 1

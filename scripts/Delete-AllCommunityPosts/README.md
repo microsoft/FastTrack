@@ -1,3 +1,48 @@
+---
+title: Delete-AllCommunityPosts
+type: script
+category: PowerShell
+summary: Delete every message in a Viva Engage community; dry run by default, optional CSV backup, and deletion can't be undone.
+author: Dean Cron
+version: 1.0.0
+published: "2024-10-18"
+updated: "2026-07-22"
+tags:
+  - viva-engage
+  - administration
+  - communities
+  - bulk-delete
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A destructive PowerShell sample that signs in interactively with MSAL.PS, lists every message in one
+  Viva Engage community through the Yammer REST API, optionally backs them up to CSV, and then deletes
+  them. Deletion can't be undone. The script header says it is intended for non-production
+  environments, runs as a dry run by default (`$whatIfMode = $true`), and soft-deletes unless
+  `$hardDelete` is set to `$true`, which permanently purges the messages.
+whyUseIt:
+  - Clear all content from a non-production community in one run.
+  - Preview what would be deleted first; `$whatIfMode` is `$true` by default.
+  - Back up the messages to CSV before deleting, and choose soft delete (default) or permanent hard delete.
+  - Microsoft Graph has no API for community messages, so the Yammer REST API is the only option today.
+howToUse: |-
+  1. Create a Microsoft Entra app registration with the delegated Yammer `access_as_user` permission and install the module with `Install-Module MSAL.PS`.
+  2. Find the ID of the community to clear and set `$ClientId`, `$TenantId`, `$RedirectUri`, and `$GroupId` near the top of the script.
+  3. Run with the default `$whatIfMode = $true` and review the output. Set it to `$false` only when you are sure.
+  4. Run:
+
+     ```powershell
+     .\Delete-AllCommunityPosts.ps1
+     ```
+prerequisites:
+  - "Test in a non-production tenant first; deletion can't be undone and hard delete is unrecoverable"
+  - "Microsoft Entra app registration with the delegated Yammer access_as_user permission"
+  - "MSAL.PS PowerShell module"
+  - "ID of the Viva Engage community to clear"
+  - "Viva Engage admin account"
+---
+
 # Microsoft FastTrack Open Source - Delete-AllCommunityPosts
 
 This sample script will allow a Viva Engage admin to delete all messages in an existing Engage group.

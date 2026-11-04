@@ -1,0 +1,13 @@
+jsonFileName: workflows/workflow/workflow.json
+workflowId: {FLOW_GUID}
+name: ESS IT ServiceNow ITSM Get User Requests
+type: 1
+description: "Retrieves a list of service catalog requests (sc_request) for the current user."
+subprocess: false
+category: 5
+mode: 0
+scope: 4
+stateCode: 1
+statusCode: 2
+isTransacted: true
+

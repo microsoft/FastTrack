@@ -18,7 +18,7 @@ The multi-agent manager simulator is meant to help aspiring and experienced mana
 
 ### Demo Video
 
-[Download Demo Video](Images/Copilot%20Agents%20demo.mp4)
+The demo video was removed from the repository to reduce its size (it was about 41 MB). It is still available in the repository's Git history.
 
 ### Diagram
 ![alt text](./Images/Diagram.png)

@@ -1,3 +1,50 @@
+---
+title: Teams Rooms Snippets
+type: script
+category: PowerShell
+summary: PowerShell snippets to create and configure Microsoft Teams Rooms resource accounts, one at a time or in bulk from a CSV.
+author: Mihai Filip
+version: 1.0.0
+published: "2023-02-10"
+updated: "2023-02-10"
+tags:
+  - teams
+  - teams-rooms
+  - resource-accounts
+  - exchange-online
+  - snippets
+format: md
+featured: false
+status: active
+whatItIs: >-
+  A README with PowerShell snippets that use the Microsoft Graph and Exchange Online modules to create
+  a room mailbox for a Microsoft Teams Rooms device, set its calendar processing, disable password
+  expiration, set the usage location, and assign a license. One snippet handles a single account and
+  another reads a CSV to create many.
+whyUseIt:
+  - Provision Teams Rooms resource accounts consistently instead of configuring each by hand.
+  - Create many accounts from a CSV; a sample resource-accounts.csv is included.
+  - Control calendar processing options such as automatic acceptance and the additional response text.
+howToUse: |-
+  1. Install the Microsoft Graph and Exchange Online PowerShell modules and connect to both.
+  2. Replace the sample UPN, alias, display name, license, usage location, and password with your own, or fill in a CSV like the included `resource-accounts.csv`.
+  3. Run the snippet for a single account or the bulk loop:
+
+     ```powershell
+     Connect-MgGraph -Scopes "User.ReadWrite.All"
+     Connect-ExchangeOnline
+
+     $path = ".\resource-accounts.csv"
+     $RAs = Import-Csv -Path $path
+     # foreach loop that creates and configures each account is in the README
+     ```
+prerequisites:
+  - "Microsoft Graph PowerShell and Exchange Online PowerShell modules"
+  - "Permission to create Exchange Online room mailboxes and to manage users and licenses (the README connects with the User.ReadWrite.All scope)"
+  - "Available Teams Rooms license, such as Microsoft_Teams_Rooms_Pro"
+  - "A password for each room account; the snippets and sample CSV handle it as plain text, so generate and protect it securely"
+---
+
 # Microsoft FastTrack Open Source - Teams Rooms Snippets
 
 Microsoft Teams Rooms configuration snippets for single room creation and configuration as well as bulk.

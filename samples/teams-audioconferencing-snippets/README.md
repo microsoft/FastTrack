@@ -1,3 +1,51 @@
+---
+title: Teams Audio Conferencing Snippets
+type: script
+category: PowerShell
+summary: PowerShell snippets to update Teams Audio Conferencing bridge numbers, dial-out policies, and toll-free dial-in in bulk.
+author: David Whitney
+version: 1.0.0
+published: "2021-01-27"
+updated: "2022-01-24"
+tags:
+  - teams
+  - audio-conferencing
+  - snippets
+  - bulk-update
+format: md
+featured: false
+status: active
+whatItIs: >-
+  A README of short PowerShell snippets, run interactively with the MicrosoftTeams module, for common
+  Teams Audio Conferencing configuration. They change the bridge number shown in users' meeting
+  invites, disable or limit dial-out from Audio Conferencing meetings with Grant-CsDialOutPolicy, and
+  disable toll-free dial-in for selected users, using a CSV of users.
+whyUseIt:
+  - Update meeting invite bridge numbers for many users after changing your default bridge or adding local numbers.
+  - Limit or disable call-me and dial-out destinations to control Communication Credits use.
+  - Disable toll-free dial-in for specific users while leaving it on for others.
+howToUse: |-
+  1. Install the MicrosoftTeams PowerShell module (2.0.0 or later) and connect to Teams.
+  2. Prepare a CSV with a `UserPrincipalName` column for the bulk snippets.
+  3. Copy the snippet you need from the README and adjust the values, for example to change the bridge number in meeting invites:
+
+     ```powershell
+     Import-Module MicrosoftTeams
+     Connect-MicrosoftTeams
+
+     $newbridgenumber = "+15551234567"
+     $updatebridgeusers = Import-Csv "C:\path\to\updatebridgeusers.csv"
+
+     foreach ($user in $updatebridgeusers) {
+         Set-CsOnlineDialInConferencingUser -Identity $user.UserPrincipalName -ServiceNumber $newbridgenumber
+     }
+     ```
+prerequisites:
+  - "MicrosoftTeams PowerShell module, version 2.0.0 or later"
+  - "Users enabled for Teams Audio Conferencing"
+  - "CSV with a UserPrincipalName column for the bulk snippets"
+---
+
 # Microsoft FastTrack Open Source - Teams Audio Conferencing Snippets
 
 Here are a few common Teams Audio Conferencing configuration PowerShell snippets that our customers rely on to update user settings for Audio Conferencing.

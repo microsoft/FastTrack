@@ -1,8 +1,82 @@
 # Traffic Data
 
 This directory is automatically populated by the [traffic-stats workflow](../.github/workflows/traffic-stats.yml).
+Daily collection is committed to the durable `automation/traffic-stats-staging`
+branch so Clarity's three-day export window is preserved without daily pull requests.
 
 **Files:**
-- `YYYY-MM-DD.json` — Full daily snapshot (views, clones, referrers, popular paths)
+- `YYYY-MM-DD.json` — Full daily snapshot (views, clones, referrers, popular paths). Collection of these is paused; see below.
+- `clarity-views.json` — Accumulated Clarity page views and downloads per resource. A download is a load of the resource's download page (`r/<slug>/download/`), which the Download button opens; it is never counted as a view.
 
-Data is collected daily at 06:00 UTC via GitHub Actions.
+## How views are counted
+
+The view count in `resource-stats.json` (and on the catalog) is the sum of two surfaces:
+
+- **Catalog views**, from `clarity-views.json`: loads of a resource's catalog page (`/#slug`) or its shareable page (`/r/<slug>/`), recorded by Clarity from 2026-07-25.
+- **GitHub folder views**, from the `YYYY-MM-DD.json` snapshots: views of the resource's folder or files on github.com. Snapshots 14 or more days apart are added together, so overlapping windows are never counted twice.
+
+Both are needed. Clarity never sees a visit that goes straight to GitHub, and the snapshots never see the catalog. Before this was a sum, a resource lost its GitHub history as soon as Clarity recorded one view for it (PowerClaw fell from 1,632 views to 4).
+
+The count is a minimum, because some days were never captured: GitHub traffic from 2026-07-01 to 2026-10-13, and Clarity from 2026-07-28 to 2026-09-06. Visitors who block analytics are not counted either.
+
+## How the live site stays current
+
+Daily collection writes `resource-stats.json` to the `automation/traffic-stats-staging` branch. Publishing it to `master` takes the weekly pull request, which GitHub Actions cannot open under the organization's policy, so the committed copy is only as fresh as the last merged weekly PR.
+
+So that the numbers on the site do not wait for that PR, the catalog and the resource pages also read the staged file straight from `raw.githubusercontent.com` (`assets/live-stats.js`). Only the view counts are taken from it. The committed `resource-stats.json` stays the source for everything else and the fallback in every other case: the staged file cannot be read within 1.5 seconds, it is older than the committed file, or it was counted by a different method (`sources.views`). A page therefore never shows a wrong count because of the staged file, only a less fresh one.
+
+- The staged file is cached for five minutes by raw.githubusercontent.com, so a daily run shows up on the site within a few minutes of finishing.
+- If the staging branch is renamed, update `LIVE_STATS_URL` in `assets/live-stats.js`. `npm run check` fails until it matches `STAGING_BRANCH` in the workflow.
+- If you change how views are counted, change `sources.views` in `build-stats.js` too. Until the next daily run re-renders the staged file with the new method, the site uses the committed file.
+- The weekly pull request is still worth merging: it keeps the committed copy, which is the fallback, current.
+
+Data is collected daily at 06:00 UTC via GitHub Actions. Each Friday at 08:00
+`America/Chicago` (including daylight saving time), the workflow updates one
+review-required pull request from the Friday-only `automation/traffic-stats-weekly`
+branch to `master`. Daily pushes to the staging branch therefore do not change the
+open weekly review. If the optional `AUTOMATION_PAT` is not configured, which is the
+case under the organization's policy against Actions opening pull requests, the Friday
+run stays green and adds a warning and a run summary with a manual compare URL
+(`/compare/master...automation/traffic-stats-weekly`). Open that pull request, check that
+it changes only `resource-stats.json` and `traffic-data/clarity-views.json`, and merge
+it. If a configured token cannot create the pull request, the run fails instead. Daily
+collection continues safely on the staging branch either way.
+
+## GitHub repository traffic is paused
+
+Since 2026-10-29 the workflow no longer collects GitHub's repository traffic (views, clones, referrers, popular paths, stars and forks). That API needs a token with Administration read access, and organization policy limits fine-grained tokens to a few days, so the daily run failed and the alert issue stayed open. Page analytics for the catalog come from Clarity, which the workflow still collects every day, along with discussion votes. The daily run skips the GitHub step with a notice and stays green.
+
+To resume, create a token that meets the organization's policy, save it as the `TRAFFIC_TOKEN` secret, and set the repository variable `COLLECT_GITHUB_TRAFFIC` to `true` (Settings, Secrets and variables, Actions, Variables). The next run collects again. GitHub keeps only 14 days, so anything not collected while paused is gone.
+
+## Manual collection
+
+When the scheduled workflow cannot authenticate (for example, its `TRAFFIC_TOKEN` expired), collect a snapshot by hand. GitHub keeps only a rolling 14 days of traffic, so run this at least every two weeks to avoid gaps. Each snapshot overlaps the previous one, and analysis unions days by date, so extra runs never double count.
+
+1. Sign in with an account that has **push access** to `microsoft/FastTrack` and whose token is authorized for the Microsoft organization's SAML SSO:
+
+   ```powershell
+   gh auth login
+   gh api repos/microsoft/FastTrack/traffic/views --jq .count   # should print a number, not an SSO error
+   ```
+
+2. Collect the snapshot and commit it:
+
+   ```powershell
+   npm ci --prefix tools/catalog-build
+   npm run collect:traffic --prefix tools/catalog-build
+   git add traffic-data
+   git commit -m "Traffic data for $(Get-Date -Format yyyy-MM-dd)"
+   ```
+
+   The command writes `traffic-data/YYYY-MM-DD.json` in the same format as the workflow.
+
+3. Optional: refresh the per-resource view counts shown on the site. This needs a Clarity project API token (Clarity does not keep more than three days of history, so the scheduled workflow is the only way to avoid gaps):
+
+   ```powershell
+   $env:CLARITY_API_TOKEN = "<token>"
+   npm run build:stats --prefix tools/catalog-build
+   ```
+
+## Known gaps
+
+The scheduled workflow stopped authenticating on 2026-07-22, and the last snapshot before the fix is `2026-06-30.json`. GitHub does not keep older traffic, so views and clones from 2026-07-01 through 2026-10-13 could not be recovered. Collection resumed with a manual snapshot, `2026-10-28.json`, which covers 2026-10-14 through 2026-10-27.

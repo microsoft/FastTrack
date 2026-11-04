@@ -6,13 +6,14 @@ summary: >-
   Inventory a SharePoint Online site collection and its document libraries, with optional subweb and
   workbook processing.
 author: Patrick Rodgers
-version: 1.0.0
+version: 1.0.1
 published: "2018-06-22"
-updated: "2018-10-30"
+updated: "2026-10-28"
 tags:
   - sharepoint
   - inventory
 format: ps1
+status: archived
 whatItIs: >-
   A multi-script PowerShell inventory for a SharePoint Online site collection that can process
   subwebs concurrently and combine outputs into a workbook.
@@ -30,6 +31,8 @@ prerequisites:
   - SharePointPnPPowerShellOnline module
   - Microsoft Excel unless using -NoWorkbook
 ---
+
+> **Archived:** This script requires the legacy SharePointPnPPowerShellOnline module, which has been replaced by PnP.PowerShell, and is kept for reference. Use PnP.PowerShell for new SharePoint Online inventory scripts.
 
 # Microsoft FastTrack Open Source - Get-SiteInventory
 

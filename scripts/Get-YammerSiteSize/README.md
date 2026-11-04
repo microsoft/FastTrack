@@ -1,3 +1,41 @@
+---
+title: Get-YammerSiteSize
+type: script
+category: PowerShell
+summary: Report the SharePoint storage used by every site created through Viva Engage (Yammer) communities.
+author: Dean Cron
+version: 1.0.0
+published: "2023-07-20"
+updated: "2023-07-20"
+tags:
+  - viva-engage
+  - administration
+  - reporting
+  - sharepoint
+  - storage
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A PowerShell sample that connects to SharePoint Online and Exchange Online, finds the Microsoft 365
+  groups whose GroupSku is Yammer, and exports each connected SharePoint site's title, URL, and current
+  storage usage to a CSV file. It applies to Viva Engage networks in native mode.
+whyUseIt:
+  - See how much SharePoint storage Viva Engage communities consume.
+  - Identify the largest community sites before storage planning or cleanup.
+howToUse: |-
+  1. Install the Exchange Online and SharePoint Online PowerShell modules.
+  2. Set `$AdminSiteURL` to your tenant's SharePoint admin URL and optionally change `$ReportOutput`.
+  3. Run the script and enter your admin credentials when prompted. Sign-in uses `Get-Credential`, which doesn't work for accounts that require MFA:
+
+     ```powershell
+     .\Get-YammerSiteSize.ps1
+     ```
+prerequisites:
+  - "Exchange Online and SharePoint Online PowerShell modules"
+  - "Admin account with Microsoft 365 Groups and SharePoint Online access that can sign in with a username and password prompt"
+---
+
 # Microsoft FastTrack Open Source - Get-YammerSiteSize
 
 This sample script gets all SPO sites created through Yammer community creation and reports the current storage size used in each site.

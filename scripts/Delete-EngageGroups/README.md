@@ -1,3 +1,46 @@
+---
+title: Delete-EngageGroups
+type: script
+category: PowerShell
+summary: Bulk-delete Viva Engage communities from a CSV through Microsoft Graph; dry run by default and deletion can't be undone.
+author: Dean Cron
+version: 1.0.0
+published: "2023-07-06"
+updated: "2026-07-22"
+tags:
+  - viva-engage
+  - administration
+  - communities
+  - bulk-delete
+  - microsoft-graph
+format: ps1
+featured: false
+status: active
+whatItIs: >-
+  A destructive PowerShell sample that reads Viva Engage community IDs from a CSV and deletes each
+  community through the Microsoft Graph community API (beta endpoint) with app-only authentication.
+  Deletion can't be undone. The script runs as a dry run by default (`$whatIfMode = $true`) and only
+  deletes after you set it to `$false`.
+whyUseIt:
+  - Remove many communities in one run instead of deleting them one at a time.
+  - Preview the communities that would be deleted first; `$whatIfMode` is `$true` by default.
+  - Continues past communities that aren't found and waits and retries when Graph throttles requests.
+howToUse: |-
+  1. Create a Microsoft Entra app registration with the Microsoft Graph `Community.ReadWrite.All` application permission and grant admin consent.
+  2. Create a CSV with a single `CommunityId` column containing the Graph community IDs (not the legacy numeric Yammer group IDs).
+  3. Set `$ClientId`, `$TenantId`, `$ClientSecret`, and `$groupsToBeDeletedCSV` near the top of the script.
+  4. Run with the default `$whatIfMode = $true` and review the output. Set it to `$false` only when you are sure.
+  5. Run:
+
+     ```powershell
+     .\Delete-EngageGroups.ps1
+     ```
+prerequisites:
+  - "Test in a non-production tenant first; deletion can't be undone"
+  - "Microsoft Entra app registration with the Community.ReadWrite.All application permission and admin consent"
+  - "CSV with a CommunityId column of Viva Engage community IDs from Microsoft Graph"
+---
+
 # Microsoft FastTrack Open Source - Delete-EngageGroups
 
 This sample script will allow an admin to bulk-delete Viva Engage communities using the Microsoft Graph API.
