@@ -3,28 +3,27 @@ title: Preflight-OneDrive
 type: script
 category: PowerShell
 summary: >-
-  Scan a local or network folder for potential OneDrive for Business sync issues and optionally
-  generate an HTML report.
+  Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.
 author: Alejandro Lopez
-version: 1.0.0
+version: 1.0.1
 published: "2019-08-02"
-updated: "2019-08-02"
+updated: "2026-11-04"
 tags:
   - onedrive
   - migration
 format: ps1
+status: archived
 whatItIs: >-
-  A PowerShell preflight scanner that checks a local folder or UNC path for potential OneDrive for
-  Business synchronization issues.
+  An archived PowerShell preflight scanner retained for historical reference. Its embedded checker
+  defaults to a 15 GB file-size limit that no longer reflects current OneDrive limits.
 whyUseIt:
   - Find problematic paths before deploying the OneDrive sync client.
   - Review results in the console or an optional HTML report.
 howToUse: |-
-  Install the external dependencies, then run:
-
-  ```powershell
-  .\Preflight-OneDrive.ps1 -Path "\\dc.contoso.com\smb" -GenerateHTMLReport
-  ```
+  Do not use this archived scanner for current readiness decisions. Review the
+  [current OneDrive and SharePoint limits](https://learn.microsoft.com/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-limits#service-limits-for-all-plans).
+  For file-share migration assessment, use
+  [Migration Manager scan and assessment reports](https://learn.microsoft.com/sharepointmigration/mm-fileshare-scan-assess).
 prerequisites:
   - EnhancedHTML2 module
   - Test-OneDrivePath function
@@ -32,6 +31,8 @@ prerequisites:
 ---
 
 # Microsoft FastTrack Open Source - Preflight-OneDrive
+
+> **Archived (2026-11-04):** This script is retained for historical reference. Its embedded checker defaults to a 15 GB file-size limit, while the [current OneDrive and SharePoint individual-file limit is 250 GB](https://learn.microsoft.com/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-limits#service-limits-for-all-plans). Do not rely on its results for current readiness decisions. For file-share migration assessment, use [Migration Manager scan and assessment reports](https://learn.microsoft.com/sharepointmigration/mm-fileshare-scan-assess). The original script and instructions remain below for reference.
 
 Script to generate a report (within console or HTML report) from a directory (local folder or UNC path) of potential sync issues before deploying the OneDrive for Business sync client.
 
@@ -102,5 +103,4 @@ Privacy information can be found at https://privacy.microsoft.com/en-us/
 
 Microsoft and any contributors reserve all others rights, whether under their respective copyrights, patents,
 or trademarks, whether by implication, estoppel or otherwise.
-
 
