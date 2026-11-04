@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-03",
+  "lastRun": "2026-11-04",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -1506,7 +1506,8 @@
         "uniques": 0
       },
       "agents-cost-calculator": {
-        "views": 1
+        "views": 1,
+        "uniques": 1
       },
       "ai-council": {
         "views": 1
@@ -1544,7 +1545,8 @@
         "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 1
+        "views": 1,
+        "uniques": 1
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 1,
@@ -1579,72 +1581,89 @@
     },
     "2026-11-03": {
       "add-engagegroupadmins": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "agent-365-enablement-checklist": {
         "views": 16,
-        "uniques": 11,
+        "uniques": 8,
         "downloads": 5
       },
       "agent-365-lifecycle-atlas": {
         "views": 2,
-        "uniques": 2
+        "uniques": 1
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
       },
       "autoreply-agent": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "copilot-analytics-reports-navigator": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "copilot-studio-workflow": {
-        "views": 2,
-        "uniques": 1
+        "views": 2
       },
       "delete-allcommunityposts": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "delete-engagegroups": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "get-groupsmembersmanagers": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "get-m365copilotreadiness": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "get-recurringteamsmeetings": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 3,
         "uniques": 2
       },
       "powerclaw-agent": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "preflight-onedrive": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "teams-phone-system-snippets": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "update-vivaengagelicensingtoggle": {
+        "views": 1
+      },
+      "viva-engage-community-creation-app": {
+        "views": 1
+      }
+    },
+    "2026-11-04": {
+      "agent-365-enablement-checklist": {
+        "views": 9,
+        "uniques": 6,
+        "downloads": 1
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 7,
+        "uniques": 7
+      },
+      "agents-cost-calculator": {
+        "views": 2,
+        "uniques": 2
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
         "views": 1,
         "uniques": 1
       },
-      "viva-engage-community-creation-app": {
-        "views": 1,
+      "microsoft-agent-365-technical-advisory": {
+        "views": 2,
         "uniques": 1
       }
     }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T06:03:45.683Z",
+  "generatedAt": "2026-11-04T06:03:46.967Z",
   "sources": {
     "views": "clarity+github-traffic",
     "downloads": "clarity",
@@ -8,12 +8,12 @@
   "resources": {
     "add-engagegroupadmins": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "agent-365-enablement-checklist": {
-      "views": 26,
-      "viewsUniques": 15,
-      "downloads": 5,
+      "views": 35,
+      "viewsUniques": 18,
+      "downloads": 6,
       "upvotes": 1,
       "discussion": {
         "number": 566,
@@ -21,8 +21,8 @@
       }
     },
     "agent-365-lifecycle-atlas": {
-      "views": 163,
-      "viewsUniques": 99,
+      "views": 170,
+      "viewsUniques": 105,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -34,8 +34,8 @@
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
-      "views": 130,
-      "viewsUniques": 81
+      "views": 132,
+      "viewsUniques": 84
     },
     "ai-council": {
       "views": 82,
@@ -52,7 +52,7 @@
     },
     "autoreply-agent": {
       "views": 78,
-      "viewsUniques": 50
+      "viewsUniques": 49
     },
     "comparedocs": {
       "views": 1,
@@ -64,7 +64,7 @@
     },
     "copilot-analytics-reports-navigator": {
       "views": 30,
-      "viewsUniques": 6
+      "viewsUniques": 5
     },
     "copilot-interaction-report": {
       "views": 2,
@@ -72,15 +72,15 @@
     },
     "copilot-studio-workflow": {
       "views": 44,
-      "viewsUniques": 6
+      "viewsUniques": 5
     },
     "delete-allcommunityposts": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "delete-engagegroups": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "get-aadadminrolemembers": {
       "views": 1,
@@ -92,22 +92,22 @@
     },
     "get-groupsmembersmanagers": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "get-m365copilotreadiness": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "get-recurringteamsmeetings": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "get-siteinventory": {
       "views": 1
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 96,
-      "viewsUniques": 43,
+      "views": 97,
+      "viewsUniques": 45,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -115,8 +115,8 @@
       }
     },
     "microsoft-agent-365-technical-advisory": {
-      "views": 12,
-      "viewsUniques": 9,
+      "views": 14,
+      "viewsUniques": 10,
       "upvotes": 1,
       "discussion": {
         "number": 568,
@@ -129,7 +129,7 @@
     },
     "powerclaw-agent": {
       "views": 1647,
-      "viewsUniques": 968,
+      "viewsUniques": 967,
       "upvotes": 1,
       "discussion": {
         "number": 479,
@@ -138,7 +138,7 @@
     },
     "preflight-onedrive": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "purview-audit-copilot-report": {
       "views": 672,
@@ -159,11 +159,11 @@
     },
     "teams-phone-system-snippets": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "update-vivaengagelicensingtoggle": {
       "views": 223,
-      "viewsUniques": 140
+      "viewsUniques": 139
     },
     "vibewriting-agent": {
       "views": 1,
@@ -171,7 +171,7 @@
     },
     "viva-engage-community-creation-app": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "viva-insights-copilot-dashboard": {
       "views": 127,
