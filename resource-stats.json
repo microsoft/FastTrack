@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T06:03:46.967Z",
+  "generatedAt": "2026-11-05T06:03:47.045Z",
   "sources": {
     "views": "clarity+github-traffic",
     "downloads": "clarity",
@@ -11,9 +11,9 @@
       "viewsUniques": 0
     },
     "agent-365-enablement-checklist": {
-      "views": 35,
-      "viewsUniques": 18,
-      "downloads": 6,
+      "views": 43,
+      "viewsUniques": 23,
+      "downloads": 7,
       "upvotes": 1,
       "discussion": {
         "number": 566,
@@ -21,8 +21,8 @@
       }
     },
     "agent-365-lifecycle-atlas": {
-      "views": 170,
-      "viewsUniques": 105,
+      "views": 172,
+      "viewsUniques": 107,
       "upvotes": 1,
       "discussion": {
         "number": 535,
@@ -30,12 +30,12 @@
       }
     },
     "agent-brainstorming-template": {
-      "views": 10,
+      "views": 11,
       "viewsUniques": 0
     },
     "agents-cost-calculator": {
       "views": 132,
-      "viewsUniques": 84
+      "viewsUniques": 82
     },
     "ai-council": {
       "views": 82,
@@ -51,20 +51,21 @@
       "viewsUniques": 0
     },
     "autoreply-agent": {
-      "views": 78,
-      "viewsUniques": 49
+      "views": 79,
+      "viewsUniques": 51
     },
     "comparedocs": {
       "views": 1,
       "viewsUniques": 0
     },
     "copilot-agents-guide": {
-      "views": 42,
-      "viewsUniques": 10
+      "views": 43,
+      "viewsUniques": 10,
+      "downloads": 1
     },
     "copilot-analytics-reports-navigator": {
-      "views": 30,
-      "viewsUniques": 5
+      "views": 31,
+      "viewsUniques": 6
     },
     "copilot-interaction-report": {
       "views": 2,
@@ -82,6 +83,9 @@
       "views": 1,
       "viewsUniques": 0
     },
+    "export-copilotinteractions": {
+      "downloads": 1
+    },
     "get-aadadminrolemembers": {
       "views": 1,
       "viewsUniques": 0
@@ -89,6 +93,10 @@
     "get-allinsightslicensedusers": {
       "views": 1,
       "viewsUniques": 0
+    },
+    "get-engagegroupinfo": {
+      "views": 1,
+      "viewsUniques": 1
     },
     "get-groupsmembersmanagers": {
       "views": 1,
@@ -107,7 +115,7 @@
     },
     "microsoft-agent-365-customer-implementation-guide": {
       "views": 97,
-      "viewsUniques": 45,
+      "viewsUniques": 44,
       "upvotes": 1,
       "discussion": {
         "number": 534,
@@ -115,8 +123,8 @@
       }
     },
     "microsoft-agent-365-technical-advisory": {
-      "views": 14,
-      "viewsUniques": 10,
+      "views": 27,
+      "viewsUniques": 16,
       "upvotes": 1,
       "discussion": {
         "number": 568,
@@ -128,8 +136,8 @@
       "viewsUniques": 0
     },
     "powerclaw-agent": {
-      "views": 1647,
-      "viewsUniques": 967,
+      "views": 1648,
+      "viewsUniques": 969,
       "upvotes": 1,
       "discussion": {
         "number": 479,
@@ -139,6 +147,10 @@
     "preflight-onedrive": {
       "views": 1,
       "viewsUniques": 0
+    },
+    "productquote-agent": {
+      "views": 1,
+      "viewsUniques": 1
     },
     "purview-audit-copilot-report": {
       "views": 672,
