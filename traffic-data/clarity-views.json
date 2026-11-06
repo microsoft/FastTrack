@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-05",
+  "lastRun": "2026-11-06",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -1670,6 +1670,9 @@
       }
     },
     "2026-11-04": {
+      "add-engagegroupadmins": {
+        "downloads": 0
+      },
       "agent-365-enablement-checklist": {
         "views": 9,
         "uniques": 5,
@@ -1684,7 +1687,9 @@
         "downloads": 0
       },
       "agents-cost-calculator": {
-        "views": 2
+        "views": 2,
+        "uniques": 2,
+        "downloads": 0
       },
       "autoreply-agent": {
         "views": 0,
@@ -1695,10 +1700,17 @@
         "downloads": 1
       },
       "copilot-analytics-reports-navigator": {
-        "views": 1
+        "views": 1,
+        "downloads": 0
       },
       "delete-engagegroups": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
+      },
+      "ess-servicenow-itsm-get-user-requests": {
+        "views": 0,
+        "uniques": 0
       },
       "export-copilotinteractions": {
         "downloads": 0
@@ -1707,55 +1719,136 @@
         "views": 0,
         "uniques": 0
       },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 0
+      },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 1
+        "views": 1,
+        "uniques": 1,
+        "downloads": 0
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 2,
-        "uniques": 0
+        "uniques": 0,
+        "downloads": 0
       },
       "powerclaw-agent": {
         "views": 0,
         "uniques": 0
       },
       "productquote-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
         "views": 0,
         "uniques": 0
       }
     },
     "2026-11-05": {
+      "add-engagegroupadmins": {
+        "downloads": 0
+      },
       "agent-365-enablement-checklist": {
         "views": 8,
-        "uniques": 7,
+        "uniques": 4,
         "downloads": 1
       },
       "agent-365-lifecycle-atlas": {
-        "views": 2,
-        "uniques": 2
+        "views": 2
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
       },
       "autoreply-agent": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "downloads": 0
       },
       "delete-engagegroups": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
+      },
+      "ess-servicenow-itsm-get-user-requests": {
+        "views": 0,
+        "uniques": 0
       },
       "export-copilotinteractions": {
         "downloads": 1
       },
       "get-engagegroupinfo": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 13,
-        "uniques": 8
+        "uniques": 5,
+        "downloads": 0
       },
       "powerclaw-agent": {
+        "views": 1
+      },
+      "productquote-agent": {
+        "views": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-11-06": {
+      "add-engagegroupadmins": {
+        "downloads": 0
+      },
+      "agent-365-enablement-checklist": {
+        "views": 10,
+        "uniques": 9,
+        "downloads": 1
+      },
+      "agents-cost-calculator": {
+        "views": 2,
+        "uniques": 2,
+        "downloads": 2
+      },
+      "copilot-analytics-reports-navigator": {
+        "downloads": 0
+      },
+      "delete-engagegroups": {
         "views": 1,
         "uniques": 1
       },
-      "productquote-agent": {
+      "ess-servicenow-itsm-get-user-requests": {
+        "views": 1,
+        "uniques": 1
+      },
+      "get-m365copilotreadiness": {
+        "views": 4,
+        "uniques": 4
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3,
+        "uniques": 3,
+        "downloads": 1
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 12,
+        "uniques": 7,
+        "downloads": 2
+      },
+      "viva-insights-copilot-dashboard": {
         "views": 1,
         "uniques": 1
       }
