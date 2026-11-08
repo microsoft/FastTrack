@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-07",
+  "lastRun": "2026-11-08",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -1903,6 +1903,10 @@
       "copilot-analytics-reports-navigator": {
         "downloads": 0
       },
+      "copilot-interaction-report": {
+        "views": 0,
+        "uniques": 0
+      },
       "copilot-studio-workflow": {
         "views": 0,
         "uniques": 0
@@ -1921,6 +1925,10 @@
       "ess-servicenow-itsm-get-user-requests": {
         "views": 1
       },
+      "export-copilotinteractions": {
+        "views": 0,
+        "uniques": 0
+      },
       "export-engagefiles": {
         "views": 0,
         "uniques": 0
@@ -1929,13 +1937,32 @@
         "views": 0,
         "uniques": 0
       },
+      "export-simpleplacesvisual": {
+        "views": 0,
+        "uniques": 0
+      },
+      "find-mailboxdelegates": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-allinsightslicensedusers": {
+        "views": 0,
+        "uniques": 0
+      },
       "get-engagegroupinfo": {
         "views": 0,
         "uniques": 0
       },
+      "get-groupsmembersmanagers": {
+        "downloads": 0
+      },
       "get-m365copilotreadiness": {
         "views": 4,
         "uniques": 4
+      },
+      "get-teamsuseractivityreport": {
+        "views": 0,
+        "uniques": 0
       },
       "get-yammersitesize": {
         "views": 0,
@@ -1955,7 +1982,15 @@
         "views": 0,
         "uniques": 0
       },
+      "productquote-agent": {
+        "views": 0,
+        "uniques": 0
+      },
       "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "simplegraph": {
         "views": 0,
         "uniques": 0
       },
@@ -1971,8 +2006,13 @@
         "views": 0,
         "uniques": 0
       },
+      "vibewriting-agent": {
+        "views": 0,
+        "uniques": 0
+      },
       "viva-insights-copilot-dashboard": {
-        "views": 1
+        "views": 1,
+        "uniques": 1
       }
     },
     "2026-11-07": {
@@ -1981,61 +2021,74 @@
         "uniques": 5
       },
       "agent-brainstorming-template": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "agents-cost-calculator": {
         "views": 5,
-        "uniques": 3,
         "downloads": 1
       },
       "ai-council": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "analyze-sharepointrisk": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "copilot-agents-guide": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "copilot-interaction-report": {
+        "views": 0,
+        "uniques": 0
       },
       "copilot-studio-workflow": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "create-engagecommunities": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "delete-engageusers": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "export-copilotinteractions": {
+        "views": 0,
+        "uniques": 0
       },
       "export-engagefiles": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "export-m365copilotreports": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "export-simpleplacesvisual": {
+        "views": 0,
+        "uniques": 0
+      },
+      "find-mailboxdelegates": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-allinsightslicensedusers": {
+        "views": 0,
+        "uniques": 0
       },
       "get-engagegroupinfo": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "get-groupsmembersmanagers": {
+        "downloads": 0
       },
       "get-m365copilotreadiness": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "get-teamsuseractivityreport": {
+        "views": 0,
+        "uniques": 0
       },
       "get-yammersitesize": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 3,
-        "uniques": 2
+        "views": 3
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 3,
@@ -2043,22 +2096,86 @@
         "downloads": 0
       },
       "migrate-copilotstudioagents": {
-        "views": 3,
-        "uniques": 2
+        "views": 3
+      },
+      "productquote-agent": {
+        "views": 0,
+        "uniques": 0
       },
       "purview-audit-copilot-report": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "simplegraph": {
+        "views": 0,
+        "uniques": 0
       },
       "teams-phone-user-migration": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "teams-rooms-snippets": {
+        "views": 1
+      },
+      "update-vivaengagelicensingtoggle": {
+        "views": 1
+      },
+      "vibewriting-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 0,
+        "uniques": 0
+      }
+    },
+    "2026-11-08": {
+      "agent-365-enablement-checklist": {
         "views": 1,
         "uniques": 1
       },
-      "update-vivaengagelicensingtoggle": {
+      "copilot-interaction-report": {
+        "views": 1,
+        "uniques": 1
+      },
+      "export-copilotinteractions": {
+        "views": 1,
+        "uniques": 1
+      },
+      "export-simpleplacesvisual": {
+        "views": 1,
+        "uniques": 1
+      },
+      "find-mailboxdelegates": {
+        "views": 1,
+        "uniques": 1
+      },
+      "get-allinsightslicensedusers": {
+        "views": 1,
+        "uniques": 1
+      },
+      "get-groupsmembersmanagers": {
+        "downloads": 0
+      },
+      "get-teamsuseractivityreport": {
+        "views": 0,
+        "uniques": 0
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 1,
+        "uniques": 1
+      },
+      "productquote-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "simplegraph": {
+        "views": 1,
+        "uniques": 1
+      },
+      "vibewriting-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "viva-insights-copilot-dashboard": {
         "views": 1,
         "uniques": 1
       }
