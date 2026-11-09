@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-08",
+  "lastRun": "2026-11-09",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -2049,12 +2049,20 @@
       "delete-engageusers": {
         "views": 1
       },
+      "ess-servicenow-itsm-get-request-details": {
+        "views": 0,
+        "uniques": 0
+      },
       "export-copilotinteractions": {
         "views": 0,
         "uniques": 0
       },
       "export-engagefiles": {
         "views": 1
+      },
+      "export-engagenetworkdata": {
+        "views": 0,
+        "uniques": 0
       },
       "export-m365copilotreports": {
         "views": 1
@@ -2098,6 +2106,9 @@
       "migrate-copilotstudioagents": {
         "views": 3
       },
+      "preflight-onedrive": {
+        "downloads": 0
+      },
       "productquote-agent": {
         "views": 0,
         "uniques": 0
@@ -2132,50 +2143,70 @@
         "views": 1,
         "uniques": 1
       },
+      "agents-cost-calculator": {
+        "downloads": 0
+      },
       "copilot-interaction-report": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "ess-servicenow-itsm-get-request-details": {
+        "views": 0,
+        "uniques": 0
       },
       "export-copilotinteractions": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "export-engagenetworkdata": {
+        "views": 0,
+        "uniques": 0
       },
       "export-simpleplacesvisual": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "find-mailboxdelegates": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "get-allinsightslicensedusers": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "get-groupsmembersmanagers": {
         "downloads": 0
       },
       "get-teamsuseractivityreport": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "microsoft-agent-365-technical-advisory": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "preflight-onedrive": {
+        "downloads": 0
       },
       "productquote-agent": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "simplegraph": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "vibewriting-agent": {
+        "views": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1
+      }
+    },
+    "2026-11-09": {
+      "agent-365-enablement-checklist": {
         "views": 1,
         "uniques": 1
       },
-      "viva-insights-copilot-dashboard": {
+      "agents-cost-calculator": {
+        "downloads": 0
+      },
+      "ess-servicenow-itsm-get-request-details": {
+        "views": 1,
+        "uniques": 1
+      },
+      "export-engagenetworkdata": {
         "views": 1,
         "uniques": 1
       }
