@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30",
+  "generatedAt": "2026-11-09",
   "count": 58,
   "resources": [
     {
@@ -67,13 +67,13 @@
       "preview": "copilot-agent-strategy/agent-365-enablement-checklist/preview.webp",
       "download": "copilot-agent-strategy/agent-365-enablement-checklist/index.html",
       "downloadName": "agent-365-enablement-checklist.html",
-      "downloadSize": 682871,
+      "downloadSize": 684153,
       "author": [
         "Alejandro Lopez"
       ],
-      "version": "1.0.3",
+      "version": "1.0.4",
       "published": "2026-10-28",
-      "updated": "2026-10-30",
+      "updated": "2026-11-09",
       "whatItIs": "A self-contained, offline tracker for planning and tracking a Microsoft Agent 365 enablement. It organizes the work into workstreams with role-based tasks, shows a readiness dashboard, and exports to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start your own.",
       "whyUseIt": [
         "Scope the plan by agent type, pillar, or feature so each team sees the tasks that apply to it.",
@@ -1552,15 +1552,15 @@
       "preview": "copilot-agent-strategy/agent-365-customer-implementation-guide/preview.webp",
       "download": "copilot-agent-strategy/agent-365-customer-implementation-guide/index.html",
       "downloadName": "microsoft-agent-365-customer-implementation-guide.html",
-      "downloadSize": 2374553,
+      "downloadSize": 2375240,
       "author": [
         "Pratik Bhusal",
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.4.0",
+      "version": "1.4.1",
       "published": "2026-09-09",
-      "updated": "2026-10-29",
+      "updated": "2026-11-09",
       "whatItIs": "A self-contained, community-built interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",

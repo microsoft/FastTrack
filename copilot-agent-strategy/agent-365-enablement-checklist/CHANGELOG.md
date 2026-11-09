@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.4 - 2026-11-09
+
+- Rechecked every task that cites a Microsoft Learn page that moved or changed since the 2026-10-22 review, and updated what no longer matched.
+- Fixed 22 moved Microsoft Learn links. The Agent 365 admin center, Tools, and registry articles now live under `microsoft-agent-365/admin/`, and the Copilot credits, Copilot plan comparison, Package Management API, and Azure AI Gateway articles have new addresses.
+- Frontier: enrolling users in Frontier doesn't need a Copilot license, which is needed only to use Copilot-related Frontier features (Foundations task 13).
+- Overview and release preferences: usage metrics for third-party agents start at license activation (Foundations task 12), and the release preference exception limit is 10,000 users, with the unified release preferences experience arriving in November 2026 (Operate & adopt task 6).
+- Defender local agent discovery is generally available on Windows and macOS, and Defender lists most agents only after it observes them running, except installed VS Code extensions (Shadow agents tasks 3 and 12).
+- Gateway & compute: the AI Gateway tier in API Management is being replaced by the AI Gateway resource type. The tasks now say existing tier resources work until January 15, 2027, and the new resource type doesn't support private endpoints or the content safety policy (Gateway & compute tasks 1, 3, and 10).
+- Registry sync (Custom agents task 10) adds Databricks Genie observability and the outbound IP addresses to allow, and the cleanup task (Custom agents task 15) lists the roles it needs.
+- Purview: the Copilot DLP location supports administrative units, but support is still rolling out (task 10), and Restricted Content Discovery is a temporary control (task 21).
+- Blocking a SharePoint or Foundry agent limits it only in Copilot Chat (Defender task 10 and Operate & adopt task 9), and maker updates to a shared Copilot Studio agent reach users after the maker publishes and a new session starts (Low-code agents task 4).
+- Updated link titles that no longer matched their Learn articles. No other task content changed.
+
 ## 1.0.3 - 2026-10-30
 
 - The version shown on the Help page, in the printed report, and in exports now matches the catalog version. It showed an internal number (2.9.1) before.
