@@ -4,19 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SimpleGraph | Microsoft FastTrack</title>
-  <meta name="description" content="A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.">
+  <meta name="description" content="Archived Graph REST wrapper retained for reference. Use Microsoft Graph PowerShell and Invoke-MgGraphRequest instead.">
   <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/simplegraph/">
+  <meta name="robots" content="noindex">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Microsoft FastTrack">
   <meta property="og:title" content="SimpleGraph">
-  <meta property="og:description" content="A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.">
+  <meta property="og:description" content="Archived Graph REST wrapper retained for reference. Use Microsoft Graph PowerShell and Invoke-MgGraphRequest instead.">
   <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/simplegraph/">
   <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/simplegraph.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SimpleGraph">
-  <meta name="twitter:description" content="A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.">
+  <meta name="twitter:description" content="Archived Graph REST wrapper retained for reference. Use Microsoft Graph PowerShell and Invoke-MgGraphRequest instead.">
   <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/simplegraph.png">
   <meta name="theme-color" content="#4f46e5">
   <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
@@ -27,7 +28,7 @@
   <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
   <link rel="stylesheet" href="../../assets/resource-page.css">
   <link rel="stylesheet" href="../../assets/site-footer.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"SimpleGraph","description":"A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.","url":"https://microsoft.github.io/FastTrack/r/simplegraph/","datePublished":"2020-10-15","dateModified":"2022-01-20","version":"1.0.0","inLanguage":"en","keywords":"microsoft-graph, powershell-module, graph-api, authentication","author":[{"@type":"Person","name":"David Whitney"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"SimpleGraph","description":"Archived Graph REST wrapper retained for reference. Use Microsoft Graph PowerShell and Invoke-MgGraphRequest instead.","url":"https://microsoft.github.io/FastTrack/r/simplegraph/","datePublished":"2020-10-15","dateModified":"2026-11-04","version":"1.0.1","inLanguage":"en","keywords":"microsoft-graph, powershell-module, graph-api, authentication","author":[{"@type":"Person","name":"David Whitney"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
 </head>
 <body class="type-script">
   <header class="site-header">
@@ -50,9 +51,9 @@
     </nav>
 
     <section class="hero">
-      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell </div>
+      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell <span class="badge badge-archived">Archived</span></div>
       <h1>SimpleGraph</h1>
-      <p class="lede">A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.</p>
+      <p class="lede">Archived Graph REST wrapper retained for reference. Use Microsoft Graph PowerShell and Invoke-MgGraphRequest instead.</p>
       <div class="actions">
         <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/tools/SimpleGraph" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
         <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/simplegraph/">Copy link</button>
@@ -60,14 +61,16 @@
       <div class="tags"><a class="tag" href="../../?tag=microsoft-graph">microsoft-graph</a><a class="tag" href="../../?tag=powershell-module">powershell-module</a><a class="tag" href="../../?tag=graph-api">graph-api</a><a class="tag" href="../../?tag=authentication">authentication</a></div>
     </section>
 
+    <p class="notice">This resource is archived and kept for reference. It is no longer actively maintained; check the README for a current alternative.</p>
+
     <div class="layout">
       <article>
-        <section class="block"><h2>What it is</h2><p>A single-file PowerShell module (SimpleGraph.psm1) that makes web calls to the Microsoft Graph REST API. It provides Connect-SimpleGraph for delegated, client-secret, or client-certificate sign-in through the MSAL.PS module, plus Get-, New-, Set-, and Remove-SimpleGraphObject, Invoke-SimpleGraphRequest, and Get-SimpleGraphReport for reading, creating, updating, deleting, sending custom calls, and pulling usage reports.</p></section>
+        <section class="block"><h2>What it is</h2><p>An archived single-file PowerShell module (SimpleGraph.psm1) for Microsoft Graph REST calls, retained for historical reference. It depends on the archived MSAL.PS project. Use the Microsoft Graph PowerShell SDK and Invoke-MgGraphRequest for new work.</p></section>
         <section class="block"><h2>Why use it</h2><ul><li>Call any Graph endpoint without waiting for a matching Microsoft Graph PowerShell SDK cmdlet.</li><li>Use the same few cmdlets for reads, creates, updates, deletes, and custom requests, with inline help for each.</li><li>Pull Microsoft 365 usage reports from Graph, such as active user counts by workload for the last 7, 30, 90, or 180 days, as PowerShell objects.</li></ul></section>
-        <section class="block"><h2>How to use it</h2><ol class="steps"><li>Install MSAL.PS (<code>Install-Module MSAL.PS</code>) and register an Entra application with the redirect URI <code>https://login.microsoftonline.com/common/oauth2/nativeclient</code> for delegated sign-in.</li><li>Download <code>SimpleGraph.psm1</code> and import it, then connect with the scopes your calls need:</li></ol>
-<pre><code>Import-Module &quot;C:\Users\you\Scripts\SimpleGraph.psm1&quot;
-Connect-SimpleGraph -ClientId &quot;XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX&quot; -TenantId &quot;XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX&quot; -Scopes &quot;User.Read.All&quot;, &quot;Group.Read.All&quot;
-Get-SimpleGraphObject users/you@domain.com</code></pre></section>
+        <section class="block"><h2>How to use it</h2><p>Use the <a href="https://learn.microsoft.com/powershell/microsoftgraph/installation" target="_blank" rel="noopener noreferrer">Microsoft Graph PowerShell SDK</a></p>
+<p>instead. For endpoints without a dedicated cmdlet, use</p>
+<p><a href="https://learn.microsoft.com/powershell/module/microsoft.graph.authentication/invoke-mggraphrequest?view=graph-powershell-1.0" target="_blank" rel="noopener noreferrer">Invoke-MgGraphRequest</a>.</p>
+<p>Existing SimpleGraph scripts need migration; this is not a drop-in replacement.</p></section>
         <section class="block"><h2>Prerequisites</h2><ul><li>MSAL.PS PowerShell module</li><li>Microsoft Entra application registration (a client secret or certificate plus Graph application permissions for app-only use)</li><li>Graph permissions that match the calls you make</li></ul></section>
         
     <section class="block related">
@@ -80,7 +83,7 @@ Get-SimpleGraphObject users/you@domain.com</code></pre></section>
     </section>
       </article>
       <aside>
-        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.ps1 · PowerShell</dd></div><div class="row" id="viewsRow" hidden><dt>Views</dt><dd><span id="viewsValue"></span></dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Jan 20, 2022</dd></div><div class="row"><dt>Author</dt><dd>David Whitney</dd></div></dl>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.ps1 · PowerShell</dd></div><div class="row" id="viewsRow" hidden><dt>Views</dt><dd><span id="viewsValue"></span></dd></div><div class="row"><dt>Version</dt><dd>1.0.1</dd></div><div class="row"><dt>Updated</dt><dd>Nov 4, 2026</dd></div><div class="row"><dt>Author</dt><dd>David Whitney</dd></div></dl>
         <div class="aside-links">
           <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=SimpleGraph&amp;title=%5BSimpleGraph%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
           <a href="../../#simplegraph">Comments &amp; upvotes in the catalog</a>

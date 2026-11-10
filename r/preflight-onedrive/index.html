@@ -4,19 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Preflight-OneDrive | Microsoft FastTrack</title>
-  <meta name="description" content="Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.">
+  <meta name="description" content="Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.">
   <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/preflight-onedrive/">
+  <meta name="robots" content="noindex">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Microsoft FastTrack">
   <meta property="og:title" content="Preflight-OneDrive">
-  <meta property="og:description" content="Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.">
+  <meta property="og:description" content="Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.">
   <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/preflight-onedrive/">
   <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og/preflight-onedrive.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Preflight-OneDrive">
-  <meta name="twitter:description" content="Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.">
+  <meta name="twitter:description" content="Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.">
   <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og/preflight-onedrive.png">
   <meta name="theme-color" content="#4f46e5">
   <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
@@ -27,7 +28,7 @@
   <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
   <link rel="stylesheet" href="../../assets/resource-page.css">
   <link rel="stylesheet" href="../../assets/site-footer.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Preflight-OneDrive","description":"Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.","url":"https://microsoft.github.io/FastTrack/r/preflight-onedrive/","datePublished":"2019-08-02","dateModified":"2019-08-02","version":"1.0.0","inLanguage":"en","keywords":"onedrive, migration","author":[{"@type":"Person","name":"Alejandro Lopez"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Preflight-OneDrive","description":"Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.","url":"https://microsoft.github.io/FastTrack/r/preflight-onedrive/","datePublished":"2019-08-02","dateModified":"2026-11-04","version":"1.0.1","inLanguage":"en","keywords":"onedrive, migration","author":[{"@type":"Person","name":"Alejandro Lopez"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
 </head>
 <body class="type-script">
   <header class="site-header">
@@ -50,23 +51,26 @@
     </nav>
 
     <section class="hero">
-      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell </div>
+      <div class="eyebrow"><span class="dot"></span>Scripts · PowerShell <span class="badge badge-archived">Archived</span></div>
       <h1>Preflight-OneDrive</h1>
-      <p class="lede">Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.</p>
+      <p class="lede">Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.</p>
       <div class="actions">
         <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/scripts/Preflight-OneDrive" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
-        <a class="btn" href="download/" aria-label="Download Preflight-OneDrive.ps1 (130 KB)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19h14"/></svg>Download<span class="btn-size">130 KB</span></a>
         <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/preflight-onedrive/">Copy link</button>
       </div>
       <div class="tags"><a class="tag" href="../../?tag=onedrive">onedrive</a><a class="tag" href="../../?tag=migration">migration</a></div>
     </section>
 
+    <p class="notice">This resource is archived and kept for reference. It is no longer actively maintained; check the README for a current alternative.</p>
+
     <div class="layout">
       <article>
-        <section class="block"><h2>What it is</h2><p>A PowerShell preflight scanner that checks a local folder or UNC path for potential OneDrive for Business synchronization issues.</p></section>
+        <section class="block"><h2>What it is</h2><p>An archived PowerShell preflight scanner retained for historical reference. Its embedded checker defaults to a 15 GB file-size limit that no longer reflects current OneDrive limits.</p></section>
         <section class="block"><h2>Why use it</h2><ul><li>Find problematic paths before deploying the OneDrive sync client.</li><li>Review results in the console or an optional HTML report.</li></ul></section>
-        <section class="block"><h2>How to use it</h2><p>Install the external dependencies, then run:</p>
-<pre><code>.\Preflight-OneDrive.ps1 -Path &quot;\\dc.contoso.com\smb&quot; -GenerateHTMLReport</code></pre></section>
+        <section class="block"><h2>How to use it</h2><p>Do not use this archived scanner for current readiness decisions. Review the</p>
+<p><a href="https://learn.microsoft.com/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-limits#service-limits-for-all-plans" target="_blank" rel="noopener noreferrer">current OneDrive and SharePoint limits</a>.</p>
+<p>For file-share migration assessment, use</p>
+<p><a href="https://learn.microsoft.com/sharepointmigration/mm-fileshare-scan-assess" target="_blank" rel="noopener noreferrer">Migration Manager scan and assessment reports</a>.</p></section>
         <section class="block"><h2>Prerequisites</h2><ul><li>EnhancedHTML2 module</li><li>Test-OneDrivePath function</li><li>Read access to the folder being scanned</li></ul></section>
         
     <section class="block related">
@@ -79,7 +83,7 @@
     </section>
       </article>
       <aside>
-        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.ps1 · PowerShell</dd></div><div class="row" id="viewsRow" hidden><dt>Views</dt><dd><span id="viewsValue"></span></dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Aug 2, 2019</dd></div><div class="row"><dt>Author</dt><dd>Alejandro Lopez</dd></div></dl>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Scripts</dd></div><div class="row"><dt>Category</dt><dd>PowerShell</dd></div><div class="row"><dt>Format</dt><dd>.ps1 · PowerShell</dd></div><div class="row" id="viewsRow" hidden><dt>Views</dt><dd><span id="viewsValue"></span></dd></div><div class="row"><dt>Version</dt><dd>1.0.1</dd></div><div class="row"><dt>Updated</dt><dd>Nov 4, 2026</dd></div><div class="row"><dt>Author</dt><dd>Alejandro Lopez</dd></div></dl>
         <div class="aside-links">
           <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=Preflight-OneDrive&amp;title=%5BPreflight-OneDrive%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
           <a href="../../#preflight-onedrive">Comments &amp; upvotes in the catalog</a>

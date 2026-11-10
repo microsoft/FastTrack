@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09",
+  "generatedAt": "2026-11-10",
   "count": 58,
   "resources": [
     {
@@ -1602,15 +1602,15 @@
       "preview": "copilot-agent-strategy/agent-365-technical-advisory/preview.webp",
       "download": "copilot-agent-strategy/agent-365-technical-advisory/Agent-365-Technical-Advisory.pdf",
       "downloadName": "Agent-365-Technical-Advisory.pdf",
-      "downloadSize": 836668,
+      "downloadSize": 1064772,
       "author": [
         "Carlos Suarez",
         "Alejandro Lopez"
       ],
-      "version": "1.0.2",
+      "version": "1.1.0",
       "published": "2026-10-28",
-      "updated": "2026-10-30",
-      "whatItIs": "A 19-page technical advisory for architects, identity, security, developer, and business leaders. It lays out an enterprise reference architecture and best practices for discovering, governing, securing, building, and measuring AI agents with Microsoft Agent 365, with 75 cited Microsoft Learn and Microsoft sources. This page wraps the PDF in a viewer so you can jump to any page.",
+      "updated": "2026-11-10",
+      "whatItIs": "A 19-page technical advisory for architects, identity, security, developer, and business leaders. It lays out an enterprise reference architecture and best practices for discovering, governing, securing, building, and measuring AI agents with Microsoft Agent 365, with 91 cited Microsoft Learn and Microsoft sources. This page wraps the PDF in a viewer so you can jump to any page.",
       "whyUseIt": [
         "See how every onboarding route converges on one governed inventory across Microsoft Entra, Purview, and Defender.",
         "Design agent identity, accountability, and lifecycle: blueprints per workload and environment, sponsors and owners, and retirement.",
@@ -1746,8 +1746,8 @@
       "type": "script",
       "subcategory": "PowerShell",
       "category": "PowerShell",
-      "description": "Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.",
-      "summary": "Scan a local or network folder for potential OneDrive for Business sync issues and optionally generate an HTML report.",
+      "description": "Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.",
+      "summary": "Archived OneDrive preflight scanner retained for reference. Use current OneDrive limits and Migration Manager assessment instead.",
       "tags": [
         "onedrive",
         "migration"
@@ -1755,20 +1755,17 @@
       "artifact": "ps1",
       "format": "ps1",
       "featured": false,
-      "status": "active",
-      "download": "scripts/Preflight-OneDrive/Preflight-OneDrive.ps1",
-      "downloadName": "Preflight-OneDrive.ps1",
-      "downloadSize": 132832,
+      "status": "archived",
       "author": "Alejandro Lopez",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2019-08-02",
-      "updated": "2019-08-02",
-      "whatItIs": "A PowerShell preflight scanner that checks a local folder or UNC path for potential OneDrive for Business synchronization issues.",
+      "updated": "2026-11-04",
+      "whatItIs": "An archived PowerShell preflight scanner retained for historical reference. Its embedded checker defaults to a 15 GB file-size limit that no longer reflects current OneDrive limits.",
       "whyUseIt": [
         "Find problematic paths before deploying the OneDrive sync client.",
         "Review results in the console or an optional HTML report."
       ],
-      "howToUse": "Install the external dependencies, then run:\n\n```powershell\n.\\Preflight-OneDrive.ps1 -Path \"\\\\dc.contoso.com\\smb\" -GenerateHTMLReport\n```",
+      "howToUse": "Do not use this archived scanner for current readiness decisions. Review the\n[current OneDrive and SharePoint limits](https://learn.microsoft.com/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-limits#service-limits-for-all-plans).\nFor file-share migration assessment, use\n[Migration Manager scan and assessment reports](https://learn.microsoft.com/sharepointmigration/mm-fileshare-scan-assess).",
       "prerequisites": [
         "EnhancedHTML2 module",
         "Test-OneDrivePath function",
@@ -1941,8 +1938,8 @@
       "type": "script",
       "subcategory": "PowerShell",
       "category": "PowerShell",
-      "description": "A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.",
-      "summary": "A lightweight PowerShell module for calling any Microsoft Graph endpoint with simple GET, POST, PATCH, and DELETE cmdlets.",
+      "description": "Archived Graph REST wrapper retained for reference. Use Microsoft Graph PowerShell and Invoke-MgGraphRequest instead.",
+      "summary": "Archived Graph REST wrapper retained for reference. Use Microsoft Graph PowerShell and Invoke-MgGraphRequest instead.",
       "tags": [
         "microsoft-graph",
         "powershell-module",
@@ -1952,18 +1949,18 @@
       "artifact": "ps1",
       "format": "ps1",
       "featured": false,
-      "status": "active",
+      "status": "archived",
       "author": "David Whitney",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "published": "2020-10-15",
-      "updated": "2022-01-20",
-      "whatItIs": "A single-file PowerShell module (SimpleGraph.psm1) that makes web calls to the Microsoft Graph REST API. It provides Connect-SimpleGraph for delegated, client-secret, or client-certificate sign-in through the MSAL.PS module, plus Get-, New-, Set-, and Remove-SimpleGraphObject, Invoke-SimpleGraphRequest, and Get-SimpleGraphReport for reading, creating, updating, deleting, sending custom calls, and pulling usage reports.",
+      "updated": "2026-11-04",
+      "whatItIs": "An archived single-file PowerShell module (SimpleGraph.psm1) for Microsoft Graph REST calls, retained for historical reference. It depends on the archived MSAL.PS project. Use the Microsoft Graph PowerShell SDK and Invoke-MgGraphRequest for new work.",
       "whyUseIt": [
         "Call any Graph endpoint without waiting for a matching Microsoft Graph PowerShell SDK cmdlet.",
         "Use the same few cmdlets for reads, creates, updates, deletes, and custom requests, with inline help for each.",
         "Pull Microsoft 365 usage reports from Graph, such as active user counts by workload for the last 7, 30, 90, or 180 days, as PowerShell objects."
       ],
-      "howToUse": "1. Install MSAL.PS (`Install-Module MSAL.PS`) and register an Entra application with the redirect URI `https://login.microsoftonline.com/common/oauth2/nativeclient` for delegated sign-in.\n2. Download `SimpleGraph.psm1` and import it, then connect with the scopes your calls need:\n\n   ```powershell\n   Import-Module \"C:\\Users\\you\\Scripts\\SimpleGraph.psm1\"\n   Connect-SimpleGraph -ClientId \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\" -TenantId \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\" -Scopes \"User.Read.All\", \"Group.Read.All\"\n   Get-SimpleGraphObject users/you@domain.com\n   ```",
+      "howToUse": "Use the [Microsoft Graph PowerShell SDK](https://learn.microsoft.com/powershell/microsoftgraph/installation)\ninstead. For endpoints without a dedicated cmdlet, use\n[Invoke-MgGraphRequest](https://learn.microsoft.com/powershell/module/microsoft.graph.authentication/invoke-mggraphrequest?view=graph-powershell-1.0).\nExisting SimpleGraph scripts need migration; this is not a drop-in replacement.",
       "prerequisites": [
         "MSAL.PS PowerShell module",
         "Microsoft Entra application registration (a client secret or certificate plus Graph application permissions for app-only use)",
