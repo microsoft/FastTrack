@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T06:03:58.082Z",
+  "generatedAt": "2026-11-10T06:04:32.431Z",
   "sources": {
     "views": "clarity+github-traffic",
     "downloads": "clarity",
@@ -11,8 +11,8 @@
       "viewsUniques": 0
     },
     "agent-365-enablement-checklist": {
-      "views": 62,
-      "viewsUniques": 33,
+      "views": 67,
+      "viewsUniques": 37,
       "downloads": 8,
       "upvotes": 1,
       "discussion": {
@@ -52,8 +52,8 @@
       "viewsUniques": 0
     },
     "autoreply-agent": {
-      "views": 79,
-      "viewsUniques": 50
+      "views": 81,
+      "viewsUniques": 51
     },
     "comparedocs": {
       "views": 1,
@@ -94,7 +94,7 @@
     },
     "ess-servicenow-itsm-get-request-details": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "ess-servicenow-itsm-get-user-requests": {
       "views": 1,
@@ -111,7 +111,7 @@
     },
     "export-engagenetworkdata": {
       "views": 1,
-      "viewsUniques": 1
+      "viewsUniques": 0
     },
     "export-m365copilotreports": {
       "views": 1,
@@ -135,15 +135,16 @@
     },
     "get-engagegroupinfo": {
       "views": 2,
-      "viewsUniques": 1
+      "viewsUniques": 1,
+      "downloads": 1
     },
     "get-groupsmembersmanagers": {
       "views": 1,
       "viewsUniques": 0
     },
     "get-m365copilotreadiness": {
-      "views": 6,
-      "viewsUniques": 4
+      "views": 8,
+      "viewsUniques": 6
     },
     "get-recurringteamsmeetings": {
       "views": 1,
@@ -157,7 +158,7 @@
       "viewsUniques": 0
     },
     "microsoft-agent-365-customer-implementation-guide": {
-      "views": 103,
+      "views": 104,
       "viewsUniques": 47,
       "downloads": 1,
       "upvotes": 1,
@@ -167,8 +168,8 @@
       }
     },
     "microsoft-agent-365-technical-advisory": {
-      "views": 43,
-      "viewsUniques": 20,
+      "views": 45,
+      "viewsUniques": 23,
       "downloads": 2,
       "upvotes": 1,
       "discussion": {
@@ -243,8 +244,8 @@
       "viewsUniques": 0
     },
     "viva-insights-copilot-dashboard": {
-      "views": 129,
-      "viewsUniques": 72,
+      "views": 130,
+      "viewsUniques": 74,
       "upvotes": 1,
       "discussion": {
         "number": 508,
