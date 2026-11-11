@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-10",
+  "lastRun": "2026-11-11",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -2246,9 +2246,13 @@
         "downloads": 0
       },
       "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
       },
       "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
       },
       "autoreply-agent": {
@@ -2256,7 +2260,17 @@
         "uniques": 0
       },
       "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
+      },
+      "delete-allcommunityposts": {
+        "views": 0,
+        "uniques": 0
+      },
+      "delete-engagegroups": {
+        "views": 0,
+        "uniques": 0
       },
       "delete-engageusers": {
         "downloads": 0
@@ -2293,9 +2307,16 @@
         "downloads": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
-        "views": 1
+        "views": 1,
+        "uniques": 1,
+        "downloads": 0
       },
       "microsoft-agent-365-technical-advisory": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
+      },
+      "productquote-agent": {
         "views": 0,
         "uniques": 0
       },
@@ -2303,6 +2324,8 @@
         "downloads": 0
       },
       "update-vivaengagelicensingtoggle": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
       },
       "viva-insights-copilot-dashboard": {
@@ -2313,18 +2336,34 @@
     "2026-11-10": {
       "agent-365-enablement-checklist": {
         "views": 5,
-        "uniques": 4,
+        "uniques": 3,
         "downloads": 0
       },
       "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
       },
       "autoreply-agent": {
         "views": 2,
-        "uniques": 1
+        "uniques": 0
       },
       "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
+      },
+      "delete-allcommunityposts": {
+        "views": 0,
+        "uniques": 0
+      },
+      "delete-engagegroups": {
+        "views": 0,
+        "uniques": 0
       },
       "delete-engageusers": {
         "downloads": 0
@@ -2348,23 +2387,83 @@
         "downloads": 1
       },
       "get-m365copilotreadiness": {
-        "views": 2,
-        "uniques": 2
+        "views": 2
       },
       "get-yammersitesize": {
         "downloads": 0
       },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
+      },
       "microsoft-agent-365-technical-advisory": {
         "views": 2,
-        "uniques": 2
+        "uniques": 2,
+        "downloads": 0
+      },
+      "productquote-agent": {
+        "views": 0,
+        "uniques": 0
       },
       "purview-audit-copilot-report": {
         "downloads": 0
       },
       "update-vivaengagelicensingtoggle": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
       },
       "viva-insights-copilot-dashboard": {
+        "views": 1
+      }
+    },
+    "2026-11-11": {
+      "agent-365-enablement-checklist": {
+        "views": 23,
+        "uniques": 13,
+        "downloads": 4
+      },
+      "agent-brainstorming-template": {
+        "views": 1,
+        "uniques": 1,
+        "downloads": 1
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0
+      },
+      "autoreply-agent": {
+        "views": 2,
+        "uniques": 1
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0
+      },
+      "delete-allcommunityposts": {
+        "views": 1,
+        "uniques": 1
+      },
+      "delete-engagegroups": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1,
+        "uniques": 1,
+        "downloads": 1
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 3,
+        "uniques": 3,
+        "downloads": 1
+      },
+      "productquote-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "update-vivaengagelicensingtoggle": {
         "views": 1,
         "uniques": 1
       }
