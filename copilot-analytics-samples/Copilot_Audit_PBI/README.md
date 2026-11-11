@@ -71,6 +71,8 @@ A Power BI dashboard for analyzing Microsoft 365 Copilot usage and adoption acro
 1. Download `Export-M365CopilotReports.ps1`.
 2. Run it in PowerShell and choose **Export Entra Users Details**.
    ![PowerShell menu](./Images/2025-03-27%2014_42_33-AlejanlDev.png)
+   - When prompted for an output location, press **Enter** to save in the current folder, or enter a **folder** or a full **`.csv` file path**. The export is always a `.csv` named `EntraUsersExport_<timestamp>.csv`.
+   - A `EntraUsersExport_Log_<timestamp>.log` transcript is written to the current folder as well. **Do not point Power BI at the `.log` file** — it will fail with *"The column 'DisplayName' of the table wasn't found"*. If no `.csv` was produced, the script says so; check the `.log` for the reason (for example, a Graph permission or connection error).
 3. The script checks for required modules (`Microsoft.Graph`, `ExchangeOnlineManagement`) and offers to install them if missing.
 
 ### Step 3: Load into Power BI
@@ -184,6 +186,9 @@ Please report issues to the [issues list](../../../../issues). This is an open-s
 | Alejandro Lopez (alejandro.lopez@microsoft.com) | March 26th, 2025 | April 21st, 2026 |
 
 ## 📝 Changelog
+
+### November 10, 2026
+- **Fixed Entra users export producing only a `.log` file.** Entering a folder, a quoted path (e.g. from *Copy as path*), or a path without a `.csv` extension at the output prompt made the CSV write fail, leaving only the transcript `.log` in the current folder. `Export-M365CopilotReports.ps1` now accepts a folder or `.csv` file path, strips quotes, expands environment variables, creates missing folders, forces a `.csv` extension, and reports clearly when no CSV was created. ([#590](../../../../issues/590))
 
 ### July 20, 2026
 - **Updated `Copilot_Audit_PBI.pbix`.** The dashboard now detects the GCC Copilot SKU (`COPILOT_FOR_MICROSOFT_365_GCC`) alongside Commercial, and the `IsCopilotChat` classification is gated on `UserType = "Member"` and `AccountEnabled = true` so GCC premium users, guests, and disabled accounts are no longer mislabeled as Chat users.
