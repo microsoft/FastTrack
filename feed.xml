@@ -5,7 +5,14 @@
   <subtitle>The 20 most recently updated tools, guides, agents, and scripts in the FastTrack catalog.</subtitle>
   <link href="https://microsoft.github.io/FastTrack/feed.xml" rel="self"/>
   <link href="https://microsoft.github.io/FastTrack/"/>
-  <updated>2026-11-09T00:00:00Z</updated>
+  <updated>2026-11-10T00:00:00Z</updated>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/</id>
+    <title>Microsoft Agent 365 Technical Advisory (v1.1.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/"/>
+    <updated>2026-11-10T00:00:00Z</updated>
+    <summary>Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.</summary>
+  </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/</id>
     <title>Agent 365 Enablement Checklist (v1.0.4)</title>
@@ -26,13 +33,6 @@
     <link href="https://microsoft.github.io/FastTrack/r/agents-cost-calculator/"/>
     <updated>2026-10-30T00:00:00Z</updated>
     <summary>Estimate production, test, and purchase-commitment costs for Copilot Studio, Agent Builder, SharePoint, and Foundry agents.</summary>
-  </entry>
-  <entry>
-    <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/</id>
-    <title>Microsoft Agent 365 Technical Advisory (v1.0.2)</title>
-    <link href="https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/"/>
-    <updated>2026-10-30T00:00:00Z</updated>
-    <summary>Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.</summary>
   </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/export-copilotinteractions/</id>

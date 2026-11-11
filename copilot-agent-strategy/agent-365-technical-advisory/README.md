@@ -6,9 +6,9 @@ summary: "Reference architecture and best practices to discover, govern, secure,
 author:
   - "Carlos Suarez"
   - "Alejandro Lopez"
-version: 1.0.2
+version: 1.1.0
 published: 2026-10-28
-updated: 2026-10-30
+updated: 2026-11-10
 tags:
   - agent-365
   - architecture
@@ -24,7 +24,7 @@ status: active
 whatItIs: >-
   A 19-page technical advisory for architects, identity, security, developer, and business leaders.
   It lays out an enterprise reference architecture and best practices for discovering, governing,
-  securing, building, and measuring AI agents with Microsoft Agent 365, with 75 cited Microsoft
+  securing, building, and measuring AI agents with Microsoft Agent 365, with 91 cited Microsoft
   Learn and Microsoft sources. This page wraps the PDF in a viewer so you can jump to any page.
 whyUseIt:
   - "See how every onboarding route converges on one governed inventory across Microsoft Entra, Purview, and Defender."
@@ -59,7 +59,7 @@ The advisory is organized into five themes:
 
 ## Current version
 
-Version `v20260930`. The change log on the last page of the PDF lists what changed in each version, who updated it, and whose feedback shaped it.
+Version `v20261110`. The change log on the last page of the PDF lists what changed in each version, who updated it, and whose feedback shaped it.
 
 ## Companion resources
 
