@@ -7,6 +7,10 @@ When pool draw is off, an environment can only consume the Copilot Credits expli
 allocated to it. With an allocation of 0, agents in that environment cannot consume
 Copilot Credits at all until credits are allocated or pool draw is turned back on.
 
+> **Getting started:** check the [Requirements](#requirements) (including the Copilot Managed
+> Runtime spending policy), then upload this zip to the Copilot app's **Code** tab together with
+> the prompt in [Running it](#running-it). Copilot builds the app in your tenant from it.
+
 ## What it does
 
 - Lists every environment you can administer, with its environment group, type, and current
@@ -79,10 +83,34 @@ Reference: Microsoft Learn, *Manage Copilot Credits allocations programmatically
 
 ## Requirements
 
+**To run the app**
+
 - A Power Platform administrator (or a role allowed to manage capacity allocations).
 - The **Power Platform for Admins V2** connector must be allowed by the data policies **and**
   any environment-group **advanced connector policies** that apply to the environment hosting
   the app. Policy changes can take a while to apply at runtime.
+- A **Copilot Managed Runtime spending policy**. Apps on Copilot Managed Runtime are billed in
+  Copilot Credits. Each person who opens the app needs either a Power Apps Premium license or a
+  spending policy that includes **Copilot Managed Runtime**. Set this up in the
+  **Microsoft 365 admin center → Copilot → Cost management**:
+  1. Turn on usage-based billing (pick a billing method, e.g. pay-as-you-go through an Azure
+     subscription or prepaid capacity).
+  2. Add a spending policy that includes **Copilot Managed Runtime** and covers the admins who
+     will use this app (all users or a security group), with a monthly per-user limit.
+
+  Creating spending policies needs the **Global Administrator** or **Billing Administrator**
+  role. A spending policy is a limit, not a purchase: you pay only for what is used.
+
+**To build it in your tenant (Copilot Code)**
+
+- A Microsoft Copilot license for the person building it, plus Copilot Credits through a
+  spending policy that includes **Copilot Code**.
+
+> The spending policy pays for *running this app*. It's separate from the per-environment
+> Copilot Credits allocations that the app turns on and off.
+
+Reference: Microsoft Learn, *Manage licensing and Copilot Credits for apps on Copilot Managed
+Runtime*.
 
 ## Project structure
 
@@ -95,14 +123,38 @@ Reference: Microsoft Learn, *Manage Copilot Credits allocations programmatically
 
 ## Running it
 
-This app was built as a **Microsoft 365 Copilot App Builder** (managed) app. It uses the
-`@microsoft/managed-apps` runtime to call the connector, so connector calls only work when it
-is hosted by that runtime with a connection to Power Platform for Admins V2 in your
-environment. It is not a standalone website. Running `npm install && npm run build` compiles
-it, but the connector calls need the managed host.
+This is a **Copilot Managed Runtime** app (built with App Builder in the Copilot Code tab). It
+isn't a standalone website: the connector calls only work when the runtime hosts the app with
+a connection to Power Platform for Admins V2 in your environment. 
 
-To deploy it in your tenant, import or rebuild it as an App Builder app, bind the
-**Power Platform for Admins V2** connector, and sign in to the connection.
+**To set it up, upload this zip to the Copilot app's Code tab and send the prompt below with
+it.** Complete the [Requirements](#requirements) first.
+
+```text
+I've attached tenant-pool-draw-control.zip. Use it to build this app in my tenant as a new
+App Builder (Copilot Managed Runtime) app.
+
+1. Create a new app called "Tenant Pool Draw Control".
+2. Copy everything under src/ from the zip into the new app. Do NOT copy generated/ or
+   ms.config.json from the zip; those hold placeholders and must come from my environment.
+   Don't change the protected scaffold files.
+3. Bind the "Power Platform for Admins V2" connector (shared_powerplatformadminv2) with these
+   actions: ListEnvironmentsForUser, ListAllocationsByEnvironment, GetAllocationsByEnvironment,
+   PutAllocationsV2 and ListEnvironmentGroups. Then create a connection and let me sign in.
+4. Use the live API only. No sample or mock data.
+5. Check the reads work: list environments, list allocations and list environment groups.
+   A 404 from GetAllocationsByEnvironment is normal for an environment with no allocation
+   (treat it as 0 credits, drawing from the pool).
+6. If any call fails with a 442 / data-policy or connector-policy error, stop and tell me.
+   That means a DLP policy or environment-group advanced connector policy is blocking the
+   connector, and I need to fix it in the Power Platform admin center.
+7. Fix any type errors so it compiles, then publish the app and give me the link.
+8. Don't make any changes to environments. I'll test turning pool draw off on one
+   non-production environment myself first.
+```
+
+When it's published, test on one non-production environment and check the change log says
+**Confirmed** before you use the bulk options.
 
 ## Testing status
 
