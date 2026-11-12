@@ -9,7 +9,7 @@
 # - Interactive startup menu
 
 # Author: Alejandro Lopez | alejandro.lopez@microsoft.com
-# Version: v20260714
+# Version: v20261110
 
 # Global configuration
 $script:Config = @{
@@ -117,6 +117,62 @@ function Get-LogPath {
     return Get-OutputPath -BaseName "${BaseName}_Log" -Extension "log" -CreateDirectory
 }
 
+# Function to turn a user-supplied location into a full .csv file path.
+# Accepts a blank value (default folder), a folder (existing, trailing slash, or no extension),
+# or a file path. Surrounding quotes (e.g. from "Copy as path") and %ENVVARS% are handled, the
+# folder is created if missing, and a non-.csv extension is replaced so a CSV is always produced.
+function Resolve-CsvOutputPath {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string]$Path,
+
+        [Parameter(Mandatory = $true)]
+        [string]$BaseName,
+
+        [Parameter(Mandatory = $false)]
+        [string]$DefaultDirectory = $script:Config.DefaultOutputDirectory
+    )
+
+    $defaultFileName = "{0}_{1}.csv" -f $BaseName, (Get-Date -Format 'yyyyMMdd_HHmmss')
+    $cleanPath = if ($Path) { $Path -replace '^[\s"'']+|[\s"'']+$', '' } else { '' }
+
+    if ([string]::IsNullOrWhiteSpace($cleanPath)) {
+        $directory = $DefaultDirectory
+        $filePath = Join-Path -Path $directory -ChildPath $defaultFileName
+    }
+    else {
+        $cleanPath = [System.Environment]::ExpandEnvironmentVariables($cleanPath)
+        if ($cleanPath.IndexOfAny([System.IO.Path]::GetInvalidPathChars()) -ge 0) {
+            throw "The path contains invalid characters."
+        }
+        $fullPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($cleanPath)
+        $isFolder = (Test-Path -LiteralPath $fullPath -PathType Container) -or
+            $cleanPath.EndsWith('\') -or $cleanPath.EndsWith('/') -or
+            [string]::IsNullOrEmpty([System.IO.Path]::GetExtension($fullPath))
+
+        if ($isFolder) {
+            $directory = $fullPath
+            $filePath = Join-Path -Path $directory -ChildPath $defaultFileName
+        }
+        else {
+            $directory = Split-Path -Path $fullPath -Parent
+            $filePath = $fullPath
+            if ([System.IO.Path]::GetExtension($filePath) -ne '.csv') {
+                $filePath = [System.IO.Path]::ChangeExtension($filePath, '.csv')
+                Write-Host "Output file must be a .csv file. Using: $filePath" -ForegroundColor Yellow
+            }
+        }
+    }
+
+    if (-not (Test-Path -LiteralPath $directory -PathType Container)) {
+        New-Item -Path $directory -ItemType Directory -Force | Out-Null
+        Write-Host "Created output directory: $directory" -ForegroundColor Green
+    }
+
+    return $filePath
+}
+
 # Function to connect to Microsoft Graph
 function Connect-ToMicrosoftGraph {
     [CmdletBinding()]
@@ -208,10 +264,12 @@ function Export-EntraUsersDetails {
     )
     
     # Generate consistent output paths
-    $outputFilePath = if ([string]::IsNullOrWhiteSpace($OutputPath)) {
-        Get-OutputPath -BaseName "EntraUsersExport" -CreateDirectory
-    } else {
-        $OutputPath
+    try {
+        $outputFilePath = Resolve-CsvOutputPath -Path $OutputPath -BaseName "EntraUsersExport"
+    }
+    catch {
+        Write-Host "Invalid output path '$OutputPath': $_" -ForegroundColor Red
+        return
     }
     
     $logFilePath = if ([string]::IsNullOrWhiteSpace($LogPath)) {
@@ -223,6 +281,7 @@ function Export-EntraUsersDetails {
     # Start logging
     Start-Transcript -Path $logFilePath -Append
     Write-Host "Starting Entra user export process. Log file: $logFilePath" -ForegroundColor Cyan
+    Write-Host "CSV output file: $outputFilePath" -ForegroundColor Cyan
     
     if (-not (Connect-ToMicrosoftGraph)) {
         Write-Host "Cannot proceed with export. Microsoft Graph connection failed." -ForegroundColor Red
@@ -376,7 +435,7 @@ function Export-EntraUsersDetails {
         Write-Progress @progressParams
         
         # Export to CSV
-        $userDetails | Export-Csv -Path $outputFilePath -NoTypeInformation
+        $userDetails | Export-Csv -Path $outputFilePath -NoTypeInformation -ErrorAction Stop
         
         # Complete progress bar
         Write-Progress -Activity "Exporting Entra User Details" -Completed
@@ -388,6 +447,7 @@ function Export-EntraUsersDetails {
     }
     catch {
         Write-Host "Error exporting Entra users: $_" -ForegroundColor Red
+        Write-Host "No CSV file was created. Review the log file for details: $logFilePath" -ForegroundColor Red
     }
     finally {
         Stop-Transcript
@@ -1042,7 +1102,7 @@ function Show-MainMenu {
             # Entra Users Export
             Clear-Host
             Write-Host "Entra Users Export:" -ForegroundColor Cyan
-            $outputPath = Read-Host "Enter output path (leave blank for default)"
+            $outputPath = Read-Host "Enter output folder or .csv file path (leave blank for default: $($script:Config.DefaultOutputDirectory))"
             
             if ([string]::IsNullOrWhiteSpace($outputPath)) {
                 Export-EntraUsersDetails
