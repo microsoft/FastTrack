@@ -38,7 +38,25 @@ export interface PoolSetting {
   allocated: number;
   /** null = no explicit TenantPool rule; the default lets the environment draw. */
   tenantPoolEnabled: boolean | null;
+  /** False when a record exists but its allocated quantity isn't a usable number: never write from it. */
+  complete: boolean;
+  /** Every Copilot Credits enforcement rule exactly as read (e.g. TenantPool, Alert with its ruleData). */
+  rules: EnforcementRule[];
+  /** Canonical form of all allocations except the TenantPool flag, to prove a write changed nothing else. */
+  fingerprint: string;
 }
+
+/** A rule as returned by the API; extra fields such as ruleData are kept so they are sent back unchanged. */
+export type EnforcementRule = { ruleType?: string; enabled?: boolean } & Record<string, unknown>;
+
+export const NO_RECORD: PoolSetting = {
+  hasRecord: false,
+  allocated: 0,
+  tenantPoolEnabled: null,
+  complete: true,
+  rules: [],
+  fingerprint: "[]",
+};
 
 export const drawsFromPool = (s: PoolSetting | undefined) => s?.tenantPoolEnabled !== false;
 
@@ -89,14 +107,50 @@ export async function fetchEnvironmentPage(skip: number | undefined): Promise<En
 const isCopilotCredits = (c: CurrencyAllocationModel) =>
   typeof c.currencyType === "string" && c.currencyType.toLowerCase() === COPILOT_CREDITS.toLowerCase();
 
+/** Sort object keys (and rule/allocation lists) so two reads of the same data compare equal. */
+function canonical(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    const items = value.map(canonical);
+    return items.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+  }
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const key of Object.keys(value as Record<string, unknown>).sort()) {
+      out[key] = canonical((value as Record<string, unknown>)[key]);
+    }
+    return out;
+  }
+  return value;
+}
+
+/** Everything in the record except the TenantPool flag on Copilot Credits. */
+function fingerprintOf(model: AllocationByEnvironmentModel | undefined): string {
+  const list = Array.isArray(model?.currencyAllocations) ? model.currencyAllocations : [];
+  const stripped = list.map((c) => {
+    if (!isCopilotCredits(c)) return c;
+    const rules = (c.enforcementRules ?? []).filter((r) => r?.ruleType !== TENANT_POOL);
+    return { ...c, enforcementRules: rules };
+  });
+  return JSON.stringify(canonical(stripped));
+}
+
+const isRule = (r: unknown): r is EnforcementRule => !!r && typeof r === "object" && !Array.isArray(r);
+
 export function toPoolSetting(model: AllocationByEnvironmentModel | undefined): PoolSetting {
   const credits = model?.currencyAllocations?.find(isCopilotCredits);
-  if (!credits) return { hasRecord: false, allocated: 0, tenantPoolEnabled: null };
-  const rule = credits.enforcementRules?.find((r) => r.ruleType === TENANT_POOL);
+  if (!credits) return NO_RECORD;
+  const rawRules: unknown = credits.enforcementRules;
+  const rulesOk = rawRules === undefined || (Array.isArray(rawRules) && rawRules.every(isRule));
+  const rules = rulesOk ? ((rawRules as EnforcementRule[] | undefined) ?? []).map((r) => ({ ...r })) : [];
+  const rule = rules.find((r) => r.ruleType === TENANT_POOL);
+  const allocatedOk = typeof credits.allocated === "number" && Number.isFinite(credits.allocated) && credits.allocated >= 0;
   return {
     hasRecord: true,
-    allocated: typeof credits.allocated === "number" ? credits.allocated : 0,
+    allocated: allocatedOk ? (credits.allocated as number) : 0,
     tenantPoolEnabled: typeof rule?.enabled === "boolean" ? rule.enabled : null,
+    complete: allocatedOk && rulesOk,
+    rules,
+    fingerprint: fingerprintOf(model),
   };
 }
 
@@ -135,22 +189,32 @@ export async function readPoolSetting(environmentId: string): Promise<PoolSettin
   if (!result.success) {
     // 404 = the environment has never had an allocation: zero credits, default pool draw.
     const status = (result.error as { status?: unknown } | undefined)?.status;
-    if (status === 404) return { hasRecord: false, allocated: 0, tenantPoolEnabled: null };
+    if (status === 404) return NO_RECORD;
     logConnectorFailure("PowerPlatformforAdminsV2Service.GetAllocationsByEnvironment", "action", result.error);
     throw result.error;
   }
   return toPoolSetting(result.data);
 }
 
-/** Request body sent per environment: PUT /licensing/allocationsV2 (keeps the current allocation). */
-export function allocationPutBody(environmentId: string, allocated: number, enabled: boolean) {
+/**
+ * Request body sent per environment: PUT /licensing/allocationsV2.
+ * Sends back the current allocation and every existing rule (e.g. Alert with its ruleData) unchanged,
+ * and only sets the TenantPool flag. Verified against the live API:
+ * - A rule-only PUT is accepted with 200 OK but not applied, so the quantity must be included.
+ * - The PATCH UpdateAllocationsByEnvironment is NOT a partial update: a rule-only PATCH reset the
+ *   allocation to 0 and removed the other rules. Don't use it.
+ * - PatchCurrencyAllocationByEnvironment (v1) only accepts quantities, not enforcement rules.
+ */
+export function allocationPutBody(environmentId: string, current: PoolSetting, enabled: boolean) {
+  const rules: EnforcementRule[] = current.rules.map((r) => (r.ruleType === TENANT_POOL ? { ...r, enabled } : { ...r }));
+  if (!rules.some((r) => r.ruleType === TENANT_POOL)) rules.unshift({ ruleType: TENANT_POOL, enabled });
   return {
     scope: { environmentId },
     allocatedEntitlements: [
       {
         entitlementId: COPILOT_CREDITS,
-        allocation: { quantity: allocated },
-        enforcementRules: [{ ruleType: TENANT_POOL, enabled }],
+        allocation: { quantity: current.allocated },
+        enforcementRules: rules,
       },
     ],
   };
@@ -161,6 +225,10 @@ export type WriteOutcome =
   | { kind: "locked" }
   | { kind: "unconfirmed" }
   | { kind: "mismatch" }
+  /** The current record couldn't be read reliably, so nothing was sent. */
+  | { kind: "incomplete" }
+  /** Pool draw changed, but something else in the allocation changed too. */
+  | { kind: "sideEffect" }
   | { kind: "failed"; error: unknown };
 
 const mentionsLock = (error: unknown) => {
@@ -168,7 +236,10 @@ const mentionsLock = (error: unknown) => {
   return typeof msg === "string" && msg.includes("TenantPoolLockedByPolicy");
 };
 
-/** Set the TenantPool rule, keeping the environment's current Copilot Credits allocation, then read it back. */
+/**
+ * Set the TenantPool rule, keeping the environment's current allocation and other rules, then read it
+ * back and check that only the TenantPool flag changed.
+ */
 export async function setTenantPool(environmentId: string, enabled: boolean): Promise<WriteOutcome> {
   let current: PoolSetting;
   try {
@@ -176,9 +247,11 @@ export async function setTenantPool(environmentId: string, enabled: boolean): Pr
   } catch (error) {
     return { kind: "failed", error };
   }
+  if (!current.complete) return { kind: "incomplete" };
   const result = await PowerPlatformforAdminsV2Service.PutAllocationsV2(
     LICENSING_API_VERSION,
-    allocationPutBody(environmentId, current.allocated, enabled),
+    // The generated request type omits extra rule fields such as ruleData; they are sent through unchanged.
+    allocationPutBody(environmentId, current, enabled) as Parameters<typeof PowerPlatformforAdminsV2Service.PutAllocationsV2>[1],
   );
   if (!result.success) {
     if (mentionsLock(result.error)) return { kind: "locked" };
@@ -188,6 +261,11 @@ export async function setTenantPool(environmentId: string, enabled: boolean): Pr
   try {
     const after = await readPoolSetting(environmentId);
     if (drawsFromPool(after) !== enabled) return { kind: "mismatch" };
+    // A brand-new record (404 before) has nothing to compare against except a zero allocation.
+    const keptOther = current.hasRecord
+      ? after.fingerprint === current.fingerprint
+      : after.allocated === current.allocated;
+    if (!keptOther) return { kind: "sideEffect" };
     return { kind: "updated", setting: after };
   } catch {
     return { kind: "unconfirmed" };

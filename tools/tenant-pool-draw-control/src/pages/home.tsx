@@ -20,6 +20,7 @@ import { ConnectorErrorState, EmptyState, LoadingState } from "@/components/stat
 import { cn } from "@/lib/utils";
 import {
   allocationPutBody,
+  NO_RECORD,
   drawsFromPool,
   fetchAllPoolSettings,
   fetchEnvironmentPage,
@@ -59,6 +60,10 @@ function outcomeDetail(outcome: Awaited<ReturnType<typeof setTenantPool>>): stri
       return "Change sent, but the read-back failed";
     case "mismatch":
       return "Read-back still shows the previous setting";
+    case "incomplete":
+      return "Current allocation couldn't be read reliably, so nothing was sent";
+    case "sideEffect":
+      return "Pool draw changed, but other allocation settings changed too. Check this environment";
     default:
       return undefined;
   }
@@ -71,7 +76,6 @@ interface PendingChange {
 
 const CONNECTOR = "Power Platform for Admins V2";
 const nf = new Intl.NumberFormat("en-US");
-const NO_RECORD: PoolSetting = { hasRecord: false, allocated: 0, tenantPoolEnabled: null };
 
 const TONE = {
   drawing: "border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100",
@@ -621,7 +625,7 @@ export function HomePage() {
                     <CollapsibleContent>
                       <pre className="mt-2 overflow-x-auto rounded-md bg-muted p-3 font-mono text-xs">
 {`PUT /licensing/allocationsV2?api-version=2024-10-01
-${JSON.stringify(allocationPutBody(pending.targets[0].environmentId, settingFor(pending.targets[0].environmentId).allocated, pending.action === "enable"), null, 2)}`}
+${JSON.stringify(allocationPutBody(pending.targets[0].environmentId, settingFor(pending.targets[0].environmentId), pending.action === "enable"), null, 2)}`}
                       </pre>
                     </CollapsibleContent>
                   </Collapsible>

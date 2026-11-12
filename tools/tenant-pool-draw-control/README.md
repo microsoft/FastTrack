@@ -57,7 +57,9 @@ All calls go through the **Power Platform for Admins V2** connector
 | Change pool draw | `PutAllocationsV2` | `PUT /licensing/allocationsV2?api-version=2024-10-01` |
 | Group names | `ListEnvironmentGroups` | `GET /environmentmanagement/environmentGroups?api-version=2024-10-01` |
 
-Request body used to turn pool draw off (the current allocation quantity is kept):
+Request body used to turn pool draw off. The app first reads the environment's current
+allocation and sends it back unchanged: the same quantity and every existing rule (for example an
+**Alert** rule with its `ruleData`). Only the `TenantPool` flag changes:
 
 ```json
 {
@@ -65,17 +67,34 @@ Request body used to turn pool draw off (the current allocation quantity is kept
   "allocatedEntitlements": [
     {
       "entitlementId": "MCSMessages",
-      "allocation": { "quantity": 0 },
-      "enforcementRules": [{ "ruleType": "TenantPool", "enabled": false }]
+      "allocation": { "quantity": 5000 },
+      "enforcementRules": [
+        { "ruleType": "TenantPool", "enabled": false },
+        { "ruleType": "Alert", "enabled": false, "ruleData": {} }
+      ]
     }
   ]
 }
 ```
 
+After each change the app reads the environment back and marks it **Confirmed** only if pool draw
+has the new value **and** everything else in the allocation record (quantities and other rules) is
+unchanged. If the current record can't be read reliably, nothing is sent.
+
 Notes:
 
-- An environment that has never had an allocation returns **404** on the single-environment
-  read. The app treats that as "0 credits, drawing from the pool" (the platform default).
+- There's no API call that changes only the pool-draw setting, so the app reads the current record
+  and sends it back with just that flag changed. Tested against the live API:
+  - A `PUT allocationsV2` with only the `TenantPool` rule is accepted with **200 OK** but not
+    applied, so `allocation.quantity` must be included.
+  - `PATCH /licensing/allocationsByEnvironment` (`UpdateAllocationsByEnvironment`) is **not** a
+    partial update: a rule-only PATCH reset the allocation to **0** and removed the other rules.
+    Don't use it for this.
+  - `PATCH /licensing/environments/{id}/allocations` only accepts credit quantities, not rules.
+- An environment with **no allocation record** (never configured) returns **404** on the
+  single-environment read. The app treats it as the platform default: 0 credits, drawing from the
+  pool. An environment with 0 credits **and** pool draw turned off has a record
+  (`allocated: 0`, `enabled: false`) and is shown as not drawing.
 - If an environment-group rule controls the setting, the update fails with
   `TenantPoolLockedByPolicy`.
 
@@ -125,7 +144,8 @@ Runtime*.
 
 This is a **Copilot Managed Runtime** app (built with App Builder in the Copilot Code tab). It
 isn't a standalone website: the connector calls only work when the runtime hosts the app with
-a connection to Power Platform for Admins V2 in your environment. 
+a connection to Power Platform for Admins V2 in your environment. `npm install && npm run build`
+compiles it, but that alone won't make it work.
 
 **To set it up, upload this zip to the Copilot app's Code tab and send the prompt below with
 it.** Complete the [Requirements](#requirements) first.
@@ -158,12 +178,17 @@ When it's published, test on one non-production environment and check the change
 
 ## Testing status
 
-Verified against a live tenant: listing environments and groups, reading allocations
-(including environments with no allocation), and turning pool draw off on two environments
-with the change confirmed by read-back.
+Verified against a live tenant:
 
-Not yet verified: environments that also have allocations of other credit types. Test on one
-such environment before bulk use, to confirm those allocations are kept.
+- Listing environments and groups, and reading allocations (including environments with no
+  allocation record).
+- Turning pool draw off on environments with no allocation, confirmed by read-back.
+- Turning pool draw off on an environment with **5,000 credits and an Alert rule**: the credits
+  and the Alert rule were kept, and only pool draw changed.
+
+Not yet verified: environments that also have allocations of **other credit types** (not just
+Copilot Credits). The app checks for this on every change and won't report **Confirmed** if
+anything else changed, but test on one such environment before bulk use.
 
 ## Disclaimer
 
