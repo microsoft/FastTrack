@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-11",
+  "lastRun": "2026-11-12",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -2374,6 +2374,9 @@
       "export-engagefiles": {
         "downloads": 0
       },
+      "export-engagenetworkdata": {
+        "downloads": 0
+      },
       "export-m365copilotreports": {
         "downloads": 0
       },
@@ -2387,7 +2390,8 @@
         "downloads": 1
       },
       "get-m365copilotreadiness": {
-        "views": 2
+        "views": 2,
+        "uniques": 2
       },
       "get-yammersitesize": {
         "downloads": 0
@@ -2421,12 +2425,11 @@
     "2026-11-11": {
       "agent-365-enablement-checklist": {
         "views": 23,
-        "uniques": 13,
+        "uniques": 11,
         "downloads": 4
       },
       "agent-brainstorming-template": {
         "views": 1,
-        "uniques": 1,
         "downloads": 1
       },
       "agents-cost-calculator": {
@@ -2434,20 +2437,24 @@
         "uniques": 0
       },
       "autoreply-agent": {
-        "views": 2,
-        "uniques": 1
+        "views": 2
       },
       "copilot-agents-guide": {
         "views": 0,
         "uniques": 0
       },
       "delete-allcommunityposts": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "delete-engagegroups": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
+      },
+      "export-engagenetworkdata": {
+        "downloads": 0
+      },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 1,
@@ -2461,11 +2468,43 @@
       },
       "productquote-agent": {
         "views": 1,
-        "uniques": 1
+        "uniques": 0
       },
       "update-vivaengagelicensingtoggle": {
+        "views": 1
+      }
+    },
+    "2026-11-12": {
+      "agent-365-enablement-checklist": {
+        "views": 8,
+        "uniques": 7
+      },
+      "agents-cost-calculator": {
         "views": 1,
         "uniques": 1
+      },
+      "copilot-agents-guide": {
+        "views": 2,
+        "uniques": 1
+      },
+      "export-engagenetworkdata": {
+        "downloads": 1
+      },
+      "get-m365copilotreadiness": {
+        "views": 2,
+        "uniques": 2
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 2,
+        "uniques": 2
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 2,
+        "uniques": 2
+      },
+      "productquote-agent": {
+        "views": 3,
+        "uniques": 2
       }
     }
   }
