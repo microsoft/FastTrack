@@ -101,28 +101,8 @@ is hosted by that runtime with a connection to Power Platform for Admins V2 in y
 environment. It is not a standalone website. Running `npm install && npm run build` compiles
 it, but the connector calls need the managed host.
 
-To deploy it in your tenant type the following prompt into cowork. Note you must have copilot managed runtime enabled in usage based billing.
-
-I've attached tenant-pool-draw-control.zip. It's the source code of an App Builder app called
-"Tenant Pool Draw Control". It lists the Power Platform environments I administer and turns off
-"Draw from the available capacity in my tenant" (Copilot Credits / MCSMessages, TenantPool
-enforcement rule) for one or many environments at once. Read the README in the zip first.
-Recreate this app in my environment as a new App Builder app:
-Create a new app named "Tenant Pool Draw Control" and copy over the app code from the zip:
-src/ (especially src/lib/pool-api.ts, src/lib/connector-safety.ts, src/pages/home.tsx,
-src/data/environments.ts, src/components/app-shell.tsx, src/index.css).
-Do NOT copy generated/ or ms.config.json from the zip. Those must be created for my
-environment.
-Bind the "Power Platform for Admins V2" connector (shared_powerplatformadminv2) with its
-actions, so the connector client is generated for my environment. Then create a connection
-and give me the sign-in link.
-Use the live API only. No sample or mock data.
-Once I've signed in, verify with live reads that environments, environment groups and Copilot
-Credits allocations load. An environment that has never had an allocation returns 404 on the
-single-environment read, and the app should treat that as "0 credits, drawing from the pool".
-When the test passes, publish the app.
-If a call fails with a data loss prevention / connector policy error (HTTP 442), stop and tell me
-which policy to change. Don't work around it.
+To deploy it in your tenant, import or rebuild it as an App Builder app, bind the
+**Power Platform for Admins V2** connector, and sign in to the connection.
 
 ## Testing status
 
