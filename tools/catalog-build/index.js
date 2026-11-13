@@ -15,6 +15,7 @@ const folderRoots = [
   'scripts',
   'samples',
   'tools/SimpleGraph',
+  'tools/tenant-pool-draw-control',
   'copilot-agent-samples/copilot-studio-agents',
   'copilot-agent-samples/agent-builder-agents',
   'copilot-agent-samples/github-copilot-agents',

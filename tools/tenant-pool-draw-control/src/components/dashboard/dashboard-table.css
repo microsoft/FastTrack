@@ -1,0 +1,35 @@
+/* DashboardTable rule tones, chosen for WCAG AA on their tinted cell (red-700,
+   not --destructive, which measures 3.97:1 in light mode). The dark values
+   follow a `.dark` ancestor and the OS dark preference, as index.css's tokens do:
+   Tailwind's `dark:` variant here follows the `.dark` class only. */
+.dashboard-tone-good {
+  color: oklch(50.8% 0.118 165.612);
+}
+.dashboard-tone-warn {
+  color: oklch(47.3% 0.137 46.201);
+}
+.dashboard-tone-bad {
+  color: oklch(50.5% 0.213 27.518);
+}
+
+.dark .dashboard-tone-good {
+  color: oklch(76.5% 0.177 163.223);
+}
+.dark .dashboard-tone-warn {
+  color: oklch(87.9% 0.169 91.605);
+}
+.dark .dashboard-tone-bad {
+  color: oklch(80.8% 0.114 19.571);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .dashboard-tone-good:not(.light *) {
+    color: oklch(76.5% 0.177 163.223);
+  }
+  :root:not(.light) .dashboard-tone-warn:not(.light *) {
+    color: oklch(87.9% 0.169 91.605);
+  }
+  :root:not(.light) .dashboard-tone-bad:not(.light *) {
+    color: oklch(80.8% 0.114 19.571);
+  }
+}
