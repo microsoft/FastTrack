@@ -1,3 +1,41 @@
+---
+title: Tenant Pool Draw Control
+type: script
+category: Copilot Managed Runtime
+summary: Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.
+author: Jake Stoker
+version: 1.0.0
+published: "2026-11-13"
+updated: "2026-11-13"
+tags:
+  - copilot-credits
+  - power-platform
+  - copilot-managed-runtime
+  - governance
+  - capacity
+format: bundle
+featured: false
+status: preview
+whatItIs: >-
+  A Copilot Managed Runtime (App Builder) app that lists the Power Platform environments you can
+  administer and turns off, or back on, "Draw from the available capacity in my tenant" for Copilot
+  Credits. It changes one environment, a ticked selection, or every environment of chosen types,
+  previews each change, reads it back to confirm it applied, and keeps a change log with CSV export.
+whyUseIt:
+  - "Cap environments at their own Copilot Credits allocation without switching pool draw off one environment at a time in the Power Platform admin center."
+  - "Confirm every change by read-back and keep a CSV audit log with one row per environment per change."
+  - "See environments controlled by an environment-group rule reported as locked by policy and left unchanged."
+howToUse: |-
+  1. Review the Requirements section: an admin role, the Power Platform for Admins V2 connector allowed by your policies, and a Copilot Managed Runtime spending policy.
+  2. Follow Running it: attach the app source as a zip in the Copilot app's Code tab with the prompt provided, and let Copilot build the app in your tenant.
+  3. Publish the app, test on one non-production environment, and check the change log shows Confirmed before using the bulk options.
+prerequisites:
+  - "Power Platform administrator (or a role allowed to manage capacity allocations)"
+  - "Power Platform for Admins V2 connector allowed by data policies and environment-group connector policies"
+  - "Copilot Managed Runtime spending policy for the people who open the app"
+  - "Copilot license and a Copilot Code spending policy for the person building the app"
+---
+
 # Tenant Pool Draw Control
 
 Turn off **"Draw from the available capacity in my tenant"** for Copilot Credits across many
@@ -19,7 +57,8 @@ Copilot Credits at all until credits are allocated or pool draw is turned back o
   the selection bar (Disable / Enable for selected). Every change is
   previewed first (including the exact API request) and read back afterwards to confirm it stuck.
 - **Disable by rule:** choose environment types, then click **Disable now** to turn pool draw
-  off for every environment of those types that still has it on. This ignores your ticked
+  off for every environment of those types, on the page of environments currently loaded, that
+  still has it on. This ignores your ticked
   selection. Use it to catch newly created environments. (The "New" badge window only
   highlights recent environments and doesn't change what the rule disables.)
 - Bulk changes show live progress ("working on 3 of 10"), the environment being changed, and
@@ -187,8 +226,28 @@ Verified against a live tenant:
   and the Alert rule were kept, and only pool draw changed.
 
 Not yet verified: environments that also have allocations of **other credit types** (not just
-Copilot Credits). The app checks for this on every change and won't report **Confirmed** if
-anything else changed, but test on one such environment before bulk use.
+Copilot Credits). It isn't confirmed that the API keeps those allocations when only Copilot
+Credits are sent, so the app **skips** any environment that has a non-empty allocation of
+another credit type (nothing is sent, and it's reported as not confirmed). Change those in the
+Power Platform admin center. Remove this guard only after testing on such an environment.
+If a change does alter anything else in the allocation record, the app stops the bulk run
+immediately instead of continuing with the remaining environments.
+
+## Known limitations and ideas for a next version
+
+- **Rule scope:** "Disable by rule" acts on the environments loaded on the current page only. Load
+  every page before applying a rule, so it covers all environments of the chosen types.
+- **Preview:** the preview shows the API request for the first environment as an example. Each
+  environment's request is built from its own current allocation when it is applied.
+- **Concurrent edits:** the app reads an allocation immediately before writing it back. A change
+  made by someone else in that short window would be overwritten.
+- **Bulk runs:** add handling for throttling (HTTP 429 and `Retry-After`) and a cancel button for
+  runs over hundreds of environments.
+- **Tests:** add mocked tests for `setTenantPool` (updated, locked, mismatch, side effect, skipped
+  and no-record cases) and the CSV export.
+- **Packaging:** provide a ready-made zip, or step-by-step instructions to create it, for the
+  Copilot Code upload; trim template code the app doesn't use; keep one lock file (`package-lock.json`
+  or `bun.lock`).
 
 ## Disclaimer
 

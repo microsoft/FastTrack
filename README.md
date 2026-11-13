@@ -30,7 +30,7 @@ The [catalog](https://microsoft.github.io/FastTrack/) is the easiest way to sear
 | [`copilot-analytics-samples/`](copilot-analytics-samples/) | Power BI templates, an interactive reports navigator, and an interaction report generator. |
 | [`scripts/`](scripts/) | PowerShell scripts for Microsoft 365 administration. Each folder has its own README; retired scripts are kept in [`scripts/archive/`](scripts/archive/). |
 | [`samples/`](samples/) | Teams and Viva Engage code samples and snippets. |
-| [`tools/`](tools/) | [SimpleGraph](tools/SimpleGraph/) (a lightweight Microsoft Graph wrapper for PowerShell) and the [catalog build tooling](tools/catalog-build/). |
+| [`tools/`](tools/) | [SimpleGraph](tools/SimpleGraph/) (a lightweight Microsoft Graph wrapper for PowerShell), [Tenant Pool Draw Control](tools/tenant-pool-draw-control/) (a Copilot Managed Runtime app for Copilot Credits pool draw), and the [catalog build tooling](tools/catalog-build/). |
 | [`docs/`](docs/) | The [catalog metadata schema](docs/CATALOG-METADATA.md) used by every resource README. |
 | [`copilot-prompt-samples/`](copilot-prompt-samples/) | Archived. See [PnP Copilot Prompts](https://pnp.github.io/copilot-prompts/) for a maintained prompt library. |
 

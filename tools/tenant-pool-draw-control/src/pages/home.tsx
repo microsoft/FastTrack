@@ -46,6 +46,8 @@ interface RunState {
   locked: number;
   failed: number;
   finished: boolean;
+  /** Name of the environment that ended the run early after an unexpected change, if any. */
+  stoppedOn?: string;
   /** The saved change-log entry for this run, once it has finished. */
   entry?: ChangeEntry;
 }
@@ -62,6 +64,8 @@ function outcomeDetail(outcome: Awaited<ReturnType<typeof setTenantPool>>): stri
       return "Read-back still shows the previous setting";
     case "incomplete":
       return "Current allocation couldn't be read reliably, so nothing was sent";
+    case "unsupported":
+      return "Skipped: this environment also has allocations of other credit types. Nothing was sent. Change it in the Power Platform admin center";
     case "sideEffect":
       return "Pool draw changed, but other allocation settings changed too. Check this environment";
     default:
@@ -236,10 +240,22 @@ export function HomePage() {
       action, total: targets.length, done: 0, current: null,
       queued: new Set(targets.map((t) => t.environmentId)), updated: 0, locked: 0, failed: 0, finished: false,
     });
+    let stoppedOn: string | undefined;
     for (const env of targets) {
       const id = env.environmentId;
-      setRun((r) => r && { ...r, current: { id, name: env.displayName } });
       names[id] = env.displayName;
+      if (stoppedOn) {
+        failedIds.push(id);
+        details[id] = `Not attempted: the run stopped after an unexpected change in ${stoppedOn}`;
+        setRun((r) => {
+          if (!r) return r;
+          const queued = new Set(r.queued);
+          queued.delete(id);
+          return { ...r, done: r.done + 1, queued, failed: r.failed + 1 };
+        });
+        continue;
+      }
+      setRun((r) => r && { ...r, current: { id, name: env.displayName } });
       const outcome = await setTenantPool(id, action === "enable");
       const detail = outcomeDetail(outcome);
       if (detail) details[id] = detail;
@@ -250,6 +266,8 @@ export function HomePage() {
         lockedIds.push(id);
       } else {
         failedIds.push(id);
+        // Another allocation changed too, so continuing could repeat that on every remaining environment.
+        if (outcome.kind === "sideEffect") stoppedOn = env.displayName;
       }
       setRun((r) => {
         if (!r) return r;
@@ -274,7 +292,7 @@ export function HomePage() {
       id: crypto.randomUUID(), at: new Date().toISOString(), action, source,
       updatedIds: updated, lockedIds, failedIds, names, details,
     };
-    setRun((r) => r && { ...r, current: null, finished: true, entry });
+    setRun((r) => r && { ...r, current: null, finished: true, entry, stoppedOn });
     setSelected(new Set());
     void queryClient.invalidateQueries({ queryKey: ["ppadmin", "allocations"] });
     const saved = commit((s) => ({ ...s, log: [entry, ...s.log].slice(0, 50) }));
@@ -282,7 +300,8 @@ export function HomePage() {
     const parts = [`${verb} for ${updated.length} of ${targets.length}`];
     if (lockedIds.length) parts.push(`${lockedIds.length} locked by a group rule`);
     if (failedIds.length) parts.push(`${failedIds.length} not confirmed`);
-    if (failedIds.length || lockedIds.length) toast.warning(parts.join(" · "));
+    if (stoppedOn) toast.error(`Stopped after an unexpected change in ${stoppedOn}. ${parts.join(" · ")}`);
+    else if (failedIds.length || lockedIds.length) toast.warning(parts.join(" · "));
     else toast.success(parts[0]);
     if (saved === "failed") toast.warning("The change log entry couldn't be saved in this browser. Download the results from the progress panel to keep them.");
     else if (saved === "trimmed") toast.info("Browser storage was full, so older change log entries were removed. Download the log to keep a full record.");
@@ -314,6 +333,7 @@ export function HomePage() {
   const selectedEnvs = rows.filter((e) => selected.has(e.environmentId));
   const zeroAllocation = pending?.action === "disable" ? pending.targets.filter((e) => settingFor(e.environmentId).allocated === 0) : [];
   const groupedTargets = pending?.targets.filter((e) => e.environmentGroupId) ?? [];
+  const skippedTargets = pending?.targets.filter((e) => settingFor(e.environmentId).otherAllocations) ?? [];
 
   const loadError = envQuery.error ?? poolQuery.error;
   const firstLoad = (envQuery.isPending || poolQuery.isPending) && !loadError;
@@ -605,6 +625,12 @@ export function HomePage() {
                     <span>{zeroAllocation.length} of these have no allocation, so agents there stop consuming Copilot Credits once capped.</span>
                   </div>
                 )}
+                {skippedTargets.length > 0 && (
+                  <div role="note" className="flex gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100">
+                    <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                    <span>{skippedTargets.length} of these also have allocations of other credit types, so they will be skipped and reported as not confirmed. Change those in the Power Platform admin center.</span>
+                  </div>
+                )}
                 {groupedTargets.length > 0 && (
                   <p className="text-sm">
                     {groupedTargets.length} {groupedTargets.length === 1 ? "is" : "are"} in an environment group. If that group publishes a draw-from-tenant-pool rule, Power Platform rejects the change and it is reported as locked.
@@ -667,12 +693,14 @@ function RunPanel({ run, onDismiss, onDownload }: { run: RunState; onDismiss: ()
         <div className="min-w-0 flex-1">
           <p className="font-semibold tabular-nums">
             {run.finished
-              ? `Finished: ${run.updated} of ${run.total} ${run.action === "disable" ? "disabled" : "enabled"}`
+              ? `${run.stoppedOn ? "Stopped" : "Finished"}: ${run.updated} of ${run.total} ${run.action === "disable" ? "disabled" : "enabled"}`
               : `${verb} tenant pool draw: working on ${working} of ${run.total}`}
           </p>
-          <p className="truncate text-sm text-muted-foreground">
+          <p className={run.stoppedOn ? "text-sm text-muted-foreground" : "truncate text-sm text-muted-foreground"}>
             {run.finished
-              ? problems ? [run.locked && `${run.locked} locked by a group rule`, run.failed && `${run.failed} not confirmed`].filter(Boolean).join(" · ") : "Every change was confirmed by reading it back."
+              ? run.stoppedOn
+                ? `Stopped after an unexpected change in ${run.stoppedOn}. Check it in the Power Platform admin center before continuing.`
+                : problems ? [run.locked && `${run.locked} locked by a group rule`, run.failed && `${run.failed} not confirmed`].filter(Boolean).join(" · ") : "Every change was confirmed by reading it back."
               : run.current ? `${run.current.name} · changing and confirming` : "Starting…"}
           </p>
         </div>

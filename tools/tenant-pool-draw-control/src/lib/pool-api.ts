@@ -44,6 +44,11 @@ export interface PoolSetting {
   rules: EnforcementRule[];
   /** Canonical form of all allocations except the TenantPool flag, to prove a write changed nothing else. */
   fingerprint: string;
+  /**
+   * The record also holds a non-empty allocation of another credit type. The write only sends Copilot
+   * Credits and it isn't verified that the API keeps the rest, so such environments are never written.
+   */
+  otherAllocations: boolean;
 }
 
 /** A rule as returned by the API; extra fields such as ruleData are kept so they are sent back unchanged. */
@@ -56,6 +61,7 @@ export const NO_RECORD: PoolSetting = {
   complete: true,
   rules: [],
   fingerprint: "[]",
+  otherAllocations: false,
 };
 
 export const drawsFromPool = (s: PoolSetting | undefined) => s?.tenantPoolEnabled !== false;
@@ -136,9 +142,21 @@ function fingerprintOf(model: AllocationByEnvironmentModel | undefined): string 
 
 const isRule = (r: unknown): r is EnforcementRule => !!r && typeof r === "object" && !Array.isArray(r);
 
+/** An allocation of another credit type that holds credits or rules. Anything unrecognised counts as non-empty. */
+function hasOtherAllocations(model: AllocationByEnvironmentModel | undefined): boolean {
+  const list = Array.isArray(model?.currencyAllocations) ? model.currencyAllocations : [];
+  return list.some((c) => {
+    if (isCopilotCredits(c)) return false;
+    const rules: unknown = c.enforcementRules;
+    const noRules = rules == null || (Array.isArray(rules) && rules.length === 0);
+    return !(noRules && (c.allocated ?? 0) === 0 && (c.autoAllocated ?? 0) === 0);
+  });
+}
+
 export function toPoolSetting(model: AllocationByEnvironmentModel | undefined): PoolSetting {
+  const otherAllocations = hasOtherAllocations(model);
   const credits = model?.currencyAllocations?.find(isCopilotCredits);
-  if (!credits) return NO_RECORD;
+  if (!credits) return { ...NO_RECORD, otherAllocations };
   const rawRules: unknown = credits.enforcementRules;
   const rulesOk = rawRules === undefined || (Array.isArray(rawRules) && rawRules.every(isRule));
   const rules = rulesOk ? ((rawRules as EnforcementRule[] | undefined) ?? []).map((r) => ({ ...r })) : [];
@@ -151,6 +169,7 @@ export function toPoolSetting(model: AllocationByEnvironmentModel | undefined): 
     complete: allocatedOk && rulesOk,
     rules,
     fingerprint: fingerprintOf(model),
+    otherAllocations,
   };
 }
 
@@ -227,6 +246,8 @@ export type WriteOutcome =
   | { kind: "mismatch" }
   /** The current record couldn't be read reliably, so nothing was sent. */
   | { kind: "incomplete" }
+  /** The environment also has allocations of other credit types, so nothing was sent. */
+  | { kind: "unsupported" }
   /** Pool draw changed, but something else in the allocation changed too. */
   | { kind: "sideEffect" }
   | { kind: "failed"; error: unknown };
@@ -248,11 +269,19 @@ export async function setTenantPool(environmentId: string, enabled: boolean): Pr
     return { kind: "failed", error };
   }
   if (!current.complete) return { kind: "incomplete" };
-  const result = await PowerPlatformforAdminsV2Service.PutAllocationsV2(
-    LICENSING_API_VERSION,
-    // The generated request type omits extra rule fields such as ruleData; they are sent through unchanged.
-    allocationPutBody(environmentId, current, enabled) as Parameters<typeof PowerPlatformforAdminsV2Service.PutAllocationsV2>[1],
-  );
+  if (current.otherAllocations) return { kind: "unsupported" };
+  let result: Awaited<ReturnType<typeof PowerPlatformforAdminsV2Service.PutAllocationsV2>>;
+  try {
+    result = await PowerPlatformforAdminsV2Service.PutAllocationsV2(
+      LICENSING_API_VERSION,
+      // The generated request type omits extra rule fields such as ruleData; they are sent through unchanged.
+      allocationPutBody(environmentId, current, enabled) as Parameters<typeof PowerPlatformforAdminsV2Service.PutAllocationsV2>[1],
+    );
+  } catch (error) {
+    // A thrown call must not abort a bulk run; the list is refreshed afterwards to show the real state.
+    logConnectorFailure("PowerPlatformforAdminsV2Service.PutAllocationsV2", "action", error);
+    return { kind: "failed", error };
+  }
   if (!result.success) {
     if (mentionsLock(result.error)) return { kind: "locked" };
     logConnectorFailure("PowerPlatformforAdminsV2Service.PutAllocationsV2", "action", result.error);
