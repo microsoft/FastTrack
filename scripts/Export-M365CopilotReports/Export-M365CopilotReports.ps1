@@ -8,7 +8,63 @@
 # - Interactive startup menu
 
 # Author: Alejandro Lopez | alejandro.lopez@microsoft.com
-# Version: v20250321 
+# Version: v20261110
+
+# Function to turn a user-supplied location into a full .csv file path.
+# Accepts a blank value (current folder), a folder (existing, trailing slash, or no extension),
+# or a file path. Surrounding quotes (e.g. from "Copy as path") and %ENVVARS% are handled, the
+# folder is created if missing, and a non-.csv extension is replaced so a CSV is always produced.
+function Resolve-CsvOutputPath {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string]$Path,
+
+        [Parameter(Mandatory = $true)]
+        [string]$BaseName,
+
+        [Parameter(Mandatory = $false)]
+        [string]$DefaultDirectory = (Get-Location).Path
+    )
+
+    $defaultFileName = "{0}_{1}.csv" -f $BaseName, (Get-Date -Format 'yyyyMMdd_HHmmss')
+    $cleanPath = if ($Path) { $Path -replace '^[\s"'']+|[\s"'']+$', '' } else { '' }
+
+    if ([string]::IsNullOrWhiteSpace($cleanPath)) {
+        $directory = $DefaultDirectory
+        $filePath = Join-Path -Path $directory -ChildPath $defaultFileName
+    }
+    else {
+        $cleanPath = [System.Environment]::ExpandEnvironmentVariables($cleanPath)
+        if ($cleanPath.IndexOfAny([System.IO.Path]::GetInvalidPathChars()) -ge 0) {
+            throw "The path contains invalid characters."
+        }
+        $fullPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($cleanPath)
+        $isFolder = (Test-Path -LiteralPath $fullPath -PathType Container) -or
+            $cleanPath.EndsWith('\') -or $cleanPath.EndsWith('/') -or
+            [string]::IsNullOrEmpty([System.IO.Path]::GetExtension($fullPath))
+
+        if ($isFolder) {
+            $directory = $fullPath
+            $filePath = Join-Path -Path $directory -ChildPath $defaultFileName
+        }
+        else {
+            $directory = Split-Path -Path $fullPath -Parent
+            $filePath = $fullPath
+            if ([System.IO.Path]::GetExtension($filePath) -ne '.csv') {
+                $filePath = [System.IO.Path]::ChangeExtension($filePath, '.csv')
+                Write-Host "Output file must be a .csv file. Using: $filePath" -ForegroundColor Yellow
+            }
+        }
+    }
+
+    if (-not (Test-Path -LiteralPath $directory -PathType Container)) {
+        New-Item -Path $directory -ItemType Directory -Force | Out-Null
+        Write-Host "Created output directory: $directory" -ForegroundColor Green
+    }
+
+    return $filePath
+}
 
 # Function to connect to Microsoft Graph
 function Connect-ToMicrosoftGraph {
@@ -56,9 +112,18 @@ function Export-EntraUsersDetails {
         [string]$LogPath = ".\EntraUsersExport_Log_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
     )
     
+    try {
+        $OutputPath = Resolve-CsvOutputPath -Path $OutputPath -BaseName "EntraUsersExport"
+    }
+    catch {
+        Write-Host "Invalid output path '$OutputPath': $_" -ForegroundColor Red
+        return
+    }
+    
     # Start logging
     Start-Transcript -Path $LogPath -Append
     Write-Host "Starting Entra user export process. Log file: $LogPath" -ForegroundColor Cyan
+    Write-Host "CSV output file: $OutputPath" -ForegroundColor Cyan
     
     if (-not (Connect-ToMicrosoftGraph)) {
         Write-Host "Cannot proceed with export. Microsoft Graph connection failed." -ForegroundColor Red
@@ -212,7 +277,7 @@ function Export-EntraUsersDetails {
         Write-Progress @progressParams
         
         # Export to CSV
-        $userDetails | Export-Csv -Path $OutputPath -NoTypeInformation
+        $userDetails | Export-Csv -Path $OutputPath -NoTypeInformation -ErrorAction Stop
         
         # Complete progress bar
         Write-Progress -Activity "Exporting Entra User Details" -Completed
@@ -224,6 +289,7 @@ function Export-EntraUsersDetails {
     }
     catch {
         Write-Host "Error exporting Entra users: $_" -ForegroundColor Red
+        Write-Host "No CSV file was created. Review the log file for details: $LogPath" -ForegroundColor Red
     }
     finally {
         Disconnect-MgGraph
@@ -254,6 +320,14 @@ function Export-PurviewAuditLogs {
         [Parameter(Mandatory = $false)]
         [string]$LogPath = ".\PurviewAuditLogs_Log_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
     )
+    
+    try {
+        $OutputPath = Resolve-CsvOutputPath -Path $OutputPath -BaseName "PurviewAuditLogs"
+    }
+    catch {
+        Write-Host "Invalid output path '$OutputPath': $_" -ForegroundColor Red
+        return
+    }
     
     # Start logging
     Start-Transcript -Path $LogPath -Append
@@ -594,7 +668,7 @@ function Show-MainMenu {
             # Entra Users Export
             Clear-Host
             Write-Host "Entra Users Export:" -ForegroundColor Cyan
-            $outputPath = Read-Host "Enter output path (leave blank for default)"
+            $outputPath = Read-Host "Enter output folder or .csv file path (leave blank for default: $((Get-Location).Path))"
             
             if ([string]::IsNullOrWhiteSpace($outputPath)) {
                 Export-EntraUsersDetails
@@ -610,7 +684,7 @@ function Show-MainMenu {
             # Purview Audit Logs Export - Copilot Interactions Only
             Clear-Host
             Write-Host "Purview Audit Logs Export (Copilot Interactions Only):" -ForegroundColor Cyan
-            $outputPath = Read-Host "Enter output path (leave blank for default)"
+            $outputPath = Read-Host "Enter output folder or .csv file path (leave blank for default: $((Get-Location).Path))"
             
             $defaultDays = 7
             $daysInput = Read-Host "Enter number of days to look back (default: $defaultDays)"
@@ -652,7 +726,7 @@ function Show-MainMenu {
             # Purview Audit Logs Export - Custom Operations
             Clear-Host
             Write-Host "Purview Audit Logs Export (Custom Operations):" -ForegroundColor Cyan
-            $outputPath = Read-Host "Enter output path (leave blank for default)"
+            $outputPath = Read-Host "Enter output folder or .csv file path (leave blank for default: $((Get-Location).Path))"
             
             $operationsInput = Read-Host "Enter operations to filter by (comma-separated, leave blank for ALL operations)"
             $operations = @()
