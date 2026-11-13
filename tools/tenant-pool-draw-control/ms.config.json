@@ -1,0 +1,18 @@
+{
+  "appDisplayName": "Tenant Pool Draw Control",
+  "appId": "<your-app-id>",
+  "buildEntryPoint": "index.html",
+  "buildPath": "dist",
+  "connectionReferences": {
+    "<your-connection-reference-id>": {
+      "dataSets": {},
+      "dataSources": [
+        "powerplatformadminv2"
+      ],
+      "displayName": "Power Platform for Admins V2",
+      "id": "/providers/Microsoft.PowerApps/apis/shared_powerplatformadminv2"
+    }
+  },
+  "environmentId": "<your-environment-id>",
+  "version": "0.0"
+}
