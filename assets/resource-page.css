@@ -22,12 +22,14 @@
 .type-agent { --type: #4f46e5; --type-bg: rgba(79, 70, 229, 0.1); }
 .type-strategy { --type: #ea580c; --type-bg: rgba(234, 88, 12, 0.1); }
 .type-analytics { --type: #0284c7; --type-bg: rgba(2, 132, 199, 0.1); }
+.type-app { --type: #a16207; --type-bg: rgba(161, 98, 7, 0.1); }
 .type-prompt { --type: #db2777; --type-bg: rgba(219, 39, 119, 0.1); }
 .type-script { --type: #059669; --type-bg: rgba(5, 150, 105, 0.1); }
 .type-skill { --type: #71717a; --type-bg: rgba(113, 113, 122, 0.1); }
 [data-theme="dark"] .type-agent { --type: #818cf8; --type-bg: rgba(129, 140, 248, 0.15); }
 [data-theme="dark"] .type-strategy { --type: #fb923c; --type-bg: rgba(251, 146, 60, 0.15); }
 [data-theme="dark"] .type-analytics { --type: #38bdf8; --type-bg: rgba(56, 189, 248, 0.15); }
+[data-theme="dark"] .type-app { --type: #facc15; --type-bg: rgba(250, 204, 21, 0.15); }
 [data-theme="dark"] .type-prompt { --type: #f472b6; --type-bg: rgba(244, 114, 182, 0.15); }
 [data-theme="dark"] .type-script { --type: #34d399; --type-bg: rgba(52, 211, 153, 0.15); }
 [data-theme="dark"] .type-skill { --type: #a1a1aa; --type-bg: rgba(161, 161, 170, 0.15); }

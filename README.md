@@ -19,6 +19,7 @@ The [catalog](https://microsoft.github.io/FastTrack/) is the easiest way to sear
 | [Guides & planning](https://microsoft.github.io/FastTrack/?type=strategy) | Interactive implementation guides, decision guides, calculators, and planning templates for Copilot and agent deployments. |
 | [Agents](https://microsoft.github.io/FastTrack/?type=agent) | Ready-to-use agents for Copilot Studio, Agent Builder, and GitHub Copilot, plus Employee Self-Service extensions. |
 | [Analytics](https://microsoft.github.io/FastTrack/?type=analytics) | Power BI templates, interactive report navigators, and Copilot usage reporting. |
+| [Apps](https://microsoft.github.io/FastTrack/?type=app) | Deployable apps for admins, such as Copilot Managed Runtime apps that manage Copilot Credits across environments. |
 | [Scripts](https://microsoft.github.io/FastTrack/?type=script) | PowerShell scripts and snippets for Microsoft 365 administration, including Teams, Viva Engage, and SharePoint. |
 
 ## What is in this repo

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-10",
-  "count": 58,
+  "generatedAt": "2026-11-13",
+  "count": 59,
   "resources": [
     {
       "name": "Add-EngageGroupAdmins",
@@ -993,7 +993,7 @@
       "status": "active",
       "download": "scripts/Export-M365CopilotReports/Export-M365CopilotReports.ps1",
       "downloadName": "Export-M365CopilotReports.ps1",
-      "downloadSize": 34019,
+      "downloadSize": 37182,
       "author": "Alejandro Lopez",
       "version": "1.0.0",
       "published": "2025-03-11",
@@ -2165,6 +2165,47 @@
       "url": "https://github.com/microsoft/FastTrack/tree/master/samples/teams-upgrade-snippets",
       "source": "samples/teams-upgrade-snippets/README.md",
       "permalink": "r/teams-upgrade-snippets/"
+    },
+    {
+      "name": "Tenant Pool Draw Control",
+      "title": "Tenant Pool Draw Control",
+      "slug": "tenant-pool-draw-control",
+      "type": "app",
+      "subcategory": "Copilot Managed Runtime",
+      "category": "Copilot Managed Runtime",
+      "description": "Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.",
+      "summary": "Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.",
+      "tags": [
+        "copilot-credits",
+        "power-platform",
+        "copilot-managed-runtime",
+        "governance",
+        "capacity"
+      ],
+      "artifact": "bundle",
+      "format": "bundle",
+      "featured": false,
+      "status": "preview",
+      "author": "Jake Stoker",
+      "version": "1.0.0",
+      "published": "2026-11-13",
+      "updated": "2026-11-13",
+      "whatItIs": "A Copilot Managed Runtime (App Builder) app that lists the Power Platform environments you can administer and turns off, or back on, \"Draw from the available capacity in my tenant\" for Copilot Credits. It changes one environment, a ticked selection, or every environment of chosen types, previews each change, reads it back to confirm it applied, and keeps a change log with CSV export.",
+      "whyUseIt": [
+        "Cap environments at their own Copilot Credits allocation without switching pool draw off one environment at a time in the Power Platform admin center.",
+        "Confirm every change by read-back and keep a CSV audit log with one row per environment per change.",
+        "See environments controlled by an environment-group rule reported as locked by policy and left unchanged."
+      ],
+      "howToUse": "1. Review the Requirements section: an admin role, the Power Platform for Admins V2 connector allowed by your policies, and a Copilot Managed Runtime spending policy.\n2. Follow Running it: attach the app source as a zip in the Copilot app's Code tab with the prompt provided, and let Copilot build the app in your tenant.\n3. Publish the app, test on one non-production environment, and check the change log shows Confirmed before using the bulk options.",
+      "prerequisites": [
+        "Power Platform administrator (or a role allowed to manage capacity allocations)",
+        "Power Platform for Admins V2 connector allowed by data policies and environment-group connector policies",
+        "Copilot Managed Runtime spending policy for the people who open the app",
+        "Copilot license and a Copilot Code spending policy for the person building the app"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/tools/tenant-pool-draw-control",
+      "source": "tools/tenant-pool-draw-control/README.md",
+      "permalink": "r/tenant-pool-draw-control/"
     },
     {
       "name": "Update-VivaEngageLicensingToggle",

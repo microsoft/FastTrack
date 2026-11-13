@@ -15,6 +15,7 @@ const TYPE_LABELS = {
   agent: 'Agents',
   strategy: 'Guides & planning',
   analytics: 'Analytics',
+  app: 'Apps',
   prompt: 'Prompts',
   skill: 'Skills'
 };
@@ -40,6 +41,7 @@ export function typeLabel(type) {
 export function artifactLabel(resource) {
   const format = resource.artifact ?? resource.format ?? 'md';
   if (format === 'interactive') return resource.interactiveKind === 'guide' ? 'Interactive guide' : 'Interactive tool';
+  if (format === 'bundle' && resource.type === 'app') return 'bundle · App';
   return ARTIFACT_LABELS[format] ?? `.${format}`;
 }
 
