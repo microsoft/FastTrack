@@ -61,6 +61,7 @@ const dataset = [
   { slug: 'analytics-tool', type: 'analytics', format: 'interactive' },
   { slug: 'prompt-interactive-nokind', type: 'prompt', format: 'interactive' },
   { slug: 'agent-bundle', type: 'agent', format: 'bundle' },
+  { slug: 'app-bundle', type: 'app', format: 'bundle' },
   { slug: 'script-ps1', type: 'script', format: 'ps1' }
 ];
 const bySlug = Object.fromEntries(dataset.map(r => [r.slug, r]));
@@ -96,11 +97,16 @@ assert(!isInteractiveGuide(bySlug['prompt-interactive-nokind']), 'Interactive re
 assert(!matchesCategory(bySlug['prompt-interactive-nokind'], 'strategy'), 'Missing-kind interactive must not be cross-listed.');
 
 // 5. No duplicate cards in any selection, including All.
-for (const typeId of ['all', 'strategy', 'analytics', 'prompt', 'agent', 'script']) {
+for (const typeId of ['all', 'strategy', 'analytics', 'prompt', 'agent', 'app', 'script']) {
   const slugs = selectSlugs(typeId);
   assert(new Set(slugs).size === slugs.length, `Duplicate cards detected under "${typeId}".`);
 }
 assert(selectSlugs('all').length === dataset.length, 'All listing must include every resource exactly once.');
+assert(
+  JSON.stringify(selectSlugs('app')) === JSON.stringify(['app-bundle']),
+  'Apps must list only app resources, and app bundles must not leak into Agents.'
+);
+assert(!selectSlugs('agent').includes('app-bundle'), 'App bundles must not appear under Agents.');
 
 // 6. Counts, search, and temp-state filtering stay consistent with the cross-listed set.
 const strategyCount = dataset.filter(r => matchesCategory(r, 'strategy')).length;

@@ -49,6 +49,12 @@ assert(feed.includes('/r/demo/') && !feed.includes('/r/old/'), 'Feed must list a
 // 3. Ordered lists keep their numbering across fenced blocks.
 assert(renderMarkdown('3. Third\n4. Fourth').includes('<ol start="3"'), 'Ordered lists must keep their start number.');
 
+// 3b. Apps get their own label and badge instead of the Agent bundle wording.
+const appResource = { ...base, slug: 'demo-app', type: 'app', category: 'Copilot Managed Runtime', artifact: undefined, format: 'bundle' };
+const appPage = renderResourcePage(appResource, context([appResource]));
+assert(appPage.includes('Apps') && appPage.includes('bundle · App') && !appPage.includes('bundle · Agent'), 'App pages must show the Apps label and the App bundle badge.');
+assert(indexSource.includes("{ id: 'app', label: 'Apps'") && indexSource.includes('--type-app:'), 'index.html must define the Apps type and its colour.');
+
 // 4. The landing page hides archived resources and has no hard-coded counts.
 assert(indexSource.includes("r.status !== 'archived'"), 'index.html must hide archived resources by default.');
 assert(!/countDisplay = "\d+"/.test(indexSource), 'index.html must not hard-code resource counts.');
@@ -58,7 +64,7 @@ assert(!/\d+ resource types/.test(indexSource.replace('id="heroTypeCount">Resour
 // 5. Only the four main types have filter pills; Prompts and Skills stay hidden for now.
 assert(/id: 'prompt'[^\n]*hidden: true/.test(indexSource), 'The Prompts pill must stay hidden.');
 assert(/id: 'skill'[^\n]*hidden: true/.test(indexSource), 'The Skills pill must stay hidden.');
-for (const id of ['strategy', 'agent', 'analytics', 'script']) {
+for (const id of ['strategy', 'agent', 'analytics', 'app', 'script']) {
   assert(!new RegExp(`id: '${id}'[^\\n]*hidden: true`).test(indexSource), `The ${id} pill must stay visible.`);
 }
 

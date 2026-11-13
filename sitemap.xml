@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://microsoft.github.io/FastTrack/</loc><lastmod>2026-11-10</lastmod><priority>1.0</priority></url>
+  <url><loc>https://microsoft.github.io/FastTrack/</loc><lastmod>2026-11-13</lastmod><priority>1.0</priority></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/add-engagegroupadmins/</loc><lastmod>2026-07-22</lastmod></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/agent-365-enablement-checklist/</loc><lastmod>2026-11-09</lastmod></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/agent-brainstorming-template/</loc><lastmod>2025-10-28</lastmod></url>
@@ -41,6 +41,7 @@
   <url><loc>https://microsoft.github.io/FastTrack/r/teams-phone-system-snippets/</loc><lastmod>2024-10-21</lastmod></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/teams-phone-user-migration/</loc><lastmod>2024-10-21</lastmod></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/teams-rooms-snippets/</loc><lastmod>2023-02-10</lastmod></url>
+  <url><loc>https://microsoft.github.io/FastTrack/r/tenant-pool-draw-control/</loc><lastmod>2026-11-13</lastmod></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/update-vivaengagelicensingtoggle/</loc><lastmod>2026-10-28</lastmod></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/vibewriting-agent/</loc><lastmod>2025-08-06</lastmod></url>
   <url><loc>https://microsoft.github.io/FastTrack/r/viva-engage-community-creation-app/</loc><lastmod>2026-10-28</lastmod></url>

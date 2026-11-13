@@ -1,6 +1,6 @@
 ---
 title: Tenant Pool Draw Control
-type: script
+type: app
 category: Copilot Managed Runtime
 summary: Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.
 author: Jake Stoker
