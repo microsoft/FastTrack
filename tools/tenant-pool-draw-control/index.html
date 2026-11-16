@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      Advertise both color schemes so the user agent paints UA-controlled
+      surfaces (scrollbar tracks, form-control chrome, the document
+      background BEFORE CSS loads) using the OS preference, not the
+      "light by default" fallback. Pairs with the
+      ``@media (prefers-color-scheme: dark)`` block in src/index.css
+      so the "Writing your app…" iframe placeholder doesn't pop out as
+      a white block inside dark cowork chrome (issue aether#7883).
+    -->
+    <meta name="color-scheme" content="light dark" />
+    <title>App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
+  </body>
+</html>

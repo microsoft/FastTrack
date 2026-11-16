@@ -1,7 +1,7 @@
 ---
 # Required catalog metadata. See docs/CATALOG-METADATA.md.
 title: "Your resource title"
-type: script # script | agent | strategy | analytics | prompt | skill
+type: script # script | agent | strategy | analytics | app | prompt | skill
 category: "PowerShell" # Short catalog sub-label, such as Copilot Studio or Power BI
 summary: "Describe the resource and its outcome in 140 characters or fewer."
 author:

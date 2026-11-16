@@ -50,7 +50,7 @@ prerequisites:
 | Field | Type | Guidance |
 | --- | --- | --- |
 | `title` | string | Human-readable resource name. It becomes `name` in `catalog.json`. |
-| `type` | enum | One of `script`, `agent`, `strategy`, `analytics`, `prompt`, or `skill`. |
+| `type` | enum | One of `script`, `agent`, `strategy`, `analytics`, `app`, `prompt`, or `skill`. Use `app` for deployable apps, such as Copilot Managed Runtime (App Builder) apps. |
 | `category` | string | Short sub-label such as `PowerShell`, `Copilot Studio`, `Agent Builder`, `Power BI`, or `Interactive`. |
 | `summary` | string | Card description. Must be 140 characters or fewer. |
 | `author` | string or string list | Original author(s), substantial co-authors, or `Microsoft FastTrack`. |

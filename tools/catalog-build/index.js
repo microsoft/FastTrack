@@ -15,6 +15,7 @@ const folderRoots = [
   'scripts',
   'samples',
   'tools/SimpleGraph',
+  'tools/tenant-pool-draw-control',
   'copilot-agent-samples/copilot-studio-agents',
   'copilot-agent-samples/agent-builder-agents',
   'copilot-agent-samples/github-copilot-agents',
@@ -25,7 +26,7 @@ const folderRoots = [
 ];
 const promptRoot = 'copilot-prompt-samples';
 const excludedSegments = new Set(['archive', '_sample_templates', 'node_modules']);
-const allowedTypes = new Set(['script', 'agent', 'strategy', 'analytics', 'prompt', 'skill']);
+const allowedTypes = new Set(['script', 'agent', 'strategy', 'analytics', 'app', 'prompt', 'skill']);
 const allowedFormats = new Set(['ps1', 'bundle', 'declarative', 'interactive', 'pptx', 'pbix', 'md']);
 const allowedStatuses = new Set(['active', 'preview', 'archived']);
 const allowedInteractiveKinds = new Set(['guide', 'tool']);

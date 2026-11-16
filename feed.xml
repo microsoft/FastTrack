@@ -5,7 +5,14 @@
   <subtitle>The 20 most recently updated tools, guides, agents, and scripts in the FastTrack catalog.</subtitle>
   <link href="https://microsoft.github.io/FastTrack/feed.xml" rel="self"/>
   <link href="https://microsoft.github.io/FastTrack/"/>
-  <updated>2026-11-10T00:00:00Z</updated>
+  <updated>2026-11-13T00:00:00Z</updated>
+  <entry>
+    <id>https://microsoft.github.io/FastTrack/r/tenant-pool-draw-control/</id>
+    <title>Tenant Pool Draw Control (v1.0.0)</title>
+    <link href="https://microsoft.github.io/FastTrack/r/tenant-pool-draw-control/"/>
+    <updated>2026-11-13T00:00:00Z</updated>
+    <summary>Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.</summary>
+  </entry>
   <entry>
     <id>https://microsoft.github.io/FastTrack/r/microsoft-agent-365-technical-advisory/</id>
     <title>Microsoft Agent 365 Technical Advisory (v1.1.0)</title>
@@ -138,12 +145,5 @@
     <link href="https://microsoft.github.io/FastTrack/r/get-engagegroupinfo/"/>
     <updated>2026-07-22T00:00:00Z</updated>
     <summary>Report every Viva Engage community&apos;s IDs, member count, and admins to CSV by using Microsoft Graph.</summary>
-  </entry>
-  <entry>
-    <id>https://microsoft.github.io/FastTrack/r/productquote-agent/</id>
-    <title>ProductQuote Agent (v1.0.0)</title>
-    <link href="https://microsoft.github.io/FastTrack/r/productquote-agent/"/>
-    <updated>2026-07-16T00:00:00Z</updated>
-    <summary>Generate product quotes from Excel inventory, populate a Word template, and email the finished document.</summary>
   </entry>
 </feed>
