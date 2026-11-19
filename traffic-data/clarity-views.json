@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-16",
+  "lastRun": "2026-11-19",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -2604,6 +2604,200 @@
       "viva-insights-copilot-dashboard": {
         "views": 2,
         "uniques": 1
+      }
+    },
+    "2026-11-19": {
+      "agent-365-enablement-checklist": {
+        "views": 14,
+        "uniques": 12,
+        "downloads": 3
+      },
+      "agents-cost-calculator": {
+        "views": 5,
+        "uniques": 4,
+        "downloads": 1
+      },
+      "autoreply-agent": {
+        "views": 3,
+        "uniques": 3
+      },
+      "copilot-agents-guide": {
+        "views": 4,
+        "uniques": 4,
+        "downloads": 1
+      },
+      "delete-allcommunityposts": {
+        "downloads": 0
+      },
+      "get-engagegroupinfo": {
+        "views": 1,
+        "uniques": 1
+      },
+      "get-m365copilotreadiness": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 9,
+        "uniques": 7,
+        "downloads": 1
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 10,
+        "uniques": 9,
+        "downloads": 2
+      },
+      "powerclaw-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "purview-audit-copilot-report": {
+        "views": 1,
+        "uniques": 1
+      },
+      "tenant-pool-draw-control": {
+        "views": 2,
+        "uniques": 2
+      }
+    },
+    "2026-11-18": {
+      "agent-365-enablement-checklist": {
+        "views": 14,
+        "uniques": 6,
+        "downloads": 0
+      },
+      "agents-cost-calculator": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
+      },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-agents-guide": {
+        "views": 1,
+        "uniques": 1,
+        "downloads": 1
+      },
+      "delete-allcommunityposts": {
+        "views": 1,
+        "downloads": 1
+      },
+      "delete-engagegroups": {
+        "views": 3,
+        "downloads": 1
+      },
+      "get-engagegroupinfo": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-m365copilotreadiness": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 2,
+        "uniques": 1,
+        "downloads": 0
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 9,
+        "uniques": 4,
+        "downloads": 0
+      },
+      "powerclaw-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "productquote-agent": {
+        "views": 1
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "tenant-pool-draw-control": {
+        "views": 9,
+        "uniques": 8
+      }
+    },
+    "2026-11-17": {
+      "agent-365-enablement-checklist": {
+        "views": 18,
+        "uniques": 7,
+        "downloads": 2
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 1
+      },
+      "agents-cost-calculator": {
+        "views": 6,
+        "uniques": 5,
+        "downloads": 0
+      },
+      "autoreply-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
+      },
+      "copilot-studio-workflow": {
+        "views": 1
+      },
+      "delete-allcommunityposts": {
+        "views": 1,
+        "uniques": 1,
+        "downloads": 0
+      },
+      "delete-engagegroups": {
+        "views": 1,
+        "uniques": 1,
+        "downloads": 0
+      },
+      "export-copilotinteractions": {
+        "views": 5
+      },
+      "get-engagegroupinfo": {
+        "views": 0,
+        "uniques": 0
+      },
+      "get-m365copilotreadiness": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 4,
+        "uniques": 1,
+        "downloads": 0
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 10,
+        "uniques": 5,
+        "downloads": 2
+      },
+      "powerclaw-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "productquote-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "purview-audit-copilot-report": {
+        "views": 6,
+        "uniques": 5,
+        "downloads": 2
+      },
+      "tenant-pool-draw-control": {
+        "views": 44,
+        "uniques": 38
+      },
+      "vibewriting-agent": {
+        "views": 1
       }
     }
   }
