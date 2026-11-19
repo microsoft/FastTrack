@@ -835,6 +835,7 @@ input[type="date"].is-empty { color: var(--faint); }
 .part-badge { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: var(--soft-2); color: var(--ink); font: 700 11.5px/1 var(--mono); vertical-align: middle; }
 .part-badge.lg { width: 32px; height: 32px; border-radius: 10px; font-size: 14px; }
 .part-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-top: 12px; }
+.part-grid.pil-tiles { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 .wave-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; margin-top: 10px; }
 .part-tile, .wave-tile { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: auto 1fr auto; gap: 8px 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; }
 .wave-tile { grid-template-columns: 1fr auto; }
@@ -847,7 +848,7 @@ input[type="date"].is-empty { color: var(--faint); }
 .pt-track i { display: block; height: 100%; background: var(--mark-done); border-radius: 3px; }
 .onb-txt .onb-tag { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); margin-top: 3px; }
 .chip-p1 { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-line); }
-[data-p="foundation"] { --pc: var(--ink-2); } [data-p="observe"] { --pc: var(--violet); } [data-p="govern"] { --pc: var(--green); } [data-p="secure"] { --pc: var(--red); }
+[data-p="foundation"] { --pc: var(--ink-2); } [data-p="manage"] { --pc: var(--violet); } [data-p="govern"] { --pc: var(--green); } [data-p="secure"] { --pc: var(--red); } [data-p="value"] { --pc: var(--amber); }
 .chip-pillar { background: transparent; color: var(--ink-2); }
 .chip-pillar i, .pdot { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--pc); }
 .type-txt .pdot { margin-right: 8px; vertical-align: 1px; }
@@ -898,8 +899,9 @@ button.stat:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px;
 @media (max-width: 820px) { .kpi .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kpi .stat b { font-size: 28px; } }
 .kpi { grid-template-columns: minmax(210px, 290px) minmax(0, 1fr); }
 /* v2.8: Microsoft logo, pillar toggles, wider Help page */
-.pil-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-@media (max-width: 1240px) { .pil-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pil-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 1500px) { .pil-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 1100px) { .pil-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .pil-grid { grid-template-columns: minmax(0, 1fr); } }
 .plat b .pdot { display: inline-block; margin: 0 7px 0 0; vertical-align: 1px; }
 .plat.is-off b { color: var(--muted); }
@@ -907,8 +909,9 @@ button.stat:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px;
 .prose.help-doc { max-width: 1120px; }
 @media (min-width: 821px) { .prose.help-doc table.ref th, .prose.help-doc table.ref td:first-child { white-space: nowrap; } }
 /* v2.9: feature slicer */
-.feat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 28px; }
-@media (max-width: 1240px) { .feat-grid { grid-template-columns: minmax(0, 1fr); } }
+.feat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px 28px; }
+@media (max-width: 1500px) { .feat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .feat-grid { grid-template-columns: minmax(0, 1fr); } }
 .feat-col h3 { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
 .feat-col .plat + .plat { margin-top: 16px; }
 .plat span.feat-n { color: var(--ink-2); font-variant-numeric: tabular-nums; margin-top: 5px; }
@@ -950,16 +953,16 @@ button.feat-chip.is-on { border-color: var(--pc); color: var(--ink); }
    Workstreams are appended by the data-ws-*.js files.
    ========================================================================== */
 
-var CONTENT_VERSION = "1.0.4";
-var CONTENT_REVIEWED = "2026-11-09";
+var CONTENT_VERSION = "1.2.0";
+var CONTENT_REVIEWED = "2026-11-19";
 /* Microsoft logo (four-square symbol, brand colors), embedded as a PNG so the file stays self-contained. */
 var MS_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKgAAACoCAYAAAB0S6W0AAACkUlEQVR42u3avW0UURiG0fdjZyz+ZK9FAQgaoBRIqIWQPkgowBG5JWqgASwKQF47QeDZ/QjAIjLsjAMkOCee6NWje7WzU5cvnnaYpZMeq2rq3mx7++T43adNJ1VJJ0l3qir9+n3W/S1nqyHr7ZSuSllvnjsmQKAgUAQKAgWBIlAQKAIFgYJAESgIFIGCQEGgCBQEikBBoCBQBAoCRaAgUBAoAgWBgkARKAgUgYJAQaAIFASKQEGgIFAECgJFoCBQECgCBYEiUBAoCBSBgkBBoAgUBIpAQaAgUAQKAkWgIFAQKAIFgSJQECgIFIGCQBEoCBQEikBBoCBQBAq3NHTSZpitf47Wez3b6U7a0gsCHavKDDPrTGqsynbX4x6Pj6shlcTSSwKdujdmmN9oJZXkog9WN56L96b0l+Tzbsq026XTkehMdf788doMCys9WPXxycfLuumq79Sr0xzeHVLZJLE0/GMnaMe1c6sB//BDqV3rAPylG6rbFXSrBcsVD//vCfr2fG2GhR505+Xx5U2naHcqpznM9WsmZhsy9pkZZup0hrHydbrIm/NnSS7SXdehdqeq0jnJYY7yIVOOcj8db0wWBLoanaCzA+1kNSTbacjBb/7AHFNJHmXIw0zyXBbodOUThiVn6I8fmFd7VHeVKZ2tE3RZoD5hWHaCVlVqr+B+PVcCncv3oAgUBIpAQaAgUAQKAkWgIFAQKAIFgSJQECgIFIGCQBEoCBQEikBBoAjUBAgUBIpAQaAgUAQKAkWgIFAQKAIFgSJQECgIFIGCQBEoCBQEikBBoAgUBAoCRaAgUBAoAgWBIlAQKAgUgYJAESgIFASKQEGgCBQECgJFoCBQBAoCBYEiUBAoCBSBwm19B32IgcD0RnF6AAAAAElFTkSuQmCC";
 
 var AREAS = {
   foundation: { name: "Foundation" },
-  observe: { name: "Observe" },
-  govern: { name: "Govern" },
-  secure: { name: "Secure" },
+  manage: { name: "Management" },
+  govern: { name: "Governance" },
+  secure: { name: "Security" },
   onboard: { name: "Onboard" },
   operate: { name: "Operate" }
 };
@@ -1032,17 +1035,17 @@ var FT_GUIDANCE = (function () {
   return m;
 })();
 var ONBOARDING = [
-  { n: 1, name: "License and enable", ws: "foundations", blurb: "Confirm the purchase prerequisite, assign Agent 365 or Microsoft 365 E7 to the pilot, review data handling, and confirm the Agents pages load." },
+  { n: 1, name: "License and enable", ws: "foundations", blurb: "Confirm the purchase prerequisite, assign Agent 365 or Microsoft 365 E7 to the pilot, forecast usage-based spend, review data handling, and confirm the Agents pages load." },
   { n: 2, name: "Assign roles", ws: "foundations", blurb: "AI Administrator to operate and AI Reader to audit, through PIM, plus the Purview and security roles each team needs." },
-  { n: 3, name: "Agent and tool settings", ws: "admin", blurb: "Agent and plugin access, user access, sharing, management rules, Power Platform data policies, and the Tools registry." },
-  { n: 4, name: "Registry and connected platforms", ws: "lowcode", blurb: "Confirm your agents appear in the registry, then connect external clouds and Foundry if you use them." },
+  { n: 3, name: "Agent and tool settings", ws: "admin", blurb: "Agent and plugin access, user access, sharing, management rules, AI model providers, Power Platform data policies, and the Tools registry." },
+  { n: 4, name: "Registry and connected platforms", ws: "lowcode", blurb: "Confirm your agents appear in the registry, then connect external platforms, Foundry, and other tenants you govern if you use them." },
   { n: 5, name: "Wire Defender", ws: "defender", blurb: "Turn on security for AI agents, connect Microsoft 365, reconcile the inventory, and give the SOC runbooks." },
   { n: 6, name: "Wire Entra", ws: "entra", blurb: "Owners and sponsors, Conditional Access in report-only then on, access packages, lifecycle workflows, and containment." },
   { n: 7, name: "Wire Purview", ws: "purview", blurb: "Audit, oversharing assessment, labels, DLP scoped to agents, retention, and insider risk." },
   { n: 8, name: "Wire SharePoint", ws: "sharepoint", blurb: "Find and fix oversharing and restrict discovery of sensitive sites. Start the assessment early: remediation takes longest." },
   { n: 9, name: "Templatize", ws: "admin", blurb: "Build policy templates from your Entra policies, apply them at activation, and use the Apply template rule for existing agents." },
   { n: 10, name: "Onboard custom, partner, and local agents", ws: "custom", blurb: "Tools and Work IQ for developers, the pro-code lifecycle, and shadow and local agents. Turn these on only if they apply." },
-  { n: 11, name: "Measure and operate", ws: "operate", blurb: "Usage reports, the monthly governance review, retiring unused agents, release preferences, and incident rehearsal." }
+  { n: 11, name: "Measure value and operate", ws: "operate", blurb: "Usage and spend reviews, business value reporting, the monthly governance review, retiring unused agents, release preferences, and incident rehearsal." }
 ];
 var ONB_BY_N = {}; ONBOARDING.forEach(function (s) { ONB_BY_N[s.n] = s; });
 /* Parts group the onboarding steps by area, the same way as the FastTrack SME deployment checklist.
@@ -1050,40 +1053,46 @@ var ONB_BY_N = {}; ONBOARDING.forEach(function (s) { ONB_BY_N[s.n] = s; });
 var PARTS = [
   { id: "A", name: "Tenant foundation", steps: [1, 2, 3, 5, 6, 7, 8], blurb: "Licenses, roles, agent and tool settings, and the Defender, Entra, Purview, SharePoint, and Power Platform baseline every agent relies on." },
   { id: "B", name: "Onboard or discover every agent", steps: [4, 10], blurb: "Confirm each agent type reaches the registry, then onboard custom, partner, external, shadow, and local agents." },
-  { id: "C", name: "Observe & govern at scale", steps: [9, 11], blurb: "Policy templates, approvals, an owner for every agent, usage, and the operating rhythm." }
+  { id: "C", name: "Govern & prove value at scale", steps: [9, 11], blurb: "Policy templates, approvals, an owner for every agent, usage, spend, business value, and the operating rhythm." }
 ];
 var PART_BY_ID = {}, PART_BY_STEP = {};
 PARTS.forEach(function (p, i) { p.order = i; PART_BY_ID[p.id] = p; p.steps.forEach(function (n) { PART_BY_STEP[n] = p.id; }); });
 ONBOARDING.forEach(function (s) { s.part = PART_BY_STEP[s.n]; });
-/* Pillars: every task has one, so a plan can start with Observe without turning off whole workstreams.
-   Observe tasks surface a signal without changing what an agent can do (including audit, report-only, and simulation
-   modes). Govern tasks set ownership, lifecycle, and access decisions. Secure tasks block, enforce, contain, or respond.
+/* Pillars: every task has one, so a plan can start with Management without turning off whole workstreams.
+   The four pillars follow Microsoft's current Agent 365 messaging: the observability platform for AI, organized as
+   Management, Governance, Security, and Business Value, each built on shared observability and on the one before it.
+   Management tasks discover, connect, and centrally manage agents and tools: registry, Agent Map, identities, connected
+   platforms, activity, and shadow AI discovery. Governance tasks set ownership, permissions, and accountability: access,
+   approvals, templates, lifecycle, tool controls, audit, and retention. Security tasks understand risk, enforce controls,
+   and protect, contain, or respond. Business Value tasks plan, control, and optimize AI spend and connect it to outcomes.
    Foundation tasks are the licenses, roles, scope, and prerequisites every pillar relies on, and are always in the plan.
-   The pillars, the Observe stages (Discover, Evaluate, Monitor), and the teams follow the Agent 365 Observability Playbook.
+   Version 1.1 replaced Observe, Govern, and Secure. A saved Observe choice carries over to Management (sanitizeState).
+   The observability stages (Discover, Evaluate, Monitor) and the teams follow the Agent 365 Observability Playbook.
    Content only: a plan saves just the pillars that are turned off (S.pillars), so task keys and backups are unaffected. */
 var PILLARS = [
   { id: "foundation", name: "Foundation", locked: true, blurb: "Licenses, roles, scope, and the prerequisites every pillar relies on.", hint: "Licenses, roles, scope, and the prerequisites every pillar relies on. Always on." },
-  { id: "observe", name: "Observe", blurb: "See every agent and its signals: the registry, owners, activity, and risk across the admin center, Defender, Purview, and Entra. Nothing here changes what an agent can do.", hint: "See every agent and its signals: registry, owners, activity, and risk. Changes nothing an agent can do." },
-  { id: "govern", name: "Govern", blurb: "Ownership, lifecycle, and access decisions: who can build, share, and use agents, and what agents can reach.", hint: "Ownership, lifecycle, and access: who can build, share, and use agents, and what they can reach." },
-  { id: "secure", name: "Secure", blurb: "Enforcement and response: DLP and Conditional Access enforcement, blocking, oversharing fixes, containment, and threat response.", hint: "Enforcement and response: DLP and Conditional Access enforcement, blocking, and containment." }
+  { id: "manage", name: "Management", blurb: "Discover, connect, and centrally manage every agent and tool: the registry, Agent Map, agent identities, connected platforms, activity insights, and shadow AI discovery.", hint: "See and manage every agent and tool: registry, Agent Map, identities, activity, and shadow AI." },
+  { id: "govern", name: "Governance", blurb: "Operate with clear ownership, permissions, and accountability: who can build, share, and use agents, approvals, policy templates, lifecycle, tool controls, audit, and retention.", hint: "Ownership, permissions, and accountability: access, approvals, templates, lifecycle, tools, and audit." },
+  { id: "secure", name: "Security", blurb: "Understand agent risk, enforce controls, and keep agents protected: data security, DLP, Conditional Access, oversharing fixes, threat detection, containment, and response.", hint: "Understand risk, enforce controls, and protect: DLP, Conditional Access, threat detection, and containment." },
+  { id: "value", name: "Business Value", blurb: "Optimize AI spend and turn the investment into business value: forecast usage, set spending policies and model choice, charge back departments, and report outcomes in Business Analytics.", hint: "Plan, control, and optimize AI spend, and connect it to business outcomes." }
 ];
 var PILLAR_BY_ID = {}; PILLARS.forEach(function (p, i) { p.order = i; PILLAR_BY_ID[p.id] = p; });
 var PILLAR_PHASE_TXT = { "1": "On", off: "Off" };
 /* Pillar of each built-in task, by workstream and permanent task number. */
-var PILLAR_TAGS = {"foundations": {"foundation": [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15], "observe": [3], "govern": [5, 14]}, "admin": {"observe": [1, 11, 12, 15], "govern": [2, 3, 4, 5, 7, 8, 9, 13, 14]}, "defender": {"foundation": [1], "observe": [2, 3, 4, 5, 6, 11], "secure": [7, 8, 9, 10]}, "entra": {"observe": [1, 5, 10], "govern": [2, 3, 4, 8, 9, 13], "secure": [6, 7, 11, 12, 14]}, "purview": {"foundation": [1, 2, 18], "observe": [3, 4, 5, 12, 19, 20, 24, 25, 26], "govern": [6, 7, 8, 13, 14, 15, 16, 17, 22], "secure": [9, 10, 11, 21, 23]}, "sharepoint": {"foundation": [1], "observe": [2, 4, 5, 8], "secure": [3, 6, 7, 10], "govern": [9]}, "lowcode": {"govern": [1, 3, 4, 5, 6, 7, 8, 10, 11], "observe": [2]}, "custom": {"observe": [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14], "secure": [9, 13], "govern": [15]}, "tools": {"observe": [1, 7, 9], "govern": [2, 3, 4, 5, 6, 8, 10, 12, 13], "foundation": [11]}, "shadow": {"govern": [1, 7, 10], "foundation": [2], "observe": [3, 4, 5, 6, 11, 12], "secure": [8, 9]}, "operate": {"observe": [2, 3, 4, 8, 12], "govern": [5, 10], "foundation": [6, 7, 11], "secure": [9]}, "gateway": {"secure": [1, 2, 3, 7, 8, 10], "observe": [4], "foundation": [5], "govern": [6, 9]}};
+var PILLAR_TAGS = {"foundations": {"foundation": [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 15], "manage": [3], "govern": [5, 14]}, "admin": {"manage": [1, 12, 14, 16, 17, 18], "govern": [2, 3, 4, 5, 7, 8, 9, 11, 13, 19], "secure": [15]}, "defender": {"foundation": [1], "manage": [4, 11], "secure": [2, 3, 5, 6, 7, 8, 9, 10]}, "entra": {"manage": [1, 3, 10], "govern": [2, 4, 8, 9, 13], "secure": [5, 6, 7, 11, 12, 14]}, "purview": {"foundation": [1, 2, 18], "govern": [3, 13, 14, 15, 16, 17, 22], "secure": [4, 5, 6, 7, 8, 9, 10, 11, 12, 19, 20, 21, 23, 24, 25, 26, 27]}, "sharepoint": {"foundation": [1], "manage": [4, 5, 8], "secure": [2, 3, 6, 7, 10], "govern": [9]}, "lowcode": {"govern": [1, 3, 4, 7, 8, 10, 11], "manage": [2, 5, 6]}, "custom": {"manage": [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14], "secure": [9, 13], "govern": [15]}, "tools": {"manage": [1, 9], "govern": [2, 3, 4, 5, 6, 8, 10, 12, 13], "secure": [7], "foundation": [11]}, "shadow": {"govern": [1, 7, 13, 14], "foundation": [2], "manage": [3, 4, 5, 10, 11, 12], "secure": [6, 8, 9, 15]}, "operate": {"value": [2, 3, 8, 12, 13, 14, 15, 16, 17, 18], "govern": [4, 5, 10], "foundation": [6, 7, 11], "secure": [9]}, "gateway": {"secure": [1, 2, 3, 7, 8, 10], "manage": [4], "foundation": [5], "govern": [6, 9]}};
 var TASK_PILLAR = {};
 Object.keys(PILLAR_TAGS).forEach(function (ws) { Object.keys(PILLAR_TAGS[ws]).forEach(function (p) { PILLAR_TAGS[ws][p].forEach(function (n) { TASK_PILLAR[ws + ":" + n] = p; }); }); });
 /* Your own tasks take their workstream's pillar unless you choose one. */
-var PILLAR_DEFAULT_WS = { foundations: "foundation", admin: "govern", defender: "secure", entra: "govern", purview: "secure", sharepoint: "secure", lowcode: "govern", custom: "observe", tools: "govern", shadow: "observe", operate: "observe", gateway: "secure" };
-function taskPillar(ws, n) { return TASK_PILLAR[ws + ":" + n] || PILLAR_DEFAULT_WS[ws] || "observe"; }
-/* The Observe process from the playbook: Discover, Evaluate, Monitor. */
+var PILLAR_DEFAULT_WS = { foundations: "foundation", admin: "manage", defender: "secure", entra: "govern", purview: "secure", sharepoint: "secure", lowcode: "govern", custom: "manage", tools: "govern", shadow: "manage", operate: "value", gateway: "secure" };
+function taskPillar(ws, n) { return TASK_PILLAR[ws + ":" + n] || PILLAR_DEFAULT_WS[ws] || "manage"; }
+/* The observability process from the playbook: Discover, Evaluate, Monitor. Observability underpins every pillar, so a task in any pillar can carry a stage. */
 var STAGES = [
   { id: "discover", name: "Discover", blurb: "Find every agent across your environment: Microsoft, custom-built, and third-party." },
   { id: "evaluate", name: "Evaluate", blurb: "Know what each agent does, what it can reach, and who owns it." },
   { id: "monitor", name: "Monitor", blurb: "Spot sprawl, risk, and ownerless agents before they become incidents." }
 ];
 var STAGE_BY_ID = {}; STAGES.forEach(function (x, i) { x.order = i; STAGE_BY_ID[x.id] = x; });
-var STAGE_TAGS = {"discover": ["foundations:3", "defender:2", "defender:3", "defender:11", "entra:1", "purview:19", "purview:20", "lowcode:2", "custom:1", "custom:2", "custom:3", "custom:4", "custom:5", "custom:6", "custom:7", "custom:8", "custom:10", "custom:11", "custom:12", "custom:14", "tools:9", "shadow:3", "shadow:12"], "evaluate": ["admin:1", "admin:11", "defender:4", "purview:4", "purview:5", "sharepoint:2", "sharepoint:4", "sharepoint:5", "tools:1", "shadow:4", "shadow:5", "shadow:6"], "monitor": ["admin:12", "admin:15", "defender:5", "defender:6", "entra:5", "entra:10", "purview:3", "purview:12", "purview:24", "purview:25", "purview:26", "sharepoint:8", "tools:7", "shadow:11", "operate:2", "operate:3", "operate:4", "operate:8", "operate:12", "gateway:4"]};
+var STAGE_TAGS = {"discover": ["foundations:3", "admin:16", "defender:2", "defender:3", "defender:11", "entra:1", "purview:19", "purview:20", "lowcode:2", "custom:1", "custom:2", "custom:3", "custom:4", "custom:5", "custom:6", "custom:7", "custom:8", "custom:10", "custom:11", "custom:12", "custom:14", "tools:9", "shadow:3", "shadow:12", "shadow:15"], "evaluate": ["admin:1", "admin:11", "defender:4", "purview:4", "purview:5", "sharepoint:2", "sharepoint:4", "sharepoint:5", "tools:1", "shadow:4", "shadow:5", "shadow:6", "admin:18"], "monitor": ["admin:12", "admin:15", "defender:5", "defender:6", "entra:5", "entra:10", "purview:3", "purview:12", "purview:24", "purview:25", "purview:26", "sharepoint:8", "tools:7", "shadow:11", "operate:2", "operate:3", "operate:4", "operate:8", "operate:12", "operate:17", "gateway:4", "admin:17", "operate:18"]};
 var OBS_STAGE = {}; Object.keys(STAGE_TAGS).forEach(function (st) { STAGE_TAGS[st].forEach(function (k) { OBS_STAGE[k] = st; }); });
 /* The teams of an agent observability program, from the playbook. Each admin role maps to one. */
 var TEAMS = [
@@ -1116,7 +1125,7 @@ var PLATFORMS = [
   { id: "sharepoint", name: "SharePoint agents", hint: "Agents created from SharePoint sites and files.", def: true },
   { id: "foundry", name: "Microsoft Foundry agents", hint: "Agents built and hosted in Microsoft Foundry.", def: false },
   { id: "custom", name: "Custom pro-code agents", hint: "Built with the Agent 365 SDK and CLI.", def: false },
-  { id: "external", name: "Agents on external clouds", hint: "Bedrock, Vertex AI, Agentforce, and other registry sync platforms.", def: false },
+  { id: "external", name: "Agents on external clouds", hint: "Bedrock, Vertex AI, Agentforce, and other connected platforms.", def: false },
   { id: "partner", name: "Ecosystem partner agents", hint: "Ready-to-deploy partner agents and agent factories.", def: false },
   { id: "thirdparty", name: "Third-party AI apps", hint: "Enterprise AI apps such as ChatGPT Enterprise.", def: false },
   { id: "publicai", name: "Public AI websites", hint: "Staff using consumer AI sites in a browser.", def: false },
@@ -1132,43 +1141,49 @@ var PLAT_BY_ID = {}; PLATFORMS.forEach(function (p) { PLAT_BY_ID[p.id] = p; });
    tasks can't show without them. Content only: a plan saves just the chosen feature ids (S.features), so task keys,
    progress, and backups are unaffected, and an older version that doesn't know features reads the plan by pillar. */
 var FEATURES = [
-  { id: "registry", pillar: "observe", name: "Agent registry and auto-discovery", blurb: "One registry for every agent. Microsoft, Agent Builder, Copilot Studio, SharePoint, and Foundry agents register automatically; confirm they do and triage unknowns.",
+  { id: "registry", pillar: "manage", name: "Agent registry and auto-discovery", blurb: "One registry for every agent. Microsoft, Agent Builder, Copilot Studio, SharePoint, and Foundry agents register automatically; confirm they do and triage unknowns.",
     t: ["foundations:3", "admin:1", "lowcode:2", "custom:11", "defender:4", "entra:1", "admin:14", "admin:12"], pre: [] },
-  { id: "unified", pillar: "observe", name: "Unified visibility for custom, partner, and external agents", blurb: "Bring pro-code, Foundry, partner, and external-cloud agents into the same registry, identity, and telemetry as Microsoft agents. Turn on the agent types you use.",
+  { id: "unified", pillar: "manage", name: "Unified visibility for custom, partner, and external agents", blurb: "Bring pro-code, Foundry, partner, and external-cloud agents into the same registry, identity, and telemetry as Microsoft agents. Turn on the agent types you use.",
     t: ["custom:1", "custom:2", "custom:3", "custom:4", "custom:5", "custom:6", "custom:7", "custom:8", "custom:9", "custom:10", "custom:11", "custom:12", "custom:13", "custom:14", "defender:5", "purview:19"], pre: ["entra:13"] },
-  { id: "context", pillar: "observe", name: "Deep agent context and connections", blurb: "For each agent: owner and sponsor, tools, the data it can reach, permissions, sign-ins, activity, and its agent-to-agent and agent-to-tool connections.",
+  { id: "context", pillar: "manage", name: "Deep agent context and connections", blurb: "For each agent: owner and sponsor, tools, the data it can reach, permissions, sign-ins, activity, and its agent-to-agent and agent-to-tool connections.",
     t: ["admin:1", "foundations:4", "entra:1", "entra:2", "entra:10", "tools:1", "sharepoint:4", "sharepoint:5", "purview:3", "defender:6", "shadow:6"], pre: ["sharepoint:1", "purview:1", "defender:3"] },
-  { id: "shadow", pillar: "observe", name: "Shadow AI and local agent discovery", blurb: "Find unmanaged AI apps, local agents, and MCP servers on devices, and generative AI SaaS use on the network.",
-    t: ["shadow:3", "shadow:4", "shadow:5", "shadow:6", "shadow:12", "shadow:11", "defender:11", "purview:24"], pre: ["shadow:2", "foundations:13"], types: ["shadow"] },
-  { id: "risk", pillar: "observe", name: "Risk signals from Entra, Purview, and Defender", blurb: "Agents at risk in the registry, with the identity, data, and threat signals behind them, triaged by the team that owns each signal.",
+  { id: "shadow", pillar: "manage", name: "Shadow AI and local agent discovery", blurb: "Find unmanaged AI apps, local agents, and MCP servers on devices and in network traffic, and generative AI SaaS use on the network.",
+    t: ["shadow:3", "shadow:15", "shadow:4", "shadow:5", "shadow:6", "shadow:12", "shadow:11", "defender:11", "purview:24"], pre: ["shadow:2", "foundations:13"], types: ["shadow"] },
+  { id: "risk", pillar: "secure", name: "Risk signals from Entra, Purview, and Defender", blurb: "Agents at risk in the registry, with the identity, data, and threat signals behind them, triaged by the team that owns each signal.",
     t: ["admin:15", "entra:7", "purview:4", "purview:12", "purview:25", "defender:2", "defender:4"], pre: ["purview:1", "purview:2", "defender:1", "defender:3"] },
-  { id: "usage", pillar: "observe", name: "Usage and exception trends", blurb: "Adoption and activity trends for leaders, plus the exceptions to review every month: inactive, ownerless, unmanaged, and at-risk agents.",
-    t: ["operate:3", "operate:2", "operate:4", "operate:12", "admin:12", "defender:5"], pre: ["custom:4"] },
-  { id: "finops", pillar: "observe", name: "ROI and FinOps reporting", blurb: "Licensed versus actual use, usage-based costs and budgets, and the adoption value you report to leaders.",
-    t: ["operate:8", "operate:3", "operate:2", "operate:12", "tools:11", "purview:18", "gateway:5"], pre: [] },
+  { id: "usage", pillar: "manage", name: "Agent activity, usage, and exception insights", blurb: "Sessions, exceptions, active users, runtime, and use cases for each agent, traces your developers can query in Azure Monitor, plus the exceptions to review every month: inactive, ownerless, unmanaged, and at-risk agents.",
+    t: ["admin:1", "operate:3", "operate:4", "admin:12", "defender:5", "admin:17", "admin:18"], pre: ["custom:4"] },
+  { id: "multitenant", pillar: "manage", name: "Multi-tenant agent management", blurb: "One agent inventory across the tenants you govern, with per-tenant risk and activity, and installs or blocks across the tenants you select.",
+    t: ["admin:16"], pre: ["admin:1"] },
+  { id: "finops", pillar: "value", name: "Plan and control AI spend", blurb: "Forecast usage-based spend, then set spending policies with limits and alerts, choose which AI model providers each group can use, and set up billing for the services you allow.",
+    t: ["operate:13", "operate:8", "operate:14", "tools:11", "purview:18", "gateway:5"], pre: [] },
+  { id: "chargeback", pillar: "value", name: "Chargeback, credit requests, and cost automation", blurb: "Charge departments for their own AI use, route credit requests to your approval workflow, and manage spending policies at scale, across tenants if you run several.",
+    t: ["operate:16", "operate:15"], pre: ["operate:8"] },
+  { id: "valuerpt", pillar: "value", name: "Business value and ROI reporting", blurb: "Pair AI spend with outcomes: Agent 365 Business Analytics, the Consumption Dashboard, Cowork assisted value, the Agent Dashboard, agent use cases, and adoption, reviewed with business owners every quarter.",
+    t: ["operate:17", "operate:18", "operate:2", "operate:3", "operate:12", "admin:18"], pre: ["operate:8"] },
   { id: "access", pillar: "govern", name: "Agent access, sharing, and approvals", blurb: "Who can install, share, and publish agents and plugins, how requests are approved, and the guardrails makers build within.",
     t: ["foundations:5", "foundations:14", "admin:2", "admin:3", "admin:4", "admin:8", "lowcode:1", "lowcode:3", "lowcode:4", "lowcode:7", "lowcode:10", "lowcode:11", "admin:5"], pre: [] },
   { id: "lifecycle", pillar: "govern", name: "Lifecycle governance from onboarding to retirement", blurb: "A defined path for every agent: request, approve, activate under a template, review, block, retire, and restore.",
     t: ["lowcode:8", "admin:8", "admin:9", "operate:4", "operate:5", "entra:9", "custom:15", "operate:10"], pre: ["foundations:5", "admin:7"] },
-  { id: "agentid", pillar: "govern", name: "Entra Agent ID and trusted agent identity", blurb: "Every agent gets an Entra Agent ID with a blueprint, an owner, and a sponsor, and signs in as itself so identity controls apply.",
+  { id: "agentid", pillar: "manage", name: "Entra Agent ID and trusted agent identity", blurb: "Every agent gets an Entra Agent ID with a blueprint, an owner, and a sponsor, and signs in as itself so identity controls apply.",
     t: ["entra:13", "entra:1", "entra:2", "entra:3", "lowcode:5", "lowcode:6", "custom:5", "custom:14", "entra:10"], pre: ["foundations:4"] },
   { id: "templates", pillar: "govern", name: "Policy-template onboarding", blurb: "Bundle Conditional Access, an access package, and a custom security attribute into templates, apply them at activation, and bring existing agents under them.",
     t: ["admin:7", "admin:9", "lowcode:4"], pre: ["entra:2", "entra:4", "entra:5", "entra:8", "admin:8"] },
   { id: "packages", pillar: "govern", name: "Access packages and time-bound access", blurb: "Approved, least-privilege access for agents that expires unless a sponsor extends it, so no agent keeps standing access.",
     t: ["entra:8", "entra:9"], pre: ["entra:1", "entra:2"] },
   { id: "ownerless", pillar: "govern", name: "Governance for ownerless and at-risk agents", blurb: "Find agents with no owner or with risk signals, assign accountability, and block or retire what no one claims.",
-    t: ["admin:11", "admin:15", "entra:2", "entra:9", "operate:4", "operate:5", "admin:13"], pre: [] },
-  { id: "localgov", pillar: "govern", name: "Local-agent governance with Intune", blurb: "Decide which local agents are allowed, block what you can't allow through Intune policies, and onboard the ones you sanction.",
-    t: ["shadow:1", "shadow:7", "shadow:8", "shadow:10"], pre: ["shadow:2", "shadow:3", "foundations:13"], types: ["shadow"] },
+    t: ["admin:11", "admin:15", "entra:2", "entra:9", "operate:4", "operate:5", "admin:13", "admin:19"], pre: [] },
+  { id: "localgov", pillar: "govern", name: "Local-agent governance with Intune", blurb: "Decide which local agents are allowed, block or mark noncompliant what you can't allow, set Execution Container boundaries and DLP for the ones you approve, and onboard them.",
+    t: ["shadow:1", "shadow:7", "shadow:8", "shadow:13", "shadow:14", "purview:27", "shadow:10"], pre: ["shadow:2", "shadow:3", "foundations:13"], types: ["shadow"] },
   { id: "tools", pillar: "govern", name: "Tools management: skills, plugins, and MCP servers", blurb: "Approve, block, and scope the plugins, skills, MCP servers, and connectors agents can use, with Work IQ MCP as the default.",
     t: ["tools:1", "tools:2", "tools:10", "tools:12", "tools:3", "tools:4", "tools:5", "tools:6", "tools:7", "tools:8", "tools:9", "tools:11", "tools:13", "admin:2"], pre: ["lowcode:3"] },
   { id: "ca", pillar: "secure", name: "Adaptive Conditional Access and risk-based access", blurb: "Conditional Access for agents, in report-only and then enforced, targeted by custom security attributes and agent risk, with a block you've proven works.",
     t: ["entra:4", "entra:5", "entra:7", "entra:6", "entra:12"], pre: ["entra:1", "entra:2", "entra:13"] },
   { id: "dataprotect", pillar: "secure", name: "Data protection with Purview: DLP, labels, and insider risk", blurb: "Labels on agent content, DLP for agent interactions from simulation to enforcement, and insider risk policies for agents and AI use.",
-    t: ["purview:5", "purview:6", "purview:7", "purview:8", "purview:26", "purview:9", "purview:10", "purview:11", "purview:12", "purview:24", "purview:25", "purview:21", "purview:23", "purview:19", "purview:17"], pre: ["purview:1", "purview:2"] },
+    t: ["purview:5", "purview:6", "purview:7", "purview:8", "purview:26", "purview:9", "purview:10", "purview:11", "purview:12", "purview:24", "purview:25", "purview:21", "purview:23", "purview:19", "purview:17", "purview:27"], pre: ["purview:1", "purview:2"] },
   { id: "overshare", pillar: "secure", name: "Oversharing remediation with SharePoint", blurb: "Find and fix overshared sites before agents ground on them, and restrict discovery of sensitive sites. Start early: remediation takes longest.",
     t: ["sharepoint:2", "purview:5", "sharepoint:3", "sharepoint:9", "purview:21", "sharepoint:6", "sharepoint:7", "sharepoint:4", "sharepoint:5", "sharepoint:8", "sharepoint:10"], pre: ["sharepoint:1"] },
-  { id: "compliance", pillar: "secure", name: "Compliance controls: audit, retention, eDiscovery, and communication compliance", blurb: "Audit agent activity and keep it as long as you need, retain and discover agent interactions, review agent communications, and assess AI regulations.",
+  { id: "compliance", pillar: "govern", name: "Compliance controls: audit, retention, eDiscovery, and communication compliance", blurb: "Audit agent activity and keep it as long as you need, retain and discover agent interactions, review agent communications, and assess AI regulations.",
     t: ["purview:3", "purview:22", "purview:14", "purview:15", "purview:13", "purview:16", "purview:20", "purview:17"], pre: ["purview:1", "purview:2", "purview:18"] },
   { id: "runtime", pillar: "secure", name: "Runtime threat detection and response with Defender", blurb: "Detect and block prompt injection, malicious tool use, and abnormal behavior, and give the SOC the runbooks to investigate and contain an agent.",
     t: ["defender:2", "defender:3", "defender:5", "defender:6", "defender:7", "defender:8", "defender:9", "defender:10", "shadow:9", "tools:7", "entra:14", "operate:9"], pre: ["defender:1", "defender:4"] },
@@ -1324,7 +1339,7 @@ var L = {
   vivaAgent: ["Connect to the Agent Dashboard in Viva Insights", "https://learn.microsoft.com/en-us/viva/insights/org-team-insights/agent-dashboard"],
   vivaSettings: ["Manage Copilot and Agent Dashboard settings", "https://learn.microsoft.com/en-us/viva/insights/advanced/admin/manage-settings-copilot-dashboard"],
   costTool: ["Agents Cost Calculator (FastTrack)", "https://microsoft.github.io/FastTrack/copilot-agent-strategy/copilot-agents-cost-tool/index.html"],
-  guide: ["Agent 365 Customer Implementation Guide (FastTrack)", "https://microsoft.github.io/FastTrack/copilot-agent-strategy/agent-365-customer-implementation-guide/index.html"],
+  guide: ["Agent 365 Customer implementation guide (FastTrack)", "https://microsoft.github.io/FastTrack/copilot-agent-strategy/agent-365-customer-implementation-guide/index.html"],
   advisory: ["Agent 365 Technical Advisory (FastTrack)", "https://microsoft.github.io/FastTrack/copilot-agent-strategy/agent-365-technical-advisory/index.html"],
 
   apimGw: ["AI gateway in API Management", "https://learn.microsoft.com/en-us/azure/ai-gateway/overview"],
@@ -1351,7 +1366,7 @@ function T(n, role, title, pri, phase, o) {
   };
 }
 
-/* Workstreams and tasks. Reviewed against Microsoft Learn on 2026-11-09.
+/* Workstreams and tasks. Reviewed against Microsoft Learn and the Microsoft Ignite 2026 announcements on 2026-11-18.
    n is a permanent number per workstream: never renumber. ord sets display order within a phase. */
 var WORKSTREAMS = [
 {
@@ -1540,7 +1555,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "configure",
 "req": "Each licensed user needs an eligible base, such as Microsoft 365 E5, A5, or Business Premium, or E3 with Defender Suite and Purview Suite. E7 already includes the base.",
-"desc": "Agent 365 is licensed per user, not per agent, and at least one qualifying license enables the service in an eligible commercial tenant. Registry inventory and basic governance actions come with Microsoft 365, while templates, observability, the Agent Map, and the Graph API need Agent 365 or E7. Microsoft 365 E7 bundles E5, Microsoft 365 Copilot, Entra Suite, and Agent 365.",
+"desc": "Agent 365 is licensed per user, not per agent, and at least one qualifying license enables the service in an eligible commercial tenant. Registry inventory and basic governance actions come with Microsoft 365. Since Ignite 2026, qualifying Microsoft 365 subscriptions also include usage and activity insights for Microsoft-built agents and agents built on Microsoft platforms: the agent overview, active users, sessions, exception rate, and run time. Templates, the Agent Map, the Graph API, insights for non-Microsoft agents, and advanced governance and security still need Agent 365 or E7. Microsoft 365 E7 bundles E5, Microsoft 365 Copilot, Entra Suite, and Agent 365.",
 "done": "A qualifying subscription appears under Billing → Licenses → Subscriptions.",
 "where": "Microsoft 365 admin center → Billing → Licenses",
 "preview": false,
@@ -1560,6 +1575,10 @@ var WORKSTREAMS = [
 [
 "Compare Microsoft Copilot in Microsoft 365 E3, E5, and E7",
 "https://learn.microsoft.com/en-us/copilot/plan/compare-copilot-e3-e5-e7"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -1762,7 +1781,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "validate",
 "req": "",
-"desc": "Open Agents → Overview and Agents → All agents → Registry as an operator and as an auditor, and confirm each role sees what you expect. The Agent Map opens only for AI Administrator or Global Administrator and needs an Agent 365 or E7 license. For third-party agents, Overview usage metrics start at license activation, so early numbers can cover fewer than 30 days.",
+"desc": "Open Agents → Overview and Agents → All agents → Registry as an operator and as an auditor, and confirm each role sees what you expect. The Agent Map opens only for AI Administrator or Global Administrator and needs an Agent 365 or E7 license. For third-party agents, Overview usage metrics start at license activation, so early numbers can cover fewer than 30 days. Usage metrics for Microsoft-built and Microsoft-platform agents now come with qualifying Microsoft 365 subscriptions, without an Agent 365 license.",
 "done": "Overview and Registry load for both roles, the Map loads for the operator, and the auditor can't change settings.",
 "where": "Microsoft 365 admin center → Agents → Overview",
 "preview": false,
@@ -1919,7 +1938,7 @@ var WORKSTREAMS = [
 "code": "MAC",
 "name": "Admin center",
 "title": "Admin center: registry, settings, and policy templates",
-"area": "observe",
+"area": "manage",
 "on": true,
 "summary": "Registry, settings, requests, and policy templates",
 "why": "The Microsoft 365 admin center is the day-to-day control surface. The registry shows every agent and its owner, settings define what people can use, and templates apply consistent protections when an agent goes live. Agents → Settings groups seven controls: agent management rules, agent and plugin access, security templates, sharing, user access, agent feedback sharing, and tags.",
@@ -1928,11 +1947,11 @@ var WORKSTREAMS = [
 {
 "n": 1,
 "role": "AI Administrator",
-"title": "Review the agent registry and Agent Map",
+"title": "Review the agent registry, Agent Map, and agent activity",
 "pri": "Required",
 "phase": "configure",
-"req": "Registry is included with Microsoft 365. The Agent Map needs Agent 365 or E7.",
-"desc": "Confirm every visible agent has a known owner and source, and flag unknowns for triage. Coverage varies by platform and publication state, and the same Copilot Studio agent can appear twice by design, as Shared by creator and Published by your org. An unlisted agent isn't proof that it doesn't exist.",
+"req": "Registry is included with Microsoft 365, and since Ignite 2026 so are usage and activity insights for Microsoft-built and Microsoft-platform agents. The Agent Map and insights for non-Microsoft agents need Agent 365 or E7.",
+"desc": "Confirm every visible agent has a known owner and source, and flag unknowns for triage. Coverage varies by platform and publication state, and the same Copilot Studio agent can appear twice by design, as Shared by creator and Published by your org. An unlisted agent isn't proof that it doesn't exist. Use AI mode (preview) to ask the registry in plain language for agents without owners, inactive agents, or agents that need a closer look.",
 "done": "The registry lists agents with owner, source, and status, and no unexplained agents remain.",
 "where": "Microsoft 365 admin center → Agents → All agents → Registry or Map",
 "preview": false,
@@ -1955,6 +1974,7 @@ var WORKSTREAMS = [
 "Review the Total agents, Agents without owners, and Unmanaged agents tiles.",
 "Filter by Platform and Publisher type, then export the list for offline triage.",
 "Open the Map to spot clusters by platform and drill into unfamiliar agents.",
+"Open an agent's Activity tab to review sessions, exceptions, active users, and runtime for a date range, and export to CSV for deeper analysis.",
 "Record each unknown agent with a triage owner and a due date."
 ],
 "ord": 10,
@@ -2282,7 +2302,7 @@ var WORKSTREAMS = [
 "pri": "Optional",
 "phase": "operate",
 "req": "Licensing sources differ on whether rules need Agent 365. Confirm in your tenant.",
-"desc": "Two more management rules help at scale: block ownerless agents without usage, and reject publish requests older than a set number of days. Each rule shows the impacted agents before it runs. Agree thresholds with owners and the service desk first.",
+"desc": "Two more management rules help at scale: block ownerless agents without usage, and reject publish requests older than a set number of days. Each rule shows the impacted agents before it runs. Agree thresholds with owners and the service desk first. An action center, due in preview in December 2026, will start with inactive and ownerless agents and put them in one review and cleanup queue.",
 "done": "Both rules exist with agreed thresholds, and each run has a reviewed preview and a change record.",
 "where": "Agents → Settings → Agent management rules",
 "preview": false,
@@ -2298,6 +2318,10 @@ var WORKSTREAMS = [
 [
 "Microsoft Agent 365 licensing FAQs",
 "https://www.microsoft.com/licensing/faqs/122"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -2345,7 +2369,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "operate",
 "req": "Agent 365 or E7 license",
-"desc": "The Risks column and Agents at risk tile combine signals from Entra, Defender, and Purview so AI admins can see risks without security roles. Counts can lag the security portals by up to an hour. Deep links open the source portal only for users with the right role, and Purview IRM alerts need an IRM role.",
+"desc": "The Risks column and Agents at risk tile combine signals from Entra, Defender, and Purview so AI admins can see risks without security roles. Counts can lag the security portals by up to an hour. Deep links open the source portal only for users with the right role, and Purview IRM alerts need an IRM role. Dynamic agent risk, in preview since Ignite 2026, combines runtime identity, access, data, endpoint, cloud, and network signals with exposure and blast radius into one risk level per agent. It updates as the agent acts, is targeted, or changes, and shows the same level in the admin center, Defender, Entra, and Purview. Microsoft is also working with Check Point, Cyera, Darktrace, and Zenity to add their signals through Microsoft Sentinel.",
 "done": "A weekly triage routes each high-severity risk to its security owner with a ticket.",
 "where": "Agents → All agents → Registry → Agents at risk",
 "preview": false,
@@ -2357,6 +2381,14 @@ var WORKSTREAMS = [
 [
 "Agent management in Microsoft 365 admin center",
 "https://learn.microsoft.com/en-us/microsoft-agent-365/admin/agent-365-overview"
+],
+[
+"AI agent posture risk in Microsoft Defender",
+"https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/ai-agent-risk-assessment"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -2364,9 +2396,164 @@ var WORKSTREAMS = [
 "Open the Risks count for an agent and review signals by severity and source.",
 "Send each signal to the owning security team using the source link.",
 "Make sure IRM investigators hold IRM Analyst or IRM Investigator for Purview links.",
-"Track each item to closure and review trends in the steering meeting."
+"Track each item to closure and review trends in the steering meeting.",
+"When dynamic agent risk reaches your tenant, sort the queue by its risk level and confirm that the admin center and the security portals show the same level for a sample agent."
 ],
 "ord": 111,
+"step": 11
+},
+{
+"n": 16,
+"role": "AI Administrator",
+"title": "Manage agents across the tenants you govern",
+"pri": "Optional",
+"phase": "configure",
+"req": "A GDAP relationship (partners) or a Microsoft Entra Tenant Governance relationship (enterprises) with each governed tenant, and a delegated role in each. Viewing agent risk and activity needs Agent 365 licenses for the users.",
+"desc": "Multi-tenant agent management, in preview, gives partners and organizations with subsidiary tenants one consolidated agent inventory in the Microsoft 365 admin center. From the governing tenant you can review risk and activity per tenant, install or block an agent across all or selected governed tenants, and use the tenant switcher to work in a governed tenant without signing out. Actions run separately in each tenant and follow your delegated role there. Entra Tenant Governance isn't the same as multitenant organization (MTO) collaboration.",
+"done": "The All tenants scope lists agents from every governed tenant you expect, delegated roles are least privilege, and a test block in a nonproduction tenant works and is reversed.",
+"where": "Microsoft 365 admin center → All tenants → Agents",
+"preview": true,
+"links": [
+[
+"Manage agents across multiple tenants in the Microsoft 365 admin center (preview)",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/agent-multi-tenant"
+],
+[
+"Manage multiple tenants in the Microsoft 365 admin center",
+"https://learn.microsoft.com/en-us/microsoft-365/admin/multi-tenant/manage"
+],
+[
+"What is Microsoft Entra Tenant Governance? (preview)",
+"https://learn.microsoft.com/en-us/entra/id-governance/tenant-governance/overview"
+]
+],
+"steps": [
+"Confirm each governed tenant has an active relationship: GDAP in Partner Center for partners, or Microsoft Entra Tenant Governance for enterprises.",
+"Grant the least-privileged delegated role in each governed tenant: Global Reader to view the inventory, AI Administrator to install, block, or change availability.",
+"Sign in to the governing tenant and select All tenants → Agents to open the consolidated inventory.",
+"Review the Total agents, Risky agents, and Assigned tenants information, then open an agent and choose a governed tenant to see its Overview, Permissions, Security & compliance, and Activity.",
+"Install an approved agent in all or selected tenants, choose the users or groups for each, and review the summary before you install.",
+"Rehearse a cross-tenant block on a test agent in a nonproduction tenant, and note any tenants where your access is read-only.",
+"Use the tenant switcher for tenant-specific follow-up, and confirm the selected tenant before every change."
+],
+"ord": 12,
+"rollback": "Unblock the agent or update its availability in each affected governed tenant. Remove the delegated role or end the relationship to stop cross-tenant management.",
+"step": 4
+},
+{
+"n": 17,
+"role": "Global Administrator",
+"title": "Sync agent activity to Azure Monitor for developers and SREs",
+"pri": "Optional",
+"phase": "configure",
+"req": "Global Administrator to set up syncs; Contributor or Owner on the Azure subscription or resource group; Owner, User Access Administrator, or Role Based Access Control Administrator on the data collection rule. Included for Microsoft-built and Microsoft-platform agents; third-party agents need Agent 365 or E7. Azure Monitor ingestion and retention charges apply.",
+"desc": "Agent activity sync, in preview since Ignite 2026, continuously sends a copy of each agent run, with its model calls, tool calls, timing, and errors, as OpenTelemetry traces to an Application Insights resource you own. Developers and SRE teams can then query, alert, and build dashboards in Azure Monitor alongside the rest of the application, and keep the data longer than the 30 days Agent 365 retains it. You can add up to 10 syncs and filter each by agent or platform. Synced traces can include user IDs and email addresses, so agree who can see them before you turn it on.",
+"done": "A sync shows Success, a test agent's run appears in Application Insights with its model and tool calls, and access to the resource is limited to the approved team.",
+"where": "Microsoft 365 admin center → Agents → Settings → Agent activity sync",
+"preview": true,
+"links": [
+[
+"Agent activity sync to Azure Monitor overview (preview)",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/sync-agent-activity-azure-monitor"
+],
+[
+"Unified agent observability with end-to-end tracing in Azure Monitor",
+"https://techcommunity.microsoft.com/blog/azureobservabilityblog/unified-agent-observability-with-end-to-end-tracing-in-azure-monitor/4574276"
+],
+[
+"Data handling, data residency, and compliance in Agent 365 observability",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/data-residency-protection-compliance"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+]
+],
+"steps": [
+"Agree with your privacy team who may see synced traces, which can include user IDs and email addresses, and which Azure region stores them.",
+"In the Azure portal, create an Application Insights resource in that region with Enable OTLP support selected.",
+"Copy the Traces Endpoint from the resource's OTLP connection info.",
+"On the linked data collection rule, assign Monitoring Metrics Publisher to the Agent365Observability service principal, which some tenants show as maven-prod.",
+"In Agents → Settings → Agent activity sync, select Set up storage, paste the endpoint, test the connection, and add Agent name or Platform conditions to scope it.",
+"Run a test agent and confirm its run, model calls, and tool calls appear in Application Insights Search or the OTelSpans table.",
+"Set Log Analytics retention and access, and give developers and SREs only the roles they need."
+],
+"ord": 85,
+"rollback": "Delete the sync to stop sending activity. Data already synced stays in your Application Insights resource until its retention ends.",
+"step": 11
+},
+{
+"n": 18,
+"role": "AI Administrator",
+"title": "Review agent use cases to find duplicate and overlapping agents",
+"pri": "Optional",
+"phase": "operate",
+"req": "Frontier program, currently for tenants with at least 50 Copilot licenses. Global Administrator, Global Reader, AI Administrator, or AI Reader to view use cases.",
+"desc": "Use case classification, a Frontier preview announced as Agent Map use cases at Ignite 2026, labels each agent session with a use case from a built-in taxonomy and shows the results on each agent's Activity tab and in Agent Map. Use it to see what agents actually do, spot several agents doing the same work, and decide which to keep, consolidate, or retire. It covers Copilot Studio, Foundry, declarative, and connected-platform agents, not Code, Autopilot, or Researcher. Classifications are directional, not an audit record, and aren't meant for performance management.",
+"done": "Use cases served by more than one agent are reviewed with their owners, and each overlap has a keep, consolidate, or retire decision.",
+"where": "Microsoft 365 admin center → Agents → Agent Map → Group by → Use cases",
+"preview": true,
+"links": [
+[
+"Understand use case classification in Microsoft Cowork and Agent 365 (Frontier)",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/business-use-case-for-agents"
+],
+[
+"Use Agent Map in the Microsoft 365 admin center",
+"https://learn.microsoft.com/en-us/microsoft-365/admin/manage/agent-map"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+]
+],
+"steps": [
+"Confirm the tenant is in the Frontier program and meets the Copilot license minimum for use case classification.",
+"Open Agent Map, select Group by → Use cases, and drill from domain to category to use case to agent.",
+"List the use cases served by more than one agent, with the session volume for each.",
+"Open each agent's Activity tab to check its full use case mix before you draw conclusions.",
+"With the owners, decide whether to keep, consolidate, or retire each overlapping agent, and record the decision.",
+"Feed the decisions into the monthly governance review and the retirement process."
+],
+"ord": 115,
+"rollback": "Use case classification only reports. Reverse a consolidation through the normal lifecycle actions, such as unblocking an agent or restoring it within 30 days.",
+"step": 11
+},
+{
+"n": 19,
+"role": "AI Administrator",
+"title": "Pilot the Agent 365 Admin plugin in Copilot for governance tasks",
+"pri": "Optional",
+"phase": "operate",
+"req": "A Microsoft 365 Copilot license for each admin who uses it in Cowork. What it can see and do follows each admin's own roles.",
+"desc": "The Agent 365 Admin plugin, in preview since Ignite 2026, brings Agent 365 administration into Copilot Chat and Cowork. Admins describe an outcome, such as finding agents without owners, keeping a departing employee's agents running, or containing agents exposed to a compromised connector, and Cowork investigates, plans, pauses for approval before consequential actions, and checks the result. Deploy it only to your AI admins, start with read-only questions, and keep a person approving every change.",
+"done": "The plugin is available only to the admin group, admins have run the agreed read-only prompts, and any change it made was approved and appears in the audit log.",
+"where": "Microsoft 365 admin center → Agents → Tools → Plugins → Agent 365 Admin",
+"preview": true,
+"links": [
+[
+"Agent 365 administration overview",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/administer-ai-estate"
+],
+[
+"Manage plugins, skills, and MCP servers",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/manage-plugins-skills-mcp-servers"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+]
+],
+"steps": [
+"In Agents → Tools → Plugins, make the Agent 365 Admin plugin available only to a security group of AI admins.",
+"Have each admin add the plugin in Copilot and sign in to the services it asks for.",
+"Start with read-only prompts, such as a governance summary, pending agent requests, agents without owners, and an MCP server's dependencies.",
+"Compare the answers with the registry and Tools pages before you rely on them for decisions.",
+"Agree which changes admins may make through the plugin, and require approval for each one.",
+"Review plugin-initiated changes in the audit log during the monthly governance review."
+],
+"ord": 125,
+"rollback": "Set the plugin's availability to No users, and reverse any change it made with the matching admin center action.",
 "step": 11
 }
 ]
@@ -2427,7 +2614,7 @@ var WORKSTREAMS = [
 "ord": 10,
 "rollback": "Keep the old queries and workflow definitions until the migrated ones are validated, so you can switch back if a detection fails. Disable a re-created block rule on the Real-time protection page if it blocks expected agent actions.",
 "step": 5,
-"deep": "02 Microsoft Defender, 2.10 licensing transition"
+"deep": "02 Microsoft Defender for Agent 365, 2.10 licensing transition"
 },
 {
 "n": 2,
@@ -2460,7 +2647,7 @@ var WORKSTREAMS = [
 "ord": 20,
 "rollback": "Leave the Enable toggle on, because Off stops AI agent data collection and disables all Security for AI capabilities. To back out one capability, change that connector or rule instead.",
 "step": 5,
-"deep": "02 Microsoft Defender, 2.01 Security for AI Get started"
+"deep": "02 Microsoft Defender for Agent 365, 2.01 Security for AI Get started"
 },
 {
 "n": 3,
@@ -2492,7 +2679,7 @@ var WORKSTREAMS = [
 "ord": 30,
 "rollback": "Clear the components you added, or disconnect the connector, only through change control. Defender then loses agent investigation and hunting data, and Copilot Studio blocks still happen but don't raise alerts or incidents.",
 "step": 5,
-"deep": "02 Microsoft Defender, 2.01 Security for AI Get started"
+"deep": "02 Microsoft Defender for Agent 365, 2.01 Security for AI Get started"
 },
 {
 "n": 4,
@@ -2501,7 +2688,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "validate",
 "req": "",
-"desc": "Defender's AI agents inventory covers Copilot Studio, Foundry, Microsoft 365, supported non-Microsoft platforms, and local agents discovered on endpoints. Compare it with the Microsoft 365 agent registry and investigate differences, which can point to missing connections, unsupported platforms, or agents outside Agent 365. Review risk level and recommendations together, because Defender calculates them separately, and use each agent page's attack-surface relationships to prioritize fixes.",
+"desc": "Defender's AI agents inventory covers Copilot Studio, Foundry, Microsoft 365, supported non-Microsoft platforms, and local agents discovered on endpoints. Compare it with the Microsoft 365 agent registry and investigate differences, which can point to missing connections, unsupported platforms, or agents outside Agent 365. Review risk level and recommendations together, because Defender calculates them separately, and use each agent page's attack-surface relationships to prioritize fixes. Since Ignite 2026, posture assessment also covers agents built on Amazon Bedrock, Google Gemini, Google Vertex AI, and Anthropic Claude, in preview; bring them into scope by connecting their platforms through Connected platforms.",
 "done": "Agent counts per platform match, or each difference has a documented cause and owner.",
 "where": "Defender portal → Assets → AI agents → Agents",
 "preview": false,
@@ -2521,6 +2708,10 @@ var WORKSTREAMS = [
 [
 "Connected platforms in Microsoft Agent 365",
 "https://learn.microsoft.com/en-us/microsoft-agent-365/admin/connected-platforms"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -2533,7 +2724,7 @@ var WORKSTREAMS = [
 ],
 "ord": 40,
 "step": 5,
-"deep": "02 Microsoft Defender, 2.07 AI agent inventory and advanced hunting"
+"deep": "02 Microsoft Defender for Agent 365, 2.07 AI agent inventory and advanced hunting"
 },
 {
 "n": 5,
@@ -2565,7 +2756,7 @@ var WORKSTREAMS = [
 ],
 "ord": 50,
 "step": 5,
-"deep": "02 Microsoft Defender, 2.07 AI agent inventory and advanced hunting"
+"deep": "02 Microsoft Defender for Agent 365, 2.07 AI agent inventory and advanced hunting"
 },
 {
 "n": 6,
@@ -2606,7 +2797,7 @@ var WORKSTREAMS = [
 "ord": 60,
 "rollback": "Turn off a custom detection rule that creates noise from Hunting → Custom detection rules. Delete also removes the rule permanently, so turn it off first if you might reuse it.",
 "step": 5,
-"deep": "02 Microsoft Defender, 2.07 AI agent inventory and advanced hunting"
+"deep": "02 Microsoft Defender for Agent 365, 2.07 AI agent inventory and advanced hunting"
 },
 {
 "n": 7,
@@ -2640,7 +2831,7 @@ var WORKSTREAMS = [
 "ord": 70,
 "rollback": "Select the rule and choose Disable or Delete on the Real-time protection page. The Default rule keeps auditing, and near-real-time alerts resume for agents no longer covered by a blocking rule.",
 "step": 5,
-"deep": "02 Microsoft Defender, 2.06 real-time protection rules"
+"deep": "02 Microsoft Defender for Agent 365, 2.06 real-time protection rules"
 },
 {
 "n": 8,
@@ -2677,7 +2868,7 @@ var WORKSTREAMS = [
 "platforms": [
 "copilotstudio"
 ],
-"deep": "02 Microsoft Defender, 2.02 Copilot Studio real-time protection"
+"deep": "02 Microsoft Defender for Agent 365, 2.02 Copilot Studio real-time protection"
 },
 {
 "n": 9,
@@ -2709,7 +2900,7 @@ var WORKSTREAMS = [
 "ord": 90,
 "rollback": "Set Enabled back to its previous value under Settings → Security for AI → Prompt evidence collection. When it's off, Defender doesn't add prompt snippets to alerts, so record the change and approver.",
 "step": 5,
-"deep": "02 Microsoft Defender, 2.03 prompt evidence collection"
+"deep": "02 Microsoft Defender for Agent 365, 2.03 prompt evidence collection"
 },
 {
 "n": 10,
@@ -2759,7 +2950,8 @@ var WORKSTREAMS = [
 ],
 "ord": 100,
 "rollback": "Turn off custom detections that create noise and revert routing changes through change control. Owners or admins reverse containment, for example by re-enabling a disabled agent identity or unblocking an agent.",
-"step": 5
+"step": 5,
+"deep": "02 Microsoft Defender for Agent 365, 2.09 Detect and investigate agent threats"
 },
 {
 "role": "Security Administrator",
@@ -2809,7 +3001,8 @@ var WORKSTREAMS = [
 "platforms": [
 "thirdparty",
 "publicai"
-]
+],
+"deep": "02 Microsoft Defender for Agent 365, 2.04 Discover SaaS generative AI apps"
 }
 ]
 },
@@ -2831,7 +3024,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "plan",
 "req": "",
-"desc": "List agent identities and blueprints and confirm each maps to a sponsor, an owner, and a known blueprint. Also find agents that still run as classic app registrations or service principals, because they lack agent-specific tracking and controls. Viewing agent identities needs no admin role, so use read-only access for the review.",
+"desc": "List agent identities and blueprints and confirm each maps to a sponsor, an owner, and a known blueprint. Also find agents that still run as classic app registrations or service principals, because they lack agent-specific tracking and controls. Viewing agent identities needs no admin role, so use read-only access for the review. Agent ID is extending in preview to Microsoft Autopilot, to connected-platform agents, and to local agents found by discovery, starting with GitHub Copilot CLI and Claude Code, so expect new identities to appear in this inventory.",
 "done": "Every in-scope identity is listed with its blueprint, owner, and sponsor, and legacy service principal agents are flagged.",
 "where": "Entra admin center → Entra ID → Agents → Agent identities / Agent blueprints",
 "preview": false,
@@ -2851,6 +3044,10 @@ var WORKSTREAMS = [
 [
 "Best practices for Microsoft Entra Agent ID",
 "https://learn.microsoft.com/en-us/entra/agent-id/best-practices-agent-id"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -2992,7 +3189,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "configure",
 "req": "Microsoft 365 E7, or Agent 365 with Entra ID P1 or Microsoft 365 E3 (Entra ID P2 or Microsoft 365 E5 for agent risk)",
-"desc": "Target the identity that receives the token: user policies cover agents acting on behalf of users, agent identity policies cover autonomous agents, and agent user policies cover agents with their own user account. Start with a high-risk agent block and an approved-agents allowlist, both in Report-only. Policies scoped to users don't include agent users, and Conditional Access doesn't apply when security defaults are on.",
+"desc": "Target the identity that receives the token: user policies cover agents acting on behalf of users, agent identity policies cover autonomous agents, and agent user policies cover agents with their own user account. Start with a high-risk agent block and an approved-agents allowlist, both in Report-only. Policies scoped to users don't include agent users, and Conditional Access doesn't apply when security defaults are on. Microsoft announced at Ignite 2026 that Conditional Access can now set policies for agents acting on a user's behalf separately from that user's own policies, and that dynamic controls can evaluate policy at the point of action. Check which supported scenarios are available in your tenant before you design for them.",
 "done": "Report-only results for pilot agents show the expected would-be outcomes and no unintended blocks.",
 "where": "Entra admin center → Entra ID → Conditional Access → Policies",
 "preview": false,
@@ -3020,6 +3217,10 @@ var WORKSTREAMS = [
 [
 "Plan a Conditional Access deployment",
 "https://learn.microsoft.com/en-us/entra/identity/conditional-access/plan-conditional-access"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -3801,7 +4002,7 @@ var WORKSTREAMS = [
 "req": "",
 "desc": "Include agent instances in DLP policies as you would users, directly or through a group, and run the policies in simulation mode. Simulation shows which agent-to-human and human-to-agent interactions in Teams, SharePoint, OneDrive, and email would match, without blocking anything. Use mail-enabled security groups or Microsoft 365 groups so Exchange rules evaluate membership, and scope SharePoint by site.",
 "done": "A test interaction with a pilot agent instance shows as a DLP rule match in the simulation dashboard, and a named owner reviews matches on a set cadence.",
-"where": "Purview portal \u2192 Data Loss Prevention \u2192 Policies",
+"where": "Purview portal → Data Loss Prevention → Policies",
 "preview": false,
 "links": [
 [
@@ -3837,7 +4038,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "configure",
 "req": "",
-"desc": "The Microsoft 365 Copilot and Copilot Chat DLP location can exclude labeled files and emails from responses, and block prompts or web searches that contain sensitive info types (prompt blocking is in preview). It covers Microsoft 365 Copilot, Copilot Chat, and Cowork, and label rules also restrict Copilot Studio agents whose knowledge source is SharePoint. It doesn't inspect files uploaded into prompts, and excluded items can still appear as citations.",
+"desc": "The Microsoft 365 Copilot and Copilot Chat DLP location can exclude labeled files and emails from responses, and block prompts or web searches that contain sensitive info types (prompt blocking is in preview). It covers Microsoft 365 Copilot, Copilot Chat, and Cowork, and label rules also restrict Copilot Studio agents whose knowledge source is SharePoint. It doesn't inspect files uploaded into prompts, and excluded items can still appear as citations. At Ignite 2026, Microsoft announced previews that block Copilot from referencing files with sensitive information even when they aren't labeled, and extend prompt protection to attachments and linked files.",
 "done": "A test prompt over labeled content returns nothing from that item in simulation and after enforcement, while unlabeled content still works.",
 "where": "Purview portal → Data Loss Prevention → Policies → Create policy → Custom",
 "preview": false,
@@ -3857,6 +4058,10 @@ var WORKSTREAMS = [
 [
 "Use Microsoft Purview to manage data security & compliance for Microsoft Copilot Studio",
 "https://learn.microsoft.com/en-us/purview/ai-copilot-studio"
+],
+[
+"Microsoft Ignite 2026 Book of News",
+"https://news.microsoft.com/events/ignite/2026/book-of-news/"
 ]
 ],
 "steps": [
@@ -4463,6 +4668,47 @@ var WORKSTREAMS = [
 "ord": 32,
 "step": 7,
 "deep": "04 Microsoft Purview, 4.13"
+},
+{
+"n": 27,
+"role": "Compliance Administrator",
+"title": "Pilot DLP for Microsoft agents and key local agents",
+"pri": "Optional",
+"phase": "configure",
+"req": "Windows devices onboarded to Purview for local agents; the preview available in your Purview portal",
+"desc": "In preview since Ignite 2026, Purview DLP can detect and block sensitive information before Microsoft agents and key local agents process, expose, or send it. Key local agents include Claude Code, Claude Desktop, GitHub Copilot CLI, the GitHub Copilot app, and the VS Code extensions for GitHub Copilot and Claude Code. Flexible scoping lets you apply a policy to one agent, a group of agents, or the whole organization. Until it reaches your tenant, keep Endpoint DLP and the Risky AI usage policy in place for people.",
+"done": "A DLP policy in simulation, scoped to one approved local agent, detects a test sensitive item, and the owner agrees when to enforce.",
+"where": "Purview portal → Data Loss Prevention → Policies",
+"preview": true,
+"links": [
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+],
+[
+"Learn about Endpoint data loss prevention",
+"https://learn.microsoft.com/en-us/purview/endpoint-dlp-learn-about"
+],
+[
+"Onboard devices to Microsoft Purview",
+"https://learn.microsoft.com/en-us/purview/device-onboarding-overview"
+],
+[
+"Microsoft Ignite 2026 Book of News",
+"https://news.microsoft.com/events/ignite/2026/book-of-news/"
+]
+],
+"steps": [
+"Confirm the DLP preview for agents is available in your Purview portal and which agents it supports.",
+"Pick the local agents your disposition policy allows, and the sensitive information types they must not send out.",
+"Create a DLP policy scoped to one approved agent on onboarded pilot devices, in simulation mode.",
+"Test with a sample sensitive item and review the matches.",
+"Agree with the agent's owner and users how blocks will appear, then enforce on the pilot.",
+"Widen the scope to groups of agents or the organization, ring by ring."
+],
+"ord": 141,
+"rollback": "Return the policy to simulation mode or turn it off.",
+"step": 7
 }
 ]
 },
@@ -4850,7 +5096,7 @@ var WORKSTREAMS = [
 "ord": 10,
 "rollback": "Uninstall the agent for the pilot users or groups, or block it, which affects it in Copilot and host apps such as Teams and Outlook. Clearing Allow agents and plugins built by Microsoft stops installs, but users still see these agents.",
 "step": 3,
-"deep": "06 Microsoft-built agents"
+"deep": "06 Microsoft-built & productivity-app agents"
 },
 {
 "n": 2,
@@ -5626,11 +5872,11 @@ var WORKSTREAMS = [
 {
 "n": 10,
 "role": "AI Administrator",
-"title": "Connect external platforms with registry sync",
+"title": "Connect external agent platforms through Connected platforms",
 "pri": "Recommended",
 "phase": "configure",
-"req": "Platform administrator to create a key-based credential and grant the documented read permissions on each source platform",
-"desc": "Supported platforms are Amazon Bedrock, Google Vertex AI, Salesforce Agentforce, Databricks Genie, Anthropic Claude Managed Agents, Oracle Generative AI Agents, and Snowflake Cortex. Connections are read-only and use a key-based credential that differs by platform, sync is manual, and agents deleted at the source aren't guaranteed to leave the registry. Observability collection is a Frontier preview documented for Bedrock, Vertex AI, Claude, Agentforce, and Databricks Genie, and sync doesn't add code-level capabilities such as identity or tooling. If a source platform restricts network access, allow the Agent 365 outbound IP addresses listed in the article, or the connection can fail with an authentication error even when the credentials are correct.",
+"req": "Platform administrator to create the credential, or set up secretless authentication where supported, and grant the documented read permissions on each source platform",
+"desc": "Supported platforms are Amazon Bedrock, Google Vertex AI, Salesforce Agentforce, Databricks Genie, Anthropic Claude Managed Agents, Oracle Generative AI Agents, and Snowflake Cortex. Connections are read-only, sync is manual, and agents deleted at the source aren't guaranteed to leave the registry. Observability collection is a Frontier preview documented for Bedrock, Vertex AI, Claude, Agentforce, and Databricks Genie. At Ignite 2026, Microsoft announced a guided connection wizard, secretless authentication through Entra workload identity federation for supported connections, and an Entra Agent ID for each connected agent, rolling out across Agentforce, Amazon AgentCore, Vertex AI, Databricks, Snowflake, Claude Managed Agents, OpenAI, Oracle, SAP, ServiceNow, and UiPath through December. These are in preview and vary by platform, so plan for a key-based credential until the Learn article lists a keyless option for yours. If a source platform restricts network access, allow the Agent 365 outbound IP addresses listed in the article, or the connection can fail with an authentication error even when the credentials are correct.",
 "done": "Each connection shows a successful latest sync, and the expected agents appear in the registry with owners.",
 "where": "Microsoft 365 admin center → Agents → All agents → Connected platforms → Manage",
 "preview": true,
@@ -5638,6 +5884,10 @@ var WORKSTREAMS = [
 [
 "Connected platforms in Microsoft Agent 365",
 "https://learn.microsoft.com/en-us/microsoft-agent-365/admin/connected-platforms"
+],
+[
+"Third-party agent observability (Frontier)",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/third-party-agent-observability"
 ],
 [
 "Choose an Agent 365 integration option",
@@ -5654,10 +5904,15 @@ var WORKSTREAMS = [
 [
 "Troubleshoot connected platforms in Microsoft Agent 365",
 "https://learn.microsoft.com/en-us/microsoft-agent-365/admin/troubleshoot-connected-platforms"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
 "Agree a RACI with each platform administrator, who creates credentials, grants source permissions, and owns rotation.",
+"Check whether secretless authentication and Entra Agent ID are available for your platform yet, and prefer them when they are.",
 "Have the platform administrator create each guide's credential, such as AWS access keys, a Vertex AI JSON key, or an Agentforce consumer key.",
 "For Anthropic Claude, use a workspace ID and workspace-scoped API key from a non-default workspace; creating the key needs at least the Developer role.",
 "Grant only the documented read permissions, and skip the optional delete permission unless you need registry-driven removal.",
@@ -5757,7 +6012,7 @@ var WORKSTREAMS = [
 "platforms": [
 "partner"
 ],
-"deep": "10 Ecosystem partner agents"
+"deep": "10 Ecosystem partner agents & agent factories"
 },
 {
 "n": 13,
@@ -5924,7 +6179,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "configure",
 "req": "AI Administrator or Global Administrator, because approval needs tenant-wide consent",
-"desc": "Approve or reject tool requests, block servers that don't meet policy, and unblock approved ones. Where tool-level control is available, keep write, delete, or payment tools off while allowing lower-risk tools on the same server. Blocking an MCP server also blocks dependent plugins and linked connectors.",
+"desc": "Approve or reject tool requests, block servers that don't meet policy, and unblock approved ones. Where tool-level control is available, keep write, delete, or payment tools off while allowing lower-risk tools on the same server. Blocking an MCP server also blocks dependent plugins and linked connectors, so first check which agents use it and which plugins depend on it.",
 "done": "Every MCP server and high-risk tool has an approved or blocked state that matches your written policy.",
 "where": "Microsoft 365 admin center → Agents → Tools → Requests",
 "preview": false,
@@ -5946,7 +6201,7 @@ var WORKSTREAMS = [
 "Define approval criteria: publisher, authentication type, data handling, declared tools, and business owner.",
 "Under Agents → Tools → Requests, review each request's publisher and declared tools, then approve or reject it.",
 "After approval, consent to the server's Entra permissions; it can take 30 minutes to appear in Copilot Studio.",
-"Under Registry, select a noncompliant server, select Block, and check which plugins the block affects.",
+"Under Registry, open a noncompliant server, review the agents that use it and the plugins that depend on it, then select Block.",
 "Where supported, open the server's Tools tab, disable high-risk tools, and select Save.",
 "Activate the admin role through PIM for approvals, and log each decision in change control."
 ],
@@ -6205,7 +6460,7 @@ var WORKSTREAMS = [
 "pri": "Optional",
 "phase": "configure",
 "req": "Global Administrator for one-time tenant consent",
-"desc": "If you register MCP servers in Azure API Management, Azure AI Gateway, or LiteLLM, connect the gateway so its servers appear on the Tools page for review and blocking. Consent is once per tenant and covers every server in the gateway, including servers added later. Only servers in a connected gateway are discovered.",
+"desc": "If you register MCP servers in Azure API Management, Azure AI Gateway, or LiteLLM, connect the gateway so its servers appear on the Tools page for review and blocking. Consent is once per tenant and covers every server in the gateway, including servers added later. Only servers in a connected gateway are discovered. Azure AI Gateway and LiteLLM support is in preview. Microsoft announced at Ignite 2026 that connecting external catalogs, such as GitHub and Databricks Unity Catalog, comes to private preview in December 2026.",
 "done": "Gateway MCP servers appear on the Tools page under the AI gateway source, each with an approved or blocked state.",
 "where": "Microsoft 365 admin center → Agents → Settings → Gateways",
 "preview": true,
@@ -6217,6 +6472,10 @@ var WORKSTREAMS = [
 [
 "Manage plugins, skills, and MCP servers",
 "https://learn.microsoft.com/en-us/microsoft-agent-365/admin/manage-plugins-skills-mcp-servers"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -6238,7 +6497,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "configure",
 "req": "",
-"desc": "Plugins and skills extend agents in the Copilot channel and can come from Microsoft, your organization, or certified external publishers. Choose which publisher categories users can install, then scope each plugin to all users, no users, or specific groups. Blocked users can request access, which you review under Tools → Requests.",
+"desc": "Plugins and skills extend agents in the Copilot channel and can come from Microsoft, your organization, or certified external publishers. Choose which publisher categories users can install, then scope each plugin to all users, no users, or specific groups. Blocked users can request access, which you review under Tools → Requests. Plugin and skill governance for Microsoft 365 Copilot and Copilot Cowork became generally available at Ignite 2026. You can't block a single skill inside a plugin package, so apply the plugin's controls.",
 "done": "Publisher categories and per-plugin availability match your policy, and access requests have a named reviewer.",
 "where": "Microsoft 365 admin center → Agents → Tools → Plugins",
 "preview": false,
@@ -6316,7 +6575,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "configure",
 "req": "",
-"desc": "Work IQ MCP policy adds a tenant-level, request-time check on each MCP tool call on top of Entra sign-in, OAuth permissions, and the user's own access. By default it blocks create, update, delete, and actions that change data, such as sending email, until you enable them. In the initial release the control is tenant-wide only, with no per-agent or per-user templates.",
+"desc": "Work IQ MCP policy adds a tenant-level, request-time check on each MCP tool call on top of Entra sign-in, OAuth permissions, and the user's own access. By default it blocks create, update, delete, and actions that change data, such as sending email, until you enable them. In the initial release the control is tenant-wide only, with no per-agent or per-user templates. At Ignite 2026, Microsoft announced a tenant-wide ceiling on agent actions, such as allowing read, create, and update but not delete, and per-agent policies for agents registered in Agent 365: the maker proposes a policy, you approve or deny it, and Work IQ checks it on every call with the agent's own identity. A per-agent policy can narrow the ceiling but never exceed it.",
 "done": "Work IQ MCP policy is on, any allowed write scenarios are documented and approved, and a denied test request shows a policy-denied response.",
 "where": "Microsoft 365 admin center → Agents → Tools → Work IQ MCP → Policy",
 "preview": false,
@@ -6336,6 +6595,10 @@ var WORKSTREAMS = [
 [
 "Work IQ MCP overview",
 "https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/mcp/overview"
+],
+[
+"What's new in Work IQ at Ignite 2026",
+"https://techcommunity.microsoft.com/blog/microsoft_365blog/whats-new-in-work-iq-at-ignite-2026-agents-that-get-work-done/4572219"
 ]
 ],
 "ord": 39,
@@ -6390,7 +6653,7 @@ var WORKSTREAMS = [
 "code": "SHD",
 "name": "Shadow agents",
 "title": "Shadow and local agents",
-"area": "observe",
+"area": "manage",
 "on": false,
 "summary": "Turn on to discover and contain unregistered and local agents (Frontier preview)",
 "why": "Coding CLIs, agentic IDEs, and desktop AI apps already run on managed devices. Detection is broader than blocking, so decide your policy before names appear and plan compensating controls.",
@@ -6482,7 +6745,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "configure",
 "req": "",
-"desc": "Enroll pilot Windows devices in Intune, onboard them to Defender for Endpoint, and keep Defender Antivirus in active mode with current updates. Discovery starts automatically, but Defender lists most agents only after it observes the agent process running; installed VS Code extensions are collected without running. Optionally forward Internet Access traffic through Global Secure Access to populate user, activity, and traffic fields.",
+"desc": "Local agent discovery in Defender is generally available for managed Windows and macOS devices and covers more than 60 local AI agents, such as Claude Code and GitHub Copilot CLI, with their configured MCP servers. Enroll pilot devices in Intune, onboard them to Defender for Endpoint, and keep Defender Antivirus in active mode with current updates. Discovery starts automatically, but Defender lists most agents only after it observes the agent process running; installed VS Code extensions are collected without running. Optionally forward Internet Access traffic through Global Secure Access to populate user, activity, and traffic fields.",
 "done": "A known agent run on each pilot device appears in Defender and in the admin center.",
 "where": "",
 "preview": false,
@@ -6525,7 +6788,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "validate",
 "req": "",
-"desc": "Shadow AI lists unmanaged AI apps such as OpenClaw and Claude Desktop, and Local agents lists developer tools such as coding CLIs, agentic IDEs, and VS Code extensions. Record each agent, its detected devices, users, and last scanned date. Users, Most recent activity, and Last scanned populate only when Global Secure Access is enabled.",
+"desc": "Shadow AI lists unmanaged AI apps such as OpenClaw and Claude Desktop, and Local agents lists developer tools such as coding CLIs, agentic IDEs, and VS Code extensions. Record each agent, its detected devices, users, and last scanned date. Users, Most recent activity, and Last scanned populate only when Global Secure Access is enabled. Shadow AI discovery in the registry and network discovery in Global Secure Access remain in preview.",
 "done": "Every listed agent is in your tracker with its devices and a review date.",
 "where": "Microsoft 365 admin center → Agents → Shadow AI; Agents → All agents → Local agents (Frontier)",
 "preview": true,
@@ -6537,6 +6800,10 @@ var WORKSTREAMS = [
 [
 "Local agents in Microsoft 365 admin center (Preview)",
 "https://learn.microsoft.com/en-us/microsoft-agent-365/admin/agent-local"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -6658,7 +6925,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "golive",
 "req": "",
-"desc": "Shadow AI can block OpenClaw, and Local agents can block Gemini CLI and six VS Code extensions, by creating an Intune policy that applies to all Intune-managed Windows devices. Blocking one Node.js-based agent blocks OpenClaw, QClaw, Claw/Nanobot, and Gemini CLI together. For everything else, use compensating controls such as Intune policies, Endpoint DLP, and Global Secure Access.",
+"desc": "Shadow AI can block OpenClaw, and Local agents can block Gemini CLI and six VS Code extensions, by creating an Intune policy that applies to all Intune-managed Windows devices. Blocking one Node.js-based agent blocks OpenClaw, QClaw, Claw/Nanobot, and Gemini CLI together. For everything else, use compensating controls such as Intune policies, Endpoint DLP, and Global Secure Access. Intune controls for local agents (preview) add two more options: mark devices with prohibited agents noncompliant so Conditional Access blocks them, and set Execution Container boundaries for agents you approve.",
 "done": "Each block is verified on a test device and uncovered device types are documented.",
 "where": "",
 "preview": false,
@@ -6697,14 +6964,14 @@ var WORKSTREAMS = [
 {
 "n": 9,
 "role": "Security Administrator",
-"title": "Pilot Defender AI agent runtime protection in audit mode, then block",
+"title": "Roll out Defender AI agent runtime protection in audit mode, then block",
 "pri": "Recommended",
 "phase": "golive",
 "req": "Defender for Endpoint Plan 2, Microsoft 365 E5, Agent 365, or Microsoft 365 E7; supported Windows devices",
-"desc": "Runtime protection inspects supported Windows agents for prompt injection through agent-native events or network inspection. Deploy agent-native inspection with the Intune or Defender portal policy profile, and network inspection with an Intune PowerShell platform script. Start in audit mode on a small group, review alerts for one to two weeks, then block.",
+"desc": "Runtime protection inspects supported agents on Windows for prompt injection and became generally available on Windows at Ignite 2026. Agent-native inspection covers Claude Code, GitHub Copilot CLI and app, Claude Desktop (Code), and the VS Code GitHub Copilot and Claude Code extensions; network inspection covers OpenClaw, Ollama Desktop, ChatGPT Classic, and ChatGPT Desktop (Chat). Deploy agent-native inspection with the Intune or Defender portal policy profile, and network inspection with an Intune PowerShell platform script. Start in audit mode on a small group, review alerts for one to two weeks, then block. Some Learn articles still carry a preview label, so check the support matrix for each agent.",
 "done": "Audit alerts are reviewed and the block decision and target device groups are recorded.",
 "where": "Intune admin center → Endpoint security → Antivirus → Create policy",
-"preview": true,
+"preview": false,
 "links": [
 [
 "AI agent runtime protection with Microsoft Defender for Endpoint (Preview)",
@@ -6721,6 +6988,10 @@ var WORKSTREAMS = [
 [
 "AI agent runtime protection demonstration",
 "https://learn.microsoft.com/en-us/defender-endpoint/defender-endpoint-demonstration-ai-agent-runtime-protection"
+],
+[
+"Microsoft Ignite 2026 Book of News",
+"https://news.microsoft.com/events/ignite/2026/book-of-news/"
 ]
 ],
 "steps": [
@@ -6744,7 +7015,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "operate",
 "req": "Agent 365 enabled; Azure subscription; Python, Node.js, or .NET agent code",
-"desc": "For agents your teams build and control, connect the code to Agent 365 to give it a blueprint, an agent identity, and observability. Registration needs a Global Administrator, or an Agent ID Developer with a Global Administrator to grant permissions. Then retire the unmanaged copy and close the detection.",
+"desc": "For agents your teams build and control, connect the code to Agent 365 to give it a blueprint, an agent identity, and observability. Registration needs a Global Administrator, or an Agent ID Developer with a Global Administrator to grant permissions. Then retire the unmanaged copy and close the detection. Entra Agent ID for discovered local agents, in preview since Ignite 2026, starts with GitHub Copilot CLI and Claude Code and gives each one its own identity, separate from the user's, so you can tell agent activity from human activity.",
 "done": "The registry shows the intended identity and owner.",
 "where": "",
 "preview": false,
@@ -6752,6 +7023,10 @@ var WORKSTREAMS = [
 [
 "Quickstart: Connect an existing agent to Agent 365",
 "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/get-started"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
 ]
 ],
 "steps": [
@@ -6838,19 +7113,144 @@ var WORKSTREAMS = [
 "ord": 51,
 "step": 10,
 "deep": "13 Shadow & local agents, 13f"
+},
+{
+"n": 13,
+"role": "Intune Administrator",
+"title": "Mark devices with prohibited local agents noncompliant",
+"pri": "Optional",
+"phase": "golive",
+"req": "Windows devices enrolled in Intune and onboarded to Defender for Endpoint; a Conditional Access policy that requires a compliant device",
+"desc": "Intune controls for local agents, in preview since Ignite 2026, let you list prohibited local agents, such as OpenClaw, in a Windows compliance policy. When one is found, the device reports noncompliant, and a Conditional Access policy that requires a compliant device blocks it from company resources until the agent is removed. Use it for agents you won't allow but can't block outright, and tell users how to get compliant again.",
+"done": "A test device with a prohibited agent reports noncompliant and loses access to a test resource, then regains it after the agent is removed.",
+"where": "Intune admin center → Devices → Compliance",
+"preview": true,
+"links": [
+[
+"In development for Microsoft Intune",
+"https://learn.microsoft.com/en-us/intune/whats-new/in-development"
+],
+[
+"How does Microsoft Intune support Agent 365?",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/guidance/intune-agent-365"
+],
+[
+"Local agents in Microsoft 365 admin center (Preview)",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/admin/agent-local"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+]
+],
+"steps": [
+"From your disposition policy, list the local agents you prohibit but can't block outright.",
+"Confirm the prohibited AI agents compliance setting is available in your tenant, because it's rolling out in preview.",
+"Add the prohibited agents to a Windows compliance policy and assign it to a pilot device group.",
+"Confirm a Conditional Access policy requires a compliant device for the apps you want to protect, starting in report-only.",
+"Test with a device that runs a prohibited agent, then remove the agent and confirm the device returns to compliant.",
+"Publish user guidance on prohibited agents and how to remove them, then widen the assignment ring by ring."
+],
+"ord": 85,
+"rollback": "Remove the agents from the compliance policy or unassign it. Devices return to compliant at their next check-in.",
+"step": 10,
+"deep": "13 Shadow & local agents, 13i"
+},
+{
+"n": 14,
+"role": "Intune Administrator",
+"title": "Set runtime boundaries for approved local agents with Execution Containers",
+"pri": "Optional",
+"phase": "golive",
+"req": "Windows devices managed by Intune, on a Windows build that supports Microsoft Execution Containers",
+"desc": "For local agents you approve, Intune policies define the file and network boundaries that Microsoft Execution Containers (MXC) on Windows enforce for supported tool execution. The boundaries sit outside the agent's control, so it can't grant itself more access. Windows also added process container controls for COM and IPC, network policy, and identity proofing, plus a learning and permissive mode that lets you watch an agent's normal behavior before you enforce. These controls are in preview since Ignite 2026.",
+"done": "Each approved local agent runs under an enforced container policy on pilot devices, built from observed behavior, with a tested rollback.",
+"where": "",
+"preview": true,
+"links": [
+[
+"Agent governance on Windows",
+"https://learn.microsoft.com/en-us/windows/security/application-security/agent-governance"
+],
+[
+"How does Microsoft Intune support Agent 365?",
+"https://learn.microsoft.com/en-us/microsoft-agent-365/guidance/intune-agent-365"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+],
+[
+"Microsoft Ignite 2026 Book of News",
+"https://news.microsoft.com/events/ignite/2026/book-of-news/"
+]
+],
+"steps": [
+"Pick one approved local agent and a pilot device ring.",
+"Run the agent's container policy in learning or permissive mode and record the files, networks, and system services it normally uses.",
+"Write a least-privilege policy from that observed behavior.",
+"Enforce it on the pilot ring and test the agent's normal tasks and one action that should be blocked.",
+"Widen enforcement ring by ring and watch for broken workflows.",
+"Repeat the learning step after major agent updates."
+],
+"ord": 95,
+"rollback": "Switch the policy back to permissive mode or unassign it, then fix it from observed behavior.",
+"step": 10
+},
+{
+"n": 15,
+"role": "Network administrator",
+"title": "Add network discovery and MCP controls for agents with Global Secure Access",
+"pri": "Optional",
+"phase": "configure",
+"req": "Global Secure Access client on endpoints with Internet Access forwarding and TLS inspection; Global Secure Access Administrator; Agent 365 or E7 for agent network controls",
+"desc": "Global Secure Access adds a network view to what Defender finds on devices. AI agent discovery lists local and Copilot Studio agents reaching the internet, ties them to a user, device, and process, and marks each as managed or shadow based on Entra Agent ID. MCP logging shows which remote MCP servers and tools agents call, and the MCP firewall can allow or block MCP servers, tools, resources, and prompts. All three are in preview. Local MCP servers on a device have no network footprint, so they aren't visible here.",
+"done": "Pilot devices show discovered agents and MCP traffic in Global Secure Access, and an MCP firewall policy blocks a test server as expected.",
+"where": "Microsoft Entra admin center → Global Secure Access",
+"preview": true,
+"links": [
+[
+"AI agent discovery in Global Secure Access (preview)",
+"https://learn.microsoft.com/en-us/entra/global-secure-access/concept-ai-agent-discovery"
+],
+[
+"How to view MCP traffic logs in Global Secure Access (Preview)",
+"https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-view-model-context-protocol-logging"
+],
+[
+"Configure Global Secure Access MCP firewall to secure MCP traffic (preview)",
+"https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-configure-mcp-firewall"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+]
+],
+"steps": [
+"After privacy and legal review, deploy the Global Secure Access client to pilot devices with Internet Access forwarding and TLS inspection.",
+"Open AI agent discovery and compare its agents with Defender's local agent inventory.",
+"Review managed versus shadow agents, and the destinations and traffic volume for each.",
+"Review MCP traffic logs to find the remote MCP servers and tools your agents use, including unknown servers.",
+"Create an MCP firewall policy that blocks a test MCP server for the pilot group, and confirm the block.",
+"Stream the logs to Microsoft Sentinel if your SOC needs them for detection."
+],
+"ord": 31,
+"rollback": "Disable or unassign the MCP firewall policy, and turn off traffic forwarding for the pilot group to stop network discovery.",
+"step": 10,
+"deep": "13 Shadow & local agents, 13d"
 }
 ]
 },
 {
 "id": "operate",
 "code": "OPS",
-"name": "Operate & adopt",
-"title": "Operate and adopt",
+"name": "Operate & value",
+"title": "Operate, adopt, and prove value",
 "area": "operate",
 "on": true,
-"summary": "Usage analytics, cost management, reviews, and adoption",
-"why": "Onboarding is the first step. Running Agent 365 well is ongoing: reports, reviews, and change management keep controls effective as agents and platforms evolve.",
-"tip": "Use Purview Audit and Defender for investigations. The usage reports, Agent 365 Dashboard, and cost management are for adoption and spend review, not an audit trail.",
+"summary": "Usage, cost management, business value, reviews, and adoption",
+"why": "Onboarding is the first step. Running Agent 365 well is ongoing: reports, reviews, spend controls, and change management keep controls effective and show the value agents deliver as agents and platforms evolve.",
+"tip": "Use Purview Audit and Defender for investigations. The usage reports, Agent 365 Dashboard, Consumption Dashboard, and cost management are for adoption, spend, and value review, not an audit trail.",
 "tasks": [
 {
 "n": 2,
@@ -6858,7 +7258,7 @@ var WORKSTREAMS = [
 "title": "Set up the Agent 365 Dashboard in Viva Insights",
 "pri": "Recommended",
 "phase": "operate",
-"req": "At least 50 Microsoft Copilot licenses assigned and agent activity. The Agent 365 Dashboard view also needs Agent 365 licensing; reporting on Microsoft platform agents without it is rolling out.",
+"req": "At least 50 Microsoft Copilot licenses assigned and agent activity. Microsoft announced at Ignite 2026 that Viva Insights will remove the Agent 365 license requirement for agent insights; until your tenant reflects that, the Agent 365 Dashboard view needs Agent 365 licensing.",
 "desc": "The Agent Dashboard in Viva Insights (Copilot Analytics) shows leaders how agents are adopted by group, organization, and job function over the last 28 days, with up to a six-day data delay. Select All agents for the Agent 365 Dashboard view, which reports sessions on all supported agents, with history from when you accepted the Agent 365 terms. Third-party agent coverage and value insights, such as estimated assisted hours, are on the public roadmap. Groups and agents below the minimum group size are hidden.",
 "done": "Named leaders and adoption leads can open the Agent 365 Dashboard with your privacy settings applied, and it's part of the monthly review.",
 "where": "Viva Insights web app → Agent Dashboard → All agents",
@@ -6887,6 +7287,10 @@ var WORKSTREAMS = [
 [
 "Roadmap 570847: Agent value insights in the Agent 365 Dashboard",
 "https://www.microsoft.com/microsoft-365/roadmap?filters=&searchterms=570847"
+],
+[
+"Microsoft Ignite 2026 Book of News",
+"https://news.microsoft.com/events/ignite/2026/book-of-news/"
 ]
 ],
 "steps": [
@@ -6902,7 +7306,7 @@ var WORKSTREAMS = [
 "ord": 20,
 "rollback": "Turn off the Agent Dashboard with its feature access management control, or remove users and groups from access. Access changes can take up to 24 hours.",
 "step": 11,
-"deep": "14 Agent usage & adoption, 14b"
+"deep": "14 Agent usage & adoption monitoring, 14b"
 },
 {
 "n": 3,
@@ -6945,7 +7349,7 @@ var WORKSTREAMS = [
 "ord": 30,
 "rollback": "Remove agents from Manage pinned agents to unpin them, and confirm the change with a pilot user. Retire adoption materials for agents you withdraw.",
 "step": 11,
-"deep": "14 Agent usage & adoption, 14a"
+"deep": "14 Agent usage & adoption monitoring, 14a"
 },
 {
 "n": 4,
@@ -7093,11 +7497,15 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "operate",
 "req": "Global or Billing Administrator to activate usage-based billing and set billing methods; an Azure subscription for pay-as-you-go",
-"desc": "Agent 365 is licensed per user, but Copilot Credits, Windows 365 for Agents, model providers, and other connected services bill by usage. Cost management in the Microsoft 365 admin center is the central place to turn on usage-based services, set spending policies, limits, and alerts, and review consumption by policy, user, group, agent, and service. Microsoft is adding more agents and services to it over time. Copilot Studio credits are still managed in the Power Platform admin center.",
+"desc": "Agent 365 is licensed per user, but Copilot Credits, Windows 365 for Agents, model providers, and other connected services bill by usage. Cost management in the Microsoft 365 admin center is the central place to turn on usage-based services, set spending policies, limits, and alerts, and review consumption by policy, user, group, agent, and service. At Ignite 2026, Microsoft expanded it to cover Copilot Cowork, Copilot Code, GitHub Copilot CLI, Copilot Studio, Copilot Managed Runtime, Autopilot, and the Work IQ APIs, with limits at the user, group, organization, or resource level, model controls, and delegated budgets for business leaders. Windows 365 for Agents now bills in Copilot Credits for new customers. Keep managing Copilot Studio environment capacity and agent limits in the Power Platform admin center.",
 "done": "Spending policies with limits and alerts cover the usage-based services you allow, finance has read-only access, and spend is reviewed monthly against budget with an owner for each overage.",
 "where": "Microsoft 365 admin center → Copilot → Cost management",
 "preview": false,
 "links": [
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+],
 [
 "Understand usage-based billing and cost management for Copilot Credits",
 "https://learn.microsoft.com/copilot/plan/usage-based-billing-overview-copilot-credits"
@@ -7139,6 +7547,7 @@ var WORKSTREAMS = [
 "As a Global or Billing Administrator, go to Copilot → Cost management and select Get started. Choose the billing method (capacity packs, a Copilot Credit Pre-purchase Plan, or pay-as-you-go on an Azure subscription), then activate the default spending policy.",
 "Set a monthly limit for the policy and for each user, add alert recipients, and set user notification thresholds.",
 "Review Auto-apply new services, which is on by default. Turn it off on policies where new agents and services should be approved before they can spend.",
+"Treat each spending policy as an access control as well as a budget: anyone in scope of a policy that selects Cowork can use Cowork, however low the limit, so control access with policy scope.",
 "Add spending policies for specific groups or services, each with its own billing method, where departments fund their own usage.",
 "Give finance and program leads read-only access with AI Reader, Global Reader, or another supported reader role.",
 "Each month, review the Overview and Consumption tabs by policy, user, group, agent, and service, and act on credit requests and users near their limits. To feed FinOps or chargeback tools, use the Copilot Cost Management API.",
@@ -7291,6 +7700,276 @@ var WORKSTREAMS = [
 "ord": 22,
 "rollback": "Turn off Auto-refresh or delete the query, and unpublish the report.",
 "step": 11
+},
+{
+"n": 13,
+"role": "Program lead",
+"title": "Forecast AI spend and agree a budget before you scale",
+"pri": "Recommended",
+"phase": "plan",
+"req": "",
+"desc": "Agent 365 is licensed per user, but services such as Copilot Cowork, the Work IQ API, Copilot Studio agents, and Windows 365 for Agents bill by usage. Before you widen access, forecast consumption from who will use each service and how heavily, agree a budget and a cost owner with finance, and choose a billing method. Estimates are directional, so plan a buffer and refine them with actual usage once you're live. Once you're live, the Cost & forecast page in Agent 365 Business Analytics (Frontier) projects cost against a budget target from recent usage, and lets you test scenarios without changing spending policies.",
+"done": "A dated forecast for each usage-based service, a budget approved by finance, a named cost owner, and the chosen billing method are recorded.",
+"where": "Copilot Credit Estimator, then Microsoft 365 admin center → Copilot → Cost management",
+"preview": false,
+"links": [
+[
+"Copilot Credit Estimator",
+"https://aka.ms/CopilotCreditPlanningModel"
+],
+[
+"Understand usage-based billing and cost management for Copilot Credits",
+"https://learn.microsoft.com/en-us/copilot/plan/usage-based-billing-overview-copilot-credits"
+],
+[
+"Agent usage estimator (Copilot Studio and Dynamics 365 agents)",
+"https://learn.microsoft.com/en-us/microsoft-copilot-studio/agent-usage-estimator"
+],
+[
+"Optimize Copilot Credit costs with a pre-purchase plan",
+"https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/copilot-credit-p3"
+],
+[
+"Copilot & Foundry Agent Cost Calculator (FastTrack)",
+"https://microsoft.github.io/FastTrack/copilot-agent-strategy/copilot-agents-cost-tool/index.html"
+],
+[
+"How to use the Agent 365 Business Analytics Cost & forecast page (Frontier)",
+"https://learn.microsoft.com/en-us/a365-business-analytics/cost-forecast"
+]
+],
+"steps": [
+"List the usage-based services in scope, such as Copilot Cowork, the Work IQ API, Copilot Studio agents, Foundry, and Windows 365 for Agents, and who will use each.",
+"Group users by expected usage intensity, such as light, medium, and heavy, and model their monthly consumption in the Copilot Credit Estimator.",
+"Use the agent usage estimator for Copilot Studio and Dynamics 365 agents, and the FastTrack cost calculator to compare agent options.",
+"Add a 10 to 20 percent buffer, because actual consumption varies with usage patterns, seasonality, and feature adoption.",
+"Compare billing methods with finance: prepaid capacity packs, a one-year Copilot Credit Pre-purchase Plan, or pay-as-you-go on an Azure subscription.",
+"Agree a monthly budget, a cost owner for each service, and the threshold that triggers a review.",
+"After 30 days live, compare the forecast with actual consumption in Cost management and update it."
+],
+"ord": 5,
+"step": 1
+},
+{
+"n": 14,
+"role": "AI Administrator",
+"title": "Choose which AI model providers each group can use",
+"pri": "Recommended",
+"phase": "configure",
+"req": "AI Administrator or Global Administrator. Providers that operate as independent processors need a Global Administrator to accept their terms.",
+"desc": "Model choice affects cost, response quality, and data handling. In Copilot settings, decide which AI providers, such as OpenAI and Anthropic, are available and assign each to all users or to specific users and security groups. Assignments apply at the provider level, not to single models, and are enforced across Microsoft Copilot, Copilot Studio, and the Power Platform admin center. In Copilot Cowork, Auto chooses only from the models your organization makes available, so these choices also shape what Auto picks. Model settings control which models users see, not whether they can use Cowork.",
+"done": "Each AI provider has a recorded decision and assigned users or groups, privacy and legal have reviewed the provider terms, and a pilot user in each group sees only the expected models in Cowork.",
+"where": "Microsoft 365 admin center → Copilot → Settings → View all → AI providers operating as Microsoft subprocessors",
+"preview": false,
+"links": [
+[
+"Assign AI provider access to users and groups",
+"https://learn.microsoft.com/en-us/copilot/implement/copilot-ai-provider-user-sec-group-access"
+],
+[
+"Choose a model for Copilot Cowork",
+"https://learn.microsoft.com/en-us/copilot/cowork/cowork-models"
+],
+[
+"Manage Copilot Cowork for your organization",
+"https://learn.microsoft.com/en-us/copilot/cowork/cowork-admin-governance"
+],
+[
+"Anthropic models in Microsoft Online Services",
+"https://learn.microsoft.com/en-us/copilot/implement/connect-to-ai-subprocessor"
+],
+[
+"OpenAI as a subprocessor in Microsoft Online Services",
+"https://learn.microsoft.com/en-us/copilot/implement/openai-subprocessor"
+]
+],
+"steps": [
+"With privacy, legal, and finance, decide which AI providers each population may use, based on cost, data handling, and regional requirements.",
+"Go to Copilot → Settings → View all, and open AI providers operating as Microsoft subprocessors.",
+"For each provider, choose All users, No users, or specific users and security groups. For Anthropic, you can also limit it to Copilot in Microsoft 365 apps.",
+"Review AI providers operating as independent processors separately. A Global Administrator must accept their terms before anyone can use them.",
+"In the Power Platform admin center, review the matching settings that allow external models in Copilot Studio.",
+"If your spending policies show a model profile, set it to match the providers each group may use.",
+"Sign in as a pilot user in each group and confirm that the Cowork model picker, including Auto, offers only the expected models."
+],
+"ord": 15,
+"rollback": "Set the provider back to its previous users and groups, or to No users. Features and agents that depend on that provider can stop working for people who lose access.",
+"step": 3
+},
+{
+"n": 15,
+"role": "AI Administrator",
+"title": "Route credit requests to your approval workflow and automate cost policies",
+"pri": "Optional",
+"phase": "operate",
+"req": "Usage-based billing active in Cost management. For automation, an approved app registration for the Microsoft 365 Copilot Cost Management API, which is in beta.",
+"desc": "Users can request Copilot Credits for first-time use or a higher limit. Review requests in Cost management, or add a request policy that redirects users to your own approval workflow, such as an IT portal or ServiceNow; a policy for a specific service takes precedence over one for all services. At scale, the Cost Management API in Microsoft Graph manages spending policies, alerts, user balances, and credit requests, and reports consumption by user, group, and service. The API is in beta, so don't rely on it for production automation yet.",
+"done": "Credit requests reach a named approver within your agreed response time, through the admin center or your request policy, and any API automation runs with least-privilege permissions and is documented.",
+"where": "Microsoft 365 admin center → Copilot → Cost management → View requests → Request policies",
+"preview": false,
+"links": [
+[
+"Monitor Copilot Credit spending",
+"https://learn.microsoft.com/en-us/copilot/implement/usage-based-billing-copilot-credits-monitor-spending"
+],
+[
+"Microsoft 365 Copilot Cost Management API overview",
+"https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/api/admin-settings/cost-management/overview"
+],
+[
+"creditRequest resource type",
+"https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/api/admin-settings/cost-management/resources/creditrequest"
+]
+],
+"steps": [
+"Decide who approves credit requests for each service and how quickly users can expect an answer.",
+"In Cost management, select View requests to review pending and approved requests, including the service, license status, and current policy.",
+"To use your own workflow, select Request policies → Add request policy, choose all services or a specific service, and enter the redirect URL and the message users see.",
+"Submit a test request as a pilot user and confirm it reaches the right approver.",
+"If you automate, register an app for the Cost Management API with least-privilege permissions, and start with read-only consumption reports by user, group, and service.",
+"Test bulk approve and reject on a few requests first, and keep API automation out of production while the API is in beta."
+],
+"ord": 84,
+"rollback": "Edit or delete the request policy to send requests back to the admin center. Disable the app registration to stop API automation.",
+"step": 11
+},
+{
+"n": 16,
+"role": "Billing Administrator",
+"title": "Charge AI usage back to the departments that fund it",
+"pri": "Optional",
+"phase": "operate",
+"req": "Global or Billing Administrator to create spending policies and set billing methods; an Azure subscription or resource group for each department that funds its own usage",
+"desc": "When departments fund their own AI use, give each its own spending policy scoped to its security groups, with a billing method on that department's Azure subscription. Pay-as-you-go usage then lands on the department's Azure bill for budgets and chargeback, and each policy keeps its own limit rather than inheriting the tenant limit. Cost management reports usage in Copilot Credits; use Azure Cost Management or Azure billing for monetary charges. Partners and organizations with several tenants can use multi-tenant Cost management (preview) to apply reusable spending templates and compare consumption across tenants. Microsoft announced at Ignite 2026 that Cost management adds delegated access, so business leaders and their delegates can manage their own AI budgets and policies. Graph APIs, data exports, and Fabric connectors bring AI spend into custom chargeback reporting.",
+"done": "Each funding department has a scoped spending policy on its own subscription, finance reconciles consumption with the Azure bill every month, and department owners receive their usage reports.",
+"where": "Microsoft 365 admin center → Copilot → Cost management → Configuration → Add spending policy",
+"preview": false,
+"links": [
+[
+"Set up usage-based billing for Copilot Credits",
+"https://learn.microsoft.com/en-us/copilot/implement/usage-based-billing-copilot-credits-setup"
+],
+[
+"View Copilot Credit consumption in the Microsoft 365 admin center and on your Azure bill",
+"https://learn.microsoft.com/en-us/copilot/implement/usage-based-billing-compare-dashboard-views"
+],
+[
+"Manage costs across multiple tenants",
+"https://learn.microsoft.com/en-us/microsoft-365/admin/multi-tenant/manage-costs-across-multiple-tenants"
+],
+[
+"Usage-based billing guidance for CSPs, partner-managed customers, and MACC",
+"https://learn.microsoft.com/en-us/copilot/implement/usage-based-billing-copilot-credits-csp-partner-macc"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+]
+],
+"steps": [
+"Agree the chargeback model with finance: which departments fund their own usage, and which services and limits each covers.",
+"Create a security group for each funding department, and an Azure subscription or resource group in that department's cost center.",
+"In Cost management → Configuration, select Add spending policy, scope it to the department's groups, choose its services, and set the policy limit, per-user limit, and alerts.",
+"Set the policy's billing method to the department's subscription. With pay-as-you-go, an Owner or Contributor on the subscription can choose the resource group and billing region under Advanced billing settings.",
+"Keep department scopes from overlapping with a broader policy: when several policies apply to one user, the least restrictive one applies.",
+"Each month, reconcile consumption by group in Cost management with the Azure bill, and send each department owner its usage.",
+"If you govern several tenants, use the All tenants scope in Cost management to apply a spending template and compare consumption across tenants."
+],
+"ord": 82,
+"rollback": "Move the department's groups back to a shared policy, or change the policy's billing method. Changing the billing method keeps the policy's scope, limits, alerts, and services.",
+"step": 11
+},
+{
+"n": 17,
+"role": "Program lead",
+"title": "Connect AI spend to business value and report outcomes",
+"pri": "Recommended",
+"phase": "operate",
+"req": "Insights Analyst with global partition access, a manager, or a Global Administrator to open the Consumption Dashboard",
+"desc": "Spend alone doesn't show value. Pair consumption with outcomes: the Consumption Dashboard in Insights shows Copilot Credit use by service, group, usage intensity, and spending policy, and its Cowork view shows which task categories drive usage and their assisted value. Agree value measures with business owners, review them alongside spend every quarter, and decide where to sustain, expand, or improve. Assisted value is a directional estimate, not measured savings, and dashboard credit figures are for reference only; Cost management in the Microsoft 365 admin center is the billing source. For business leaders, Agent 365 Business Analytics (Frontier) brings spend, usage, use cases, and value signals such as assisted hours, success rate, and satisfaction into one app.",
+"done": "A quarterly value review compares spend with agreed outcome measures for each priority scenario, and leaders record a sustain, expand, or improve decision for each.",
+"where": "Viva Insights web app → Consumption Dashboard",
+"preview": false,
+"links": [
+[
+"Introduction to Agent 365 Business Analytics (Frontier)",
+"https://learn.microsoft.com/en-us/a365-business-analytics/introduction"
+],
+[
+"How to use the Consumption Dashboard in Insights",
+"https://learn.microsoft.com/en-us/viva/insights/org-team-insights/ai-cost-dashboard"
+],
+[
+"Connect to the Agent Dashboard (preview)",
+"https://learn.microsoft.com/en-us/viva/insights/org-team-insights/agent-dashboard"
+],
+[
+"Monitor Copilot Credit spending",
+"https://learn.microsoft.com/en-us/copilot/implement/usage-based-billing-copilot-credits-monitor-spending"
+],
+[
+"Microsoft Agent 365 adoption hub",
+"https://adoption.microsoft.com/en-us/microsoft-agent-365/"
+]
+],
+"steps": [
+"With each business owner, pick two or three priority scenarios and agree how to measure their value, such as time saved, cycle time, or quality.",
+"Confirm who can open the Consumption Dashboard: Insights Analysts with global partition access and Global Administrators see the whole organization, and managers see their own group unless you turn that off in Manager settings.",
+"Each month, review credit use by service and group, the usage intensity segments, and the spending policies nearest their limits.",
+"Open the Cowork view to see which task categories drive usage and assisted value, and the share of scheduled versus user-initiated tasks.",
+"Pair high consumption with business context before you act: heavy use can be a valuable workflow, not waste.",
+"Each quarter, present spend next to the agreed outcome measures and record whether to sustain, expand, or improve each scenario.",
+"Reconcile dashboard credit figures with Cost management in the Microsoft 365 admin center, which is the billing source."
+],
+"ord": 86,
+"rollback": "Turn off manager access to consumption insights in Manager settings if it conflicts with your privacy policy.",
+"step": 11
+},
+{
+"n": 18,
+"role": "Program lead",
+"title": "Set up Agent 365 Business Analytics for business leaders",
+"pri": "Optional",
+"phase": "operate",
+"req": "Frontier program. At launch, analytics for Microsoft services are available to tenants with at least 50 Microsoft 365 Copilot licenses, and availability will expand to tenants with one or more licenses by mid-December. Usage-based billing turned on and spending policies in place. Insights for non-Microsoft services need Agent 365 or E7.",
+"desc": "Agent 365 Business Analytics, a Frontier preview launched at Ignite 2026, is a dedicated app that shows business leaders AI cost, usage, and value in one place, across Microsoft 365 Copilot and usage-based services such as Cowork, agents, GitHub Copilot, and the Work IQ API. It shows what drives cost by service, model, and use case, forecasts cost against a budget, and measures value through assisted hours, AI value, success rate, and satisfaction. Access follows Viva Insights roles and minimum group sizes, and Cowork value metrics stay off until an admin turns them on. Treat AI value as an estimate built on the calculator assumptions you set.",
+"done": "Named leaders can open Business Analytics with the right scope, value calculator assumptions are agreed with finance, and the quarterly value review uses it.",
+"where": "Agent 365 Business Analytics app (aka.ms/a365analytics)",
+"preview": true,
+"links": [
+[
+"Introduction to Agent 365 Business Analytics (Frontier)",
+"https://learn.microsoft.com/en-us/a365-business-analytics/introduction"
+],
+[
+"How to use the Agent 365 Business Analytics Cost & forecast page (Frontier)",
+"https://learn.microsoft.com/en-us/a365-business-analytics/cost-forecast"
+],
+[
+"How to make configurations in Agent 365 Business Analytics (Frontier)",
+"https://learn.microsoft.com/en-us/a365-business-analytics/manage/configurations"
+],
+[
+"How to use the A365 Business Analytics Cowork plugin and MCP server (Frontier)",
+"https://learn.microsoft.com/en-us/a365-business-analytics/advanced/cowork-plugin"
+],
+[
+"What's new in Microsoft Agent 365: Ignite 2026",
+"https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
+]
+],
+"steps": [
+"Confirm the tenant is in the Frontier program and meets the Copilot license prerequisite.",
+"Turn on billing for usage-based services in the admin center, and confirm spending policies cover the services leaders will review.",
+"Review who has access by default, such as the top three organization levels, managers of large enough teams, and Global Administrators, and adjust roles in Viva Insights.",
+"Turn on consumption insights for the business leaders who need cost data, because they're on by default only for general managers.",
+"With finance, agree the assumptions under Configurations → Metric calculators, then decide whether to turn on Cowork value metrics.",
+"Set reporting budget targets on the Cost & forecast page; they don't change spending policies or limits.",
+"Use the Overview, Use cases, and Cost & forecast pages in the quarterly value review, and optionally offer leaders the A365 Analytics plugin for Cowork."
+],
+"ord": 88,
+"rollback": "Remove access in Viva Insights roles, or turn off value metrics and consumption insights. Reporting settings don't affect spending policies.",
+"step": 11
 }
 ]
 },
@@ -7425,15 +8104,19 @@ var WORKSTREAMS = [
 "title": "Confirm Windows 365 for Agents prerequisites and billing",
 "pri": "Optional",
 "phase": "plan",
-"req": "Microsoft Intune and Agent 365 licenses; Billing Administrator or AI Administrator; Owner or Contributor on the Azure subscription and resource group",
-"desc": "Before you create an agent pool, confirm Intune and Agent 365 licenses and a billing policy with Windows 365 for Agents turned on. Billing combines hourly pay-as-you-go usage with a monthly charge per always-available Cloud PC, through your Azure subscription. Copilot Studio computer use, Project Opal, and Researcher create their own pools and need no Intune setup.",
-"done": "An active billing policy with Windows 365 for Agents enabled is ready to select in Intune.",
+"req": "Microsoft Intune and Agent 365 licenses; Global Administrator or Billing Administrator for spending policies; a security group of agent users. Existing billing plans also need Owner or Contributor on the Azure subscription and resource group.",
+"desc": "Before you create an agent pool, confirm Intune and Agent 365 licenses and how the pool is billed. New customers of Windows 365 for Agents through Agent 365 are billed in Copilot Credits through a spending policy in Cost management that covers the pool's agent users, and a checkout fails if no policy covers the agent user. Existing customers can keep their billing plan or switch a pool to Copilot Credits, which can't be undone. Usage is charged per checkout plus a monthly charge for each always-available Cloud PC. Copilot Studio computer use, Project Opal, and Researcher create their own pools and need no Intune setup.",
+"done": "A spending policy covers each pool's agent users for Windows 365 for Agents, or the pool's existing billing plan is confirmed, and the billing choice is recorded.",
 "where": "Microsoft 365 admin center → Copilot → Cost management → classic Billing & usage → Billing policies",
 "preview": false,
 "links": [
 [
 "Set up billing for Windows 365 for Agents",
 "https://learn.microsoft.com/en-us/windows-365/agents/billing-w365a"
+],
+[
+"Set up usage-based billing for Copilot Credits",
+"https://learn.microsoft.com/en-us/copilot/implement/usage-based-billing-copilot-credits-setup"
 ],
 [
 "Pricing for Windows 365 for Agents",
@@ -7444,25 +8127,25 @@ var WORKSTREAMS = [
 "https://learn.microsoft.com/en-us/windows-365/agents/create-provisioning-policy-agents"
 ],
 [
-"Set up and manage pay-as-you-go billing in the Copilot node",
-"https://learn.microsoft.com/en-us/microsoft-365/commerce/services/pay-as-you-go-setup-copilot"
+"Microsoft Copilot Credits report",
+"https://learn.microsoft.com/en-us/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits"
 ],
 [
-"Create a budget for pay-as-you-go billing",
-"https://learn.microsoft.com/en-us/microsoft-365/commerce/services/pay-as-you-go-budget"
+"What's new in Windows 365 for Agents",
+"https://learn.microsoft.com/en-us/windows-365/agents/whats-new"
 ]
 ],
 "steps": [
-"Confirm Intune and Agent 365 licenses, and a Billing Administrator or AI Administrator with Owner or Contributor on the Azure subscription and resource group.",
-"In the admin center, go to Copilot → Cost management, select classic Billing & usage, then Billing policies.",
-"Add a billing policy with the subscription, resource group, and a region that matches your Cloud PC geography.",
-"Under Pay-as-you-go services, turn on Windows 365 for Agents for that billing policy.",
-"Optionally set a budget and alert recipients on the billing policy; budgets apply to everything under that policy.",
-"Estimate cost from hourly usage, rounded up to the hour, plus the monthly charge per always-available Cloud PC.",
-"Track spend monthly in Azure Cost Management with the Windows365foragents tag."
+"Confirm Intune and Agent 365 licenses, and put the pool's agent users in a Microsoft Entra security group.",
+"In the admin center, go to Copilot → Cost management and check whether an All users spending policy with Auto-apply new services already covers Windows 365 for Agents.",
+"Otherwise, on the Configuration tab, add or edit a spending policy scoped to the agent users' group, select Windows 365 for Agents, and set limits and alerts.",
+"Keep each agent user in only one spending policy that includes Windows 365 for Agents, because the highest per-user limit applies when there are several.",
+"If you already use a billing plan, decide pool by pool whether to switch the provisioning policy's billing type to Copilot Credits, knowing the change can't be undone.",
+"Estimate cost from expected checkouts plus the monthly charge for each always-available Cloud PC.",
+"Track consumption in Cost management and the Copilot Credits report."
 ],
 "ord": 50,
-"rollback": "Turn off the Windows 365 for Agents connection on the billing policy, then review billing and usage to confirm no further charges apply.",
+"rollback": "Remove Windows 365 for Agents from the spending policy or lower its limit to stop new checkouts. A pool switched from a billing plan to Copilot Credits can't be switched back.",
 "step": 10
 },
 {
@@ -8160,7 +8843,7 @@ var XLSX = (function () {
       ["Statuses", STATUS_LIST.join(", ")],
       ["Priorities", "Required (needed for a governed baseline), Recommended (strongly advised), Optional (depends on your scenario)."],
       ["Stages", "Plan, Configure, Validate, Go live, Operate"],
-      ["Pillars", "Foundation (always in the plan), Observe, Govern, and Secure. Observe tasks surface signals without changing what an agent can do; Govern covers ownership, lifecycle, and access decisions; Secure covers enforcement and response."],
+      ["Pillars", "Foundation (always in the plan), Management, Governance, Security, and Business Value. Management covers discovering, connecting, and managing agents and tools; Governance covers ownership, permissions, and accountability; Security covers risk, enforcement, and protection; Business Value covers AI spend and the outcomes it delivers."],
       ["Pillar plan", (snap.pillars || []).map(function (p) { return p.name + ": " + p.when; }).join("; ")],
       ["Feature plan", snap.features && snap.features.length ? "Scoped to these features, plus the Foundation tasks every feature relies on: " + snap.features.join("; ") + ". The Features column lists every feature each task supports." : "Not scoped by feature. The Features column lists the features each task supports, so you can filter by one."],
       ["FastTrack guidance", "Marks tasks within the published FastTrack for Microsoft Agent 365 scope, where eligible customers can get remote guidance. FastTrack guides, and your teams or partner do the hands-on work. A blank cell doesn't make a task less important."],
@@ -8180,7 +8863,7 @@ var XLSX = (function () {
   }
 
   function tabColor(area) {
-    return { foundation: "FF101012", observe: "FF6D5BD0", govern: "FF12804A", secure: "FFC02A20", onboard: "FF2150C8", operate: "FFA15C00" }[area] || "FF9B9BA6";
+    return { foundation: "FF101012", manage: "FF6D5BD0", govern: "FF12804A", secure: "FFC02A20", onboard: "FF2150C8", operate: "FFA15C00" }[area] || "FF9B9BA6";
   }
 
   /* ---------- CSV ---------- */
@@ -8191,7 +8874,7 @@ var XLSX = (function () {
   }
 
   function buildCsv(snap) {
-    var head = ["ID", "Workstream", "In scope", "Stage", "Onboarding step", "Role", "Task", "Priority", "Pillar", "Observe stage", "Team", "Requires", "Preview", "Description", "Done when", "Where", "More info", "Owner", "Due date", "Status", "Notes", "FastTrack guidance", "Features"];
+    var head = ["ID", "Workstream", "In scope", "Stage", "Onboarding step", "Role", "Task", "Priority", "Pillar", "Observability stage", "Team", "Requires", "Preview", "Description", "Done when", "Where", "More info", "Owner", "Due date", "Status", "Notes", "FastTrack guidance", "Features"];
     var lines = [head.map(csvCell).join(",")];
     snap.workstreams.forEach(function (w) {
       w.tasks.forEach(function (t) {
@@ -8336,7 +9019,7 @@ var PHASE_BY_ID = {}; PHASES.forEach(function (p, i) { p.order = i; PHASE_BY_ID[
 var STATUS_BY_ID = {}; STATUSES.forEach(function (s) { STATUS_BY_ID[s.id] = s; });
 var WS_BY_ID = {}; WORKSTREAMS.forEach(function (w, i) { w.order = i; WS_BY_ID[w.id] = w; });
 var PRI_WEIGHT = { Required: 300, Recommended: 120, Optional: 20 };
-var AREA_TONE = { foundation: "gray", observe: "violet", govern: "green", secure: "red", onboard: "blue", operate: "amber" };
+var AREA_TONE = { foundation: "gray", manage: "violet", govern: "green", secure: "red", onboard: "blue", operate: "amber" };
 
 /* ---------- State and persistence ---------- */
 /* Each checklist file keeps its own plan, keyed by its file name, so copies don't overwrite each other.
@@ -8388,7 +9071,9 @@ function sanitizeState(raw) {
   st.levels = lv ? PRIORITIES.filter(function (p) { return p === "Required" || lv.indexOf(p) >= 0; }) : DEFAULT_LEVELS.slice();
   /* Pillars turned off. Missing means on. Version 2.7 plans could set a pillar to "2" (Later), which kept its tasks in view, so it reads as on. */
   var pz = raw.pillars && typeof raw.pillars === "object" ? raw.pillars : {};
-  PILLARS.forEach(function (p) { if (p.locked) return; if (pz[p.id] === "off") st.pillars[p.id] = "off"; });
+  /* 1.1 replaced Observe, Govern, and Secure with Management, Governance, Security, and Business Value. Govern and Secure keep their ids; a saved Observe choice carries over to Management. */
+  var PZ_OLD = { manage: "observe" };
+  PILLARS.forEach(function (p) { if (p.locked) return; var v = Object.prototype.hasOwnProperty.call(pz, p.id) ? pz[p.id] : PZ_OLD[p.id] ? pz[PZ_OLD[p.id]] : undefined; if (v === "off") st.pillars[p.id] = "off"; });
   /* Features chosen (2.9). Missing or empty means the plan is scoped by pillar. Kept in FEATURES order. */
   var fz = Array.isArray(raw.features) ? raw.features : [];
   st.features = FEATURES.filter(function (f) { return fz.indexOf(f.id) >= 0; }).map(function (f) { return f.id; });
@@ -8412,7 +9097,7 @@ function sanitizeState(raw) {
     var id = /^c[a-z0-9]{2,16}$/.test(c.id) ? c.id : "c" + uid();
     st.custom.push({
       id: id, ws: c.ws, title: str(c.title, 160).trim(), role: str(c.role, 60) || "Program lead",
-      pri: PRIORITIES.indexOf(c.pri) >= 0 ? c.pri : "Recommended", phase: PHASE_BY_ID[c.phase] ? c.phase : "configure", desc: str(c.desc, 600), pillar: PILLAR_BY_ID[c.pillar] ? c.pillar : undefined
+      pri: PRIORITIES.indexOf(c.pri) >= 0 ? c.pri : "Recommended", phase: PHASE_BY_ID[c.phase] ? c.phase : "configure", desc: str(c.desc, 600), pillar: PILLAR_BY_ID[c.pillar] ? c.pillar : c.pillar === "observe" ? "manage" : undefined
     });
   });
   var valid = {};
@@ -8575,7 +9260,7 @@ function taskDefs(w) {
     if (c.ws !== w.id) return;
     ci++;
     list.push({ key: w.id + ":" + c.id, ws: w, n: 1000 + ci, id: w.code + "-C" + ci, role: c.role, title: c.title, pri: c.pri, phase: c.phase, req: "", desc: c.desc,
-      done: "", where: "", preview: false, links: [], steps: [], rollback: "", ft: false, ord: 100000 + ci, part: WS_PART[w.id] || "A", pillar: PILLAR_BY_ID[c.pillar] ? c.pillar : (PILLAR_DEFAULT_WS[w.id] || "observe"), stage: "", team: teamOf(c.role, w.id), custom: true, cid: c.id });
+      done: "", where: "", preview: false, links: [], steps: [], rollback: "", ft: false, ord: 100000 + ci, part: WS_PART[w.id] || "A", pillar: PILLAR_BY_ID[c.pillar] ? c.pillar : (PILLAR_DEFAULT_WS[w.id] || "manage"), stage: "", team: teamOf(c.role, w.id), custom: true, cid: c.id });
   });
   return list;
 }
@@ -8586,9 +9271,9 @@ function sortTasks(list) {
 
 function computeModel() {
   var win = P.window;
-  var m = { ws: [], tasks: [], on: [], hidden: [], owners: {}, win: win, levelCounts: { Required: 0, Recommended: 0, Optional: 0 }, platCounts: {}, pillarCounts: { foundation: 0, observe: 0, govern: 0, secure: 0 },
-    pillarC: { foundation: { n: 0, done: 0, req: 0, reqDone: 0 }, observe: { n: 0, done: 0, req: 0, reqDone: 0 }, govern: { n: 0, done: 0, req: 0, reqDone: 0 }, secure: { n: 0, done: 0, req: 0, reqDone: 0 } },
+  var m = { ws: [], tasks: [], on: [], hidden: [], owners: {}, win: win, levelCounts: { Required: 0, Recommended: 0, Optional: 0 }, platCounts: {}, pillarCounts: {}, pillarC: {},
     partC: { A: { n: 0, done: 0 }, B: { n: 0, done: 0 }, C: { n: 0, done: 0 } }, waveC: { "1": { n: 0, done: 0 }, "2": { n: 0, done: 0 } } };
+  PILLARS.forEach(function (p) { m.pillarCounts[p.id] = 0; m.pillarC[p.id] = { n: 0, done: 0, req: 0, reqDone: 0 }; });
   var T = { total: 0, done: 0, doing: 0, blocked: 0, todo: 0, na: 0, applicable: 0, open: 0, req: 0, reqDone: 0, unowned: 0, overdue: 0, pct: 0 };
   m.featC = {}; FEATURES.forEach(function (f) { m.featC[f.id] = { n: 0, done: 0, req: 0, reqDone: 0 }; });
   WORKSTREAMS.forEach(function (w) {
@@ -8803,7 +9488,7 @@ function parseRoute() {
 /* ---------- Components ---------- */
 function chip(label, tone, extra) { return html`<span class="chip chip-${tone || "gray"}${extra ? " " + extra : ""}">${label}</span>`; }
 function pillarChip(t) {
-  var p = PILLAR_BY_ID[t.pillar] || PILLAR_BY_ID.observe, sg = t.stage && STAGE_BY_ID[t.stage], ph = pillarPhase(p.id);
+  var p = PILLAR_BY_ID[t.pillar] || PILLAR_BY_ID.manage, sg = t.stage && STAGE_BY_ID[t.stage], ph = pillarPhase(p.id);
   return html`<span class="chip chip-pillar" data-p="${p.id}" title="${p.name} pillar${sg ? ", " + sg.name + " stage" : ""}${ph === "off" ? ". Pillar off" : ""}"><i aria-hidden="true"></i>${p.name}</span>`;
 }
 function pillarLine(t) {
@@ -9005,7 +9690,7 @@ function welcomeHtml() {
     <ol class="steps">
       <li><b>Name your plan.</b> Add your organization and deployment lead.</li>
       <li><b>Choose agent types.</b> Turn on the kinds of agents you run.</li>
-      <li><b>Choose pillars or features.</b> Start with Observe to see every agent and its signals, then turn on Govern and Secure. Or choose specific features, such as Conditional Access, to get just the tasks they need.</li>
+      <li><b>Choose pillars or features.</b> Start with Management to see every agent and its signals, then turn on Governance, Security, and Business Value. Or choose specific features, such as Conditional Access or AI spend controls, to get just the tasks they need.</li>
       <li><b>Follow the onboarding order.</b> Work through steps 1 to 11, Required tasks first, starting with licenses and roles.</li>
     </ol>
     <div class="actions"><a class="btn btn-primary" href="#/plan">Set up plan${ico("arrowR", 16)}</a><button class="btn" data-act="demo">Explore sample data</button></div>
@@ -9022,9 +9707,9 @@ function pillarsCardHtml() {
   var sub = featMode() ? "Your plan is scoped by feature, so each pillar counts the tasks your chosen features need." : off.length ? pillarNames(off) + (off.length === 1 ? " is" : " are") + " off, so " + (off.length === 1 ? "its" : "their") + " tasks aren't in your plan." : "Every pillar is in your plan.";
   return html`<section class="bezel onb-wrap" aria-labelledby="pilHead"><div class="card onb-card">
     <div class="side-head"><div><h2 id="pilHead">Readiness by pillar</h2><p>${sub} Select a pillar to see its tasks.</p></div>${featMode() ? "" : html`<a class="btn btn-sm" href="#/plan#pillars">Choose pillars</a>`}</div>
-    <div class="part-grid">${PILLARS.map(function (p) { var c = m.pillarC[p.id];
+    <div class="part-grid pil-tiles">${PILLARS.map(function (p) { var c = m.pillarC[p.id];
       if (!pillarOn(p.id)) return html`<a class="part-tile is-off" href="#/plan#pillars" aria-label="${p.name} is off. Turn it on in Plan setup."><span class="pdot lg" data-p="${p.id}" aria-hidden="true"></span><span class="pt-txt"><b>${p.name}</b><span>Off \u00B7 turn on in Plan setup</span></span><span class="pt-num"></span>${ptTrack(c)}</a>`;
-      return html`<button class="part-tile" data-act="openPillar" data-pillar="${p.id}" aria-label="${p.name}: ${c.done} of ${c.n} tasks done"><span class="pdot lg" data-p="${p.id}" aria-hidden="true"></span><span class="pt-txt"><b>${p.name}</b><span>${c.reqDone} of ${c.req} required done</span></span><span class="pt-num">${c.done}/${c.n}</span>${ptTrack(c)}</button>`; })}</div>
+      return html`<button class="part-tile" data-act="openPillar" data-pillar="${p.id}" aria-label="${p.name}: ${c.done} of ${c.n} tasks done"><span class="pdot lg" data-p="${p.id}" aria-hidden="true"></span><span class="pt-txt"><b>${p.name}</b><span>${c.req ? c.reqDone + " of " + c.req + " required done" : "No required tasks"}</span></span><span class="pt-num">${c.done}/${c.n}</span>${ptTrack(c)}</button>`; })}</div>
   </div></section>`;
 }
 function featuresCardHtml() {
@@ -9347,7 +10032,7 @@ function groupTasks(tasks, by) {
     else if (by === "status") { id = t.status; title = STATUS_BY_ID[t.status].name; order = STATUS_ORDER.indexOf(t.status); }
     else if (by === "role") { id = t.role; title = t.role; order = 0; }
     else if (by === "pillar") { var pi = PILLAR_BY_ID[t.pillar], ph = pillarPhase(t.pillar); id = "x" + pi.order; title = pi.name; blurb = (ph === "off" ? "Off \u00B7 " : "") + pi.blurb; order = pi.order; }
-    else if (by === "stage") { if (t.pillar === "observe") { var sg = STAGE_BY_ID[t.stage]; id = "s" + (sg ? sg.order : 9); title = "Observe \u00B7 " + (sg ? sg.name : "Your own tasks"); blurb = sg ? sg.blurb : ""; order = sg ? sg.order : 3; } else { var po = PILLAR_BY_ID[t.pillar]; id = "x" + po.order; title = po.name; blurb = (pillarOn(t.pillar) ? "" : "Off \u00B7 ") + po.blurb; order = po.id === "foundation" ? -1 : 10 + po.order; } }
+    else if (by === "stage") { if (t.stage && STAGE_BY_ID[t.stage]) { var sg = STAGE_BY_ID[t.stage]; id = "s" + sg.order; title = "Observability \u00B7 " + sg.name; blurb = sg.blurb; order = sg.order; } else { var po = PILLAR_BY_ID[t.pillar]; id = "x" + po.order; title = po.name; blurb = (pillarOn(t.pillar) ? "" : "Off \u00B7 ") + po.blurb; order = po.id === "foundation" ? -1 : 10 + po.order; } }
     else if (by === "team") { var tm = TEAM_BY_ID[t.team]; id = "t" + tm.order; title = tm.name; blurb = tm.where; order = tm.order; }
     else if (by === "pri") { id = t.pri; title = t.pri; order = PRIORITIES.indexOf(t.pri); }
     else if (by === "step") { var ob = ONB_BY_N[t.step]; id = "s" + (t.step || 99); title = ob ? "Step " + ob.n + ": " + ob.name : "Your own tasks"; blurb = ob ? ob.blurb : ""; order = t.step || 99; }
@@ -9465,8 +10150,8 @@ function toolbarHtml(key) {
   var roles = distinct(base.map(function (t) { return t.role; })).sort();
   var owners = distinct(base.map(function (t) { return t.effOwner; })).sort();
   var groupOpts = isAll
-    ? [["step", "Group by step"], ["pillar", "Group by pillar"], ["stage", "Group by Observe stage"], ["team", "Group by team"], ["ws", "Group by workstream"], ["pri", "Group by priority"], ["status", "Group by status"], ["owner", "Group by owner"], ["none", "No grouping"]]
-    : [["step", "Group by step"], ["pillar", "Group by pillar"], ["stage", "Group by Observe stage"], ["team", "Group by team"], ["pri", "Group by priority"], ["status", "Group by status"], ["none", "No grouping"]];
+    ? [["step", "Group by step"], ["pillar", "Group by pillar"], ["stage", "Group by observability stage"], ["team", "Group by team"], ["ws", "Group by workstream"], ["pri", "Group by priority"], ["status", "Group by status"], ["owner", "Group by owner"], ["none", "No grouping"]]
+    : [["step", "Group by step"], ["pillar", "Group by pillar"], ["stage", "Group by observability stage"], ["team", "Group by team"], ["pri", "Group by priority"], ["status", "Group by status"], ["none", "No grouping"]];
   var nMore = [isAll && f.ws, f.role, f.team, isAll && f.due, f.hideDone, f.hidePreview, f.showHidden].filter(Boolean).length;
   var teams = TEAMS.filter(function (x) { return base.some(function (t) { return t.team === x.id; }); });
   return html`<div class="toolbar" role="search" data-view="${key}">
@@ -9590,7 +10275,7 @@ function viewPlan() {
     <section class="section" id="features">
       <div class="section-head"><div><h2>Features</h2><p>Plan for specific capabilities instead of whole pillars. Choose the features you want to enable, and your plan narrows to the tasks they need, including prerequisites from other pillars, plus the Foundation tasks every feature relies on. A chosen feature's Optional tasks count as Recommended. Leave every feature off to plan by pillar.</p></div></div>
       <div class="bezel"><div class="card form-card">
-        <div class="feat-grid">${["observe", "govern", "secure"].map(function (pid) {
+        <div class="feat-grid">${PILLARS.filter(function (p) { return !p.locked; }).map(function (p) { var pid = p.id;
           return html`<div class="feat-col"><h3><span class="pdot" data-p="${pid}" aria-hidden="true"></span>${PILLAR_BY_ID[pid].name}</h3>${FEATURES.filter(function (f) { return f.pillar === pid; }).map(featRowHtml)}</div>`; })}</div>
         <div class="feat-bar"><p class="depth-total">${featMode() ? html`Planning by feature: <b>${S.features.length}</b> chosen. Your plan has <b>${m.totals.applicable}</b> tasks, and <b>${m.totals.req}</b> of them are required for go-live.` : html`No features chosen, so your plan follows your pillars.`}</p>${featMode() ? html`<button class="btn btn-sm" data-act="clearFeatures">Clear features</button>` : ""}</div>
       </div></div>
@@ -9657,7 +10342,7 @@ function viewHelp() {
     [L.guide, "Step-by-step portal paths, validation, and sample hunting queries."],
     [L.advisory, "Reference architecture and best practices for identity, governance, security, and operations."],
     [L.costTool, "Estimate agent consumption and licensing costs."],
-    [L.playbook, "Roles, cadence, and the Discover, Evaluate, Monitor process for the Observe pillar."],
+    [L.playbook, "Roles, cadence, and the Discover, Evaluate, Monitor observability process that underpins every pillar."],
     [L.adoption, "Adoption materials for champions and leaders."],
     [L.roadmap, "Track upcoming Microsoft 365 changes."]
   ];
@@ -9677,17 +10362,26 @@ function viewHelp() {
       <table class="ref"><thead><tr><th>Label</th><th>Answers</th><th>Values</th></tr></thead><tbody>
         <tr><td>Onboarding step</td><td>In what order?</td><td>Steps 1 to 11 below. Work through them in order.</td></tr>
         <tr><td>Priority</td><td>How important?</td><td>Required tasks gate go-live. Recommended tasks complete the enterprise baseline. Optional tasks only if they apply.</td></tr>
-        <tr><td>Pillar</td><td>What kind of work?</td><td>Foundation, Observe, Govern, or Secure. Turn each on or off under Plan setup, Pillars.</td></tr>
-        <tr><td>Feature</td><td>Which capability?</td><td>${FEATURES.length} features across Observe, Govern, and Secure, such as Conditional Access or shadow AI discovery. Choose them under Plan setup, Features, to get a checklist for just those capabilities, or filter All tasks by one.</td></tr>
+        <tr><td>Pillar</td><td>What kind of work?</td><td>Foundation, Management, Governance, Security, or Business Value. Turn each on or off under Plan setup, Pillars.</td></tr>
+        <tr><td>Feature</td><td>Which capability?</td><td>${FEATURES.length} features across Management, Governance, Security, and Business Value, such as Conditional Access, shadow AI discovery, or AI spend controls. Choose them under Plan setup, Features, to get a checklist for just those capabilities, or filter All tasks by one.</td></tr>
         <tr><td>Workstream</td><td>Which team?</td><td>Foundations, Admin center, Defender, Entra, Purview, SharePoint, and the rest. Each has an owner and a go-live date.</td></tr>
       </tbody></table>
       <p>The steps match the recommended onboarding order in the FastTrack SME deployment checklist. Its parts map to them as follows: ${PARTS.map(function (p) { return "Part " + p.id + " " + p.name + " is steps " + p.steps.join(", "); }).join("; ")}.</p>
-      <h2>Pillars and the Observability Playbook</h2>
-      <p>Every task has one pillar, so you can start with Observe without turning off whole workstreams. <b>Observe</b> tasks surface a signal without changing what an agent can do, including audit, report-only, and simulation modes. <b>Govern</b> tasks set ownership, lifecycle, and access decisions. <b>Secure</b> tasks block, enforce, contain, or respond. <b>Foundation</b> tasks are the licenses, roles, scope, and prerequisites every pillar relies on.</p>
-      <p>The pillars follow the <a href="${L.playbook[1]}" target="_blank" rel="noopener noreferrer">${L.playbook[0]}</a>. Its process for the Observe pillar has three stages that run continuously, and Observe tasks carry the stage they support, so you can group All tasks by Observe stage.</p>
+      <h2>Pillars and shared observability</h2>
+      <p>Every task has one pillar, so you can stage a rollout without turning off whole workstreams. The pillars follow Microsoft's current Agent 365 messaging, which positions Agent 365 as the observability platform for AI and organizes it into four pillars, each built on shared observability and on the pillar before it: you can't govern what you can't see, and you can't show value for what you don't control.</p>
+      <ul>
+        <li><b>Management</b> tasks discover, connect, and centrally manage agents and tools: the registry, Agent Map, agent identities, connected platforms, activity insights, and shadow AI discovery.</li>
+        <li><b>Governance</b> tasks set clear ownership, permissions, and accountability: who can build, share, and use agents, approvals, policy templates, lifecycle, tool controls, audit, and retention.</li>
+        <li><b>Security</b> tasks help you understand agent risk, enforce controls, and keep agents protected: data security, DLP, Conditional Access, oversharing fixes, threat detection, containment, and response.</li>
+        <li><b>Business Value</b> tasks plan, control, and optimize AI spend and connect it to outcomes: spend forecasts, spending policies, model choice, chargeback, and value reporting.</li>
+        <li><b>Foundation</b> tasks are the licenses, roles, scope, and prerequisites every pillar relies on.</li>
+      </ul>
+      <p>Version 1.1 replaced the earlier Observe, Govern, and Secure pillars. A plan saved with Observe turned off opens with Management turned off, and Governance and Security keep your earlier choices. Some tasks moved to match the new model: for example, audit and retention now sit in Governance, data security posture and risk triage in Security, and usage, spend, and adoption reporting in Business Value.</p>
+      <p>Version 1.2 (November 2026) reflects the Microsoft Ignite 2026 announcements. It adds eight tasks: Agent 365 Business Analytics for business leaders, agent activity sync to Azure Monitor, agent use cases in Agent Map, the Agent 365 Admin plugin in Copilot, Intune compliance and Execution Container boundaries for local agents, Global Secure Access network discovery and MCP controls, and DLP for Microsoft and key local agents. It also updates existing tasks: usage insights for Microsoft agents without an Agent 365 license, local agent discovery and runtime protection now generally available in Defender, plugin and skill governance now generally available, dynamic agent risk, Entra Agent ID for connected platforms and local agents, expanded Cost management, and Copilot Credits billing for Windows 365 for Agents. Saved plans and task IDs carry over unchanged. Guide references were rechecked against the published Customer implementation guide, so each one opens its matching step, and four more tasks now link to a step.</p>
+      <p>The <a href="${L.playbook[1]}" target="_blank" rel="noopener noreferrer">${L.playbook[0]}</a> describes an observability process with three stages that run continuously. Tasks that support a stage carry it in whichever pillar they sit, so you can group All tasks by observability stage.</p>
       <table class="ref"><thead><tr><th>Stage</th><th>What it answers</th></tr></thead><tbody>${STAGES.map(function (x) { return html`<tr><td>${x.name}</td><td>${x.blurb}</td></tr>`; })}</tbody></table>
       <p>The playbook also names the teams that run an observability program. The Team filter maps each task's admin role to one of them: ${TEAMS.map(function (x) { return x.name; }).join(", ")}.</p>
-      <p>Use Plan setup, Pillars, to stage your rollout. For example, turn on only Observe to start: your plan keeps the Foundation and Observe tasks and the task count drops to match. Turn on Govern and Secure when you're ready, and their tasks come back with anything you already recorded.</p>
+      <p>Use Plan setup, Pillars, to stage your rollout. For example, turn on only Management to start: your plan keeps the Foundation and Management tasks and the task count drops to match. Turn on Governance, Security, and Business Value when you're ready, and their tasks come back with anything you already recorded.</p>
       <h2>Plan by feature</h2>
       <p>Pillars scope a plan by the kind of work. Features scope it by capability, so you can answer "what do we need to do to turn this on?" Choose features under Plan setup, Features. Your plan then holds each chosen feature's tasks, the prerequisite tasks it needs from other pillars and workstreams, and the Foundation tasks every feature relies on: sponsor and scope, licenses, roles, data handling, test users, and release preferences. While features are chosen, pillar switches are paused. Clear the features to plan by pillar again, with your pillar choices intact.</p>
       <p>A chosen feature's Optional tasks count as Recommended. Plan depth and agent types still apply, so a feature for an agent type you don't use adds only its shared tasks, and Plan setup tells you which agent types would add more. A feature that can't work without an agent type or workstream, such as shadow AI discovery, turns it on for you and says so. A task can support several features, and its details list each one. Exports add a Features column so you can filter the workbook the same way.</p>
@@ -9697,7 +10391,7 @@ function viewHelp() {
       <h2>How each agent gets into Agent 365</h2>
       <table class="ref"><thead><tr><th>Route</th><th>Applies to</th><th>Admin effort</th></tr></thead><tbody>
         <tr><td>Native registration</td><td>Microsoft-built agents, Agent Builder, Copilot Studio, SharePoint agents, and supported Microsoft Foundry agents</td><td>None. The platform registers them.</td></tr>
-        <tr><td>Registry sync (preview)</td><td>Agents on Amazon Bedrock, Google Vertex AI, Salesforce Agentforce, Databricks Genie, Anthropic Claude Managed Agents, Oracle Generative AI Agents, and Snowflake Cortex</td><td>A one-time read-only connection per platform. Sync is manual.</td></tr>
+        <tr><td>Connected platforms (preview, formerly registry sync)</td><td>Agents on Amazon Bedrock, Google Vertex AI, Salesforce Agentforce, Databricks Genie, Anthropic Claude Managed Agents, Oracle Generative AI Agents, and Snowflake Cortex</td><td>A one-time read-only connection per platform. Sync is manual. Entra Agent ID and secretless authentication are rolling out in preview.</td></tr>
         <tr><td>Agent 365 SDK and CLI</td><td>Custom pro-code agents. Partner agents vary by partner.</td><td>Blueprint, identity, telemetry, and tools for each agent.</td></tr>
       </tbody></table>
       <h2>What each onboarding depth gives you</h2>
@@ -9709,9 +10403,10 @@ function viewHelp() {
       </tbody></table>
       <h2>What onboarded means</h2>
       <table class="ref"><thead><tr><th>Pillar</th><th>Minimum evidence</th><th>Common false positive</th></tr></thead><tbody>
-        <tr><td>Observe</td><td>The agent is in the registry with a known owner, source, and status, and its activity is visible where supported.</td><td>It appears in the registry, but no telemetry or interaction evidence exists.</td></tr>
-        <tr><td>Govern</td><td>An accountable owner or sponsor exists, access is least privilege, and lifecycle, tool, data, and approval controls are applied.</td><td>A template is attached, but its Entra, Purview, or SharePoint configuration was never completed.</td></tr>
-        <tr><td>Secure</td><td>Posture is reviewed, threat detection is on, and a safe test proves the intended block works.</td><td>Telemetry is present, but nothing enforces controls on the agent's actual runtime, tools, or data.</td></tr>
+        <tr><td>Management</td><td>The agent is in the registry with a known owner, source, identity, and status, and its activity is visible where supported.</td><td>It appears in the registry, but no telemetry or interaction evidence exists.</td></tr>
+        <tr><td>Governance</td><td>An accountable owner or sponsor exists, access is least privilege, and lifecycle, tool, data, and approval controls are applied.</td><td>A template is attached, but its Entra, Purview, or SharePoint configuration was never completed.</td></tr>
+        <tr><td>Security</td><td>Risk signals are triaged, posture is reviewed, threat detection is on, and a safe test proves the intended block works.</td><td>Telemetry is present, but nothing enforces controls on the agent's actual runtime, tools, or data.</td></tr>
+        <tr><td>Business Value</td><td>The usage-based services the agent consumes sit under a spending policy with limits and an owner, and its usage and spend are reviewed against agreed outcome measures.</td><td>Spend is capped, but no one agreed what outcome the agent should deliver, so its value can't be shown.</td></tr>
       </tbody></table>
       <h2>Detailed walkthroughs</h2>
       <p>Most tasks link to the matching step of the <a href="${GUIDE_URL}" target="_blank" rel="noopener noreferrer">Agent 365 Customer implementation guide</a> (Detailed view), which has screenshots, field-level steps, and validation for each control. Use this checklist as the plan of record. Where the two differ, follow this checklist, which was reviewed against Microsoft Learn more recently.</p>
@@ -9993,7 +10688,7 @@ function paletteItems(q) {
   add("Pages", "grid", "Overview", "dashboard home", function () { navigate("#/"); });
   add("Pages", "list", "All tasks", "every task filter", function () { navigate("#/tasks"); });
   add("Pages", "sliders", "Plan setup", "plan scope owners go-live settings start", function () { navigate("#/plan"); });
-  add("Pages", "sliders", "Pillars", "observe govern secure pillar toggle on off plan", function () { navigate("#/plan#pillars"); });
+  add("Pages", "sliders", "Pillars", "management governance security business value pillar toggle on off plan observe govern secure", function () { navigate("#/plan#pillars"); });
   add("Pages", "sliders", "Features", "feature slicer capability enable checklist scope plan", function () { navigate("#/plan#features"); });
   if (toks.length) FEATURES.forEach(function (f) { add("Features", "list", f.name, "feature " + PILLAR_BY_ID[f.pillar].name + " " + f.blurb, function () { ACTIONS.openFeature({ dataset: { feat: f.id } }); }); });
   add("Pages", "help", "Help and links", "documentation privacy shortcuts", function () { navigate("#/help"); });
@@ -10294,7 +10989,7 @@ var ACTIONS = {
   },
   clearFeatures: function () { S.features = []; touch(); render(); toast("Features cleared. Your plan follows your pillars again"); },
   openFeature: function (a) { $("#app").classList.remove("nav-open"); UI.f.tasks = null; var f = filt("tasks"); f.feat = a.dataset.feat; f.group = "step"; if (location.hash !== "#/tasks") location.hash = "#/tasks"; else render(); },
-  openPillar: function (a) { $("#app").classList.remove("nav-open"); UI.f.tasks = null; var f = filt("tasks"); f.pillar = a.dataset.pillar; f.group = a.dataset.pillar === "observe" ? "stage" : "step"; if (location.hash !== "#/tasks") location.hash = "#/tasks"; else render(); },
+  openPillar: function (a) { $("#app").classList.remove("nav-open"); UI.f.tasks = null; var f = filt("tasks"); f.pillar = a.dataset.pillar; f.group = a.dataset.pillar === "manage" ? "stage" : "step"; if (location.hash !== "#/tasks") location.hash = "#/tasks"; else render(); },
   levelToggle: function (a) { var p = a.dataset.id; if (p === "Required" || PRIORITIES.indexOf(p) < 0) return; var cur = (S.levels || DEFAULT_LEVELS).slice(), i = cur.indexOf(p); if (i >= 0) cur.splice(i, 1); else cur.push(p); S.levels = PRIORITIES.filter(function (x) { return x === "Required" || cur.indexOf(x) >= 0; }); touch(); render(); },
   setType: function (a) { var id = a.dataset.id, v = a.dataset.v, p = PLAT_BY_ID[id]; if (!p || p.locked || ["1", "2", "off"].indexOf(v) < 0) return; if (v === typeDefault(p)) delete S.platforms[id]; else S.platforms[id] = v; touch(); render(); },
   toggleMore: function (a) { var f = filt(a.dataset.view); f.more = !f.more; render(); },
@@ -10395,7 +11090,7 @@ document.addEventListener("submit", function (e) {
   if (PILLAR_BY_ID[fd.get("pillar")]) c.pillar = fd.get("pillar");
   S.custom.push(c); touch(); closeDialog();
   var key = c.ws + ":" + c.id; UI.open[key] = true; UI.scrollTo = key; UI.f["ws:" + c.ws] = null;
-  navigate("#/w/" + c.ws); var cp = c.pillar || PILLAR_DEFAULT_WS[c.ws] || "observe"; toast("Task added to " + WS_BY_ID[c.ws].name + (pillarOn(cp) ? "" : ". " + PILLAR_BY_ID[cp].name + " is off, so it shows once you turn that pillar on"));
+  navigate("#/w/" + c.ws); var cp = c.pillar || PILLAR_DEFAULT_WS[c.ws] || "manage"; toast("Task added to " + WS_BY_ID[c.ws].name + (pillarOn(cp) ? "" : ". " + PILLAR_BY_ID[cp].name + " is off, so it shows once you turn that pillar on"));
 });
 
 function isTyping(el) { return el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable); }
