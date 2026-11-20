@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-slug="tenant-pool-draw-control">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tenant Pool Draw Control | Microsoft FastTrack</title>
+  <meta name="description" content="Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.">
+  <link rel="canonical" href="https://microsoft.github.io/FastTrack/r/tenant-pool-draw-control/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Microsoft FastTrack">
+  <meta property="og:title" content="Tenant Pool Draw Control">
+  <meta property="og:description" content="Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.">
+  <meta property="og:url" content="https://microsoft.github.io/FastTrack/r/tenant-pool-draw-control/">
+  <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tenant Pool Draw Control">
+  <meta name="twitter:description" content="Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.">
+  <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og-default.png">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="FastTrack updates" href="../../feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(e){}</script>
+  <link rel="stylesheet" href="../../assets/resource-page.css">
+  <link rel="stylesheet" href="../../assets/site-footer.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Tenant Pool Draw Control","description":"Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.","url":"https://microsoft.github.io/FastTrack/r/tenant-pool-draw-control/","datePublished":"2026-11-13","dateModified":"2026-11-13","version":"1.0.0","inLanguage":"en","keywords":"copilot-credits, power-platform, copilot-managed-runtime, governance, capacity","author":[{"@type":"Person","name":"Jake Stoker"}],"license":"https://opensource.org/licenses/MIT","isPartOf":{"@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/"}}</script>
+</head>
+<body class="type-app">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="Microsoft FastTrack catalog">
+        <svg viewBox="0 0 21 21" width="21" height="21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        Microsoft FastTrack
+      </a>
+      <nav class="bar-links" aria-label="Site">
+        <a href="../../">Catalog</a>
+        <a href="https://github.com/microsoft/FastTrack" target="_blank" rel="noopener">GitHub</a>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Catalog</a><span aria-hidden="true">/</span><a href="../../?type=app">Apps</a><span aria-hidden="true">/</span><span aria-current="page">Tenant Pool Draw Control</span>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>Apps · Copilot Managed Runtime <span class="badge badge-preview">Preview</span></div>
+      <h1>Tenant Pool Draw Control</h1>
+      <p class="lede">Turn off Copilot Credits tenant pool draw across many Power Platform environments at once, with read-back and an audit log.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/microsoft/FastTrack/tree/master/tools/tenant-pool-draw-control" target="_blank" rel="noopener">View on GitHub<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17l9.2-9.2M17 16.2V7H8.8"/></svg></a>
+        <button class="btn" id="copyLink" type="button" data-url="https://microsoft.github.io/FastTrack/r/tenant-pool-draw-control/">Copy link</button>
+      </div>
+      <div class="tags"><a class="tag" href="../../?tag=copilot-credits">copilot-credits</a><a class="tag" href="../../?tag=power-platform">power-platform</a><a class="tag" href="../../?tag=copilot-managed-runtime">copilot-managed-runtime</a><a class="tag" href="../../?tag=governance">governance</a><a class="tag" href="../../?tag=capacity">capacity</a></div>
+    </section>
+
+    <p class="notice">Preview: this resource is still maturing. Validate it in a non-production environment before relying on it.</p>
+
+    <div class="layout">
+      <article>
+        <section class="block"><h2>What it is</h2><p>A Copilot Managed Runtime (App Builder) app that lists the Power Platform environments you can administer and turns off, or back on, &quot;Draw from the available capacity in my tenant&quot; for Copilot Credits. It changes one environment, a ticked selection, or every environment of chosen types, previews each change, reads it back to confirm it applied, and keeps a change log with CSV export.</p></section>
+        <section class="block"><h2>Why use it</h2><ul><li>Cap environments at their own Copilot Credits allocation without switching pool draw off one environment at a time in the Power Platform admin center.</li><li>Confirm every change by read-back and keep a CSV audit log with one row per environment per change.</li><li>See environments controlled by an environment-group rule reported as locked by policy and left unchanged.</li></ul></section>
+        <section class="block"><h2>How to use it</h2><ol class="steps"><li>Review the Requirements section: an admin role, the Power Platform for Admins V2 connector allowed by your policies, and a Copilot Managed Runtime spending policy.</li><li>Follow Running it: attach the app source as a zip in the Copilot app&#39;s Code tab with the prompt provided, and let Copilot build the app in your tenant.</li><li>Publish the app, test on one non-production environment, and check the change log shows Confirmed before using the bulk options.</li></ol></section>
+        <section class="block"><h2>Prerequisites</h2><ul><li>Power Platform administrator (or a role allowed to manage capacity allocations)</li><li>Power Platform for Admins V2 connector allowed by data policies and environment-group connector policies</li><li>Copilot Managed Runtime spending policy for the people who open the app</li><li>Copilot license and a Copilot Code spending policy for the person building the app</li></ul></section>
+        
+    <section class="block related">
+      <h2>Related resources</h2>
+      <ul class="related-list">
+        <li><a href="../agent-365-enablement-checklist/"><strong>Agent 365 Enablement Checklist</strong><span>A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel.</span></a></li>
+        <li><a href="../microsoft-agent-365-customer-implementation-guide/"><strong>Microsoft Agent 365 Customer Implementation Guide</strong><span>Plan and configure a governed Microsoft Agent 365 baseline with simple guidance and detailed implementation tasks.</span></a></li>
+        <li><a href="../microsoft-agent-365-technical-advisory/"><strong>Microsoft Agent 365 Technical Advisory</strong><span>Reference architecture and best practices to discover, govern, secure, build, and measure agents with Agent 365, as a 19-page PDF.</span></a></li>
+      </ul>
+    </section>
+      </article>
+      <aside>
+        <dl class="details"><div class="row"><dt>Type</dt><dd>Apps</dd></div><div class="row"><dt>Category</dt><dd>Copilot Managed Runtime</dd></div><div class="row"><dt>Format</dt><dd>bundle · App</dd></div><div class="row" id="viewsRow" hidden><dt>Views</dt><dd><span id="viewsValue"></span></dd></div><div class="row"><dt>Version</dt><dd>1.0.0</dd></div><div class="row"><dt>Updated</dt><dd>Nov 13, 2026</dd></div><div class="row"><dt>Author</dt><dd>Jake Stoker</dd></div></dl>
+        <div class="aside-links">
+          <a href="https://github.com/microsoft/FastTrack/issues/new?template=resource-feedback.yml&amp;resource=Tenant%20Pool%20Draw%20Control&amp;title=%5BTenant%20Pool%20Draw%20Control%5D%20" target="_blank" rel="noopener">Report a problem or suggest an update</a>
+          <a href="../../#tenant-pool-draw-control">Comments &amp; upvotes in the catalog</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="site-footer-brand">
+        <svg viewBox="0 0 21 21" width="16" height="16" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+        <span>Microsoft</span><span class="site-footer-brand-sep" aria-hidden="true"></span><span>FastTrack</span>
+      </div>
+      <p class="site-footer-disclaimer">Disclaimer: This community catalog of tools, scripts, and guidance from Microsoft FastTrack is provided as-is, without warranty of any kind, including merchantability or fitness for a particular purpose. It is not official Microsoft software, and support is not available through Microsoft support channels. Report problems through GitHub issues; there is no SLA.</p>
+      <p class="site-footer-legal"><a href="https://www.microsoft.com/en-us/legal/terms-of-use" target="_blank" rel="noopener">Terms and Conditions</a><a href="https://privacy.microsoft.com/en-us/privacystatement" target="_blank" rel="noopener">Privacy Statement</a><button type="button" data-privacy-notice aria-haspopup="dialog" hidden>Privacy notice</button></p>
+      <p><a href="../../">Browse the catalog</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a> · <a href="https://github.com/microsoft/FastTrack/issues" target="_blank" rel="noopener">Issues</a> · <a href="https://github.com/microsoft/FastTrack/blob/master/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/privacy-notice.js" defer></script>
+  <script src="../../assets/live-stats.js" defer></script>
+  <script src="../../assets/resource-page.js" data-clarity="w810tntgw1" defer></script>
+</body>
+</html>

@@ -22,7 +22,7 @@ const renderAll = process.argv.includes('--all');
 
 const TYPE_COLORS = {
   script: '#34d399', agent: '#818cf8', strategy: '#fb923c',
-  analytics: '#38bdf8', prompt: '#f472b6', skill: '#a1a1aa'
+  analytics: '#38bdf8', app: '#facc15', prompt: '#f472b6', skill: '#a1a1aa'
 };
 
 function findBrowser() {

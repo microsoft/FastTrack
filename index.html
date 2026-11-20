@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Microsoft FastTrack | Tools &amp; guides for Microsoft 365 Copilot and agents</title>
-  <meta name="description" content="Field-tested guides, agents, scripts, and analytics from Microsoft FastTrack to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
+  <meta name="description" content="Field-tested guides, agents, apps, scripts, and analytics from Microsoft FastTrack to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
   <link rel="canonical" href="https://microsoft.github.io/FastTrack/">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate" type="application/atom+xml" title="FastTrack: new and updated resources" href="feed.xml">
@@ -13,16 +13,16 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Microsoft FastTrack">
   <meta property="og:title" content="Microsoft FastTrack: tools &amp; guides for Microsoft 365 Copilot and agents">
-  <meta property="og:description" content="Field-tested guides, agents, scripts, and analytics to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
+  <meta property="og:description" content="Field-tested guides, agents, apps, scripts, and analytics to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
   <meta property="og:url" content="https://microsoft.github.io/FastTrack/">
   <meta property="og:image" content="https://microsoft.github.io/FastTrack/assets/og-default.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Microsoft FastTrack: tools &amp; guides for Microsoft 365 Copilot and agents">
-  <meta name="twitter:description" content="Field-tested guides, agents, scripts, and analytics to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
+  <meta name="twitter:description" content="Field-tested guides, agents, apps, scripts, and analytics to plan, deploy, govern, and measure Microsoft 365 Copilot and Agent 365.">
   <meta name="twitter:image" content="https://microsoft.github.io/FastTrack/assets/og-default.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/","description":"Field-tested guides, agents, scripts, and analytics from Microsoft FastTrack for Microsoft 365 Copilot and agents.","publisher":{"@type":"Organization","name":"Microsoft FastTrack"},"potentialAction":{"@type":"SearchAction","target":"https://microsoft.github.io/FastTrack/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Microsoft FastTrack","url":"https://microsoft.github.io/FastTrack/","description":"Field-tested guides, agents, apps, scripts, and analytics from Microsoft FastTrack for Microsoft 365 Copilot and agents.","publisher":{"@type":"Organization","name":"Microsoft FastTrack"},"potentialAction":{"@type":"SearchAction","target":"https://microsoft.github.io/FastTrack/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   
   <script type="text/javascript">
    (function(c,l,a,r,i,t,y){
@@ -67,6 +67,8 @@
       --type-strategy-bg: rgba(234, 88, 12, 0.1);
       --type-analytics: #0284c7;
       --type-analytics-bg: rgba(2, 132, 199, 0.1);
+      --type-app: #a16207;
+      --type-app-bg: rgba(161, 98, 7, 0.1);
       --type-prompt: #db2777;
       --type-prompt-bg: rgba(219, 39, 119, 0.1);
       --type-script: #059669;
@@ -101,6 +103,8 @@
       --type-strategy-bg: rgba(251, 146, 60, 0.15);
       --type-analytics: #38bdf8;
       --type-analytics-bg: rgba(56, 189, 248, 0.15);
+      --type-app: #facc15;
+      --type-app-bg: rgba(250, 204, 21, 0.15);
       --type-prompt: #f472b6;
       --type-prompt-bg: rgba(244, 114, 182, 0.15);
       --type-script: #34d399;
@@ -1393,7 +1397,7 @@
           <span class="stat-chip" id="heroUpdated">Updated regularly</span>
         </div>
         <h1 class="display-title">Tools &amp; guides for Microsoft 365 Copilot and agents</h1>
-        <p class="hero-subtitle">Field-tested guides, agents, scripts, and analytics from Microsoft FastTrack. Pick a goal below or search the catalog.</p>
+        <p class="hero-subtitle">Field-tested guides, agents, apps, scripts, and analytics from Microsoft FastTrack. Pick a goal below or search the catalog.</p>
       </div>
       <div class="hero-search">
         <div class="search-container">
@@ -1664,6 +1668,7 @@
       { id: 'strategy', label: 'Guides & planning', colorVar: '--type-strategy', desc: 'Implementation guides, planning tools & walkthroughs' },
       { id: 'agent', label: 'Agents', colorVar: '--type-agent', desc: 'Ready-to-use AI assistants' },
       { id: 'analytics', label: 'Analytics', colorVar: '--type-analytics', desc: 'Power BI & reporting' },
+      { id: 'app', label: 'Apps', colorVar: '--type-app', desc: 'Deployable apps for admins, such as Copilot Managed Runtime apps' },
       { id: 'script', label: 'Scripts', colorVar: '--type-script', desc: 'PowerShell automation' },
       { id: 'prompt', label: 'Prompts', colorVar: '--type-prompt', desc: 'Copilot prompt templates', hidden: true },
       { id: 'skill', label: 'Skills', colorVar: '--type-skill', desc: 'Reusable skills for GitHub Copilot and Claude Code', hidden: true }
@@ -1764,6 +1769,7 @@
       if (artifact === 'interactive') {
         return resource && resource.interactiveKind === 'guide' ? 'Interactive guide' : 'Interactive tool';
       }
+      if (artifact === 'bundle' && resource && resource.type === 'app') return 'bundle · App';
       const map = {
         'pbix': '.pbix · Power BI',
         'ps1': '.ps1 · PowerShell',

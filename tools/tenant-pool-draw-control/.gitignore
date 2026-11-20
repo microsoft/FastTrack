@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vite-cache/
+.env*.local
+*.log
+.browser-errors.log
+.browser-errors.seq
+
+# The monorepo root .gitignore has a broad `lib/` rule that also matches this
+# template's `src/lib/`. Re-include it so source files aren't silently dropped.
+!src/lib/
+!src/lib/**

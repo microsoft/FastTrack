@@ -1,0 +1,67 @@
+/* Dashboard look, scoped to `DashboardPage` (`.dashboard-root`): a tinted
+   canvas that lifts the cards, and a chart palette with distinct hues. Nothing
+   here applies outside a dashboard page, so an app's theme is unchanged. */
+.dashboard-root {
+  --background: oklch(0.975 0.004 250);
+  --card: oklch(1 0 0);
+  --dashboard-skeleton: oklch(0.91 0.008 250);
+  --chart-1: oklch(0.55 0.17 255);
+  --chart-2: oklch(0.68 0.15 165);
+  --chart-3: oklch(0.75 0.15 75);
+  --chart-4: oklch(0.62 0.2 25);
+  --chart-5: oklch(0.58 0.16 300);
+  background-color: var(--background);
+}
+
+.dark .dashboard-root,
+.dashboard-root.dark {
+  --background: oklch(0.17 0.01 250);
+  --card: oklch(0.22 0.012 250);
+  --dashboard-skeleton: oklch(0.32 0.014 250);
+  --chart-1: oklch(0.7 0.15 255);
+  --chart-2: oklch(0.74 0.14 165);
+  --chart-3: oklch(0.8 0.14 75);
+  --chart-4: oklch(0.7 0.18 25);
+  --chart-5: oklch(0.7 0.15 300);
+}
+
+/* An OS dark preference themes the app dark without a `.dark` class
+   (index.css, `:root:not(.light)`); the dashboard follows it the same way. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .dashboard-root:not(.light) {
+    --background: oklch(0.17 0.01 250);
+    --card: oklch(0.22 0.012 250);
+    --dashboard-skeleton: oklch(0.32 0.014 250);
+    --chart-1: oklch(0.7 0.15 255);
+    --chart-2: oklch(0.74 0.14 165);
+    --chart-3: oklch(0.8 0.14 75);
+    --chart-4: oklch(0.7 0.18 25);
+    --chart-5: oklch(0.7 0.15 300);
+  }
+}
+
+.dashboard-root [data-slot="card"] {
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.05);
+}
+
+/* The base skeleton (`bg-accent`) is a shade off the white card and reads as a
+   blank tile; a loading tile on a dashboard shows a visible placeholder. */
+.dashboard-root [data-slot="skeleton"] {
+  background-color: var(--dashboard-skeleton);
+}
+
+/* Default widths for a 12-column DashboardGrid child that sets no
+   `lg:col-span-*`: alone it would take one column, a KPI's title then wrapping
+   a letter per line. A KpiCard spans 3 (four across), anything else the row.
+   In the base layer so any col-span utility on the child wins; skipped when the
+   grid's className replaced its 12 columns. 64rem is Tailwind's `lg`. */
+@layer base {
+  @media (width >= 64rem) {
+    .dashboard-root [data-dashboard-grid].lg\:grid-cols-12 > * {
+      grid-column: span 12 / span 12;
+    }
+    .dashboard-root [data-dashboard-grid].lg\:grid-cols-12 > [data-kpi-card] {
+      grid-column: span 3 / span 3;
+    }
+  }
+}
