@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13",
+  "generatedAt": "2026-11-19",
   "count": 59,
   "resources": [
     {
@@ -67,16 +67,17 @@
       "preview": "copilot-agent-strategy/agent-365-enablement-checklist/preview.webp",
       "download": "copilot-agent-strategy/agent-365-enablement-checklist/index.html",
       "downloadName": "agent-365-enablement-checklist.html",
-      "downloadSize": 684153,
+      "downloadSize": 739540,
       "author": [
         "Alejandro Lopez"
       ],
-      "version": "1.0.4",
+      "version": "1.2.0",
       "published": "2026-10-28",
-      "updated": "2026-11-09",
+      "updated": "2026-11-19",
       "whatItIs": "A self-contained, offline tracker for planning and tracking a Microsoft Agent 365 enablement. It organizes the work into workstreams with role-based tasks, shows a readiness dashboard, and exports to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start your own.",
       "whyUseIt": [
-        "Scope the plan by agent type, pillar, or feature so each team sees the tasks that apply to it.",
+        "Scope the plan by agent type, pillar (Management, Governance, Security, or Business Value), or feature so each team sees the tasks that apply to it.",
+        "Plan AI spend, model choices, chargeback, and business value reporting alongside the technical rollout.",
         "Track every task through to the go-live baseline, with owners, dates, and notes, and watch readiness on the dashboard.",
         "Share the plan with your steering group as an Excel workbook (a dashboard plus one sheet per workstream), a CSV task list for Planner, DevOps, or Jira, or a printable report.",
         "Work entirely offline: it is a single file with no server, sign-in, tracking, or network requests."

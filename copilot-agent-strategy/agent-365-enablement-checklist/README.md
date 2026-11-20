@@ -5,9 +5,9 @@ category: "Interactive"
 summary: "A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel."
 author:
   - "Alejandro Lopez"
-version: 1.0.4
+version: 1.2.0
 published: 2026-10-28
-updated: 2026-11-09
+updated: 2026-11-19
 tags:
   - agent-365
   - deployment
@@ -25,7 +25,8 @@ whatItIs: >-
   to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start
   your own.
 whyUseIt:
-  - "Scope the plan by agent type, pillar, or feature so each team sees the tasks that apply to it."
+  - "Scope the plan by agent type, pillar (Management, Governance, Security, or Business Value), or feature so each team sees the tasks that apply to it."
+  - "Plan AI spend, model choices, chargeback, and business value reporting alongside the technical rollout."
   - "Track every task through to the go-live baseline, with owners, dates, and notes, and watch readiness on the dashboard."
   - "Share the plan with your steering group as an Excel workbook (a dashboard plus one sheet per workstream), a CSV task list for Planner, DevOps, or Jira, or a printable report."
   - "Work entirely offline: it is a single file with no server, sign-in, tracking, or network requests."
@@ -48,7 +49,7 @@ Open [`index.html`](index.html) in a modern browser. It opens with a made-up pla
 
 ## What it does
 
-- **Scope the plan.** Include only the agent types, pillars, and features that apply to your tenant.
+- **Scope the plan.** Include only the agent types, pillars, and features that apply to your tenant. The pillars follow Microsoft's Agent 365 messaging: Management, Governance, Security, and Business Value, each built on shared observability.
 - **Work the tasks.** Tasks are grouped into workstreams and assigned to roles, with status, owner, dates, and notes. Tasks link to Microsoft Learn documentation.
 - **See readiness.** A dashboard summarizes progress toward the go-live baseline.
 - **Export and share.** Export an Excel workbook (a dashboard and one sheet per workstream with live totals), a CSV task list for Planner, DevOps, or Jira, or a JSON backup you can import later. You can also print or save a report.

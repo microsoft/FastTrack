@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.0 - 2026-11-19
+
+Updated for the Agent 365 announcements from Microsoft Ignite. The checklist grows from 160 to 174 tasks and was rechecked against Microsoft Learn on 2026-11-19.
+
+- **New pillars.** The Observe, Govern, and Secure pillars are now Management, Governance, Security, and a new Business Value pillar, matching Microsoft's current Agent 365 messaging. Observability (Discover, Evaluate, Monitor) now applies across every pillar. A saved Observe choice carries over to Management, and existing plans, progress, and backups keep working.
+- **Business value and cost.** The "Operate & adopt" workstream is now "Operate & value" and adds six tasks: forecast AI spend and agree a budget (task 13), choose which AI model providers each group can use (14), route credit requests to your approval workflow and automate cost policies (15), charge AI usage back to the departments that fund it (16), connect AI spend to business value (17), and set up Agent 365 Business Analytics (18). The FinOps task (8) was updated. Three features join the feature scope: Multi-tenant agent management; Chargeback, credit requests, and cost automation; and Business value and ROI reporting.
+- **Administration.** Four new Agent 365 admin tasks cover managing agents across the tenants you govern (16), syncing agent activity to Azure Monitor (17), reviewing agent use cases to find duplicate and overlapping agents (18), and piloting the Agent 365 Admin plugin in Copilot (19). The registry task (1) now includes agent activity, and the ownerless-agent and risk-triage tasks (13 and 15) were updated.
+- **Shadow AI and local agents.** Three new tasks mark devices with prohibited local agents noncompliant (13), set runtime boundaries with Execution Containers (14), and add network discovery and MCP controls with Global Secure Access (15). The discovery sensors, review, containment, and onboarding tasks (3, 4, 8, and 10) were updated, and the Defender runtime protection task (9) is now "Roll out" instead of "Pilot".
+- **Data protection.** A new Purview task pilots DLP for Microsoft agents and key local agents (27), and the Copilot processing restriction task (10) was updated.
+- **Connected platforms and tools.** The registry sync task (Custom agents 10) is now "Connect external agent platforms through Connected platforms". The tool approval, AI gateway, plugin and skill availability, and Work IQ MCP tasks (Tools 2, 9, 10, and 12) were updated, along with the Windows 365 for Agents prerequisites task (Gateway & compute 5).
+- **Licensing and dashboards.** Foundations task 6 now covers the usage and activity insights that qualifying Microsoft 365 subscriptions include since Ignite, and forecasting usage-based spend. The Agent 365 Dashboard task (Operate 2) notes that Viva Insights will remove the Agent 365 license requirement for agent insights.
+- **Defender, Entra, and Copilot Studio.** The Defender tasks (1 to 11) cite the guide's renamed "Microsoft Defender for Agent 365" section. The inventory reconciliation task (4), the agent identity inventory and report-only Conditional Access tasks (Entra 1 and 5), and the Microsoft-built agent rollout and partner agent tasks (Low-code agents 1 and Custom agents 12) were updated.
+- **Layout.** The pillar and feature pickers now fit five pillars and the new features.
+
 ## 1.0.4 - 2026-11-09
 
 - Rechecked every task that cites a Microsoft Learn page that moved or changed since the 2026-10-22 review, and updated what no longer matched.
