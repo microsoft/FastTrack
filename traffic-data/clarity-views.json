@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-21",
+  "lastRun": "2026-11-22",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -2842,7 +2842,7 @@
     "2026-11-20": {
       "agent-365-enablement-checklist": {
         "views": 11,
-        "uniques": 6,
+        "uniques": 5,
         "downloads": 2
       },
       "agent-365-lifecycle-atlas": {
@@ -2902,6 +2902,10 @@
         "views": 3,
         "uniques": 2
       },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
       "tenant-pool-draw-control": {
         "views": 6,
         "uniques": 3
@@ -2910,61 +2914,69 @@
     "2026-11-21": {
       "agent-365-enablement-checklist": {
         "views": 9,
-        "uniques": 7,
+        "uniques": 6,
         "downloads": 5
       },
       "agent-365-lifecycle-atlas": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "agent-brainstorming-template": {
         "downloads": 1
       },
       "ai-council": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "autoreply-agent": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "delete-allcommunityposts": {
         "views": 2,
-        "uniques": 1,
         "downloads": 1
       },
       "delete-engagegroups": {
         "views": 1,
-        "uniques": 1,
         "downloads": 1
       },
       "ess-servicenow-itsm-get-request-details": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "ess-servicenow-itsm-get-user-requests": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "export-copilotinteractions": {
-        "views": 2,
-        "uniques": 1
+        "views": 2
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "downloads": 1
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 4,
-        "uniques": 4,
         "downloads": 2
       },
       "powerclaw-agent": {
         "views": 1,
         "uniques": 1
       },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
       "tenant-pool-draw-control": {
-        "views": 3,
+        "views": 3
+      }
+    },
+    "2026-11-22": {
+      "agent-365-enablement-checklist": {
+        "views": 2,
         "uniques": 2
+      },
+      "powerclaw-agent": {
+        "views": 2,
+        "uniques": 2
+      },
+      "purview-audit-copilot-report": {
+        "views": 1,
+        "uniques": 1
       }
     }
   }
