@@ -159,6 +159,35 @@ export function parseGuide(source) {
   return { sections, sectionHashes, codes, keys, tasks, urls };
 }
 
+// Each workstream lists its tasks under "tasks". A task is read as a whole object so that one whose
+// keys come in a different order (for example "n" after "title") is still found.
+function taskObjects(source) {
+  const found = [];
+  for (const opener of source.matchAll(/"tasks":\s*\[/g)) {
+    let depth = 0;
+    let start = -1;
+    let inString = false;
+    for (let at = opener.index + opener[0].length; at < source.length; at += 1) {
+      const char = source[at];
+      if (inString) {
+        if (char === '\\') at += 1;
+        else if (char === '"') inString = false;
+      } else if (char === '"') {
+        inString = true;
+      } else if (char === '{') {
+        if (depth === 0) start = at;
+        depth += 1;
+      } else if (char === '}') {
+        depth -= 1;
+        if (depth === 0) found.push({ at: start, text: source.slice(start, at + 1) });
+      } else if (char === ']' && depth === 0) {
+        break;
+      }
+    }
+  }
+  return found;
+}
+
 export function parseChecklist(source) {
   const version = /var CONTENT_VERSION = "([^"]+)"/.exec(source)?.[1] ?? '';
   const reviewed = /var CONTENT_REVIEWED = "([^"]+)"/.exec(source)?.[1] ?? '';
@@ -166,29 +195,30 @@ export function parseChecklist(source) {
   for (const match of source.matchAll(/"id":\s*"([^"]+)",\s*"code":\s*"([^"]+)",\s*"name":\s*"((?:[^"\\]|\\.)*)"/g)) {
     workstreams.push({ at: match.index, name: JSON.parse(`"${match[3]}"`) });
   }
-  const starts = [];
-  const taskPattern = /"n":\s*(\d+),\s*"role":\s*"[^"]*",\s*"title":\s*"((?:[^"\\]|\\.)*)"/g;
-  for (const match of source.matchAll(taskPattern)) {
-    starts.push({ at: match.index, number: Number(match[1]), title: JSON.parse(`"${match[2]}"`) });
-  }
   const tasks = [];
   const urls = new Map();
-  starts.forEach((start, index) => {
-    const end = index + 1 < starts.length ? starts[index + 1].at : source.length;
-    const slice = source.slice(start.at, end);
-    const workstream = [...workstreams].reverse().find(candidate => candidate.at < start.at)?.name ?? '';
-    const deep = /"deep":\s*"((?:[^"\\]|\\.)*)"/.exec(slice);
-    const label = `Checklist ${workstream} task ${start.number}: ${start.title}`;
-    const taskUrls = [...slice.matchAll(learnUrlPattern)].map(match => match[0]);
+  for (const object of taskObjects(source)) {
+    let task;
+    try {
+      task = JSON.parse(object.text);
+    } catch (error) {
+      throw new Error(`A checklist task near character ${object.at} is not valid JSON: ${error.message}`);
+    }
+    if (!Number.isInteger(task.n) || typeof task.title !== 'string') {
+      throw new Error(`A checklist task near character ${object.at} needs a whole-number "n" and a text "title".`);
+    }
+    const workstream = [...workstreams].reverse().find(candidate => candidate.at < object.at)?.name ?? '';
+    const label = `Checklist ${workstream} task ${task.n}: ${task.title}`;
+    const taskUrls = [...object.text.matchAll(learnUrlPattern)].map(match => match[0]);
     taskUrls.forEach(url => addUrl(urls, url, label));
     tasks.push({
       workstream,
-      number: start.number,
-      title: start.title,
-      deep: deep ? JSON.parse(`"${deep[1]}"`) : '',
+      number: task.n,
+      title: task.title,
+      deep: typeof task.deep === 'string' ? task.deep : '',
       urlCount: taskUrls.length
     });
-  });
+  }
   return { version, reviewed, tasks, urls };
 }
 
