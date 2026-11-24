@@ -63,6 +63,22 @@ assert(checklist.tasks.length === 2 && checklist.tasks[0].title === 'Verify "Sec
 assert(checklist.tasks[0].deep.startsWith('02 Microsoft Defender') && checklist.tasks[1].deep === '', 'The checklist reader must read per-task guide references.');
 assert([...checklist.urls.keys()].length === 1, 'The checklist reader must collect Learn links.');
 
+// A task whose keys are not in the usual order ("n" after "title") must still be read with its links and reference.
+const reorderedChecklist = parseChecklist(`{ "id": "purview", "code": "PUR", "name": "Purview", "tasks": [
+{ "role": "Compliance", "title": "Reordered", "desc": "Has a } and a \\"quote\\" in text",
+  "links": [["Doc", "https://learn.microsoft.com/en-us/purview/reordered"]], "n": 25, "deep": "04 Microsoft Purview, 4.13" },
+{ "n": 26, "role": "Compliance", "title": "Regular", "links": [] } ] }`);
+assert(reorderedChecklist.tasks.length === 2 && reorderedChecklist.tasks[0].number === 25 && reorderedChecklist.tasks[0].deep === '04 Microsoft Purview, 4.13'
+  && reorderedChecklist.tasks[1].number === 26 && reorderedChecklist.urls.get('https://learn.microsoft.com/en-us/purview/reordered')?.has('Checklist Purview task 25: Reordered'),
+  'The checklist reader must find a task whose keys are in a different order, and keep its links with that task.');
+
+// A task it cannot read must fail loudly instead of being dropped from the alignment checks.
+let invalidTask = '';
+try {
+  parseChecklist('{ "id": "x", "code": "X", "name": "X", "tasks": [ { "n": "7", "role": "R", "title": "Dropped?" } ] }');
+} catch (error) { invalidTask = error.message; }
+assert(invalidTask.includes('whole-number "n"'), 'A checklist task without a numeric "n" must be rejected, not skipped.');
+
 const richGuide = parseGuide([
   '<h2>02. Microsoft Defender for Agent 365</h2><h4>2.07 · Review AI agent inventory and posture</h4>',
   '<h2>04. Microsoft Purview</h2><h4>4.04a · Enable Purview Data Security</h4>',
