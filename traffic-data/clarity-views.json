@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-23",
+  "lastRun": "2026-11-24",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -3112,9 +3112,14 @@
         "uniques": 1,
         "downloads": 0
       },
-      "agent-brainstorming-template": {
+      "agent-365-lifecycle-atlas": {
         "views": 0,
         "uniques": 0
+      },
+      "agent-brainstorming-template": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
       },
       "agents-cost-calculator": {
         "views": 0,
@@ -3138,7 +3143,8 @@
       },
       "copilot-analytics-reports-navigator": {
         "views": 0,
-        "uniques": 0
+        "uniques": 0,
+        "downloads": 0
       },
       "copilot-interaction-report": {
         "views": 0,
@@ -3287,125 +3293,105 @@
     },
     "2026-11-23": {
       "add-engagegroupadmins": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "agent-365-enablement-checklist": {
         "views": 2,
-        "uniques": 2,
         "downloads": 2
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 0,
+        "uniques": 0
       },
       "agent-brainstorming-template": {
         "views": 0,
-        "uniques": 0
+        "downloads": 0
       },
       "agents-cost-calculator": {
         "views": 0,
         "uniques": 0
       },
       "ai-council": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "analyze-sharepointrisk": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "autoreply-agent": {
         "views": 0,
         "uniques": 0
       },
       "copilot-agents-guide": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "copilot-analytics-reports-navigator": {
         "views": 0,
-        "uniques": 0
+        "uniques": 0,
+        "downloads": 0
       },
       "copilot-interaction-report": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "copilot-studio-workflow": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "create-engagecommunities": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "delete-allcommunityposts": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "delete-engagegroups": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "delete-engageusers": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "ess-servicenow-itsm-get-request-details": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "ess-servicenow-itsm-get-user-requests": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "export-copilotinteractions": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "export-engagefiles": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "export-engagenetworkdata": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "export-m365copilotreports": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "export-simpleplacesvisual": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "find-mailboxdelegates": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "get-allinsightslicensedusers": {
         "views": 0,
         "uniques": 0
       },
       "get-engagegroupinfo": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "get-groupsmembersmanagers": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "get-m365copilotreadiness": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "get-recurringteamsmeetings": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "get-teamsuseractivityreport": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "get-yammersitesize": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 0,
@@ -3413,59 +3399,103 @@
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 2,
-        "uniques": 1
+        "uniques": 0
       },
       "migrate-copilotstudioagents": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "powerclaw-agent": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "productquote-agent": {
         "views": 0,
         "uniques": 0
       },
       "purview-audit-copilot-report": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "teams-audio-conferencing-snippets": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "teams-phone-system-snippets": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "teams-phone-user-migration": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "teams-rooms-snippets": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "tenant-pool-draw-control": {
         "views": 0,
         "uniques": 0
       },
       "update-vivaengagelicensingtoggle": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "vibewriting-agent": {
         "views": 0,
         "uniques": 0
       },
       "viva-engage-community-creation-app": {
-        "views": 0,
-        "uniques": 0
+        "views": 0
       },
       "viva-insights-copilot-dashboard": {
         "views": 0,
         "uniques": 0
+      }
+    },
+    "2026-11-24": {
+      "agent-365-enablement-checklist": {
+        "downloads": 0
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 2,
+        "uniques": 2
+      },
+      "agent-brainstorming-template": {
+        "downloads": 1
+      },
+      "agents-cost-calculator": {
+        "views": 2,
+        "uniques": 2
+      },
+      "autoreply-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 2,
+        "uniques": 2,
+        "downloads": 0
+      },
+      "get-allinsightslicensedusers": {
+        "views": 1,
+        "uniques": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 2,
+        "uniques": 1
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 4,
+        "uniques": 3
+      },
+      "productquote-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "tenant-pool-draw-control": {
+        "views": 6,
+        "uniques": 4
+      },
+      "vibewriting-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1,
+        "uniques": 1
       }
     }
   }
