@@ -953,8 +953,8 @@ button.feat-chip.is-on { border-color: var(--pc); color: var(--ink); }
    Workstreams are appended by the data-ws-*.js files.
    ========================================================================== */
 
-var CONTENT_VERSION = "1.2.1";
-var CONTENT_REVIEWED = "2026-11-23";
+var CONTENT_VERSION = "1.2.2";
+var CONTENT_REVIEWED = "2026-11-25";
 /* Microsoft logo (four-square symbol, brand colors), embedded as a PNG so the file stays self-contained. */
 var MS_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKgAAACoCAYAAAB0S6W0AAACkUlEQVR42u3avW0UURiG0fdjZyz+ZK9FAQgaoBRIqIWQPkgowBG5JWqgASwKQF47QeDZ/QjAIjLsjAMkOCee6NWje7WzU5cvnnaYpZMeq2rq3mx7++T43adNJ1VJJ0l3qir9+n3W/S1nqyHr7ZSuSllvnjsmQKAgUAQKAgWBIlAQKAIFgYJAESgIFIGCQEGgCBQEikBBoCBQBAoCRaAgUBAoAgWBgkARKAgUgYJAQaAIFASKQEGgIFAECgJFoCBQECgCBYEiUBAoCBSBgkBBoAgUBIpAQaAgUAQKAkWgIFAQKAIFgSJQECgIFIGCQBEoCBQEikBBoCBQBAq3NHTSZpitf47Wez3b6U7a0gsCHavKDDPrTGqsynbX4x6Pj6shlcTSSwKdujdmmN9oJZXkog9WN56L96b0l+Tzbsq026XTkehMdf788doMCys9WPXxycfLuumq79Sr0xzeHVLZJLE0/GMnaMe1c6sB//BDqV3rAPylG6rbFXSrBcsVD//vCfr2fG2GhR505+Xx5U2naHcqpznM9WsmZhsy9pkZZup0hrHydbrIm/NnSS7SXdehdqeq0jnJYY7yIVOOcj8db0wWBLoanaCzA+1kNSTbacjBb/7AHFNJHmXIw0zyXBbodOUThiVn6I8fmFd7VHeVKZ2tE3RZoD5hWHaCVlVqr+B+PVcCncv3oAgUBIpAQaAgUAQKAkWgIFAQKAIFgSJQECgIFIGCQBEoCBQEikBBoAjUBAgUBIpAQaAgUAQKAkWgIFAQKAIFgSJQECgIFIGCQBEoCBQEikBBoAgUBAoCRaAgUBAoAgWBIlAQKAgUgYJAESgIFASKQEGgCBQECgJFoCBQBAoCBYEiUBAoCBSBwm19B32IgcD0RnF6AAAAAElFTkSuQmCC";
 
@@ -1777,7 +1777,7 @@ var WORKSTREAMS = [
 {
 "n": 12,
 "role": "AI Administrator",
-"title": "Confirm the Agents workload in the admin center",
+"title": "Confirm the Agents workload in the Microsoft 365 admin center",
 "pri": "Required",
 "phase": "validate",
 "req": "",
@@ -1936,8 +1936,8 @@ var WORKSTREAMS = [
 {
 "id": "admin",
 "code": "MAC",
-"name": "Admin center",
-"title": "Admin center: registry, settings, and policy templates",
+"name": "M365 Admin Center",
+"title": "M365 Admin Center: registry, settings, and policy templates",
 "area": "manage",
 "on": true,
 "summary": "Registry, settings, requests, and policy templates",
@@ -2374,7 +2374,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "operate",
 "req": "Agent 365 or E7 license",
-"desc": "The Risks column and Agents at risk tile combine signals from Entra, Defender, and Purview so AI admins can see risks without security roles. Counts can lag the security portals by up to an hour. Deep links open the source portal only for users with the right role, and Purview IRM alerts need an IRM role. Dynamic agent risk, in preview since Ignite 2026, combines runtime identity, access, data, endpoint, cloud, and network signals with exposure and blast radius into one risk level per agent. It updates as the agent acts, is targeted, or changes, and shows the same level in the admin center, Defender, Entra, and Purview. Microsoft is also working with Check Point, Cyera, Darktrace, and Zenity to add their signals through Microsoft Sentinel.",
+"desc": "The Risks column and Agents at risk tile combine signals from Entra, Defender, and Purview so AI admins can see risks without security roles. Counts can lag the security portals by up to an hour. Deep links open the source portal only for users with the right role, and Purview IRM alerts need an IRM role. Dynamic agent risk, in preview since Ignite 2026, combines runtime identity, access, data, endpoint, cloud, and network signals with exposure and blast radius into one risk level per agent. It updates as the agent acts, is targeted, or changes, and shows the same level in the Microsoft 365 admin center, Defender, Entra, and Purview. Microsoft is also working with Check Point, Cyera, Darktrace, and Zenity to add their signals through Microsoft Sentinel.",
 "done": "A weekly triage routes each high-severity risk to its security owner with a ticket.",
 "where": "Agents → All agents → Registry → Agents at risk",
 "preview": false,
@@ -2402,7 +2402,7 @@ var WORKSTREAMS = [
 "Send each signal to the owning security team using the source link.",
 "Make sure IRM investigators hold IRM Analyst or IRM Investigator for Purview links.",
 "Track each item to closure and review trends in the steering meeting.",
-"When dynamic agent risk reaches your tenant, sort the queue by its risk level and confirm that the admin center and the security portals show the same level for a sample agent."
+"When dynamic agent risk reaches your tenant, sort the queue by its risk level and confirm that the Microsoft 365 admin center and the security portals show the same level for a sample agent."
 ],
 "ord": 111,
 "step": 11,
@@ -2562,7 +2562,7 @@ var WORKSTREAMS = [
 "Review plugin-initiated changes in the audit log during the monthly governance review."
 ],
 "ord": 125,
-"rollback": "Set the plugin's availability to No users, and reverse any change it made with the matching admin center action.",
+"rollback": "Set the plugin's availability to No users, and reverse any change it made with the matching Microsoft 365 admin center action.",
 "step": 11,
 "deep": "15 Agent requests & policy templates, 15g"
 }
@@ -2577,7 +2577,7 @@ var WORKSTREAMS = [
 "on": true,
 "summary": "Security for AI, inventory, hunting, and runtime protection",
 "why": "Defender gives your SOC the same detection and response for agents that it has for users and devices: inventory, posture, alerts, hunting, and real-time protection for supported agents.",
-"tip": "Since July 1, 2026, Defender agent posture, detection, blocking, and hunting need Agent 365 or E7, and GCC lists only hunting as available. Threat detection, Copilot Studio and Foundry real-time protection, and local agent runtime protection are still in preview, so confirm coverage per platform.",
+"tip": "Since July 1, 2026, Defender agent posture, detection, blocking, and hunting need Agent 365 or E7, and GCC lists only hunting as available. Copilot Studio real-time protection now onboards automatically at tenant level (preview); if you onboarded through the Copilot Studio step on the Get started page, re-create your blocking rules before that experience retires on December 23, 2026. Threat detection and Foundry real-time protection are also in preview, so confirm coverage per platform.",
 "tasks": [
 {
 "n": 1,
@@ -2633,7 +2633,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "configure",
 "req": "Tenant onboarded to Agent 365; Security Administrator or higher",
-"desc": "When you onboard to Agent 365, Defender turns on security for AI agents automatically, including discovery, posture assessment, and threat detection. Confirm the Enable toggle is on and that Agent 365 shows Done in the setup checklist. Turning the toggle off stops AI agent data collection and disables all Security for AI capabilities.",
+"desc": "When you onboard to Agent 365, Defender turns on security for AI agents automatically, including discovery, posture assessment, and threat detection. Confirm the Enable toggle is on and that Agent 365 shows Done in the setup checklist. Turning the toggle off stops AI agent data collection and disables all Security for AI capabilities. With the toggle on, supported Copilot Studio agents are also onboarded to real-time protection automatically at tenant level (preview).",
 "done": "The Get started page shows the toggle on and Agent 365 marked Done.",
 "where": "Defender portal → Settings → Security for AI → Get started",
 "preview": false,
@@ -2651,7 +2651,7 @@ var WORKSTREAMS = [
 "Sign in to the Microsoft Defender portal as at least a Security Administrator.",
 "Go to Settings → Security for AI → Get started.",
 "Confirm the Enable toggle is on and Agent 365 shows Done in the setup checklist.",
-"Review the Identified Power Platform Admins list and name the admin who will complete the Copilot Studio setup.",
+"Check the Copilot Studio step. New tenants can no longer onboard there, because supported Copilot Studio agents are onboarded automatically at tenant level (preview); if your tenant onboarded there earlier, plan the move to tenant-level onboarding before December 23, 2026.",
 "Capture a screenshot of the checklist status as deployment evidence."
 ],
 "ord": 20,
@@ -2832,8 +2832,8 @@ var WORKSTREAMS = [
 ],
 "steps": [
 "Review audit events that the Default rule records in BehaviorInfo, and note which detections fire for which agents.",
-"Confirm coverage: Agent 365 Tooling Servers (Work IQ MCP and onboarded custom MCP tools), Copilot Studio agents (preview, tool invocations only), and Foundry agents (preview). Local agents are covered by Defender for Endpoint runtime protection instead.",
-"If you set up Copilot Studio real-time protection through the existing onboarding experience, disable it under Settings → Security for AI → Get started → Copilot Studio, then re-create and enable your blocking rules before December 23, 2026. Blocking settings don't migrate, and after that date agents without an enabled blocking rule run in audit mode. Automatic tenant-level onboarding begins rolling out in public preview on November 22, 2026.",
+"Confirm coverage: Agent 365 Tooling Servers (Work IQ MCP and onboarded custom MCP tools), Copilot Studio agents (preview, onboarded automatically at tenant level, tool invocations only), and Foundry agents (preview). Local agents are covered by Defender for Endpoint runtime protection instead.",
+"If you set up Copilot Studio real-time protection through the existing onboarding experience, disable it under Settings → Security for AI → Get started → Copilot Studio, then re-create and enable your blocking rules before December 23, 2026. Blocking settings don't migrate, and after that date agents without an enabled blocking rule run in audit mode. Automatic tenant-level onboarding (preview) started rolling out on November 22, 2026.",
 "Select Create rule, set Status, name, and description, then scope the rule to specific pilot agents.",
 "Select only high-confidence detection types, such as Secret exfiltration or Unsafe email domain, then select Apply.",
 "Create the rule, test it with a pilot agent, and confirm a block behavior appears in BehaviorInfo.",
@@ -2846,39 +2846,35 @@ var WORKSTREAMS = [
 },
 {
 "n": 8,
-"role": "Security Administrator with Power Platform Administrator",
-"title": "Connect Copilot Studio environments to Defender real-time protection",
+"role": "Security Administrator",
+"title": "Move Copilot Studio real-time protection to automatic tenant-level onboarding",
 "pri": "Recommended",
 "phase": "configure",
-"req": "Power Platform Administrator; permission to create Entra app registrations; agents that use generative orchestration",
-"desc": "Defender inspects Copilot Studio tool invocations before they run and can block suspicious actions. You configure it per environment, there's no tenant-wide setting, and it applies only to agents that use generative orchestration. Defender says this onboarding experience retires on December 23, 2026 and that automatic tenant-level onboarding for supported Copilot Studio agents begins rolling out in public preview on November 22, 2026, so confirm the current path before you set up more environments. If no decision arrives within one second, the default error behavior lets the action proceed.",
-"done": "The Copilot Studio step shows Connected and a protected test agent's tool invocation is evaluated as expected.",
-"where": "Defender portal → Settings → Security for AI → Get started → Copilot Studio; Power Platform admin center → Security → Threat detection → Additional threat detection",
+"req": "Security for AI agents enabled in Defender, with the Microsoft 365 connector; Copilot Studio agents built on the standard agent harness",
+"desc": "Defender real-time protection for Copilot Studio has moved to automatic tenant-level onboarding, in preview since November 22, 2026, for supported agents in tenants with security for AI agents enabled. You no longer connect each Power Platform environment, and new customers can't onboard through the Copilot Studio step on the Get started page. If you onboarded there earlier, your blocking settings don't migrate when that experience retires on December 23, 2026, so disable it and re-create your blocking rules before then. After that date, agents without an enabled blocking rule run in audit mode, which raises alerts without blocking. Protection evaluates Copilot Studio tool invocations only.",
+"done": "Copilot Studio agents are protected through tenant-level onboarding, any earlier Copilot Studio onboarding is disabled with its blocking rules re-created, and a blocking rule scoped to a pilot Copilot Studio agent records its behaviors in BehaviorInfo.",
+"where": "Defender portal → Settings → Security for AI → Policies & rules → Real-time protection; earlier onboarding: Settings → Security for AI → Get started → Copilot Studio",
 "preview": true,
 "links": [
 [
-"Enable external threat detection and protection for Copilot Studio custom agents (preview)",
-"https://learn.microsoft.com/en-us/microsoft-copilot-studio/external-security-provider"
+"Protect AI agents in real time using Microsoft Defender",
+"https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/ai-agent-real-time-protection"
 ],
 [
 "Enable security for AI agents using Microsoft Defender",
 "https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/get-started-defender-security-for-ai"
-],
-[
-"Protect AI agents in real time using Microsoft Defender",
-"https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/ai-agent-real-time-protection"
 ]
 ],
 "steps": [
-"In Defender, open the Copilot Studio step, turn on Real-time protection, and copy the URL under Enable Power Platform Integration.",
-"Create the Entra app and federated credential with the Create-CopilotWebhookApp.ps1 script, run -DryRun first, and record the App ID.",
-"In Power Platform admin center, go to Security → Threat detection → Additional threat detection, select a test environment, then Set up.",
-"Select Allow Copilot Studio to share data with a threat detection provider, enter the App ID and endpoint, and choose error behavior.",
-"Paste the same App ID into Defender, select Save, and confirm the Copilot Studio step shows Connected.",
-"Add this setup to your environment provisioning runbook, because new environments aren't covered automatically."
+"Confirm security for AI agents is on and the Microsoft 365 connector shows Connected, because tenant-level onboarding covers only tenants with security for AI agents enabled.",
+"Open Settings → Security for AI → Get started → Copilot Studio. If your tenant onboarded there earlier, record the environments and blocking settings it covers, because they don't migrate.",
+"Before December 23, 2026, disable that onboarding, then re-create and enable your blocking rules under Policies & rules → Real-time protection.",
+"Scope a blocking rule to a pilot Copilot Studio agent built on the standard agent harness, run a test that calls a tool, and confirm the audit or block behavior appears in BehaviorInfo.",
+"Remove the per-environment Defender setup from your environment provisioning runbook, because new environments no longer need it.",
+"Widen blocking rules in stages through change control, as in the real-time protection rules task."
 ],
 "ord": 80,
-"rollback": "In Power Platform admin center, open Security → Threat detection → Additional threat detection, select the environment, and clear Allow Copilot Studio to share data with your selected provider. Tool invocations in that environment are then no longer sent to Defender for evaluation.",
+"rollback": "Disable or delete a blocking rule on the Real-time protection page if it blocks expected agent actions; the Default rule keeps auditing Copilot Studio agents. The earlier onboarding retires on December 23, 2026, so don't plan to fall back to it.",
 "step": 5,
 "platforms": [
 "copilotstudio"
@@ -3126,7 +3122,7 @@ var WORKSTREAMS = [
 "pri": "Optional",
 "phase": "configure",
 "req": "Agent ID Developer or Agent ID Administrator; Privileged Role Administrator to grant Microsoft Graph application permissions",
-"desc": "Create a blueprint for the pilot agent with a sponsor and owner by using the admin center wizard, Microsoft Graph, or the Agent 365 CLI. Use a managed identity credential in production and start inheritable permissions with only the scopes the agent needs. Make sure the blueprint is registered in the Agent 365 registry so admins can govern it.",
+"desc": "Create a blueprint for the pilot agent with a sponsor and owner by using the Entra admin center wizard, Microsoft Graph, or the Agent 365 CLI. Use a managed identity credential in production and start inheritable permissions with only the scopes the agent needs. Make sure the blueprint is registered in the Agent 365 registry so admins can govern it.",
 "done": "The blueprint exists with owners, sponsors, and the expected permissions.",
 "where": "Entra admin center → Entra ID → Agents → Agent blueprints → New agent blueprint (Preview)",
 "preview": false,
@@ -3146,7 +3142,7 @@ var WORKSTREAMS = [
 ],
 "steps": [
 "Agree the blueprint name, sponsor, owner, and required permissions with the agent's business owner before you create it.",
-"Create the blueprint with the admin center wizard, Microsoft Graph, or a365 setup all for Agent 365 custom agents.",
+"Create the blueprint with the Entra admin center wizard, Microsoft Graph, or a365 setup all for Agent 365 custom agents.",
 "Add a managed identity as a federated credential for production, and use secrets or certificates only for testing.",
 "Configure inheritable permissions with enumerated scopes, and have a Privileged Role Administrator grant any application permissions.",
 "Confirm the blueprint appears in the Agent 365 registry, and if you used Graph, call the Agent Registry API.",
@@ -5080,7 +5076,7 @@ var WORKSTREAMS = [
 "on": true,
 "summary": "Microsoft-built, Agent Builder, Copilot Studio, and SharePoint agents",
 "why": "These agents register natively, so your work is availability, data boundaries, and monitoring rather than custom integration. Identity models differ by platform, so check which controls apply to each.",
-"tip": "Since May 2026, new Copilot Studio agents get an Entra Agent ID automatically, and older agents keep app registrations until migrated. No Entra Agent ID or migration date is documented for Agent Builder agents, so don't plan Agent ID-targeted Conditional Access or access packages for them; govern them with admin center, Purview, and SharePoint controls.",
+"tip": "Since May 2026, new Copilot Studio agents get an Entra Agent ID automatically, and older agents keep app registrations until migrated. No Entra Agent ID or migration date is documented for Agent Builder agents, so don't plan Agent ID-targeted Conditional Access or access packages for them; govern them with Microsoft 365 admin center, Purview, and SharePoint controls.",
 "tasks": [
 {
 "n": 1,
@@ -5331,7 +5327,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "configure",
 "req": "Microsoft 365 Copilot or pay-as-you-go billing",
-"desc": "Permissions on each .agent file decide who can use or edit the agent, and users only get answers from sources they can already open. Bound knowledge sources with site permissions and Restricted Access Control. SharePoint agents don't need activation, and blocking one in the admin center affects only Copilot Chat.",
+"desc": "Permissions on each .agent file decide who can use or edit the agent, and users only get answers from sources they can already open. Bound knowledge sources with site permissions and Restricted Access Control. SharePoint agents don't need activation, and blocking one in the Microsoft 365 admin center affects only Copilot Chat.",
 "done": ".agent file and site permissions match the intended audience, and a test user outside it gets no content from restricted sources.",
 "where": "",
 "preview": false,
@@ -5372,7 +5368,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "validate",
 "req": "",
-"desc": "For one Agent Builder agent and one Copilot Studio agent, create, share, submit, check the registry, apply a template, block, delete, and restore. Record what each action does on each platform, because behavior differs: blocking a SharePoint or Foundry agent affects only Copilot Chat, an admin center delete is a soft delete with a 30-day recovery window, and admin actions fail on Copilot Studio agents in environments with the Power Platform IP firewall in active enforcement mode.",
+"desc": "For one Agent Builder agent and one Copilot Studio agent, create, share, submit, check the registry, apply a template, block, delete, and restore. Record what each action does on each platform, because behavior differs: blocking a SharePoint or Foundry agent affects only Copilot Chat, a Microsoft 365 admin center delete is a soft delete with a 30-day recovery window, and admin actions fail on Copilot Studio agents in environments with the Power Platform IP firewall in active enforcement mode.",
 "done": "A signed-off lifecycle test record and a per-platform Block and Delete reference exist, with evidence of each admin action.",
 "where": "",
 "preview": false,
@@ -5403,7 +5399,7 @@ var WORKSTREAMS = [
 "Submit the Agent Builder agent to the org catalog, approve it, and confirm both registry entries appear.",
 "Apply a policy template, or record why the Apply template rule skips an agent without an agent identity.",
 "Block each agent and confirm it stops working in Copilot and in host apps such as Teams and Outlook.",
-"Delete each agent in the admin center, then restore one from Deleted within the 30-day window to prove recovery.",
+"Delete each agent in the Microsoft 365 admin center, then restore one from Deleted within the 30-day window to prove recovery.",
 "Delete the Copilot Studio agent in Copilot Studio and confirm its Entra Agent ID is removed.",
 "Note which registry entries offer Delete, Remove, or only Block, and check Power Platform IP firewall mode for environments that hold agents.",
 "Record results, timings, and the roles each action needed in your runbook, and publish the Block and Delete reference to your service desk and security teams."
@@ -5461,7 +5457,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "configure",
 "req": "Managed Environments",
-"desc": "Sharing limits in Managed Environments stop makers from granting editor rights or sharing agents with large groups, so broad rollout goes through review. They apply only to agents that require authentication. The admin center Sharing setting covers only Agent Builder agents.",
+"desc": "Sharing limits in Managed Environments stop makers from granting editor rights or sharing agents with large groups, so broad rollout goes through review. They apply only to agents that require authentication. The Microsoft 365 admin center Sharing setting covers only Agent Builder agents.",
 "done": "Team and production environments enforce agent sharing rules, and a test share with a security group is blocked.",
 "where": "Power Platform admin center → Manage → Environments → select an environment → Edit Managed Environments → Manage sharing",
 "preview": false,
@@ -5640,7 +5636,7 @@ var WORKSTREAMS = [
 "phase": "configure",
 "req": "At least one user with a Microsoft 365 E7 or Agent 365 license assigned; Purview auditing turned on",
 "desc": "Use the Microsoft OpenTelemetry Distro for new work, and use direct OTel only for unsupported languages or existing pipelines; the Agent 365 Observability SDK is deprecated. Every run needs an invoke_agent root span, and telemetry is dropped unless at least one tenant user has an E7 or Agent 365 license assigned. Blueprint agents created with a365 setup all should export on the S2S route with an app-only token.",
-"done": "Test sessions and tool calls appear on the agent's Activity tab in the admin center and in Defender advanced hunting.",
+"done": "Test sessions and tool calls appear on the agent's Activity tab in the Microsoft 365 admin center and in Defender advanced hunting.",
 "where": "",
 "preview": false,
 "links": [
@@ -5811,8 +5807,8 @@ var WORKSTREAMS = [
 "title": "Publish the package, configure Developer Portal, and approve instances",
 "pri": "Required",
 "phase": "golive",
-"req": "Global Administrator for the admin center upload; Frontier preview for agents with their own user account",
-"desc": "a365 publish builds manifest.zip but doesn't upload it, so a Global Administrator uploads it in the admin center. Configure the blueprint in Teams Developer Portal, or the agent won't receive messages from Teams, email, or other Microsoft 365 services. Instances of agents with their own user account need Frontier, admin approval, and licenses for the agent user.",
+"req": "Global Administrator for the Microsoft 365 admin center upload; Frontier preview for agents with their own user account",
+"desc": "a365 publish builds manifest.zip but doesn't upload it, so a Global Administrator uploads it in the Microsoft 365 admin center. Configure the blueprint in Teams Developer Portal, or the agent won't receive messages from Teams, email, or other Microsoft 365 services. Instances of agents with their own user account need Frontier, admin approval, and licenses for the agent user.",
 "done": "The agent appears under Agents → All agents, and a test instance replies and shows sessions on its Activity tab.",
 "where": "Microsoft 365 admin center → Agents → All agents → Upload custom agent",
 "preview": false,
@@ -6028,7 +6024,7 @@ var WORKSTREAMS = [
 "steps": [
 "Check the partner's row in the capability matrix for Registered, Observable, and Work IQ support.",
 "Review the partner's terms, data locations, declared permissions, and licensing with procurement and security.",
-"Deploy the agent from the admin center registry to a pilot group, or connect the factory environment.",
+"Deploy the agent from the Microsoft 365 admin center registry to a pilot group, or connect the factory environment.",
 "Confirm the agent has an owner, an Entra Agent ID where expected, and activity on its Activity tab.",
 "Verify Purview audit records and Defender coverage, and test one supported block before broad rollout."
 ],
@@ -6348,7 +6344,7 @@ var WORKSTREAMS = [
 "Activate the Global Administrator role through PIM for a short window, with a ticket reference.",
 "Run a365 setup permissions mcp with deploymentProjectPath pointing at the reviewed project folder.",
 "In Entra, open the blueprint's API permissions, and confirm each MCP scope shows granted with nothing extra.",
-"In the admin center, open the agent's Permissions, and confirm only the required MCP servers are approved."
+"In the Microsoft 365 admin center, open the agent's Permissions, and confirm only the required MCP servers are approved."
 ],
 "ord": 50,
 "rollback": "Revoke the unneeded grant on the blueprint's API permissions in Microsoft Entra, then rerun a365 setup permissions mcp with the corrected ToolingManifest.json. Record the change, because consent is tenant-wide.",
@@ -6726,7 +6722,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "plan",
 "req": "Microsoft 365 E5 (Shadow AI) or Microsoft 365 E3 (Local agents); Defender for Endpoint Plan 2; Frontier opt-in, and for Agent 365 Frontier features at least one Microsoft 365 E7 license in the tenant",
-"desc": "Shadow AI needs Microsoft 365 E5 and Local agents needs Microsoft 365 E3, plus Frontier opt-in, Intune-enrolled Windows devices, and one of eight documented roles. Defender local agent discovery needs Defender for Endpoint Plan 2, and its risk levels also need Microsoft 365 E7 or Agent 365. Both admin center pages are public previews in the Frontier program.",
+"desc": "Shadow AI needs Microsoft 365 E5 and Local agents needs Microsoft 365 E3, plus Frontier opt-in, Intune-enrolled Windows devices, and one of eight documented roles. Defender local agent discovery needs Defender for Endpoint Plan 2, and its risk levels also need Microsoft 365 E7 or Agent 365. Both Microsoft 365 admin center pages are public previews in the Frontier program.",
 "done": "Both pages render for reviewer accounts that hold only read roles.",
 "where": "Microsoft 365 admin center → Copilot → Settings → View all → Copilot Frontier",
 "preview": true,
@@ -6774,7 +6770,7 @@ var WORKSTREAMS = [
 "phase": "configure",
 "req": "",
 "desc": "Local agent discovery in Defender is generally available for managed Windows and macOS devices and covers more than 60 local AI agents, such as Claude Code and GitHub Copilot CLI, with their configured MCP servers. Enroll pilot devices in Intune, onboard them to Defender for Endpoint, and keep Defender Antivirus in active mode with current updates. Discovery starts automatically, but Defender lists most agents only after it observes the agent process running; installed VS Code extensions are collected without running. Optionally forward Internet Access traffic through Global Secure Access to populate user, activity, and traffic fields.",
-"done": "A known agent run on each pilot device appears in Defender and in the admin center.",
+"done": "A known agent run on each pilot device appears in Defender and in the Microsoft 365 admin center.",
 "where": "",
 "preview": false,
 "links": [
@@ -6812,7 +6808,7 @@ var WORKSTREAMS = [
 {
 "n": 4,
 "role": "Security Reader",
-"title": "Review Shadow AI and Local agents in the admin center",
+"title": "Review Shadow AI and Local agents in the Microsoft 365 admin center",
 "pri": "Required",
 "phase": "validate",
 "req": "",
@@ -6916,7 +6912,7 @@ var WORKSTREAMS = [
 "pri": "Required",
 "phase": "golive",
 "req": "",
-"desc": "The Shadow AI and Local agents pages document view and block actions, not an owner or disposition workflow, so route detections into your own queue. Give each detection an owner, a decision, a review date, and a next action. Admin center owner reassignment applies only to Agent Builder and Copilot Studio agents in the registry.",
+"desc": "The Shadow AI and Local agents pages document view and block actions, not an owner or disposition workflow, so route detections into your own queue. Give each detection an owner, a decision, a review date, and a next action. Microsoft 365 admin center owner reassignment applies only to Agent Builder and Copilot Studio agents in the registry.",
 "done": "No untriaged detection is older than your service level.",
 "where": "",
 "preview": false,
@@ -6935,7 +6931,7 @@ var WORKSTREAMS = [
 ]
 ],
 "steps": [
-"Create a queue, such as an ITSM ticket type, fed weekly from the Defender export and both admin center lists.",
+"Create a queue, such as an ITSM ticket type, fed weekly from the Defender export and both Microsoft 365 admin center lists.",
 "Record agent name, version, process, user, device, auto-approve status, MCP servers, and last scanned date per detection.",
 "Assign each detection an owner, a disposition from your policy, a review date, and a next action.",
 "Prioritize agents that auto-approve actions, run on critical devices, or run under privileged accounts.",
@@ -6977,7 +6973,7 @@ var WORKSTREAMS = [
 ],
 "steps": [
 "Before blocking, confirm no business process depends on the agent or, for Node.js blocks, on any Node.js-based agent.",
-"In the admin center, open the agent, select Security policies, then Block or Block agent, then Apply Policies.",
+"In the Microsoft 365 admin center, open the agent, select Security policies, then Block or Block agent, then Apply Policies.",
 "Expect the Intune policy to reach all Intune-managed Windows devices within 15 minutes to 8 hours.",
 "In Intune, find the created policy, such as A365 - Block OpenClaw, and review its settings and assignments.",
 "For VS Code extension agents, deploy a VS Code extension policy to managed devices.",
@@ -7096,9 +7092,9 @@ var WORKSTREAMS = [
 ]
 ],
 "steps": [
-"Each week, triage new detections from both admin center lists and Defender, watching for agents that auto-approve actions.",
+"Each week, triage new detections from both Microsoft 365 admin center lists and Defender, watching for agents that auto-approve actions.",
 "Each month, rerun the exposure graph queries and confirm block and containment policies still apply.",
-"Each quarter, recheck the Defender support matrix and both admin center pages for changed agents or blocking, and recheck the preview Global Secure Access, Execution Container, and Intune controls.",
+"Each quarter, recheck the Defender support matrix and both Microsoft 365 admin center pages for changed agents or blocking, and recheck the preview Global Secure Access, Execution Container, and Intune controls.",
 "Maintain a coverage matrix by agent and operating system for discovery, blocking, runtime protection, network and MCP controls, and containment.",
 "Report open detections, aging, and coverage gaps to the monthly governance review."
 ],
@@ -7333,7 +7329,7 @@ var WORKSTREAMS = [
 ],
 "steps": [
 "Confirm at least 50 Microsoft Copilot licenses are assigned and the tenant isn't in a national or government cloud.",
-"In the admin center, go to Settings → Microsoft Viva → Viva Insights → Set up and management, and confirm the Viva Insights web app and Agent Dashboard feature access controls are on.",
+"In the Microsoft 365 admin center, go to Settings → Microsoft Viva → Viva Insights → Set up and management, and confirm the Viva Insights web app and Agent Dashboard feature access controls are on.",
 "Grant access to named leaders and analysts with Entra groups, and decide whether to keep automatic leader access.",
 "Set the minimum group size to meet your privacy policy; the default is 10 and the minimum is 5.",
 "Decide whether the Agent 365 Dashboard view should exclude non-public agents, those created by users or your organization, in the Agent Dashboard feature access settings.",
@@ -7433,7 +7429,7 @@ var WORKSTREAMS = [
 "pri": "Recommended",
 "phase": "operate",
 "req": "",
-"desc": "Block first, then delete in the admin center, which keeps the agent restorable for 30 days before permanent deletion. Blocking SharePoint or Foundry agents affects only Copilot Chat. Confirm the audit log entries and the registry state after retirement.",
+"desc": "Block first, then delete in the Microsoft 365 admin center, which keeps the agent restorable for 30 days before permanent deletion. Blocking SharePoint or Foundry agents affects only Copilot Chat. Confirm the audit log entries and the registry state after retirement.",
 "done": "Retired agents are deleted in the registry and the delete events appear in the audit log.",
 "where": "",
 "preview": false,
@@ -7523,7 +7519,7 @@ var WORKSTREAMS = [
 "Select Customize → Email and send incident and advisory notifications to up to two addresses, such as an operations mailbox.",
 "For ITSM or SOC integration, read service health issues with the Graph service communications API.",
 "Use Report an issue for unlisted problems and track them on the Reported issues tab.",
-"Use the public service status page when you can't sign in to the admin center."
+"Use the public service status page when you can't sign in to the Microsoft 365 admin center."
 ],
 "ord": 70,
 "rollback": "Revert the custom view and email recipients to the values recorded in change control. These settings affect notifications only, not service behavior.",
@@ -7846,7 +7842,7 @@ var WORKSTREAMS = [
 "phase": "operate",
 "req": "Usage-based billing active in Cost management. For automation, an approved app registration for the Microsoft 365 Copilot Cost Management API, which is in beta.",
 "desc": "Users can request Copilot Credits for first-time use or a higher limit. Review requests in Cost management, or add a request policy that redirects users to your own approval workflow, such as an IT portal or ServiceNow; a policy for a specific service takes precedence over one for all services. At scale, the Cost Management API in Microsoft Graph manages spending policies, alerts, user balances, and credit requests, and reports consumption by user, group, and service. The API is in beta, so don't rely on it for production automation yet.",
-"done": "Credit requests reach a named approver within your agreed response time, through the admin center or your request policy, and any API automation runs with least-privilege permissions and is documented.",
+"done": "Credit requests reach a named approver within your agreed response time, through the Microsoft 365 admin center or your request policy, and any API automation runs with least-privilege permissions and is documented.",
 "where": "Microsoft 365 admin center → Copilot → Cost management → View requests → Request policies",
 "preview": false,
 "links": [
@@ -7872,7 +7868,7 @@ var WORKSTREAMS = [
 "Test bulk approve and reject on a few requests first, and keep API automation out of production while the API is in beta."
 ],
 "ord": 84,
-"rollback": "Edit or delete the request policy to send requests back to the admin center. Disable the app registration to stop API automation.",
+"rollback": "Edit or delete the request policy to send requests back to the Microsoft 365 admin center. Disable the app registration to stop API automation.",
 "step": 11,
 "deep": "14 Agent usage, adoption, cost & business value, 14d"
 },
@@ -8010,7 +8006,7 @@ var WORKSTREAMS = [
 ],
 "steps": [
 "Confirm the tenant is in the Frontier program and meets the Copilot license prerequisite.",
-"Turn on billing for usage-based services in the admin center, and confirm spending policies cover the services leaders will review.",
+"Turn on billing for usage-based services in the Microsoft 365 admin center, and confirm spending policies cover the services leaders will review.",
 "In Manage → Access management, review who has access by default, such as the top three organization levels, managers of large enough teams, and Global Administrators, and adjust the access policies.",
 "Turn on consumption insights for the business leaders who need cost data, because they're on by default only for general managers.",
 "With finance, agree the assumptions under Configurations → Metric calculators, set the currency and average hourly rate on the Value calculator, and turn on Cowork value metrics only after finance agrees, because calculator changes apply tenant-wide and to historical trends.",
@@ -8198,7 +8194,7 @@ var WORKSTREAMS = [
 ],
 "steps": [
 "Confirm Intune and Agent 365 licenses, and put the pool's agent users in a Microsoft Entra security group.",
-"In the admin center, go to Copilot → Cost management and check whether an All users spending policy with Auto-apply new services already covers Windows 365 for Agents.",
+"In the Microsoft 365 admin center, go to Copilot → Cost management and check whether an All users spending policy with Auto-apply new services already covers Windows 365 for Agents.",
 "Otherwise, on the Configuration tab, add or edit a spending policy scoped to the agent users' group, select Windows 365 for Agents, and set limits and alerts.",
 "Keep each agent user in only one spending policy that includes Windows 365 for Agents, because the highest per-user limit applies when there are several.",
 "If you already use a billing plan, decide pool by pool whether to switch the provisioning policy's billing type to Copilot Credits, knowing the change can't be undone.",
@@ -10425,7 +10421,7 @@ function viewHelp() {
         <tr><td>Priority</td><td>How important?</td><td>Required tasks gate go-live. Recommended tasks complete the enterprise baseline. Optional tasks only if they apply.</td></tr>
         <tr><td>Pillar</td><td>What kind of work?</td><td>Foundation, Management, Governance, Security, or Business Value. Turn each on or off under Plan setup, Pillars.</td></tr>
         <tr><td>Feature</td><td>Which capability?</td><td>${FEATURES.length} features across Management, Governance, Security, and Business Value, such as Conditional Access, shadow AI discovery, or AI spend controls. Choose them under Plan setup, Features, to get a checklist for just those capabilities, or filter All tasks by one.</td></tr>
-        <tr><td>Workstream</td><td>Which team?</td><td>Foundations, Admin center, Defender, Entra, Purview, SharePoint, and the rest. Each has an owner and a go-live date.</td></tr>
+        <tr><td>Workstream</td><td>Which team?</td><td>Foundations, M365 Admin Center, Defender, Entra, Purview, SharePoint, and the rest. Each has an owner and a go-live date.</td></tr>
       </tbody></table>
       <p>The steps match the recommended onboarding order in the FastTrack SME deployment checklist. Its parts map to them as follows: ${PARTS.map(function (p) { return "Part " + p.id + " " + p.name + " is steps " + p.steps.join(", "); }).join("; ")}.</p>
       <h2>Pillars and shared observability</h2>
