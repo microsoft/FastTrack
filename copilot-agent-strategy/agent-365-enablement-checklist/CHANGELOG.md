@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.2 - 2026-11-25
+
+Rechecked the Defender real-time protection tasks against Microsoft Learn on 2026-11-25. Task numbers, workstreams, and saved plans are unchanged.
+
+- **M365 Admin Center.** The "Admin center" workstream is now "M365 Admin Center", so it isn't confused with the Entra, Intune, Power Platform, or SharePoint admin centers. Task text that said only "the admin center" now names the Microsoft 365 admin center, and the agent blueprint task (Entra 3) names the Entra admin center wizard.
+- **Copilot Studio real-time protection.** Defender real-time protection for Copilot Studio moved to automatic tenant-level onboarding (Preview), rolling out since November 22, 2026, and new customers can no longer onboard through the Copilot Studio step on the Get started page. Defender task 8 is now "Move Copilot Studio real-time protection to automatic tenant-level onboarding": the per-environment Power Platform and Entra app steps are removed, and it keeps the December 23, 2026 deadline to disable the earlier onboarding and re-create blocking rules. Defender tasks 2 and 7 and the Defender tip follow the change, and the tip no longer lists local agent runtime protection as preview, matching Shadow agents task 9.
+
 ## 1.2.1 - 2026-11-23
 
 Rechecked against Microsoft Learn on 2026-11-23 and aligned with Customer Implementation Guide 1.5.0. Task numbers, workstreams, and saved plans are unchanged.
