@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-24",
+  "lastRun": "2026-11-25",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -3297,6 +3297,7 @@
       },
       "agent-365-enablement-checklist": {
         "views": 2,
+        "uniques": 2,
         "downloads": 2
       },
       "agent-365-lifecycle-atlas": {
@@ -3412,7 +3413,8 @@
         "uniques": 0
       },
       "purview-audit-copilot-report": {
-        "views": 0
+        "views": 0,
+        "uniques": 0
       },
       "teams-audio-conferencing-snippets": {
         "views": 0
@@ -3447,7 +3449,62 @@
     },
     "2026-11-24": {
       "agent-365-enablement-checklist": {
+        "views": 0,
+        "uniques": 0,
         "downloads": 0
+      },
+      "agent-365-lifecycle-atlas": {
+        "views": 2,
+        "uniques": 1
+      },
+      "agent-brainstorming-template": {
+        "downloads": 1
+      },
+      "agents-cost-calculator": {
+        "views": 2,
+        "uniques": 1
+      },
+      "autoreply-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-analytics-reports-navigator": {
+        "views": 2,
+        "downloads": 0
+      },
+      "get-allinsightslicensedusers": {
+        "views": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 2
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 4,
+        "uniques": 2
+      },
+      "productquote-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "purview-audit-copilot-report": {
+        "views": 0,
+        "uniques": 0
+      },
+      "tenant-pool-draw-control": {
+        "views": 6,
+        "uniques": 3
+      },
+      "vibewriting-agent": {
+        "views": 1
+      },
+      "viva-insights-copilot-dashboard": {
+        "views": 1
+      }
+    },
+    "2026-11-25": {
+      "agent-365-enablement-checklist": {
+        "views": 5,
+        "uniques": 4
       },
       "agent-365-lifecycle-atlas": {
         "views": 2,
@@ -3457,44 +3514,27 @@
         "downloads": 1
       },
       "agents-cost-calculator": {
-        "views": 2,
-        "uniques": 2
+        "views": 3,
+        "uniques": 3
       },
       "autoreply-agent": {
         "views": 1,
         "uniques": 1
       },
-      "copilot-analytics-reports-navigator": {
-        "views": 2,
-        "uniques": 2,
-        "downloads": 0
-      },
-      "get-allinsightslicensedusers": {
-        "views": 1,
-        "uniques": 1
-      },
-      "microsoft-agent-365-customer-implementation-guide": {
-        "views": 2,
-        "uniques": 1
-      },
       "microsoft-agent-365-technical-advisory": {
-        "views": 4,
+        "views": 3,
         "uniques": 3
       },
       "productquote-agent": {
         "views": 1,
         "uniques": 1
       },
+      "purview-audit-copilot-report": {
+        "views": 2,
+        "uniques": 2
+      },
       "tenant-pool-draw-control": {
-        "views": 6,
-        "uniques": 4
-      },
-      "vibewriting-agent": {
-        "views": 1,
-        "uniques": 1
-      },
-      "viva-insights-copilot-dashboard": {
-        "views": 1,
+        "views": 2,
         "uniques": 1
       }
     }
