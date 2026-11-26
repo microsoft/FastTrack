@@ -5,9 +5,9 @@ category: "Interactive"
 summary: "A sample Agent 365 deployment plan in one HTML file: scope by agent type, pillar, or feature, track tasks to go-live, and export to Excel."
 author:
   - "Alejandro Lopez"
-version: 1.2.1
+version: 1.2.2
 published: 2026-10-28
-updated: 2026-11-23
+updated: 2026-11-25
 tags:
   - agent-365
   - deployment
