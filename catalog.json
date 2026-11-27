@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-19",
-  "count": 59,
+  "generatedAt": "2026-11-25",
+  "count": 60,
   "resources": [
     {
       "name": "Add-EngageGroupAdmins",
@@ -67,13 +67,13 @@
       "preview": "copilot-agent-strategy/agent-365-enablement-checklist/preview.webp",
       "download": "copilot-agent-strategy/agent-365-enablement-checklist/index.html",
       "downloadName": "agent-365-enablement-checklist.html",
-      "downloadSize": 739540,
+      "downloadSize": 756461,
       "author": [
         "Alejandro Lopez"
       ],
-      "version": "1.2.0",
+      "version": "1.2.2",
       "published": "2026-10-28",
-      "updated": "2026-11-19",
+      "updated": "2026-11-25",
       "whatItIs": "A self-contained, offline tracker for planning and tracking a Microsoft Agent 365 enablement. It organizes the work into workstreams with role-based tasks, shows a readiness dashboard, and exports to Excel, CSV, or JSON. It opens with a made-up plan for Contoso so you can explore before you start your own.",
       "whyUseIt": [
         "Scope the plan by agent type, pillar (Management, Governance, Security, or Business Value), or feature so each team sees the tasks that apply to it.",
@@ -484,6 +484,53 @@
       "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-analytics-samples/copilot-interaction-report",
       "source": "copilot-analytics-samples/copilot-interaction-report/README.md",
       "permalink": "r/copilot-interaction-report/"
+    },
+    {
+      "name": "Copilot Spending Policy Planner",
+      "title": "Copilot Spending Policy Planner",
+      "slug": "copilot-spending-policy-planner",
+      "type": "strategy",
+      "subcategory": "Interactive",
+      "category": "Interactive",
+      "description": "Plan Copilot Credits spending policies in one HTML file: billing methods, groups, limits and checks, with a summary PDF and build sheet.",
+      "summary": "Plan Copilot Credits spending policies in one HTML file: billing methods, groups, limits and checks, with a summary PDF and build sheet.",
+      "tags": [
+        "copilot-credits",
+        "spending-policies",
+        "cost",
+        "governance",
+        "billing",
+        "planning"
+      ],
+      "artifact": "interactive",
+      "format": "interactive",
+      "featured": false,
+      "status": "preview",
+      "interactiveKind": "tool",
+      "preview": "copilot-agent-strategy/copilot-spending-policy-planner/preview.webp",
+      "download": "copilot-agent-strategy/copilot-spending-policy-planner/index.html",
+      "downloadName": "copilot-spending-policy-planner.html",
+      "downloadSize": 2289774,
+      "author": "Sumit Sadhu",
+      "version": "1.0.0",
+      "published": "2026-11-23",
+      "updated": "2026-11-23",
+      "whatItIs": "A self-contained, offline planner for Copilot Credits spending policies. You draw the design on a canvas: billing methods, spending policies, groups and the services they cover. The planner estimates credits and cost, runs checks against public Microsoft Learn guidance, and exports a summary PDF and an admin build sheet. It includes ten sample designs, so you can explore before you start your own.",
+      "whyUseIt": [
+        "See billing methods, policies, groups and services on one canvas before you change anything in the admin centers.",
+        "Compare limits with expected usage and cost, and see the effect of a pilot, production or scale stage.",
+        "Get a worst-first list of Fix, Check and Tip items before you build. Microsoft rules link to Microsoft Learn; other items are labelled as recommended practice, seen in the admin center, or Microsoft API (beta).",
+        "Hand administrators a build sheet (CSV) and a summary report (PDF) that follow the design."
+      ],
+      "howToUse": "1. Open `index.html` in a modern browser, or use the hosted copy from the catalog.\n2. Under \"Start a design\", pick a sample design. You can also use \"Start from\" for a sample or a blank canvas, or \"Open\" to load a saved design file.\n3. Set the stage, the cost model, the number of people and the default price per credit.\n4. From the Blocks pane, add billing methods, identity-based or resource-based policies, groups, Copilot Studio agents and environments. Set limits in the Inspector.\n5. Open the Checks tab and work through the Fix, Check and Tip items. Use \"Today vs plan\" to compare with the current setup.\n6. Choose Save, then Design file, then Download to keep the design as a file.\n7. Choose Save, then Admin build sheet, then Download CSV for the build sheet. On the Summary view, choose Download PDF for the report.",
+      "prerequisites": [
+        "A modern web browser",
+        "Access to the Microsoft 365 admin center and the Power Platform admin center to build the policies you plan",
+        "The admin roles the planner names for policies: Global administrator, Billing administrator, AI administrator and License administrator"
+      ],
+      "url": "https://github.com/microsoft/FastTrack/tree/master/copilot-agent-strategy/copilot-spending-policy-planner",
+      "source": "copilot-agent-strategy/copilot-spending-policy-planner/README.md",
+      "permalink": "r/copilot-spending-policy-planner/"
     },
     {
       "name": "Copilot Studio Workflow",
@@ -1553,15 +1600,15 @@
       "preview": "copilot-agent-strategy/agent-365-customer-implementation-guide/preview.webp",
       "download": "copilot-agent-strategy/agent-365-customer-implementation-guide/index.html",
       "downloadName": "microsoft-agent-365-customer-implementation-guide.html",
-      "downloadSize": 2375240,
+      "downloadSize": 2479333,
       "author": [
         "Pratik Bhusal",
         "Manas Biswas",
         "Alejandro Lopez"
       ],
-      "version": "1.4.1",
+      "version": "1.5.0",
       "published": "2026-09-09",
-      "updated": "2026-11-09",
+      "updated": "2026-11-23",
       "whatItIs": "A self-contained, community-built interactive implementation guide for planning and configuring a governed Microsoft Agent 365 baseline. It includes a concise reference and a detailed deployment journey.",
       "whyUseIt": [
         "Review 58 configuration controls across the Microsoft 365, Entra, Purview, Defender, SharePoint, and Intune admin experiences.",
