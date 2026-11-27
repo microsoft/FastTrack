@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-26",
+  "lastRun": "2026-11-27",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -3571,6 +3571,10 @@
         "uniques": 0,
         "downloads": 0
       },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 0
+      },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 0,
         "uniques": 0,
@@ -3599,16 +3603,14 @@
     "2026-11-26": {
       "agent-365-enablement-checklist": {
         "views": 18,
-        "uniques": 15,
+        "uniques": 13,
         "downloads": 3
       },
       "agent-365-lifecycle-atlas": {
-        "views": 3,
-        "uniques": 1
+        "views": 3
       },
       "agent-brainstorming-template": {
         "views": 1,
-        "uniques": 1,
         "downloads": 0
       },
       "agents-cost-calculator": {
@@ -3616,16 +3618,14 @@
         "uniques": 3
       },
       "copilot-analytics-reports-navigator": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "copilot-spending-policy-planner": {
         "views": 3,
         "uniques": 3
       },
       "copilot-studio-workflow": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "export-copilotinteractions": {
         "views": 1,
@@ -3633,8 +3633,12 @@
       },
       "get-engagegroupinfo": {
         "views": 1,
-        "uniques": 1,
+        "uniques": 0,
         "downloads": 1
+      },
+      "get-m365copilotreadiness": {
+        "views": 0,
+        "uniques": 0
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 4,
@@ -3643,16 +3647,49 @@
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 4,
-        "uniques": 4,
         "downloads": 2
       },
       "powerclaw-agent": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "tenant-pool-draw-control": {
         "views": 3,
         "uniques": 3
+      }
+    },
+    "2026-11-27": {
+      "agent-365-enablement-checklist": {
+        "views": 5,
+        "uniques": 5
+      },
+      "agents-cost-calculator": {
+        "views": 7,
+        "uniques": 7
+      },
+      "copilot-spending-policy-planner": {
+        "views": 2,
+        "uniques": 2
+      },
+      "export-copilotinteractions": {
+        "views": 1,
+        "uniques": 1
+      },
+      "get-engagegroupinfo": {
+        "views": 4,
+        "uniques": 4,
+        "downloads": 1
+      },
+      "get-m365copilotreadiness": {
+        "views": 3,
+        "uniques": 2
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 1,
+        "uniques": 1
+      },
+      "tenant-pool-draw-control": {
+        "views": 1,
+        "uniques": 1
       }
     }
   }
