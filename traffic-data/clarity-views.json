@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-11-27",
+  "lastRun": "2026-11-28",
   "days": {
     "2026-07-25": {
       "autoreply-agent": {
@@ -3617,12 +3617,22 @@
         "views": 3,
         "uniques": 3
       },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
+      },
       "copilot-analytics-reports-navigator": {
         "views": 1
       },
       "copilot-spending-policy-planner": {
         "views": 3,
-        "uniques": 3
+        "uniques": 3,
+        "downloads": 0
       },
       "copilot-studio-workflow": {
         "views": 1
@@ -3647,6 +3657,7 @@
       },
       "microsoft-agent-365-technical-advisory": {
         "views": 4,
+        "uniques": 4,
         "downloads": 2
       },
       "powerclaw-agent": {
@@ -3660,32 +3671,85 @@
     "2026-11-27": {
       "agent-365-enablement-checklist": {
         "views": 5,
-        "uniques": 5
+        "uniques": 4,
+        "downloads": 0
       },
       "agents-cost-calculator": {
         "views": 7,
         "uniques": 7
       },
+      "autoreply-agent": {
+        "views": 0,
+        "uniques": 0
+      },
+      "copilot-agents-guide": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
+      },
       "copilot-spending-policy-planner": {
         "views": 2,
-        "uniques": 2
+        "uniques": 2,
+        "downloads": 0
       },
       "export-copilotinteractions": {
-        "views": 1,
-        "uniques": 1
+        "views": 1
       },
       "get-engagegroupinfo": {
         "views": 4,
-        "uniques": 4,
         "downloads": 1
       },
       "get-m365copilotreadiness": {
-        "views": 3,
-        "uniques": 2
+        "views": 3
       },
       "microsoft-agent-365-customer-implementation-guide": {
         "views": 1,
+        "uniques": 1,
+        "downloads": 0
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 0,
+        "uniques": 0,
+        "downloads": 0
+      },
+      "tenant-pool-draw-control": {
+        "views": 1,
         "uniques": 1
+      }
+    },
+    "2026-11-28": {
+      "agent-365-enablement-checklist": {
+        "views": 7,
+        "uniques": 6,
+        "downloads": 1
+      },
+      "agents-cost-calculator": {
+        "views": 2,
+        "uniques": 2
+      },
+      "autoreply-agent": {
+        "views": 1,
+        "uniques": 1
+      },
+      "copilot-agents-guide": {
+        "views": 1,
+        "uniques": 1,
+        "downloads": 1
+      },
+      "copilot-spending-policy-planner": {
+        "views": 2,
+        "uniques": 2,
+        "downloads": 1
+      },
+      "microsoft-agent-365-customer-implementation-guide": {
+        "views": 3,
+        "uniques": 3,
+        "downloads": 1
+      },
+      "microsoft-agent-365-technical-advisory": {
+        "views": 7,
+        "uniques": 7,
+        "downloads": 1
       },
       "tenant-pool-draw-control": {
         "views": 1,
